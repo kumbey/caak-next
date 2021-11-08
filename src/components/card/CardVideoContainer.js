@@ -5,8 +5,6 @@ import VideoJS from "./VideoJS";
 const CardVideoContainer = ({ files, addPost, postId }) => {
   const [videoDuration, setVideoDuration] = useState(0);
   const [isTouching, setIsTouching] = useState(false);
-  const history = useHistory();
-  const location = useLocation();
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   let clickTimer = null;

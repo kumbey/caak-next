@@ -5,12 +5,12 @@ import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../src/graphql-custom/group/queries";
-import { checkUser, getReturnData } from "../src/Utility/Util";
+import { checkUser, getReturnData } from "../src/utility/Util";
 import { getPostByStatus } from "../src/graphql-custom/post/queries";
 import useInfiniteScroll from "../src/hooks/useFetch";
 import Loader from "../src/components/loader";
 import Suggest from "../src/components/Sidebar/Suggest";
-import { useListPager } from "../src/Utility/ApiHelper";
+import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
 // import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
@@ -217,7 +217,7 @@ const Feed = () => {
             user ? "flex-row items-start" : "flex-col items-center"
           } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
-          <aside
+          {/* <aside
             className={`leftSideBar hidden mr-4 md:flex flex flex-col ${
               user && "sticky"
             }`}
@@ -343,7 +343,7 @@ const Feed = () => {
                 ) : null}
               </div>
             </div>
-          </aside>
+          </aside> */}
           <div
             className={
               "grid_container_container  w-full flex flex-col justify-center"

@@ -1,0 +1,78 @@
+{
+  "devs": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-caakmn-devs-100650-authRole",
+      "UnauthRoleArn": "arn:aws:iam::699925983689:role/amplify-caakmn-devs-100650-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::699925983689:role/amplify-caakmn-devs-100650-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+      "UnauthRoleName": "amplify-caakmn-devs-100650-unauthRole",
+      "StackName": "amplify-caakmn-devs-100650",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:699925983689:stack/amplify-caakmn-devs-100650/1a5d1b70-0a00-11ec-ba81-023477035e84",
+      "AmplifyAppId": "d3cv0kq0oa3k6b"
+    },
+    "categories": {
+      "auth": {
+        "caakmn248efac3": {
+          "userPoolId": "ap-southeast-1_aPFBL1JrG",
+          "userPoolName": "caakauth",
+          "webClientId": "513vv9i9nrnd4glini11ips7bt",
+          "nativeClientId": "2ifs9p3e5kpvk26esr45sqmh5p",
+          "identityPoolId": "ap-southeast-1:761b8e04-4eed-48bc-bd42-09320bb21645",
+          "identityPoolName": "caakiam",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamAuth_Role",
+          "authRoleName": "Cognito_caakiamAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamUnauth_Role",
+          "unauthRoleName": "Cognito_caakiamUnauth_Role"
+        }
+      },
+      "function": {
+        "userpoolpostconfirmation": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/userpoolpostconfirmation-6b7a5232433258332f4b-build.zip"
+        },
+        "caakmnlayerAPI": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersion6ddc7994-build.zip"
+        },
+        "resolverBoolean": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/resolverBoolean-596e745a577879474752-build.zip"
+        },
+        "aura": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/aura-68562f7162445a7a4a5a-build.zip"
+        },
+        "userRoleOnGroup": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/userRoleOnGroup-6654797275354b795837-build.zip"
+        },
+        "triggerTables": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/triggerTables-7a59526a70674738714c-build.zip"
+        },
+        "totals": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/totals-474d4958574877717971-build.zip"
+        },
+        "totalsTrigger": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/totalsTrigger-6d34526a6f3877757769-build.zip"
+        },
+        "triggerNotification": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/triggerNotification-78354351354a54455448-build.zip"
+        },
+        "fixTableData": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/fixTableData-6f39324a397844436948-build.zip"
+        },
+        "notification": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/notification-50504f6d4d415573595a-build.zip"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "storage": {
+      "FollowedUsers:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Reactions:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "GroupUsers:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "caakmnlayerAPI",
+      "env": "devs",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}

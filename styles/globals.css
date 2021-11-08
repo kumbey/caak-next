@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@import "./assets/css/components/buttons.css";
+@import "./assets/css/components/dropdown.css";
+@import "./assets/css/components/inputs.css";
+@import "./assets/css/components/basic.css";
+@tailwind utilities;
+@import "./assets/css/icon-fonts.css";
+@import "./Tooltip.css";
+
+@layer base {
+    html {
+        @apply font-roboto;
+    }
+
+    body {
+        @apply bg-caak-bleachedsilk
+    }
+
+    ::-webkit-scrollbar {
+        width: .6em;
+    }
+
+    ::-webkit-scrollbar,
+    ::-webkit-scrollbar-thumb {
+        overflow: visible;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, .2);
+    }
+
+
+}
+/*Custom sizing class*/
+@layer utilities {
+    .h-22px {
+        height: 22px;
+    }
+
+    .h-34px {
+        height: 34px;
+    }
+
+    .w-22px {
+        width: 22px;
+    }
+
+    .w-34px {
+        width: 34px;
+    }
+
+    .w-15px {
+        width: 15px;
+    }
+
+    .h-15px {
+        height: 15px;
+    }
+
+    .w-36px {
+        width: 36px;
+    }
+
+    .h-36px {
+        height: 36px;
+    }
+
+    .w-18px {
+        width: 18px;
+    }
+
+    .h-18px {
+        height: 18px;
+    }
+
+    .w-45px {
+        width: 45px;
+    }
+
+    .h-45px {
+        height: 45px;
+    }
+
+    .h-20px {
+        height: 20px;
+    }
+
+    .w-20px {
+        width: 20px;
+    }
+
+    .w-13px {
+        width: 13px;
+    }
+
+    .h-13px {
+        height: 13px;
+    }
+}
+

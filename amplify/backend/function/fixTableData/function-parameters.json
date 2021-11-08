@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "storage": {
+      "Post:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Notification:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "caakmnlayerAPI",
+      "env": "devs",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}

@@ -1,0 +1,433 @@
+type File @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+    id: ID!
+    key: String!
+    name: String!
+    owner: String
+    bucket: String!
+    region: String!
+    level: String!
+    ext: String!
+    type: String
+}
+
+type User @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read, create]}
+  ]){
+  id: ID!
+  username: Username @connection(fields:["id"])
+  firstname: String
+  lastname: String
+  nickname: String
+  birthdate: String
+  gender: String
+  pic_id: ID
+  pic: File @connection(fields:["pic_id"])
+  cover_pic_id: ID
+  cover_pic: File @connection(fields:["cover_pic_id"])
+  about: String
+  aura: Int @function(name:"aura-${env}")
+  is_public: Boolean
+  status: String!
+  category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
+  totals: UserTotal @connection(fields:["id"])
+  followed: Boolean @function(name:"resolverBoolean-${env}")
+  verified: Boolean
+}
+
+type UserTotal @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["user_id"]){
+  user_id: ID!
+  pending: Int
+  confirmed: Int
+  archived: Int
+  reported: Int
+  drafted: Int
+  following: Int
+  followers: Int
+  post_reactions: Int,
+  post_items_reactions: Int
+  comment_reactions: Int,
+  unseen: Int
+}
+
+type GroupTotal @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["group_id"]){
+  group_id: ID!
+  pending: Int
+  confirmed: Int
+  member: Int
+  admin: Int
+  moderator: Int
+  unseen: Int
+}
+
+type Username @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name:"byIdName" fields: ["id_name"], queryField:"userByIdName"){
+     id: ID!
+     id_name: ID!
+     user: User @connection(fields:["id"])
+}
+
+type Aura @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["user_id"]){
+    user_id: ID!,
+    point: Int!
+}
+
+type FollowedUsers @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields: ["user_id","followed_user_id"])
+  @key(name: "byFollowed", fields: ["user_id"], queryField:"byFollowed")
+  @key(name: "byFollowing", fields: ["followed_user_id"], queryField:"byFollowing"){
+  user_id: ID!
+  followed_user_id: ID!
+}
+
+type UserCategory @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields: ["user_id","category_id"])
+  @key(name: "byUser", fields:["user_id"])
+  @key(name: "byCategory", fields:["category_id"]){
+  id: ID!
+  user_id: ID!
+  category_id: ID!
+  category: Category! @connection(fields: ["category_id"])
+}
+
+type Category @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  id: ID!
+  name: String!
+  icon: String!
+}
+
+type Post @model @versioned
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byStatus", fields:["status","updatedAt"] , queryField:"getPostByStatus")
+  @key(name: "byGroup", fields:["group_id","updatedAt"] , queryField:"getPostByGroup")
+  @key(name: "byUser", fields:["user_id","updatedAt"] , queryField:"getPostByUser"){
+  id: ID!
+  title: String!
+  commentType: Boolean!
+  status: String!
+  user_id: ID!
+  user: User @connection(fields:["user_id"])
+  updated_user_id: ID!
+  updated_user: User @connection(fields:["user_id"])
+  group_id: ID!
+  group: Group @connection(fields:["group_id"])
+  category_id: ID!
+  category: Category @connection(fields:["category_id"])
+  items: [PostItems] @connection(keyName:"byPost", fields:["id"])
+  totals: PostTotal @connection(fields:["id"])
+  reacted: Boolean @function(name:"resolverBoolean-${env}")
+  updatedAt: AWSDateTime!
+}
+
+type PostItems @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byPost", fields:["post_id","order"]){
+  id: ID!
+  post_id: ID!
+  user_id: ID!
+  post: Post! @connection(fields:["post_id"])
+  file_id: ID!
+  file: File @connection(fields:["file_id"])
+  title: String
+  order: Int
+  comments: [Comment] @connection(keyName:"byPostItem", fields:["id"])
+  totals: PostItemsTotal @connection(fields:["id"])
+  reacted: Boolean @function(name:"resolverBoolean-${env}")
+}
+
+type PostTotal @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["post_id"]){
+  post_id: ID!
+  reactions: Int!
+  views: Int!
+  shares: Int!
+}
+
+type PostItemsTotal @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["post_item_id"]){
+  post_item_id: ID!
+  reactions: Int!
+  comments: Int!
+}
+
+type PostHistory @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byPost", fields:["post_id"]){
+  id: ID!
+  post_id: ID!
+  post: String!
+}
+
+type PostViews @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["post_id","user_id"]){
+  post_id: ID!
+  user_id: ID!
+}
+
+type PostShares @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  id: ID!
+  post_id: ID!
+  user_id: ID!
+  description: String,
+  source: String,
+  link: String
+}
+
+type Comment @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byPostItem", fields: ["post_item_id"] queryField:"getCommentsByPostItem")
+  @key(name: "byParent", fields: ["parent_id"])
+  @key(name: "byType", fields: ["type"]){
+  id: ID!,
+  user_id:ID!
+  user: User @connection(fields:["user_id"])
+  post_item_id: ID!
+  post_item: PostItems! @connection(fields:["post_item_id"])
+  comment: String!
+  status: String!
+  type: String!
+  parent_id: ID
+  sub: [Comment] @connection(keyName:"byParent" fields:["id"])
+  replyUserID: ID
+  replyTo: User @connection(fields:["replyUserID"])
+  totals: CommentTotal @connection(fields:["id"])
+}
+
+type CommentTotal@model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["comment_id"]){
+  comment_id: ID!
+  reactions: Int
+}
+
+type Reactions @model
+   @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields: ["id","user_id"])
+  @key(name:"byUser", fields:["user_id"])
+  @key(name:"byId", fields:["id"]){
+  id: ID!
+  user_id: ID!
+  type: String!
+  on_to: String!
+}
+
+type ReportedPost @model
+   @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  id: ID!
+  post: Post @connection
+  user: User @connection
+  type: ReportType @connection
+  reason: String!
+  status: String
+}
+
+type ReportType @model
+   @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  id: ID!
+  name: String!
+  status: String!
+  description: String
+}
+
+type GroupUsers @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields: ["user_id","group_id"])
+  @key(name: "byUser", fields: ["user_id"])
+  @key(name: "byGroup", fields: ["group_id"], queryField:"getGroupUsersByGroup"){
+  id: ID!
+  user_id: ID!
+  user: User @connection(fields:["user_id"])
+  group_id: ID!
+  group: Group! @connection(fields:["group_id"])
+  role: String!
+}
+
+type Group @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  id: ID!
+  name: String!
+  category_id: ID!
+  category: Category! @connection(fields: ["category_id"])
+  profile: File @connection
+  cover: File @connection
+  about: String
+  founder_id: ID!
+  founder: User @connection(fields:["founder_id"])
+  rating: Float
+  members: [GroupUsers] @connection(keyName:"byGroup", fields:["id"])
+  totals: GroupTotal @connection(fields:["id"])
+  followed: Boolean @function(name:"resolverBoolean-${env}")
+  role_on_group: String @function(name:"userRoleOnGroup-${env}")
+  username: GroupUsername! @connection(fields:["id"])
+}
+
+type GroupUsername @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name:"byIdName" fields: ["id_name"], queryField:"groupByIdName"){
+     id: ID!
+     id_name: ID!
+     group: Group @connection(fields:["id"])
+}
+
+type Notification @model @versioned
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name:"byUser", fields:["to","createdAt"], queryField:"listNotificationByUser")
+  @key(name:"byUserAndSeen", fields:["to","seen"],  queryField:"listNotificationByUserAndSeen"){
+    id: ID!
+    section: String!
+    type: String!
+    item_id: String
+    action: String!
+    from: ID!
+    from_user: User @connection(fields:["from"])
+    to: ID!
+    seen: String!
+    updatedAt: AWSDateTime
+    createdAt: AWSDateTime
+}
+
+type Mutation {
+  changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @function(name:"totals-${env}")
+  @aws_iam
+  @aws_cognito_user_pools
+  notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @function(name:"totals-${env}")
+  @aws_iam
+  @aws_cognito_user_pools
+  notification(user_id: ID!, method: String!): Boolean @function(name:"notification-${env}")
+  @aws_cognito_user_pools
+}
+
+type Subscription {
+  onChangedTotalsBy(type: String!, id: ID!): ChangedTotalsType
+    @aws_subscribe(mutations: ["changedTotals"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onNoficationAdded(section: String!, to: ID!): NotificationAddedType
+    @aws_subscribe(mutations: ["notificationAdded"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onCommentByPostItem(post_item_id: ID!): Comment
+    @aws_subscribe(mutations: ["createComment","updateComment"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onPostByGroup(group_id: ID!, status: String!): Post
+    @aws_subscribe(mutations: ["createPost","updatePost"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onPostByUser(user_id: ID!, status: String!): Post
+    @aws_subscribe(mutations: ["createPost","updatePost"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onUserUpdateByUser(id: ID!): User
+    @aws_subscribe(mutations: ["updateUser"])
+    @aws_iam
+    @aws_cognito_user_pools 
+  onPostUpdateByStatus(status: String!): Post
+    @aws_subscribe(mutations: ["updatePost", "createPost"])
+    @aws_iam
+    @aws_cognito_user_pools 
+}
+
+type NotificationAddedType
+  @aws_iam
+  @aws_cognito_user_pools{
+    section: String!,
+    to: ID!
+    id: ID!
+}
+
+type ChangedTotalsType
+  @aws_iam
+  @aws_cognito_user_pools{
+    type: String!,
+    id: ID!
+    totals: String!,
+}

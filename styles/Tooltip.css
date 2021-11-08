@@ -1,0 +1,18 @@
+:root {
+    --tooltip-background-color: transparent;
+}
+
+.Tooltip-Wrapper {
+    display: flex;
+    position: relative;
+}
+
+/* Absolute positioning */
+.Tooltip-Tip {
+    position: absolute;
+    top: 1rem;
+    background: var(--tooltip-background-color);
+    padding-top: 10px;
+    z-index: 2;
+    white-space: nowrap;
+}

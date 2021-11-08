@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "storage": {
+      "UserTotal:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "GroupTotal:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "PostItems:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "PostTotal:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "CommentTotal:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "caakmnlayerAPI",
+      "env": "devs",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
+}

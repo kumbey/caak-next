@@ -22,7 +22,7 @@ const DefaultModalLayout = ({children, ...props}) => {
         >
             <div className="popup absolute bg-white rounded-lg shadow-xl">
                 <div
-                onClick={() => }
+                onClick={() => close()}
                     className="pt-c6 pr-c6 absolute top-0 right-0"
                 >
                     <span className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex items-center justify-center rounded-full cursor-pointer" />

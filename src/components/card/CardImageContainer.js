@@ -6,7 +6,7 @@ const CardImageContainer = ({ files, postId }) => {
 
   return (
     <Link
-      href={{ pathname: `/post/view/${postId}`, state: { background: location } }}
+      href={{ pathname: `/post/view/${postId}`}}
     >
       <div className={"relative max-w-8xl xs:w-full w-96 h-100"}>
         {files.length > 1 ? (

@@ -149,8 +149,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
     <div className="xs:w-full xs:max-w-full sm:w-96 md:96 max-w-8xl relative flex flex-col justify-between h-full px-4 py-2 pb-4">
       <Link
         href={{
-          pathname: `/post/view/${postId}`,
-          state: { background: location },
+          pathname: `/post/view/${postId}`
         }}
       >
         <p className="text-generalblack text-17px font-bold leading-5 break-words">

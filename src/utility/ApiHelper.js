@@ -46,6 +46,11 @@ export const useListPager = (params) => {
   const data = params;
   const { user } = useUser();
   let lastToken = null;
+
+  if(data.nextToken){
+    lastToken = data.nextToken
+  }
+
   let isFinished = false;
 
   async function list(qry, limit, items) {

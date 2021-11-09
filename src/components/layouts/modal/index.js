@@ -1,5 +1,4 @@
-
-const layoutsModal = (name) => {
+const layoutsModal = () => {
     
 }
 

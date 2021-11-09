@@ -15,10 +15,12 @@ import NavBarMenu from "./NavBarMenu";
 import SubMenu from "./SubMenu";
 import useMediaQuery from "./useMeduaQuery";
 import Image from "next/image"
+import { useRouter } from "next/router";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const router = useRouter()
   const { user } = useUser();
 
   const [subscripTotal, setSubscripTotal] = useState();
@@ -179,10 +181,10 @@ export default function NavBar() {
                     skin={"secondary"}
                     className={"mr-2"}
                     onClick={() =>
-                      history.push({
-                        pathname: "/login",
-                        state: { background: location },
-                      })
+                      router.push(
+                        `?signInUp=signIn&isModal=true`,
+                        `/signInUp/signIn`
+                      )
                     }
                     // onClick={() => history.push({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.c
                   >
@@ -193,10 +195,10 @@ export default function NavBar() {
                     skin={"primary"}
                     className={"mr-2"}
                     onClick={() =>
-                      history.push({
-                        pathname: "/register",
-                        state: { background: location },
-                      })
+                      router.push(
+                        `?signInUp=signUp&isModal=true`,
+                        `/signInUp/signUp`
+                      )
                     }
                   >
                     Бүртгүүлэх

@@ -1,11 +1,12 @@
+import { useRouter } from "next/router";
 import { useEffect } from "react"
 import useScrollBlock from "../../../hooks/useScrollBlock"
+import { _modalisOpen } from "../../../utility/Util";
 
 const DefaultModalLayout = ({children, ...props}) => {
 
     const router = useRouter();
     const [blockScroll, allowScroll] = useScrollBlock()
-    const query = props.query
 
     useEffect(() => {
         blockScroll();
@@ -13,7 +14,8 @@ const DefaultModalLayout = ({children, ...props}) => {
     }, [allowScroll, blockScroll]);
 
     const close = () => {
-        router.replace('/about', undefined, { shallow: true })
+        // router.replace('/about', undefined, { shallow: true })
+        router.back()
     }
 
     return (

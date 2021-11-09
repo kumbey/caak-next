@@ -317,6 +317,21 @@ export function _objectWithoutKeys(obj, keys){
     return target
 }
 
+export function _modalisOpen(params){
+    const {conditions, query} = params
+    let isOpen = false
+    
+    for(let i=0; i , conditions.length > i; i++){
+      const condition = conditions[i]
+      
+      if(condition.value === query[condition.key]){
+        isOpen = true
+      }
+    }
+
+    return isOpen
+}
+
 
 const object = {
   useQuery,
@@ -333,6 +348,7 @@ const object = {
   closeModal,
   getFileUrl,
   getReturnData,
-  _objectWithoutKeys
+  _objectWithoutKeys,
+  _modalisOpen
 };
 export default object;

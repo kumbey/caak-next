@@ -15,7 +15,7 @@ import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
 import { withSSRContext } from "aws-amplify";
 // import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
-export async function getServerSideProps({req, res}) {
+export async function getStaticProps({req, res}) {
   
   const { API } = withSSRContext({req})
 

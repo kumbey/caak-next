@@ -12,27 +12,27 @@ import Loader from "../src/components/loader";
 import Suggest from "../src/components/Sidebar/Suggest";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
-import { withSSRContext } from "aws-amplify";
+// import { withSSRContext } from "aws-amplify";
 // import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
-export async function getServerSideProps({req, res}) {
+// export async function getServerSideProps({req, res}) {
   
-  const { API } = withSSRContext({req})
+//   const { API } = withSSRContext({req})
 
-  const resp = await API.graphql({
-    query: getPostByStatus,
-    variables: {
-      sortDirection: "DESC",
-      status: "CONFIRMED",
-      limit: 6
-    },
-    authMode:"AWS_IAM"
-  })
+//   const resp = await API.graphql({
+//     query: getPostByStatus,
+//     variables: {
+//       sortDirection: "DESC",
+//       status: "CONFIRMED",
+//       limit: 6
+//     },
+//     authMode:"AWS_IAM"
+//   })
 
-  return {
-    props: { ssrData: getReturnData(resp) }
-  }
-}
+//   return {
+//     props: { ssrData: getReturnData(resp) }
+//   }
+// }
 
 
 const Feed = ({ssrData, ...props}) => {
@@ -63,7 +63,7 @@ const Feed = ({ssrData, ...props}) => {
     member: [],
     unMember: [],
   });
-  const [posts, setPosts] = useState(ssrData.items);
+  const [posts, setPosts] = useState([]);
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -71,7 +71,7 @@ const Feed = ({ssrData, ...props}) => {
       status: "CONFIRMED",
       limit: 6,
     },
-    nextToken: ssrData.nextToken
+    // nextToken: ssrData.nextToken
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);

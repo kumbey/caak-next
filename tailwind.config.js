@@ -127,7 +127,7 @@ module.exports = {
         "56px": "56px",
       },
       fontFamily: {
-        roboto: ["Roboto"],
+        inter: ["Inter"],
       },
       spacing: {
         "px-2": "2px",

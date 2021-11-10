@@ -13,7 +13,7 @@
 
 @layer base {
   html {
-    @apply font-roboto;
+    @apply font-inter;
   }
 
   body {

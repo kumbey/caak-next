@@ -11,11 +11,15 @@ import {
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
-import { methodNoitification, updateNotification } from "../../graphql-custom/notification/mutation";
+import {
+  methodNoitification,
+  updateNotification,
+} from "../../graphql-custom/notification/mutation";
 import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
 import useInfiniteScroll from "../../hooks/useFetch";
+import { useRouter } from "next/router";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [domReady, setDomReady] = useState(false);
@@ -24,9 +28,7 @@ const NotificationDropDown = ({ isOpen }) => {
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState();
   const subscriptions = {};
-  const history = useHistory();
-  const location = useLocation();
-  // let localNotifications = notifications;
+  const history = useRouter();
   const notificationRef = useRef();
 
   const [nextNotification] = useListPager({
@@ -76,10 +78,13 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   const handleAllNotifications = () => {
-
-    try{
-
-      API.graphql(graphqlOperation(methodNoitification, {method: "SeenALL", user_id: user.sysUser.id}))
+    try {
+      API.graphql(
+        graphqlOperation(methodNoitification, {
+          method: "SeenALL",
+          user_id: user.sysUser.id,
+        })
+      );
 
       notifications.map((item, index) => {
         if (item.seen === "FALSE") {
@@ -87,8 +92,8 @@ const NotificationDropDown = ({ isOpen }) => {
         }
         return null;
       });
-    }catch(ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
     }
   };
 
@@ -113,17 +118,17 @@ const NotificationDropDown = ({ isOpen }) => {
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "POST_PENDING") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "POST_ARCHIVED") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
         let resp = await API.graphql(
@@ -132,7 +137,7 @@ const NotificationDropDown = ({ isOpen }) => {
         resp = getReturnData(resp);
         history.push({
           pathname: `/post/view/${resp.post_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "COMMENT_WRITED") {
         let resp = await API.graphql(
@@ -145,7 +150,7 @@ const NotificationDropDown = ({ isOpen }) => {
         resp = getReturnData(resp);
         history.push({
           pathname: `/post/view/${resp.post_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "USER_FOLLOWED") {
         history.push({
@@ -283,7 +288,7 @@ const NotificationDropDown = ({ isOpen }) => {
           />
         </div>
       </div>,
-      document.getElementById("root")
+      document.body
     )
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../button";
+import Link from "next/link";
 import NotificationDropDown from "./NotificationDropDown";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
@@ -100,7 +101,7 @@ const SubMenu = ({ params }) => {
             className={"top-10 -right-4"}
           />
           <Link
-            to={{
+            href={{
               ...(checkUser(user)
                 ? { pathname: `/user/${user.sysUser.id}/profile` }
                 : { pathname: "/login", state: { background: location } }),
@@ -133,7 +134,7 @@ const SubMenu = ({ params }) => {
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
                   <Link
-                    to={{
+                    href={{
                       pathname: `/user/${user.sysUser.id}/profile`,
                     }}
                   >

@@ -2,6 +2,7 @@ import { useUser } from "../../context/userContext";
 import { checkUser } from "../../utility/Util";
 import { Fragment } from "react";
 import Divider from "../divider";
+import Link from "next/link";
 
 export default function NavBarMenu({ type }) {
   const { user } = useUser();
@@ -11,7 +12,7 @@ export default function NavBarMenu({ type }) {
       {checkUser(user) && (
         <Fragment>
           {type !== "mobile" && (
-            <Link to={{ pathname: `/user/${user.sysUser.id}/profile` }}>
+            <Link href={{ pathname: `/user/${user.sysUser.id}/profile` }}>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                 <span
                   className={
@@ -25,7 +26,7 @@ export default function NavBarMenu({ type }) {
             </Link>
           )}
 
-          <Link to={`/user}/profile`}>
+          <Link href={`/user}/profile`}>
             <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
               <span
                 className={
@@ -38,7 +39,7 @@ export default function NavBarMenu({ type }) {
             </div>
           </Link>
 
-          <Link to={`/user/${user.sysUser.id}/settings`}>
+          <Link href={`/user/${user.sysUser.id}/settings`}>
             <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
               <span className={" icon-fi-rs-settings text-18px w-5 h-5 mr-2"} />
               <p className="text-14px text-caak-extraBlack font-roboto">
@@ -46,18 +47,10 @@ export default function NavBarMenu({ type }) {
               </p>
             </div>
           </Link>
-          <Link to={`/user/profile`}>
-            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-              <span className={"icon-fi-rs-help text-18px w-5 h-5 mr-2"} />
-              <p className="text-14px text-caak-extraBlack font-roboto">
-                Тусламж
-              </p>
-            </div>
-          </Link>
         </Fragment>
       )}
       {checkUser(user) && <Divider className={"my-2"} />}
-      <Link to={`/user/profile`}>
+      <Link href={`/user/profile`}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -68,8 +61,22 @@ export default function NavBarMenu({ type }) {
             Шөнийн горим
           </p>
         </div>
+      </Link>{" "}
+      <Link href={`/user/profile`}>
+        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+          <span className={"icon-fi-rs-resend text-18px w-5 h-5 mr-2"} />
+          <p className="text-14px text-caak-extraBlack font-roboto">
+            Шинэчлэлт
+          </p>
+        </div>
       </Link>
-      <Link to={{ pathname: `/newcaak` }}>
+      <Link href={`/user/profile`}>
+        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+          <span className={"icon-fi-rs-help text-18px w-5 h-5 mr-2"} />
+          <p className="text-14px text-caak-extraBlack font-roboto">Тусламж</p>
+        </div>
+      </Link>
+      {/* <Link href={{ pathname: `/newcaak` }}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -81,7 +88,7 @@ export default function NavBarMenu({ type }) {
           </p>
         </div>
       </Link>
-      <Link to={{ pathname: `/about/aura` }}>
+      <Link href={{ pathname: `/about/aura` }}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -93,7 +100,7 @@ export default function NavBarMenu({ type }) {
           </p>
         </div>
       </Link>
-      <Link to={{ pathname: `/newcaak` }}>
+      <Link href={{ pathname: `/newcaak` }}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -104,7 +111,7 @@ export default function NavBarMenu({ type }) {
         </div>
       </Link>
 
-      <Link to={{ pathname: `/newcaak` }}>
+      <Link href={{ pathname: `/newcaak` }}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -118,7 +125,7 @@ export default function NavBarMenu({ type }) {
       </Link>
 
       <Divider className={"my-2"} />
-      <Link to={{ pathname: `/newcaak` }}>
+      <Link href={{ pathname: `/newcaak` }}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -130,7 +137,7 @@ export default function NavBarMenu({ type }) {
           </p>
         </div>
       </Link>
-      <Link to={{ pathname: `/newcaak` }}>
+      <Link href={{ pathname: `/newcaak` }}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -141,14 +148,18 @@ export default function NavBarMenu({ type }) {
             Үйлчилгээний нөхцөл
           </p>
         </div>
-      </Link>
+      </Link> */}
       {checkUser(user) && type !== "mobile" && (
-        <Link to={`/logout`}>
-          <Divider className={"my-2"} />
-          <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-            <span className={"icon-fi-rs-exit text-18px w-5 h-5 mr-2"} />
-            <p className="text-14px text-caak-extraBlack font-roboto">Гарах</p>
-          </div>
+        <Link href={`/logout`}>
+          <>
+            <Divider className={"my-2"} />
+            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+              <span className={"icon-fi-rs-exit text-18px w-5 h-5 mr-2"} />
+              <p className="text-14px text-caak-extraBlack font-roboto">
+                Гарах
+              </p>
+            </div>
+          </>
         </Link>
       )}
     </div>

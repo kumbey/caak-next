@@ -94,7 +94,7 @@ const Feed = ({ssrData, ...props}) => {
       resp = getReturnData(resp).items;
 
       for (let i = 0; i < resp.length; i++) {
-        let item = resp[i];
+        const item = resp[i];
         if (item.role_on_group === "NOT_MEMBER") {
           grData.unMember.push(item);
         } else if (item.role_on_group === "MEMBER") {
@@ -115,7 +115,7 @@ const Feed = ({ssrData, ...props}) => {
       if (!loading) {
         setLoading(true);
 
-        let resp = await nextPosts();
+        const resp = await nextPosts();
         if (resp) {
           setData([...data, ...resp]);
         }

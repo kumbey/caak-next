@@ -54,7 +54,7 @@ export const pdtPost = async (oldPost, userId) => {
   try {
     let { items, ...post } = { ...oldPost };
 
-    let currentPost = getReturnData(
+    const currentPost = getReturnData(
       await API.graphql(graphqlOperation(getPost, { id: post.id }))
     );
 
@@ -70,7 +70,7 @@ export const pdtPost = async (oldPost, userId) => {
       );
 
       //UPDATE POST
-      let postData = _objectWithoutKeys(post, ["user", "version"]);
+      const postData = _objectWithoutKeys(post, ["user", "version"]);
 
       post = getReturnData(
         await API.graphql(
@@ -108,7 +108,7 @@ export const pdtPost = async (oldPost, userId) => {
 
       //DELETE OLD ITEMS
       for (let i = 0; i < currentPost.items.length; i++) {
-        let currentItem = currentPost.item[i];
+        const currentItem = currentPost.item[i];
         if (!items.find((item) => item.id === currentItem.id)) {
           await API.graphql(
             graphqlOperation(deletePostItems, { input: { id: currentItem.id } })

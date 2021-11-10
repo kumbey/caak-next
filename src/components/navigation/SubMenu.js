@@ -7,6 +7,7 @@ import { checkUser, getFileUrl, useClickOutSide } from "../../utility/Util";
 import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
 import Dummy from "dummyjs";
+import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();

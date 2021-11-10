@@ -24,16 +24,16 @@ const EditNewPostCaption = ({
   const featuredPostHandler = (e, index) => {
     e.stopPropagation();
 
-    let featured = data[index];
-    let arr = [...data];
+    const featured = data[index];
+    const arr = [...data];
     removeItemByIndex(arr, index);
     setData([featured, ...arr]);
     setCurrent(0);
   };
 
   const captionHandler = (e) => {
-    let arr = [...data];
-    let cur = arr[current];
+    const arr = [...data];
+    const cur = arr[current];
     arr[current] = { ...cur, title: e.target.value };
     setData([...arr]);
   };

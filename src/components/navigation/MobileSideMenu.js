@@ -4,6 +4,7 @@ import { checkUser, getFileUrl } from "../../utility/Util";
 import React from "react";
 import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
+import Link from "next/link";
 
 const MobileSideMenu = ({ setOpen }) => {
 

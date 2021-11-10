@@ -1,13 +1,13 @@
 @font-face {
-  font-family: "caakmoon";
-  src: url("../fonts/caakmoon.eot?9j9lnf");
-  src: url("../fonts/caakmoon.eot?9j9lnf#iefix") format("embedded-opentype"),
-    url("../fonts/caakmoon.ttf?9j9lnf") format("truetype"),
-    url("../fonts/caakmoon.woff?9j9lnf") format("woff"),
-    url("../fonts/caakmoon.svg?9j9lnf#caakmoon") format("svg");
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
+    font-family: 'caakmoon';
+    src: url('../public/assets/fonts/caakmoon.eot?9j9lnf');
+    src: url('../public/assets/fonts/caakmoon.eot?9j9lnf#iefix') format('embedded-opentype'),
+    url('../public/assets/fonts/caakmoon.ttf?9j9lnf') format('truetype'),
+    url('../public/assets/fonts/caakmoon.woff?9j9lnf') format('woff'),
+    url('../public/assets/fonts/caakmoon.svg?9j9lnf#caakmoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
 [class^="icon-"],

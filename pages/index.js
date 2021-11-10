@@ -12,7 +12,7 @@ import Loader from "../src/components/loader";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
 import { withSSRContext } from "aws-amplify";
-// import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 export async function getServerSideProps({req, res}) {
   

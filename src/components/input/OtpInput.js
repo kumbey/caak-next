@@ -6,7 +6,7 @@ export default function Test({ name, onChange, errorMessage, reset }) {
   const [pointer, setPointer] = useState(0);
 
   useEffect(() => {
-    let arr = [...otp];
+    const arr = [...otp];
     arr[pointer] = "";
     setOtp(arr);
     refs.current[pointer].current.focus();

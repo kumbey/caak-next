@@ -14,13 +14,13 @@ import { getUserAura } from "../../graphql-custom/user/queries";
 import NavBarMenu from "./NavBarMenu";
 import SubMenu from "./SubMenu";
 import useMediaQuery from "./useMeduaQuery";
-import Image from "next/image"
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
   const { user } = useUser();
 
   const [subscripTotal, setSubscripTotal] = useState();
@@ -141,18 +141,18 @@ export default function NavBar() {
       )}
 
       <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-5 fixed w-full bg-white border-t shadow-sm">
-        <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
+        <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1 site-container">
           <div className="relative flex items-center justify-between w-full h-full">
-            <div className="md:block flex flex-row items-center hidden">
-            <Image 
-              src={"/logo.svg"}
-              onClick={() => history.push({ pathname: "/" })}
-              className="h-c25 w-auto mr-1 cursor-pointer"
-              alt="Caak Logo"
-              width="90%" 
-              height="100%"
-              objectFit="contain"
-            ></Image>
+            <div className="md:flex flex flex-row items-center hidden">
+              <Image
+                src={"/logo.svg"}
+                onClick={() => history.push({ pathname: "/" })}
+                className="cursor-pointer"
+                alt="Caak Logo"
+                width="100%"
+                height="100%"
+                objectFit="contain"
+              />
               {/* <img
                 onClick={() => history.push({ pathname: "/" })}
                 className="h-c25 w-auto mr-1 cursor-pointer"
@@ -220,13 +220,12 @@ export default function NavBar() {
                       }
                     />
                     <DropDown
-                        className={"top-8 -right-3"}
-                        open={isMenuOpen}
-                        onToggle={toggleMenu}
-                        content={<NavBarMenu />}
+                      className={"top-8 -right-3"}
+                      open={isMenuOpen}
+                      onToggle={toggleMenu}
+                      content={<NavBarMenu />}
                     />
                   </div>
-
                 </div>
               )}
             </div>

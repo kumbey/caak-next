@@ -2,6 +2,7 @@ import { useUser } from "../../context/userContext";
 import { checkUser } from "../../utility/Util";
 import { Fragment } from "react";
 import Divider from "../divider";
+import Link from "next/link";
 
 export default function NavBarMenu({ type }) {
   const { user } = useUser();

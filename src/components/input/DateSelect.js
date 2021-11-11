@@ -11,7 +11,7 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
 
   useEffect(() => {
     if (value) {
-      let splited = value.split("-");
+      const splited = value.split("-");
       setYear(splited[0]);
       setMonth(splited[1]);
       setDay(splited[2]);
@@ -87,7 +87,7 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
           name={"month"}
           onChange={(e) =>
             setMonth(() => {
-              let length = e.target.value.toString().length;
+              const length = e.target.value.toString().length;
               if (length === 2) return `${e.target.value}`;
               return `0${e.target.value}`;
             })
@@ -109,7 +109,7 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
           name={"day"}
           onChange={(e) =>
             setDay(() => {
-              let length = e.target.value.toString().length;
+              const length = e.target.value.toString().length;
               if (length === 2) return `${e.target.value}`;
               return `0${e.target.value}`;
             })

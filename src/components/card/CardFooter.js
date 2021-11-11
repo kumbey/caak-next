@@ -47,7 +47,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  let totalComment = Object.keys(items[0].comments.items).length;
+  const totalComment = Object.keys(items[0].comments.items).length;
   const reactionTimer = useRef(null);
   const initReacted = useRef(null);
 

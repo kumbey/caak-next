@@ -9,6 +9,7 @@ const StepModalLayout = ({
   children,
   handleSubmit,
   activeStep,
+  setActiveStep,
   type,
   maxStep,
   ...props
@@ -29,31 +30,34 @@ const StepModalLayout = ({
   };
   return (
     <div className={`backdrop ${props.className}`}>
-      <div className="popup absolute bg-white rounded-lg shadow-xl">
+      <div className="popup absolute bg-white rounded-xl shadow-xl">
         {activeStep <= maxStep ? (
           <>
-            <div className="px-c6 pt-c6 flex items-center justify-between cursor-pointer">
+            <div className="h-[60px] px-[16px] py-[20px] flex items-center relative justify-between ">
               <div
-                onClick={() =>
-                  history.replace({ pathname: "/login", state: state })
-                }
+                className={`w-[18px] h-[15px] ${
+                  activeStep === 2 || activeStep === 3 ? "hidden" : ""
+                }`}
+                onClick={() => setActiveStep(activeStep - 1)}
               >
-                <span className="icon-fi-rs-back-2 text-15px text-caak-extraBlack pr-1" />
+                <span className="cursor-pointer icon-fi-rs-back-2 text-18px text-caak-extraBlack pr-1" />
               </div>
-              <div>
-                <p>
+              <div className="absolute right-1/2">
+                <p className="text-sm">
                   {activeStep}/{maxStep}
                 </p>
               </div>
-              <div onClick={() => close()}>
-                <span className="icon-fi-rs-close  text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex items-center justify-center rounded-full cursor-pointer" />
+              <div className="absolute right-4" onClick={() => close()}>
+                <span className="icon-fi-rs-close  text-caak-generalblack text-14px bg-caak-titaniumwhite w-c3 h-c3 flex items-center justify-center rounded-full cursor-pointer" />
               </div>
             </div>
+
             <Stepper
               currentStep={activeStep}
               maxStep={maxStep}
               bgColor={"bg-caak-algalfuel"}
             />
+
             <div
               className={
                 "text-center text-caak-generalblack mb-9 font-bold text-24px  "
@@ -88,7 +92,7 @@ const StepModalLayout = ({
               </span>
               <span
                 onClick={() =>
-                  history.replace({
+                  router.replace({
                     pathname: "/register/",
                     state,
                   })

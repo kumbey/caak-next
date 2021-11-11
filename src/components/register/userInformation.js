@@ -13,7 +13,7 @@ const UserInformation = ({ activeType }) => {
   const [error, setError] = useState("");
 
   const [nickname, setNickname] = useState("");
-  const [gender, setGender] = useState("MALE");
+  const [gender, setGender] = useState("");
   const [birthdate, setBirthdate] = useState("");
 
   const validate = {

@@ -34,6 +34,7 @@ const SignIn1 = ({ type }) => {
       type={"signup"}
       handleSubmit={handleSubmit}
       activeStep={activeStep}
+      setActiveStep={setActiveStep}
       className={"flex justify-center items-center"}
     >
       <div

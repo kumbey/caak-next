@@ -1,5 +1,5 @@
-import useModalLayout from "../../../src/hooks/useModalLayout";
-import Button from "../../../src/components/button";
+import useModalLayout from "/src/hooks/useModalLayout";
+import Button from "/src/components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import {

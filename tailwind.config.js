@@ -1,6 +1,6 @@
 module.exports = {
-  mode: 'jit',
-  purge: ["./src/**/*.{js,jsx}", './pages/**/*.{js,jsx}'],
+  mode: "jit",
+  purge: ["./src/**/*.{js,jsx}", "./pages/**/*.{js,jsx}"],
   darkMode: "class", // or 'media' or 'class'
   important: true,
   theme: {
@@ -89,6 +89,7 @@ module.exports = {
           peachbreeze: "#FEECE5",
           washme: "#fafafc",
           absoluteapricot: "#ff963c",
+          primaryLighter: "#FF660014",
         },
         darkblue: {
           DEFAULT: "#6C7392",
@@ -166,6 +167,7 @@ module.exports = {
         c15: "55px",
         c20: "68px",
         c60: "60px",
+        c62: "62px",
         c7: "70px",
         c33: "72px",
         c29: "78px",

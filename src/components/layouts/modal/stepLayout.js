@@ -1,22 +1,19 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 import { _modalisOpen } from "../../../utility/Util";
 import Stepper from "../../stepper";
-import Button from "../../button";
+import Link from "next/link";
 
 const StepModalLayout = ({
   children,
-  handleSubmit,
   activeStep,
-  setActiveStep,
-  type,
   maxStep,
+  configure,
   ...props
 }) => {
-  const [loading, setLoading] = useState(false);
-
   const router = useRouter();
+  const type = router.query.signInUp;
   const [blockScroll, allowScroll] = useScrollBlock();
 
   useEffect(() => {
@@ -25,62 +22,50 @@ const StepModalLayout = ({
   }, [allowScroll, blockScroll]);
 
   const close = () => {
-    // router.replace('/about', undefined, { shallow: true })
     router.back();
   };
   return (
     <div className={`backdrop ${props.className}`}>
       <div className="popup absolute bg-white rounded-xl shadow-xl">
-        {activeStep <= maxStep ? (
-          <>
-            <div className="h-[60px] px-[16px] py-[20px] flex items-center relative justify-between ">
+        <>
+          <div className="h-[60px] px-[16px] py-[20px] flex items-center relative justify-between ">
+            {configure.back && (
               <div
-                className={`w-[18px] h-[15px] ${
-                  activeStep === 2 || activeStep === 3 ? "hidden" : ""
-                }`}
-                onClick={() => setActiveStep(activeStep - 1)}
+                className={`w-[18px] h-[15px]`}
+                onClick={() =>
+                  router.replace(
+                    `?signInUp=signUp&isModal=false`,
+                    `/signInUp/signUp`
+                  )
+                }
               >
                 <span className="cursor-pointer icon-fi-rs-back-2 text-18px text-caak-extraBlack pr-1" />
               </div>
+            )}
+            {type === "stepUp" ? (
               <div className="absolute right-1/2">
                 <p className="text-sm">
                   {activeStep}/{maxStep}
                 </p>
               </div>
-              <div className="absolute right-4" onClick={() => close()}>
-                <span className="icon-fi-rs-close  text-caak-generalblack text-14px bg-caak-titaniumwhite w-c3 h-c3 flex items-center justify-center rounded-full cursor-pointer" />
-              </div>
-            </div>
+            ) : null}
 
+            <div className="absolute right-4" onClick={() => close()}>
+              <span className="icon-fi-rs-close  text-caak-generalblack text-14px bg-caak-titaniumwhite w-c3 h-c3 flex items-center justify-center rounded-full cursor-pointer" />
+            </div>
+          </div>
+          {type === "stepUp" ? (
             <Stepper
               currentStep={activeStep}
               maxStep={maxStep}
               bgColor={"bg-caak-algalfuel"}
             />
+          ) : null}
+        </>
 
-            <div
-              className={
-                "text-center text-caak-generalblack mb-9 font-bold text-24px  "
-              }
-            >
-              {props.title}
-            </div>
-          </>
-        ) : null}
         {children}
-        <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
-          <Button
-            loading={loading}
-            onClick={() => handleSubmit()}
-            className={
-              "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
-            }
-          >
-            Үргэлжлүүлэх
-          </Button>
-        </div>
         {/*Footer*/}
-        {activeStep === 1 ? (
+        {configure.footer ? (
           <div
             className={
               "signFooter mb-c1 flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
@@ -90,17 +75,23 @@ const StepModalLayout = ({
               <span>
                 {type === "signup" ? "Бүртгэлтэй " : "Шинэ "} хэрэглэгч бол
               </span>
-              <span
-                onClick={() =>
-                  router.replace({
-                    pathname: "/register/",
-                    state,
-                  })
-                }
-                className="text-caak-primary text-15px font-bold cursor-pointer"
+
+              <Link
+                href={`/signInUp/${type === "signup" ? "signin" : "signup"}`}
+                passHref
               >
-                {type === "signup" ? " Нэвтрэх" : " Бүртгүүлэх"}
-              </span>
+                <span
+                  // onClick={() =>
+                  //   router.replace({
+                  //     pathname: "/register/",
+                  //     state,
+                  //   })
+                  // }
+                  className="text-caak-primary text-15px font-bold cursor-pointer"
+                >
+                  {type === "signup" ? " Нэвтрэх" : " Бүртгүүлэх"}
+                </span>
+              </Link>
             </div>
             <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />
           </div>

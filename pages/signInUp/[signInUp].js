@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 
 const SignInUp = ({ ...props }) => {
+  console.log(props);
   const ModalLayout = useModalLayout();
   const router = useRouter();
   const type = router.query.signInUp;
@@ -33,22 +34,22 @@ const SignInUp = ({ ...props }) => {
       }
     }, 100);
   };
-  console.log(router);
+  console.log(type);
   return (
-    <ModalLayout
-      className={"flex justify-center items-center"}
-      title={`Шинэ Саак-т ${type === "signUp" ? "бүртгүүлэх!" : "нэвтрэх!"}`}
-    >
+    <ModalLayout type={type} className={"flex justify-center items-center"}>
       {/*Social Buttons*/}
       <div className={"flex flex-col items-center px-c13 "}>
         <Button
           onClick={() => {
             type === "signUp"
-              ? history.replace({
-                  pathname: "/register/main",
-                  state: state,
-                })
-              : history.replace({ pathname: "/login/main", state: state });
+              ? router.replace(
+                  `?signInUp=stepUp&isModal=true`,
+                  `/signInUp/stepUp`
+                )
+              : router.replace(
+                  `?signInUp=stepIn&isModal=true`,
+                  `/signInUp/stepIn`
+                );
           }}
           round
           className={
@@ -123,48 +124,6 @@ const SignInUp = ({ ...props }) => {
             <p className="">Apple</p>
           </div>
         </Button>
-      </div>
-
-      {/*Footer*/}
-      <div
-        className={
-          "signFooter px-c2 mb-c1 flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20 text-sm "
-        }
-      >
-        {type === "signUp" ? (
-          <div className="text-caak-blue text-15px">
-            <span>Бүртгэлтэй хэрэглэгч бол </span>
-            <span
-              onClick={() =>
-                history.replace({
-                  pathname: "/login/",
-                  state,
-                })
-              }
-              className="text-caak-primary text-15px font-bold cursor-pointer"
-            >
-              {" "}
-              Нэвтрэх
-            </span>
-          </div>
-        ) : (
-          <div className="text-caak-blue text-15px">
-            <span>Шинэ хэрэглэгч бол </span>
-            <span
-              onClick={() =>
-                history.replace({
-                  pathname: "/register/",
-                  state,
-                })
-              }
-              className="text-caak-primary text-15px font-bold cursor-pointer"
-            >
-              {" "}
-              Бүртгүүлэх
-            </span>
-          </div>
-        )}
-        <span className="icon-fi-rs-help text-18px" />
       </div>
     </ModalLayout>
   );

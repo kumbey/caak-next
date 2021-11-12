@@ -14,13 +14,13 @@ import { getUserAura } from "../../graphql-custom/user/queries";
 import NavBarMenu from "./NavBarMenu";
 import SubMenu from "./SubMenu";
 import useMediaQuery from "./useMeduaQuery";
-import Image from "next/image"
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
   const { user } = useUser();
 
   const [subscripTotal, setSubscripTotal] = useState();
@@ -144,15 +144,15 @@ export default function NavBar() {
         <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
           <div className="relative flex items-center justify-between w-full h-full">
             <div className="md:block flex flex-row items-center hidden">
-            <Image 
-              src={"/logo.svg"}
-              onClick={() => history.push({ pathname: "/" })}
-              className="h-c25 w-auto mr-1 cursor-pointer"
-              alt="Caak Logo"
-              width="90%" 
-              height="100%"
-              objectFit="contain"
-            ></Image>
+              <Image
+                src={"/logo.svg"}
+                onClick={() => history.push({ pathname: "/" })}
+                className="h-c25 w-auto mr-1 cursor-pointer"
+                alt="Caak Logo"
+                width="90%"
+                height="100%"
+                objectFit="contain"
+              ></Image>
               {/* <img
                 onClick={() => history.push({ pathname: "/" })}
                 className="h-c25 w-auto mr-1 cursor-pointer"
@@ -186,7 +186,7 @@ export default function NavBar() {
                         `/signInUp/signIn`
                       )
                     }
-                    // onClick={() => history.push({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.c
+                    // onClick={() => history.replace({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.c
                   >
                     Нэвтрэх
                   </Button>
@@ -220,13 +220,12 @@ export default function NavBar() {
                       }
                     />
                     <DropDown
-                        className={"top-8 -right-3"}
-                        open={isMenuOpen}
-                        onToggle={toggleMenu}
-                        content={<NavBarMenu />}
+                      className={"top-8 -right-3"}
+                      open={isMenuOpen}
+                      onToggle={toggleMenu}
+                      content={<NavBarMenu />}
                     />
                   </div>
-
                 </div>
               )}
             </div>

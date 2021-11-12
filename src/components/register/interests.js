@@ -54,9 +54,10 @@ const items = [
   },
 ];
 
-export default function Interests() {
-  const history = useRouter();
-  //   const { state } = useLocation();
+export default function Interests({ nextStep }) {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
 
   useEffect(() => {
@@ -73,8 +74,19 @@ export default function Interests() {
     }
   };
 
+  const submitHandler = () => {
+    router.replace(`?signInUp=completed&isModal=true`, `/signInUp/completed`);
+  };
+
   return (
     <div className="px-2 sm:px-10 pb-c1">
+      <div
+        className={
+          "flex text-caak-generalblack justify-center text-center align-center  pb-c2 mt-9 font-bold text-24px"
+        }
+      >
+        Таны сонирхол
+      </div>
       <div
         style={{ maxWidth: "360px" }}
         className={"flex text-caak-darkBlue mb-c2 text-15px text-center"}
@@ -117,6 +129,17 @@ export default function Interests() {
       >
         Хамгийн багадаа 3-ыг сонгоно уу!
       </p>
+      <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
+        <Button
+          loading={loading}
+          onClick={() => submitHandler()}
+          className={
+            "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
+          }
+        >
+          Дуусгах
+        </Button>
+      </div>
     </div>
   );
 }

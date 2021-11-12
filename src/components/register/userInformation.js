@@ -6,7 +6,7 @@ import Consts from "../../utility/Consts";
 import Validate from "../../utility/Validate";
 import Gender from "../gender/gender";
 
-const UserInformation = ({ activeType }) => {
+const UserInformation = ({ activeType, nextStep }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -38,19 +38,22 @@ const UserInformation = ({ activeType }) => {
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
-  //   useEffect(() => {
-  //     if (state.onlyInfo) {
-  //       if (user) {
-  //         setLastname(user.attributes.middle_name);
-  //         setFirstname(user.attributes.name);
-  //         setNickname(user.attributes.middle_name + user.attributes.name);
-  //       }
-  //     }
-  //     // eslint-disable-next-line
-  //   }, []);
+  const submitHandler = () => {
+    // handleSubmit()
+    if (nextStep) {
+      nextStep();
+    }
+  };
 
   return (
     <>
+      <div
+        className={
+          "flex text-caak-generalblack justify-center text-center align-center  pb-c2 mt-9 font-bold text-24px"
+        }
+      >
+        Хувийн мэдээлэл
+      </div>
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="px-c13 xs:px-2">
           <Input
@@ -76,20 +79,18 @@ const UserInformation = ({ activeType }) => {
             }
           />
 
-          {/* <Select
-            value={gender}
-            name={"gender"}
-            onChange={(e) => setGender(e.target.value)}
-            errorMessage={errors.gender}
-            containerStyle={"flex-1 w-full mr-2"}
-            className="border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite py-3 mb-1 border"
-          >
-            <option value="placeholder">{"Хүйс"}</option>
-            <option value="MALE">Эрэгтэй</option>
-            <option value="FEMALE">Эмэгтэй</option>
-          </Select> */}
-
           <Gender setGender={setGender} gender={gender} label={"Таны хүйс"} />
+        </div>
+        <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
+          <Button
+            loading={loading}
+            onClick={() => submitHandler()}
+            className={
+              "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
+            }
+          >
+            Үргэлжлүүлэх
+          </Button>
         </div>
       </form>
     </>

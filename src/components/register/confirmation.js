@@ -6,7 +6,7 @@ import { mailNumber } from "../../utility/Util";
 import Consts from "/src/utility/Consts";
 import Validate from "/src/utility/Validate";
 
-const Confirmation = ({ activeType }) => {
+const Confirmation = ({ activeType, nextStep }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -24,10 +24,24 @@ const Confirmation = ({ activeType }) => {
 
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
-  console.log(router);
+
+  const submitHandler = () => {
+    // handleSubmit();
+    if (nextStep) {
+      nextStep();
+    }
+  };
 
   return (
     <div className="ph:w-full ">
+      {" "}
+      <div
+        className={
+          "flex text-caak-generalblack justify-center text-center align-center  pb-c2 mt-9 font-bold text-24px"
+        }
+      >
+        Баталгаажуулах
+      </div>
       <div className="text-center text-15px text-caak-darkBlue ">
         {activeType === "phone"
           ? "Таны утасны дугаар болох "
@@ -52,6 +66,17 @@ const Confirmation = ({ activeType }) => {
             <span className={"icon-fi-rs-resend text-13px mr-1"} />
             Дахин илгээх
           </div>
+        </div>
+        <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
+          <Button
+            loading={loading}
+            onClick={() => submitHandler()}
+            className={
+              "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
+            }
+          >
+            Үргэлжлүүлэх
+          </Button>
         </div>
       </form>
     </div>

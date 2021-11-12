@@ -311,7 +311,7 @@ type GroupUsers @model
     { allow: public, provider: iam, operations: [read]}
   ])
   @key(fields: ["user_id","group_id"])
-  @key(name: "byUser", fields: ["user_id"])
+  @key(name: "byUser", fields: ["user_id","role"], queryField:"listGroupByUserAndRole")
   @key(name: "byGroup", fields: ["group_id"], queryField:"getGroupUsersByGroup"){
   id: ID!
   user_id: ID!

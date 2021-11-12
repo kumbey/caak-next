@@ -16,6 +16,7 @@ import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
 import useInfiniteScroll from "../../hooks/useFetch";
+import {useRouter} from "next/router";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [domReady, setDomReady] = useState(false);
@@ -24,8 +25,8 @@ const NotificationDropDown = ({ isOpen }) => {
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState();
   const subscriptions = {};
-  const history = useHistory();
-  const location = useLocation();
+  const history = useRouter();
+  // const location = useLocation();
   // let localNotifications = notifications;
   const notificationRef = useRef();
 
@@ -113,17 +114,17 @@ const NotificationDropDown = ({ isOpen }) => {
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "POST_PENDING") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "POST_ARCHIVED") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
         let resp = await API.graphql(
@@ -132,7 +133,7 @@ const NotificationDropDown = ({ isOpen }) => {
         resp = getReturnData(resp);
         history.push({
           pathname: `/post/view/${resp.post_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "COMMENT_WRITED") {
         let resp = await API.graphql(
@@ -145,7 +146,7 @@ const NotificationDropDown = ({ isOpen }) => {
         resp = getReturnData(resp);
         history.push({
           pathname: `/post/view/${resp.post_id}`,
-          state: { background: location },
+          // state: { background: location },
         });
       } else if (item.action === "USER_FOLLOWED") {
         history.push({
@@ -283,7 +284,7 @@ const NotificationDropDown = ({ isOpen }) => {
           />
         </div>
       </div>,
-      document.getElementById("root")
+      document.getElementById("__next")
     )
   );
 };

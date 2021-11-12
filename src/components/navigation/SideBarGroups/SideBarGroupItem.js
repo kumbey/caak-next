@@ -1,12 +1,12 @@
 import Image from "next/image";
 
-const SideBarGroupItem = ({ name, notification }) => {
+const SideBarGroupItem = ({ name, notification, image }) => {
   return (
     <div className={"flex flex-row items-center justify-between my-[6px] break-words"}>
       <div className={"flex flex-row items-center"}>
         <Image
           className={"w-[32px] h-[32px] rounded-square"}
-          src={"https://picsum.photos/200"}
+          src={image}
           alt={"group icon"}
           width={32}
           height={32}

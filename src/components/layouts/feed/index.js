@@ -1,11 +1,11 @@
-import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
-import Divider from "../src/components/divider";
-import SideBarGroups from "../src/components/navigation/SideBarGroups";
-import FooterSidebar from "../src/components/footer/FooterSidebar";
-import AuraCard from "../src/components/card/AuraCard";
-import Index from "../src/components/card/SuggestedGroupsCard";
+import FeedSortButtons from "../../navigation/FeedSortButtons";
+import Divider from "../../divider";
+import SideBarGroups from "../../navigation/SideBarGroups";
+import FooterSidebar from "../../footer/FooterSidebar";
+import AuraCard from "../../card/AuraCard";
+import Index from "../../card/SuggestedGroupsCard/SuggestedGroupsCard";
 
-const DefaultFeedLayout = ({ children, columns }) => {
+const DefaultFeedLayout = ({ children }) => {
   return (
     <div className={"feedLayoutContainer"}>
       <div className={"leftSideBar"}>
@@ -26,7 +26,6 @@ const DefaultFeedLayout = ({ children, columns }) => {
         <Divider color={"border-titaniumwhite"} className={"py-5"} />
         <FooterSidebar />
       </div>
-
       <div className={"feed"}>{children}</div>
       <div className={"rightSideBar"}>
         <AuraCard />
@@ -40,4 +39,4 @@ const DefaultFeedLayout = ({ children, columns }) => {
   );
 };
 
-export default DefaultFeedLayout;
+export default Layout;

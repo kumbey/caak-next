@@ -7,7 +7,6 @@
 @import "./components/inputs.css";
 @import "./components/dropdown.css";
 
-
 @import "icon-fonts.css";
 @import "./Tooltip.css";
 
@@ -17,7 +16,7 @@
   }
 
   body {
-    @apply bg-caak-bleachedsilk;
+    @apply bg-caak-doctor;
   }
 
   ::-webkit-scrollbar {
@@ -84,19 +83,19 @@
     height: 45px;
   }
 
-  .h-20px {
-    height: 20px;
-  }
+    .h-20px {
+        height: 20px;
+    }
 
-  .w-20px {
-    width: 20px;
-  }
+    .w-20px {
+        width: 20px;
+    }
 
-  .w-13px {
-    width: 13px;
-  }
+    .w-13px {
+        width: 13px;
+    }
 
-  .h-13px {
-    height: 13px;
-  }
+    .h-13px {
+        height: 13px;
+    }
 }

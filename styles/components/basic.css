@@ -1,7 +1,7 @@
 @layer components {
   :root {
-    --card-width: 384px;
-    --card-grid-gap: 16px;
+    --card-width: 616px;
+    /*--card-grid-gap: 16px;*/
     --bottomTabSize: 50px;
     --topBarSize: 54px;
     --containerPaddingTop: 24px;
@@ -229,7 +229,7 @@
       auto-fit,
       minmax(var(--card-width), max-content)
     );
-    grid-gap: var(--card-grid-gap);
+    /*grid-gap: var(--card-grid-gap);*/
     padding: initial;
   }
 
@@ -245,11 +245,12 @@
 
   .leftSideBar {
     /*scrollbar-gutter: stable;*/
+    position: sticky;
     height: calc(
       100vh - (var(--topBarSize) + var(--containerPaddingTop))
     ) !important;
     flex-grow: 1;
-    top: var(--topBarSize);
+    top: calc(var(--topBarSize) + var(--containerPaddingTop));
     overflow-y: auto;
     overflow-x: hidden;
     /*padding-top: 40px;*/

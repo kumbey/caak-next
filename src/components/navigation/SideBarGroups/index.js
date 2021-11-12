@@ -1,22 +1,18 @@
 import SideBarGroupItem from "./SideBarGroupItem";
 import { useEffect, useState } from "react";
+import {getFileUrl, getReturnData} from "../../../utility/Util";
+import ViewMoreText from "./ViewMoreText";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
-import { getReturnData } from "../../../utility/Util";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {listGroupsForAddPost} from "../../../graphql-custom/group/queries";
 
 const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
-  const [groupData, setGroupData] = useState({
-    // groupType: [],
-  });
+
+  const [groupData, setGroupData] = useState([]);
 
   const listGroups = async () => {
     try {
-      const grData = {
-        adminModerator: [],
-        member: [],
-        unMember: [],
-      };
+      const grData = []
 
       let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
 
@@ -24,17 +20,13 @@ const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
 
       for (let i = 0; i < resp.length; i++) {
         const item = resp[i];
-        if (item.role_on_group === "NOT_MEMBER") {
-          grData.unMember.push(item);
-        } else if (item.role_on_group === "MEMBER") {
-          grData.member.push(item);
-        } else {
-          grData.adminModerator.push(item);
+        if (item.role_on_group === groupType) {
+          grData.push(item);
         }
       }
 
-      setGroupData(grData);
-      console.log(grData);
+      setGroupData([...grData]);
+
     } catch (ex) {
       console.log(ex);
     }
@@ -45,8 +37,7 @@ const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
     // eslint-disable-next-line
   }, []);
 
-  const groups = [1, 2, 3, 4, 5];
-  return groups.length > 0 ? (
+  return groupData.length > 0 ? (
     <div className={"flex flex-col px-[6px]"}>
       <div className={"flex flex-row justify-between items-center mb-[6px]"}>
         <div className={"font-semibold text-caak-generalblack text-15px "}>
@@ -55,20 +46,21 @@ const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
         {addGroup && (
           <div
             className={
-              "flex justify-center items-center w-[18px] h-[18px] p-[3px]"
+              "flex justify-center cursor-pointer items-center w-[18px] h-[18px] p-[3px]"
             }
           >
             <span className={"text-18px icon-fi-rs-add-l text-darkblue"} />
           </div>
         )}
       </div>
-      {groups.map((_, index) => {
+      {groupData.map((group, index) => {
         if (index < maxColumns) {
           return (
             <SideBarGroupItem
               key={index}
               notification={15}
-              name={"Mongolian NUDE"}
+              name={group.name}
+              image={getFileUrl(group.profile)}
             />
           );
         } else {
@@ -76,19 +68,8 @@ const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
         }
       })}
 
-      {groups.length > maxColumns ? (
-        <div className={"flex flex-row items-center cursor-pointer"}>
-          <div className={"text-13px text-caak-primary my-[6px]"}>
-            Илүү ихийг үзэх
-          </div>
-          <div
-            className={
-              "flex justify-center items-center ml-[4.5px] w-[12px] h-[12px] rotate-90"
-            }
-          >
-            <span className={"icon-fi-rs-next text-[11px] text-caak-primary"} />
-          </div>
-        </div>
+      {groupData.length > maxColumns ? (
+        <ViewMoreText text={"Илүү ихийг үзэх"} />
       ) : null}
     </div>
   ) : null;

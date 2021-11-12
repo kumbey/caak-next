@@ -20,6 +20,7 @@ const SignInUp = ({...props }) => {
   const ModalLayout = useModalLayout()
   const router = useRouter()
   const type = router.query.signInUp
+  const history = useRouter()
 
   const host = "/federated/login/";
   const windowName = "_blank";
@@ -48,9 +49,12 @@ const SignInUp = ({...props }) => {
               type === "signUp"
                 ? history.replace({
                     pathname: "/register/main",
-                    state: state,
+                    // state: state,
                   })
-                : history.replace({ pathname: "/login/main", state: state });
+                : history.replace({
+                    pathname: "/login/main",
+                    // state: state
+                });
             }}
             round
             className={
@@ -140,7 +144,7 @@ const SignInUp = ({...props }) => {
                 onClick={() =>
                   history.replace({
                     pathname: "/login/",
-                    state,
+                    // state,
                   })
                 }
                 className="text-caak-primary text-15px font-bold cursor-pointer"
@@ -156,7 +160,7 @@ const SignInUp = ({...props }) => {
                 onClick={() =>
                   history.replace({
                     pathname: "/register/",
-                    state,
+                    // state,
                   })
                 }
                 className="text-caak-primary text-15px font-bold cursor-pointer"

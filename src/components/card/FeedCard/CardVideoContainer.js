@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { getFileUrl } from "../../utility/Util";
-import VideoJS from "./VideoJS";
+import { getFileUrl } from "../../../utility/Util";
+import VideoJS from "../VideoJS";
 
 const CardVideoContainer = ({ files, addPost, postId }) => {
   const [videoDuration, setVideoDuration] = useState(0);
@@ -106,8 +106,8 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
         files={files}
         options={videoJsOptions}
         style={{ objectFit: "cover", width: "100%" }}
-        videoClassName={`videoPlayer  video-js vjs-big-play-centered max-w-8xl ${
-          addPost ? "w-full rounded-square" : "xs:w-full w-96 md:w-96"
+        videoClassName={`videoPlayer  video-js vjs-big-play-centered ${
+          addPost ? "w-full rounded-square" : ""
         } ${
           files?.length > 0 ? "max-h-100 h-100" : "max-h-80"
         } block cursor-pointer`}

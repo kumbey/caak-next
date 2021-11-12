@@ -1,5 +1,5 @@
 import Masonry from "react-masonry-css";
-import CardVideoContainer from "../card/CardVideoContainer";
+import CardVideoContainer from "../card/FeedCard/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import Button from "../button";
 import { getFileUrl } from "../../utility/Util";
@@ -75,7 +75,6 @@ const UploadedMediaEdit = ({
   loading,
   uploadPost,
 }) => {
-
   return (
     <div>
       {errors && (

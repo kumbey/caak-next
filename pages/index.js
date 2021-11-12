@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Card from "../src/components/card";
-import Button from "../src/components/button";
+import Card from "../src/components/card/FeedCard";
 import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
@@ -12,30 +11,27 @@ import Loader from "../src/components/loader";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
 import { withSSRContext } from "aws-amplify";
-import { onChangedTotalsBy } from "../src/graphql-custom/totals/subscription";
+import DefaultFeedLayout from "./layout";
 
-export async function getServerSideProps({req, res}) {
-  
-  const { API } = withSSRContext({req})
+export async function getServerSideProps({ req, res }) {
+  const { API } = withSSRContext({ req });
 
   const resp = await API.graphql({
     query: getPostByStatus,
     variables: {
       sortDirection: "DESC",
       status: "CONFIRMED",
-      limit: 6
+      limit: 6,
     },
-    authMode:"AWS_IAM"
-  })
+    authMode: "AWS_IAM",
+  });
 
   return {
-    props: { ssrData: getReturnData(resp) }
-  }
+    props: { ssrData: getReturnData(resp) },
+  };
 }
 
-
-const Feed = ({ssrData, ...props}) => {
-
+const Feed = ({ ssrData, ...props }) => {
   const feedType = [
     {
       id: 0,
@@ -70,7 +66,7 @@ const Feed = ({ssrData, ...props}) => {
       status: "CONFIRMED",
       limit: 6,
     },
-    nextToken: ssrData.nextToken
+    nextToken: ssrData.nextToken,
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
@@ -363,68 +359,86 @@ const Feed = ({ssrData, ...props}) => {
               </div>
             </div>
           </aside> */}
-          <div
-            className={
-              "grid_container_container  w-full flex flex-col justify-center"
-            }
-          >
-            <div
-              className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
-            >
-              {feedType.map(({ icon, type, id }) => {
+
+          <DefaultFeedLayout>
+            {posts.length > 0 &&
+              posts.map((data, index) => {
                 return (
-                  <Button
-                    key={id}
-                    onClick={() => setActiveIndex(id)}
-                    className={`h-8 w-auto mr-2 ${
-                      id === activeIndex
-                        ? "white shadow-button mb-2"
-                        : "transparent mb-2"
-                    }`}
-                    iconPosition={"left"}
-                    icon={
-                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
-                        <i
-                          className={`${icon}${
-                            id === activeIndex ? "" : "-o"
-                          } text-19px ph:text-15px`}
-                        />
-                      </div>
-                    }
-                  >
-                    <p className="text-16px ph:text-15px font-bold">{type}</p>
-                  </Button>
+                  <Card
+                    key={index}
+                    video={data?.items?.items[0]?.file?.type?.startsWith(
+                      "video"
+                    )}
+                    post={data}
+                    className="ph:mb-4 sm:mb-4"
+                  />
                 );
               })}
-            </div>
-            <div
-              className={
-                "grid-container justify-center md:justify-center lg:justify-start"
-              }
-            >
-              {posts.length > 0 &&
-                posts.map((data, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      video={data?.items?.items[0]?.file?.type?.startsWith(
-                        "video"
-                      )}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  );
-                })}
-            </div>
             <div ref={feedRef} className={"flex justify-center items-center"}>
               <Loader
-                containerClassName={"self-center"}
-                className={`bg-caak-primary ${
-                  loading ? "opacity-100" : "opacity-0"
-                }`}
+                  containerClassName={"self-center"}
+                  className={`bg-caak-primary ${
+                      loading ? "opacity-100" : "opacity-0"
+                  }`}
               />
             </div>
-          </div>
+          </DefaultFeedLayout>
+
+          {/*      <div*/}
+          {/*        className={*/}
+          {/*          "grid_container_container  w-full flex flex-col justify-center"*/}
+          {/*        }*/}
+          {/*      >*/}
+          {/*        <div*/}
+          {/*          className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}*/}
+          {/*        >*/}
+          {/*          {feedType.map(({ icon, type, id }) => {*/}
+          {/*            return (*/}
+          {/*              <Button*/}
+          {/*                key={id}*/}
+          {/*                onClick={() => setActiveIndex(id)}*/}
+          {/*                className={`h-8 w-auto mr-2 ${*/}
+          {/*                  id === activeIndex*/}
+          {/*                    ? "white shadow-button mb-2"*/}
+          {/*                    : "transparent mb-2"*/}
+          {/*                }`}*/}
+          {/*                iconPosition={"left"}*/}
+          {/*                icon={*/}
+          {/*                  <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>*/}
+          {/*                    <i*/}
+          {/*                      className={`${icon}${*/}
+          {/*                        id === activeIndex ? "" : "-o"*/}
+          {/*                      } text-19px ph:text-15px`}*/}
+          {/*                    />*/}
+          {/*                  </div>*/}
+          {/*                }*/}
+          {/*              >*/}
+          {/*                <p className="text-16px ph:text-15px font-bold">{type}</p>*/}
+          {/*              </Button>*/}
+          {/*            );*/}
+          {/*          })}*/}
+          {/*        </div>*/}
+          {/*        <div*/}
+          {/*          className={*/}
+          {/*            "grid-container justify-center md:justify-center lg:justify-start"*/}
+          {/*          }*/}
+          {/*        >*/}
+          {/*          {posts.length > 0 &&*/}
+          {/*            posts.map((data, index) => {*/}
+          {/*              return (*/}
+          {/*                <Card*/}
+          {/*                  key={index}*/}
+          {/*                  video={data?.items?.items[0]?.file?.type?.startsWith(*/}
+          {/*                    "video"*/}
+          {/*                  )}*/}
+          {/*                  post={data}*/}
+          {/*                  className="ph:mb-4 sm:mb-4"*/}
+          {/*                />*/}
+          {/*              );*/}
+          {/*            })}*/}
+          {/*        </div>*/}
+
+          {/*</div>*/}
         </div>
       </div>
     </div>

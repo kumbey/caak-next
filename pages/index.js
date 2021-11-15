@@ -12,6 +12,7 @@ import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
 import { withSSRContext } from "aws-amplify";
 import DefaultFeedLayout from "./layout";
+import useFeedLayout from "../src/hooks/useFeedLayout";
 
 export async function getServerSideProps({ req, res }) {
   const { API } = withSSRContext({ req });
@@ -49,7 +50,7 @@ const Feed = ({ ssrData, ...props }) => {
       icon: "icon-fi-rs-top",
     },
   ];
-
+  const FeedLayout = useFeedLayout()
   const [activeIndex, setActiveIndex] = useState(0);
   const feedRef = useRef();
   const { user } = useUser();
@@ -226,7 +227,7 @@ const Feed = ({ ssrData, ...props }) => {
 
   return (
     <div id={"feed"}>
-      <div className={`px-0 md:px-10 w-full relative`}>
+      <div className={`px-0 w-full relative`}>
         <div
           className={`h-full flex ${
             user ? "flex-row items-start" : "flex-col items-center"
@@ -360,7 +361,7 @@ const Feed = ({ ssrData, ...props }) => {
             </div>
           </aside> */}
 
-          <DefaultFeedLayout>
+          <FeedLayout columns={3}>
             {posts.length > 0 &&
               posts.map((data, index) => {
                 return (
@@ -382,7 +383,7 @@ const Feed = ({ ssrData, ...props }) => {
                   }`}
               />
             </div>
-          </DefaultFeedLayout>
+          </FeedLayout>
 
           {/*      <div*/}
           {/*        className={*/}

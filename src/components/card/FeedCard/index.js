@@ -10,7 +10,7 @@ const Card = ({ video, verifiedUser, post }) => {
 
   return (
     post && (
-      <div className="flex flex-col justify-between mx-auto bg-white rounded-xl shadow-card mb-[24px]">
+      <div className="feedCard flex flex-col justify-between mx-auto bg-white rounded-xl shadow-card mb-[24px]">
         <div className={"flex flex-col "}>
           <CardHeader
             postUser={post.user}

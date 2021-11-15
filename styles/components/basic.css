@@ -1,6 +1,6 @@
 @layer components {
   :root {
-    --card-width: 616px;
+    --card-width: clamp(320px, 100%, 616px);
     /*--card-grid-gap: 16px;*/
     --bottomTabSize: 50px;
     --topBarSize: 54px;
@@ -9,6 +9,12 @@
     /* Profile settings */
     --minSettingsPanelWidth: 288px;
     --maxSettingsPanelWidth: 608px;
+
+    --navBarSearchWidth: clamp(320px, 100%, 480px);
+  }
+
+  .navbarSearch {
+    width: var(--navBarSearchWidth);
   }
 
   .site-container {
@@ -164,11 +170,6 @@
     @apply max-h-80;
   }
 
-  @media (max-width: 767px) {
-    .fullscreen_footer_size {
-      padding-bottom: var(--bottomTabSize);
-    }
-  }
 
   .auroGradient {
     background: transparent
@@ -222,25 +223,32 @@
     filter: blur(0);
   }
 
-  .grid-container {
-    display: grid;
-    grid-auto-columns: auto;
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(var(--card-width), max-content)
-    );
-    /*grid-gap: var(--card-grid-gap);*/
-    padding: initial;
-  }
-
-  .grid_container_container {
-    flex-grow: 1;
-    max-width: calc(var(--card-width) * 3 + var(--card-grid-gap) * 2);
-    padding-top: 40px;
+  /*.grid-container {*/
+  /*  display: grid;*/
+  /*  grid-auto-columns: auto;*/
+  /*  grid-template-columns: repeat(*/
+  /*    auto-fit,*/
+  /*    minmax(var(--card-width), max-content)*/
+  /*  );*/
+  /*  !*grid-gap: var(--card-grid-gap);*!*/
+  /*  padding: initial;*/
+  /*}*/
+  /*.grid_container_container {*/
+  /*  flex-grow: 1;*/
+  /*  max-width: calc(var(--card-width) * 3 + var(--card-grid-gap) * 2);*/
+  /*  padding-top: 40px;*/
+  /*}*/
+  .feedCard {
+    width: var(--card-width);
   }
 
   .feedLayoutContainer {
-    @apply flex flex-nowrap flex-row;
+    @apply flex flex-nowrap justify-center flex-row;
+    flex-shrink: 1;
+    flex-grow: 1;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .leftSideBar {
@@ -253,22 +261,39 @@
     top: calc(var(--topBarSize) + var(--containerPaddingTop));
     overflow-y: auto;
     overflow-x: hidden;
-    /*padding-top: 40px;*/
-    width: 248px;
     max-width: 248px;
     min-width: 248px;
+    flex-basis: 248px;
   }
 
   .feed {
     flex-grow: 1;
-    width: 616px;
+    flex-basis: 616px;
+    width: 100%;
+    min-width: 320px;
     margin-right: 40px;
     margin-left: 40px;
+    max-width: 616px;
+  }
+
+  @media (max-width: 1100px) {
+    .feed {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .feed {
+      @apply px-0 mx-0;
+    }
+    .feedLayoutContainer {
+      @apply px-0;
+    }
   }
 
   .rightSideBar {
     flex-grow: 1;
-    width: 320px;
+    flex-basis: 320px;
     max-width: 320px;
     min-width: 320px;
   }

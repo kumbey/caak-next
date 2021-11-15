@@ -49,7 +49,7 @@ module.exports = {
       colors: {
         caak: {
           primary: "#FF6600",
-          primaryHover: "#F65A60",
+          primaryHover: "#FF8939",
           bleachedsilk: "#F2F2F2",
           aleutian: "#9A9FB4",
           liquidnitrogen: "#F3F3F4",
@@ -58,6 +58,7 @@ module.exports = {
           upscale: "#A8AEC1",
           darkBlue: "#6C7392",
           extraBlack: "#0D1026",
+          "extraBlack-hover": "#161b3f",
           blue: "#4B587C",
           2: "rgba(0, 0, 0, 0.15)",
           3: "rgba(0, 0, 0, 0.1)",
@@ -146,6 +147,8 @@ module.exports = {
         "px-45": "45px",
         "px-154": "154px",
         "px-13px": "13px",
+        "px-280": "280px",
+        "px-260": "260px",
         c6: "15px",
         b5: "16px",
         b4: "17px",
@@ -204,7 +207,12 @@ module.exports = {
     },
   },
   variants: {
-    extend: { placeholderColor: ["hover"], opacity: ["group-hover"] },
+    extend: {
+      placeholderColor: ["hover"],
+      opacity: ["group-hover"],
+      backdropBrightness: ["hover"],
+      backdropFilter: ["hover"],
+    },
   },
   plugins: [require("@tailwindcss/forms")],
 };

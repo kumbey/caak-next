@@ -1,0 +1,5 @@
+@layer components {
+    .auraCard {
+        @apply flex flex-col justify-between items-center bg-caak-icingrose px-px50 py-c1 h-px-260 w-ci  rounded-square;
+    }
+}

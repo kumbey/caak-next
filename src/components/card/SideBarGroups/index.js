@@ -1,7 +1,7 @@
 import SideBarGroupItem from "./SideBarGroupItem";
 import { useEffect, useState } from "react";
 import {getFileUrl, getReturnData} from "../../../utility/Util";
-import ViewMoreText from "./ViewMoreText";
+import ViewMoreText from "../SideBarGroups/ViewMoreText";
 import API from "@aws-amplify/api";
 import {graphqlOperation} from "@aws-amplify/api-graphql";
 import {listGroupsForAddPost} from "../../../graphql-custom/group/queries";

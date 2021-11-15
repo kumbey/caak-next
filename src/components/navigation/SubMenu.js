@@ -33,13 +33,8 @@ const SubMenu = ({ params }) => {
       >
         <div className={"flex items-center mr-0 block md:hidden"}>
           <span
-            onClick={() =>
-              history.push({
-                pathname: "/",
-              })
-            }
-            className="p-2 rounded-lg icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8"
-          />
+            className="icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8 p-2 rounded-lg"
+          ></span>
         </div>
         <div className={"flex items-center mr-0 block md:hidden"}>
           <span className="p-2 rounded-lg icon-fi-rs-search text-caak-generalblack text-24px py-px-8" />

@@ -332,6 +332,11 @@ export function _modalisOpen(params){
     return isOpen
 }
 
+export async function fetcher(url){
+  const resp = await fetch(url)
+  return resp.json()
+}
+
 
 const object = {
   useQuery,

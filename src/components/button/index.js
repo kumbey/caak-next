@@ -1,22 +1,28 @@
-import React from "react";
+import { forwardRef } from "react";
 import Loader from "../loader";
 
-const Button = ({
-  skin,
-  round,
-  circular,
-  iconPosition,
-  icon,
-  loading,
-  roundedSquare,
-  disabled,
-  small,
-  ...props
-}) => {
+const Button = (
+  {
+    skin,
+    round,
+    circular,
+    iconPosition,
+    icon,
+    loading,
+    roundedSquare,
+    disabled,
+    small,
+    ...props
+  },
+  ref
+) => {
   return (
     <button
       {...props}
-      className={`button ${small ? "small" : ""} ${skin ? skin : ""} ${round ? "round" : ""} ${
+      ref={ref}
+      className={`button ${small ? "small" : ""} ${skin ? skin : ""} ${
+        round ? "round" : ""
+      } ${
         disabled && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"
       } ${circular ? "circular" : ""} ${
         roundedSquare ? "rounded-square" : ""
@@ -30,4 +36,4 @@ const Button = ({
     </button>
   );
 };
-export default Button;
+export default forwardRef(Button);

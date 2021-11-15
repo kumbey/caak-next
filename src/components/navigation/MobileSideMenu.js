@@ -7,13 +7,10 @@ import NavBarMenu from "./NavBarMenu";
 import Link from "next/link";
 
 const MobileSideMenu = ({ setOpen }) => {
-
   const { user } = useUser();
-  
+
   return (
-    <div
-      className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white"
-    >
+    <div className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white">
       <div
         className={
           "relative text-20px text-caak-generalblack font-medium py-2.5 px-5 border-t border-b border-gray-100"
@@ -31,11 +28,11 @@ const MobileSideMenu = ({ setOpen }) => {
         {checkUser(user) && (
           <div className={"relative flex flex-row items-center"}>
             <Link
-              to={{
+              href={{
                 pathname: checkUser(user)
                   ? `/user/${user.sysUser.id}/profile`
                   : "/login",
-                state: { background: location },
+                // state: { background: location },
               }}
             >
               <div className={"cursor-pointer "}>
@@ -59,7 +56,7 @@ const MobileSideMenu = ({ setOpen }) => {
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
                   <Link
-                    to={{
+                    href={{
                       pathname: `/user/${user.sysUser.id}/profile`,
                     }}
                   >
@@ -109,7 +106,7 @@ const MobileSideMenu = ({ setOpen }) => {
             onClick={() =>
               history.push({
                 pathname: "/login",
-                state: { background: location },
+                // state: { background: location },
               })
             }
           >
@@ -122,7 +119,7 @@ const MobileSideMenu = ({ setOpen }) => {
             onClick={() =>
               history.push({
                 pathname: "/register",
-                state: { background: location },
+                // state: { background: location },
               })
             }
           >

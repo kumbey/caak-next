@@ -1,14 +1,30 @@
 import auraImage from "../../../public/assets/images/Aura.svg";
+import registerImage from "../../../public/assets/images/Register.png";
+
 import Image from "next/image";
-import Button from "../button";
+import { useUser } from "../../context/userContext";
+import { checkUser } from "../../utility/Util";
+import useHover from "../../hooks/useHover";
+import {useEffect, useState} from "react";
+
 const AuraCard = () => {
-  return (
-    <div
-      className={
-        "auraCard flex flex-col justify-between items-center bg-caak-icingrose px-[50px] py-[18px] w-[320px] h-[260px] rounded-square"
+  const { user } = useUser();
+  const [hoverRef, isHovered] = useHover();
+  const [logged, setLogged] = useState(false)
+
+  useEffect(() => {
+      if(checkUser(user)){
+          setLogged(true)
       }
-    >
-      <div className={"font-bold text-22px text-caak-extraBlack py-[10px]"}>
+  },[user])
+
+  return logged ? (
+    <div className={`auraCard`}>
+      <div
+        className={
+          "font-bold text-22px text-caak-extraBlack py-px-10 text-center"
+        }
+      >
         Аура гэж юу вэ?
       </div>
 
@@ -19,7 +35,40 @@ const AuraCard = () => {
         height={"146px"}
         objectFit="contain"
       />
-      <Button skin={"primary w-[220px] h-[36px] font-medium text-14px"}>Дэлгэрэнгүй</Button>
+      <button
+        className={"button primary w-[220px] h-[36px] font-medium text-14px"}
+      >
+        Дэлгэрэнгүй
+      </button>
+    </div>
+  ) : (
+    <div
+      style={
+        checkUser(user)
+          ? {
+              backgroundImage: `url(${registerImage.src})`,
+              backgroundPosition: "center",
+              backgroundSize: "contain",
+            }
+          : {}
+      }
+      className={"auraCard h-px-280"}
+    >
+      <div
+        className={
+          "font-bold text-22px text-caak-extraBlack py-px-10 text-center"
+        }
+      >
+        Шинэ мэдрэмж үүсгэцгээе!
+      </div>
+      <button
+        ref={hoverRef}
+        className={
+          "button w-[280px] h-c9 font-medium text-14px bg-black text-white  hover:bg-caak-extraBlack-hover"
+        }
+      >
+        {isHovered ? "Бүртгүүлэх" : "Бидэнтэй нэгдэх"}
+      </button>
     </div>
   );
 };

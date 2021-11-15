@@ -7,7 +7,6 @@ import { checkUser, getFileUrl, useClickOutSide } from "../../utility/Util";
 import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
 import Dummy from "dummyjs";
-import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
@@ -38,18 +37,20 @@ const SubMenu = ({ params }) => {
           ></span>
         </div>
         <div className={"flex items-center mr-0 block md:hidden"}>
-          <span className="icon-fi-rs-search text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
+          <span className="p-2 rounded-lg icon-fi-rs-search text-caak-generalblack text-24px py-px-8" />
         </div>
-        <div className={"mr-0 md:mr-6"}>
+        <div className={"mr-0 md:mr-[10px]"}>
           <Button
             roundedSquare
-            skin={"primary"}
-            className={"w-36px h-36px px-0 py-0"}
-            icon={<span className={"icon-fi-rs-add text-15px"} />}
+            skin={"transparent"}
+            className={
+              "w-[26px] h-[26px] px-0 py-0 flex justify-center items-center hover:bg-transparent"
+            }
+            icon={<span className={"icon-fi-rs-add text-22px"} />}
             onClick={() =>
               history.push({
                 pathname: checkUser(user) ? "/post/add/new" : "/login",
-                state: { background: location },
+                // state: { background: location },
               })
             }
           />
@@ -61,24 +62,26 @@ const SubMenu = ({ params }) => {
               ? setIsNotificationMenu((oldState) => !oldState)
               : history.push({
                   pathname: "/login",
-                  state: { background: location },
+                  // state: { background: location },
                 });
           }}
-          className={"relative flex items-center mr-0 md:mr-6 cursor-pointer"}
+          className={`${
+            isNotificationMenu ? "bg-caak-liquidnitrogen" : ""
+          } relative flex items-center justify-center w-[50px] h-[36px] mr-0 md:mr-[10px] cursor-pointer rounded-square  hover:bg-caak-liquidnitrogen transition duration-100`}
         >
           <span
-            className={`${
-              isNotificationMenu && "bg-caak-titaniumwhite"
-            } icon-fi-rs-notification text-22px text-caak-generalblack text-24px p-2 rounded-square hover:bg-caak-titaniumwhite`}
+            className={`icon-fi-rs-notification text-22px text-caak-generalblack text-21px`}
           />
           {parseInt(params.userTotal.unseen) > 0 ? (
-            <span
+            <div
               className={
-                "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
+                "absolute flex justify-center items-center top-1 right-[7px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
               }
             >
-              {params.userTotal.unseen > 9 ? "9+" : params.userTotal.unseen}
-            </span>
+              <span className={"text-white text-11px text-center"}>
+                {params.userTotal.unseen > 9 ? "9+" : params.userTotal.unseen}
+              </span>
+            </div>
           ) : null}
           {checkUser(user) && (
             <NotificationDropDown
@@ -87,83 +90,51 @@ const SubMenu = ({ params }) => {
             />
           )}
         </div>
-        <div className={"relative flex flex-row mr-0 md:mr-6"}>
+        <div
+          className={
+            "relative hidden md:flex flex-row w-max mr-0 md:mr-[10px] h-[36px] bg-caak-liquidnitrogen px-[12px] py-[10px] rounded-square"
+          }
+        >
+          {params.type === "web" && checkUser(user) && (
+            <div className={"flex flex-col items-center justify-center"}>
+              <div className={"flex flex-row justify-center items-center"}>
+                <span className={"icon-fi-rs-auro auroGradient mr-1"} />
+                <span
+                  className={"text-14px text-caak-generalblack font-medium"}
+                >
+                  {`${user.sysUser.aura} Аура`}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div
+          className={
+            "relative cursor-pointer flex items-center justify-center w-[36px] h-[36px]"
+          }
+        >
           <DropDown
             open={params.isMenuOpen}
             onToggle={toggleMenu}
             content={<NavBarMenu />}
-            // items={menu_data}
-            className={"top-10 -right-4"}
+            className={"top-8 -right-3"}
           />
-          <Link
-            passHref
-            href={{
-              ...(checkUser(user)
-                ? { pathname: `/user/${user.sysUser.id}/profile` }
-                : {
-                    pathname: "/login",
-                    // state: { background: location }
-                  }),
-            }}
-          >
-            <div className={"cursor-pointer flex items-center"}>
-              {checkUser(user) ? (
-                <img
-                  alt={user.sysUser.nickname}
-                  src={
-                    user.sysUser.pic
-                      ? getFileUrl(user.sysUser.pic)
-                      : Dummy.img("50x50")
-                  }
-                  className={
-                    "block mr-0 md:mr-px-8 w-c3 h-c3 md:w-px-45 md:h-px-45 object-cover rounded-full"
-                  }
-                />
-              ) : (
-                <span className="icon-fi-rs-profile text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
-              )}
-            </div>
-          </Link>
-          {params.type === "web" && checkUser(user) && (
-            <div
-              className={
-                "hidden md:flex flex flex-col items-center justify-center"
+          {checkUser(user) ? (
+            <img
+              ref={menuRef}
+              onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
+              alt={user.sysUser.nickname}
+              src={
+                user.sysUser.pic
+                  ? getFileUrl(user.sysUser.pic)
+                  : Dummy.img("50x50")
               }
-            >
-              <div className={"flex flex-row justify-center items-center"}>
-                <div className="flex flex-col items-center">
-                  <Link
-                    passHref
-                    href={{
-                      pathname: `/user/${user.sysUser.id}/profile`,
-                    }}
-                  >
-                    <span
-                      className={
-                        "text-generalblack text-14px font-bold cursor-pointer"
-                      }
-                    >
-                      {user.sysUser.nickname}
-                    </span>
-                  </Link>
-                  <div className={"flex flex-row items-center self-start"}>
-                    <span className={"icon-fi-rs-auro auroGradient mr-1"} />
-                    <span
-                      className={"text-14px text-caak-darkBlue font-medium"}
-                    >
-                      {user.sysUser.aura}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  ref={menuRef}
-                  onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
-                  className="text-12px hover:bg-caak-liquidnitrogen flex items-center justify-center w-6 h-6 ml-1 text-center transition duration-100 ease-linear transform -rotate-90 rounded-full cursor-pointer"
-                >
-                  <span className="icon-fi-rs-back" />
-                </div>
-              </div>
-            </div>
+              className={
+                "block mr-0 w-[36px] h-[36px] md:w-px-45 md:h-px-45 object-cover rounded-full"
+              }
+            />
+          ) : (
+            <span className="p-2 rounded-lg icon-fi-rs-profile text-caak-generalblack text-24px py-px-8" />
           )}
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import Notification from "./Notification";
-import { createPortal } from "react-dom";
 import { useUser } from "../../context/userContext";
 import { checkUser, getReturnData } from "../../utility/Util";
 import { useListPager } from "../../utility/ApiHelper";
@@ -11,12 +10,15 @@ import {
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
-import { methodNoitification, updateNotification } from "../../graphql-custom/notification/mutation";
+import {
+  methodNoitification,
+  updateNotification,
+} from "../../graphql-custom/notification/mutation";
 import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
 import useInfiniteScroll from "../../hooks/useFetch";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [domReady, setDomReady] = useState(false);
@@ -77,10 +79,13 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   const handleAllNotifications = () => {
-
-    try{
-
-      API.graphql(graphqlOperation(methodNoitification, {method: "SeenALL", user_id: user.sysUser.id}))
+    try {
+      API.graphql(
+        graphqlOperation(methodNoitification, {
+          method: "SeenALL",
+          user_id: user.sysUser.id,
+        })
+      );
 
       notifications.map((item, index) => {
         if (item.seen === "FALSE") {
@@ -88,8 +93,8 @@ const NotificationDropDown = ({ isOpen }) => {
         }
         return null;
       });
-    }catch(ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
     }
   };
 
@@ -215,77 +220,70 @@ const NotificationDropDown = ({ isOpen }) => {
   }, []);
 
   return (
-    domReady &&
-    createPortal(
+    <div
+      id={"notificationDropdown"}
+      // onClick={(e) => e.stopPropagation()}
+      className={`${
+        !isOpen && "hidden"
+      } notificationMobile dropdown min-h-[470px] -right-10 overflow-y-scroll pb-c20 fixed md:absolute z-2 mt-0 md:z-50 top-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:w-px360  md:py-2   md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
+    >
       <div
-        id={"notificationDropdown"}
-        // onClick={(e) => e.stopPropagation()}
-        className={`${
-          !isOpen && "hidden"
-        } notificationMobile h-full dropdown overflow-y-scroll pb-c20 fixed z-2 mt-0 md:z-50 top-0 right-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
+        className={
+          "flex flex-row items-center justify-between w-full px-[14px] pb-2 pt-3 border-b border-t md:border-t-0"
+        }
       >
-        <div
+        <span
           className={
-            "flex flex-row items-center justify-between w-full px-5 pb-2 pt-3 border-b border-t md:border-t-0"
+            "text-caak-generalblack font-medium text-20px md:text-16px"
           }
         >
-          <span
-            className={
-              "text-caak-generalblack font-medium text-20px md:text-16px"
-            }
-          >
-            Мэдэгдэл
-          </span>
+          Мэдэгдэл
+        </span>
+        <div className={"w-[24px] h-[24px] cursor-pointer"}>
           <span
             onClick={() => handleAllNotifications()}
             className={
-              "text-caak-bleudefrance cursor-pointer text-14px font-medium"
+              "icon-fi-rs-checkall text-caak-darkBlue  text-22px font-medium"
             }
-          >
-            Бүгдийг харсан
-          </span>
+          />
         </div>
-        <div className={"notification_body flex flex-col bg-caak-washme p-0"}>
-          <span
-            className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
-          >
-            Шинэ
-          </span>
-          {notifications.map((item, index) => {
-            return (
-              <Notification
-                onClick={() => handleNotificationClick(index)}
-                key={index}
-                item={item}
-              />
-            );
-          })}
-          {/* <span
+      </div>
+      <div className={"notification_body flex flex-col bg-caak-washme p-0"}>
+        <span
+          className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
+        >
+          Шинэ
+        </span>
+        {notifications.map((item, index) => {
+          return (
+            <Notification
+              onClick={() => handleNotificationClick(index)}
+              key={index}
+              item={item}
+            />
+          );
+        })}
+        {/* <span
             className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
           >
             Сүүлд ирсэн
           </span> */}
-          {/* <Notification type={"caak"} />
+        {/* <Notification type={"caak"} />
           <Notification type={"comment"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} /> */}
-        </div>
-        <div
-          ref={notificationRef}
-          className={"flex justify-center items-center"}
-        >
-          <Loader
-            className={`${
-              loading ? "opacity-100" : "opacity-0"
-            } bg-caak-primary `}
-          />
-        </div>
-      </div>,
-      document.getElementById("__next")
-    )
+      </div>
+      <div ref={notificationRef} className={"flex justify-center items-center"}>
+        <Loader
+          className={`${
+            loading ? "opacity-100" : "opacity-0"
+          } bg-caak-primary `}
+        />
+      </div>
+    </div>
   );
 };
 

@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [logged, setLogged] = useState(false);
 
   const router = useRouter();
   const { user } = useUser();
@@ -28,6 +29,7 @@ export default function NavBar() {
   const [userTotal, setUserTotal] = useState({});
   const [render, setRender] = useState(0);
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
+  const isTablet = useMediaQuery("(max-width: 767px)");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -37,9 +39,9 @@ export default function NavBar() {
     setIsMenuOpen(false);
   });
 
-  const mobileMenuRef = useClickOutSide(() => {
-    setIsMobileMenuOpen(false);
-  });
+  // const mobileMenuRef = useClickOutSide(() => {
+  //   setIsMobileMenuOpen(false);
+  // });
 
   const fetchUserTotal = async () => {
     try {
@@ -106,9 +108,13 @@ export default function NavBar() {
     // eslint-disable-next-line
   }, [subscripTotal]);
 
-  const isTablet = useMediaQuery("(max-width: 767px)");
+  useEffect(() => {
+    if (checkUser(user)) {
+      setLogged(true);
+    }
+  }, [user]);
 
-  return (
+  return logged ? (
     <Fragment>
       {isTablet && (
         <nav
@@ -118,12 +124,15 @@ export default function NavBar() {
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="flex-row items-center">
                 {/* <Image src={"/vervel.svg"}></Image> */}
-                {/* <img
+                <Image
+                  src={"/logo.svg"}
                   onClick={() => history.push({ pathname: "/" })}
-                  className="h-c25 w-auto mr-1 cursor-pointer"
-                  src={logo}
+                  className="cursor-pointer"
                   alt="Caak Logo"
-                /> */}
+                  width="100%"
+                  height="100%"
+                  objectFit="contain"
+                />
               </div>
               {/* Mobile menu button */}
               <div className="flex">
@@ -161,8 +170,12 @@ export default function NavBar() {
               /> */}
             </div>
 
-            <div className="md:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
-              <SearchInput hideLabel placeholder={"Бүлэг болон пост хайх"} />
+            <div className="navbarSearch hidden md:block mx-4">
+              <SearchInput
+                containerStyle={"h-[36px]"}
+                hideLabel
+                placeholder={"Групп болон пост хайх"}
+              />
             </div>
 
             <div className={"relative flex h-full w-full md:w-auto"}>
@@ -234,7 +247,7 @@ export default function NavBar() {
         {isTablet && (
           <div
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            ref={mobileMenuRef}
+            // ref={mobileMenuRef}
             className={`block md:hidden w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
               isMobileMenuOpen
                 ? "transform translate-x-0"
@@ -247,5 +260,5 @@ export default function NavBar() {
         )}
       </nav>
     </Fragment>
-  );
+  ) : null;
 }

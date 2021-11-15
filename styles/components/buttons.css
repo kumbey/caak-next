@@ -1,6 +1,6 @@
 @layer components {
     .button {
-        @apply inline-flex items-center text-sm justify-center text-15px tracking-0.23px rounded-square font-medium shadow-sm bg-caak-primary text-white hover:bg-caak-primaryHover focus:outline-none;
+        @apply transition duration-100 inline-flex items-center text-sm justify-center text-15px tracking-0.23px rounded-square font-medium shadow-sm;
         height: 36px;
         border-radius: 8px;
         padding: 9px 24px;

@@ -3,7 +3,11 @@ import { getFileUrl } from "../../../../utility/Util";
 
 const CommentItem = ({ comment }) => {
   return (
-    <div className={"flex flex-row my-[4px] leading-[24px] tracking-[0.21px] transition-all duration-100"}>
+    <div
+      className={
+        "flex flex-row my-[4px] leading-[24px] tracking-[0.21px] transition-all duration-100"
+      }
+    >
       <div className={"flex flex-row "}>
         <div className={"w-[24px] h-[24px] rounded-full"}>
           <Image

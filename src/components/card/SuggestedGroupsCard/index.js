@@ -1,13 +1,29 @@
 import SuggestedGroupsCardItem from "./SuggestedGroupsCardItem";
-import ViewMoreText from "../../navigation/SideBarGroups/ViewMoreText";
+import ViewMoreText from "../SideBarGroups/ViewMoreText";
+import { useUser } from "../../../context/userContext";
+import { checkUser } from "../../../utility/Util";
+import { useEffect, useState } from "react";
 
-const Index = ({ className, title, maxColumns }) => {
+const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
   const groups = [1, 2, 3, 4, 5, 6];
-  return (
+  const { user } = useUser();
+  const [logged, setLogged] = useState(false);
+
+  useEffect(() => {
+    if (checkUser(user)) {
+      setLogged(true);
+    }
+  }, [user]);
+
+  return logged ? (
     <div
-      className={`suggestedGroupsCard p-[18px] ${
+      className={`suggestedGroupsCard ${
+        user?.sysUser
+          ? "bg-white shadow-card p-[18px]"
+          : "py-[18px] bg-transparent shadow-none"
+      } ${
         className ? className : ""
-      } flex flex-col bg-white w-[320px] h-[371px] rounded-square shadow-card`}
+      } flex flex-col bg-white w-ci rounded-square `}
     >
       <div className={"text-15px pb-[7px] text-caak-extraBlack font-semibold"}>
         {title}
@@ -34,7 +50,7 @@ const Index = ({ className, title, maxColumns }) => {
         <ViewMoreText text={"Илүү ихийг үзэх"} />
       ) : null}
     </div>
-  );
+  ) : null;
 };
 
-export default Index;
+export default SuggestedGroupsCard;

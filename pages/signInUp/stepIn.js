@@ -1,8 +1,9 @@
 import useModalLayout from "/src/hooks/useModalLayout";
 import { useState, useEffect } from "react";
 
-import Login from "../../src/components/login/Login";
-import ForgotPassword from "../../src/components/login/forgotPassword";
+import Login from "/src/components/login/Login";
+import ForgotPass from "/src/components/login/ForgotPass";
+import PassConfirmation from "/src/components/login/PassConfirmation";
 
 const SignIn1 = ({ ...props }) => {
   const maxStep = 3;
@@ -19,19 +20,19 @@ const SignIn1 = ({ ...props }) => {
       },
     },
     2: {
-      comp: ForgotPassword,
+      comp: ForgotPass,
       conf: {
         back: true,
-        footer: true,
+        footer: false,
       },
     },
-    // 3: {
-    //   comp: Confirmation,
-    //   conf: {
-    //     back: false,
-    //     footer: false,
-    //   },
-    // },
+    3: {
+      comp: PassConfirmation,
+      conf: {
+        back: false,
+        footer: false,
+      },
+    },
   });
   const [Step, setStep] = useState(steps[activeStep]);
 

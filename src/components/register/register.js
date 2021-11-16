@@ -16,13 +16,11 @@ const Register = ({ nextStep }) => {
 
   return (
     <>
-      {" "}
       <div
         className={
           "flex text-caak-generalblack justify-center text-center align-center  pb-c2 mt-9 font-bold text-24px"
         }
       >
-        {" "}
         Бүртгэл үүсгэх
       </div>
       <div className="flex mb-c2">

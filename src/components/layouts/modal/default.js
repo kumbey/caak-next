@@ -45,7 +45,12 @@ const DefaultModalLayout = ({ children, ...props }) => {
             <div className="text-caak-blue text-15px">
               <span>Бүртгэлтэй хэрэглэгч бол </span>
               <span
-                onClick={() => router.replace(`/signInUp/signIn`)}
+                onClick={() =>
+                  router.replace(
+                    `?signInUp=signIn&isModal=true`,
+                    `/signInUp/signIn`
+                  )
+                }
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 Нэвтрэх
@@ -55,7 +60,12 @@ const DefaultModalLayout = ({ children, ...props }) => {
             <div className="text-caak-blue text-15px">
               <span>Шинэ хэрэглэгч бол </span>
               <span
-                onClick={() => router.replace(`/signInUp/signUp`)}
+                onClick={() =>
+                  router.replace(
+                    `?signInUp=signUp&isModal=true`,
+                    `/signInUp/signUp`
+                  )
+                }
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 Бүртгүүлэх

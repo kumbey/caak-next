@@ -34,8 +34,16 @@ const StepModalLayout = ({
                 className={`w-[18px] h-[15px]`}
                 onClick={() =>
                   router.replace(
-                    `?signInUp=signUp&isModal=false`,
-                    `/signInUp/signUp`
+                    `?signInUp=${
+                      type === "signUp" || type === "stepUp"
+                        ? "signUp"
+                        : "signIn"
+                    }&isModal=false`,
+                    `/signInUp/${
+                      type === "signUp" || type === "stepUp"
+                        ? "signUp"
+                        : "signIn"
+                    }`
                   )
                 }
               >
@@ -76,22 +84,24 @@ const StepModalLayout = ({
                 {type === "signup" ? "Бүртгэлтэй " : "Шинэ "} хэрэглэгч бол
               </span>
 
-              <Link
+              {/* <Link
                 href={`/signInUp/${type === "signup" ? "signin" : "signup"}`}
                 passHref
+              > */}
+              <span
+                onClick={() =>
+                  router.replace(
+                    `?signInUp=${
+                      type === "stepUp" ? "signIn" : "signUp"
+                    }&isModal=true`,
+                    `/signInUp/${type === "stepUp" ? "signIn" : "signUp"}`
+                  )
+                }
+                className="text-caak-primary text-15px font-bold cursor-pointer"
               >
-                <span
-                  // onClick={() =>
-                  //   router.replace({
-                  //     pathname: "/register/",
-                  //     state,
-                  //   })
-                  // }
-                  className="text-caak-primary text-15px font-bold cursor-pointer"
-                >
-                  {type === "signup" ? " Нэвтрэх" : " Бүртгүүлэх"}
-                </span>
-              </Link>
+                {type === "stepUp" ? " Нэвтрэх" : " Бүртгүүлэх"}
+              </span>
+              {/* </Link> */}
             </div>
             <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />
           </div>

@@ -6,13 +6,10 @@ import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
 
 const MobileSideMenu = ({ setOpen }) => {
-
   const { user } = useUser();
-  
+
   return (
-    <div
-      className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white"
-    >
+    <div className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white">
       <div
         className={
           "relative text-20px text-caak-generalblack font-medium py-2.5 px-5 border-t border-b border-gray-100"

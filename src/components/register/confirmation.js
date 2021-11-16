@@ -8,6 +8,7 @@ import Validate from "/src/utility/Validate";
 
 const Confirmation = ({ activeType, nextStep }) => {
   const router = useRouter();
+  const username = router.query.username;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -25,12 +26,39 @@ const Confirmation = ({ activeType, nextStep }) => {
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
+  const doConfirm = async () => {
+    try {
+      setLoading(true);
+      await Auth.confirmSignUp(username, code);
+      await Auth.signIn(username, password);
+      setLoading(false);
+      router.replace(
+        `?signInUp=stepIn&isModal=true&username=${username}&code=${code}`,
+        `signInUp/stepIn`
+      );
+    } catch (ex) {
+      setLoading(false);
+      if (ex.code === "CodeMismatchException") {
+        setErrors({ ...errors, code: "Баталгаажуулах код буруу байна" });
+      } else if (ex.code === "NotAuthorizedException") {
+        history.replace({
+          pathname: "/login/main/",
+          state: { ...state, errors: { password: "Нууц үг буруу байна" } },
+        });
+      } else {
+        console.log(ex);
+      }
+    }
+  };
+
   const submitHandler = () => {
-    // handleSubmit();
+    handleSubmit(doConfirm());
     if (nextStep) {
       nextStep();
     }
   };
+
+  console.log("***", router);
 
   return (
     <div className="ph:w-full ">
@@ -46,8 +74,7 @@ const Confirmation = ({ activeType, nextStep }) => {
         {activeType === "phone"
           ? "Таны утасны дугаар болох "
           : "Таны имэйл хаяг болох "}
-        {/* {mailNumber(router.username.replace("+976", ""))} руу <br /> */}
-        99998888 руу <br />
+        {username ? mailNumber(username.replace("+976", "")) : null} руу <br />
         баталгаажуулах код илгээгдлээ!
       </div>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -69,11 +96,14 @@ const Confirmation = ({ activeType, nextStep }) => {
         </div>
         <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
           <Button
+            disabled={isValid ? false : true}
             loading={loading}
             onClick={() => submitHandler()}
-            className={
-              "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
-            }
+            className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary  ${
+              isValid
+                ? "bg-caak-primary text-white"
+                : "bg-caak-titaniumwhite text-caak-shit"
+            }`}
           >
             Үргэлжлүүлэх
           </Button>

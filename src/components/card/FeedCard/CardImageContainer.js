@@ -1,14 +1,11 @@
 import React from "react";
-import { getFileUrl } from "../../utility/Util";
-import Link from 'next/link'
+import { getFileUrl } from "../../../utility/Util";
+import Link from "next/link";
 
 const CardImageContainer = ({ files, postId }) => {
-
   return (
-    <Link
-      href={{ pathname: `/post/view/${postId}`}}
-    >
-      <div className={"relative max-w-8xl xs:w-full w-96 h-100"}>
+    <Link href={{ pathname: `/post/view/${postId}` }}>
+      <div className={"relative"}>
         {files.length > 1 ? (
           <div
             className={
@@ -23,9 +20,7 @@ const CardImageContainer = ({ files, postId }) => {
         )}
         <img
           src={getFileUrl(files[0].file)}
-          className={
-            "image_size h-100 xs:w-full w-96 md:w-auto block object-cover"
-          }
+          className={"w-full h-full max-h-[770px] object-cover"}
           alt={""}
         />
       </div>

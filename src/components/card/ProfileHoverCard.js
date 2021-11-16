@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { checkUser, getFileUrl } from "../../utility/Util";
 import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
+import Link from "next/link"
 
 export default function ProfileHoverCard({ userId }) {
   const { user } = useUser();

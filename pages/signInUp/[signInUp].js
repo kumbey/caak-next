@@ -15,10 +15,10 @@ import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 
 const SignInUp = ({ ...props }) => {
-  console.log(props);
   const ModalLayout = useModalLayout();
   const router = useRouter();
   const type = router.query.signInUp;
+  const history = useRouter();
 
   const host = "/federated/login/";
   const windowName = "_blank";

@@ -4,6 +4,7 @@ import { checkUser, getFileUrl } from "../../utility/Util";
 import React from "react";
 import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
+import Link from "next/link";
 
 const MobileSideMenu = ({ setOpen }) => {
   const { user } = useUser();
@@ -27,11 +28,11 @@ const MobileSideMenu = ({ setOpen }) => {
         {checkUser(user) && (
           <div className={"relative flex flex-row items-center"}>
             <Link
-              to={{
+              href={{
                 pathname: checkUser(user)
                   ? `/user/${user.sysUser.id}/profile`
                   : "/login",
-                state: { background: location },
+                // state: { background: location },
               }}
             >
               <div className={"cursor-pointer "}>
@@ -55,7 +56,7 @@ const MobileSideMenu = ({ setOpen }) => {
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
                   <Link
-                    to={{
+                    href={{
                       pathname: `/user/${user.sysUser.id}/profile`,
                     }}
                   >
@@ -105,7 +106,7 @@ const MobileSideMenu = ({ setOpen }) => {
             onClick={() =>
               history.push({
                 pathname: "/login",
-                state: { background: location },
+                // state: { background: location },
               })
             }
           >
@@ -118,7 +119,7 @@ const MobileSideMenu = ({ setOpen }) => {
             onClick={() =>
               history.push({
                 pathname: "/register",
-                state: { background: location },
+                // state: { background: location },
               })
             }
           >

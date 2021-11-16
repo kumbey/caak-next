@@ -26,10 +26,10 @@ const DropZone = ({
     if (post.items.length + dropZoneFiles.length > 10) {
       alert("maxFiles 10 files");
     } else {
-      let files = [];
+      const files = [];
 
       dropZoneFiles.map((file) => {
-        let fileData = {
+        const fileData = {
           title: "",
           post_id: post.id,
           file: {
@@ -53,7 +53,7 @@ const DropZone = ({
       });
 
       if (files.length > 0) {
-        let items = [...post.items, ...files];
+        const items = [...post.items, ...files];
         setPost({ ...post, items: items });
       }
     }

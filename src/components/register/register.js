@@ -7,8 +7,7 @@ import { useUser } from "../../context/userContext";
 import { checkUser, checkUsernameType } from "/src/utility/Util";
 import { isLogged } from "../../Utility/Authenty";
 import Consts from "/src/utility/Consts";
-import API from "@aws-amplify/api";
-import { createUser } from "/src/graphql-custom/user/mutation";
+
 import { useRouter } from "next/router";
 
 const Register = ({ nextStep, ...props }) => {
@@ -81,10 +80,6 @@ const Register = ({ nextStep, ...props }) => {
         usrData.id = user.attributes.sub;
       }
 
-      // await saveUserData(usrData).then(() => {
-      //   setLoading(false);
-      // });
-
       if (!checkUser(user)) {
         router.replace(
           `?signInUp=stepUp&isModal=true&username=${username}`,
@@ -109,16 +104,6 @@ const Register = ({ nextStep, ...props }) => {
         console.log(ex);
       }
     }
-  };
-
-  const saveUserData = async (data) => {
-    let user = await API.graphql({
-      query: createUser,
-      variables: { input: data },
-      authMode: "AWS_IAM",
-    });
-
-    console.log(user);
   };
 
   const submitHandler = () => {
@@ -195,7 +180,6 @@ const Register = ({ nextStep, ...props }) => {
             }
           />
           <Input
-            lengthCounter
             value={password}
             label={"Нууц үг"}
             name={"password"}

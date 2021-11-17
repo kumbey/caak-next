@@ -2,11 +2,10 @@ import CardVideoContainer from "./CardVideoContainer";
 import CardHeader from "./CardHeader";
 import CardFooter from "./CardFooter";
 import CardImageContainer from "./CardImageContainer";
-import CommentCard from "./CommentCard";
-import { useState } from "react";
+
 
 const Card = ({ video, verifiedUser, post }) => {
-  const [isCommentOpen, setIsCommentOpen] = useState(false);
+  // const [isCommentOpen, setIsCommentOpen] = useState(false);
 
   return (
     post && (
@@ -32,15 +31,15 @@ const Card = ({ video, verifiedUser, post }) => {
           title={post.title}
           totals={post.totals}
           items={post.items.items}
-          setIsCommentOpen={setIsCommentOpen}
+          // setIsCommentOpen={setIsCommentOpen}
         />
-        {isCommentOpen && (
-          <CommentCard
-            isCommentOpen={isCommentOpen}
-            postItemId={post.items.items[0].id}
-            maxComments={4}
-          />
-        )}
+        {/*{isCommentOpen && (*/}
+        {/*  <CommentCard*/}
+        {/*    isCommentOpen={isCommentOpen}*/}
+        {/*    postItemId={post.items.items[0].id}*/}
+        {/*    maxComments={4}*/}
+        {/*  />*/}
+        {/*)}*/}
       </div>
     )
   );

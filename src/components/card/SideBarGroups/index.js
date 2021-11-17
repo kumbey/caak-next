@@ -1,45 +1,44 @@
 import SideBarGroupItem from "./SideBarGroupItem";
-import { useEffect, useState } from "react";
-import {fetcher, getFileUrl, getReturnData} from "../../../utility/Util";
+import { useState } from "react";
+import { getFileUrl } from "../../../utility/Util";
 import ViewMoreText from "./ViewMoreText";
-import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {listGroupsForAddPost} from "../../../graphql-custom/group/queries";
-import useSWR from 'swr'
 
-const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
-
-  const {data , error} = useSWR(`/api/groupByUser/${groupType}`, fetcher)
-  // const [groupData] = useState(data ? data : [])
+const SideBarGroups = ({
+  title,
+  addGroup,
+  maxColumns,
+  // groupType,
+  initialData,
+}) => {
+  const [groupData] = useState(initialData ? initialData : []);
 
   // const listGroups = async () => {
   //   try {
-  //     const grData = []
-
+  //     const grData = [];
+  //
   //     let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-
+  //
   //     resp = getReturnData(resp).items;
-
+  //
   //     for (let i = 0; i < resp.length; i++) {
   //       const item = resp[i];
   //       if (item.role_on_group === groupType) {
   //         grData.push(item);
   //       }
   //     }
-
+  //
   //     setGroupData([...grData]);
-
   //   } catch (ex) {
   //     console.log(ex);
   //   }
   // };
-
+  //
   // useEffect(() => {
   //   listGroups();
   //   // eslint-disable-next-line
   // }, []);
 
-  return data && data.length > 0 ? (
+  return groupData && groupData.length > 0 ? (
     <div className={"flex flex-col px-[6px]"}>
       <div className={"flex flex-row justify-between items-center mb-[6px]"}>
         <div className={"font-semibold text-caak-generalblack text-15px "}>
@@ -55,14 +54,14 @@ const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
           </div>
         )}
       </div>
-      {data.map((group, index) => {
+      {groupData.map((group, index) => {
         if (index < maxColumns) {
           return (
             <SideBarGroupItem
               key={index}
               notification={15}
-              name={group.name}
-              image={getFileUrl(group.profile)}
+              name={group.group.name}
+              image={getFileUrl(group.group.profile)}
             />
           );
         } else {
@@ -70,7 +69,7 @@ const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
         }
       })}
 
-      {data.length > maxColumns ? (
+      {groupData.length > maxColumns ? (
         <ViewMoreText text={"Илүү ихийг үзэх"} />
       ) : null}
     </div>

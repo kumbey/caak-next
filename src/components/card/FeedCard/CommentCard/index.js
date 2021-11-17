@@ -3,13 +3,15 @@ import Image from "next/image";
 import Input from "../../../input";
 import API from "@aws-amplify/api";
 import { getCommentsByPostItem } from "../../../../graphql-custom/comment/queries";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import { getReturnData } from "../../../../utility/Util";
 import CommentItemSkeleton from "../../../skeleton/CommentItemSkeleton";
+import AddComment from "../../../input/AddComment";
 
 const Index = ({ postItemId, isCommentOpen, maxComments }) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const addCommentRef = useRef()
 
   const getCommentsById = async () => {
     try {

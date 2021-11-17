@@ -48,7 +48,8 @@ export default function Login() {
 
       await Auth.signIn(checkUsername(username), password);
       setLoading(false);
-      closeModal(history, state);
+      history.replace("/")
+      // closeModal(history, state);
     } catch (ex) {
       console.log(ex);
       setLoading(false);

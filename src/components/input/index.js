@@ -10,7 +10,7 @@ const Input = ({
   id,
   type,
   containerStyle,
-  lengthCounter,
+  children,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +44,7 @@ const Input = ({
             errorMessage ? `border border-caak-red` : ``
           }`}
         />
+        {children}
       </div>
 
       {!hideError && (

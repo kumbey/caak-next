@@ -175,6 +175,7 @@ module.exports = {
         c15: "55px",
         c20: "68px",
         c60: "60px",
+        c62: "62px",
         c7: "70px",
         c33: "72px",
         c29: "78px",

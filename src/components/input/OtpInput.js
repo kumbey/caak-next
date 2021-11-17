@@ -75,7 +75,7 @@ export default function Test({ name, onChange, errorMessage, reset }) {
               id={index}
               type="text"
               maxLength="1"
-              className="w-11 mr-1 h-14 text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite rounded-lg"
+              className="w-px50 mr-1 h-c62 text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite rounded-lg"
             />
           );
         })}

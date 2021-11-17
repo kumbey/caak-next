@@ -2,7 +2,7 @@ import { generateTimeAgo, getFileUrl } from "../../utility/Util";
 import ProfileHoverCard from "./ProfileHoverCard";
 import Tooltip from "../tooltip/Tooltip";
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Dummy from "dummyjs";
 
 const CommentCard = ({ comment, children }) => {
@@ -19,7 +19,7 @@ const CommentCard = ({ comment, children }) => {
         content={<ProfileHoverCard userId={comment.user.id} />}
       >
         <Link
-          to={`/user/${comment.user.id}/profile`}
+          href={`/user/${comment.user.id}/profile`}
           className={"m-34px w-10 h-10"}
         >
           <img
@@ -47,7 +47,7 @@ const CommentCard = ({ comment, children }) => {
             className={"-left-16"}
             content={<ProfileHoverCard userId={comment.user.id} />}
           >
-            <Link to={`/user/${comment.user.id}/profile`}>
+            <Link href={`/user/${comment.user.id}/profile`}>
               <span className={"text-16px font-bold text-caak-generalblack"}>
                 {comment.user.nickname}
               </span>

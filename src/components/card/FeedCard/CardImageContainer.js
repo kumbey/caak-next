@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const CardImageContainer = ({ files, postId }) => {
   return (
-    <Link href={{ pathname: `/post/view/${postId}` }}>
+    <Link href={`/post/view/${postId}`}>
       <div className={"relative"}>
         {files.length > 1 ? (
           <div

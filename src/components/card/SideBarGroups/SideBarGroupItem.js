@@ -1,8 +1,10 @@
 import Image from "next/image";
 
 const SideBarGroupItem = ({ name, notification, image }) => {
-  return (
-    <div className={"flex flex-row items-center justify-between my-[6px] break-words"}>
+    return (
+    <div
+      className={"flex flex-row items-center justify-between my-[6px] h-[32px]"}
+    >
       <div className={"flex flex-row items-center"}>
         <Image
           className={"w-[32px] h-[32px] rounded-square"}
@@ -11,7 +13,12 @@ const SideBarGroupItem = ({ name, notification, image }) => {
           width={32}
           height={32}
         />
-        <div className={"leading-4 text-15px ml-[10px] w-[144px]"}>{name}</div>
+
+        <div
+          className={"truncate-2 leading-4 text-15px ml-[10px] w-[144px]"}
+        >
+          {name}
+        </div>
       </div>
       {notification > 0 && (
         <div

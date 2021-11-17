@@ -16,6 +16,9 @@ const AuraCard = () => {
       if(checkUser(user)){
           setLogged(true)
       }
+      else {
+          setLogged(false)
+      }
   },[user])
 
   return logged ? (
@@ -44,7 +47,7 @@ const AuraCard = () => {
   ) : (
     <div
       style={
-        checkUser(user)
+        !logged
           ? {
               backgroundImage: `url(${registerImage.src})`,
               backgroundPosition: "center",

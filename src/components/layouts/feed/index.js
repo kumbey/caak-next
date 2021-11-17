@@ -8,7 +8,7 @@ import { useUser } from "../../../context/userContext";
 import { checkUser } from "../../../utility/Util";
 import useMediaQuery from "../../navigation/useMeduaQuery";
 
-const DefaultFeedLayout = ({ children, columns }) => {
+const DefaultFeedLayout = ({ children, columns, myGroups, adminModeratorGroups }) => {
   const { user } = useUser();
   const isTablet = useMediaQuery("(max-width: 767px)");
   const isLaptop = useMediaQuery("(max-width: 1100px");
@@ -26,13 +26,15 @@ const DefaultFeedLayout = ({ children, columns }) => {
             groupType={"ADMIN"}
             maxColumns={3}
             addGroup
+            initialData={adminModeratorGroups}
             title={"Миний группүүд"}
           />
           <Divider color={"border-titaniumwhite"} className={"py-5"} />
           <SideBarGroups
             groupType={"MEMBER"}
             maxColumns={4}
-            title={"Миний дагасан группүүд"}
+            initialData={myGroups}
+            title={"Дагасан группүүд"}
           />
           <Divider color={"border-titaniumwhite"} className={"py-5"} />
           {checkUser(user) && <FooterSidebar />}

@@ -31,6 +31,7 @@ module.exports = {
         dropdown: "0 3px 20px rgba(0, 0, 0, 0.25)",
         card: "0px 1px 2px rgba(0, 0, 0, 0.1)",
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
+        searchInput: "0px 5px 6px rgba(0, 0, 0, 0.12)",
       },
       screens: {
         xs: { max: "360px" },
@@ -94,6 +95,7 @@ module.exports = {
           doctor: "#F9F9F9",
           carbonfootprint: "#7A7F8A",
           lynxwhite: "#F7F7F7",
+          aliceblue: "#eff7fe",
         },
         darkblue: {
           DEFAULT: "#6C7392",

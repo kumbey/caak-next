@@ -225,7 +225,7 @@ const NotificationDropDown = ({ isOpen }) => {
       // onClick={(e) => e.stopPropagation()}
       className={`${
         !isOpen && "hidden"
-      } notificationMobile dropdown min-h-[470px] -right-10 overflow-y-scroll pb-c20 fixed md:absolute z-2 mt-0 md:z-50 top-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:w-px360  md:py-2   md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
+      } notificationMobile dropdown right-0 md:-right-10 fixed md:absolute z-2 mt-0 md:z-50 top-0 w-full md:w-px360 md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:w-[360px] md:my-2 flex flex-col bg-white cursor-auto  `}
     >
       <div
         className={
@@ -248,7 +248,11 @@ const NotificationDropDown = ({ isOpen }) => {
           />
         </div>
       </div>
-      <div className={"notification_body flex flex-col bg-caak-washme p-0"}>
+      <div
+        className={
+          "notification_body rounded-b-square overflow-y-scroll flex flex-col bg-caak-washme p-0"
+        }
+      >
         <span
           className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
         >
@@ -275,13 +279,16 @@ const NotificationDropDown = ({ isOpen }) => {
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} /> */}
-      </div>
-      <div ref={notificationRef} className={"flex justify-center items-center"}>
-        <Loader
-          className={`${
-            loading ? "opacity-100" : "opacity-0"
-          } bg-caak-primary `}
-        />
+        <div
+          ref={notificationRef}
+          className={"flex justify-center items-center"}
+        >
+          <Loader
+            className={`${
+              loading ? "opacity-100" : "opacity-0"
+            } bg-caak-primary `}
+          />
+        </div>
       </div>
     </div>
   );

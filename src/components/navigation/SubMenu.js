@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
 import NotificationDropDown from "./NotificationDropDown";
 import DropDown from "./DropDown";
@@ -9,6 +9,7 @@ import { useUser } from "../../context/userContext";
 import Dummy from "dummyjs";
 
 const SubMenu = ({ params }) => {
+  const [logged, setLogged] = useState(false);
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user } = useUser();
   const notificationRef = useClickOutSide(() => {
@@ -22,19 +23,29 @@ const SubMenu = ({ params }) => {
   const toggleMenu = () => {
     params.setIsMenuOpen(!params.isMenuOpen);
   };
+
+  useEffect(() => {
+    if (checkUser(user)) {
+      console.log("user is here")
+      setLogged(true);
+    }
+    else {
+      console.log("not here")
+      setLogged(false)
+    }
+  }, [user]);
+
   return (
-    ((checkUser(user) && params.type === "mobile") ||
-      (!checkUser(user) && params.type === "mobile") ||
-      (checkUser(user) && params.type === "web")) && (
+    ((logged && params.type === "mobile") ||
+      (!logged && params.type === "mobile") ||
+      (logged && params.type === "web")) && (
       <div
         className={
           "flex flex-row items-center w-full justify-around md:w-auto md:justify-center"
         }
       >
         <div className={"flex items-center mr-0 block md:hidden"}>
-          <span
-            className="icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8 p-2 rounded-lg"
-          ></span>
+          <span className="icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
         </div>
         <div className={"flex items-center mr-0 block md:hidden"}>
           <span className="p-2 rounded-lg icon-fi-rs-search text-caak-generalblack text-24px py-px-8" />
@@ -49,7 +60,7 @@ const SubMenu = ({ params }) => {
             icon={<span className={"icon-fi-rs-add text-22px"} />}
             onClick={() =>
               history.push({
-                pathname: checkUser(user) ? "/post/add/new" : "/login",
+                pathname: logged ? "/post/add/new" : "/login",
                 // state: { background: location },
               })
             }
@@ -58,7 +69,7 @@ const SubMenu = ({ params }) => {
         <div
           ref={notificationRef}
           onClick={() => {
-            checkUser(user)
+            logged
               ? setIsNotificationMenu((oldState) => !oldState)
               : history.push({
                   pathname: "/login",
@@ -83,19 +94,19 @@ const SubMenu = ({ params }) => {
               </span>
             </div>
           ) : null}
-          {checkUser(user) && (
-            <NotificationDropDown
-              isOpen={isNotificationMenu}
-              setIsOpen={setIsNotificationMenu}
-            />
-          )}
+          {/*{checkUser(user) && (*/}
+          {/*  <NotificationDropDown*/}
+          {/*    isOpen={isNotificationMenu}*/}
+          {/*    setIsOpen={setIsNotificationMenu}*/}
+          {/*  />*/}
+          {/*)}*/}
         </div>
         <div
           className={
             "relative hidden md:flex flex-row w-max mr-0 md:mr-[10px] h-[36px] bg-caak-liquidnitrogen px-[12px] py-[10px] rounded-square"
           }
         >
-          {params.type === "web" && checkUser(user) && (
+          {params.type === "web" && logged && (
             <div className={"flex flex-col items-center justify-center"}>
               <div className={"flex flex-row justify-center items-center"}>
                 <span className={"icon-fi-rs-auro auroGradient mr-1"} />
@@ -117,9 +128,9 @@ const SubMenu = ({ params }) => {
             open={params.isMenuOpen}
             onToggle={toggleMenu}
             content={<NavBarMenu />}
-            className={"top-8 -right-3"}
+            className={"top-8 -right-3 w-[215px]"}
           />
-          {checkUser(user) ? (
+          {logged ? (
             <img
               ref={menuRef}
               onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}

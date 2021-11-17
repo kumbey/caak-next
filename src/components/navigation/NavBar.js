@@ -87,8 +87,12 @@ export default function NavBar() {
 
   useEffect(() => {
     if (checkUser(user)) {
+      setLogged(true);
       fetchUserTotal();
       subscrip();
+    }
+    else {
+      setLogged(false)
     }
 
     return () => {
@@ -108,13 +112,7 @@ export default function NavBar() {
     // eslint-disable-next-line
   }, [subscripTotal]);
 
-  useEffect(() => {
-    if (checkUser(user)) {
-      setLogged(true);
-    }
-  }, [user]);
-
-  return logged ? (
+  return  (
     <Fragment>
       {isTablet && (
         <nav
@@ -187,7 +185,7 @@ export default function NavBar() {
                   type: isTablet ? "mobile" : "web",
                 }}
               />
-              {!checkUser(user) && (
+              {!logged && (
                 <div className={"hidden md:flex flex-row items-center"}>
                   <Button
                     round
@@ -219,7 +217,7 @@ export default function NavBar() {
                 </div>
               )}
 
-              {!checkUser(user) && !isTablet && (
+              {!logged && !isTablet && (
                 <div ref={menuRef} className={"flex items-center relative"}>
                   <div
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -260,5 +258,5 @@ export default function NavBar() {
         )}
       </nav>
     </Fragment>
-  ) : null;
+  );
 }

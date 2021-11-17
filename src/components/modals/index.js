@@ -3,6 +3,7 @@ import SignInUp from "../../../pages/signInUp/[signInUp]";
 import StepIn from "/pages/signInUp/stepIn";
 import StepUp from "/pages/signInUp/stepUp";
 import Completed from "../../../pages/signInUp/completed";
+import Confirmation from "../../components/register/Confirmation";
 import { _modalisOpen } from "../../utility/Util";
 
 const modals = [
@@ -47,6 +48,16 @@ const modals = [
       {
         key: "signInUp",
         value: "completed",
+      },
+    ],
+  },
+  {
+    name: "signInUp",
+    comp: Confirmation,
+    conditions: [
+      {
+        key: "signInUp",
+        value: "confirmation",
       },
     ],
   },

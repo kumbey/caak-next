@@ -34,7 +34,7 @@ const SignInUp = ({ ...props }) => {
       }
     }, 100);
   };
-  console.log(type);
+
   return (
     <ModalLayout type={type} className={"flex justify-center items-center"}>
       {/*Social Buttons*/}

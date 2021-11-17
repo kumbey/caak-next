@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import useModalLayout from "/src/hooks/useModalLayout";
 
-import Register from "/src/components/register/register";
+import Register from "/src/components/register/Register";
+import Confirmation from "/src/components/register/Confirmation";
+import Interests from "/src/components/register/Interests";
+import UserInformation from "/src/components/register/UserInformation";
 
-import Confirmation from "/src/components/register/confirmation";
-import Interests from "/src/components/register/interests";
-import UserInformation from "/src/components/register/userInformation";
-
-const SignIn1 = ({ type }) => {
+const SignIn1 = ({ ...props }) => {
   const maxStep = 4;
 
   const ModalLayout = useModalLayout({ layoutName: "step" });
@@ -55,6 +54,7 @@ const SignIn1 = ({ type }) => {
   useEffect(() => {
     setStep(steps[activeStep]);
   }, [activeStep, steps]);
+
 
   return (
     <ModalLayout

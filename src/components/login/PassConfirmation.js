@@ -1,16 +1,16 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Button from "../button";
-import Validate from "/src/utility/Validate";
+import Validate from "../../utility/Validate";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
 import Input from "../input";
 import { mailNumber } from "/src/utility/Util";
 import OtpInput from "/src/components/input/OtpInput";
 
-const ResetPass = () => {
+const PassConfirmation = () => {
   const router = useRouter();
-  const [username, setUsername] = useState(router.query.username);
+  const username = router.query.username;
 
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -56,6 +56,7 @@ const ResetPass = () => {
 
     try {
       setLoading(true);
+      console.log(username);
       await Auth.forgotPassword(username);
 
       setLoading(false);
@@ -99,7 +100,7 @@ const ResetPass = () => {
       </div>
 
       <div className="text-center text-15px text-caak-darkBlue mt-c3">
-        Таны {username ? mailNumber(username.replace("+976", "")) : null} руу{" "}
+        {/* Таны {username ? mailNumber(username.replace("+976", "")) : null} руу{" "} */}
         <br /> баталгаажуулах код илгээгдсэн болно.
       </div>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -188,4 +189,4 @@ const ResetPass = () => {
   );
 };
 
-export default ResetPass;
+export default PassConfirmation;

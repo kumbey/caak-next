@@ -6,7 +6,7 @@ import Button from "../button";
 import { useRouter } from "next/router";
 import Validate from "/src/utility/Validate";
 import Consts from "/src/utility/Consts";
-import { checkUsername, closeModal } from "/src/utility/Util";
+import { checkUsername, closeModal } from "../../utility/Util";
 
 const Login = ({ nextStep }) => {
   const router = useRouter();
@@ -51,12 +51,15 @@ const Login = ({ nextStep }) => {
 
       await Auth.signIn(checkUsername(username), password);
       setLoading(false);
-      router.replace(`/?isModal=false`, `/`);
+      router.replace(`/?signInUp=stepUp&isModal=false`, `/`);
     } catch (ex) {
       console.log(ex);
       setLoading(false);
       if (ex.code === "UserNotConfirmedException") {
-        router.replace(`?signInUp=signUp&isModal=true`, `/signInUp/signUp`);
+        router.replace(
+          `?signInUp=confirmation&isModal=true&username${username}`,
+          `/signInUp/confirmation`
+        );
         // router.replace({
         //   pathname: "/register/confirmation/",
         //   state: {

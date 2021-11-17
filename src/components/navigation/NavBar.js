@@ -114,7 +114,7 @@ export default function NavBar() {
     }
   }, [user]);
 
-  return logged ? (
+  return  (
     <Fragment>
       {isTablet && (
         <nav
@@ -126,7 +126,7 @@ export default function NavBar() {
                 {/* <Image src={"/vervel.svg"}></Image> */}
                 <Image
                   src={"/logo.svg"}
-                  onClick={() => history.push({ pathname: "/" })}
+                  onClick={() => router.push({ pathname: "/" })}
                   className="cursor-pointer"
                   alt="Caak Logo"
                   width="100%"
@@ -155,7 +155,7 @@ export default function NavBar() {
             <div className="md:flex flex flex-row items-center hidden">
               <Image
                 src={"/logo.svg"}
-                onClick={() => history.push({ pathname: "/" })}
+                onClick={() => router.push({ pathname: "/" })}
                 className="cursor-pointer"
                 alt="Caak Logo"
                 width="100%"
@@ -260,5 +260,5 @@ export default function NavBar() {
         )}
       </nav>
     </Fragment>
-  ) : null;
+  ) 
 }

@@ -2,13 +2,17 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Button from "../button";
 import OtpInput from "../input/OtpInput";
-import { mailNumber } from "../../utility/Util";
+import { checkUser, mailNumber } from "../../utility/Util";
 import Consts from "/src/utility/Consts";
-import Validate from "/src/utility/Validate";
+import Validate from "../../utility/Validate";
+import { useUser } from "../../context/userContext";
+import { route } from "next/dist/server/router";
 
 const Confirmation = ({ activeType, nextStep }) => {
   const router = useRouter();
   const username = router.query.username;
+  const { user } = useUser();
+  console.log("query:", router.query);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,25 +30,20 @@ const Confirmation = ({ activeType, nextStep }) => {
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
-  const doConfirm = async () => {
+  const doSubmit = async () => {
     try {
       setLoading(true);
       await Auth.confirmSignUp(username, code);
-      await Auth.signIn(username, password);
+      // await Auth.signIn(username, password);
       setLoading(false);
-      router.replace(
-        `?signInUp=stepIn&isModal=true&username=${username}&code=${code}`,
-        `signInUp/stepIn`
-      );
+      router.replace(`?signInUp=stepIn&isModal=true`, `signInUp/stepIn`);
     } catch (ex) {
       setLoading(false);
       if (ex.code === "CodeMismatchException") {
         setErrors({ ...errors, code: "Баталгаажуулах код буруу байна" });
       } else if (ex.code === "NotAuthorizedException") {
-        history.replace({
-          pathname: "/login/main/",
-          state: { ...state, errors: { password: "Нууц үг буруу байна" } },
-        });
+        router.replace(`?signInUp=stepIn&isModal=true`, `signInUp/stepIn`);
+        setErrors({ ...errors, password: "Нууц үг буруу байна" });
       } else {
         console.log(ex);
       }
@@ -52,9 +51,11 @@ const Confirmation = ({ activeType, nextStep }) => {
   };
 
   const submitHandler = () => {
-    handleSubmit(doConfirm());
-    if (nextStep) {
-      nextStep();
+    handleSubmit(doSubmit);
+    if (!loading) {
+      if (nextStep) {
+        nextStep();
+      }
     }
   };
 

@@ -17,6 +17,13 @@
     width: var(--navBarSearchWidth);
   }
 
+  .truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .site-container {
     max-width: 1264px;
     margin-left: auto;
@@ -72,6 +79,31 @@
     padding-top: var(--topBarSize);
   }
 
+  .caak-button.shake {
+    animation: shake 0.5s;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: scale(1.2) rotate(10deg);
+    }
+    25% {
+      transform: scale(1.2) rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .notificationMobile {
+    @apply shadow-dropdown;
+    height: auto;
+    min-height: 470px;
+  }
+
   @media (max-width: 767px) {
     .navbar {
       top: unset;
@@ -90,15 +122,18 @@
     .viewPost {
       padding-bottom: var(--bottomTabSize);
     }
+
+    .notificationMobile {
+      padding-top: var(--topBarSize);
+      height: calc(100vh - var(--bottomTabSize));
+      min-height: 470px;
+      border-radius: unset !important;
+      box-shadow: unset !important;
+    }
   }
 
   p.error {
     @apply mt-2 text-sm text-left text-red-600;
-  }
-
-  .notificationMobile {
-    padding-top: var(--topBarSize);
-    padding-bottom: var(--bottomTabSize);
   }
 
   .spinner {
@@ -170,19 +205,16 @@
     @apply max-h-80;
   }
 
-
   .auroGradient {
-    background: transparent
-      conic-gradient(
-        from 264deg at 50% 50%,
-        rgba(244, 173, 87, 1) 0%,
-        rgba(247, 88, 49, 1) 30.32%,
-        rgba(108, 65, 228, 1) 50.32%,
-        rgba(80, 121, 241, 1) 66.97%,
-        rgba(45, 235, 217, 1) 80.51%,
-        rgba(244, 173, 87, 1) 100%
-      )
-      0 0 no-repeat padding-box;
+    background: transparent conic-gradient(
+            from 264deg at 50% 50%,
+            rgba(244, 173, 87, 1) 0%,
+            rgba(247, 88, 49, 1) 30.32%,
+            rgba(108, 65, 228, 1) 50.32%,
+            rgba(80, 121, 241, 1) 66.97%,
+            rgba(45, 235, 217, 1) 80.51%,
+            rgba(244, 173, 87, 1) 100%
+    ) 0 0 no-repeat padding-box;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -255,7 +287,7 @@
     /*scrollbar-gutter: stable;*/
     position: sticky;
     height: calc(
-      100vh - (var(--topBarSize) + var(--containerPaddingTop))
+            100vh - (var(--topBarSize) + var(--containerPaddingTop))
     ) !important;
     flex-grow: 1;
     top: calc(var(--topBarSize) + var(--containerPaddingTop));
@@ -286,6 +318,7 @@
     .feed {
       @apply px-0 mx-0;
     }
+
     .feedLayoutContainer {
       @apply px-0;
     }
@@ -322,9 +355,9 @@
 
   .settingsDiv {
     width: clamp(
-      var(--minSettingsPanelWidth),
-      100%,
-      var(--maxSettingsPanelWidth)
+            var(--minSettingsPanelWidth),
+            100%,
+            var(--maxSettingsPanelWidth)
     );
   }
 }

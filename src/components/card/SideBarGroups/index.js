@@ -1,39 +1,42 @@
 import SideBarGroupItem from "./SideBarGroupItem";
-import { useEffect, useState } from "react";
-import { fetcher, getFileUrl, getReturnData } from "../../../utility/Util";
+import { useState } from "react";
+import { getFileUrl } from "../../../utility/Util";
 import ViewMoreText from "./ViewMoreText";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
 
-const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
-  const [groupData, setGroupData] = useState([]);
+const SideBarGroups = ({
+  title,
+  addGroup,
+  maxColumns,
+  // groupType,
+  initialData,
+}) => {
+  const [groupData] = useState(initialData ? initialData : []);
 
-  const listGroups = async () => {
-    try {
-      const grData = [];
-
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-
-      resp = getReturnData(resp).items;
-
-      for (let i = 0; i < resp.length; i++) {
-        const item = resp[i];
-        if (item.role_on_group === groupType) {
-          grData.push(item);
-        }
-      }
-
-      setGroupData([...grData]);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
-  useEffect(() => {
-    listGroups();
-    // eslint-disable-next-line
-  }, []);
+  // const listGroups = async () => {
+  //   try {
+  //     const grData = [];
+  //
+  //     let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+  //
+  //     resp = getReturnData(resp).items;
+  //
+  //     for (let i = 0; i < resp.length; i++) {
+  //       const item = resp[i];
+  //       if (item.role_on_group === groupType) {
+  //         grData.push(item);
+  //       }
+  //     }
+  //
+  //     setGroupData([...grData]);
+  //   } catch (ex) {
+  //     console.log(ex);
+  //   }
+  // };
+  //
+  // useEffect(() => {
+  //   listGroups();
+  //   // eslint-disable-next-line
+  // }, []);
 
   return groupData && groupData.length > 0 ? (
     <div className={"flex flex-col px-[6px]"}>
@@ -57,8 +60,8 @@ const SideBarGroups = ({ title, addGroup, maxColumns, groupType }) => {
             <SideBarGroupItem
               key={index}
               notification={15}
-              name={group.name}
-              image={getFileUrl(group.profile)}
+              name={group.group.name}
+              image={getFileUrl(group.group.profile)}
             />
           );
         } else {

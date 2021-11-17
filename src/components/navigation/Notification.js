@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { generateFileUrl } from "../../utility/Util";
+import { generateFileUrl, getFileUrl } from "../../utility/Util";
 import Dummy from "dummyjs";
+import Image from "next/image";
 
 const Notification = ({ item, ...props }) => {
   const [text] = useState({
@@ -111,21 +112,21 @@ const Notification = ({ item, ...props }) => {
   return (
     <div
       {...props}
-      className={
-        "flex flex-row justify-between items-center bg-white pl-7 pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite"
-      }
+      className={`${
+        item.seen === "FALSE" ? "bg-caak-aliceblue" : "bg-white"
+      } flex flex-row justify-between items-center  pl-[14px] pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite`}
     >
       <div className={"flex flex-row"}>
         <div className={"avatar relative"}>
-          {item.seen === "FALSE" && (
-            <div
-              className={
-                "absolute -left-3 top-4  w-2 h-2 bg-caak-bleudefrance rounded-full"
-              }
-            />
-          )}
+          {/*{item.seen === "FALSE" && (*/}
+          {/*  <div*/}
+          {/*    className={*/}
+          {/*      "absolute -left-3 top-4  w-2 h-2 bg-caak-bleudefrance rounded-full"*/}
+          {/*    }*/}
+          {/*  />*/}
+          {/*)}*/}
 
-          <div className={"flex justify-center items-center  w-10 h-10"}>
+          <div className={"flex justify-center items-center w-[38px] h-[38px]"}>
             <img
               className={"rounded-full w-full h-full object-cover"}
               src={
@@ -149,25 +150,43 @@ const Notification = ({ item, ...props }) => {
           {/*  />*/}
           {/*</div>*/}
         </div>
-        <div className={"flex flex-row flex-wrap items-center ml-3"}>
-          <span className={"text-15px text-caak-generalblack font-medium"}>
+        <div
+          className={"flex flex-row flex-wrap items-center ml-3 content-center"}
+        >
+          <span
+            className={
+              "text-15px text-caak-generalblack font-medium tracking-[0.23px] leading-[16px]"
+            }
+          >
             {`${item.from_user.nickname}`}
           </span>
-          <span className={"text-14px text-caak-darkBlue"}>
+          <span
+            className={
+              "text-14px text-caak-darkBlue tracking-[0.21px] leading-[16px]"
+            }
+          >
             &nbsp;{text.short}
           </span>
-          <span className={"text-14px text-caak-generalblack"}>
+          <span
+            className={
+              "text-14px text-caak-generalblack tracking-[0.21px] leading-[16px]"
+            }
+          >
             &nbsp;{text.long}
           </span>
         </div>
       </div>
-      {/* <div className={"postImage"}>
-        <img
-          className={"rounded-square w-14 h-10 object-cover"}
-          src={"https://i.pravatar.cc/300"}
-          alt={""}
-        />
-      </div> */}
+      {/*Post Image*/}
+      {/*<div className={"flex-shrink-0 rounded-[6px] w-[50px] h-[40px]"}>*/}
+      {/*  <Image*/}
+      {/*      className={"rounded-[6px]"}*/}
+      {/*      src={Dummy.image("50x50")}*/}
+      {/*      alt="Comment user"*/}
+      {/*      width={50}*/}
+      {/*      height={40}*/}
+      {/*      objectFit="cover"*/}
+      {/*  />*/}
+      {/*</div>*/}
     </div>
   );
 };

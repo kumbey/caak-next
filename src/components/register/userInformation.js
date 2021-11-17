@@ -5,6 +5,8 @@ import Input from "../input";
 import Consts from "../../utility/Consts";
 import Validate from "../../utility/Validate";
 import Gender from "../gender/gender";
+import API from "@aws-amplify/api";
+import { createUser } from "../../graphql-custom/user/mutation";
 
 const UserInformation = ({ activeType, nextStep }) => {
   const router = useRouter();
@@ -38,8 +40,26 @@ const UserInformation = ({ activeType, nextStep }) => {
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
+  const doSubmit = async () => {
+    try {
+      // await saveUserData(usrData).then(() => {
+      //   setLoading(false);
+      // });
+    } catch (ex) {}
+  };
+
+  const saveUserData = async (data) => {
+    let user = await API.graphql({
+      query: createUser,
+      variables: { input: data },
+      authMode: "AWS_IAM",
+    });
+
+    console.log(user);
+  };
+
   const submitHandler = () => {
-    // handleSubmit()
+    handleSubmit(doSubmit);
     if (nextStep) {
       nextStep();
     }

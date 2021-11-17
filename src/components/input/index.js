@@ -26,9 +26,6 @@ const Input = ({
       <div className={"relative"}>
         {type === "password" ? (
           <div className="absolute flex flex-row items-center right-2 top-1/2 -translate-y-1/2">
-            {lengthCounter ? (
-              <span className="text-caak-darkBlue transform  mr-2.5">6/10</span>
-            ) : null}
             <span
               onClick={() => setShowPassword(!showPassword)}
               className={`${

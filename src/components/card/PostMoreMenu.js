@@ -10,11 +10,12 @@ import {
 import { useEffect, useState } from "react";
 import { getGroupFollowed } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
+import {useRouter} from "next/router";
 
 export default function PostMoreMenu({ postUser, postId, groupId }) {
   const { user } = useUser();
-  const history = useHistory();
-  const location = useLocation();
+  const history = useRouter();
+  // const location = useLocation();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -86,7 +87,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
           onClick={() =>
             history.push({
               pathname: `/post/edit/${postId}`,
-              state: { background: location },
+              // state: { background: location },
             })
           }
         >

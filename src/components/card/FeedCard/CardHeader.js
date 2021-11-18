@@ -9,6 +9,7 @@ import Tooltip from "../../tooltip/Tooltip";
 import DropDown from "../../navigation/DropDown";
 import PostMoreMenu from "../PostMoreMenu";
 import Link from "next/link";
+import ProfileHoverCard from "../ProfileHoverCard";
 
 const CardHeader = ({
   verifiedUser,
@@ -59,18 +60,20 @@ const CardHeader = ({
               )}
               <Tooltip
                 className={"-left-14"}
-                // content={
-                //   <ProfileHoverCard userId={postUser.id} postUser={postUser} />
-                // }
+                content={
+                  <ProfileHoverCard userId={postUser.id} postUser={postUser} />
+                }
               >
                 <Link
                   href={{
                     pathname: `/user/${postUser.id}/profile`,
                   }}
                 >
-                  <p className="cursor-pointer hover:underline text-generalblack text-13px leading-[16px] tracking-[0.2px]">
-                    @{postUser.nickname}
-                  </p>
+                  <a>
+                    <p className="cursor-pointer hover:underline text-generalblack text-13px leading-[16px] tracking-[0.2px]">
+                      @{postUser.nickname}
+                    </p>
+                  </a>
                 </Link>
               </Tooltip>
             </div>

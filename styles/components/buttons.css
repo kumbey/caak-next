@@ -31,7 +31,7 @@
     }
 
     .button.small {
-        height: 32px;
+        height: 34px;
         padding: 7px 24px;
         @apply font-bold text-15px tracking-0.23px;
         border-radius: 8px;

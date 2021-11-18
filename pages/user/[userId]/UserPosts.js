@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getPostByUser } from "/src/graphql-custom/post/queries";
-import { useListPager } from "/src/Utility/ApiHelper";
+import { useListPager } from "/src/utility/ApiHelper";
 import useInfiniteScroll from "/src/hooks/useFetch";
 import UserPostItem from "/src/components/PendingPost/UserPostItem";
 import Loader from "/src/components/loader";
-import { getReturnData } from "/src/Utility/Util";
+import { getReturnData } from "/src/utility/Util";
 import API from "@aws-amplify/api";
 import { onPostByUser } from "/src/graphql-custom/post/subscription";
 import Card from "/src/components/card/FeedCard/index";

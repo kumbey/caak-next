@@ -14,7 +14,6 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
     autoPlay = window.localStorage.getItem("autoPlay")
       ? localStorage.getItem("autoPlay")
       : "false";
-    console.log(autoPlay);
   }
 
   const videoJsOptions = {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 import Dummy from "dummyjs";
-import { getUserById } from "/src/Utility/ApiHelper";
-import { checkUser } from "/src/Utility/Util";
+import { getUserById } from "/src/utility/ApiHelper";
+import { checkUser } from "/src/utility/Util";
 import { useUser } from "/src/context/userContext";
-import { getFileUrl } from "/src/Utility/Util";
+import { getFileUrl } from "/src/utility/Util";
 import Informations from "./Informations";
 import SocialLink from "./SocialLink";
 import SiteConfiguration from "./SiteConfiguration";

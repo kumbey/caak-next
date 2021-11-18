@@ -5,7 +5,7 @@ import Validate from "../../utility/Validate";
 import Auth from "@aws-amplify/auth";
 import { useUser } from "../../context/userContext";
 import { checkUser, checkUsernameType } from "/src/utility/Util";
-import { isLogged } from "../../Utility/Authenty";
+import { isLogged } from "../../utility/Authenty";
 import Consts from "/src/utility/Consts";
 
 import { useRouter } from "next/router";

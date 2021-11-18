@@ -7,7 +7,7 @@ import API from "@aws-amplify/api";
 import Button from "/src/components/button";
 import Loader from "/src/components/loader";
 import Link from "next/link";
-import { ApiFileUpload, getUserById } from "/src/Utility/ApiHelper";
+import { ApiFileUpload, getUserById } from "/src/utility/ApiHelper";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { useDropzone } from "react-dropzone";
@@ -17,7 +17,7 @@ import {
   getFileExt,
   getFileName,
   getFileUrl,
-} from "/src/Utility/Util";
+} from "/src/utility/Util";
 import { updateUser } from "/src/graphql-custom/user/mutation";
 import { deleteFile } from "/src/graphql-custom/file/mutation";
 import { useUser } from "/src/context/userContext";
@@ -27,7 +27,6 @@ import UserPosts from "./UserPosts";
 export default function Profile() {
   const router = useRouter();
   const userId = router.query.userId;
-  console.log(userId);
 
   const [user, setUser] = useState();
 

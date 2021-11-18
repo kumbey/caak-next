@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Switch from "./Switch";
-import Consts from "/src/Utility/Consts";
+import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
-import Validate from "/src/Utility/Validate";
+import Validate from "/src/utility/Validate";
 import Input from "/src/components/input";
 
 export default function Privacy() {

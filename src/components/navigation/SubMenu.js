@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Button from "../button";
-import NotificationDropDown from "./NotificationDropDown";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
 import { checkUser, getFileUrl, useClickOutSide } from "../../utility/Util";
 import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
 import Dummy from "dummyjs";
+import { useRouter } from "next/router";
 
 const SubMenu = ({ params }) => {
   const [logged, setLogged] = useState(false);
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
+  const history = useRouter();
   const { user } = useUser();
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
@@ -26,10 +27,8 @@ const SubMenu = ({ params }) => {
 
   useEffect(() => {
     if (checkUser(user)) {
-      console.log("user is here");
       setLogged(true);
     } else {
-      console.log("not here");
       setLogged(false);
     }
   }, [user]);
@@ -59,9 +58,9 @@ const SubMenu = ({ params }) => {
             icon={<span className={"icon-fi-rs-add text-22px"} />}
             onClick={() =>
               history.push({
-                pathname: logged ? "/post/add/new" : "/login",
+                pathname: logged ? "/addpost" : "/login",
                 // state: { background: location },
-              })
+              }, "add/post/new")
             }
           />
         </div>

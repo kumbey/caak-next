@@ -19,8 +19,7 @@ function useUser() {
 }
 
 function UserProvider(props) {
-
-  const {lsGet, lsSet, lsRemove} = useLocalStorage("session")
+  const { lsGet, lsSet, lsRemove } = useLocalStorage("session");
   const [user, setUser] = useState(lsGet(Consts.SS_UserKey));
   const [updatedUser, setUpdatedUser] = useState();
   const subscriptions = {};

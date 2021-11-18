@@ -30,7 +30,7 @@ const Tooltip = ({ children, content, className, style }) => {
             const windowHeight = window.screen.height;
 
             if (windowHeight - itemClientRect.bottom < itemClientRect.height) {
-              el.style.top = "-10.3rem";
+              el.style.top = "-11.6rem";
             }
           }}
           className={`Tooltip-Tip ${className && className}`}

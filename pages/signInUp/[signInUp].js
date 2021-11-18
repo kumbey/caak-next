@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faApple,
   faFacebook,
   faGoogle,
   faTwitter,
-  faApple,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { closeModal } from "../../src/utility/Util";

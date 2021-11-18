@@ -9,9 +9,11 @@ import { isLogged } from "../../utility/Authenty";
 import Consts from "/src/utility/Consts";
 
 import { useRouter } from "next/router";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const Register = ({ nextStep, ...props }) => {
   const { user, setUser } = useUser();
+  const { lsSet } = useLocalStorage("session");
 
   const [error, setError] = useState("");
   const [activeType, setActiveType] = useState("phone");
@@ -70,21 +72,20 @@ const Register = ({ nextStep, ...props }) => {
       usrData.verified = false;
 
       //do not sign up when its federated sign in
-      console.log(checkUser(user));
       if (!checkUser(user)) {
-        console.log(usr);
         let resp = await Auth.signUp(usr);
-        console.log("response : ", resp);
         usrData.id = resp.userSub;
       } else {
         usrData.id = user.attributes.sub;
       }
+      let localUsr = { usr: usr, usrData: usrData };
 
       if (!checkUser(user)) {
-        router.replace(
-          `?signInUp=stepUp&isModal=true&username=${username}`,
-          `/signInUp/stepUp`
-        );
+        lsSet(Consts.SS_UserSignUp, localUsr);
+        // router.replace(
+        //   `?signInUp=stepUp&isModal=true&username=${username}`,
+        //   `/signInUp/stepUp`
+        // );
       } else {
         isLogged(user, setUser);
         router.replace(
@@ -104,13 +105,6 @@ const Register = ({ nextStep, ...props }) => {
         console.log(ex);
       }
     }
-  };
-
-  const submitHandler = () => {
-    handleSubmit(doSubmit);
-    // if (!loading) {
-
-    // }
   };
 
   useEffect(() => {
@@ -208,7 +202,7 @@ const Register = ({ nextStep, ...props }) => {
           <Button
             disabled={isValid ? false : true}
             loading={loading}
-            onClick={() => submitHandler()}
+            onClick={() => handleSubmit(doSubmit)}
             className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary  ${
               isValid
                 ? "bg-caak-primary text-white"

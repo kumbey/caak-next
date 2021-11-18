@@ -7,12 +7,16 @@ import Consts from "/src/utility/Consts";
 import Validate from "../../utility/Validate";
 import { useUser } from "../../context/userContext";
 import { route } from "next/dist/server/router";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import Auth from "@aws-amplify/auth";
 
 const Confirmation = ({ activeType, nextStep }) => {
+  const { lsGet } = useLocalStorage("session");
+  const usr = lsGet(Consts.SS_UserSignUp);
+  const [username] = useState(usr.usr.username);
+  const [password] = useState(usr.usr.password);
+
   const router = useRouter();
-  const username = router.query.username;
-  const { user } = useUser();
-  console.log("query:", router.query);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -34,9 +38,9 @@ const Confirmation = ({ activeType, nextStep }) => {
     try {
       setLoading(true);
       await Auth.confirmSignUp(username, code);
-      // await Auth.signIn(username, password);
+      await Auth.signIn(username, password);
+      // router.replace(`?signInUp=stepIn&isModal=true`, `signInUp/stepIn`);
       setLoading(false);
-      router.replace(`?signInUp=stepIn&isModal=true`, `signInUp/stepIn`);
     } catch (ex) {
       setLoading(false);
       if (ex.code === "CodeMismatchException") {
@@ -59,8 +63,6 @@ const Confirmation = ({ activeType, nextStep }) => {
     }
   };
 
-  console.log("***", router);
-
   return (
     <div className="ph:w-full ">
       {" "}
@@ -75,7 +77,7 @@ const Confirmation = ({ activeType, nextStep }) => {
         {activeType === "phone"
           ? "Таны утасны дугаар болох "
           : "Таны имэйл хаяг болох "}
-        {username ? mailNumber(username.replace("+976", "")) : null} руу <br />
+        {/* {username ? mailNumber(username.replace("+976", "")) : null} руу <br /> */}
         баталгаажуулах код илгээгдлээ!
       </div>
       <form onSubmit={(e) => e.preventDefault()}>

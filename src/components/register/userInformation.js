@@ -7,16 +7,24 @@ import Validate from "../../utility/Validate";
 import Gender from "../gender/gender";
 import API from "@aws-amplify/api";
 import { createUser } from "../../graphql-custom/user/mutation";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import Auth from "@aws-amplify/auth";
 
 const UserInformation = ({ activeType, nextStep }) => {
   const router = useRouter();
+  const { lsGet, lsSet, lsRemove } = useLocalStorage("session");
+  let usrData = lsGet(Consts.SS_UserSignUp).usrData;
+
+  console.log(usrData);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const [age, setAge] = useState("");
+
+  Auth.currentAuthenticatedUser().then((usr) => console.log(usr));
 
   const validate = {
     nickname: {
@@ -29,11 +37,13 @@ const UserInformation = ({ activeType, nextStep }) => {
       value: gender,
       type: Consts.typeRequired,
       onChange: setGender,
+      ignoreOn: true,
     },
-    birthdate: {
-      value: birthdate,
-      type: Consts.typeDate,
-      onChange: setBirthdate,
+    age: {
+      value: age,
+      type: Consts.typeAge,
+      onChange: setAge,
+      ignoreOn: true,
     },
   };
 
@@ -42,10 +52,21 @@ const UserInformation = ({ activeType, nextStep }) => {
 
   const doSubmit = async () => {
     try {
-      // await saveUserData(usrData).then(() => {
-      //   setLoading(false);
-      // });
-    } catch (ex) {}
+      setLoading(true);
+
+      usrData.nickname = nickname;
+      usrData.gender = gender;
+      usrData.age = age;
+      console.log(usrData);
+      await saveUserData(usrData).then(() => {
+        setLoading(false);
+      });
+
+      lsRemove(Consts.SS_UserSignUp);
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
   };
 
   const saveUserData = async (data) => {
@@ -89,9 +110,9 @@ const UserInformation = ({ activeType, nextStep }) => {
           />
           <Input
             label={"Таны нас"}
-            value={birthdate || ""}
-            name={"birthdate"}
-            errorMessage={errors.birthdate}
+            value={age || ""}
+            name={"age"}
+            errorMessage={errors.age}
             onChange={handleChange}
             placeholder={"Нас"}
             className={

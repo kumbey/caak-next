@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Button from "../button";
-import Link from "next/link";
 import NotificationDropDown from "./NotificationDropDown";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
@@ -27,12 +26,11 @@ const SubMenu = ({ params }) => {
 
   useEffect(() => {
     if (checkUser(user)) {
-      console.log("user is here")
+      console.log("user is here");
       setLogged(true);
-    }
-    else {
-      console.log("not here")
-      setLogged(false)
+    } else {
+      console.log("not here");
+      setLogged(false);
     }
   }, [user]);
 

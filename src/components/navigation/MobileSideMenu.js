@@ -28,12 +28,10 @@ const MobileSideMenu = ({ setOpen }) => {
         {checkUser(user) && (
           <div className={"relative flex flex-row items-center"}>
             <Link
-              href={{
-                pathname: checkUser(user)
-                  ? `/user/${user.sysUser.id}/profile`
-                  : "/login",
+              href={
+                checkUser(user) ? `/user/${user.sysUser.id}/profile` : "/login"
                 // state: { background: location },
-              }}
+              }
             >
               <div className={"cursor-pointer "}>
                 {checkUser(user) ? (

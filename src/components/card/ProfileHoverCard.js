@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { checkUser, getFileUrl } from "../../utility/Util";
 import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
-import Link from "next/link"
+import Link from "next/link";
 
 export default function ProfileHoverCard({ userId }) {
   const { user } = useUser();
@@ -92,11 +92,7 @@ export default function ProfileHoverCard({ userId }) {
       // style={{ top: "45px" }}
     >
       <div className="flex flex-row items-center justify-between w-full">
-        <Link
-          to={{
-            pathname: `/user/${profileUser.id}/profile`,
-          }}
-        >
+        <Link href={`/user/${profileUser.id}/profile`}>
           <img
             className="object-cover w-12 h-12 border-2 border-white rounded-full"
             alt=""
@@ -128,9 +124,7 @@ export default function ProfileHoverCard({ userId }) {
         <div className="flex items-center">
           <Link
             className="flex items-center"
-            to={{
-              pathname: `/user/${profileUser.id}/profile`,
-            }}
+            href={`/user/${profileUser.id}/profile`}
           >
             <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>
             <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />

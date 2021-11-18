@@ -51,7 +51,7 @@ const Login = ({ nextStep }) => {
 
       await Auth.signIn(checkUsername(username), password);
       setLoading(false);
-      router.replace(`/?signInUp=stepUp&isModal=false`, `/`);
+      router.replace(`/?isModal=false`, `/`);
     } catch (ex) {
       console.log(ex);
       setLoading(false);

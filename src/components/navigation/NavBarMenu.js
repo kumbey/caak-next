@@ -8,15 +8,16 @@ import Auth from "@aws-amplify/auth";
 export default function NavBarMenu({ type }) {
   const { user, setUser } = useUser();
   const logout = async () => {
-    setUser(null)
+    setUser(null);
     await Auth.signOut();
   };
+
   return (
     <div className={`dropdown-item-wrapper`}>
       {checkUser(user) && (
         <Fragment>
           {type !== "mobile" && (
-            <Link href={{ pathname: `/user/${user.sysUser.id}/profile` }}>
+            <Link href={`/user/${user.sysUser.id}/profile`}>
               <a>
                 <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span
@@ -83,7 +84,7 @@ export default function NavBarMenu({ type }) {
         </a>
       </Link>
       {checkUser(user) && <Divider className={"my-2"} />}
-      <Link href={{ pathname: `/about/aura` }}>
+      <Link href={`/about/aura`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span
@@ -97,7 +98,7 @@ export default function NavBarMenu({ type }) {
           </div>
         </a>
       </Link>
-      <Link href={{ pathname: `/newcaak` }}>
+      <Link href={`/newcaak`}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={

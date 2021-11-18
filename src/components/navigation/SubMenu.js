@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
-import { checkUser, getFileUrl, useClickOutSide } from "../../utility/Util";
+import { getFileUrl, useClickOutSide } from "../../utility/Util";
 import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
 import Dummy from "dummyjs";
 import { useRouter } from "next/router";
 
 const SubMenu = ({ params }) => {
-  const [logged, setLogged] = useState(false);
+ 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
-  const history = useRouter();
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
@@ -25,18 +24,11 @@ const SubMenu = ({ params }) => {
     params.setIsMenuOpen(!params.isMenuOpen);
   };
 
-  useEffect(() => {
-    if (checkUser(user)) {
-      setLogged(true);
-    } else {
-      setLogged(false);
-    }
-  }, [user]);
 
   return (
-    ((logged && params.type === "mobile") ||
-      (!logged && params.type === "mobile") ||
-      (logged && params.type === "web")) && (
+    ((isLogged && params.type === "mobile") ||
+      (!isLogged && params.type === "mobile") ||
+      (isLogged && params.type === "web")) && (
       <div
         className={
           "flex flex-row items-center w-full justify-around md:w-auto md:justify-center"
@@ -67,7 +59,7 @@ const SubMenu = ({ params }) => {
         <div
           ref={notificationRef}
           onClick={() => {
-            logged
+            isLogged
               ? setIsNotificationMenu((oldState) => !oldState)
               : history.push({
                   pathname: "/login",
@@ -104,14 +96,14 @@ const SubMenu = ({ params }) => {
             "relative hidden md:flex flex-row w-max mr-0 md:mr-[10px] h-[36px] bg-caak-liquidnitrogen px-[12px] py-[10px] rounded-square"
           }
         >
-          {params.type === "web" && logged && (
+          {params.type === "web" && isLogged && (
             <div className={"flex flex-col items-center justify-center"}>
               <div className={"flex flex-row justify-center items-center"}>
                 <span className={"icon-fi-rs-auro auroGradient mr-1"} />
                 <span
                   className={"text-14px text-caak-generalblack font-medium"}
                 >
-                  {`${user.sysUser.aura} Аура`}
+                  {`${user.aura} Аура`}
                 </span>
               </div>
             </div>
@@ -128,14 +120,14 @@ const SubMenu = ({ params }) => {
             content={<NavBarMenu />}
             className={"top-8 -right-3 w-[215px]"}
           />
-          {logged ? (
+          {isLogged ? (
             <img
               ref={menuRef}
               onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
-              alt={user.sysUser.nickname}
+              alt={user.nickname}
               src={
-                user.sysUser.pic
-                  ? getFileUrl(user.sysUser.pic)
+                user.pic
+                  ? getFileUrl(user.pic)
                   : Dummy.img("50x50")
               }
               className={

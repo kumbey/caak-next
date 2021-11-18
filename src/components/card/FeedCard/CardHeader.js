@@ -63,11 +63,7 @@ const CardHeader = ({
                 //   <ProfileHoverCard userId={postUser.id} postUser={postUser} />
                 // }
               >
-                <Link
-                  href={{
-                    pathname: `/user/${postUser.id}/profile`,
-                  }}
-                >
+                <Link href={`/user/${postUser.id}/profile`}>
                   <p className="cursor-pointer hover:underline text-generalblack text-13px leading-[16px] tracking-[0.2px]">
                     @{postUser.nickname}
                   </p>

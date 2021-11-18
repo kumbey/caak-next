@@ -13,13 +13,13 @@ import VideoJS from "../card/VideoJS";
 import { generateFileUrl } from "../../utility/Util";
 import { getFileUrl } from "../../utility/Util";
 import { generateTimeAgo } from "../../utility/Util";
-import Dummy from 'dummyjs'
+import Dummy from "dummyjs";
 import { closeModal } from "../../utility/Util";
 import { useHistory } from "react-router";
 
 export default function PendingPostItem({ post, className }) {
   const [loading, setLoading] = useState(false);
-  const history = useHistory()
+  const history = useHistory();
   const location = useLocation();
   const { state } = useLocation();
   const { user } = useUser();
@@ -47,13 +47,12 @@ export default function PendingPostItem({ post, className }) {
       if (
         ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        updateStatus(post, user.sysUser.ID,status)
-        setLoading(false)
-        closeModal(history, state)
+        updateStatus(post, user.sysUser.ID, status);
+        setLoading(false);
+        closeModal(history, state);
       }
     }
   };
-  
 
   return (
     <div
@@ -63,36 +62,36 @@ export default function PendingPostItem({ post, className }) {
       }`}
     >
       <div className="sm:w-1/3">
-        <Link
-          to={{
-            pathname: `/pending/view/${post.id}`,
-            state: { background: location },
-          }}
-        > 
-          <div 
-            style={{textOverflow: "ellipsis", wordBreak: "break-all"}}
-            className='flex items-center cursor-pointer pl-6 mr-5'
+        <Link href={`/pending/view/${post.id}`}>
+          <div
+            style={{ textOverflow: "ellipsis", wordBreak: "break-all" }}
+            className="flex items-center cursor-pointer pl-6 mr-5"
           >
             {post.items.items[0].file.type.startsWith("video") ? (
               <VideoJS
                 files={post.items.items}
                 videoClassName={`videoPlayer rounded-lg video-js vjs-big-play-centered h-c7 w-c33`}
-              /> 
-              ? 
+              /> ? (
+                <img
+                  src={
+                    "https://images-na.ssl-images-amazon.com/images/I/31OQNoCuVdL.png"
+                  }
+                  className={"h-c7 w-c33 rounded-lg "}
+                  alt={""}
+                />
+              ) : null
+            ) : (
               <img
-                src={"https://images-na.ssl-images-amazon.com/images/I/31OQNoCuVdL.png"}
-                className={"h-c7 w-c33 rounded-lg "}
-                alt={""}
-              /> : null
-              ) : (
-              <img
-                src={generateFileUrl(post.items.items.length > 0 && post.items.items[0].file)}
+                src={generateFileUrl(
+                  post.items.items.length > 0 && post.items.items[0].file
+                )}
                 className={"h-c7 w-c33 rounded-lg object-cover"}
                 alt={""}
               />
-              )
-            }
-            <p className="text-15px" style={{marginInline: "20px"}}>{post.title}</p>
+            )}
+            <p className="text-15px" style={{ marginInline: "20px" }}>
+              {post.title}
+            </p>
           </div>
         </Link>
       </div>
@@ -102,7 +101,11 @@ export default function PendingPostItem({ post, className }) {
             <div className="flex items-center sm:w-1/2">
               <img
                 className="ph:w-c2 ph:h-c2 w-8 h-8 rounded-full"
-                src={post.user?.pic ? getFileUrl(post.user?.pic) : Dummy.img("100x100")}
+                src={
+                  post.user?.pic
+                    ? getFileUrl(post.user?.pic)
+                    : Dummy.img("100x100")
+                }
                 alt=""
               />
               <p className="text-15px ml-px-7">{post.user?.firstname}</p>
@@ -134,8 +137,9 @@ export default function PendingPostItem({ post, className }) {
               Татгалзах
             </Button>
           </div>
-          <span 
-            onClick={toggleMenu} className="icon-fi-rs-dots text-4px md:hidden cursor-pointer  hover:bg-caak-liquidnitrogen" 
+          <span
+            onClick={toggleMenu}
+            className="icon-fi-rs-dots text-4px md:hidden cursor-pointer  hover:bg-caak-liquidnitrogen"
           />
           <DropDown
             className={"top-5"}

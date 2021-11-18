@@ -25,6 +25,7 @@ type User @model
   lastname: String
   nickname: String
   birthdate: String
+  age: Int
   gender: String
   pic_id: ID
   pic: File @connection(fields:["pic_id"])

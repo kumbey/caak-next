@@ -7,6 +7,7 @@ import Validate from "../../utility/Validate";
 import Gender from "../gender/gender";
 import API from "@aws-amplify/api";
 import { createUser } from "../../graphql-custom/user/mutation";
+import Auth from "@aws-amplify/auth";
 
 const UserInformation = ({ activeType, nextStep }) => {
   const router = useRouter();

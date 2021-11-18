@@ -90,9 +90,8 @@ export default function NavBar() {
       setLogged(true);
       fetchUserTotal();
       subscrip();
-    }
-    else {
-      setLogged(false)
+    } else {
+      setLogged(false);
     }
 
     return () => {
@@ -112,7 +111,7 @@ export default function NavBar() {
     // eslint-disable-next-line
   }, [subscripTotal]);
 
-  return  (
+  return (
     <Fragment>
       {isTablet && (
         <nav

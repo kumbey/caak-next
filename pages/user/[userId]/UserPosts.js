@@ -162,18 +162,16 @@ export default function UserPosts({ userId, type, card }) {
             })}
         </div>
       ) : (
-        <div>
-          <div
+        <table className="table-fixed">
+          <tr
             style={{ paddingBlock: "21px" }}
-            className="hidden md:flex bg-white rounded-t-xl"
+            className="text-left hidden md:flex bg-white rounded-t-xl"
           >
-            <p className="w-1/2 md:ml-c32">Пост</p>
-            <p className="w-1/4 text-center">Грүпп</p>
-            <div className="w-1/4 flex items-center justify-evenly">
-              <p>Хугацаа</p>
-              <p>Үйлдэл</p>
-            </div>
-          </div>
+            <th className="w-1/2 text-center md:ml-c32">Пост</th>
+            <th className="w-1/4 text-center">Грүпп</th>
+            <th className="w-1/6 text-center">Хугацаа</th>
+            <th className="w-1/6 text-center">Үйлдэл</th>
+          </tr>
           {userPosts.length > 0 &&
             userPosts.map((data, index) => {
               return (
@@ -187,7 +185,7 @@ export default function UserPosts({ userId, type, card }) {
                 </div>
               );
             })}
-        </div>
+        </table>
       )}
       <div ref={itemRef} className={"flex justify-center items-center"}>
         <Loader

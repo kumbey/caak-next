@@ -262,10 +262,12 @@ export default function Profile() {
             <div className=" md:justify-center flex justify-end">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link href={`/user/${user.id}/settings`}>
-                  <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
-                    <span className="pr-px-6 icon-fi-rs-settings text-18px" />
-                    <p className="text-15px font-medium">Тохиргоо</p>
-                  </div>
+                  <a>
+                    <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
+                      <span className="pr-px-6 icon-fi-rs-settings text-18px" />
+                      <p className="text-15px font-medium">Тохиргоо</p>
+                    </div>
+                  </a>
                 </Link>
               ) : (
                 <Button

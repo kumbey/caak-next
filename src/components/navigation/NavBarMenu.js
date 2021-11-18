@@ -11,6 +11,7 @@ export default function NavBarMenu({ type }) {
     setUser(null);
     await Auth.signOut();
   };
+
   return (
     <div className={`dropdown-item-wrapper`}>
       {checkUser(user) && (

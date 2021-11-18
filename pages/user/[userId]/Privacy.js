@@ -26,13 +26,13 @@ export default function Privacy() {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
     passwordRepeat: {
       value: passwordRepeat,
       type: Consts.typePasswordRepeat,
       onChange: setPasswordRepeat,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
   };
 
@@ -40,6 +40,13 @@ export default function Privacy() {
 
   const handleClick = () => {
     setShowInput(true);
+  };
+
+  const clear = () => {
+    setOldPassword("");
+    setPassword("");
+    setPasswordRepeat("");
+    setShowInput(false);
   };
 
   const doConfirm = async () => {
@@ -51,6 +58,7 @@ export default function Privacy() {
       setMessage("Нууц үг амжилттай солигдлоо!");
       setLoading(false);
       setShowInput(false);
+      clear();
     } catch (ex) {
       setLoading(false);
       if (ex.code === "CodeMismatchException") {
@@ -143,7 +151,7 @@ export default function Privacy() {
                   />
                 </div>
                 <button
-                  onClick={() => setShowInput(false)}
+                  onClick={() => clear()}
                   className="icon-fi-rs-close font-bold text-caak-boilingmagma ml-10"
                 />
                 <button

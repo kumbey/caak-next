@@ -1,9 +1,7 @@
-import { useState } from "react";
-export default function Switch() {
-  const [active, setActive] = useState();
+export default function Switch({ toggle, active }) {
   return (
     <label
-      onClick={() => setActive(!active)}
+      onClick={toggle}
       style={{ minWidth: "40px", height: "22px" }}
       className={`ml-1 cursor-pointer
                 rounded-full 

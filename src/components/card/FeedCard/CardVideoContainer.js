@@ -8,9 +8,18 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   let clickTimer = null;
+  let autoPlay;
+
+  if (typeof window !== "undefined" && window.localStorage) {
+    autoPlay = window.localStorage.getItem("autoPlay")
+      ? localStorage.getItem("autoPlay")
+      : "false";
+    console.log(autoPlay);
+  }
 
   const videoJsOptions = {
-    autoplay: false,
+    autoplay: autoPlay === "true" ? true : false,
+    muted: autoPlay === "true" ? true : false,
     controls: true,
     responsive: false,
     fluid: false,

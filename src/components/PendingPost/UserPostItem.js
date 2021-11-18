@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import VideoJS from "../card/VideoJS";
 import {
   generateFileUrl,
@@ -98,7 +97,7 @@ export default function UserPostItem({ post, className }) {
           className="flex items-center w-full md:w-1/2"
           href={`/group/${post.group?.id}`}
         >
-          <>
+          <a>
             <img
               className="ph:w-c2 ph:h-c2 w-8 h-8 ph:ml-10 rounded-full object-cover"
               src={
@@ -109,7 +108,7 @@ export default function UserPostItem({ post, className }) {
               alt=""
             />
             <p className="text-15px ml-px-7">{post.group?.name}</p>
-          </>
+          </a>
         </Link>
         <div className="flex items-center justify-evenly w-1/2">
           <span className={"text-darkblue text-12px"}>

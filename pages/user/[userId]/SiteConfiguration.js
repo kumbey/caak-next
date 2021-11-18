@@ -1,6 +1,19 @@
+import { useEffect, useState } from "react";
 import Switch from "./Switch";
 
 export default function SiteConfiguration() {
+  const local = localStorage.getItem("autoPlay");
+  const [active, setActive] = useState(local ? local : "false");
+
+  const toggle = () => {
+    setActive(active === "true" ? "false" : "true");
+  };
+
+  useEffect(() => {
+    console.log(active);
+    localStorage.setItem("autoPlay", active === "true" ? "true" : "false");
+  }, [active]);
+
   return (
     <>
       <p
@@ -21,7 +34,7 @@ export default function SiteConfiguration() {
           <p className="text-16px font-medium">
             Видео бичлэгийг автоматаар тоглуулах
           </p>
-          <Switch />
+          <Switch toggle={toggle} active={active === "true" ? true : false} />
         </div>
       </div>
     </>

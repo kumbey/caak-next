@@ -4,86 +4,62 @@ import Button from "/src/components/button";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getCategoryList } from "../../graphql-custom/category/queries";
+import { createUserCategory } from "../../graphql-custom/category/mutation";
+import Auth from "@aws-amplify/auth";
 
-const items = [
-    {
-        icon: "icon-fi-rs-ig",
-        title: "Спорт",
-    },
-    {
-        icon: "icon-fi-rs-fb",
-        title: "Технологи",
-    },
-    {
-        icon: "icon-fi-rs-tiktok",
-        title: "Хөгжилтэй",
-    },
-    {
-        icon: "icon-fi-rs-social",
-        title: "Хоол",
-    },
-    {
-        icon: "icon-fi-rs-lock-f",
-        title: "Аялал",
-    },
-    {
-        icon: "icon-fi-rs-star",
-        title: "Түүх",
-    },
-    {
-        icon: "icon-Android",
-        title: "Тоглоом",
-    },
-    {
-        icon: "icon-fi-rs-auro",
-        title: "Шинжлэх ухаан",
-    },
-    {
-        icon: "icon-fi-rs-image",
-        title: "Гоо сайхан",
-    },
-    {
-        icon: "icon-fi-rs-world",
-        title: "Урлаг",
-    },
-    {
-        icon: "icon-fi-rs-add",
-        title: "Дуу хөгжим",
-    },
-    {
-        icon: "icon-fi-rs-back",
-        title: "Авто машин",
-    },
-];
-
-export default function Interests({ nextStep }) {
+export default function Interests() {
     const router = useRouter();
+    const [userId, setUserId] = useState();
+
+    Auth.currentAuthenticatedUser()
+        .then((user) => setUserId(user.attributes.sub))
+        .catch((err) => console.log(err));
 
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState([]);
     const [categories, setCategories] = useState([]);
 
-    const selectHandler = (index, title) => {
-        if (selected.length === 0) setSelected([...selected, title]);
+    const selectHandler = (id) => {
+        if (selected.length === 0)
+            setSelected([...selected, { user_id: userId, category_id: id }]);
 
-        if (selected.includes(title)) {
-            setSelected(selected.filter((item) => item !== title));
+        if (selected.includes(id)) {
+            setSelected(selected.filter((item) => item.category_id !== id));
         } else {
-            setSelected([...selected, title]);
+            setSelected([...selected, { user_id: userId, category_id: id }]);
         }
     };
 
-    const submitHandler = () => {
+    const submitHandler = async () => {
+        try {
+            selected.map((item) => {
+                createCat(item);
+            });
+        } catch (ex) {
+            console.log(ex);
+        }
+
         router.replace(
             `?signInUp=completed&isModal=true`,
             `/signInUp/completed`
         );
     };
 
-    useEffect(() => {
-        API.graphql(graphqlOperation(getCategoryList)).then((cat) => {
+    const fetchCat = async () => {
+        await API.graphql(graphqlOperation(getCategoryList)).then((cat) => {
             setCategories(cat.data.listCategories.items);
         });
+    };
+
+    const createCat = async (data) => {
+        console.log(data);
+        await API.graphql(
+            graphqlOperation(createUserCategory, { input: data })
+        );
+    };
+
+    useEffect(() => {
+        fetchCat();
     }, []);
 
     useEffect(() => {
@@ -113,12 +89,12 @@ export default function Interests({ nextStep }) {
                     return (
                         <div
                             key={index}
-                            onClick={(e) => selectHandler(index, data.name)}
+                            onClick={(e) => selectHandler(data.id)}
                             className={`
                                             flex items-center border py-px-6 rounded-full justify-center cursor-pointer px-c6 
                                             ${
                                                 selected.find(
-                                                    (item) => item === data.name
+                                                    (item) => item === data.id
                                                 )
                                                     ? "bg-caak-primary text-white"
                                                     : ""

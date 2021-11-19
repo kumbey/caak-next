@@ -45,11 +45,6 @@ const Register = ({ nextStep, ...props }) => {
         },
     };
 
-    // if (state.onlyInfo) {
-    //   delete validate["username"];
-    //   delete validate["password"];
-    //   delete validate["passwordRepeat"];
-    // }
     const { handleChange, errors, setErrors, handleSubmit, isValid } =
         Validate(validate);
 

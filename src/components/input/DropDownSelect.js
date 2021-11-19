@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+// import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
 import { generateFileUrl } from "../../utility/Util";
 import { useEffect, useRef, useState } from "react";
@@ -69,10 +69,10 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
             hideError
             containerStyle={"w-full"}
           />
-          <FontAwesomeIcon
-            className={"absolute right-2.5"}
-            icon={faCaretDown}
-          />
+          {/*<FontAwesomeIcon*/}
+          {/*  className={"absolute right-2.5"}*/}
+          {/*  icon={faCaretDown}*/}
+          {/*/>*/}
           <span />
         </div>
         <div className={"z-50"}>

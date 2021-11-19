@@ -1,23 +1,18 @@
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../utility/Util";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Divider from "../divider";
 import Link from "next/link";
-import Auth from "@aws-amplify/auth";
 
 export default function NavBarMenu({ type }) {
-  const { user, setUser } = useUser();
-  const logout = async () => {
-    setUser(null);
-    await Auth.signOut();
-  };
+
+  const { user, isLogged, logout } = useUser();
 
   return (
     <div className={`dropdown-item-wrapper`}>
-      {checkUser(user) && (
+      {isLogged && (
         <Fragment>
           {type !== "mobile" && (
-            <Link href={`/user/${user.sysUser.id}/profile`}>
+            <Link href={`/user/${user.id}/profile`}>
               <a>
                 <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span
@@ -48,7 +43,7 @@ export default function NavBarMenu({ type }) {
             </a>
           </Link>
 
-          <Link href={`/user/${user.sysUser.id}/settings`}>
+          <Link href={`/user/${user.id}/settings`}>
             <a>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                 <div className={"flex justify-center items-center"}>
@@ -83,7 +78,7 @@ export default function NavBarMenu({ type }) {
           </div>
         </a>
       </Link>
-      {checkUser(user) && <Divider className={"my-2"} />}
+      {isLogged && <Divider className={"my-2"} />}
       <Link href={`/about/aura`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
@@ -123,7 +118,7 @@ export default function NavBarMenu({ type }) {
           </div>
         </a>
       </Link>
-      {checkUser(user) && type !== "mobile" && (
+      {isLogged && type !== "mobile" && (
         <>
           <Divider className={"my-2"} />
           <div

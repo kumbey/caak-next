@@ -19,10 +19,9 @@ import { useRouter } from "next/router";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logged, setLogged] = useState(false);
 
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
 
   const [subscripTotal, setSubscripTotal] = useState();
   const subscriptions = {};
@@ -46,7 +45,7 @@ export default function NavBar() {
   const fetchUserTotal = async () => {
     try {
       const resp = await API.graphql(
-        graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
+        graphqlOperation(getUserTotal, { user_id: user.id })
       );
       setUserTotal(getReturnData(resp));
     } catch (ex) {
@@ -57,10 +56,10 @@ export default function NavBar() {
   const fetchUserAura = async () => {
     try {
       let resp = await API.graphql(
-        graphqlOperation(getUserAura, { id: user.sysUser.id })
+        graphqlOperation(getUserAura, { id: user.id })
       );
       resp = getReturnData(resp);
-      user.sysUser.aura = resp.aura;
+      user.aura = resp.aura;
       setRender(render + 1);
     } catch (ex) {
       console.log(ex);
@@ -72,7 +71,7 @@ export default function NavBar() {
       query: onChangedTotalsBy,
       variables: {
         type: "UserTotal",
-        id: user.sysUser.id,
+        id: user.id,
       },
     }).subscribe({
       next: (data) => {
@@ -86,12 +85,10 @@ export default function NavBar() {
   };
 
   useEffect(() => {
-    if (checkUser(user)) {
-      setLogged(true);
+
+    if(isLogged){
       fetchUserTotal();
       subscrip();
-    } else {
-      setLogged(false);
     }
 
     return () => {
@@ -101,7 +98,7 @@ export default function NavBar() {
       });
     };
     // eslint-disable-next-line
-  }, [user]);
+  }, [isLogged]);
 
   useEffect(() => {
     if (subscripTotal) {
@@ -184,7 +181,7 @@ export default function NavBar() {
                   type: isTablet ? "mobile" : "web",
                 }}
               />
-              {!logged && (
+              {!isLogged && (
                 <div className={"hidden md:flex flex-row items-center"}>
                   <Button
                     round
@@ -216,7 +213,7 @@ export default function NavBar() {
                 </div>
               )}
 
-              {!logged && !isTablet && (
+              {!isLogged && !isTablet && (
                 <div ref={menuRef} className={"flex items-center relative"}>
                   <div
                     onClick={() => setIsMenuOpen(!isMenuOpen)}

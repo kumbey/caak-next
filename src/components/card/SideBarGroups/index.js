@@ -1,7 +1,8 @@
 import SideBarGroupItem from "./SideBarGroupItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getFileUrl } from "../../../utility/Util";
 import ViewMoreText from "./ViewMoreText";
+import { useUser } from "../../../context/userContext";
 
 const SideBarGroups = ({
   title,
@@ -11,6 +12,8 @@ const SideBarGroups = ({
   initialData,
 }) => {
   const [groupData] = useState(initialData ? initialData : []);
+
+  const { user } = useUser();
 
   // const listGroups = async () => {
   //   try {

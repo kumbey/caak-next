@@ -20,15 +20,23 @@ const Register = ({ nextStep, ...props }) => {
   const router = useRouter();
 
   const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [loading, setLoading] = useState(false);
 
   const validate = {
-    username: {
-      value: username,
-      type: Consts.typeUsername,
-      onChange: setUsername,
+    phoneNumber: {
+      value: phoneNumber,
+      type: Consts.typePhoneNumber,
+      onChange: setPhoneNumber,
+      // ignoreOn: true,
+    },
+    email: {
+      value: email,
+      type: Consts.typeEmail,
+      onChange: setEmail,
       // ignoreOn: true,
     },
     password: {
@@ -109,6 +117,14 @@ const Register = ({ nextStep, ...props }) => {
   };
 
   useEffect(() => {
+    setPhoneNumber("");
+    setEmail("");
+    setPassword("");
+    setPasswordRepeat("");
+    setErrors("");
+  }, [activeType]);
+
+  useEffect(() => {
     if (errors) {
       setErrors(errors);
     }
@@ -162,10 +178,18 @@ const Register = ({ nextStep, ...props }) => {
             label={`Таны ${
               activeType === "phone" ? "утасны дугаар" : "имэйл хаяг"
             }`}
-            name={"username"}
-            value={username}
+            name={`${activeType === "phone" ? "phoneNumber" : "email"}`}
+            value={`${activeType === "phone" ? phoneNumber : email}`}
             type={"text"}
-            errorMessage={errors.username}
+            errorMessage={`${
+              activeType === "phone"
+                ? errors.phoneNumber
+                  ? errors.phoneNumber
+                  : ""
+                : errors.email
+                ? errors.email
+                : ""
+            }`}
             onChange={handleChange}
             placeholder={`${
               activeType === "phone" ? "Утасны дугаар" : "Имэйл хаяг"

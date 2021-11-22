@@ -16,6 +16,20 @@ const Validation = (values) => {
           errors[key] = "Таны мэйл хаяг эсвэл утасны дугаар буруу байна";
         }
         break;
+      case Consts.typeEmail:
+        if (!value) {
+          errors[key] = "Та мэйл хаягаа оруулна уу";
+        } else if (!Consts.regexEmail.test(value)) {
+          errors[key] = "Таны мэйл хаяг буруу байна";
+        }
+        break;
+      case Consts.typePhoneNumber:
+        if (!value) {
+          errors[key] = "Та утасны дугаараа оруулна уу";
+        } else if (!Consts.regexPhoneNumber.test(value)) {
+          errors[key] = "Таны утасны дугаар буруу байна";
+        }
+        break;
       case Consts.typeName:
         if (!value) {
           errors[key] = "Та хэрэглэгчийн нэрээ оруулна уу?";

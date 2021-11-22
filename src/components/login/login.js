@@ -48,10 +48,9 @@ const Login = ({ nextStep }) => {
   async function doSignIn() {
     try {
       setLoading(true);
-
       await Auth.signIn(checkUsername(username), password);
+      await router.replace(`/?isModal=false`, `/`);
       setLoading(false);
-      router.replace(`/?isModal=false`, `/`);
     } catch (ex) {
       console.log(ex);
       setLoading(false);

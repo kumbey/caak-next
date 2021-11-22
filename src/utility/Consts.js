@@ -1,6 +1,6 @@
 const Consts = {
   typeEmail: "email",
-  typePhoneNumber: "phonenumber",
+  typePhoneNumber: "phoneNumber",
   typeMismatch: "mismatch",
   typeUsername: "username",
   typeName: "name",
@@ -11,6 +11,9 @@ const Consts = {
   typeDate: "date",
   typeConfirmationCode: "confirmationCode",
   typeAge: "age",
+  regexEmail:
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  regexPhoneNumber: /^[0-9]{4}[-\s\.]?[0-9]{4}$/,
   regexUsername:
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$|^[0-9]{8}$/,
   regexPassword: /^(?=.*[0-9])(?=.*[a-z]).{8,}$/,

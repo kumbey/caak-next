@@ -12,12 +12,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { useDropzone } from "react-dropzone";
 import awsExports from "/src/aws-exports";
-import {
-  checkUser,
-  getFileExt,
-  getFileName,
-  getFileUrl,
-} from "/src/utility/Util";
+import { getFileExt, getFileName, getFileUrl } from "/src/utility/Util";
 import { updateUser } from "/src/graphql-custom/user/mutation";
 import { deleteFile } from "/src/graphql-custom/file/mutation";
 import { useUser } from "/src/context/userContext";
@@ -25,12 +20,12 @@ import { useRouter } from "next/router";
 import UserPosts from "./UserPosts";
 
 export default function Profile() {
+  const { isLogged, cognitoUser } = useUser();
   const router = useRouter();
   const userId = router.query.userId;
 
   const [user, setUser] = useState();
-
-  const { user: signedUser } = useUser();
+  const signedUserId = cognitoUser.attributes.sub;
   const [uploading, setUploading] = useState(false);
   const [doRender, setDoRender] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -62,7 +57,7 @@ export default function Profile() {
     await API.graphql({
       query: createFollowedUsers,
       variables: {
-        input: { followed_user_id: signedUser.sysUser.id, user_id: userId },
+        input: { followed_user_id: signedUserId, user_id: userId },
       },
     });
     user.totals.followers += 1;
@@ -75,7 +70,7 @@ export default function Profile() {
       query: deleteFollowedUsers,
       variables: {
         input: {
-          followed_user_id: signedUser.sysUser.id,
+          followed_user_id: signedUserId,
           user_id: userId,
         },
       },
@@ -86,7 +81,7 @@ export default function Profile() {
   };
 
   const handleClick = () => {
-    if (checkUser(signedUser)) {
+    if (isLogged) {
       if (!user.followed) {
         createFollowUser();
       } else if (user.followed) {
@@ -138,7 +133,7 @@ export default function Profile() {
   useEffect(() => {
     setLoading(true);
     try {
-      if (checkUser(signedUser)) {
+      if (isLogged) {
         getUserById({
           id: userId,
           setUser,
@@ -154,7 +149,7 @@ export default function Profile() {
     } catch (ex) {
       console.log(ex);
     }
-  }, [signedUser, userId]);
+  }, [signedUserId, userId]);
 
   return !loading && user ? (
     <div>
@@ -186,7 +181,7 @@ export default function Profile() {
                     className={"bg-caak-primary"}
                   />
                 )}
-                {signedUser?.sysUser?.id === userId && (
+                {signedUserId === userId && (
                   <>
                     <div
                       {...getRootProps()}
@@ -259,7 +254,7 @@ export default function Profile() {
           </div>
           <div>
             <div className=" md:justify-center flex justify-end">
-              {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
+              {isLogged && userId === signedUserId ? (
                 <Link href={`/user/${user.id}/settings`}>
                   <a>
                     <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
@@ -320,12 +315,12 @@ export default function Profile() {
             <span className="icon-fi-rs-drag text-20px mr-px-6" />
 
             <p className="text-17px ml-px-10 font-medium">
-              {checkUser(signedUser) && userId === signedUser.sysUser.id
+              {isLogged && userId === signedUserId
                 ? "Миний постууд"
                 : "Хэрэглэгчийн постууд"}
             </p>
           </Button>
-          {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
+          {isLogged && userId === signedUserId ? (
             <>
               <Button
                 key={2}

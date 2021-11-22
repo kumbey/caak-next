@@ -6,20 +6,20 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getCategoryList } from "../../graphql-custom/category/queries";
 import { createUserCategory } from "../../graphql-custom/category/mutation";
 import Auth from "@aws-amplify/auth";
+import useUser from "../../context/userContext"
 
 export default function Interests() {
     const router = useRouter();
-    const [userId, setUserId] = useState();
-
-    Auth.currentAuthenticatedUser()
-        .then((user) => setUserId(user.attributes.sub))
-        .catch((err) => console.log(err));
+    const { cognitoUser } = useUser()
 
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState([]);
     const [categories, setCategories] = useState([]);
 
     const selectHandler = (id) => {
+
+        const userId = cognitoUser.attributes.sub
+
         if (selected.length === 0)
             setSelected([...selected, { user_id: userId, category_id: id }]);
 
@@ -32,30 +32,29 @@ export default function Interests() {
 
     const submitHandler = async () => {
         try {
-            selected.map((item) => {
-                createCat(item);
-            });
+            setLoading(true)
+            for(let i=0; i < selected.length; i++){
+                await API.graphql(
+                    graphqlOperation(createUserCategory, { input: selected[i] })
+                );
+            }
+            setLoading(false)
+
+            router.replace(
+                `?signInUp=completed&isModal=true`,
+                `/signInUp/completed`
+            );
+
         } catch (ex) {
+            setLoading(false)
             console.log(ex);
         }
-
-        router.replace(
-            `?signInUp=completed&isModal=true`,
-            `/signInUp/completed`
-        );
     };
 
     const fetchCat = async () => {
         await API.graphql(graphqlOperation(getCategoryList)).then((cat) => {
             setCategories(cat.data.listCategories.items);
         });
-    };
-
-    const createCat = async (data) => {
-        console.log(data);
-        await API.graphql(
-            graphqlOperation(createUserCategory, { input: data })
-        );
     };
 
     useEffect(() => {

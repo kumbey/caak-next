@@ -17,6 +17,7 @@ const Consts = {
   regexDate: /^\d{4}-\d{2}-\d{2}$/,
   regexNumber: /[^\d.]/gi,
   SS_UserKey: "user",
+  SS_CognitoUserKey: "uc",
   SS_UserSignUp: "signUpKey",
   signInUp: "signInUp",
   signIn: "signIn",

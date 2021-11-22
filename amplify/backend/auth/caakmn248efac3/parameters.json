@@ -2,5 +2,24 @@
   "authSelections": "identityPoolAndUserPool",
   "resourceName": "caakmn248efac3",
   "serviceType": "imported",
-  "region": "ap-southeast-1"
+  "region": "ap-southeast-1",
+  "usernameAttributes": [
+    "email",
+    "phone_number"
+  ],
+  "authProvidersUserPool": [
+    "Facebook",
+    "Google"
+  ],
+  "requiredAttributes": [],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [],
+  "mfaConfiguration": "OPTIONAL",
+  "autoVerifiedAttributes": [
+    "email",
+    "phone_number"
+  ],
+  "mfaTypes": [
+    "SMS Text Message"
+  ]
 }

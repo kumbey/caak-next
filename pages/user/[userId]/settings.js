@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import Dummy from "dummyjs";
 import { getUserById } from "/src/utility/ApiHelper";
-import { checkUser } from "/src/utility/Util";
 import { useUser } from "/src/context/userContext";
 import { getFileUrl } from "/src/utility/Util";
 import Informations from "./Informations";
@@ -16,19 +15,18 @@ export default function Settings() {
   const router = useRouter();
   const userId = router.query.userId;
   const [user, setUser] = useState();
-  const { user: signedUser } = useUser();
+  const { user: signedUser, isLogged } = useUser();
 
   const [activeIndex, setActiveIndex] = useState(1);
-
   useEffect(() => {
     try {
-      if (checkUser(signedUser))
+      if (isLogged) {
         getUserById({
           id: userId,
           setUser,
           authMode: "AMAZON_COGNITO_USER_POOLS",
         });
-      else {
+      } else {
         router.back();
       }
     } catch (ex) {

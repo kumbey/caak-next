@@ -57,7 +57,7 @@ const Login = ({ nextStep }) => {
       setLoading(false);
       if (ex.code === "UserNotConfirmedException") {
         router.replace(
-          `?signInUp=confirmation&isModal=true&username${username}`,
+          `?signInUp=confirmation&isModal=true&username=${username}&password=${password}`,
           `/signInUp/confirmation`
         );
         // router.replace({

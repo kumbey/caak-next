@@ -9,13 +9,15 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import Auth from "@aws-amplify/auth";
 
 const Confirmation = ({ activeType, nextStep }) => {
+  const router = useRouter();
+
   const { lsGet } = useLocalStorage("session");
   const usr = lsGet(Consts.SS_UserSignUp);
-  console.log(usr);
-  const [username] = useState(usr.usr.username);
-  const [password] = useState(usr.usr.password);
 
-  const router = useRouter();
+  const [username] = useState(usr ? usr.usr.username : router.query.username);
+  const [password] = useState(usr ? usr.usr.password : router.query.password);
+
+  console.log(username);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

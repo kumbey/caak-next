@@ -163,28 +163,32 @@ export default function UserPosts({ userId, type, card }) {
         </div>
       ) : (
         <table className="table-fixed">
-          <tr
-            style={{ paddingBlock: "21px" }}
-            className="text-left hidden md:flex bg-white rounded-t-xl"
-          >
-            <th className="w-1/2 text-center md:ml-c32">Пост</th>
-            <th className="w-1/4 text-center">Грүпп</th>
-            <th className="w-1/6 text-center">Хугацаа</th>
-            <th className="w-1/6 text-center">Үйлдэл</th>
-          </tr>
-          {userPosts.length > 0 &&
-            userPosts.map((data, index) => {
-              return (
-                <div
-                  key={index}
-                  className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
-                >
-                  <div className="flex items-center w-full">
-                    <UserPostItem post={data} className="ph:mb-4 sm:mb-4 " />
+          <thead>
+            <tr
+              style={{ paddingBlock: "21px" }}
+              className="text-left hidden md:flex bg-white rounded-t-xl"
+            >
+              <th className="w-1/2 text-center md:ml-c32">Пост</th>
+              <th className="w-1/4 text-center">Грүпп</th>
+              <th className="w-1/6 text-center">Хугацаа</th>
+              <th className="w-1/6 text-center">Үйлдэл</th>
+            </tr>
+          </thead>
+          <tbody>
+            {userPosts.length > 0 &&
+              userPosts.map((data, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
+                  >
+                    <div className="flex items-center w-full">
+                      <UserPostItem post={data} className="ph:mb-4 sm:mb-4 " />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </tbody>
         </table>
       )}
       <div ref={itemRef} className={"flex justify-center items-center"}>

@@ -104,11 +104,10 @@ export default function Informations({ currentUser }) {
                   <div className="flex w-full">
                     <Input
                       name={setting.name}
-                      // errorMessage={errors.oldPassword}
                       className={
                         "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
                       }
-                      readOnly={setting.isReadOnly}
+                      // readOnly={setting.isReadOnly}
                       autoFocus
                       id={setting.id}
                       onChange={handleChange}
@@ -130,13 +129,15 @@ export default function Informations({ currentUser }) {
                 </form>
               ) : (
                 <>
-                  <div className="flex w-full">
-                    <p className="w-full">{setting.value}</p>
-                    <span
-                      onClick={() => handleClick(index)}
-                      className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
-                    />{" "}
-                  </div>
+                  {!setting.isReadOnly ? (
+                    <div className="flex w-full">
+                      <p className="w-full">{setting.value}</p>
+                      <span
+                        onClick={() => handleClick(index)}
+                        className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
+                      />
+                    </div>
+                  ) : null}
                 </>
               )}
             </div>

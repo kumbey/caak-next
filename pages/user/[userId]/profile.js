@@ -86,16 +86,15 @@ export default function Profile() {
   };
 
   const handleClick = () => {
-    if (checkUser(signedUser)) {
+    if (isLogged) {
       if (!user.followed) {
         createFollowUser();
       } else if (user.followed) {
         deleteFollowUser();
       }
     } else {
-      history.push({
+      router.push({
         pathname: `/login`,
-        state: { background: location },
       });
     }
   };

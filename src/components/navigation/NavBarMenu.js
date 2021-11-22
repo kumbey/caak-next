@@ -42,7 +42,7 @@ export default function NavBarMenu({ type }) {
             </a>
           </Link>
 
-          <Link href={`/user/${user.id}/settings`}>
+          <Link href={`/user/${user.id}/Settings`}>
             <a>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                 <div className={"flex justify-center items-center"}>

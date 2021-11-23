@@ -62,7 +62,7 @@ export default function Profile() {
     await API.graphql({
       query: createFollowedUsers,
       variables: {
-        input: { followed_user_id: signedUser.sysUser.id, user_id: userId },
+        input: { followed_user_id: signedUser.id, user_id: userId },
       },
     });
     user.totals.followers += 1;
@@ -75,7 +75,7 @@ export default function Profile() {
       query: deleteFollowedUsers,
       variables: {
         input: {
-          followed_user_id: signedUser.sysUser.id,
+          followed_user_id: signedUser.id,
           user_id: userId,
         },
       },
@@ -186,7 +186,7 @@ export default function Profile() {
                     className={"bg-caak-primary"}
                   />
                 )}
-                {signedUser?.sysUser?.id === userId && (
+                {signedUser?.id === userId && (
                   <>
                     <div
                       {...getRootProps()}
@@ -259,7 +259,7 @@ export default function Profile() {
           </div>
           <div>
             <div className=" md:justify-center flex justify-end">
-              {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
+              {checkUser(signedUser) && userId === signedUser.id ? (
                 <Link href={`/user/${user.id}/settings`}>
                   <a>
                     <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
@@ -320,12 +320,12 @@ export default function Profile() {
             <span className="icon-fi-rs-drag text-20px mr-px-6" />
 
             <p className="text-17px ml-px-10 font-medium">
-              {checkUser(signedUser) && userId === signedUser.sysUser.id
+              {checkUser(signedUser) && userId === signedUser.id
                 ? "Миний постууд"
                 : "Хэрэглэгчийн постууд"}
             </p>
           </Button>
-          {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
+          {checkUser(signedUser) && userId === signedUser.id ? (
             <>
               <Button
                 key={2}

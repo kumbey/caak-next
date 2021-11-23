@@ -44,7 +44,7 @@ const AddPost = () => {
     title: "",
     commentType: true,
     status: "PENDING",
-    user_id: user.attributes.sub,
+    user_id: user.id,
     group_id: "",
     category_id: "",
     items: [],
@@ -142,7 +142,7 @@ const AddPost = () => {
     try {
       const resp = await API.graphql(graphqlOperation(getPost, { id: id }));
       const { items, ...data } = resp.data.getPost;
-      if (data.user_id === user.sysUser.id) {
+      if (data.user_id === user.id) {
         setPermissionDenied(false);
         setSelectedGroupId(data.group_id);
         setPost({ ...data, items: items.items });
@@ -156,18 +156,18 @@ const AddPost = () => {
     try {
       setLoading(true);
       if (groupId === "new") {
-        await crtPost(post, user.sysUser.id);
+        await crtPost(post, user.id);
       } else if (postId) {
-        await pdtPost(post, user.sysUser.id);
+        await pdtPost(post, user.id);
       } else {
-        await crtPost(post, user.sysUser.id);
+        await crtPost(post, user.id);
       }
 
       setLoading(false);
       // closeModal(history, state);
 
       history.push(
-        { pathname: `/user/${user.sysUser.id}/profile` },
+        { pathname: `/user/${user.id}/profile` },
         { index: 2 }
       );
       // setActiveIndex(2)

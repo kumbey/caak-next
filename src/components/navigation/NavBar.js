@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import Button from "../button";
 import SearchInput from "../input/SearchInput";
 import DropDown from "./DropDown";
-import { checkUser, getReturnData, useClickOutSide } from "../../utility/Util";
+import { getReturnData, useClickOutSide } from "../../utility/Util";
 import { useUser } from "../../context/userContext";
 import MobileSideMenu from "./MobileSideMenu";
 import { useWrapper } from "../../context/wrapperContext";
@@ -14,10 +14,11 @@ import { getUserAura } from "../../graphql-custom/user/queries";
 import NavBarMenu from "./NavBarMenu";
 import SubMenu from "./SubMenu";
 import useMediaQuery from "./useMeduaQuery";
-import Image from "next/image";
 import { useRouter } from "next/router";
+import Logo from "../logo";
 
 export default function NavBar() {
+  const [loaded, setLoaded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const router = useRouter();
@@ -85,8 +86,7 @@ export default function NavBar() {
   };
 
   useEffect(() => {
-
-    if(isLogged){
+    if (isLogged) {
       fetchUserTotal();
       subscrip();
     }
@@ -108,7 +108,11 @@ export default function NavBar() {
     // eslint-disable-next-line
   }, [subscripTotal]);
 
-  return (
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  return loaded && (
     <Fragment>
       {isTablet && (
         <nav
@@ -116,17 +120,8 @@ export default function NavBar() {
         >
           <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
             <div className="relative flex items-center justify-between w-full h-full">
-              <div className="flex-row items-center">
-                {/* <Image src={"/vervel.svg"}></Image> */}
-                <Image
-                  src={"/logo.svg"}
-                  onClick={() => router.push({ pathname: "/" })}
-                  className="cursor-pointer"
-                  alt="Caak Logo"
-                  width="100%"
-                  height="100%"
-                  objectFit="contain"
-                />
+              <div className={"flex  items-center justify-center"}>
+                <Logo />
               </div>
               {/* Mobile menu button */}
               <div className="flex">
@@ -144,24 +139,10 @@ export default function NavBar() {
       )}
 
       <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-5 fixed w-full bg-white border-t shadow-sm">
-        <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1 site-container">
+        <div className="flex items-center h-full px-[40px] py-1">
           <div className="relative flex items-center justify-between w-full h-full">
-            <div className="md:flex flex flex-row items-center hidden">
-              <Image
-                src={"/logo.svg"}
-                onClick={() => router.push({ pathname: "/" })}
-                className="cursor-pointer"
-                alt="Caak Logo"
-                width="100%"
-                height="100%"
-                objectFit="contain"
-              />
-              {/* <img
-                onClick={() => history.push({ pathname: "/" })}
-                className="h-c25 w-auto mr-1 cursor-pointer"
-                src={logo}
-                alt="Caak Logo"
-              /> */}
+            <div className="md:flex flex flex-row items-center hidden ">
+              <Logo onClick={() => router.push("/")} />
             </div>
 
             <div className="navbarSearch hidden md:block mx-4">

@@ -1,5 +1,4 @@
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../utility/Util";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Consts from "../../utility/Consts";
@@ -10,12 +9,11 @@ import {
 import { useEffect, useState } from "react";
 import { getGroupFollowed } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 export default function PostMoreMenu({ postUser, postId, groupId }) {
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
   const history = useRouter();
-  // const location = useLocation();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,9 +21,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
     setLoading(true);
     const resp = await API.graphql({
       query: getGroupFollowed,
-      authMode: `${
-        checkUser(user) ? Consts.loggedUserAuth : Consts.publicUserAuth
-      }`,
+      authMode: `${isLogged ? Consts.loggedUserAuth : Consts.publicUserAuth}`,
       variables: {
         id: groupId,
       },
@@ -44,7 +40,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
       graphqlOperation(createGroupUsers, {
         input: {
           group_id: groupId,
-          user_id: user.sysUser.id,
+          user_id: user.id,
           role: "MEMBER",
         },
       })
@@ -55,7 +51,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
   const leaveGroup = async () => {
     await API.graphql(
       graphqlOperation(deleteGroupUsers, {
-        input: { group_id: groupId, user_id: user.sysUser.id },
+        input: { group_id: groupId, user_id: user.id },
       })
     );
     setGroupFollowed(false);
@@ -65,7 +61,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
     <div className={"dropdown-item-wrapper"}>
       <div
         onClick={() =>
-          !checkUser(user)
+          !isLogged
             ? history.push({
                 pathname: `/login`,
                 state: { background: location },
@@ -81,7 +77,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
           {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
         </p>
       </div>
-      {checkUser(user) && postUser.id === user.sysUser.id && (
+      {isLogged && postUser.id === user.id && (
         <div
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>
@@ -100,15 +96,11 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
 
       <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  w-c1 text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
-          Хадгалах
-        </p>
+        <p className="text-14px text-caak-extraBlack font-roboto">Хадгалах</p>
       </div>
       <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
-          Репорт
-        </p>
+        <p className="text-14px text-caak-extraBlack font-roboto">Репорт</p>
       </div>
       {/* <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-hide mr-px-12 w-c1  text-16px"} />

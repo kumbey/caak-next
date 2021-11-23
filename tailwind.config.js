@@ -96,6 +96,7 @@ module.exports = {
           carbonfootprint: "#7A7F8A",
           lynxwhite: "#F7F7F7",
           aliceblue: "#eff7fe",
+          uclagold: "#FDB400",
         },
         darkblue: {
           DEFAULT: "#6C7392",

@@ -1,6 +1,6 @@
 import React from "react";
 
-const DropDown = ({ open, onToggle, className, content }) => {
+const DropDown = ({ open, onToggle, className, content, arrow }) => {
   return (
     open && (
       <div
@@ -27,7 +27,13 @@ const DropDown = ({ open, onToggle, className, content }) => {
         {/*  </div>*/}
         {/*) : null}*/}
 
-        <div className="absolute inset-0 z-0 flex justify-end mr-6 -mt-2">
+        <div
+          className={`absolute  inset-0 z-[-1] flex  ${
+            arrow === "bottom"
+              ? "rotate-180 justify-start mr-6 -mb-2"
+              : "justify-end mr-6 -mt-2"
+          }`}
+        >
           <svg
             className={"text-right"}
             xmlns="http://www.w3.org/2000/svg"

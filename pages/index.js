@@ -12,6 +12,8 @@ import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
 import { withSSRContext } from "aws-amplify";
 import useFeedLayout from "../src/hooks/useFeedLayout";
 import { listGroupByUserAndRole } from "../src/graphql-custom/GroupUsers/queries";
+import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
+import {feedType} from "../src/components/navigation/sortButtonTypes";
 
 export async function getServerSideProps({ req, res }) {
   const { API, Auth } = withSSRContext({ req });
@@ -83,26 +85,9 @@ export async function getServerSideProps({ req, res }) {
 }
 
 const Feed = ({ ssrData, ...props }) => {
-  const feedType = [
-    {
-      id: 0,
-      type: "Тренд",
-      icon: "icon-fi-rs-trend",
-    },
-    {
-      id: 1,
-      type: "Шинэ",
-      icon: "icon-fi-rs-new",
-    },
-    {
-      id: 2,
-      type: "Шилдэг",
-      icon: "icon-fi-rs-top",
-    },
-  ];
   const FeedLayout = useFeedLayout();
   const feedRef = useRef();
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
 
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [nextPosts] = useListPager({
@@ -116,7 +101,7 @@ const Feed = ({ ssrData, ...props }) => {
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
-  const [logged, setLogged] = useState(false);
+  const [loaded, setLoaded] = useState(false)
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
 
@@ -194,14 +179,6 @@ const Feed = ({ ssrData, ...props }) => {
     });
   };
 
-  useEffect(() => {
-    if (checkUser(user)) {
-      setLogged(true);
-    }
-    else {
-      setLogged(false)
-    }
-  }, [user]);
 
   useEffect(() => {
     if (subscripedPost) {
@@ -225,6 +202,7 @@ const Feed = ({ ssrData, ...props }) => {
 
   useEffect(() => {
     // fetchPosts(posts, setPosts);
+    setLoaded(true)
     setPostScroll(fetchPosts);
 
     return () => {
@@ -247,19 +225,26 @@ const Feed = ({ ssrData, ...props }) => {
     // eslint-disable-next-line
   }, [user]);
 
-  return (
-    <div id={"feed"}>
+  return loaded && (
+    <div id={"feed"} className={"site-container"}>
       <div className={`px-0 w-full relative`}>
         <div
           className={`h-full flex ${
-            user ? "flex-row items-start" : "flex-col items-center"
+            isLogged ? "flex-row items-start" : "flex-col items-center"
           } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
           <FeedLayout
             adminModeratorGroups={ssrData.adminModeratorGroups}
             myGroups={ssrData.myGroups}
-            {...(logged ? { columns: 3 } : { columns: 2 })}
+            buttonType={feedType}
+            {...(isLogged ? { columns: 3 } : { columns: 2 })}
           >
+            <FeedSortButtons
+                items={feedType}
+                hide={isLogged}
+                containerClassname={"mb-[19px] justify-center"}
+                direction={"row"}
+            />
             {posts.length > 0 &&
               posts.map((data, index) => {
                 return (

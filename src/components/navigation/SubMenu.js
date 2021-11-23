@@ -7,11 +7,13 @@ import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
 import Dummy from "dummyjs";
 import { useRouter } from "next/router";
+import NotificationDropDown from "./NotificationDropDown";
 
 const SubMenu = ({ params }) => {
  
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
+  const history = useRouter()
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
@@ -24,8 +26,11 @@ const SubMenu = ({ params }) => {
     params.setIsMenuOpen(!params.isMenuOpen);
   };
 
-
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  return mounted&& (
     ((isLogged && params.type === "mobile") ||
       (!isLogged && params.type === "mobile") ||
       (isLogged && params.type === "web")) && (
@@ -50,7 +55,7 @@ const SubMenu = ({ params }) => {
             icon={<span className={"icon-fi-rs-add text-22px"} />}
             onClick={() =>
               history.push({
-                pathname: logged ? "/addpost" : "/login",
+                pathname: isLogged ? "/addpost" : "/login",
                 // state: { background: location },
               }, "add/post/new")
             }
@@ -84,12 +89,12 @@ const SubMenu = ({ params }) => {
               </span>
             </div>
           ) : null}
-          {/*{checkUser(user) && (*/}
-          {/*  <NotificationDropDown*/}
-          {/*    isOpen={isNotificationMenu}*/}
-          {/*    setIsOpen={setIsNotificationMenu}*/}
-          {/*  />*/}
-          {/*)}*/}
+          {isLogged && (
+            <NotificationDropDown
+              isOpen={isNotificationMenu}
+              setIsOpen={setIsNotificationMenu}
+            />
+          )}
         </div>
         <div
           className={

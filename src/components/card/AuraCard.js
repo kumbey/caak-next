@@ -3,25 +3,13 @@ import registerImage from "../../../public/assets/images/Register.png";
 
 import Image from "next/image";
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../utility/Util";
 import useHover from "../../hooks/useHover";
-import {useEffect, useState} from "react";
 
 const AuraCard = () => {
-  const { user } = useUser();
+  const { isLogged } = useUser();
   const [hoverRef, isHovered] = useHover();
-  const [logged, setLogged] = useState(false)
 
-  useEffect(() => {
-      if(checkUser(user)){
-          setLogged(true)
-      }
-      else {
-          setLogged(false)
-      }
-  },[user])
-
-  return logged ? (
+  return isLogged ? (
     <div className={`auraCard`}>
       <div
         className={
@@ -47,7 +35,7 @@ const AuraCard = () => {
   ) : (
     <div
       style={
-        !logged
+        !isLogged
           ? {
               backgroundImage: `url(${registerImage.src})`,
               backgroundPosition: "center",

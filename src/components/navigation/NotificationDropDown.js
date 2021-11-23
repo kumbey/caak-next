@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Notification from "./Notification";
 import { useUser } from "../../context/userContext";
-import { checkUser, getReturnData } from "../../utility/Util";
+import {  getReturnData } from "../../utility/Util";
 import { useListPager } from "../../utility/ApiHelper";
 import {
   getNotification,
@@ -19,9 +19,9 @@ import { getComment } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
 import useInfiniteScroll from "../../hooks/useFetch";
 import { useRouter } from "next/router";
+import {isLogged} from "../../utility/Authenty";
 
 const NotificationDropDown = ({ isOpen }) => {
-  const [domReady, setDomReady] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ const NotificationDropDown = ({ isOpen }) => {
   const [nextNotification] = useListPager({
     query: listNotificationByUser,
     variables: {
-      to: user.sysUser.id,
+      to: user.id,
       sortDirection: "DESC",
       limit: 20,
     },
@@ -83,7 +83,7 @@ const NotificationDropDown = ({ isOpen }) => {
       API.graphql(
         graphqlOperation(methodNoitification, {
           method: "SeenALL",
-          user_id: user.sysUser.id,
+          user_id: user.id,
         })
       );
 
@@ -173,7 +173,7 @@ const NotificationDropDown = ({ isOpen }) => {
       query: onNoficationAdded,
       variables: {
         section: "USER",
-        to: user.sysUser.id,
+        to: user.id,
       },
     }).subscribe({
       next: (data) => {
@@ -187,15 +187,15 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   useEffect(() => {
-    if (domReady && checkUser(user)) {
+    if (isLogged) {
       fetchNotifications(notifications, setNotifications);
       setNotificationScroll(fetchNotifications);
     }
     // eslint-disable-next-line
-  }, [domReady]);
+  }, []);
 
   useEffect(() => {
-    if (checkUser(user)) {
+    if (isLogged) {
       subscrip();
     }
 
@@ -215,9 +215,6 @@ const NotificationDropDown = ({ isOpen }) => {
     // eslint-disable-next-line
   }, [subscripNotifcation]);
 
-  useEffect(() => {
-    setDomReady(true);
-  }, []);
 
   return (
     <div

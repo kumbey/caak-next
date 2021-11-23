@@ -11,10 +11,9 @@
   font-display: block;
 }
 
-[class^="icon-"],
-[class*=" icon-"] {
+[class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "caakmoon" !important;
+  font-family: 'caakmoon' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -27,6 +26,48 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-fi-rs-comment-o-1:before {
+  content: "\e937";
+}
+.icon-fi-rs-friends-o:before {
+  content: "\e938";
+}
+.icon-fi-rs-globe:before {
+  content: "\e97f";
+}
+.icon-fi-rs-group-o:before {
+  content: "\e980";
+}
+.icon-fi-rs-home-o:before {
+  content: "\e981";
+}
+.icon-fi-rs-list-grid:before {
+  content: "\e982";
+}
+.icon-fi-rs-menu:before {
+  content: "\e983";
+}
+.icon-fi-rs-next-f:before {
+  content: "\e984";
+}
+.icon-fi-rs-notification-mb:before {
+  content: "\e985";
+}
+.icon-fi-rs-post:before {
+  content: "\e986";
+}
+.icon-fi-rs-profile-mb:before {
+  content: "\e987";
+}
+.icon-fi-rs-rock-f:before {
+  content: "\e988";
+}
+.icon-fi-rs-rock-i:before {
+  content: "\e989";
+}
+.icon-fi-rs-smile:before {
+  content: "\e98a";
+}
 .icon-fi-rs-checkall:before {
   content: "\e97d";
   color: #6c7392;
@@ -403,10 +444,4 @@
 }
 .icon-fi-rs-warning:before {
   content: "\e936";
-}
-.icon-fr-rs-caak-active:before {
-  content: "\e937";
-}
-.icon-fr-rs-caak:before {
-  content: "\e938";
 }

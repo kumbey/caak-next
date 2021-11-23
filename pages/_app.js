@@ -13,9 +13,9 @@ function MyApp({ Component, pageProps }) {
     <WrapperProvider>
       <UserProvider>
         <NavBar />
-        <div className={"site-container"}>
+        {/*<div className={"site-container"}>*/}
           <Component {...pageProps} />
-        </div>
+        {/*</div>*/}
         <Modals />
       </UserProvider>
     </WrapperProvider>

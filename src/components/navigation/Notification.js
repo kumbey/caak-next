@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { generateFileUrl, getFileUrl } from "../../utility/Util";
+import { generateFileUrl } from "../../utility/Util";
 import Dummy from "dummyjs";
-import Image from "next/image";
 
 const Notification = ({ item, ...props }) => {
   const [text] = useState({
@@ -130,8 +129,8 @@ const Notification = ({ item, ...props }) => {
             <img
               className={"rounded-full w-full h-full object-cover"}
               src={
-                item.from_user.pic
-                  ? generateFileUrl(item.from_user.pic)
+                item.from_user?.pic
+                  ? generateFileUrl(item.from_user?.pic)
                   : Dummy.image("50x50")
               }
               alt={""}
@@ -158,7 +157,7 @@ const Notification = ({ item, ...props }) => {
               "text-15px text-caak-generalblack font-medium tracking-[0.23px] leading-[16px]"
             }
           >
-            {`${item.from_user.nickname}`}
+            {`${item.from_user?.nickname}`}
           </span>
           <span
             className={

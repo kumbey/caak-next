@@ -9,15 +9,12 @@ import API from "@aws-amplify/api";
 import { createUser } from "../../graphql-custom/user/mutation";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
-const UserInformation = ({ activeType, nextStep }) => {
+const UserInformation = ({ nextStep }) => {
   const router = useRouter();
   const { lsGet, lsSet, lsRemove } = useLocalStorage("session");
   let usrData = lsGet(Consts.SS_UserSignUp).usrData;
 
-  console.log(usrData);
-
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
@@ -54,7 +51,6 @@ const UserInformation = ({ activeType, nextStep }) => {
       usrData.nickname = nickname;
       usrData.gender = gender;
       usrData.age = age;
-      console.log(usrData);
       await saveUserData(usrData).then(() => {
         setLoading(false);
       });
@@ -67,13 +63,11 @@ const UserInformation = ({ activeType, nextStep }) => {
   };
 
   const saveUserData = async (data) => {
-    let user = await API.graphql({
+    await API.graphql({
       query: createUser,
       variables: { input: data },
       authMode: "AWS_IAM",
     });
-
-    console.log(user);
   };
 
   const submitHandler = () => {

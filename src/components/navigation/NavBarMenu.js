@@ -4,7 +4,6 @@ import Divider from "../divider";
 import Link from "next/link";
 
 export default function NavBarMenu({ type }) {
-
   const { user, isLogged, logout } = useUser();
 
   return (
@@ -12,7 +11,7 @@ export default function NavBarMenu({ type }) {
       {isLogged && (
         <Fragment>
           {type !== "mobile" && (
-            <Link href={`/user/${user.id}/profile`}>
+            <Link href={`/user/${user.id}/Profile`}>
               <a>
                 <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span
@@ -43,7 +42,7 @@ export default function NavBarMenu({ type }) {
             </a>
           </Link>
 
-          <Link href={`/user/${user.id}/settings`}>
+          <Link href={`/user/${user.id}/Settings`}>
             <a>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                 <div className={"flex justify-center items-center"}>

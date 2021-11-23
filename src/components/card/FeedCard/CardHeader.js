@@ -66,7 +66,7 @@ const CardHeader = ({
               >
                 <Link
                   href={{
-                    pathname: `/user/${postUser.id}/profile`,
+                    pathname: `/user/${postUser.id}/Profile`,
                   }}
                 >
                   <a>

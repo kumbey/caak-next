@@ -4,33 +4,46 @@ import Input from "../input";
 import Validate from "../../utility/Validate";
 import Auth from "@aws-amplify/auth";
 import { useUser } from "../../context/userContext";
-import { checkUser, checkUsernameType } from "/src/utility/Util";
-import { isLogged } from "../../utility/Authenty";
 import Consts from "/src/utility/Consts";
 
 import { useRouter } from "next/router";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
-const Register = ({ nextStep, ...props }) => {
-  const { user, setUser } = useUser();
+const Register = ({ nextStep }) => {
+  const { user, setUser, isLogged } = useUser();
   const { lsSet } = useLocalStorage("session");
 
   const [error, setError] = useState("");
   const [activeType, setActiveType] = useState("phone");
   const router = useRouter();
 
-  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [loading, setLoading] = useState(false);
 
+  let condition = activeType === "phone";
+
   const validate = {
-    username: {
-      value: username,
-      type: Consts.typeUsername,
-      onChange: setUsername,
-      // ignoreOn: true,
-    },
+    ...(condition
+      ? {
+          phoneNumber: {
+            value: phoneNumber,
+            type: Consts.typePhoneNumber,
+            onChange: setPhoneNumber,
+            // ignoreOn: true,
+          },
+        }
+      : {
+          email: {
+            value: email,
+            type: Consts.typeEmail,
+            onChange: setEmail,
+            // ignoreOn: true,
+          },
+        }),
+
     password: {
       value: password,
       type: Consts.typePassword,
@@ -49,20 +62,12 @@ const Register = ({ nextStep, ...props }) => {
     Validate(validate);
 
   const doSubmit = async () => {
-    if (nextStep) {
-      nextStep();
-    }
     try {
       setLoading(true);
       let usr = {};
 
-      if (checkUsernameType(username) === Consts.typeEmail) {
-        usr.username = username;
-      } else {
-        usr.username = "+976" + username;
-      }
+      usr.username = condition ? phoneNumber && "+976" + phoneNumber : email;
       usr.password = password;
-
       let usrData = {};
 
       usrData.status = "ACTIVE";
@@ -70,7 +75,7 @@ const Register = ({ nextStep, ...props }) => {
       usrData.verified = false;
 
       //do not sign up when its federated sign in
-      if (!checkUser(user)) {
+      if (!isLogged) {
         let resp = await Auth.signUp(usr);
         usrData.id = resp.userSub;
       } else {
@@ -78,7 +83,7 @@ const Register = ({ nextStep, ...props }) => {
       }
       let localUsr = { usr: usr, usrData: usrData };
 
-      if (!checkUser(user)) {
+      if (!isLogged) {
         lsSet(Consts.SS_UserSignUp, localUsr);
         // router.replace(
         //   `?signInUp=stepUp&isModal=true&username=${username}`,
@@ -99,14 +104,21 @@ const Register = ({ nextStep, ...props }) => {
       if (ex.code === "UsernameExistsException") {
         setErrors({
           ...errors,
-          username: "Дээрхи хэрэглэгч бүртгэлтэй байна",
+          phoneNumber: "Дээрхи хэрэглэгч бүртгэлтэй байна",
         });
-        console.log(errors);
       } else {
         console.log(ex);
       }
     }
   };
+
+  useEffect(() => {
+    setPhoneNumber("");
+    setEmail("");
+    setPassword("");
+    setPasswordRepeat("");
+    setErrors({});
+  }, [activeType]);
 
   useEffect(() => {
     if (errors) {
@@ -159,17 +171,13 @@ const Register = ({ nextStep, ...props }) => {
         <div className="px-c8">
           <p className="error">{error}</p>
           <Input
-            label={`Таны ${
-              activeType === "phone" ? "утасны дугаар" : "имэйл хаяг"
-            }`}
-            name={"username"}
-            value={username}
+            label={`Таны ${condition ? "утасны дугаар" : "имэйл хаяг"}`}
+            name={`${condition ? "phoneNumber" : "email"}`}
+            value={`${condition ? phoneNumber : email}`}
             type={"text"}
-            errorMessage={errors.username}
+            errorMessage={condition ? errors.phoneNumber : errors.email}
             onChange={handleChange}
-            placeholder={`${
-              activeType === "phone" ? "Утасны дугаар" : "Имэйл хаяг"
-            }`}
+            placeholder={`${condition ? "Утасны дугаар" : "Имэйл хаяг"}`}
             className={
               "border border-caak-titaniumwhite bg-caak-liquidnitrogen"
             }

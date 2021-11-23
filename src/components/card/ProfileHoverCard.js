@@ -13,11 +13,11 @@ import Image from "next/image";
 import Divider from "../divider";
 
 export default function ProfileHoverCard({ userId }) {
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
-  const history = useRouter();
+  const router = useRouter();
   // useEffect(() => {
   //   console.log("FOLLOW: ", postUser.followed);
   // }, [postUser.followed]);
@@ -25,7 +25,7 @@ export default function ProfileHoverCard({ userId }) {
   useEffect(() => {
     setLoading(true);
     if (userId)
-      if (checkUser(user)) {
+      if (isLogged) {
         getUserById({ id: userId, setUser: setProfileUser }).then(() =>
           setLoading(false)
         );
@@ -44,7 +44,7 @@ export default function ProfileHoverCard({ userId }) {
     await API.graphql({
       query: createFollowedUsers,
       variables: {
-        input: { followed_user_id: user.sysUser.id, user_id: profileUser.id },
+        input: { followed_user_id: user.id, user_id: profileUser.id },
       },
     });
     profileUser.totals.followers += 1;
@@ -63,7 +63,7 @@ export default function ProfileHoverCard({ userId }) {
       query: deleteFollowedUsers,
       variables: {
         input: {
-          followed_user_id: user.sysUser.id,
+          followed_user_id: user.id,
           user_id: userId,
         },
       },
@@ -74,14 +74,14 @@ export default function ProfileHoverCard({ userId }) {
   };
 
   const handleClick = () => {
-    if (checkUser(user)) {
+    if (isLogged) {
       if (!profileUser.followed) {
         createFollowUser();
       } else if (profileUser.followed) {
         deleteFollowUser();
       }
     } else {
-      history.push({
+      router.push({
         pathname: `/login`,
         // state: { background: location },
       });
@@ -171,17 +171,24 @@ export default function ProfileHoverCard({ userId }) {
         <Divider className={"mb-[12px]"} color={"bg-caak-titaniumwhite"} />
         {/*If no user is logged, show only follow button*/}
         {/*And If user is there show follow or unfollow button*/}
-        {checkUser(user) ? (
-          user.sysUser.id !== profileUser.id ? (
+        {isLogged ? (
+          user.id !== profileUser.id ? (
             <button
               onClick={handleClick}
-              className={"button small bg-caak-primary text-white font-medium text-15px"}
+              className={
+                "button small bg-caak-primary text-white font-medium text-15px"
+              }
             >
               {profileUser.followed ? "Дагасан" : "Дагах"}
             </button>
           ) : null
         ) : (
-          <button onClick={handleClick} className={"button small bg-caak-primary text-white font-medium text-15px"}>
+          <button
+            onClick={handleClick}
+            className={
+              "button small bg-caak-primary text-white font-medium text-15px"
+            }
+          >
             Дагах
           </button>
         )}

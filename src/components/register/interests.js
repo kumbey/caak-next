@@ -54,10 +54,6 @@ export default function Interests() {
     fetchCat();
   }, []);
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
-
   return (
     <div className="px-2 sm:px-10 pb-c1">
       <div

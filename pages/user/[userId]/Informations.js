@@ -129,15 +129,15 @@ export default function Informations({ currentUser }) {
                 </form>
               ) : (
                 <>
-                  {!setting.isReadOnly ? (
-                    <div className="flex w-full">
-                      <p className="w-full">{setting.value}</p>
+                  <div className="flex w-full">
+                    <p className="w-full">{setting.value}</p>
+                    {!setting.isReadOnly ? (
                       <span
                         onClick={() => handleClick(index)}
                         className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
                       />
-                    </div>
-                  ) : null}
+                    ) : null}
+                  </div>
                 </>
               )}
             </div>

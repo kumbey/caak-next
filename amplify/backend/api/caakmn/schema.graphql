@@ -7,11 +7,13 @@ type File @model
     key: String!
     name: String!
     owner: String
-    bucket: String!
-    region: String!
-    level: String!
+    bucket: String
+    region: String
+    level: String
     ext: String!
     type: String
+    isExternal: String
+    external_url: String
 }
 
 type User @model

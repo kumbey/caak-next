@@ -7,17 +7,18 @@ import Validate from "../../utility/Validate";
 import Gender from "../gender/gender";
 import API from "@aws-amplify/api";
 import { createUser } from "../../graphql-custom/user/mutation";
-import Auth from "@aws-amplify/auth";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
-const UserInformation = ({ activeType, nextStep }) => {
+const UserInformation = ({ nextStep }) => {
   const router = useRouter();
+  const { lsGet, lsSet, lsRemove } = useLocalStorage("session");
+  let usrData = lsGet(Consts.SS_UserSignUp).usrData;
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
-  const [birthdate, setBirthdate] = useState("");
+  const [age, setAge] = useState("");
 
   const validate = {
     nickname: {
@@ -30,11 +31,13 @@ const UserInformation = ({ activeType, nextStep }) => {
       value: gender,
       type: Consts.typeRequired,
       onChange: setGender,
+      ignoreOn: true,
     },
-    birthdate: {
-      value: birthdate,
-      type: Consts.typeDate,
-      onChange: setBirthdate,
+    age: {
+      value: age,
+      type: Consts.typeAge,
+      onChange: setAge,
+      ignoreOn: true,
     },
   };
 
@@ -43,20 +46,28 @@ const UserInformation = ({ activeType, nextStep }) => {
 
   const doSubmit = async () => {
     try {
-      // await saveUserData(usrData).then(() => {
-      //   setLoading(false);
-      // });
-    } catch (ex) {}
+      setLoading(true);
+
+      usrData.nickname = nickname;
+      usrData.gender = gender;
+      usrData.age = age;
+      await saveUserData(usrData).then(() => {
+        setLoading(false);
+      });
+
+      lsRemove(Consts.SS_UserSignUp);
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
   };
 
   const saveUserData = async (data) => {
-    let user = await API.graphql({
+    await API.graphql({
       query: createUser,
       variables: { input: data },
       authMode: "AWS_IAM",
     });
-
-    console.log(user);
   };
 
   const submitHandler = () => {
@@ -90,9 +101,9 @@ const UserInformation = ({ activeType, nextStep }) => {
           />
           <Input
             label={"Таны нас"}
-            value={birthdate || ""}
-            name={"birthdate"}
-            errorMessage={errors.birthdate}
+            value={age || ""}
+            name={"age"}
+            errorMessage={errors.age}
             onChange={handleChange}
             placeholder={"Нас"}
             className={

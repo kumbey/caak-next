@@ -48,16 +48,15 @@ const Login = ({ nextStep }) => {
   async function doSignIn() {
     try {
       setLoading(true);
-
       await Auth.signIn(checkUsername(username), password);
+      await router.replace(`/?isModal=false`, `/`);
       setLoading(false);
-      router.replace(`/?isModal=false`, `/`);
     } catch (ex) {
       console.log(ex);
       setLoading(false);
       if (ex.code === "UserNotConfirmedException") {
         router.replace(
-          `?signInUp=confirmation&isModal=true&username${username}`,
+          `?signInUp=confirmation&isModal=true&username=${username}&password=${password}`,
           `/signInUp/confirmation`
         );
         // router.replace({

@@ -12,21 +12,6 @@
       "AmplifyAppId": "d3cv0kq0oa3k6b"
     },
     "categories": {
-      "auth": {
-        "caakmn248efac3": {
-          "userPoolId": "ap-southeast-1_aPFBL1JrG",
-          "userPoolName": "caakauth",
-          "webClientId": "513vv9i9nrnd4glini11ips7bt",
-          "nativeClientId": "2ifs9p3e5kpvk26esr45sqmh5p",
-          "identityPoolId": "ap-southeast-1:761b8e04-4eed-48bc-bd42-09320bb21645",
-          "identityPoolName": "caakiam",
-          "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamAuth_Role",
-          "authRoleName": "Cognito_caakiamAuth_Role",
-          "unauthRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamUnauth_Role",
-          "unauthRoleName": "Cognito_caakiamUnauth_Role"
-        }
-      },
       "function": {
         "userpoolpostconfirmation": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
@@ -34,7 +19,7 @@
         },
         "caakmnlayerAPI": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersion6ddc7994-build.zip"
+          "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersione9391a30-build.zip"
         },
         "resolverBoolean": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
@@ -71,6 +56,21 @@
         "notification": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
           "s3Key": "amplify-builds/notification-50504f6d4d415573595a-build.zip"
+        }
+      },
+      "auth": {
+        "caakmn248efac3": {
+          "userPoolId": "ap-southeast-1_aPFBL1JrG",
+          "userPoolName": "caakauth",
+          "webClientId": "513vv9i9nrnd4glini11ips7bt",
+          "nativeClientId": "2ifs9p3e5kpvk26esr45sqmh5p",
+          "identityPoolId": "ap-southeast-1:761b8e04-4eed-48bc-bd42-09320bb21645",
+          "identityPoolName": "caakiam",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamAuth_Role",
+          "authRoleName": "Cognito_caakiamAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamUnauth_Role",
+          "unauthRoleName": "Cognito_caakiamUnauth_Role"
         }
       }
     }

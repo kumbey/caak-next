@@ -1,82 +1,58 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "/src/components/button";
-import { closeModal } from "/src/utility/Util";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { getCategoryList } from "../../graphql-custom/category/queries";
+import { createUserCategory } from "../../graphql-custom/category/mutation";
+import { useUser } from "../../context/userContext";
 
-const items = [
-  {
-    icon: "icon-fi-rs-ig",
-    title: "Спорт",
-  },
-  {
-    icon: "icon-fi-rs-fb",
-    title: "Технологи",
-  },
-  {
-    icon: "icon-fi-rs-tiktok",
-    title: "Хөгжилтэй",
-  },
-  {
-    icon: "icon-fi-rs-social",
-    title: "Хоол",
-  },
-  {
-    icon: "icon-fi-rs-lock-f",
-    title: "Аялал",
-  },
-  {
-    icon: "icon-fi-rs-star",
-    title: "Түүх",
-  },
-  {
-    icon: "icon-Android",
-    title: "Тоглоом",
-  },
-  {
-    icon: "icon-fi-rs-auro",
-    title: "Шинжлэх ухаан",
-  },
-  {
-    icon: "icon-fi-rs-image",
-    title: "Гоо сайхан",
-  },
-  {
-    icon: "icon-fi-rs-world",
-    title: "Урлаг",
-  },
-  {
-    icon: "icon-fi-rs-add",
-    title: "Дуу хөгжим",
-  },
-  {
-    icon: "icon-fi-rs-back",
-    title: "Авто машин",
-  },
-];
-
-export default function Interests({ nextStep }) {
+export default function Interests() {
   const router = useRouter();
+  const { cognitoUser } = useUser();
+  const userId = cognitoUser.attributes.sub;
 
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
+  const selectHandler = (id) => {
+    if (selected.length === 0) setSelected([...selected, id]);
 
-  const selectHandler = (index, title) => {
-    if (selected.length === 0) setSelected([...selected, title]);
-
-    if (selected.includes(title)) {
-      setSelected(selected.filter((item) => item !== title));
+    if (selected.includes(id)) {
+      setSelected(selected.filter((item) => item !== id));
     } else {
-      setSelected([...selected, title]);
+      setSelected([...selected, id]);
     }
   };
 
-  const submitHandler = () => {
-    router.replace(`?signInUp=completed&isModal=true`, `/signInUp/completed`);
+  const submitHandler = async () => {
+    try {
+      setLoading(true);
+      for (var i = 0; i < selected.length; i++) {
+        await API.graphql(
+          graphqlOperation(createUserCategory, {
+            input: { category_id: selected[i], user_id: userId },
+          })
+        );
+      }
+      router.replace(`?signInUp=completed&isModal=true`, `/signInUp/completed`);
+      setLoading(false);
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
   };
+
+  const fetchCat = async () => {
+    await API.graphql(graphqlOperation(getCategoryList)).then((cat) => {
+      setCategories(cat.data.listCategories.items);
+    });
+  };
+
+  useEffect(() => {
+    fetchCat();
+  }, []);
 
   return (
     <div className="px-2 sm:px-10 pb-c1">
@@ -95,28 +71,25 @@ export default function Interests({ nextStep }) {
         боломжтой.
       </div>
       <div className="flex flex-row flex-wrap items-center justify-center gap-3">
-        {items.map((data, index) => {
+        {categories.map((data, index) => {
           return (
             <div
               key={index}
-              onClick={(e) => selectHandler(index, data.title)}
-              className={`
-                                            flex items-center border py-px-6 rounded-full justify-center cursor-pointer px-c6 
-                                            ${
-                                              selected.find(
-                                                (item) => item === data.title
-                                              )
-                                                ? "bg-caak-primary text-white"
-                                                : ""
-                                            }
+              onClick={(e) => selectHandler(data.id)}
+              className={`flex items-center border py-px-6 rounded-full justify-center cursor-pointer px-c6 
+                          ${
+                            selected.find((item) => item === data.id)
+                              ? "bg-caak-primary text-white"
+                              : ""
+                          }
                                         `}
             >
-              {selected.find((item) => item === data.title) ? (
+              {selected.find((item) => item === data.id) ? (
                 <span className="icon-fi-rs-check text-12px mr-1.5" />
               ) : (
                 <span className={`mr-1.5 text-18px ${data.icon}`} />
               )}
-              <p className="text-15px font-medium">{data.title}</p>
+              <p className="text-15px font-medium">s{data.name}</p>
             </div>
           );
         })}

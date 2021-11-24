@@ -17,7 +17,7 @@ export default function ProfileHoverCard({ userId }) {
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
-  const history = useRouter();
+  const router = useRouter();
   // useEffect(() => {
   //   console.log("FOLLOW: ", postUser.followed);
   // }, [postUser.followed]);
@@ -81,7 +81,7 @@ export default function ProfileHoverCard({ userId }) {
         deleteFollowUser();
       }
     } else {
-      history.push({
+      router.push({
         pathname: `/login`,
         // state: { background: location },
       });
@@ -175,13 +175,20 @@ export default function ProfileHoverCard({ userId }) {
           user.id !== profileUser.id ? (
             <button
               onClick={handleClick}
-              className={"button small bg-caak-primary text-white font-medium text-15px"}
+              className={
+                "button small bg-caak-primary text-white font-medium text-15px"
+              }
             >
               {profileUser.followed ? "Дагасан" : "Дагах"}
             </button>
           ) : null
         ) : (
-          <button onClick={handleClick} className={"button small bg-caak-primary text-white font-medium text-15px"}>
+          <button
+            onClick={handleClick}
+            className={
+              "button small bg-caak-primary text-white font-medium text-15px"
+            }
+          >
             Дагах
           </button>
         )}

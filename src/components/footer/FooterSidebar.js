@@ -1,6 +1,6 @@
-const FooterSidebar = () => {
+const FooterSidebar = ({containerClassname}) => {
   return (
-    <div className={"flex flex-col text-12px text-caak-darkBlue"}>
+    <div className={`flex flex-col text-12px text-caak-darkBlue ${containerClassname ? containerClassname : ""}`}>
       <div className={"flex flex-wrap my-[4px]"}>
         <div>Асуулт хариулт ·&nbsp;</div>
         <div>Холбоо барих</div>

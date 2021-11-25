@@ -20,12 +20,12 @@ export const searchResultType = [
   {
     id: 0,
     type: "Бүгд",
-    icon: "icon-fi-rs-group",
+    icon: "icon-fi-rs-grid",
   },
   {
     id: 1,
     type: "Пост",
-    icon: "icon-fi-rs-group",
+    icon: "icon-fi-rs-post",
   },
   {
     id: 2,
@@ -35,6 +35,6 @@ export const searchResultType = [
   {
     id: 3,
     type: "Гишүүн",
-    icon: "icon-fi-rs-group",
+    icon: "icon-fi-rs-friends",
   },
 ];

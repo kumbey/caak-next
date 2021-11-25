@@ -11,7 +11,14 @@ import PostMoreMenu from "../PostMoreMenu";
 import Link from "next/link";
 import ProfileHoverCard from "../ProfileHoverCard";
 
-const CardHeader = ({ post, verifiedUser, hideTitle, containerClassname }) => {
+const CardHeader = ({
+  post,
+  verifiedUser,
+  hideTitle,
+  containerClassname,
+  titleClassname,
+  viewPost,
+}) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -21,15 +28,21 @@ const CardHeader = ({ post, verifiedUser, hideTitle, containerClassname }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return post.user ? (
     <div
-      className={`flex flex-col relative p-[16px] ${
-        containerClassname ? containerClassname : ""
+      className={`flex flex-col relative ${
+        containerClassname ? containerClassname : "p-[16px]"
       } `}
     >
       <div className={"flex justify-between items-center"}>
         <div className="flex justify-between items-center">
-          <div className={"relative w-[34px] h-[34px]"}>
+          <div
+            className={`relative border border-caak-titaniumwhite rounded-square ${
+              viewPost ? "w-[30px] h-[30px]" : "w-[34px] h-[34px]"
+            }`}
+          >
             <img
-              className="object-cover w-[34px] h-[34px] m-34px rounded-square"
+              className={`object-cover ${
+                viewPost ? "w-[30px] h-[30px]" : "w-[34px] h-[34px]"
+              } m-34px rounded-square`}
               src={
                 post.group.profile
                   ? getFileUrl(post.group?.profile)
@@ -78,18 +91,31 @@ const CardHeader = ({ post, verifiedUser, hideTitle, containerClassname }) => {
                   </a>
                 </Link>
               </Tooltip>
+              {viewPost && (
+                <div className={"flex flex-row items-center"}>
+                  {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
+                  <span
+                    className={
+                      "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
+                    }
+                  >
+                    &nbsp;·&nbsp;{generateTimeAgo(post.updatedAt)}
+                  </span>
+                </div>
+              )}
             </div>
-
-            <div className={"flex flex-row items-center"}>
-              {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
-              <span
-                className={
-                  "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
-                }
-              >
-                {generateTimeAgo(post.updatedAt)}
-              </span>
-            </div>
+            {!viewPost && (
+              <div className={"flex flex-row items-center"}>
+                {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
+                <span
+                  className={
+                    "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
+                  }
+                >
+                  {generateTimeAgo(post.updatedAt)}
+                </span>
+              </div>
+            )}
           </div>
         </div>
         <div
@@ -114,9 +140,11 @@ const CardHeader = ({ post, verifiedUser, hideTitle, containerClassname }) => {
       </div>
       {!hideTitle && (
         <div
-          className={
-            "text-15px text-caak-generalblack break-words pt-[12px] leading-[18px] tracking-[0.23px]"
-          }
+          className={` text-caak-generalblack break-words pt-[12px]  ${
+            titleClassname
+              ? titleClassname
+              : "text-15px leading-[18px] tracking-[0.23px]"
+          }`}
         >
           {post.title}
         </div>

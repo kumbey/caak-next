@@ -1,9 +1,11 @@
 import DefaultModalLayout from "../components/layouts/modal/default";
 import StepModalLayout from "../components/layouts/modal/stepLayout";
+import ViewPostModalLayout from "../components/layouts/modal/viewPostModalLayout";
 
 const layouts = {
   default: DefaultModalLayout,
   step: StepModalLayout,
+  viewpost: ViewPostModalLayout,
 };
 
 const useModalLayout = (props) => {

@@ -26,6 +26,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-fi-rs-birth:before {
+  content: "\e98b";
+}
+.icon-fi-rs-list-grid-f:before {
+  content: "\e98c";
+}
+.icon-fi-rs-list-grid-o:before {
+  content: "\e98d";
+}
+.icon-fi-rs-locker:before {
+  content: "\e98e";
+}
+.icon-fi-rs-post-o:before {
+  content: "\e98f";
+}
+.icon-fi-rs-thick-search:before {
+  content: "\e990";
+}
+.icon-fi-rs-triangle:before {
+  content: "\e991";
+}
 .icon-fi-rs-comment-o-1:before {
   content: "\e937";
 }
@@ -70,7 +91,6 @@
 }
 .icon-fi-rs-checkall:before {
   content: "\e97d";
-  color: #6c7392;
 }
 .icon-fi-rs-comment-f:before {
   content: "\e97e";

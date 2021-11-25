@@ -97,6 +97,11 @@ module.exports = {
           lynxwhite: "#F7F7F7",
           aliceblue: "#eff7fe",
           uclagold: "#FDB400",
+          flashoforange: "#FDA900",
+          fieryflamingo: "#FB6B7C",
+          herablue: '#737EE6',
+          bluerhapsody: "#3B4555",
+          cherenkov: "#24B9F8"
         },
         darkblue: {
           DEFAULT: "#6C7392",

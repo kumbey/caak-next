@@ -12,6 +12,7 @@ const Button = (
     roundedSquare,
     disabled,
     small,
+      className,
     ...props
   },
   ref
@@ -20,7 +21,7 @@ const Button = (
     <button
       {...props}
       ref={ref}
-      className={`button ${small ? "small" : ""} ${skin ? skin : ""} ${
+      className={`button ${className ? className : ""} ${small ? "small" : ""} ${skin ? skin : ""} ${
         round ? "round" : ""
       } ${
         disabled && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"

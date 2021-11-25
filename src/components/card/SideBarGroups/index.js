@@ -1,45 +1,44 @@
 import SideBarGroupItem from "./SideBarGroupItem";
 import { useEffect, useState } from "react";
-import { getFileUrl } from "../../../utility/Util";
+import { getFileUrl, getReturnData } from "../../../utility/Util";
 import ViewMoreText from "./ViewMoreText";
 import { useUser } from "../../../context/userContext";
+import { API, graphqlOperation } from "aws-amplify";
+import { listGroupByUserAndRole } from "../../../graphql-custom/GroupUsers/queries";
 
-const SideBarGroups = ({
-  title,
-  addGroup,
-  maxColumns,
-  // groupType,
-  initialData,
-}) => {
-  const [groupData] = useState(initialData ? initialData : []);
+const SideBarGroups = ({ title, addGroup, maxColumns, role, initialData }) => {
+  const [groupData, setGroupData] = useState(initialData ? initialData : []);
+  const { isLogged, user } = useUser();
+  const listGroups = async () => {
+    try {
+      let groups = await API.graphql(
+        graphqlOperation(listGroupByUserAndRole, {
+          user_id: user.id,
+          role: { eq: role },
+        })
+      );
+      groups = getReturnData(groups).items;
 
-  const { user } = useUser();
-
-  // const listGroups = async () => {
-  //   try {
-  //     const grData = [];
-  //
-  //     let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-  //
-  //     resp = getReturnData(resp).items;
-  //
-  //     for (let i = 0; i < resp.length; i++) {
-  //       const item = resp[i];
-  //       if (item.role_on_group === groupType) {
-  //         grData.push(item);
-  //       }
-  //     }
-  //
-  //     setGroupData([...grData]);
-  //   } catch (ex) {
-  //     console.log(ex);
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   listGroups();
-  //   // eslint-disable-next-line
-  // }, []);
+      if (role === "ADMIN") {
+        let moderatorGroups = await API.graphql(
+          graphqlOperation(listGroupByUserAndRole, {
+            user_id: user.id,
+            role: { eq: "MODERATOR" },
+          })
+        );
+        moderatorGroups = getReturnData(moderatorGroups).items;
+        setGroupData(groups.concat(moderatorGroups));
+      } else {
+        setGroupData(groups);
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+  useEffect(() => {
+    if (!initialData && isLogged) listGroups();
+    // eslint-disable-next-line
+  }, [isLogged]);
 
   return groupData && groupData.length > 0 ? (
     <div className={"flex flex-col px-[6px]"}>

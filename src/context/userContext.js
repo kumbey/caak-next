@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { Hub, Auth } from "aws-amplify";
+import { createContext, useContext, useEffect, useState } from "react";
+import { Auth, Hub } from "aws-amplify";
 import { signIn } from "../utility/Authenty";
 import Consts from "../utility/Consts";
 import { onUserUpdateByUser } from "../graphql-custom/user/subscription";
@@ -22,20 +22,21 @@ function useUser() {
 }
 
 function UserProvider(props) {
-
-  const {lsGet, lsSet, lsRemove} = useLocalStorage("session")
-  const [cognitoUser, setCognitoUser] = useState(lsGet(Consts.SS_CognitoUserKey));
-  const [isLogged, setIsLogged] = useState(cognitoUser ? true : false)
+  const { lsGet, lsSet, lsRemove } = useLocalStorage("session");
+  const [cognitoUser, setCognitoUser] = useState(
+    lsGet(Consts.SS_CognitoUserKey)
+  );
+  const [isLogged, setIsLogged] = useState(cognitoUser);
   const [user, setUser] = useState(lsGet(Consts.SS_UserKey));
   const [updatedUser, setUpdatedUser] = useState();
   const subscriptions = {};
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     Hub.listen("auth", ({ payload: { event } }) => {
       switch (event) {
         case "signIn":
-          isLoginValid()
+          isLoginValid();
           break;
         default:
           break;
@@ -46,7 +47,7 @@ function UserProvider(props) {
     };
     // eslint-disable-next-line
   }, []);
-  
+
   const subscrip = () => {
     subscriptions.onUserUpdateByUser = API.graphql({
       query: onUserUpdateByUser,
@@ -84,13 +85,12 @@ function UserProvider(props) {
 
   useEffect(() => {
     if (cognitoUser && user) {
-      setIsLogged(true)
+      setIsLogged(true);
     } else {
-      setIsLogged(false)
+      setIsLogged(false);
     }
     // eslint-disable-next-line
   }, [user, cognitoUser]);
-
 
   useEffect(() => {
     if (updatedUser) {
@@ -115,39 +115,44 @@ function UserProvider(props) {
   }, [isLogged]);
 
   useEffect(() => {
-    isLoginValid()
+    isLoginValid();
     // eslint-disable-next-line
   }, []);
 
   const isLoginValid = async () => {
-     const usr = await Auth.currentAuthenticatedUser()
-      console.log(usr)
-     if(usr){
-
-      if(!Object.is(usr, cognitoUser)){
-        setCognitoUser(usr)
+    const usr = await Auth.currentAuthenticatedUser();
+    // console.log(usr)
+    if (usr) {
+      if (!Object.is(usr, cognitoUser)) {
+        setCognitoUser(usr);
       }
-      
-      let resp = await API.graphql(graphqlOperation(getUser, { id : usr.attributes.sub }))
-      setUser(resp.data.getUser)
 
-     }else{
-      setIsLogged(false)
-      setUser(null)
-      setCognitoUser(null)
-     }
-  }
+      let resp = await API.graphql(
+        graphqlOperation(getUser, { id: usr.attributes.sub })
+      );
+      setUser(resp.data.getUser);
+    } else {
+      setIsLogged(false);
+      setUser(null);
+      setCognitoUser(null);
+    }
+  };
 
   const logout = async () => {
-    setIsLogged(false)
-    setUser(null)
-    setCognitoUser(null)
-    await Auth.signOut()
-    router.replace("/")
-  }
+    setIsLogged(false);
+    setUser(null);
+    setCognitoUser(null);
+    await Auth.signOut();
+    router.replace("/");
+  };
 
   // const value = useMemo(() => ({ user, setUser }), [user]);
-  return <UserContext.Provider value={{user, cognitoUser, isLogged, logout}} {...props} />;
+  return (
+    <UserContext.Provider
+      value={{ user, cognitoUser, isLogged, logout }}
+      {...props}
+    />
+  );
 }
 
 export { UserProvider, useUser };

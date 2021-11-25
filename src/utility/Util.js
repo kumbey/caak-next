@@ -229,13 +229,13 @@ export function generateTimeAgo(date) {
   if (diff.years !== 0 || diff.months !== 0) {
     return postdate.toLocaleString();
   } else if (diff.days !== 0) {
-    return diff.days + " өдрийн өмнө";
+    return diff.days + " өдөр";
   } else if (diff.hours !== 0) {
-    return diff.hours + " цагийн өмнө";
+    return diff.hours + " цаг";
   } else if (diff.minutes !== 0) {
-    return diff.minutes + " минутын өмнө";
+    return diff.minutes + " минут";
   } else if (diff.seconds !== 0) {
-    return diff.seconds + " секундын өмнө";
+    return diff.seconds + " секунд";
   } else {
     return "Саяхан";
   }

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { getFileUrl } from "../../../utility/Util";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,8 +5,8 @@ import Image from "next/image";
 const CardImageContainer = ({ file, postId }) => {
   return (
     <Link href={{ pathname: `/post/view/${postId}` }}>
-      <a>
-        <div className={"relative"}>
+      <a className={"w-full h-full"}>
+        <div className={"relative w-full h-full"}>
           {file?.length > 1 ? (
             <div
               className={
@@ -21,28 +20,19 @@ const CardImageContainer = ({ file, postId }) => {
             ""
           )}
 
-          <div className={"relative w-full h-[462px] bg-black"}>
-            {/*<div*/}
-            {/*    className={"absolute left-0 right-0 w-full h-full"}*/}
-            {/*    style={{*/}
-            {/*        backgroundImage: `url(${getFileUrl(file)})`,*/}
-            {/*        backgroundSize: "cover",*/}
-            {/*        filter: "blur(10px)",*/}
-            {/*    }}*/}
-            {/*/>*/}
+          <div className={"relative w-full h-full"}>
             <Image
               placeholder={"blur"}
               blurDataURL={getFileUrl(file)}
               alt={file.name}
               src={getFileUrl(file)}
               className={"w-full h-full max-h-[770px]"}
-              // width={"100%"}
-              // height={"100%"}
               layout={"fill"}
               objectFit={"contain"}
             />
           </div>
         </div>
+        {/*</div>*/}
       </a>
     </Link>
   );

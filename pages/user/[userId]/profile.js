@@ -30,7 +30,7 @@ export default function Profile() {
 
   const [user, setUser] = useState();
 
-  const { user: signedUser, isLogged } = useUser();
+  const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
   const [doRender, setDoRender] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -86,15 +86,16 @@ export default function Profile() {
   };
 
   const handleClick = () => {
-    if (isLogged) {
+    if (checkUser(signedUser)) {
       if (!user.followed) {
         createFollowUser();
       } else if (user.followed) {
         deleteFollowUser();
       }
     } else {
-      router.push({
+      history.push({
         pathname: `/login`,
+        state: { background: location },
       });
     }
   };
@@ -258,8 +259,8 @@ export default function Profile() {
           </div>
           <div>
             <div className=" md:justify-center flex justify-end">
-              {isLogged && userId === signedUser.id ? (
-                <Link href={`/user/${user.id}/Settings`}>
+              {checkUser(signedUser) && userId === signedUser.id ? (
+                <Link href={`/user/${user.id}/settings`}>
                   <a>
                     <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
                       <span className="pr-px-6 icon-fi-rs-settings text-18px" />

@@ -10,7 +10,7 @@
     --minSettingsPanelWidth: 288px;
     --maxSettingsPanelWidth: 608px;
 
-    --navBarSearchWidth: clamp(320px, 100%, 480px);
+    --navBarSearchWidth: clamp(320px, 100%, 616px);
   }
 
   .navbarSearch {

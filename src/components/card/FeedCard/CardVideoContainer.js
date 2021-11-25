@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { getFileUrl } from "../../../utility/Util";
 import VideoJS from "../VideoJS";
 
-const CardVideoContainer = ({ files, addPost, postId }) => {
+const CardVideoContainer = ({ file, addPost, postId }) => {
   const [videoDuration, setVideoDuration] = useState(0);
   const [isTouching, setIsTouching] = useState(false);
   const videoRef = useRef(null);
@@ -17,14 +17,14 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
   }
 
   const videoJsOptions = {
-    autoplay: autoPlay === "true" ? true : false,
-    muted: autoPlay === "true" ? true : false,
+    autoplay: autoPlay === "true",
+    muted: autoPlay === "true",
     controls: true,
     responsive: false,
     fluid: false,
     sources: [
       {
-        src: getFileUrl(files.length ? files[0].file : files.file),
+        src: getFileUrl(file),
         type: "video/mp4",
       },
     ],
@@ -72,22 +72,22 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
   return (
     <div
       className={`relative ${
-        files.length > 0 ? "max-h-100 h-100" : " max-h-80"
+        file.length > 0 ? "max-h-100 h-100" : "h-full w-full"
       }`}
     >
       <div
         className={`z-1 flex flex-row tracking-wide items-center leading-none text-center align-middle absolute font-bold top-3 ${
-          !addPost ? (files.length === 2 ? "right-16" : "right-3") : "left-3"
+          !addPost ? (file.length === 2 ? "right-16" : "right-3") : "left-3"
         } text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1`}
       >
         <span className={"icon-fi-rs-rec mr-1 text-9px"} />
         {`${formattedTime.minutes}:${formattedTime.seconds}`}
       </div>
-      {files.length > 1 ? (
+      {file.length > 1 ? (
         <div
           className={`z-1 flex flex-row tracking-wide items-center text-center align-middle absolute font-bold top-3 right-3 text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1`}
         >
-          <span className={"icon-fi-rs-album mr-1 text-11px"} />+{files.length}
+          <span className={"icon-fi-rs-album mr-1 text-11px"} />+{file.length}
         </div>
       ) : (
         ""
@@ -111,13 +111,13 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
           })
         }
         onLoadedMetadata={(e) => setVideoDuration(e.target.duration)}
-        files={files}
+        // file={file}
         options={videoJsOptions}
-        style={{ objectFit: "cover", width: "100%" }}
+        style={{ objectFit: "cover", width: "100%", height: "100%" }}
         videoClassName={`videoPlayer  video-js vjs-big-play-centered ${
           addPost ? "w-full rounded-square" : ""
         } ${
-          files?.length > 0 ? "max-h-100 h-100" : "max-h-80"
+          file?.length > 0 ? "max-h-100 h-100" : ""
         } block cursor-pointer`}
       />
       {/*<video*/}

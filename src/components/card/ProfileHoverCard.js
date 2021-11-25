@@ -5,7 +5,7 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import { checkUser, getFileUrl } from "../../utility/Util";
+import {  getFileUrl } from "../../utility/Util";
 import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
 import { useRouter } from "next/router";

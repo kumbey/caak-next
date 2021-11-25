@@ -1,6 +1,7 @@
 import Input from "./index";
 import { useEffect, useState } from "react";
 import SearchedGroupItem from "./SearchedGroupItem";
+import Link from "next/link";
 import {
   generateFileUrl,
   getReturnData,
@@ -11,13 +12,15 @@ import { API } from "aws-amplify";
 import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
+import { listUsers } from "../../graphql-custom/user/queries";
+import { useRouter } from "next/router";
 
 const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-
+  const router = useRouter();
   const searchInputRef = useClickOutSide(() => setIsSearchBarOpen(false));
   const debouncedSearchResult = useDebounce(inputValue, 300);
 
@@ -38,6 +41,19 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
       variables: {
         status: "CONFIRMED",
         filter: { title: { contains: inputValue } },
+        limit: 4,
+      },
+    });
+    return getReturnData(resp).items;
+  };
+
+  const getUsers = async () => {
+    const resp = await API.graphql({
+      query: listUsers,
+      authMode: "AWS_IAM",
+      sortDirection: "DESC",
+      variables: {
+        filter: { nickname: { contains: inputValue } },
       },
     });
     return getReturnData(resp).items;
@@ -46,7 +62,8 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const searchQuery = async () => {
     const queriedGroups = await getGroups();
     const queriedPosts = await getPosts();
-    setSearchResult([...queriedGroups.concat(queriedPosts)]);
+    const queriedUsers = await getUsers();
+    setSearchResult([...queriedGroups.concat(queriedPosts, queriedUsers)]);
   };
 
   useEffect(() => {
@@ -60,6 +77,13 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
       setIsSearching(false);
     }
   }, [debouncedSearchResult]);
+  const handler = (e) => {
+    if (e.keyCode === 13) {
+      setIsSearchBarOpen(false);
+      e.preventDefault();
+      router.push(`/search?q=${e.target.value}`, undefined);
+    }
+  };
 
   return (
     <div
@@ -69,7 +93,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
       <div
         className={`${
           !isSearchBarOpen ? "hidden" : null
-        } w-full bg-white pt-[60px] absolute top-0 rounded-square shadow-searchInput p-[14px] min-h-[100px]`}
+        } w-full bg-white overflow-y-auto max-h-[400px] pt-[60px] absolute top-0 rounded-square shadow-searchInput p-[14px] min-h-[100px]`}
       >
         {!inputValue && (
           <div>
@@ -88,10 +112,35 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
                 clear
               />
             </div>
+          </div>
+        )}
 
+        {!isSearching ? (
+          <div>
+            {searchResult?.map((item, index) => {
+              if (item.nickname) {
+                return (
+                  <SearchedGroupItem
+                    key={index}
+                    setIsSearchBarOpen={setIsSearchBarOpen}
+                    name={item.nickname}
+                    image={generateFileUrl(item.pic)}
+                  />
+                );
+              } else {
+                return (
+                  <SearchedGroupItem
+                    key={index}
+                    setIsSearchBarOpen={setIsSearchBarOpen}
+                    name={item.name ? item.name : item.title}
+                    image={generateFileUrl(item.profile)}
+                  />
+                );
+              }
+            })}
             <div
               className={
-                "flex flex-row items-center p-[6px] pt-[14px] border-t border-caak-liquidnitrogen"
+                "flex flex-row items-center px-[6px] pt-[14px] border-t border-caak-liquidnitrogen"
               }
             >
               <div
@@ -101,29 +150,23 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
               >
                 <span className={"icon-fi-rs-search text-white"} />
               </div>
-              <div
-                className={
-                  "text-15px cursor-pointer text-caak-primary ml-[10px]"
-                }
+              <Link
+                href={{
+                  pathname: "/search",
+                  query: { q: `${inputValue}` },
+                }}
               >
-                Илүү ихийг харах
-              </div>
+                <a>
+                  <div
+                    className={
+                      "text-15px cursor-pointer text-caak-primary ml-[10px]"
+                    }
+                  >
+                    Илүү ихийг харах
+                  </div>
+                </a>
+              </Link>
             </div>
-          </div>
-        )}
-
-        {!isSearching ? (
-          <div>
-            {searchResult?.map((item, index) => {
-              return (
-                <SearchedGroupItem
-                  key={index}
-                  setIsSearchBarOpen={setIsSearchBarOpen}
-                  name={item.name ? item.name : item.title}
-                  image={generateFileUrl(item.profile)}
-                />
-              );
-            })}
           </div>
         ) : (
           <div className={"w-full flex justify-center items-center"}>
@@ -135,6 +178,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
         <Input
           hideError
           {...props}
+          onKeyDown={handler}
           // onBlur={() => setIsSearchBarOpen(false)}
           onFocus={() => setIsSearchBarOpen(true)}
           value={inputValue}

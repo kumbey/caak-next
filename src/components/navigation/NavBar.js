@@ -185,7 +185,7 @@ export default function NavBar() {
                     onClick={() =>
                       router.push(
                         `?signInUp=signUp&isModal=true`,
-                        `/signInUp/signUp`
+                        null , {shallow: true}
                       )
                     }
                   >

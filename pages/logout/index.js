@@ -15,7 +15,7 @@ const Logout = () => {
   const { setUser } = useUser();
 
   useEffect(() => {
-    setUser(null);
+    // setUser(null);
     logout();
     return () => {
       setSignedOut(null);

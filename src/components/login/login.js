@@ -18,7 +18,7 @@ const Login = ({ nextStep }) => {
   const validate = {
     username: {
       value: username,
-      type: Consts.typeUsername,
+      type: Consts.typeName,
       onChange: setUsername,
       ignoreOn: true,
     },

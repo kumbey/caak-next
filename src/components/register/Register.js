@@ -5,6 +5,7 @@ import Validate from "../../utility/Validate";
 import Auth from "@aws-amplify/auth";
 import { useUser } from "../../context/userContext";
 import Consts from "/src/utility/Consts";
+import { nanoid } from 'nanoid'
 
 import { useRouter } from "next/router";
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -66,8 +67,18 @@ const Register = ({ nextStep }) => {
       setLoading(true);
       let usr = {};
 
-      usr.username = condition ? phoneNumber && "+976" + phoneNumber : email;
+      usr.username = nanoid(10);
+      usr.attributes = {
+        profile: `https://caak.mn/u/${usr.username}`
+        // preferred_username: usr.username
+      }
+      if(condition){
+          usr.attributes.phone_number = "+976" + phoneNumber
+      }else{
+        usr.attributes.email = email
+      }
       usr.password = password;
+      console.log(usr)
       let usrData = {};
 
       usrData.status = "ACTIVE";

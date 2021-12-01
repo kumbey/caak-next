@@ -10,9 +10,9 @@ const PostItemsTotal = require("../db/PostItemsTotal")
 const UserTotal = require("../db/UserTotal")
 const PostTotal = require("../db/PostTotal")
 const NotificationDB = require("../db/Notification")
-const PostDB = DB(process.env.API_CAAKMN_POSTTABLE_NAME, docClient)
-const PostItems = DB(process.env.API_CAAKMN_POSTITEMSTABLE_NAME, docClient)
-const CommentDB = DB(process.env.API_CAAKMN_COMMENTTABLE_NAME, docClient)
+const PostDB = DB(process.env.API_CAAK_POSTTABLE_NAME, docClient)
+const PostItems = DB(process.env.API_CAAK_POSTITEMSTABLE_NAME, docClient)
+const CommentDB = DB(process.env.API_CAAK_COMMENTTABLE_NAME, docClient)
 
 async function insert(record){
     try{

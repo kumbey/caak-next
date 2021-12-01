@@ -9,8 +9,8 @@
     }
   ],
   "permissions": {
-    "api": {
-      "caak": [
+    "storage": {
+      "UserTotal:@model(appsync)": [
         "create",
         "read",
         "update",

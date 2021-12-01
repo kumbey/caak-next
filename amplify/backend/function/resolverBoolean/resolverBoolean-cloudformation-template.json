@@ -23,6 +23,10 @@
     "apicaakGraphQLAPIEndpointOutput": {
       "Type": "String",
       "Default": "apicaakGraphQLAPIEndpointOutput"
+    },
+    "functioncaaklayer001Arn": {
+      "Type": "String",
+      "Default": "functioncaaklayer001Arn"
     }
   },
   "Conditions": {
@@ -171,7 +175,11 @@
           ]
         },
         "Runtime": "nodejs14.x",
-        "Layers": [],
+        "Layers": [
+          {
+            "Ref": "functioncaaklayer001Arn"
+          }
+        ],
         "Timeout": 25
       }
     },

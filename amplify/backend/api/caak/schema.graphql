@@ -146,6 +146,8 @@ type Post @model @versioned
   @key(name: "byUser", fields:["user_id","updatedAt"] , queryField:"getPostByUser"){
   id: ID!
   title: String!
+  description: String
+  f_text: String
   commentType: Boolean!
   status: String!
   user_id: ID!
@@ -175,6 +177,8 @@ type PostItems @model
   file_id: ID!
   file: File @connection(fields:["file_id"])
   title: String
+  description: String
+  f_text: String
   order: Int
   comments: [Comment] @connection(keyName:"byPostItem", fields:["id"])
   totals: PostItemsTotal @connection(fields:["id"])

@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
-const DBClient = DB(process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME, docClient)
+const DBClient = DB(process.env.API_CAAK_NOTIFICATIONTABLE_NAME, docClient)
 
 async function insert(data){
     try{

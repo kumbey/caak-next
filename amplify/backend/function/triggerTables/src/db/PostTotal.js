@@ -2,8 +2,8 @@ const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
 const Counter = require("/opt/tables/Counter")
-const DBClient = DB(process.env.API_CAAKMN_POSTTOTALTABLE_NAME, docClient)
-const CountClient = Counter(process.env.API_CAAKMN_POSTTOTALTABLE_NAME, docClient)
+const DBClient = DB(process.env.API_CAAK_POSTTOTALTABLE_NAME, docClient)
+const CountClient = Counter(process.env.API_CAAK_POSTTOTALTABLE_NAME, docClient)
 
 async function insert(id){
     try{
@@ -13,6 +13,7 @@ async function insert(id){
             pkey: "post_id",
             __typename: "PostTotal",
             post_id: id,
+            search_id: id,
             reactions: 0,
             views: 0,
             shares: 0

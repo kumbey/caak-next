@@ -16,17 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "apicaakGraphQLAPIIdOutput": {
-      "Type": "String",
-      "Default": "apicaakGraphQLAPIIdOutput"
-    },
-    "apicaakGraphQLAPIEndpointOutput": {
-      "Type": "String",
-      "Default": "apicaakGraphQLAPIEndpointOutput"
-    },
     "functioncaaklayer001Arn": {
       "Type": "String",
       "Default": "functioncaaklayer001Arn"
+    },
+    "apicaakGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apicaakGraphQLAPIIdOutput"
     }
   },
   "Conditions": {
@@ -59,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "userRoleOnGroup",
+            "aura",
             {
               "Fn::Join": [
                 "",
                 [
-                  "userRoleOnGroup",
+                  "aura",
                   "-",
                   {
                     "Ref": "env"
@@ -82,18 +78,12 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAK_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicaakGraphQLAPIIdOutput"
-            },
-            "API_CAAK_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apicaakGraphQLAPIEndpointOutput"
-            },
-            "API_CAAK_GROUPUSERSTABLE_NAME": {
+            "API_CAAK_USERTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
               }
             },
-            "API_CAAK_GROUPUSERSTABLE_ARN": {
+            "API_CAAK_USERTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -108,11 +98,14 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                     }
                   }
                 ]
               ]
+            },
+            "API_CAAK_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicaakGraphQLAPIIdOutput"
             }
           }
         },
@@ -137,12 +130,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakLambdaRole6ab92f87",
+            "caakLambdaRolecde6ee56",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakLambdaRole6ab92f87",
+                  "caakLambdaRolecde6ee56",
                   "-",
                   {
                     "Ref": "env"
@@ -231,59 +224,6 @@
             {
               "Effect": "Allow",
               "Action": [
-                "appsync:Create*",
-                "appsync:StartSchemaCreation",
-                "appsync:GraphQL",
-                "appsync:Get*",
-                "appsync:List*",
-                "appsync:Update*",
-                "appsync:Delete*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apicaakGraphQLAPIIdOutput"
-                      },
-                      "/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apicaakGraphQLAPIIdOutput"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
                 "dynamodb:Put*",
                 "dynamodb:Create*",
                 "dynamodb:BatchWriteItem",
@@ -313,7 +253,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       }
                     ]
@@ -334,7 +274,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       },
                       "/index/*"

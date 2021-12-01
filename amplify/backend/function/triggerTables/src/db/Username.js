@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
-const DBClient = DB(process.env.API_CAAKMN_USERNAMETABLE_NAME, docClient)
+const DBClient = DB(process.env.API_CAAK_USERNAMETABLE_NAME, docClient)
 const { customAlphabet } =  require('nanoid')
 
 async function insert(id){

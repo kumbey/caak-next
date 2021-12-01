@@ -34,15 +34,15 @@
         },
         "notification": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/notification-61684c597a367a557268-build.zip"
+          "s3Key": "amplify-builds/notification-655362574c32334c7974-build.zip"
         },
         "resolverBoolean": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/resolverBoolean-62665052435450505933-build.zip"
+          "s3Key": "amplify-builds/resolverBoolean-6e6c6833462b437a5178-build.zip"
         },
         "totalsTrigger": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/totalsTrigger-2f6f677738743535746a-build.zip"
+          "s3Key": "amplify-builds/totalsTrigger-44516535577956436c36-build.zip"
         },
         "totals": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
@@ -50,15 +50,19 @@
         },
         "triggerNotification": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/triggerNotification-63786c4739515946356f-build.zip"
+          "s3Key": "amplify-builds/triggerNotification-69597759657573483368-build.zip"
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/triggerTables-38536876774157384d4d-build.zip"
+          "s3Key": "amplify-builds/triggerTables-726562636c4649454e2f-build.zip"
         },
         "userRoleOnGroup": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
           "s3Key": "amplify-builds/userRoleOnGroup-384b613237726a765a64-build.zip"
+        },
+        "aura": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/aura-6865396d4269552f4d2b-build.zip"
         }
       }
     }

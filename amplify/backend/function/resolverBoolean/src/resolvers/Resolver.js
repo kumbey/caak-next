@@ -1,9 +1,9 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
-const Reactions = DB(process.env.API_CAAKMN_REACTIONSTABLE_NAME, docClient)
-const FollowedUsers = DB(process.env.API_CAAKMN_FOLLOWEDUSERSTABLE_NAME, docClient)
-const GroupUsers = DB(process.env.API_CAAKMN_GROUPUSERSTABLE_NAME, docClient)
+const Reactions = DB(process.env.API_CAAK_REACTIONSTABLE_NAME, docClient)
+const FollowedUsers = DB(process.env.API_CAAK_FOLLOWEDUSERSTABLE_NAME, docClient)
+const GroupUsers = DB(process.env.API_CAAK_GROUPUSERSTABLE_NAME, docClient)
 
 async function isReacted(ctx){
     try{

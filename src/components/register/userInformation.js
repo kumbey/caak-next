@@ -8,6 +8,7 @@ import Gender from "../gender/gender";
 import API from "@aws-amplify/api";
 import { createUser } from "../../graphql-custom/user/mutation";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import DateInput from "../input/MaskedInput";
 
 const UserInformation = ({ nextStep }) => {
   const router = useRouter();
@@ -18,7 +19,7 @@ const UserInformation = ({ nextStep }) => {
 
   const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
+  const [date, setDate] = useState("");
 
   const validate = {
     nickname: {
@@ -33,10 +34,10 @@ const UserInformation = ({ nextStep }) => {
       onChange: setGender,
       ignoreOn: true,
     },
-    age: {
-      value: age,
-      type: Consts.typeAge,
-      onChange: setAge,
+    date: {
+      value: date,
+      type: Consts.typeDate,
+      onChange: setDate,
       ignoreOn: true,
     },
   };
@@ -50,7 +51,7 @@ const UserInformation = ({ nextStep }) => {
 
       usrData.nickname = nickname;
       usrData.gender = gender;
-      usrData.age = age;
+      usrData.date = date;
       await saveUserData(usrData).then(() => {
         setLoading(false);
       });
@@ -99,17 +100,28 @@ const UserInformation = ({ nextStep }) => {
               "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"
             }
           />
-          <Input
+          <DateInput
+            format={momentFormat}
+            label={"Таны төрсөн өдөр"}
+            value={birthdate || ""}
+            name={"birthdate"}
+            errorMessage={errors.birthdate}
+            onChange={handleChange}
+            className={
+              "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"
+            }
+          />
+          {/* <Input
             label={"Таны нас"}
-            value={age || ""}
-            name={"age"}
-            errorMessage={errors.age}
+            value={date || ""}
+            name={"date"}
+            errorMessage={errors.date}
             onChange={handleChange}
             placeholder={"Нас"}
             className={
               "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"
             }
-          />
+          /> */}
 
           <Gender setGender={setGender} gender={gender} label={"Таны хүйс"} />
         </div>

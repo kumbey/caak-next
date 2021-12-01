@@ -35,7 +35,7 @@ const Confirmation = ({ activeType, nextStep }) => {
     Validate(validate);
 
   const doGetCode = async () => {
-    setCounter(3);
+    setCounter(60);
     setReset(true);
 
     try {

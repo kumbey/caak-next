@@ -137,7 +137,7 @@ export default function Profile() {
   useEffect(() => {
     setLoading(true);
     try {
-      if (checkUser(signedUser)) {
+      if (isLogged) {
         getUserById({
           id: userId,
           setUser,
@@ -319,12 +319,12 @@ export default function Profile() {
             <span className="icon-fi-rs-drag text-20px mr-px-6" />
 
             <p className="text-17px ml-px-10 font-medium">
-              {checkUser(signedUser) && userId === signedUser.id
+              {isLogged && userId === signedUser.id
                 ? "Миний постууд"
                 : "Хэрэглэгчийн постууд"}
             </p>
           </Button>
-          {checkUser(signedUser) && userId === signedUser.id ? (
+          {isLogged && userId === signedUser.id ? (
             <>
               <Button
                 key={2}

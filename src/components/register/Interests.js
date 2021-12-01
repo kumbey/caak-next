@@ -6,6 +6,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getCategoryList } from "../../graphql-custom/category/queries";
 import { createUserCategory } from "../../graphql-custom/category/mutation";
 import { useUser } from "../../context/userContext";
+import { getReturnData } from "../../utility/Util";
 
 export default function Interests() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function Interests() {
       for (var i = 0; i < selected.length; i++) {
         await API.graphql(
           graphqlOperation(createUserCategory, {
-            input: { category_id: selected[i], user_id: userId },
+            input: { id: `${selected[i]}#${user_id}`, category_id: selected[i], user_id: userId },
           })
         );
       }
@@ -45,9 +46,8 @@ export default function Interests() {
   };
 
   const fetchCat = async () => {
-    await API.graphql(graphqlOperation(getCategoryList)).then((cat) => {
-      setCategories(cat.data.listCategories.items);
-    });
+    const resp = await API.graphql(graphqlOperation(getCategoryList))
+    setCategories(getReturnData(resp).items)
   };
 
   useEffect(() => {

@@ -1,0 +1,13 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "api": {
+      "caak": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}

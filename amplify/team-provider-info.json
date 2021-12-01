@@ -26,6 +26,40 @@
           "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
           "unauthRoleName": "Cognito_caakidpUnauth_Role"
         }
+      },
+      "function": {
+        "caaklayer001": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion58bc9a3c-build.zip"
+        },
+        "notification": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/notification-61684c597a367a557268-build.zip"
+        },
+        "resolverBoolean": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/resolverBoolean-62665052435450505933-build.zip"
+        },
+        "totalsTrigger": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/totalsTrigger-2f6f677738743535746a-build.zip"
+        },
+        "totals": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/totals-682b773342515a796532-build.zip"
+        },
+        "triggerNotification": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/triggerNotification-63786c4739515946356f-build.zip"
+        },
+        "triggerTables": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/triggerTables-38536876774157384d4d-build.zip"
+        },
+        "userRoleOnGroup": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/userRoleOnGroup-384b613237726a765a64-build.zip"
+        }
       }
     }
   }

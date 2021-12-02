@@ -121,7 +121,7 @@ function UserProvider(props) {
 
   const isLoginValid = async () => {
     const usr = await Auth.currentAuthenticatedUser();
-    // console.log(usr)
+
     if (usr) {
       if (!Object.is(usr, cognitoUser)) {
         setCognitoUser(usr);
@@ -130,6 +130,7 @@ function UserProvider(props) {
       let resp = await API.graphql(
         graphqlOperation(getUser, { id: usr.attributes.sub })
       );
+      console.log(resp)
       setUser(resp.data.getUser);
     } else {
       setIsLogged(false);

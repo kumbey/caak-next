@@ -44,11 +44,13 @@ const SignInUp = ({ ...props }) => {
             type === "signUp"
               ? router.replace(
                   `?signInUp=stepUp&isModal=true`,
-                  `/signInUp/stepUp`
+                  `/signInUp/stepUp`,
+                  {shallow: true}
                 )
               : router.replace(
                   `?signInUp=stepIn&isModal=true`,
-                  `/signInUp/stepIn`
+                  `/signInUp/stepIn`,
+                  {shallow: true}
                 );
           }}
           round

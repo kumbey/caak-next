@@ -22,8 +22,13 @@ const StepModalLayout = ({
   }, [allowScroll, blockScroll]);
 
   const close = () => {
-    router.back();
+    if(router.query && router.query.isModal){
+      router.replace(router.pathname, undefined, {shallow: true});
+    }else{
+      router.replace("/");
+    }
   };
+  
   return (
     <div className={`backdrop ${props.className}`}>
       <div className="popup absolute bg-white rounded-xl shadow-xl">
@@ -43,7 +48,8 @@ const StepModalLayout = ({
                       type === "signUp" || type === "stepUp"
                         ? "signUp"
                         : "signIn"
-                    }`
+                    }`,
+                    {shallow : true}
                   )
                 }
               >
@@ -94,7 +100,8 @@ const StepModalLayout = ({
                     `?signInUp=${
                       type === "stepUp" ? "signIn" : "signUp"
                     }&isModal=true`,
-                    `/signInUp/${type === "stepUp" ? "signIn" : "signUp"}`
+                    `/signInUp/${type === "stepUp" ? "signIn" : "signUp"}`,
+                    {shallow : true}
                   )
                 }
                 className="text-caak-primary text-15px font-bold cursor-pointer"

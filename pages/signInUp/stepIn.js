@@ -18,29 +18,9 @@ const SignIn1 = ({ ...props }) => {
         back: true,
         footer: true,
       },
-    },
-    2: {
-      comp: ForgotPass,
-      conf: {
-        back: true,
-        footer: false,
-      },
-    },
-    3: {
-      comp: PassConfirmation,
-      conf: {
-        back: false,
-        footer: false,
-      },
-    },
+    }
   });
   const [Step, setStep] = useState(steps[activeStep]);
-
-  const submitHandler = () => {
-    if (activeStep < maxStep) {
-      setActiveStep(activeStep + 1);
-    }
-  };
 
   useEffect(() => {
     setStep(steps[activeStep]);
@@ -60,7 +40,7 @@ const SignIn1 = ({ ...props }) => {
     >
       <div className="flex flex-col items-center justify-center">
         <div className=" flex flex-col justify-center w-full">
-          <Step.comp nextStep={submitHandler} />
+          <Step.comp />
         </div>
       </div>
     </ModalLayout>

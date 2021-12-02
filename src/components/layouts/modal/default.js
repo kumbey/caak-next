@@ -14,7 +14,13 @@ const DefaultModalLayout = ({ children, ...props }) => {
   }, [allowScroll, blockScroll]);
 
   const close = () => {
-    router.replace(router.pathname, undefined, {shallow: true});
+    
+    if(router.query && router.query.isModal){
+      router.replace(router.pathname, undefined, {shallow: true});
+    }else{
+      router.replace("/");
+    }
+    
   };
 
   return (

@@ -1,0 +1,8 @@
+<svg id="lifebuoy" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <path id="Path_373" data-name="Path 373" d="M12,0A12,12,0,1,0,24,12,12.033,12.033,0,0,0,12,0Zm0,16.922A4.922,4.922,0,1,1,16.922,12,4.928,4.928,0,0,1,12,16.922Z" fill="#ff7b4a"/>
+  <path id="Path_374" data-name="Path 374" d="M267,12c0-6.6-4.949-12-11-12V7.078A4.736,4.736,0,0,1,260.512,12,4.736,4.736,0,0,1,256,16.922V24C262.051,24,267,18.6,267,12Z" transform="translate(-243)" fill="#ff435b"/>
+  <path id="Path_375" data-name="Path 375" d="M0,0H2.589V9.024H0Z" transform="translate(1.422 3.253) rotate(-45)" fill="#fff5f5"/>
+  <path id="Path_376" data-name="Path 376" d="M0,0H2.589V9.024H0Z" transform="translate(14.363 16.197) rotate(-45)" fill="#efe2dd"/>
+  <path id="Path_377" data-name="Path 377" d="M0,0H9.024V2.589H0Z" transform="translate(14.365 7.804) rotate(-45)" fill="#efe2dd"/>
+  <path id="Path_378" data-name="Path 378" d="M0,0H9.024V2.589H0Z" transform="translate(1.421 20.746) rotate(-45)" fill="#fff5f5"/>
+</svg>

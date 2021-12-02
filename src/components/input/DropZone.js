@@ -23,13 +23,13 @@ const DropZone = ({
   });
 
   useEffect(() => {
-    if (post.items.length + dropZoneFiles.length > 10) {
-      alert("maxFiles 10 files");
+    if (post.items.length + dropZoneFiles.length > 50) {
+      alert("maxFiles 50 files");
     } else {
       const files = [];
-
-      dropZoneFiles.map((file) => {
+      dropZoneFiles.map((file, index) => {
         const fileData = {
+          id: post.items.length === 0 ? index + 1 : post.items.length + index + 1,
           title: "",
           post_id: post.id,
           file: {
@@ -63,9 +63,9 @@ const DropZone = ({
   return (
     <div
       {...getRootProps({
-        className: `cursor-pointer flex flex-col justify-center items-center rounded-square bg-caak-liquidnitrogen ${
-          className && className
-        }`,
+        className: `${
+          className ? className : ""
+        } cursor-pointer flex flex-col justify-center items-center rounded-square`,
       })}
     >
       <input {...getInputProps()} />

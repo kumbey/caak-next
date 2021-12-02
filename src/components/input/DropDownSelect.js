@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
 import { generateFileUrl } from "../../utility/Util";
@@ -41,20 +40,20 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
   return (
     <div
       onClick={onToggle}
-      className={`dropdown py-2 shadow-dropdown ${open ? "" : "hidden"} ${
+      className={`dropdown p-1 shadow-dropdown ${open ? "" : "hidden"} ${
         className && className
       }`}
     >
-      <div className={"p-1"}>
+      <div className={""}>
         <div
           onClick={onToggle}
           className={
-            "relative flex flex-row items-center cursor-pointer bg-white text-16px text-caak-generalblack w-full pl-3 pr-10  block h-11 rounded-md text-base  border border-caak-primary placeholder-gray-400 ring-2 ring-caak-primary ring-opacity-20 sm:text-sm hover:border-caak-primary"
+            "relative flex flex-row items-center cursor-pointer bg-white text-16px text-caak-generalblack w-full pl-3 pr-10  block h-[44px] rounded-[3px] text-base  border border-caak-primary placeholder-gray-400 ring-2 ring-caak-primary ring-opacity-20 sm:text-sm hover:border-caak-primary"
           }
         >
           <span
             className={
-              "icon-fi-rs-search text-caak-darkBlue flex items-center justify-center border-2 border-dashed border-caak-darkBlue w-6.5 h-6.5 rounded-square mr-2 p-1"
+              "icon-fi-rs-search text-caak-darkBlue flex items-center justify-center border-2 border-dashed border-caak-darkBlue w-6.5 h-6.5 rounded-square p-1"
             }
           />
           <Input
@@ -64,15 +63,20 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
             hideLabel
             placeholder={"Хайлт хийх"}
             className={
-              "py-2 border-transparent hover:border-transparent focus:ring-transparent"
+              "py-2 pl-[10px] text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] ml-0 border-transparent hover:border-transparent focus:ring-transparent"
             }
             hideError
             containerStyle={"w-full"}
           />
-          {/*<FontAwesomeIcon*/}
-          {/*  className={"absolute right-2.5"}*/}
-          {/*  icon={faCaretDown}*/}
-          {/*/>*/}
+          <div
+            className={
+              "flex items-center justify-center w-[12px] h-[12px] absolute right-[12px]"
+            }
+          >
+            <span
+              className={"icon-fi-rs-triangle text-caak-generalblack text-10px"}
+            />
+          </div>
           <span />
         </div>
         <div className={"z-50"}>
@@ -119,7 +123,7 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
             }
           >
             <span className={"text-15px text-caak-darkBlue pt-2"}>
-              Элссэн бүлгүүд
+              Нэгдсэн группүүд
             </span>
           </div>
           <div className={"px-2"}>

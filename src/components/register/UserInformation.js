@@ -12,14 +12,14 @@ import DateInput from "../input/MaskedInput";
 
 const UserInformation = ({ nextStep }) => {
   const router = useRouter();
-  const { lsGet, lsSet, lsRemove } = useLocalStorage("session");
+  const { lsGet, lsRemove } = useLocalStorage("session");
   let usrData = lsGet(Consts.SS_UserSignUp).usrData;
 
   const [loading, setLoading] = useState(false);
 
   const [nickname, setNickname] = useState("");
   const [gender, setGender] = useState("");
-  const [date, setDate] = useState("");
+  const [birthdate, setBirthdate] = useState("");
 
   const validate = {
     nickname: {
@@ -34,10 +34,10 @@ const UserInformation = ({ nextStep }) => {
       onChange: setGender,
       ignoreOn: true,
     },
-    date: {
-      value: date,
+    birthdate: {
+      value: birthdate,
       type: Consts.typeDate,
-      onChange: setDate,
+      onChange: setBirthdate,
       ignoreOn: true,
     },
   };
@@ -51,12 +51,15 @@ const UserInformation = ({ nextStep }) => {
 
       usrData.nickname = nickname;
       usrData.gender = gender;
-      usrData.date = date;
-      await saveUserData(usrData).then(() => {
-        setLoading(false);
-      });
-
+      usrData.birthdate = birthdate;
+      await saveUserData(usrData)
+      setLoading(false);
       lsRemove(Consts.SS_UserSignUp);
+
+      if (nextStep) {
+        nextStep();
+      }
+
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -71,12 +74,6 @@ const UserInformation = ({ nextStep }) => {
     });
   };
 
-  const submitHandler = () => {
-    handleSubmit(doSubmit);
-    if (nextStep) {
-      nextStep();
-    }
-  };
 
   return (
     <>
@@ -101,7 +98,7 @@ const UserInformation = ({ nextStep }) => {
             }
           />
           <DateInput
-            format={momentFormat}
+            format={"YYYY-MM-DD"}
             label={"Таны төрсөн өдөр"}
             value={birthdate || ""}
             name={"birthdate"}
@@ -128,7 +125,7 @@ const UserInformation = ({ nextStep }) => {
         <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
           <Button
             loading={loading}
-            onClick={() => submitHandler()}
+            onClick={() => handleSubmit(doSubmit)}
             className={
               "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
             }

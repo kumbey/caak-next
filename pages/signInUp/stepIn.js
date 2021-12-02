@@ -44,6 +44,11 @@ const SignIn1 = ({ ...props }) => {
 
   useEffect(() => {
     setStep(steps[activeStep]);
+
+    return () => {
+      setStep(null)
+    }
+
   }, [activeStep, steps]);
 
   return (

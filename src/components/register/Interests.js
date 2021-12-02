@@ -33,7 +33,7 @@ export default function Interests() {
       for (var i = 0; i < selected.length; i++) {
         await API.graphql(
           graphqlOperation(createUserCategory, {
-            input: { id: `${selected[i]}#${user_id}`, category_id: selected[i], user_id: userId },
+            input: { id: `${selected[i]}#${userId}`, category_id: selected[i], user_id: userId },
           })
         );
       }

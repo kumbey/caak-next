@@ -171,7 +171,7 @@ export default function NavBar() {
                     onClick={() =>
                       router.push(
                         `?signInUp=signIn&isModal=true`,
-                        `/signInUp/signIn`
+                        `/signInUp/signIn`, {shallow: true}
                       )
                     }
                     // onClick={() => history.replace({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.c
@@ -185,7 +185,7 @@ export default function NavBar() {
                     onClick={() =>
                       router.push(
                         `?signInUp=signUp&isModal=true`,
-                        null , {shallow: true}
+                        `/signInUp/signUp` , {shallow: true}
                       )
                     }
                   >

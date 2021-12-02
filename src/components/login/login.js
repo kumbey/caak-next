@@ -49,25 +49,11 @@ const Login = ({ nextStep }) => {
     try {
       setLoading(true);
       await Auth.signIn(checkUsername(username), password);
-      await router.replace(`/?isModal=false`, `/`);
+      await router.replace(`/`, { shallow: true });
       setLoading(false);
     } catch (ex) {
-      console.log(ex);
       setLoading(false);
-      if (ex.code === "UserNotConfirmedException") {
-        router.replace(
-          `?signInUp=confirmation&isModal=true&username=${username}&password=${password}`,
-          `/signInUp/confirmation`
-        );
-        // router.replace({
-        //   pathname: "/register/confirmation/",
-        //   state: {
-        //     ...state,
-        //     username: checkUsername(username),
-        //     password: password,
-        //   },
-        // });
-      } else if (ex.code === "NotAuthorizedException") {
+      if (ex.code === "NotAuthorizedException") {
         setError("Нэвтрэх нэр эсвэл нууц үг буруу байна");
       } else if (ex.code === "UserNotFoundException") {
         setError("Бүртгэлтэй хэрэглэгч олдсонгүй");

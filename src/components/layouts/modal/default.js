@@ -14,8 +14,7 @@ const DefaultModalLayout = ({ children, ...props }) => {
   }, [allowScroll, blockScroll]);
 
   const close = () => {
-    // router.replace('/about', undefined, { shallow: true })
-    router.back();
+    router.replace(router.pathname, undefined, {shallow: true});
   };
 
   return (

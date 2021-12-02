@@ -17,7 +17,7 @@
   }
 
   body {
-    @apply bg-caak-doctor;
+    @apply bg-caak-doctor bg-caak-paperwhite;
   }
 
   ::-webkit-scrollbar {

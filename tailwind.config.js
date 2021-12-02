@@ -101,7 +101,8 @@ module.exports = {
           fieryflamingo: "#FB6B7C",
           herablue: '#737EE6',
           bluerhapsody: "#3B4555",
-          cherenkov: "#24B9F8"
+          cherenkov: "#24B9F8",
+          paperwhite: "#EFEFF2"
         },
         darkblue: {
           DEFAULT: "#6C7392",

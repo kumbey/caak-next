@@ -32,9 +32,4 @@ export const searchResultType = [
     type: "Групп",
     icon: "icon-fi-rs-group",
   },
-  {
-    id: 3,
-    type: "Гишүүн",
-    icon: "icon-fi-rs-friends",
-  },
 ];

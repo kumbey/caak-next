@@ -1,7 +1,7 @@
 export default function Switch({ toggle, active }) {
   return (
     <label
-      onClick={toggle}
+      onClick={() => toggle((prev) => !prev)}
       style={{ minWidth: "40px", height: "22px" }}
       className={`ml-1 cursor-pointer
                 rounded-full 

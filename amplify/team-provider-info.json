@@ -12,21 +12,6 @@
       "AmplifyAppId": "d36nkdl3p18em1"
     },
     "categories": {
-      "auth": {
-        "caak0290cf1f": {
-          "userPoolId": "ap-southeast-1_rIO08tyP8",
-          "userPoolName": "caak-auth",
-          "webClientId": "3ucknqne71hmd7bqhmbiatic7u",
-          "nativeClientId": "3kkpqu5hd46hd29k7gfubjvoqe",
-          "identityPoolId": "ap-southeast-1:da79ac62-2f04-4e38-b4d8-d3b9b918b315",
-          "identityPoolName": "caak-idp",
-          "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
-          "authRoleName": "Cognito_caakidpAuth_Role",
-          "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
-          "unauthRoleName": "Cognito_caakidpUnauth_Role"
-        }
-      },
       "function": {
         "caaklayer001": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
@@ -54,15 +39,30 @@
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/triggerTables-726562636c4649454e2f-build.zip"
+          "s3Key": "amplify-builds/triggerTables-3750644c63502b4c5179-build.zip"
         },
         "userRoleOnGroup": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/userRoleOnGroup-384b613237726a765a64-build.zip"
+          "s3Key": "amplify-builds/userRoleOnGroup-684b68486a79734e4944-build.zip"
         },
         "aura": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
           "s3Key": "amplify-builds/aura-6865396d4269552f4d2b-build.zip"
+        }
+      },
+      "auth": {
+        "caak7c5cc3bf": {
+          "userPoolId": "ap-southeast-1_rIO08tyP8",
+          "userPoolName": "caak-auth",
+          "webClientId": "3ucknqne71hmd7bqhmbiatic7u",
+          "nativeClientId": "3kkpqu5hd46hd29k7gfubjvoqe",
+          "identityPoolId": "ap-southeast-1:da79ac62-2f04-4e38-b4d8-d3b9b918b315",
+          "identityPoolName": "caak-idp",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
+          "authRoleName": "Cognito_caakidpAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
+          "unauthRoleName": "Cognito_caakidpUnauth_Role"
         }
       }
     }

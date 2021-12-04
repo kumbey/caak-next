@@ -64,7 +64,7 @@ async function changeReactions(newImg, increase){
 
         if(newImg.on_to === "POST"){
 
-            const post = await PostDB.get(newImg.id)
+            const post = await PostDB.get(newImg.item_id)
 
             await PostTotal.modify(post.id , items)
             items[0].field = "post_reactions"
@@ -77,7 +77,7 @@ async function changeReactions(newImg, increase){
 
         }else if(newImg.on_to === "POST_ITEM"){
 
-            const postItem = await PostItems.get(newImg.id)
+            const postItem = await PostItems.get(newImg.item_id)
             const post = await PostDB.get(postItem.post_id)
 
             await PostItemsTotal.modify(postItem.id, items)
@@ -92,7 +92,7 @@ async function changeReactions(newImg, increase){
 
         }else if(newImg.on_to === "COMMENT"){
             
-            let comment = await CommentDB.get(newImg.id)
+            let comment = await CommentDB.get(newImg.item_id)
             await CommentTotal.modify(comment.id, items)
             items[0].field = "comment_reactions"
             await UserTotal.modify(comment.user_id)

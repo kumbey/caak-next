@@ -1,0 +1,26 @@
+{
+  "authSelections": "identityPoolAndUserPool",
+  "resourceName": "caak7c5cc3bf",
+  "serviceType": "imported",
+  "region": "ap-southeast-1",
+  "aliasAttributes": [
+    "email",
+    "phone_number",
+    "preferred_username"
+  ],
+  "authProvidersUserPool": [],
+  "requiredAttributes": [
+    "profile"
+  ],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [],
+  "mfaConfiguration": "OPTIONAL",
+  "autoVerifiedAttributes": [
+    "email",
+    "phone_number"
+  ],
+  "mfaTypes": [
+    "SMS Text Message",
+    "TOTP"
+  ]
+}

@@ -12,12 +12,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { useDropzone } from "react-dropzone";
 import awsExports from "/src/aws-exports";
-import {
-  checkUser,
-  getFileExt,
-  getFileName,
-  getFileUrl,
-} from "/src/utility/Util";
+import { getFileExt, getFileName, getFileUrl } from "/src/utility/Util";
 import { updateUser } from "/src/graphql-custom/user/mutation";
 import { deleteFile } from "/src/graphql-custom/file/mutation";
 import { useUser } from "/src/context/userContext";
@@ -29,6 +24,7 @@ export default function Profile() {
   const userId = router.query.userId;
 
   const [user, setUser] = useState();
+  const { isLogged } = useUser();
 
   const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
@@ -86,7 +82,7 @@ export default function Profile() {
   };
 
   const handleClick = () => {
-    if (checkUser(signedUser)) {
+    if (isLogged) {
       if (!user.followed) {
         createFollowUser();
       } else if (user.followed) {
@@ -259,8 +255,8 @@ export default function Profile() {
           </div>
           <div>
             <div className=" md:justify-center flex justify-end">
-              {checkUser(signedUser) && userId === signedUser.id ? (
-                <Link href={`/user/${user.id}/settings`}>
+              {isLogged && userId === signedUser.id ? (
+                <Link href={`/user/${user.id}/Settings`}>
                   <a>
                     <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
                       <span className="pr-px-6 icon-fi-rs-settings text-18px" />

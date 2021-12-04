@@ -99,10 +99,12 @@ module.exports = {
           uclagold: "#FDB400",
           flashoforange: "#FDA900",
           fieryflamingo: "#FB6B7C",
-          herablue: '#737EE6',
+          herablue: "#737EE6",
           bluerhapsody: "#3B4555",
           cherenkov: "#24B9F8",
-          paperwhite: "#EFEFF2"
+          paperwhite: "#EFEFF2",
+          cardinal: "#BE1E39",
+          extraLight: "#F2F2F3",
         },
         darkblue: {
           DEFAULT: "#6C7392",

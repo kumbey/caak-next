@@ -2,7 +2,10 @@ import Consts from "./Consts";
 import CryptoJS from "crypto-js";
 import Configure from "../configure";
 import { DateTime } from "luxon";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
+import femaleImg from "../../public/assets/images/Female-Avatar.svg";
+import maleImg from "../../public/assets/images/Man-Avatar.svg";
+import defaultImg from "../../public/assets/images/default.png";
 
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
@@ -11,22 +14,32 @@ export function useDebounce(value, delay) {
   // State and setters for debounced value
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(
-      () => {
-        // Update debounced value after delay
-        const handler = setTimeout(() => {
-          setDebouncedValue(value);
-        }, delay);
-        // Cancel the timeout if value changes (also on delay change or unmount)
-        // This is how we prevent debounced value from updating if value is changed ...
-        // .. within the delay period. Timeout gets cleared and restarted.
-        return () => {
-          clearTimeout(handler);
-        };
-      },
-      [value, delay] // Only re-call effect if value or delay changes
+    () => {
+      // Update debounced value after delay
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      // Cancel the timeout if value changes (also on delay change or unmount)
+      // This is how we prevent debounced value from updating if value is changed ...
+      // .. within the delay period. Timeout gets cleared and restarted.
+      return () => {
+        clearTimeout(handler);
+      };
+    },
+    [value, delay] // Only re-call effect if value or delay changes
   );
   return debouncedValue;
 }
+
+export const getGenderImage = (gender) => {
+  if (gender === "MALE") {
+    return maleImg;
+  } else if (gender === "FEMALE") {
+    return femaleImg;
+  } else {
+    return defaultImg;
+  }
+};
 
 export const getFileExt = (fileName) => {
   return fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -49,7 +62,7 @@ export const useClickOutSide = (handler) => {
     return () => {
       document.removeEventListener("click", checkIfClickedOutside);
     };
-    
+
     // eslint-disable-next-line
   }, []);
   return domNode;
@@ -290,53 +303,50 @@ export function removeKeyFromObj(obj, removeKeys) {
   });
 }
 
-export function getReturnData(data, isSubscription){
+export function getReturnData(data, isSubscription) {
+  let retData = {};
 
-    let retData = {}
+  if (isSubscription) {
+    retData = data.value.data;
+  } else {
+    retData = data.data;
+  }
 
-    if(isSubscription){
-      retData = data.value.data
-    }else{
-      retData = data.data
+  retData = retData[Object.keys(retData)[0]];
+  return retData;
+}
+
+export function _objectWithoutKeys(obj, keys) {
+  let target = {};
+
+  for (let key in obj) {
+    if (keys.indexOf(key) < 0) {
+      target[key] = obj[key];
     }
+  }
 
-    retData = retData[Object.keys(retData)[0]]
-    return retData
+  return target;
 }
 
-export function _objectWithoutKeys(obj, keys){
+export function _modalisOpen(params) {
+  const { conditions, query } = params;
+  let isOpen = false;
 
-    let target = {}
+  for (let i = 0; i, conditions.length > i; i++) {
+    const condition = conditions[i];
 
-    for(let key in obj){
-      if (keys.indexOf(key) < 0){
-        target[key] = obj[key]
-      } 
+    if (condition.value === query[condition.key]) {
+      isOpen = true;
     }
+  }
 
-    return target
+  return isOpen;
 }
 
-export function _modalisOpen(params){
-    const {conditions, query} = params
-    let isOpen = false
-    
-    for(let i=0; i , conditions.length > i; i++){
-      const condition = conditions[i]
-      
-      if(condition.value === query[condition.key]){
-        isOpen = true
-      }
-    }
-
-    return isOpen
+export async function fetcher(url) {
+  const resp = await fetch(url);
+  return resp.json();
 }
-
-export async function fetcher(url){
-  const resp = await fetch(url)
-  return resp.json()
-}
-
 
 const object = {
   useQuery,
@@ -354,6 +364,6 @@ const object = {
   getFileUrl,
   getReturnData,
   _objectWithoutKeys,
-  _modalisOpen
+  _modalisOpen,
 };
 export default object;

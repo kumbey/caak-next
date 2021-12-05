@@ -24,9 +24,9 @@ export default function Informations({ currentUser }) {
       id: 1,
       text: "Хэрэглэгчийн ID",
       name: "user_id",
-      placeholder: currentUser.username.id_name,
+      placeholder: currentUser.username,
       type: "text",
-      value: currentUser.username.id_name,
+      value: currentUser.username,
       isReadOnly: true,
     },
     {

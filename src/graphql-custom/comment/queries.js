@@ -1,6 +1,7 @@
 import comment0001 from "./fields/comment0001";
 import comment0002 from "./fields/comment0002";
 import file0001 from "../file/fields/file0001";
+import comment0003 from "./fields/comment0003";
 
 export const getCommentsByPostItem = /* GraphQL */ `
     query GetCommentsByPostItem(
@@ -94,4 +95,22 @@ export const listCommentByParent = /* GraphQL */ `
       nextToken
     }
   }
+`
+export const listCommentByUser = /* GraphQL */ `
+    query ListCommentByUser(
+        $user_id: ID!
+        $sortDirection: ModelSortDirection
+        $nextToken: String
+    ) 
+    {
+        listCommentByUser
+    (     
+            user_id: $user_id
+            sortDirection: $sortDirection
+            nextToken: $nextToken
+    )   {
+        items ${comment0003}
+        nextToken
+    }
+    }
 `;

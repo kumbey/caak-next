@@ -32,7 +32,7 @@ export async function getServerSideProps({ req, res }) {
       status: "CONFIRMED",
       limit: 6,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
 
   const fetchGroups = async (user, role) => {
@@ -50,7 +50,7 @@ export async function getServerSideProps({ req, res }) {
               role: { eq: role[i] },
             })
         );
-        retData = [...retData, ...getReturnData(resp)]
+        retData = [...retData, ...getReturnData(resp).items]
       }
       return retData;
     } catch (ex) {

@@ -21,17 +21,13 @@ const GroupLayout = ({ children, groupData, hideSuggestedGroups }) => {
   useEffect(() => {
     setLoaded(true);
   }, []);
-
   return (
     loaded && (
       <div className={"feedLayoutContainer"}>
         <div className={"feed"}>{children}</div>
         <div
-          className={`rightSideBar bg-none ${isLogged ? "" : "pt-[300px]"} ${
-            isLaptop ? "hidden" : "block"
-          }`}
+          className={`rightSideBar bg-none  ${isLaptop ? "hidden" : "block"}`}
         >
-          {/* {!hideAura && <AuraCard />} */}
           <GroupInfo groupData={groupData} />
           <div className="mt-[16px]">
             {!hideSuggestedGroups && (

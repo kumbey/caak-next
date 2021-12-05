@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-caak-dev-123611-authRole",
+      "UnauthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-dev-123611-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-dev-123611-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-caak-dev-123611-deployment",
+      "UnauthRoleName": "amplify-caak-dev-123611-unauthRole",
+      "StackName": "amplify-caak-dev-123611",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:395091497679:stack/amplify-caak-dev-123611/3b2fe890-4da9-11ec-b9b0-02a58faeed02",
+      "AmplifyAppId": "d36nkdl3p18em1"
+    }
+  }
+}

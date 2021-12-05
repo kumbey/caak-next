@@ -11,7 +11,7 @@ export default function NavBarMenu({ type }) {
       {isLogged && (
         <Fragment>
           {type !== "mobile" && (
-            <Link href={`/user/${user.id}/Profile`}>
+            <Link href={`/user/${user.id}/profile`}>
               <a>
                 <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span

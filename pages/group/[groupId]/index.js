@@ -30,7 +30,7 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 2,
+      limit: 6,
     },
   });
   const groupView = await API.graphql({
@@ -70,7 +70,7 @@ const Group = ({ ssrData, ...props }) => {
       group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 2,
+      limit: 6,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -165,6 +165,9 @@ const Group = ({ ssrData, ...props }) => {
                   <List
                     key={index}
                     imageSrc={data?.items?.items[0]?.file}
+                    video={data?.items?.items[0]?.file?.type?.startsWith(
+                      "video"
+                    )}
                     post={data}
                     className="ph:mb-4 sm:mb-4"
                   />

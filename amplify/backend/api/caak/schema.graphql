@@ -58,9 +58,12 @@ type UserTotal @model(mutations: null)
   drafted: Int
   following: Int
   followers: Int
+  comments: Int,
   post_reactions: Int,
   post_items_reactions: Int
-  comment_reactions: Int,
+  comment_reactions: Int
+  post_views: Int
+  post_shares: Int
   unseen: Int
 }
 
@@ -106,11 +109,13 @@ type FollowedUsers @model
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byFollowed", fields: ["user_id"], queryField:"byFollowed")
-  @key(name: "byFollowing", fields: ["followed_user_id"], queryField:"byFollowing"){
+  @key(name: "byFollowed", fields: ["user_id"], queryField:"listUsersbyFollowed")
+  @key(name: "byFollowing", fields: ["followed_user_id"], queryField:"listUsersbyFollowing"){
   id: ID!
   user_id: ID!
+  user: User @connection(fields:["user_id"])
   followed_user_id: ID!
+  follower_user: User @connection(fields:["followed_user_id"])
 }
 
 type UserCategory @model
@@ -161,6 +166,7 @@ type Post @model @versioned
   items: [PostItems] @connection(keyName:"byPost", fields:["id"])
   totals: PostTotal @connection(fields:["id"])
   reacted: Boolean @function(name:"resolverBoolean-${env}")
+  comments: [Comment] @connection(keyName:"byPostQ", fields:["id"])
   updatedAt: AWSDateTime!
 }
 
@@ -180,7 +186,7 @@ type PostItems @model
   description: String
   f_text: String
   order: Int
-  comments: [Comment] @connection(keyName:"byPostItem", fields:["id"])
+  comments: [Comment] @connection(keyName:"byPostItemQ", fields:["id"])
   totals: PostItemsTotal @connection(fields:["id"])
   reacted: Boolean @function(name:"resolverBoolean-${env}")
 }
@@ -250,9 +256,12 @@ type Comment @model
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byPostItem", fields: ["post_item_id"] queryField:"getCommentsByPostItem")
-  @key(name: "byParent", fields: ["parent_id"])
-  @key(name: "byType", fields: ["type"]){
+  @key(name: "byPostItemQ", fields: ["post_item_id","createdAt"], queryField:"listCommentByPostItem")
+  @key(name: "byPostQ", fields: ["post_id","createdAt"] queryField:"getCommentsByPost")
+  @key(name: "byType", fields: ["type"])
+  @key(name: "byTypeOrderByDate", fields: ["post_id","type","createdAt"] queryField:"listCommentsByDateAndType")
+  @key(name: "byParent", fields: ["parent_id","createdAt"] queryField:"listCommentByParent")
+  @key(name: "byUser", fields: ["user_id","createdAt"] queryField:"listCommentByUser"){
   id: ID!,
   user_id:ID!
   user: User @connection(fields:["user_id"])
@@ -263,11 +272,13 @@ type Comment @model
   comment: String!
   status: String!
   type: String!
+  on_to: String!
   parent_id: ID
   sub: [Comment] @connection(keyName:"byParent" fields:["id"])
   replyUserID: ID
   replyTo: User @connection(fields:["replyUserID"])
   totals: CommentTotal @connection(fields:["id"])
+  createdAt: AWSDateTime!
 }
 
 type CommentTotal@model
@@ -419,6 +430,10 @@ type Subscription {
     @aws_iam
     @aws_cognito_user_pools
   onCommentByPostItem(post_item_id: ID!): Comment
+    @aws_subscribe(mutations: ["createComment","updateComment"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onCommentByPost(post_id: ID!): Comment
     @aws_subscribe(mutations: ["createComment","updateComment"])
     @aws_iam
     @aws_cognito_user_pools

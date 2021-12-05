@@ -21,6 +21,7 @@ async function insert(id){
             drafted: 0,
             following: 0,
             followers: 0,
+            comments: 0,
             post_reactions: 0,
             post_items_reactions: 0,
             comment_reactions: 0,

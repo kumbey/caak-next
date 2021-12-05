@@ -15,6 +15,7 @@ async function insert(id){
             post_id: id,
             search_id: id,
             reactions: 0,
+            comments: 0,
             views: 0,
             shares: 0
         }

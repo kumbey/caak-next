@@ -1,6 +1,7 @@
 const { getValuesFromRecord } = require("/opt/util/Util")
 const CommentTotal = require("../db/CommentTotal")
 const PostItemsTotal = require("../db/PostItemsTotal")
+const PostTotal = require("../db/PostTotal")
 const UserTotal = require("../db/PostItemsTotal")
 const NotificationDB = require("../db/Notification")
 
@@ -14,13 +15,32 @@ async function insert(record){
         await CommentTotal.insert(newImg.id)
 
         //UPDATE USER TOTAL
-        await PostItemsTotal.modify(newImg.post_item_id, [
+        await UserTotal.modify(newImg.user_id, [
             {
                 field: "comments",
                 increase: true,
                 count: 1
             }
         ])
+
+        if(newImg.on_to === "POST_ITEM"){
+            await PostItemsTotal.modify(newImg.post_item_id, [
+                {
+                    field: "comments",
+                    increase: true,
+                    count: 1
+                }
+            ])
+        }else{
+            await PostTotal.modify(newImg.post_id, [
+                {
+                    field: "comments",
+                    increase: true,
+                    count: 1
+                }
+            ])
+        }
+        
 
         const react = {
             section: "USER",
@@ -57,16 +77,31 @@ async function remove(record){
             field: "comment_reactions",
             increase: false,
             count: commentTotal.reactions
-        }
-    ])
-
-    await PostItemsTotal.modify(oldImg.post_item_id, [
+        },
         {
             field: "comments",
             increase: false,
             count: 1
         }
     ])
+
+    if(oldImg.on_to === "POST_ITEM"){
+        await PostItemsTotal.modify(oldImg.post_item_id, [
+            {
+                field: "comments",
+                increase: false,
+                count: 1
+            }
+        ])
+    }else{
+        await PostITotal.modify(oldImg.post_id, [
+            {
+                field: "comments",
+                increase: false,
+                count: 1
+            }
+        ])
+    }
 
     await CommentTotal.remove(oldImg.id)
 

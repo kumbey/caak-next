@@ -1,5 +1,6 @@
 const { getValuesFromRecord } = require("/opt/util/Util")
 const PostTotal = require("../db/PostTotal")
+const UserTotal = require("../db/UserTotal")
 
 async function insert(record){
     try{
@@ -9,7 +10,15 @@ async function insert(record){
 
         await PostTotal.modify(newImg.post_id, [
             {
-                field: views,
+                field: "shares",
+                increase: true,
+                count: 1
+            }
+        ])
+
+        await UserTotal.modify(newImg.user_id, [
+            {
+                field: "post_shares",
                 increase: true,
                 count: 1
             }
@@ -26,10 +35,10 @@ async function insert(record){
 async function remove(record){
   try{
 
-      const { OldImage } = record
-      const oldImg = getValuesFromRecord(OldImage)
-      
-      await PostTotal.modify(oldImg.post_id, [
+    const { OldImage } = record
+    const oldImg = getValuesFromRecord(OldImage)
+    
+    await PostTotal.modify(oldImg.post_id, [
         {
             field: views,
             increase: false,
@@ -37,7 +46,15 @@ async function remove(record){
         }
     ])
 
-      return true
+    await UserTotal.modify(newImg.user_id, [
+        {
+            field: "post_shares",
+            increase: true,
+            count: 1
+        }
+    ])
+
+    return true
 
   }catch(ex){
       return ex

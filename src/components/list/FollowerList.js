@@ -28,7 +28,7 @@ const FollowerList = ({ imageSrc, followedUser, ...props }) => {
           query: deleteFollowedUsers,
           variables: {
             input: {
-              id: `${router.query.userId}#${followedUser.id}`,
+              id: `${followedUser.id}#${router.query.userId}`,
             },
           },
         });

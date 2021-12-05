@@ -1,21 +1,23 @@
 const user0006 = /* GraphQL */ `
   {
-    following
-    followers
-    comments
-    confirmed
+    post_views
+    post_shares
     user_id
-    archived
-    comment_reactions
-    createdAt
-    drafted
-    pending
-    post_items_reactions
-    post_reactions
+    updatedAt
+    unseen
     reported
     search_id
-    unseen
-    updatedAt
+    post_reactions
+    post_items_reactions
+    pending
+    following
+    followers
+    drafted
+    createdAt
+    confirmed
+    comments
+    comment_reactions
+    archived
   }
 `;
 

@@ -87,7 +87,7 @@ const Dashboard = ({ ssrData, ...props }) => {
     {
       id: 0,
       icon: "icon-fi-rs-aura",
-      number: user.aura,
+      number: user?.aura,
       text: "Нийт аура",
       bgcolor: "",
       color: "",
@@ -103,7 +103,7 @@ const Dashboard = ({ ssrData, ...props }) => {
     {
       id: 2,
       icon: "icon-fi-rs-comment-f",
-      number: userComments.length,
+      number: userComments?.length,
       text: "Нийт сэтгэгдэл",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
@@ -111,7 +111,7 @@ const Dashboard = ({ ssrData, ...props }) => {
     {
       id: 3,
       icon: "icon-fi-rs-view",
-      number: "2300",
+      number: userInfo?.post_views,
       text: "Нийт пост үзсэн",
       bgcolor: "bg-caak-errigalwhite",
       color: "text-caak-darkBlue",

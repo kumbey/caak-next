@@ -23,7 +23,15 @@ import { getGroupView } from "../../../src/graphql-custom/group/queries";
 import List from "../../../src/components/list";
 
 export async function getServerSideProps({ req, query }) {
-  const { API } = withSSRContext({ req });
+  const { API, Auth } = withSSRContext({ req });
+  let user = null
+
+  try{
+    user = await Auth.currentAuthenticatedUser()
+  }catch (ex){
+    user = null
+  }
+  
   const resp = await API.graphql({
     query: getPostByGroup,
     variables: {
@@ -32,13 +40,17 @@ export async function getServerSideProps({ req, query }) {
       filter: { status: { eq: "CONFIRMED" } },
       limit: 6,
     },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
+
   const groupView = await API.graphql({
     query: getGroupView,
     variables: {
       id: query.groupId,
     },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
+
   return {
     props: {
       ssrData: {
@@ -71,30 +83,11 @@ const Group = ({ ssrData, ...props }) => {
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
       limit: 6,
+      nextToken: ssrData.posts.nextToken,
     },
-    nextToken: ssrData.posts.nextToken,
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
-
-  const getGroupDataById = async () => {
-    try {
-      if (isLogged) {
-        let resp = await API.graphql(
-          graphqlOperation(getGroupView, { id: router.query.groupId })
-        );
-        setGroupData(resp.data.getGroup);
-      } else {
-        const resp = await API.graphql({
-          query: getGroupView,
-          authMode: "AWS_IAM",
-          variables: { id: router.query.groupId },
-        });
-        setGroupData(resp.data.getGroup);
-      }
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
 
   const fetchPosts = async (data, setData) => {
     try {
@@ -123,13 +116,6 @@ const Group = ({ ssrData, ...props }) => {
     };
 
     // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    getGroupDataById();
-
-    console.log(groupData);
-    console.log(posts);
   }, []);
 
   return (

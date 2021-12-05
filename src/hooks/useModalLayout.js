@@ -1,11 +1,13 @@
 import DefaultModalLayout from "../components/layouts/modal/default";
 import StepModalLayout from "../components/layouts/modal/stepLayout";
 import ViewPostModalLayout from "../components/layouts/modal/viewPostModalLayout";
+import DefaultUserProfileLayout from "../components/layouts/profile";
 
 const layouts = {
   default: DefaultModalLayout,
   step: StepModalLayout,
   viewpost: ViewPostModalLayout,
+  userProfile: DefaultUserProfileLayout,
 };
 
 const useModalLayout = (props) => {

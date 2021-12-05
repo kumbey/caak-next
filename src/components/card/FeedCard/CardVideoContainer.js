@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { getFileUrl } from "../../../utility/Util";
 import VideoJS from "../VideoJS";
 
-const CardVideoContainer = ({ file, addPost, postId }) => {
+const CardVideoContainer = ({ file, addPost, postId, indicatorClassname }) => {
   const [videoDuration, setVideoDuration] = useState(0);
   const [isTouching, setIsTouching] = useState(false);
   const videoRef = useRef(null);
@@ -19,7 +19,7 @@ const CardVideoContainer = ({ file, addPost, postId }) => {
   const videoJsOptions = {
     autoplay: autoPlay === "true",
     muted: autoPlay === "true",
-    controls: true,
+    controls: false,
     responsive: false,
     fluid: false,
     sources: [
@@ -63,7 +63,6 @@ const CardVideoContainer = ({ file, addPost, postId }) => {
       if (playerRef.current) playerRef.current.pause();
       history.push({
         pathname: `/post/view/${postId}`,
-        state: { background: location },
       });
     }
   }
@@ -71,27 +70,18 @@ const CardVideoContainer = ({ file, addPost, postId }) => {
   const formattedTime = formatTime(videoDuration);
   return (
     <div
-      className={`relative ${
+      className={`relative rounded-[4px] ${
         file.length > 0 ? "max-h-100 h-100" : "h-full w-full"
       }`}
     >
       <div
-        className={`z-1 flex flex-row tracking-wide items-center leading-none text-center align-middle absolute font-bold top-3 ${
-          !addPost ? (file.length === 2 ? "right-16" : "right-3") : "left-3"
-        } text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1`}
+        className={`${
+          indicatorClassname ? indicatorClassname : ""
+        } z-1 flex flex-row tracking-wide items-center leading-none text-center align-middle absolute font-bold top-3 text-white text-11px bg-black bg-opacity-20 rounded-[4px] h-5 px-2 py-1`}
       >
-        <span className={"icon-fi-rs-rec mr-1 text-9px"} />
+        <span className={"icon-fi-rs-video mr-1 text-[16px]"} />
         {`${formattedTime.minutes}:${formattedTime.seconds}`}
       </div>
-      {file.length > 1 ? (
-        <div
-          className={`z-1 flex flex-row tracking-wide items-center text-center align-middle absolute font-bold top-3 right-3 text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1`}
-        >
-          <span className={"icon-fi-rs-album mr-1 text-11px"} />+{file.length}
-        </div>
-      ) : (
-        ""
-      )}
       <VideoJS
         videoRef={videoRef}
         playerRef={playerRef}
@@ -107,36 +97,14 @@ const CardVideoContainer = ({ file, addPost, postId }) => {
         onDoubleClick={() =>
           history.push({
             pathname: `/post/view/${postId}`,
-            state: { background: location },
           })
         }
         onLoadedMetadata={(e) => setVideoDuration(e.target.duration)}
         // file={file}
         options={videoJsOptions}
         style={{ objectFit: "cover", width: "100%", height: "100%" }}
-        videoClassName={`videoPlayer  video-js vjs-big-play-centered ${
-          addPost ? "w-full rounded-square" : ""
-        } ${
-          file?.length > 0 ? "max-h-100 h-100" : ""
-        } block cursor-pointer`}
+        videoClassName={`videoPlayer video-js vjs-big-play-centered  cursor-pointer`}
       />
-      {/*<video*/}
-      {/*  onLoadedMetadata={(e) => setVideoDuration(e.target.duration)}*/}
-      {/*  onClick={togglePlayBack}*/}
-      {/*  ref={videoRefr}*/}
-      {/*  disablePictureInPicture*/}
-      {/*  controlsList="nodownload noremoteplayback noplaybackrate"*/}
-      {/*  className={`videoPlayer max-w-8xl ${*/}
-      {/*    addPost ? "w-full rounded-square" : "w-96"*/}
-      {/*  } ${*/}
-      {/*    files.length > 0 ? "max-h-100 h-100" : "max-h-80"*/}
-      {/*  } block object-cover cursor-pointer`}*/}
-      {/*>*/}
-      {/*  <source*/}
-      {/*    src={getFileUrl(files.length ? files[0].file : files.file)}*/}
-      {/*    type="video/mp4"*/}
-      {/*  />*/}
-      {/*</video>*/}
     </div>
   );
 };

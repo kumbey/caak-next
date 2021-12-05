@@ -4,6 +4,7 @@ const post0004 = /* GraphQL */ `
   {
     id
     title
+    description
     commentType
     status
     user_id
@@ -11,6 +12,38 @@ const post0004 = /* GraphQL */ `
     category_id
     updatedAt
     version
+    comments {
+      items {
+        comment
+        parent_id
+        createdAt
+        id
+        totals {
+          reactions
+        }
+        user {
+          nickname
+          pic ${file0001}
+          id
+        }
+        sub {
+          items {
+            comment
+            id
+            createdAt
+            parent_id
+            totals {
+              reactions
+            }
+            user {
+              nickname
+              pic ${file0001}
+              id
+            }
+          }
+        }
+      }
+    }
     user {
       firstname
       id
@@ -31,6 +64,7 @@ const post0004 = /* GraphQL */ `
 
     totals {
       reactions
+      comments
     }
     reacted
     items {

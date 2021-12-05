@@ -5,6 +5,7 @@ import StepUp from "/pages/signInUp/stepUp";
 import Completed from "../../../pages/signInUp/completed";
 import Confirmation from "../../components/register/Confirmation";
 import { _modalisOpen } from "../../utility/Util";
+import ViewPostBlogItem from "../card/ViewPostBlogItem";
 
 const modals = [
   {
@@ -57,6 +58,16 @@ const modals = [
     conditions: [
       {
         key: "signInUp",
+        value: "confirmation",
+      },
+    ],
+  },
+  {
+    name: "viewPostBlogItem",
+    comp: ViewPostBlogItem,
+    conditions: [
+      {
+        key: "postItemId",
         value: "confirmation",
       },
     ],

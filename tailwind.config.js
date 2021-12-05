@@ -29,6 +29,7 @@ module.exports = {
       },
       boxShadow: {
         dropdown: "0 3px 20px rgba(0, 0, 0, 0.25)",
+        profileCamera: "0 3px 6px rgba(0, 0, 0, 0.29)",
         card: "0px 1px 2px rgba(0, 0, 0, 0.1)",
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
         searchInput: "0px 5px 6px rgba(0, 0, 0, 0.12)",
@@ -102,7 +103,9 @@ module.exports = {
           herablue: '#737EE6',
           bluerhapsody: "#3B4555",
           cherenkov: "#24B9F8",
-          paperwhite: "#EFEFF2"
+          paperwhite: "#EFEFF2",
+          pinkmirage: "#F4EEEA",
+          lightmaidensblush: "#F5DDCE"
         },
         darkblue: {
           DEFAULT: "#6C7392",

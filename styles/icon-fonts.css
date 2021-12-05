@@ -26,6 +26,75 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-fi-rs-add-group-f-1:before {
+  content: "\e992";
+}
+.icon-fi-rs-aura-f:before {
+  content: "\e993";
+}
+.icon-fi-rs-aura-o:before {
+  content: "\e994";
+}
+.icon-fi-rs-block-user:before {
+  content: "\e995";
+}
+.icon-fi-rs-camera-f:before {
+  content: "\e996";
+}
+.icon-fi-rs-edit-f:before {
+  content: "\e997";
+}
+.icon-fi-rs-facebook.path1:before {
+  content: "\e998";
+  /*color: rgb(255, 255, 255);*/
+}
+.icon-fi-rs-facebook.path2:before {
+  content: "\e999";
+  /*margin-left: -1em;*/
+  /*color: rgb(33, 41, 60);*/
+}
+.icon-fi-rs-grid-o:before {
+  content: "\e99a";
+}
+.icon-fi-rs-list-card-f:before {
+  content: "\e99b";
+}
+.icon-fi-rs-list-card-o:before {
+  content: "\e99c";
+}
+.icon-fi-rs-notification-f:before {
+  content: "\e99d";
+}
+.icon-fi-rs-notification-o:before {
+  content: "\e99e";
+}
+.icon-fi-rs-play-f:before {
+  content: "\e99f";
+}
+.icon-fi-rs-play-o:before {
+  content: "\e9a0";
+}
+.icon-fi-rs-remove-friend-f:before {
+  content: "\e9a1";
+}
+.icon-fi-rs-settings-o:before {
+  content: "\e9a2";
+}
+.icon-fi-rs-share-f:before {
+  content: "\e9a3";
+}
+.icon-fi-rs-share-o:before {
+  content: "\e9a4";
+}
+.icon-fi-rs-social-links:before {
+  content: "\e9a5";
+}
+.icon-fi-rs-statistic-o:before {
+  content: "\e9a6";
+}
+.icon-fi-rs-twitter:before {
+  content: "\e9a7";
+}
 .icon-fi-rs-birth:before {
   content: "\e98b";
 }

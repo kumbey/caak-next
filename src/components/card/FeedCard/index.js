@@ -10,14 +10,13 @@ const Card = ({ verifiedUser, post }) => {
       <div className="feedCard relative flex flex-col justify-between mx-auto bg-white rounded-xl shadow-card mb-[24px]">
         <div className={"flex flex-col"}>
           <CardHeader post={post} />
+          <ImageCarousel
+            card
+            mediaContainerClassname={"w-full h-[462px]"}
+            postId={post.id}
+            items={post.items.items}
+          />
 
-          <ImageCarousel postId={post.id} items={post.items.items} />
-
-          {/*{video ? (*/}
-          {/*  <CardVideoContainer postId={post.id} files={post.items.items} />*/}
-          {/*) : (*/}
-          {/*  <CardImageContainer postId={post.id} files={post.items.items} />*/}
-          {/*)}*/}
         </div>
 
         <CardFooter
@@ -26,15 +25,7 @@ const Card = ({ verifiedUser, post }) => {
           title={post.title}
           totals={post.totals}
           items={post.items.items}
-          // setIsCommentOpen={setIsCommentOpen}
         />
-        {/*{isCommentOpen && (*/}
-        {/*  <CommentCard*/}
-        {/*    isCommentOpen={isCommentOpen}*/}
-        {/*    postItemId={post.items.items[0].id}*/}
-        {/*    maxComments={4}*/}
-        {/*  />*/}
-        {/*)}*/}
       </div>
     )
   );

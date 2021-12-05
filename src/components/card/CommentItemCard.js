@@ -1,7 +1,13 @@
 import Image from "next/image";
-import { getFileUrl, generateTimeAgo } from "../../utility/Util";
+import { generateTimeAgo, getFileUrl } from "../../utility/Util";
 
-const CommentItemCard = ({ children, subComment, comment }) => {
+const CommentItemCard = ({
+  children,
+  subComment,
+  comment,
+  setReply,
+  setCommentInputValue,
+}) => {
   return (
     <div
       className={`flex flex-row justify-between ${
@@ -39,7 +45,7 @@ const CommentItemCard = ({ children, subComment, comment }) => {
           </div>
 
           <div className={"flex flex-row items-center justify-between"}>
-            <div className={"w-[320px]"}>
+            <div className={"w-[320px] flex flex-col justify-center"}>
               <p
                 className={
                   "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px]"
@@ -47,6 +53,38 @@ const CommentItemCard = ({ children, subComment, comment }) => {
               >
                 {comment.comment}
               </p>
+              <div
+                  className={
+                    "flex flex-row text-caak-darkBlue items-center mt-[10px]"
+                  }
+              >
+                <div>
+                  <p className={"text-[13px]"}>
+                    {generateTimeAgo(comment.createdAt)}
+                  </p>
+                </div>
+                <div
+                    onClick={() => {
+                      setCommentInputValue(prev=> `@${comment.user.nickname} ${prev}`);
+                      setReply({
+                        isReplying: true,
+                        user_id: comment.user.id,
+                        user_nickname: `@${comment.user.nickname} `,
+                        comment_id: subComment ? subComment : comment.id
+                      });
+                    }}
+                    className={"flex flex-row item-center ml-[16px]"}
+                >
+                  <div
+                      className={
+                        "flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
+                      }
+                  >
+                    <span className={"icon-fi-rs-comment text-[14px]"} />
+                  </div>
+                  <p className={"text-[13px] cursor-pointer"}>Хариулах</p>
+                </div>
+              </div>
             </div>
             <div className={"flex flex-col text-caak-aleutian self-center"}>
               <div
@@ -58,31 +96,13 @@ const CommentItemCard = ({ children, subComment, comment }) => {
               </div>
               <div className={"flex items-center justify-center"}>
                 <p className={"text-13px tracking-[0.2px] leading-[16px]"}>
-                  {comment.totals.reactions}
+                  {comment.totals?.reactions}
                 </p>
               </div>
             </div>
           </div>
 
-          <div
-            className={
-              "flex flex-row text-caak-darkBlue items-center mt-[10px]"
-            }
-          >
-            <div>
-              <p className={"text-[13px]"}>
-                {generateTimeAgo(comment.createdAt)} мин
-              </p>
-            </div>
-            <div className={"flex flex-row item-center ml-[16px]"}>
-              <div
-                className={"flex items-center justify-center w-[18px] h-[18px]"}
-              >
-                <span className={"icon-fi-rs-comment text-[14px]"} />
-              </div>
-              <p className={"text-[13px]"}>Хариулах</p>
-            </div>
-          </div>
+
           {children}
         </div>
       </div>

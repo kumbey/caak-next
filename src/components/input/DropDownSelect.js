@@ -3,7 +3,14 @@ import Input from "./index";
 import { generateFileUrl } from "../../utility/Util";
 import { useEffect, useRef, useState } from "react";
 
-const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
+const DropDownSelect = ({
+  groupData,
+  open,
+  onToggle,
+  className,
+  onSelect,
+  setPost,
+}) => {
   const [filteredData, setFilteredData] = useState({
     adminModerator: [],
     member: [],
@@ -36,6 +43,15 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
 
     // eslint-disable-next-line
   }, [inputValue]);
+
+  const selectGroup = (item) => {
+    onSelect(item);
+    setPost((prev) => ({
+      ...prev,
+      group_id: item.id,
+      category_id: item.category_id,
+    }));
+  };
 
   return (
     <div
@@ -93,7 +109,7 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
               return (
                 <div
                   key={index}
-                  onClick={() => onSelect(item)}
+                  onClick={() => selectGroup(item)}
                   className={"flex flex-col"}
                 >
                   <div
@@ -131,7 +147,7 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
               return (
                 <div
                   key={index}
-                  onClick={() => onSelect(item)}
+                  onClick={() => selectGroup(item)}
                   className={"flex flex-col"}
                 >
                   <div

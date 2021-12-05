@@ -82,6 +82,7 @@ const SelectGroup = ({
           <span />
           {groupData.member && (
             <DropDownSelect
+              setPost={setPost}
               onSelect={setSelectedGroup}
               open={isGroupVisible}
               onToggle={() => setIsGroupVisible(!isGroupVisible)}

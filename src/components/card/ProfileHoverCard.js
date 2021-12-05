@@ -5,7 +5,7 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import {  getFileUrl } from "../../utility/Util";
+import { getFileUrl } from "../../utility/Util";
 import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
 import { useRouter } from "next/router";
@@ -44,7 +44,11 @@ export default function ProfileHoverCard({ userId }) {
     await API.graphql({
       query: createFollowedUsers,
       variables: {
-        input: { followed_user_id: user.id, user_id: profileUser.id },
+        input: {
+          followed_user_id: user.id,
+          user_id: profileUser.id,
+          id: `${profileUser.id}#${user.id}`,
+        },
       },
     });
     profileUser.totals.followers += 1;
@@ -63,8 +67,7 @@ export default function ProfileHoverCard({ userId }) {
       query: deleteFollowedUsers,
       variables: {
         input: {
-          followed_user_id: user.id,
-          user_id: userId,
+          id: `${profileUser.id}#${user.id}`,
         },
       },
     });
@@ -104,7 +107,7 @@ export default function ProfileHoverCard({ userId }) {
               src={
                 profileUser.pic
                   ? getFileUrl(profileUser.pic)
-                  : "https://picsum.photo/50x50"
+                  : "https://picsum.photos/50x50"
               }
             />
           </div>

@@ -1,13 +1,16 @@
 import CardVideoContainer from "../card/FeedCard/CardVideoContainer";
 import CardImageContainer from "../card/FeedCard/CardImageContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getFileUrl } from "../../utility/Util";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import ReactPlayer from "react-player";
+import Video from "../video";
 
-const ImageCarousel = ({ items, postId }) => {
+const ImageCarousel = ({ items, postId, mediaContainerClassname, card }) => {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchPosition, setTouchPosition] = useState(null);
-
   //Swipe left, right on mobile screen
   const handleTouchStart = (e) => {
     const touchDown = e.touches[0].clientX;
@@ -35,76 +38,112 @@ const ImageCarousel = ({ items, postId }) => {
     setTouchPosition(null);
   };
   const nextItem = () => {
+    if (!card) {
+      router.push(`/post/view/${postId}/${items[activeIndex].id}`, undefined, {
+        shallow: true,
+      });
+    }
     if (activeIndex < items.length - 1) {
       setActiveIndex(activeIndex + 1);
-    } else {
-      setActiveIndex(0);
     }
   };
   const prevItem = () => {
+    if (!card) {
+      router.push(`/post/view/${postId}/${items[activeIndex].id}`, undefined, {
+        shallow: true,
+      });
+    }
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
-    } else {
-      setActiveIndex(items.length - 1);
     }
   };
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.keyCode === 39) {
+        nextItem();
+      } else if (e.keyCode === 37) {
+        prevItem();
+      } else if (e.keyCode === 27) {
+        router.back();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+  });
+
   return (
     <div className={"relative h-full w-full overflow-hidden"}>
       <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
-        {items.map((item, index) => {
-          return (
-            <div
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              key={index}
-              className={"w-full h-full flex-shrink-0 transition duration-300"}
-              style={{
-                transform: `translateX(-${activeIndex * 100}%)`,
-              }}
-            >
+        <div
+          onClick={() => card && router.push(`/post/view/${postId}`)}
+          className={"flex flex-nowrap flex-row items-center h-full w-full"}
+        >
+          {items.map((item, index) => {
+            return (
               <div
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                key={index}
                 className={
-                  "relative flex justify-center items-center w-full h-[462px] bg-black"
+                  "w-full h-full flex-shrink-0 transition duration-300"
                 }
+                style={{
+                  transform: `translateX(-${activeIndex * 100}%)`,
+                }}
               >
-                {item.file.type.startsWith("video") ? (
-                  <CardVideoContainer postId={postId} file={item.file} />
-                ) : (
-                  <div
-                    className={
-                      "w-full h-full relative overflow-hidden bg-black"
-                    }
-                  >
+                <div
+                  className={`${
+                    mediaContainerClassname ? mediaContainerClassname : ""
+                  } relative flex justify-center items-center  bg-black`}
+                >
+                  {item.file.type.startsWith("video") ? (
+                    <Video src={getFileUrl(item.file)} />
+                  ) : (
+                    // <CardVideoContainer
+                    //   indicatorClassname={"top-[15px] right-[12px]"}
+                    //   postId={postId}
+                    //   file={item.file}
+                    // />
                     <div
-                      className={""}
-                      style={{
-                        width: "10%",
-                        height: "10%",
-                        filter: "blur(2px)",
-                        position: "absolute",
-                        transform: "scale(10)",
-                        left: "50%",
-                        top: "50%",
-                        opacity: "0.3",
-                        // zIndex: -1
-                      }}
+                      className={
+                        "w-full h-full relative overflow-hidden bg-black"
+                      }
                     >
-                      <div className={"relative w-full h-full"}>
-                        <Image
-                          objectFit={"cover"}
-                          layout={"fill"}
-                          alt={item.file.type}
-                          src={getFileUrl(item.file)}
-                        />
+                      <div
+                        className={""}
+                        style={{
+                          width: "10%",
+                          height: "10%",
+                          filter: "blur(2px)",
+                          position: "absolute",
+                          transform: "scale(10)",
+                          left: "50%",
+                          top: "50%",
+                          opacity: "0.3",
+                          // zIndex: -1
+                        }}
+                      >
+                        <div className={"relative w-full h-full"}>
+                          <Image
+                            objectFit={"cover"}
+                            layout={"fill"}
+                            alt={item.file.type}
+                            src={getFileUrl(item.file)}
+                          />
+                        </div>
                       </div>
+                      <CardImageContainer postId={postId} file={item.file} />
                     </div>
-                    <CardImageContainer postId={postId} file={item.file} />
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+
         {activeIndex > 0 && (
           <div
             onClick={() => prevItem()}

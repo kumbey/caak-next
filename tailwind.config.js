@@ -105,6 +105,11 @@ module.exports = {
           paperwhite: "#EFEFF2",
           cardinal: "#BE1E39",
           extraLight: "#F2F2F3",
+          emptiness: "#FCFCFC",
+          placeboblue: "#EDF5FE",
+          sweetfrosting: "#FFF7E5",
+          cookiedough: "#AC6D00",
+          errigalwhite: "#F0F1F4",
         },
         darkblue: {
           DEFAULT: "#6C7392",

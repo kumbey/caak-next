@@ -1,7 +1,7 @@
 import Button from "../button";
 import { useState } from "react";
 
-const FeedSortButtons = ({ direction, containerClassname, hide, items, iconSize, textClassname }) => {
+const FeedSortButtons = ({ direction, containerClassname, hide, items, iconSize, iconContainerSize, textClassname }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return !hide && (
@@ -26,7 +26,7 @@ const FeedSortButtons = ({ direction, containerClassname, hide, items, iconSize,
             icon={
               <div
                 className={
-                  `flex justify-center items-center ${iconSize ? iconSize : "w-[26px] h-[26px]"}  mr-px-6 ph:w-4 ph:mr-2`
+                  `flex justify-center items-center ${iconContainerSize ? iconContainerSize : "w-[26px] h-[26px]"}  mr-px-6 ph:w-4 ph:mr-2`
                 }
               >
                 <i

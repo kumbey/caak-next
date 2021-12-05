@@ -137,7 +137,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
     const arr = [...post.items];
     const currentItem = arr[activeIndex];
     currentItem.title = e.target.value;
-    setPost({ items: arr });
+    setPost({ ...post, items: arr });
   };
 
   const postTitleHandler = (e) => {

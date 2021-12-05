@@ -17,6 +17,14 @@ import {feedType} from "../src/components/navigation/sortButtonTypes";
 
 export async function getServerSideProps({ req, res }) {
   const { API, Auth } = withSSRContext({ req });
+  let user = null
+
+  try{
+    user = await Auth.currentAuthenticatedUser()
+  }catch (ex){
+    user = null
+  }
+
   const resp = await API.graphql({
     query: getPostByStatus,
     variables: {
@@ -24,64 +32,43 @@ export async function getServerSideProps({ req, res }) {
       status: "CONFIRMED",
       limit: 6,
     },
-    authMode: "AWS_IAM",
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
-  const fetchGroups = async (user) => {
+  const fetchGroups = async (user, role) => {
     try {
-      let myGroups = await API.graphql(
-        graphqlOperation(listGroupByUserAndRole, {
-          user_id: user.attributes.sub,
-          role: { eq: "MEMBER" },
-        })
-      );
-      myGroups = getReturnData(myGroups);
 
-      let adminGroups = await API.graphql(
-        graphqlOperation(listGroupByUserAndRole, {
-          user_id: user.attributes.sub,
-          role: { eq: "ADMIN" },
-        })
-      );
-      adminGroups = getReturnData(adminGroups);
+      if(!user){
+        return null
+      }
 
-      let moderatorGroups = await API.graphql(
-        graphqlOperation(listGroupByUserAndRole, {
-          user_id: user.attributes.sub,
-          role: { eq: "MODERATOR" },
-        })
-      );
-      moderatorGroups = getReturnData(moderatorGroups);
-
-      const adminModeratorGroups = adminGroups.items.concat(
-        moderatorGroups.items
-      );
-      return {
-        props: {
-          ssrData: {
-            posts: getReturnData(resp),
-            myGroups: myGroups.items,
-            adminModeratorGroups: adminModeratorGroups,
-          },
-        },
-      };
+      let retData = []
+      for(let i=0; i < role.length; i++){
+        const resp = await API.graphql(
+            graphqlOperation(listGroupByUserAndRole, {
+              user_id: user.attributes.sub,
+              role: { eq: role[i] },
+            })
+        );
+        retData = [...retData, ...getReturnData(resp)]
+      }
+      return retData;
     } catch (ex) {
       console.log(ex);
+      return null
     }
   };
-  try {
-    const user = await Auth.currentAuthenticatedUser();
-    return fetchGroups(user);
-  } catch (ex) {
-    console.log(ex);
-    return {
-      props: {
-        ssrData: {
-          posts: getReturnData(resp),
-        },
+
+  return {
+    props: {
+      ssrData: {
+        posts: getReturnData(resp),
+        myGroups: await fetchGroups(user, ["MEMBER"]),
+        adminModerator: await fetchGroups(user, ["ADMIN","MODERATOR"])
       },
-    };
-  }
+    },
+  };
+
 }
 
 const Feed = ({ ssrData, ...props }) => {

@@ -2,18 +2,17 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { useEffect, useState } from "react";
-import {useRouter} from "next/router";
-import {useUser} from "../../context/userContext";
-import {checkUser, getFileUrl, getReturnData} from "../../utility/Util";
-import {createComment} from "../../graphql-custom/comment/mutation";
+import { useRouter } from "next/router";
+import { useUser } from "../../context/userContext";
+import { getFileUrl, getReturnData } from "../../utility/Util";
+import { createComment } from "../../graphql-custom/comment/mutation";
 import Button from "../button";
 
 const AddComment = ({ activeIndex, post, addCommentRef }) => {
   const [loading, setLoading] = useState(false);
   const [commentInputValue, setCommentInputValue] = useState("");
-  const { user } = useUser();
-  const history = useRouter();
-  // const location = useLocation();
+  const { user, isLogged } = useUser();
+  const router = useRouter();
   const item = post.items.items[activeIndex];
 
   //Press Enter key to comment
@@ -34,7 +33,7 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
     if (commentInputValue) {
       setLoading(true);
       try {
-        if (checkUser(user)) {
+        if (isLogged) {
           const resp = await API.graphql(
             graphqlOperation(createComment, {
               input: {
@@ -50,9 +49,8 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
           setCommentInputValue("");
           item.comments.items.push(getReturnData(resp, false));
         } else {
-          history.push({
+          router.push({
             pathname: "/login",
-            state: { background: { location } },
           });
         }
         setLoading(false);
@@ -68,7 +66,7 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
         "bg-white sticky bottom-0 right-0 left-0 flex flex-row justify-between items-center py-3 pl-c11 z-2"
       }
     >
-      {checkUser(user) ? (
+      {isLogged ? (
         <img
           className="border-caak-primary w-10 h-10 border-2 rounded-full"
           src={
@@ -90,8 +88,8 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
           placeholder={"Сэтгэгдэл үлдээх"}
           onChange={(e) => setCommentInputValue(e.target.value)}
           onFocus={() =>
-            !checkUser(user) &&
-            history.push({
+            !isLogged &&
+            router.push({
               pathname: "/login",
               state: { background: location },
             })

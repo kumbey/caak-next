@@ -40,7 +40,7 @@ const DefaultAddPostLayout = ({ children, selectedGroup }) => {
           {selectedGroup && (
             <GroupInfoCard
               containerClassname={"mb-[16px]"}
-              groupId={"e557d20a-b3d1-4e66-89a9-34814992ec2b"}
+              groupId={selectedGroup.id}
             />
           )}
 

@@ -8,31 +8,16 @@ const DropDown = ({ open, onToggle, className, content, arrow }) => {
         className={`dropdown py-2 shadow-dropdown ${className && className}`}
       >
         {content ? content : null}
-        {/*{items ? (*/}
-        {/*  <div className={"dropdown-item-wrapper"}>*/}
-        {/*    {items.map((item) => (*/}
-        {/*      <Link*/}
-        {/*        className={"dropdown-items"}*/}
-        {/*        key={item.name}*/}
-        {/*        to={item.href.replace(*/}
-        {/*          ":userId",*/}
-        {/*          checkUser(user) && user.sysUser.id*/}
-        {/*        )}*/}
-        {/*      >*/}
-        {/*        {item.icon}*/}
-
-        {/*        <p>{item.name}</p>*/}
-        {/*      </Link>*/}
-        {/*    ))}*/}
-        {/*  </div>*/}
-        {/*) : null}*/}
-
         <div
-          className={`absolute  inset-0 z-[-1] flex  ${
-            arrow === "bottom"
-              ? "rotate-180 justify-start mr-6 -mb-2"
-              : "justify-end mr-6 -mt-2"
-          }`}
+          className={`absolute  inset-0 z-[-1] flex  
+          ${
+            arrow === "bottomRight" ? "rotate-180 justify-start mr-6 -mb-2" : ""
+          } 
+          ${arrow === "topLeft" ? "justify-start ml-6 -mt-2" : ""} 
+          ${arrow === "centerTop" ? "justify-center -mt-2" : ""}
+          ${arrow === "centerBottom" ? "rotate-180 justify-center -mb-2" : ""}
+          ${arrow === "topRight" ? "justify-end mr-6 -mt-2" : ""}
+          ${arrow === "bottomLeft" ? "rotate-180 justify-end ml-6 -mb-2" : ""}`}
         >
           <svg
             className={"text-right"}

@@ -188,29 +188,29 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             "flex flex-col justify-between text-caak-generalblack mb-[23px]"
           }
         >
-          <div className={"flex flex-row items-center mb-[5px]"}>
+          <div className={"flex flex-row items-center mb-[5px] text-caak-darkBlue"}>
             <div
               className={"flex justify-center items-center w-[22px] h-[22px]"}
             >
               <span
                 className={
-                  "icon-fi-rs-world text-[18px] text-caak-generalblack"
+                  "icon-fi-rs-birth text-[20px]"
                 }
               />
             </div>
             <div className={"ml-[8px]"}>
-              <p className={"text-[14px] tracking-[0.21px] leading-[16px]"}>
+              <p className={"text-[14px] tracking-[0.21px]  leading-[16px]"}>
                 {`${extractDate(group.createdAt).year}.${
                   extractDate(group.createdAt).month
                 }.${extractDate(group.createdAt).day}`}
               </p>
             </div>
           </div>
-          <div className={"flex flex-row items-center"}>
+          <div className={"flex flex-row items-center text-caak-darkBlue"}>
             <div
               className={"flex justify-center items-center w-[22px] h-[22px]"}
             >
-              <span className={"icon-fi-rs-world text-[18px]"} />
+              <span className={"icon-fi-rs-globe text-[18px]"} />
             </div>
             <div className={"ml-[8px]"}>
               <p className={"text-[14px] tracking-[0.21px] leading-[16px]"}>

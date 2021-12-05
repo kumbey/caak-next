@@ -99,7 +99,8 @@ const CardFooter = ({ totals, items, postId, reacted }) => {
         await API.graphql(
           graphqlOperation(createReaction, {
             input: {
-              id: postId,
+              id: `${postId}#${user.id}`,
+              item_id: postId,
               on_to: "POST",
               type: "CAAK",
               user_id: user.id,
@@ -110,8 +111,7 @@ const CardFooter = ({ totals, items, postId, reacted }) => {
         await API.graphql(
           graphqlOperation(deleteReaction, {
             input: {
-              id: postId,
-              user_id: user.id,
+              id: `${postId}#${user.id}`,
             },
           })
         );

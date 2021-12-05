@@ -33,3 +33,16 @@ export const searchResultType = [
     icon: "icon-fi-rs-group",
   },
 ];
+
+export const userProfileType = [
+  {
+    id: 0,
+    type: "Пост",
+    icon: "icon-fi-rs-grid",
+  },
+  {
+    id: 1,
+    type: "Видео",
+    icon: "icon-fi-rs-play",
+  },
+];

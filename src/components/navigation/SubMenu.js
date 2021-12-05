@@ -10,10 +10,9 @@ import { useRouter } from "next/router";
 import NotificationDropDown from "./NotificationDropDown";
 
 const SubMenu = ({ params }) => {
- 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
-  const history = useRouter()
+  const history = useRouter();
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
@@ -28,9 +27,10 @@ const SubMenu = ({ params }) => {
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    setMounted(true)
-  }, [])
-  return mounted&& (
+    setMounted(true);
+  }, []);
+  return (
+    mounted &&
     ((isLogged && params.type === "mobile") ||
       (!isLogged && params.type === "mobile") ||
       (isLogged && params.type === "web")) && (
@@ -55,9 +55,8 @@ const SubMenu = ({ params }) => {
             icon={<span className={"icon-fi-rs-add text-22px"} />}
             onClick={() =>
               history.push({
-                pathname: isLogged ? "/addpost" : "/login",
-                // state: { background: location },
-              }, "add/post/new")
+                pathname: isLogged ? "/post/add" : "/login",
+              })
             }
           />
         </div>
@@ -116,7 +115,7 @@ const SubMenu = ({ params }) => {
         </div>
         <div
           className={
-            "relative cursor-pointer flex items-center justify-center w-[36px] h-[36px]"
+            "relative cursor-pointer flex items-center justify-center w-[36px] h-[36px] flex-shrink-0"
           }
         >
           <DropDown
@@ -130,13 +129,9 @@ const SubMenu = ({ params }) => {
               ref={menuRef}
               onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
               alt={user.nickname}
-              src={
-                user.pic
-                  ? getFileUrl(user.pic)
-                  : Dummy.img("50x50")
-              }
+              src={user.pic ? getFileUrl(user.pic) : Dummy.img("50x50")}
               className={
-                "block mr-0 w-[36px] h-[36px] md:w-px-45 md:h-px-45 object-cover rounded-full"
+                "block mr-0 w-[36px] h-[36px] object-cover rounded-full"
               }
             />
           ) : (

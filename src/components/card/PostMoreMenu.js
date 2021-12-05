@@ -41,6 +41,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
         input: {
           group_id: groupId,
           user_id: user.id,
+          id: `${groupId}#${user.id}`,
           role: "MEMBER",
         },
       })
@@ -51,7 +52,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
   const leaveGroup = async () => {
     await API.graphql(
       graphqlOperation(deleteGroupUsers, {
-        input: { group_id: groupId, user_id: user.id },
+        input: { id: `${groupId}#${user.id}` },
       })
     );
     setGroupFollowed(false);
@@ -64,7 +65,6 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
           !isLogged
             ? history.push({
                 pathname: `/login`,
-                state: { background: location },
               })
             : groupFollowed
             ? leaveGroup()
@@ -83,7 +83,6 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
           onClick={() =>
             history.push({
               pathname: `/post/edit/${postId}`,
-              // state: { background: location },
             })
           }
         >

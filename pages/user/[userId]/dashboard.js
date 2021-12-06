@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import API from "@aws-amplify/api";
 import StatsItem from "../../../src/components/stats";
 import { withSSRContext } from "aws-amplify";
 import { getReturnData } from "../../../src/utility/Util";
@@ -8,6 +7,7 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
+import API from "@aws-amplify/api";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
@@ -17,9 +17,11 @@ import {
 import FollowerList from "../../../src/components/list/FollowerList";
 import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
+import PendingPost from "../../../src/components/PendingPost/PendingPost";
 
 export async function getServerSideProps({ req, query }) {
   const { API } = withSSRContext({ req });
+
   const resp = await API.graphql({
     query: getPostByUser,
     variables: {
@@ -29,6 +31,17 @@ export async function getServerSideProps({ req, query }) {
       limit: 5,
     },
   });
+
+  const pendingPosts = await API.graphql({
+    query: getPostByUser,
+    variables: {
+      user_id: query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 5,
+    },
+  });
+
   const userList = await API.graphql({
     query: listUsersbyFollowing,
     variables: {
@@ -57,6 +70,7 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
+        pendingPosts: getReturnData(pendingPosts),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
         userTotals: getReturnData(userTotals),
@@ -79,6 +93,8 @@ const Dashboard = ({ ssrData, ...props }) => {
   );
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
+  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
+  console.log(pendingPosts);
   let totalReaction =
     userInfo?.comment_reactions +
     userInfo?.post_reactions +
@@ -137,8 +153,8 @@ const Dashboard = ({ ssrData, ...props }) => {
     },
     {
       id: 3,
-      name: "Статистик",
-      icon: "icon-fi-rs-statistic-o",
+      name: "Хүлээгдэж буй постууд",
+      icon: "icon-fi-rs-pending",
     },
   ];
 
@@ -264,7 +280,9 @@ const Dashboard = ({ ssrData, ...props }) => {
             </div>
           </div>
           <div
-            className={"flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] "}
+            className={
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px]"
+            }
           >
             {activeIndex === 0
               ? posts.length > 0 &&
@@ -280,7 +298,7 @@ const Dashboard = ({ ssrData, ...props }) => {
                 })
               : null}
             {activeIndex === 1 ? (
-              <div className=" flex flex-row flex-wrap px-[30px] py-[30px]">
+              <div className=" flex flex-row flex-wrap ">
                 {followedUsers.map((data, index) => {
                   return (
                     <FollowerList
@@ -306,6 +324,22 @@ const Dashboard = ({ ssrData, ...props }) => {
                   );
                 })
               : null}
+            <div className=" flex flex-col items-center max-w-[877px] justify-center">
+              {activeIndex === 3
+                ? pendingPosts.length > 0 &&
+                  pendingPosts.map((pendingPost, index) => {
+                    return (
+                      <>
+                        <PendingPost
+                          key={index}
+                          imageSrc={pendingPost?.items?.items[0]?.file}
+                          pendingPost={pendingPost}
+                        />
+                      </>
+                    );
+                  })
+                : null}
+            </div>
           </div>
         </div>
       </div>

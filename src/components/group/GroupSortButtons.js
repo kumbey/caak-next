@@ -59,39 +59,31 @@ const GroupSortButtons = ({
               </Button>
             );
           })}
-
-          <div></div>
         </div>
-        <div
-          className={`flex mb-[19px] bg-white rounded-lg ${
-            direction === "column" ? "flex-col" : "flex-row"
-          } ${containerClassname ? containerClassname : ""}`}
-        >
-          {items2.map(({ icon, id }) => {
-            return (
-              <Button
-                key={id}
-                onClick={() => setActiveView(id)}
-                className={`mx-[2px] ${
-                  direction === "column" ? "w-[20px] h-12" : "w-auto h-9"
-                } min-w-max transparent mb-1`}
-                iconPosition={"left"}
-                icon={
-                  <div
-                    className={`flex justify-center items-center ${
-                      iconSize ? iconSize : "w-[26px] h-[26px]"
-                    }  `}
-                  >
-                    <i
-                      className={`${
-                        id === activeView ? `${icon}-f` : `${icon}-o`
-                      } ${iconSize ? iconSize : "text-[26px]"} ph:text-15px`}
-                    />
-                  </div>
-                }
-              ></Button>
-            );
-          })}
+        <div className="flex w-[80px] mb-[19px]  items-center justify-center bg-white rounded-lg">
+          <div
+            className={`flex  ${
+              direction === "column" ? "flex-col" : "flex-row"
+            } ${containerClassname ? containerClassname : ""}`}
+          >
+            {items2.map(({ icon, id }) => {
+              return (
+                <div
+                  className={`mx-[5px] ${
+                    id === activeView ? "bg-white  " : "bg-transparent "
+                  }`}
+                  key={id}
+                  onClick={() => setActiveView(id)}
+                >
+                  <span
+                    className={`${
+                      id === activeView ? `${icon}-f` : `${icon}-o`
+                    } ${iconSize ? iconSize : "text-[26px]"} ph:text-15px`}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     )

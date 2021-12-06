@@ -5,8 +5,9 @@ import Divider from "../divider";
 import Button from "../../components/button";
 
 const DashList = ({ imageSrc, post, ...props }) => {
+  console.log(post);
   return (
-    <div className="mt-[30px]  mx-[30px] ">
+    <div className=" ">
       <div className="relative flex items-center ">
         <div className="flex w-[400px] items-center">
           <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
@@ -39,11 +40,11 @@ const DashList = ({ imageSrc, post, ...props }) => {
         <div className="flex text-sm text-caak-darkBlue">
           <div className="flex items-center mr-5">
             <span className="icon-fi-rs-rock-i text-20px mr-2 cursor-pointer" />
-            <p>23</p>
+            <p>{post.totals.reactions}</p>
           </div>
           <div className="flex items-center mr-5">
             <span className="icon-fi-rs-comment-f text-20px mr-2 cursor-pointer" />
-            <p>14</p>
+            <p>{post.totals.comments}</p>
           </div>
           <div className="flex items-center">
             <span className="icon-fi-rs-share text-20px mr-2 cursor-pointer" />

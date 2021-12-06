@@ -14,7 +14,7 @@ export const feedType = [
     type: "Саак",
     icon: "icon-fi-rs-caak",
   },
-]
+];
 
 export const searchResultType = [
   {
@@ -44,7 +44,7 @@ export const userProfileType = [
     id: 1,
     type: "Видео",
     icon: "icon-fi-rs-play",
-  }
+  },
 ];
 export const GroupType = [
   {
@@ -66,14 +66,10 @@ export const GroupType = [
 export const GroupViewType = [
   {
     id: 0,
-    icon: "icon-fi-rs-new",
-
-    // icon: "icon-fi-rs-list-card",
+    icon: "icon-fi-rs-list-card",
   },
   {
     id: 1,
-    icon: "icon-fi-rs-flash",
-
-    // icon: "icon-fi-list-grid",
+    icon: " icon-fi-rs-list-grid",
   },
 ];

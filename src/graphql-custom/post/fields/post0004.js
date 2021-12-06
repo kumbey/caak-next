@@ -67,8 +67,14 @@ const post0004 = /* GraphQL */ `
     }
 
     totals {
-      reactions
       comments
+      createdAt
+      post_id
+      reactions
+      search_id
+      shares
+      updatedAt
+      views
     }
     reacted
     items {

@@ -1,6 +1,3 @@
-import { useUser } from "../../context/userContext";
-import Image from "next/image";
-import { getFileUrl } from "../../utility/Util";
 import Divider from "../divider";
 import { extractDate } from "../../utility/Util";
 import Button from "../button";
@@ -18,11 +15,15 @@ const GroupInfo = ({ groupData }) => {
         </div>
         <div className="flex mt-[22px]">
           <div className="flex flex-col mr-[40px]">
-            <p className="text-17px">2434</p>
+            <p className="text-17px font-inter font-medium text-caak-generalblack">
+              2434
+            </p>
             <p className="text-14px text-caak-darkBlue">Аура</p>
           </div>
           <div className="flex flex-col">
-            <p className="text-17px">{groupData.totals.member}</p>
+            <p className="text-17px font-inter font-medium text-caak-generalblack">
+              {groupData.totals.member}
+            </p>
             <p className="text-14px text-caak-darkBlue">Гишүүн</p>
           </div>
         </div>
@@ -30,13 +31,13 @@ const GroupInfo = ({ groupData }) => {
           className={"h-[1px] mt-[21px] mb-[21px]"}
           color={"border-caak-titaniumwhite"}
         />
-        <div className="flex flex-col">
+        <div className="flex flex-col ">
           <div className="flex mb-2 text-caak-darkBlue items-center">
-            <span className="icon-fi-rs-birth  mr-2" />
+            <span className="icon-fi-rs-birth text-xl mr-2 pb-1" />
             <p className="text-14px ">{`${createdAt.year}.${createdAt.month}.${createdAt.day}`}</p>
           </div>
           <div className="flex text-caak-darkBlue items-center">
-            <span className="icon-fi-rs-globe mr-2" />
+            <span className="icon-fi-rs-globe text-xl mr-2" />
             <p className="text-14px ">Нээлттэй бүлэг</p>
           </div>
         </div>
@@ -46,7 +47,7 @@ const GroupInfo = ({ groupData }) => {
         />
         <div className="flex flex-col">
           <div className="text-caak-darkBlue text-sm">Грүппын төрөл</div>
-          <div className="flex items-center justify-center w-[110px] mt-2.5 h-[35px] rounded-full border-2 border-caak-liquidnitrogen">
+          <div className="flex items-center justify-center  flex-shrink-1 mt-2.5 h-[35px] rounded-full border-2 border-caak-liquidnitrogen">
             <span className={`${groupData.category.icon} mr-2`} />
             <p className="font-medium font-inter text-15px">
               {groupData.category.name}

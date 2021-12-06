@@ -37,7 +37,7 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
         <div className=" mr-3">
           <div className={"w-[64px] h-[64px] "}>
             <Image
-              className=" bg-white rounded-3xl"
+              className=" bg-white rounded-md"
               src={!imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)}
               width={64}
               height={64}
@@ -78,7 +78,7 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
           <Button
             loading={loading}
             onClick={() => postHandler(post.id, "CONFIRMED")}
-            className="bg-caak-bleudefrance text-15px w-full mr-2.5 text-white"
+            className="bg-caak-cardinal text-15px w-full mr-2.5 text-white"
           >
             Зөвшөөрөх
           </Button>

@@ -146,7 +146,13 @@ const CardHeader = ({
               : "text-15px leading-[18px] tracking-[0.23px]"
           }`}
         >
-          {post.title}
+          {viewPost ? (
+            post.title
+          ) : (
+            <Link href={`/post/view/${post.id}`}>
+              <a>{post.title}</a>
+            </Link>
+          )}
         </div>
       )}
     </div>

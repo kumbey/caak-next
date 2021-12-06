@@ -17,7 +17,10 @@ const post0004 = /* GraphQL */ `
       items {
         comment
         parent_id
+        post_item_id
+        post_id
         createdAt
+        reacted
         id
         totals {
           reactions
@@ -80,6 +83,9 @@ const post0004 = /* GraphQL */ `
         comments {
           items {
             comment
+            id
+            parent_id
+            reacted
             createdAt
             totals {
               reactions

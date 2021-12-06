@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { getFileUrl } from "../../utility/Util";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
@@ -8,11 +8,8 @@ import { useUser } from "../../context/userContext";
 const CommentSection = ({ post }) => {
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
-
   const { user } = useUser();
-  useEffect(() => {
-    console.log(reply);
-  }, [reply]);
+
   return (
     <div
       className={"flex flex-col bg-white py-[16px] px-[29px] rounded-b-square"}
@@ -54,11 +51,13 @@ const CommentSection = ({ post }) => {
 
       <CommentCardNew
         commentInputValue={commentInputValue}
-        setReply={setReply}
-        reply={reply}
         setCommentInputValue={setCommentInputValue}
-        initialComments={post.comments.items}
-        postId={post.id}
+        reply={reply}
+        setReply={setReply}
+        setup={{
+          id: post.id,
+          type: "POST"
+        }}
       />
     </div>
   );

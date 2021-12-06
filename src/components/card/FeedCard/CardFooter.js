@@ -14,6 +14,7 @@ import DropDown from "../../navigation/DropDown";
 import Image from "next/image";
 import FacebookIcon from "../../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../../public/assets/images/Twitter-Color.svg";
+import AnimatedCaakButton from "../../button/animatedCaakButton";
 
 const postShareMenu = [
   {
@@ -171,18 +172,19 @@ const CardFooter = ({ totals, items, postId, reacted }) => {
         >
           <div className={"flex flex-row"}>
             <div
-              onClick={() => localHandler()}
+              // onClick={() => localHandler()}
               className={
                 "flex flex-row group items-center mr-4 cursor-pointer rounded-full"
               }
             >
-              <div
-                className={`caak-button ${
-                  shake ? `shake` : null
-                } w-[24px] h-[24px]`}
-              >
-                <span className={`${isReacted ? "icon-fi-rs-rock-f text-caak-uclagold" : "icon-fi-rs-rock-i"}  text-[23px]`}/>
-              </div>
+              <AnimatedCaakButton reacted={isReacted} totals={totals} postId={postId}/>
+              {/*<div*/}
+              {/*  className={`caak-button ${*/}
+              {/*    shake ? `shake` : null*/}
+              {/*  } w-[24px] h-[24px]`}*/}
+              {/*>*/}
+              {/*  <span className={`${isReacted ? "icon-fi-rs-rock-f text-caak-uclagold" : "icon-fi-rs-rock-i"}  text-[23px]`}/>*/}
+              {/*</div>*/}
               <span className={"text-15px text-caak-generalblack ml-[6px]"}>
                 {totals.reactions + " саак"}
               </span>
@@ -197,7 +199,7 @@ const CardFooter = ({ totals, items, postId, reacted }) => {
                 }
               />
               <span className={"text-15px text-caak-generalblack"}>
-                {totalComment + " сэтгэгдэл"}
+                {totals.comments + " сэтгэгдэл"}
               </span>
             </div>
           </div>

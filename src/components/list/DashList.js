@@ -7,7 +7,7 @@ import Button from "../../components/button";
 const DashList = ({ imageSrc, post, ...props }) => {
   console.log(post);
   return (
-    <div className="mt-[30px]  mx-[30px] ">
+    <div className=" ">
       <div className="relative flex items-center ">
         <div className="flex w-[400px] items-center">
           <div className={"w-[96px] h-[96px] mr-[12px] relative"}>

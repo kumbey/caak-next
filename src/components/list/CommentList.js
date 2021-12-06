@@ -7,7 +7,7 @@ import Divider from "../divider";
 const CommentList = ({ comment, imageSrc, ...props }) => {
   const createdAt = extractDate(comment.createdAt);
   return (
-    <div className="mt-[30px]  mx-[30px] w-full">
+    <div className="  w-full">
       <div className="relative flex items-center ">
         <div className="flex w-[300px] items-center">
           <div className={"w-[96px] h-[96px] mr-[12px] relative"}>

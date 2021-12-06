@@ -1,12 +1,26 @@
 import { useState } from "react";
 import Image from "next/image";
 import successImg from "/public/assets/images/Successfully.svg";
-import Button from "../../src/components/button";
+import Button from "../button";
 import { useRouter } from "next/router";
+import { _objectWithoutKeys } from "../../utility/Util";
 
 const Completed = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const hide = () => {
+    if(router.query.isModal){
+      router.replace({
+        pathname: router.pathname,
+        query: _objectWithoutKeys(...router.query, ["signInUp"])
+      }, undefined, {shallow: true, scroll: false})
+    }else{
+      router.replace("/", undefined, {
+        shallow: true, scroll: false
+      })
+    }
+  }
 
   return (
     <div className={`backdrop flex justify-center items-center`}>
@@ -27,7 +41,7 @@ const Completed = () => {
         <div className="my-[40px] px-[40px] ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between ">
           <Button
             loading={loading}
-            onClick={() => router.back()}
+            onClick={hide}
             className={
               "disabled: rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
             }

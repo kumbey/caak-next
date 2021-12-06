@@ -106,7 +106,7 @@ const PostItem = ({ ssrData }) => {
 
   const back = () => {
     if (router.query && router.query.isModal) {
-      router.replace(`/post/view/${post.id}`, undefined, { shallow: true });
+      router.replace(`/post/view/${post.id}`, undefined, { shallow: true, scroll: false});
     } else {
       router.replace(`/post/view/${post.id}`);
     }

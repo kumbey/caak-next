@@ -90,7 +90,7 @@ function UserProvider(props) {
       setIsLogged(false);
     }
     // eslint-disable-next-line
-  }, [user, cognitoUser]);
+  }, [cognitoUser, user]);
 
   useEffect(() => {
     if (updatedUser) {
@@ -130,8 +130,33 @@ function UserProvider(props) {
       let resp = await API.graphql(
         graphqlOperation(getUser, { id: usr.attributes.sub })
       );
-      console.log(resp)
-      setUser(resp.data.getUser);
+
+      resp = getReturnData(resp)
+      if(!resp){
+        router.push({
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "information",
+            step: 3
+          }
+        }, "/signInUp/information", {shallow : true, scroll: false})
+
+      }else{
+        if(resp.category && resp.category.items.length <= 0){
+          router.push({
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              signInUp: "intrst",
+              step: 3
+            }
+          }, "/signInUp/intrst", {shallow : true, scroll: false})
+          return false
+        }
+        setUser(resp);
+      }
+      
     } else {
       setIsLogged(false);
       setUser(null);

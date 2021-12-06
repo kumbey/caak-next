@@ -169,12 +169,15 @@ export default function NavBar() {
                     skin={"secondary"}
                     className={"mr-2"}
                     onClick={() =>
-                      router.push(
-                        `?signInUp=signIn&isModal=true`,
-                        `/signInUp/signIn`, {shallow: true}
-                      )
+                      router.push({
+                        pathname: router.pathname,
+                        query: {
+                          ...router.query,
+                          signInUp: "signIn",
+                          isModal: true
+                        }
+                      }, `/signInUp/signIn`, {shallow: true, scroll: false})
                     }
-                    // onClick={() => history.replace({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.c
                   >
                     Нэвтрэх
                   </Button>
@@ -183,10 +186,14 @@ export default function NavBar() {
                     skin={"primary"}
                     className={"mr-2"}
                     onClick={() =>
-                      router.push(
-                        `?signInUp=signUp&isModal=true`,
-                        `/signInUp/signUp` , {shallow: true}
-                      )
+                      router.push({
+                        pathname: router.pathname,
+                        query: {
+                          ...router.query,
+                          signInUp: "signUp",
+                          isModal: true
+                        }
+                      }, `/signInUp/signUp`, {shallow: true, scroll: false})
                     }
                   >
                     Бүртгүүлэх

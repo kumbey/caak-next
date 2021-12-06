@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import SignInUp from "../../../pages/signInUp/[signInUp]";
-import StepIn from "/pages/signInUp/stepIn";
-import StepUp from "/pages/signInUp/stepUp";
-import Completed from "../../../pages/signInUp/completed";
-import Confirmation from "../../components/register/Confirmation";
+import In from "/pages/signInUp/in";
+import Up from "/pages/signInUp/up";
+import Complete from "../../../pages/signInUp/complete";
+import Confirm from "../../../pages/signInUp/confirm";
 import { _modalisOpen } from "../../utility/Util";
 import ViewPostBlogItem from "../card/ViewPostBlogItem";
+import Information from "../../../pages/signInUp/information";
+import Intrst from "../../../pages/signInUp/intrst";
 
 const modals = [
   {
@@ -24,41 +26,61 @@ const modals = [
   },
   {
     name: "signInUp",
-    comp: StepUp,
+    comp: Up,
     conditions: [
       {
         key: "signInUp",
-        value: "stepUp",
+        value: "up",
       },
     ],
   },
   {
     name: "signInUp",
-    comp: StepIn,
+    comp: In,
     conditions: [
       {
         key: "signInUp",
-        value: "stepIn",
+        value: "in",
       },
     ],
   },
   {
     name: "signInUp",
-    comp: Completed,
+    comp: Complete,
     conditions: [
       {
         key: "signInUp",
-        value: "completed",
+        value: "complete",
       },
     ],
   },
   {
     name: "signInUp",
-    comp: Confirmation,
+    comp: Information,
     conditions: [
       {
         key: "signInUp",
-        value: "confirmation",
+        value: "information",
+      },
+    ],
+  },
+  {
+    name: "signInUp",
+    comp: Intrst,
+    conditions: [
+      {
+        key: "signInUp",
+        value: "intrst",
+      },
+    ],
+  },
+  {
+    name: "signInUp",
+    comp: Confirm,
+    conditions: [
+      {
+        key: "signInUp",
+        value: "confirm",
       },
     ],
   },

@@ -10,6 +10,7 @@ import Modals from "../src/components/modals";
 Amplify.configure({ ...awsExports, ssr: true });
 Storage.configure({ level: "public" });
 
+
 function MyApp({ Component, pageProps }) {
   return (
     <WrapperProvider>

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import useScrollBlock from "../../../hooks/useScrollBlock";
-import { _modalisOpen } from "../../../utility/Util";
+import { _modalisOpen, _objectWithoutKeys } from "../../../utility/Util";
 import Stepper from "../../stepper";
 import Link from "next/link";
 
@@ -10,6 +10,8 @@ const StepModalLayout = ({
   activeStep,
   maxStep,
   configure,
+  onCloseKeys,
+  onBack,
   ...props
 }) => {
   const router = useRouter();
@@ -20,14 +22,17 @@ const StepModalLayout = ({
     blockScroll();
     return () => allowScroll();
   }, [allowScroll, blockScroll]);
-
+  
   const close = () => {
-    if(router.query && router.query.isModal){
-      router.replace(router.pathname, undefined, {shallow: true});
+    if(router.query.isModal){
+      router.replace({
+        pathname: router.pathname,
+        query: _objectWithoutKeys(router.query, [ ...onCloseKeys, "isModal"])
+      }, undefined, {shallow : true, scroll: false})
     }else{
-      router.replace("/");
+      router.replace("/", undefined, {shallow : true, scroll: false})
     }
-  };
+  }
   
   return (
     <div className={`backdrop ${props.className}`}>
@@ -37,26 +42,12 @@ const StepModalLayout = ({
             {configure.back && (
               <div
                 className={`w-[18px] h-[15px]`}
-                onClick={() =>
-                  router.replace(
-                    `?signInUp=${
-                      type === "signUp" || type === "stepUp"
-                        ? "signUp"
-                        : "signIn"
-                    }&isModal=false`,
-                    `/signInUp/${
-                      type === "signUp" || type === "stepUp"
-                        ? "signUp"
-                        : "signIn"
-                    }`,
-                    {shallow : true}
-                  )
-                }
+                onClick={onBack}
               >
                 <span className="cursor-pointer icon-fi-rs-back-2 text-18px text-caak-extraBlack pr-1" />
               </div>
             )}
-            {type === "stepUp" ? (
+            {!configure.hideCount ? (
               <div className="absolute right-1/2">
                 <p className="text-sm">
                   {activeStep}/{maxStep}
@@ -64,11 +55,11 @@ const StepModalLayout = ({
               </div>
             ) : null}
 
-            <div className="absolute right-4" onClick={() => close()}>
+            <div className="absolute right-4" onClick={close}>
               <span className="icon-fi-rs-close  text-caak-generalblack text-14px bg-caak-titaniumwhite w-c3 h-c3 flex items-center justify-center rounded-full cursor-pointer" />
             </div>
           </div>
-          {type === "stepUp" ? (
+          {!configure.hideProgress? (
             <Stepper
               currentStep={activeStep}
               maxStep={maxStep}
@@ -101,7 +92,7 @@ const StepModalLayout = ({
                       type === "stepUp" ? "signIn" : "signUp"
                     }&isModal=true`,
                     `/signInUp/${type === "stepUp" ? "signIn" : "signUp"}`,
-                    {shallow : true}
+                    {shallow : true, scroll: false}
                   )
                 }
                 className="text-caak-primary text-15px font-bold cursor-pointer"

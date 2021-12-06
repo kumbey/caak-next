@@ -2,20 +2,18 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Button from "../button";
 import OtpInput from "../input/OtpInput";
-import { mailNumber } from "../../utility/Util";
 import Consts from "/src/utility/Consts";
 import Validate from "../../utility/Validate";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import Auth from "@aws-amplify/auth";
 
-const Confirmation = ({ activeType, nextStep }) => {
+const Confirmation = ({ usr }) => {
   const router = useRouter();
 
-  const { lsGet } = useLocalStorage("session");
-  const usr = lsGet(Consts.SS_UserSignUp);
+  const { lsRemove } = useLocalStorage("session");
 
-  const [username] = useState(usr ? usr.usr.username : router.query.username);
-  const [password] = useState(usr ? usr.usr.password : router.query.password);
+  const [username] = useState(usr ? usr.user.username : "");
+  const [password] = useState(usr ? usr.password : "");
 
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
@@ -58,10 +56,27 @@ const Confirmation = ({ activeType, nextStep }) => {
       setLoading(true);
       await Auth.confirmSignUp(username, code);
       await Auth.signIn(username, password);
-      // router.replace(`?signInUp=stepIn&isModal=true`, `signInUp/stepIn`);
+      lsRemove(Consts.SS_UserSignUp)
+      
+      if(router.query.isModal){
+        router.replace({
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "information",
+          },   
+        }, "/signInUp/information", {shallow: true, scroll: false})
+      }else{
+        router.replace("/signInUp/information", undefined, {
+          shallow: true,
+          scroll: false
+        })
+      }
+
       setLoading(false);
     } catch (ex) {
       setLoading(false);
+      console.log(JSON.stringify(ex))
       if (ex.code === "CodeMismatchException") {
         setErrors({
           ...errors,
@@ -76,22 +91,13 @@ const Confirmation = ({ activeType, nextStep }) => {
     }
   };
 
-  const submitHandler = () => {
-    handleSubmit(doSubmit);
-    if (!loading) {
-      if (nextStep) {
-        nextStep();
-      }
-    }
-  };
-
   useEffect(() => {
     const timer =
       counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     return () => clearInterval(timer);
   }, [counter]);
 
-  return (
+  return usr ? (
     <div className="ph:w-full ">
       {" "}
       <div
@@ -102,16 +108,16 @@ const Confirmation = ({ activeType, nextStep }) => {
         Баталгаажуулах
       </div>
       <div className="text-center text-15px text-caak-darkBlue ">
-        {activeType === "phone"
-          ? "Таны утасны дугаар болох "
-          : "Таны имэйл хаяг болох "}
-        {username ? mailNumber(username.replace("+976", "")) : null} руу <br />
+        {usr && usr.codeDeliveryDetails.AttributeName === "email"
+          ? "Таны имэйл хаяг болох "
+          : "Таны утасны дугаар болох "}
+        {usr.codeDeliveryDetails.Destination} руу <br />
         баталгаажуулах код илгээгдлээ!
       </div>
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="mt-c11">
           <OtpInput
-            errorMessage={errors.reset}
+            errorMessage={errors.code}
             name={"code"}
             onChange={handleChange}
             reset={reset}
@@ -149,7 +155,7 @@ const Confirmation = ({ activeType, nextStep }) => {
           <Button
             disabled={isValid ? false : true}
             loading={loading}
-            onClick={() => submitHandler()}
+            onClick={() => handleSubmit(doSubmit)}
             className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary  ${
               isValid
                 ? "bg-caak-primary text-white"
@@ -161,7 +167,7 @@ const Confirmation = ({ activeType, nextStep }) => {
         </div>
       </form>
     </div>
-  );
-};
+  ) : null
+}
 
 export default Confirmation;

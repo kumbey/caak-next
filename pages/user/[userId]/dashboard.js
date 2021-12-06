@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
-import API from "@aws-amplify/api";
 import StatsItem from "../../../src/components/stats";
 import { withSSRContext } from "aws-amplify";
 import { getReturnData } from "../../../src/utility/Util";
@@ -8,6 +7,7 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
+import API from "@aws-amplify/api";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
@@ -20,6 +20,7 @@ import { useUser } from "../../../src/context/userContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API } = withSSRContext({ req });
+
   const resp = await API.graphql({
     query: getPostByUser,
     variables: {
@@ -29,6 +30,7 @@ export async function getServerSideProps({ req, query }) {
       limit: 5,
     },
   });
+
   const userList = await API.graphql({
     query: listUsersbyFollowing,
     variables: {

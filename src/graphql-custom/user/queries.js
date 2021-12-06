@@ -36,13 +36,20 @@ export const listUsers = /* GraphQL */ `
 `;
 export const listUsersbyFollowing = /* GraphQL */ `
     query ListUsersbyFollowing(
-        $followed_user_id: ID!,
-        $limit: Int,
-        $nextToken: String) {
-            listUsersbyFollowing(
-            followed_user_id: $followed_user_id,
-            limit: $limit,
-            nextToken: $nextToken)
+            $followed_user_id: ID,
+            $sortDirection: ModelSortDirection,
+            $filter: ModelFollowedUsersFilterInput,
+            $limit: Int,
+            $nextToken: String
+        ) {
+            listUsersbyFollowing
+            (
+                followed_user_id: $followed_user_id,
+		        sortDirection: $sortDirection,
+		        filter: $filter,
+		        limit: $limit,
+		        nextToken: $nextToken
+            )
         {
             items ${user0005}
             nextToken

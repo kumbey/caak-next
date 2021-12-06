@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getFileUrl } from "../../../utility/Util";
+import { getFileUrl, getGenderImage } from "../../../utility/Util";
 import Button from "../../button";
 import SideBarGroups from "../../card/SideBarGroups";
 import { useUser } from "../../../context/userContext";
@@ -15,9 +15,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           layout={"fill"}
           alt={user?.cover_pic?.name}
           src={
-            user.cover_pic
+            user?.pic?.file
               ? getFileUrl(user.cover_pic.file)
-              : "https://picsum.photos/1920/240"
+              : getGenderImage("default")
           }
         />
       </div>
@@ -73,9 +73,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 alt={"user profile"}
                 layout={"fill"}
                 src={
-                  user.pic
+                  user?.pic?.file
                     ? getFileUrl(user.pic.file)
-                    : "https://picsum.photos/200"
+                    : getGenderImage("default")
                 }
               />
               {signedUser.id === user.id && (

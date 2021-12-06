@@ -95,19 +95,25 @@ export const listCommentByParent = /* GraphQL */ `
       nextToken
     }
   }
-`
+`;
 export const listCommentByUser = /* GraphQL */ `
     query ListCommentByUser(
         $user_id: ID!
+        $createdAt: ModelStringKeyConditionInput
         $sortDirection: ModelSortDirection
+        $filter: ModelCommentFilterInput
+        $limit: Int
         $nextToken: String
     ) 
     {
         listCommentByUser
     (     
-            user_id: $user_id
-            sortDirection: $sortDirection
-            nextToken: $nextToken
+              user_id: $user_id
+              createdAt: $createdAt
+              sortDirection: $sortDirection
+              filter: $filter
+              limit: $limit
+              nextToken: $nextToken
     )   {
         items ${comment0003}
         nextToken

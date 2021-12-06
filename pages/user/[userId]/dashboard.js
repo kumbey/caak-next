@@ -49,6 +49,7 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
+  console.log(userList)
 
   const userComments = await API.graphql({
     query: listCommentByUser,

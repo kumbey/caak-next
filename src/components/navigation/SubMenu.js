@@ -107,7 +107,7 @@ const SubMenu = ({ params }) => {
                 <span
                   className={"text-14px text-caak-generalblack font-medium"}
                 >
-                  {`${user.aura} Аура`}
+                  {`${user && user.aura} Аура`}
                 </span>
               </div>
             </div>
@@ -124,7 +124,7 @@ const SubMenu = ({ params }) => {
             content={<NavBarMenu />}
             className={"top-8 -right-3 w-[215px]"}
           />
-          {isLogged ? (
+          {isLogged && user? (
             <img
               ref={menuRef}
               onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}

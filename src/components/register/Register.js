@@ -3,15 +3,14 @@ import Button from "../button";
 import Input from "../input";
 import Validate from "../../utility/Validate";
 import Auth from "@aws-amplify/auth";
-import { useUser } from "../../context/userContext";
 import Consts from "/src/utility/Consts";
 import { nanoid } from 'nanoid'
 
 import { useRouter } from "next/router";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
-const Register = ({ nextStep }) => {
-  const { user, setUser, isLogged } = useUser();
+const Register = () => {
+
   const { lsSet } = useLocalStorage("session");
 
   const [error, setError] = useState("");
@@ -33,7 +32,7 @@ const Register = ({ nextStep }) => {
             value: phoneNumber,
             type: Consts.typePhoneNumber,
             onChange: setPhoneNumber,
-            // ignoreOn: true,
+            ignoreOn: true,
           },
         }
       : {
@@ -41,7 +40,7 @@ const Register = ({ nextStep }) => {
             value: email,
             type: Consts.typeEmail,
             onChange: setEmail,
-            // ignoreOn: true,
+            ignoreOn: true,
           },
         }),
 
@@ -49,13 +48,13 @@ const Register = ({ nextStep }) => {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
-      // ignoreOn: true,
+      ignoreOn: true,
     },
     passwordRepeat: {
       value: passwordRepeat,
       type: Consts.typePasswordRepeat,
       onChange: setPasswordRepeat,
-      // ignoreOn: true,
+      ignoreOn: true,
     },
   };
 
@@ -78,38 +77,25 @@ const Register = ({ nextStep }) => {
         usr.attributes.email = email
       }
       usr.password = password;
-      console.log(usr)
-      let usrData = {};
 
-      usrData.status = "ACTIVE";
-      usrData.status = true;
-      usrData.verified = false;
+      const resp = await Auth.signUp(usr);
 
-      //do not sign up when its federated sign in
-      if (!isLogged) {
-        let resp = await Auth.signUp(usr);
-        usrData.id = resp.userSub;
-      } else {
-        usrData.id = user.attributes.sub;
-      }
-      let localUsr = { usr: usr, usrData: usrData };
+      lsSet(Consts.SS_UserSignUp, {...resp, password});
 
-      if (!isLogged) {
-        lsSet(Consts.SS_UserSignUp, localUsr);
-        // router.replace(
-        //   `?signInUp=stepUp&isModal=true&username=${username}`,
-        //   `/signInUp/stepUp`
-        // );
-      } else {
-        isLogged(user, setUser);
-        router.replace(
-          `?signInUp=completed&isModal=true`,
-          `/signInUp/completed`
-        );
+      if(router.query.isModal){
+        router.replace({
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "confirm",
+          },   
+        }, "/signInUp/confirmation", {shallow: true, scroll: false})
+      }else{
+        router.replace("/signInUp/confirm", undefined, {
+          shallow: true
+        })
       }
-      if (nextStep) {
-        nextStep();
-      }
+
     } catch (ex) {
       setLoading(false);
       if (ex.code === "UsernameExistsException") {
@@ -220,7 +206,6 @@ const Register = ({ nextStep }) => {
         </div>
         <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
           <Button
-            disabled={isValid ? false : true}
             loading={loading}
             onClick={() => handleSubmit(doSubmit)}
             className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary  ${

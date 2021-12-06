@@ -17,7 +17,6 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
   const [loading, setLoading] = useState(false);
   const history = useRouter();
   // const { state } = useLocation();
-
   const getUsers = async (id) => {
     if (isLogged) {
       const resp = await API.graphql(
@@ -67,14 +66,14 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
         isReacted,
         setIsReacted,
         deleteReactionInput: {
-          id: item.id,
-          user_id: user.sysUser.id,
+          id: `${item.id}#${user.id}`,
         },
         createReactionInput: {
-          id: item.id,
+          id: `${item.id}#${user.id}`,
+          item_id: item.id,
           on_to: "POST_ITEM",
           type: "CAAK",
-          user_id: user.sysUser.id,
+          user_id: user.id,
         },
       });
     } else {
@@ -118,14 +117,14 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
                 <span
                   className={`${
                     isReacted
-                      ? "text-caak-primary icon-fi-rs-rock-f"
+                      ? "text-caak-uclagold icon-fi-rs-rock-f"
                       : "icon-fi-rs-rock-i"
                   } text-[23px]`}
                 />
               </div>
               <span
                 className={
-                  "text-15px  tracking-[0.23px] leading-[18px] ml-[8px]"
+                  "text-15px tracking-[0.23px] leading-[18px] ml-[8px]"
                 }
               >
                 {item.totals?.reactions}

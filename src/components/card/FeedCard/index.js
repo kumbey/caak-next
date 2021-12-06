@@ -2,8 +2,7 @@ import CardHeader from "./CardHeader";
 import CardFooter from "./CardFooter";
 import ImageCarousel from "../../carousel/ImageCarousel";
 
-const Card = ({ verifiedUser, post }) => {
-  // const [isCommentOpen, setIsCommentOpen] = useState(false);
+const Card = ({ post }) => {
 
   return (
     post && (
@@ -11,12 +10,12 @@ const Card = ({ verifiedUser, post }) => {
         <div className={"flex flex-col"}>
           <CardHeader post={post} />
           <ImageCarousel
+            route
             card
             mediaContainerClassname={"w-full h-[462px]"}
             postId={post.id}
             items={post.items.items}
           />
-
         </div>
 
         <CardFooter

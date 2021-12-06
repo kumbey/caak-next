@@ -32,18 +32,6 @@ const ViewPostBlogAddComment = ({
       setLoading(true);
       try {
         if (isLogged) {
-          console.log({
-            input: {
-              comment: commentInputValue,
-              post_id: postId,
-              status: "ACTIVE",
-              type: reply.isReplying ? "SUB" : "PARENT",
-              ...(reply.isReplying ? { parent_id: reply.comment_id } : {}),
-              on_to: "POST_ITEM",
-              user_id: user.id,
-              replyUserID: reply.isReplying ? reply.user_id : replyUserId,
-            },
-          });
           const resp = await API.graphql(
             graphqlOperation(createComment, {
               input: {
@@ -52,7 +40,7 @@ const ViewPostBlogAddComment = ({
                 status: "ACTIVE",
                 type: reply.isReplying ? "SUB" : "PARENT",
                 ...(reply.isReplying ? { parent_id: reply.comment_id } : {}),
-                on_to: "POST_ITEM",
+                on_to: "POST",
                 user_id: user.id,
                 replyUserID: reply.isReplying ? reply.user_id : replyUserId,
               },

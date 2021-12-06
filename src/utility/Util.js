@@ -127,7 +127,7 @@ export function mailNumber(mailNumber) {
     mailNumber = arry.join("");
     return mailNumber;
   } else {
-    return alert("Мэйл эсвэл утасны дугаар оруулна уу");
+    return "Мэйл эсвэл утасны дугаар оруулна уу";
   }
 }
 

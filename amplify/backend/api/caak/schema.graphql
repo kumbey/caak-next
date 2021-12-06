@@ -260,6 +260,7 @@ type Comment @model
   @key(name: "byPostQ", fields: ["post_id","createdAt"] queryField:"getCommentsByPost")
   @key(name: "byType", fields: ["type"])
   @key(name: "byTypeOrderByDate", fields: ["post_id","type","createdAt"] queryField:"listCommentsByDateAndType")
+  @key(name: "byTypeOrderByDateForItem", fields: ["post_item_id","type","createdAt"] queryField:"listCommentsByDateAndTypeForItem")
   @key(name: "byParent", fields: ["parent_id","createdAt"] queryField:"listCommentByParent")
   @key(name: "byUser", fields: ["user_id","createdAt"] queryField:"listCommentByUser"){
   id: ID!,
@@ -278,6 +279,7 @@ type Comment @model
   replyUserID: ID
   replyTo: User @connection(fields:["replyUserID"])
   totals: CommentTotal @connection(fields:["id"])
+  reacted: Boolean @function(name:"resolverBoolean-${env}")
   createdAt: AWSDateTime!
 }
 
@@ -434,6 +436,10 @@ type Subscription {
     @aws_iam
     @aws_cognito_user_pools
   onCommentByPost(post_id: ID!): Comment
+    @aws_subscribe(mutations: ["createComment","updateComment"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onCommentByParent(parent_id: ID!): Comment
     @aws_subscribe(mutations: ["createComment","updateComment"])
     @aws_iam
     @aws_cognito_user_pools

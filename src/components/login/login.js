@@ -6,7 +6,7 @@ import Button from "../button";
 import { useRouter } from "next/router";
 import Validate from "/src/utility/Validate";
 import Consts from "/src/utility/Consts";
-import { checkUsername, closeModal } from "../../utility/Util";
+import { checkUsername, closeModal, _objectWithoutKeys } from "../../utility/Util";
 
 const Login = ({ nextStep }) => {
   const router = useRouter();
@@ -32,24 +32,15 @@ const Login = ({ nextStep }) => {
 
   const { handleChange, errors, setErrors, handleSubmit } = Validate(validate);
 
-  const submitHandler = () => {
-    if (nextStep) {
-      nextStep();
-    }
-  };
-
-  useEffect(() => {
-    if (errors) {
-      setErrors(errors);
-    }
-    // eslint-disable-next-line
-  }, []);
 
   async function doSignIn() {
     try {
       setLoading(true);
       await Auth.signIn(checkUsername(username), password);
-      await router.replace(`/`, { shallow: true });
+      router.replace({
+        pathname: router.pathname,
+        query: _objectWithoutKeys(...router.query, ["signInUp"])
+      }, undefined,{ shallow: true, scroll: false });
       setLoading(false);
     } catch (ex) {
       setLoading(false);
@@ -108,7 +99,6 @@ const Login = ({ nextStep }) => {
           </Button>
           <div className="text-caak-blue text-15px">
             <span
-              onClick={() => submitHandler()}
               className="ml- cursor-pointer"
             >
               Нууц үгээ мартсан уу?

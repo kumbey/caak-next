@@ -6,8 +6,8 @@ import { getFileUrl, getReturnData } from "../../../../src/utility/Util";
 import { getPostView } from "../../../../src/graphql-custom/post/queries";
 import Image from "next/image";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
-import { useUser } from "../../../../src/context/userContext";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
+import Video from "../../../../src/components/video";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -41,12 +41,10 @@ export async function getServerSideProps({ req, query }) {
 
 const Post = ({ ssrData }) => {
   const [post, setPost] = useState(ssrData.post);
-  console.log(post);
   useEffect(() => {
     setPost(ssrData.post);
   }, [ssrData.post]);
 
-  const { user } = useUser();
   const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   return post ? (
     <ViewPostModal
@@ -64,14 +62,24 @@ const Post = ({ ssrData }) => {
           }
           post={post}
         />
-        <div className={"relative h-[444px] w-full pt-[4px]"}>
-          <Image
-            objectFit={"cover"}
-            layout={"fill"}
-            src={getFileUrl(post.items.items[0].file)}
-            alt={"post picture"}
-          />
-        </div>
+        {post.items.items.length > 1 && (
+          <div className={"relative h-[444px] w-full pt-[4px]"}>
+            {post.items.items[0].file.type.startsWith("video") ? (
+              <Video
+                videoClassname={"object-contain rounded-[4px]"}
+                src={getFileUrl(post.items.items[0].file)}
+              />
+            ) : (
+              <Image
+                objectFit={"cover"}
+                layout={"fill"}
+                src={getFileUrl(post.items.items[0].file)}
+                alt={"post picture"}
+              />
+            )}
+          </div>
+        )}
+
         <div
           className={
             "px-[52px] pt-[26px] pb-[52px] bg-white border-b border-caak-titaniumwhite"
@@ -87,6 +95,7 @@ const Post = ({ ssrData }) => {
           {post.items.items.map((item, index) => {
             return (
               <ViewPostBlogItem
+                singleItem={post.items.items.length <= 1}
                 key={index}
                 index={index}
                 postId={post.id}

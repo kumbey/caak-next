@@ -1,76 +1,36 @@
-import API from "@aws-amplify/api";
-import { useEffect, useState } from "react";
-import { getReturnData } from "../../../../../src/utility/Util";
-import { onCommentByPostItem } from "../../../../../src/graphql-custom/comment/subscriptions";
-import CommentCard from "../../../../../src/components/card/CommentCard";
+import CommentCardNew from "../../../../../src/components/card/CommentCardNew";
+import {useEffect} from "react";
 
-const PostBody = ({ post, activeIndex }) => {
-  const subscriptions = {};
-  const [subscriptionComment, setSubscriptionComment] = useState(null);
-  const [reRender, setReRender] = useState(0);
+const PostBody = ({
+  post,
+  activeIndex,
+  commentInputValue,
+  setCommentInputValue,
+  reply,
+  setReply,
+  addCommentRef,
+}) => {
   const item = post.items.items[activeIndex];
 
-  const subscrip = () => {
-    subscriptions.onCommentByPostItem = API.graphql({
-      query: onCommentByPostItem,
-      variables: {
-        post_item_id: item.id,
-      },
-      authMode: "AWS_IAM",
-    }).subscribe({
-      next: (data) => {
-        const onData = getReturnData(data, true);
-        setSubscriptionComment(onData);
-      },
-      error: (error) => {
-        console.warn(error);
-      },
-    });
-  };
-
-  useEffect(() => {
-    if (subscriptionComment) {
-      if (
-        !item.comments.items.find((item) => item.id === subscriptionComment.id)
-      ) {
-        item.comments.items.push(subscriptionComment);
-      }
-      setReRender(reRender + 1);
-    }
-    // eslint-disable-next-line
-  }, [subscriptionComment]);
-
-  useEffect(() => {
-    if (item.id) {
-      subscrip();
-    }
-    return () => {
-      Object.keys(subscriptions).map((key) => {
-        subscriptions[key].unsubscribe();
-        return true;
-      });
-    };
-    // eslint-disable-next-line
-  }, [item]);
+  useEffect(()=> {
+    console.log(reply)
+  },[reply])
 
   return (
     <div
       className={"relative flex flex-col justify-between bg-caak-whitesmoke"}
     >
-      {item.comments.items.map((comment, index) => {
-        return (
-          <CommentCard key={index} comment={comment}>
-            {/*<SubCommentCard name={"Bataa"} comment={"Харин тиймээ"}/>*/}
-            {/*<SubCommentCard name={"Nomio"} comment={"Харин тиймээ"} />*/}
-            {/*<SubCommentCard*/}
-            {/*  name={"Tsetsegee"}*/}
-            {/*  comment={"Харин тиймээ"}*/}
-            {/*/>*/}
-            {/*<SubCommentCard name={"Saraa"} comment={"Харин тиймээ"} />*/}
-            {/*<SubCommentCard name={"Boloroo"} comment={"Харин тиймээ"} />*/}
-          </CommentCard>
-        );
-      })}
+      <CommentCardNew
+        addCommentRef={addCommentRef}
+        commentInputValue={commentInputValue}
+        setCommentInputValue={setCommentInputValue}
+        reply={reply}
+        setReply={setReply}
+        setup={{
+          id: item.id,
+          type: "POST_ITEM",
+        }}
+      />
     </div>
   );
 };

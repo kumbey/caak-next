@@ -13,11 +13,11 @@ import DropDown from "../../../../../src/components/navigation/DropDown";
 import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import { getPostView } from "../../../../../src/graphql-custom/post/queries";
 import { withSSRContext } from "aws-amplify";
-import { useUser } from "../../../../../src/context/userContext";
 import Dummy from "dummyjs";
 import Link from "next/link";
 import ImageCarousel from "../../../../../src/components/carousel/ImageCarousel";
 import Button from "../../../../../src/components/button";
+import AddComment from "../../../../../src/components/input/AddComment";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -55,7 +55,11 @@ export async function getServerSideProps({ req, query }) {
 const PostItem = ({ ssrData }) => {
   const [post, setPost] = useState(ssrData.post);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [commentInputValue, setCommentInputValue] = useState("");
+  const [reply, setReply] = useState({});
   const [loading, setLoading] = useState(true);
+  const [render, setRender] = useState(0)
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -65,7 +69,6 @@ const PostItem = ({ ssrData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const itemId = router.query.itemId;
-  const { user } = useUser();
   const addCommentRef = useRef();
 
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -106,11 +109,18 @@ const PostItem = ({ ssrData }) => {
 
   const back = () => {
     if (router.query && router.query.isModal) {
-      router.replace(`/post/view/${post.id}`, undefined, { shallow: true });
+      router.replace(`/post/view/${post.id}`, undefined, { shallow: true, scroll: false});
     } else {
       router.replace(`/post/view/${post.id}`);
     }
   };
+useEffect(()=> {
+  console.log(post)
+},[post])
+
+  useEffect(()=> {
+    console.log(render)
+  },[render])
 
   return !loading ? (
     <div
@@ -130,6 +140,7 @@ const PostItem = ({ ssrData }) => {
           }
         />
         <ImageCarousel
+          changeActiveIndex={setActiveIndex}
           mediaContainerClassname={"w-full h-full"}
           postId={post.id}
           items={post.items.items}
@@ -139,10 +150,10 @@ const PostItem = ({ ssrData }) => {
       <div
         style={{ flexBasis: "448px" }}
         className={
-          "relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll"
+          "relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll h-full"
         }
       >
-        <div>
+        <div className={"flex-1"}>
           <div
             onClick={toggleMenu}
             ref={menuRef}
@@ -168,104 +179,125 @@ const PostItem = ({ ssrData }) => {
               />
             </div>
           </div>
-          <div className={"px-[24px]"}>
-            <div
-              className={"relative flex flex-row justify-between items-center"}
-            >
-              <div className={"flex flex-row"}>
-                <div className={"relative"}>
-                  <img
-                    className="w-[48px] h-[48px] m-34px rounded-[6px]"
-                    src={
-                      post.group.profile
-                        ? getFileUrl(post.group.profile)
-                        : Dummy.image("100x100")
+          <div className={"h-full"}>
+            <div className={"px-[24px]"}>
+              <div
+                className={
+                  "relative flex flex-row justify-between items-center"
+                }
+              >
+                <div className={"flex flex-row"}>
+                  <div className={"relative"}>
+                    <img
+                      className="w-[48px] h-[48px] m-34px rounded-[6px]"
+                      src={
+                        post.group.profile
+                          ? getFileUrl(post.group.profile)
+                          : Dummy.image("100x100")
+                      }
+                      alt={post.group?.profile?.name}
+                    />
+                  </div>
+                  <div
+                    className={
+                      "flex flex-col justify-center ml-[10px] self-center"
                     }
-                    alt={post.group?.profile?.name}
-                  />
-                </div>
-                <div
-                  className={
-                    "flex flex-col justify-center ml-[10px] self-center"
-                  }
-                >
-                  <span
-                    className={"text-caak-generalblack font-bold text-[16px]"}
                   >
-                    <Link
-                      href={{
-                        pathname: `/group/${post.group.id}`,
-                      }}
+                    <span
+                      className={"text-caak-generalblack font-bold text-[16px]"}
                     >
-                      {post.group.name}
-                    </Link>
-                  </span>
-                  <div className={"flex flex-row items-center"}>
-                    <Link
-                      href={{
-                        pathname: `/user/${post.user.id}/profile`,
-                      }}
-                    >
-                      <span className={"text-caak-generalblack text-15px"}>
-                        {post.user.nickname}
-                      </span>
-                    </Link>
-                    {!post.user.verified && (
-                      <div
+                      <Link
+                        href={{
+                          pathname: `/group/${post.group.id}`,
+                        }}
+                      >
+                        {post.group.name}
+                      </Link>
+                    </span>
+                    <div className={"flex flex-row items-center"}>
+                      <Link
+                        href={{
+                          pathname: `/user/${post.user.id}/profile`,
+                        }}
+                      >
+                        <a>
+                          <span className={"text-caak-generalblack text-15px"}>
+                            {post.user.nickname}
+                          </span>
+                        </a>
+                      </Link>
+                      {post.user.verified && (
+                        <div
+                          className={
+                            "flex items-center justify-center w-[17px] h-[17px] ml-[3px]"
+                          }
+                        >
+                          <span className={"icon-fi-rs-verified"} />
+                        </div>
+                      )}
+                      <p
                         className={
-                          "flex items-center justify-center w-[17px] h-[17px] ml-[3px]"
+                          "text-caak-darkBlue text-[13px] tracking-[0.2px] leading-[16px]"
                         }
                       >
-                        <span className={"icon-fi-rs-verified"} />
-                      </div>
-                    )}
-                    <p
-                      className={
-                        "text-caak-darkBlue text-[13px] tracking-[0.2px] leading-[16px]"
-                      }
-                    >
-                      &nbsp; &middot; &nbsp;
-                      {generateTimeAgo(post.updatedAt)}
-                    </p>
+                        &nbsp; &middot; &nbsp;
+                        {generateTimeAgo(post.updatedAt)}
+                      </p>
+                    </div>
                   </div>
                 </div>
+                <div>
+                  <Button
+                    icon={
+                      <div
+                        className={
+                          "flex items-center justify-start w-[20px] h-[20px]"
+                        }
+                      >
+                        <span className={"icon-fi-rs-add-l text-[18px]"} />
+                      </div>
+                    }
+                    iconPosition={"left"}
+                    className={
+                      "h-[28px] tracking-[0.18px] justify-between leading-[15px] flex rounded-[6px] text-caak-primary text-[12px] font-semibold uppercase border-[1px] border-caak-primary pr-[12px] pl-[7px] py-[7px]"
+                    }
+                  >
+                    Нэгдэх
+                  </Button>
+                </div>
               </div>
-              <div>
-                <Button
-                  icon={
-                    <div
-                      className={
-                        "flex items-center justify-start w-[20px] h-[20px]"
-                      }
-                    >
-                      <span className={"icon-fi-rs-add-l text-[18px]"} />
-                    </div>
-                  }
-                  iconPosition={"left"}
-                  className={
-                    "h-[28px] tracking-[0.18px] justify-between leading-[15px] flex rounded-[6px] text-caak-primary text-[12px] font-semibold uppercase border-[1px] border-caak-primary pr-[12px] pl-[7px] py-[7px]"
-                  }
-                >
-                  Нэгдэх
-                </Button>
-              </div>
+              <PostHeader
+                addCommentRef={addCommentRef}
+                activeIndex={activeIndex}
+                post={post}
+              />
             </div>
-            <PostHeader
-              addCommentRef={addCommentRef}
-              activeIndex={activeIndex}
-              post={post}
-            />
-            <PostBody post={post} activeIndex={activeIndex} />
+            <div className={"flex-1 w-full bg-caak-liquidnitrogen px-[24px]"}>
+              <PostBody
+                commentInputValue={commentInputValue}
+                setCommentInputValue={setCommentInputValue}
+                reply={reply}
+                setReply={setReply}
+                addCommentRef={addCommentRef}
+                activeIndex={activeIndex}
+                post={post}
+              />
+            </div>
           </div>
         </div>
 
-        {/*{post.status === "CONFIRMED" && (*/}
-        {/*  <AddComment*/}
-        {/*    addCommentRef={addCommentRef}*/}
-        {/*    post={post}*/}
-        {/*    activeIndex={activeIndex}*/}
-        {/*  />*/}
-        {/*)}*/}
+        {post.status === "CONFIRMED" && (
+          <AddComment
+            commentInputValue={commentInputValue}
+            setCommentInputValue={setCommentInputValue}
+            reply={reply}
+            setReply={setReply}
+            addCommentRef={addCommentRef}
+            post={post}
+            activeIndex={activeIndex}
+            setPost={setPost}
+          />
+        )}
       </div>
     </div>
   ) : null;

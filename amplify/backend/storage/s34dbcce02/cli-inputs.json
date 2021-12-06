@@ -1,0 +1,15 @@
+{
+  "resourceName": "s34dbcce02",
+  "policyUUID": "4dbcce02",
+  "bucketName": "files",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "groupAccess": {}
+}

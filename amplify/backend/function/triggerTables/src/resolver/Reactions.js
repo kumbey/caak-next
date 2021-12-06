@@ -95,7 +95,7 @@ async function changeReactions(newImg, increase){
             let comment = await CommentDB.get(newImg.item_id)
             await CommentTotal.modify(comment.id, items)
             items[0].field = "comment_reactions"
-            await UserTotal.modify(comment.user_id)
+            await UserTotal.modify(comment.user_id, items)
 
             react.item_id = comment.id
             react.action = `REACTION_${newImg.on_to}`

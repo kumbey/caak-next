@@ -11,7 +11,7 @@ import { getReturnData } from "../../utility/Util";
 export default function Interests() {
   const router = useRouter();
   const { cognitoUser } = useUser();
-  const userId = cognitoUser.attributes.sub;
+  const userId = cognitoUser ? cognitoUser.attributes.sub : null
 
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
@@ -37,7 +37,13 @@ export default function Interests() {
           })
         );
       }
-      router.replace(`?signInUp=completed&isModal=true`, `/signInUp/completed`);
+      router.replace({
+          pathname: router.pathname,
+          query:{
+            ...router.query,
+            signInUp: "complete"
+          }
+      },`/signInUp/complete`, { shallow: true, scroll: false});
       setLoading(false);
     } catch (ex) {
       setLoading(false);
@@ -54,7 +60,7 @@ export default function Interests() {
     fetchCat();
   }, []);
 
-  return (
+  return router.query.isModal ? (
     <div className="px-2 sm:px-10 pb-c1">
       <div
         className={
@@ -114,5 +120,5 @@ export default function Interests() {
         </Button>
       </div>
     </div>
-  );
+  ) : null
 }

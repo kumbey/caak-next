@@ -1,12 +1,29 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import ReactPlayer from "react-player";
+import { useRouter } from "next/router";
+const dblTouchTapMaxDelay = 300;
+let latestTouchTap = {
+  time: 0,
+  target: null,
+};
 
-const Video = ({ src, containerClassname, videoClassname }) => {
+export function isDblTouchTap(event) {
+  const touchTap = {
+    time: new Date().getTime(),
+    target: event.currentTarget,
+  };
+  const isFastDblTouchTap =
+    touchTap.target === latestTouchTap.target &&
+    touchTap.time - latestTouchTap.time < dblTouchTapMaxDelay;
+  latestTouchTap = touchTap;
+  return isFastDblTouchTap;
+}
+const Video = ({ src, containerClassname, videoClassname, postId, route }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
 
   const videoRef = useRef();
-
+  const router = useRouter();
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
 
@@ -23,6 +40,22 @@ const Video = ({ src, containerClassname, videoClassname }) => {
   return (
     <div
       onClick={() => setIsPlaying(!isPlaying)}
+      onDoubleClick={() =>
+        route &&
+        router.push({
+          pathname: `/post/view/${postId}`,
+        })
+      }
+      onTouchEnd={(e) => {
+        if (isDblTouchTap(e)) {
+          if (route) {
+            setIsPlaying(false);
+            router.push({
+              pathname: `/post/view/${postId}`,
+            });
+          }
+        }
+      }}
       className={`${
         containerClassname ? containerClassname : ""
       } relative w-full h-full group`}
@@ -34,9 +67,7 @@ const Video = ({ src, containerClassname, videoClassname }) => {
         loop
         onReady={(e) => setVideoDuration(e.getDuration())}
         onProgress={(e) => setPlayedSeconds(e.playedSeconds)}
-        className={`${
-          videoClassname ? videoClassname : ""
-        } react-player rounded-[4px] object-cover`}
+        className={`${videoClassname ? videoClassname : ""} react-player`}
         width={"100%"}
         height={"100%"}
         url={src}
@@ -72,13 +103,12 @@ const Video = ({ src, containerClassname, videoClassname }) => {
               "flex items-center w-full h-[2px] relative bg-white bg-opacity-40 mx-[18px]"
             }
           >
-
             <span
-                style={{
-                  width: `${
-                      (100 * Math.floor(playedSeconds)) / Math.floor(videoDuration)
-                  }%`,
-                }}
+              style={{
+                width: `${
+                  (100 * Math.floor(playedSeconds)) / Math.floor(videoDuration)
+                }%`,
+              }}
               className={"h-full bg-white absolute top-0 left-0"}
             />
           </div>
@@ -99,13 +129,13 @@ const Video = ({ src, containerClassname, videoClassname }) => {
             )}
           </div>
           <div
-              onClick={(e) => {
-                e.stopPropagation();
-                // videoRef.current
-              }}
-              className={
-                "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer ml-[8px]"
-              }
+            onClick={(e) => {
+              e.stopPropagation();
+              // videoRef.current
+            }}
+            className={
+              "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer ml-[8px]"
+            }
           >
             <span className={"icon-fi-rs-full-screen text-white text-[22px]"} />
           </div>

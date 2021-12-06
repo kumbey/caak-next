@@ -4,6 +4,7 @@ import GroupInfoCard from "../../card/GroupInfoCard";
 import FooterSidebar from "../../footer/FooterSidebar";
 import ViewPostLeftReaction from "../../viewpost/ViewPostLeftReaction";
 import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
+import {useRouter} from "next/router";
 
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -12,6 +13,20 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
     blockScroll();
     return () => allowScroll();
   }, [allowScroll, blockScroll]);
+
+  const router = useRouter()
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.keyCode === 27) {
+        router.back();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+  }, []);
 
   return (
     <div className={`backdrop bg-black bg-opacity-80`}>

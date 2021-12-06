@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import useScrollBlock from "../../../hooks/useScrollBlock";
-import { _modalisOpen } from "../../../utility/Util";
+import { _modalisOpen, _objectWithoutKeys } from "../../../utility/Util";
 
-const DefaultModalLayout = ({ children, ...props }) => {
+const DefaultModalLayout = ({ children, onCloseKeys,...props }) => {
   const router = useRouter();
   const type = router.query.signInUp;
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -14,14 +14,30 @@ const DefaultModalLayout = ({ children, ...props }) => {
   }, [allowScroll, blockScroll]);
 
   const close = () => {
-    
-    if(router.query && router.query.isModal){
-      router.replace(router.pathname, undefined, {shallow: true});
+    if(router.query.isModal){
+      router.replace({
+        pathname: router.pathname,
+        query: _objectWithoutKeys(router.query, [...onCloseKeys, "isModal"])
+      }, undefined, {shallow: true, scroll: false});
     }else{
       router.replace("/");
     }
-    
   };
+
+  const switchType = () => {
+    if(router.query.isModal){
+      router.replace({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          signInUp: (type === "signIn") ? "signUp" : "signIn"
+        }
+      }, (type === "signIn") ? "/signInUp/signUp" : "/signInUp/signIn", {shallow: true, scroll: false});
+    }else{
+      router.replace((type === "signIn") ? "/signInUp/signUp" : "/signInUp/signIn", undefined, {shallow: true, scroll: false});
+    }
+  };
+  
 
   return (
     <div className={`backdrop ${props.className}`}>
@@ -50,12 +66,7 @@ const DefaultModalLayout = ({ children, ...props }) => {
             <div className="text-caak-blue text-15px">
               <span>Бүртгэлтэй хэрэглэгч бол </span>
               <span
-                onClick={() =>
-                  router.replace(
-                    `?signInUp=signIn&isModal=true`,
-                    `/signInUp/signIn`
-                  )
-                }
+                onClick={switchType}
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 Нэвтрэх
@@ -65,12 +76,7 @@ const DefaultModalLayout = ({ children, ...props }) => {
             <div className="text-caak-blue text-15px">
               <span>Шинэ хэрэглэгч бол </span>
               <span
-                onClick={() =>
-                  router.replace(
-                    `?signInUp=signUp&isModal=true`,
-                    `/signInUp/signUp`
-                  )
-                }
+                onClick={switchType}
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 Бүртгүүлэх

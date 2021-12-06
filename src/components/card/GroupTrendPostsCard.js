@@ -19,6 +19,7 @@ const GroupTrendPostsCard = ({ groupId }) => {
         sortDirection: "DESC",
         variables: {
           status: "CONFIRMED",
+          limit: 5
         },
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });

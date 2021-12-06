@@ -4,20 +4,78 @@ import { API } from "aws-amplify";
 import { listCommentByParent } from "../../graphql-custom/comment/queries";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
+import AnimatedCaakButton from "../button/animatedCaakButton";
+import { onCommentByParent } from "../../graphql-custom/comment/subscriptions";
+import Loader from "../loader";
 
 const CommentSubItemCard = ({
   setReply,
   setCommentInputValue,
   parentId,
   maxComment,
+  addCommentRef,
 }) => {
   const { isLogged } = useUser();
+  const subscriptions = {};
+  const [subscriptionComment, setSubscriptionComment] = useState(null);
+  const [reRender, setReRender] = useState(0);
+  const [isFetchingComment, setIsFetchingComment] = useState(false);
+
   const [subComments, setSubComments] = useState({
     items: [],
-    nextToken: null
+    nextToken: null,
   });
 
+  const subscrip = () => {
+    const params = {
+      query: onCommentByParent,
+      variables: {
+        parent_id: parentId,
+      },
+      authMode: "AWS_IAM",
+    };
+    subscriptions.onCommentByPostItem = API.graphql(params).subscribe({
+      next: (data) => {
+        console.log(data);
+        const onData = getReturnData(data, true);
+        setSubscriptionComment(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (subscriptionComment) {
+      console.log(subscriptionComment);
+      if (
+        !subComments.items.find((item) => item.id === subscriptionComment.id)
+      ) {
+        setSubComments({
+          ...subComments,
+          items: [subscriptionComment, ...subComments.items],
+        });
+      }
+      setReRender(reRender + 1);
+    }
+    // eslint-disable-next-line
+  }, [subscriptionComment]);
+
+  useEffect(() => {
+    subscrip();
+
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+  }, []);
+
+  const [render, setRender] = useState(0);
   const listSubCommentByParentId = async () => {
+    setIsFetchingComment(true);
     try {
       let resp = await API.graphql({
         query: listCommentByParent,
@@ -30,15 +88,19 @@ const CommentSubItemCard = ({
         },
       });
 
-      resp = getReturnData(resp)
+      resp = getReturnData(resp);
 
       setSubComments({
         nextToken: resp.nextToken,
-        items: [...subComments.items, ...resp.items]
+        items: [...subComments.items, ...resp.items],
       });
+      setSubscriptionComment(false);
     } catch (ex) {
+      setIsFetchingComment(false);
+
       console.log(ex);
     }
+    setIsFetchingComment(false);
   };
 
   useEffect(() => {
@@ -79,7 +141,7 @@ const CommentSubItemCard = ({
                 </div>
 
                 <div className={"flex flex-row items-center justify-between"}>
-                  <div className={"w-[320px] flex flex-col justify-center"}>
+                  <div className={"flex flex-col justify-center"}>
                     <p
                       className={
                         "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px]"
@@ -88,9 +150,9 @@ const CommentSubItemCard = ({
                       {subComment.comment}
                     </p>
                     <div
-                        className={
-                          "flex flex-row text-caak-darkBlue items-center mt-[10px] mb-[17px]"
-                        }
+                      className={
+                        "flex flex-row text-caak-darkBlue items-center mt-[10px] mb-[10px]"
+                      }
                     >
                       <div>
                         <p className={"text-[13px]"}>
@@ -98,40 +160,53 @@ const CommentSubItemCard = ({
                         </p>
                       </div>
                       <div
-                          onClick={() => {
-                            setCommentInputValue(
-                                (prev) => `@${subComment.user.nickname} ${prev}`
-                            );
-                            setReply({
-                              isReplying: true,
-                              user_id: subComment.user.id,
-                              user_nickname: `@${subComment.user.nickname} `,
-                              comment_id: parentId,
-                            });
-                          }}
-                          className={"flex flex-row item-center ml-[16px]"}
+                        onClick={() => {
+                          setCommentInputValue(
+                            (prev) => `@${subComment.user.nickname} ${prev}`
+                          );
+                          setReply({
+                            isReplying: true,
+                            user_id: subComment.user.id,
+                            user_nickname: `@${subComment.user.nickname} `,
+                            comment_id: parentId,
+                          });
+                          if (addCommentRef?.current)
+                            addCommentRef.current.focus();
+                        }}
+                        className={"flex flex-row item-center ml-[16px]"}
                       >
                         <div
-                            className={
-                              "flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
-                            }
+                          className={
+                            "flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
+                          }
                         >
-                          <span className={"icon-fi-rs-comment text-[14px]"} />
+                          <span
+                            className={"icon-fi-rs-comment-o text-[15px]"}
+                          />
                         </div>
                         <p className={"text-[13px] cursor-pointer"}>Хариулах</p>
                       </div>
                     </div>
                   </div>
                   <div
-                    className={"flex flex-col text-caak-aleutian self-center"}
+                    className={"flex flex-col text-caak-aleutian self-start"}
                   >
-                    <div
-                      className={
-                        "flex items-center justify-center w-[24px] h-[24px] cursor-pointer"
-                      }
-                    >
-                      <span className={"icon-fi-rs-rock-i text-[24px]"} />
-                    </div>
+                    <AnimatedCaakButton
+                      reactionType={"COMMENT"}
+                      commentId={subComment.id}
+                      totals={subComment.totals}
+                      sub
+                      reacted={subComment.reacted}
+                      render={render}
+                      setRender={setRender}
+                    />
+                    {/*<div*/}
+                    {/*  className={*/}
+                    {/*    "flex items-center justify-center w-[24px] h-[24px] cursor-pointer"*/}
+                    {/*  }*/}
+                    {/*>*/}
+                    {/*  <span className={"icon-fi-rs-rock-i text-[22px]"} />*/}
+                    {/*</div>*/}
                     <div className={"flex items-center justify-center"}>
                       <p
                         className={"text-13px tracking-[0.2px] leading-[16px]"}
@@ -141,8 +216,6 @@ const CommentSubItemCard = ({
                     </div>
                   </div>
                 </div>
-
-               
               </div>
             </div>
           </div>
@@ -152,10 +225,14 @@ const CommentSubItemCard = ({
         <div
           onClick={() => listSubCommentByParentId()}
           className={
-            "text-darkblue text-[12px] pl-[40px] mb-[10px] cursor-pointer"
+            "text-caak-generalblack font-medium text-[12px] pl-[40px] mb-[10px] cursor-pointer"
           }
         >
-          Илүү ихийг үзэх
+          {isFetchingComment ? (
+            <Loader className={`bg-caak-primary self-center`} />
+          ) : (
+            "Илүү ихийг үзэх"
+          )}
         </div>
       )}
     </div>

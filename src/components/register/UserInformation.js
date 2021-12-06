@@ -9,11 +9,13 @@ import API from "@aws-amplify/api";
 import { createUser } from "../../graphql-custom/user/mutation";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import DateInput from "../input/MaskedInput";
+import { useUser } from "../../context/userContext";
 
 const UserInformation = ({ nextStep }) => {
+
   const router = useRouter();
   const { lsGet, lsRemove } = useLocalStorage("session");
-  let usrData = lsGet(Consts.SS_UserSignUp).usrData;
+  const { cognitoUser } = useUser()
 
   const [loading, setLoading] = useState(false);
 
@@ -49,16 +51,16 @@ const UserInformation = ({ nextStep }) => {
     try {
       setLoading(true);
 
-      usrData.nickname = nickname;
-      usrData.gender = gender;
-      usrData.birthdate = birthdate;
-      await saveUserData(usrData)
-      setLoading(false);
-      lsRemove(Consts.SS_UserSignUp);
-
-      if (nextStep) {
-        nextStep();
+      const usr = {
+        id: cognitoUser.attributes.sub,
+        nickname: nickname,
+        gender: gender,
+        birthdate: birthdate,
+        status: "ACTIVE"
       }
+
+      await saveUserData(usr)
+      setLoading(false);
 
     } catch (ex) {
       setLoading(false);
@@ -75,7 +77,7 @@ const UserInformation = ({ nextStep }) => {
   };
 
 
-  return (
+  return router.query.isModal ? (
     <>
       <div
         className={
@@ -135,7 +137,7 @@ const UserInformation = ({ nextStep }) => {
         </div>
       </form>
     </>
-  );
+  ) : null
 };
 
 export default UserInformation;

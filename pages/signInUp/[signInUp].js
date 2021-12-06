@@ -35,24 +35,30 @@ const SignInUp = ({ ...props }) => {
     }, 100);
   };
 
+  const goNext = () => {
+    if(router.query.isModal){
+      router.replace({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          signInUp: (type === "signIn") ? "in" : "up"
+        }
+      }, (type === "signIn") ? "/signInUp/in" : "/signInUp/up", {shallow: true});
+    }else{
+      router.replace((type === "signIn") ? "/signInUp/in" : "/signInUp/up", undefined, {shallow: true, scroll: false});
+    }
+  }
+
   return (
-    <ModalLayout type={type} className={"flex justify-center items-center"}>
+    <ModalLayout 
+      type={type} 
+      onCloseKeys={["signInUp"]}
+      className={"flex justify-center items-center"}
+      >
       {/*Social Buttons*/}
       <div className={"flex flex-col items-center px-c13 "}>
         <Button
-          onClick={() => {
-            type === "signUp"
-              ? router.replace(
-                  `?signInUp=stepUp&isModal=true`,
-                  `/signInUp/stepUp`,
-                  {shallow: true}
-                )
-              : router.replace(
-                  `?signInUp=stepIn&isModal=true`,
-                  `/signInUp/stepIn`,
-                  {shallow: true}
-                );
-          }}
+          onClick={goNext}
           round
           className={
             "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-bold rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"

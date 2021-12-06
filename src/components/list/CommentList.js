@@ -9,7 +9,7 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
   return (
     <div className="mt-[30px]  mx-[30px] w-full">
       <div className="relative flex items-center ">
-        <div className="flex w-[400px] items-center">
+        <div className="flex w-[300px] items-center">
           <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
             <Image
               className=" bg-white rounded-md"
@@ -21,13 +21,13 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
               alt="#"
             />
           </div>
-          <div className="flex flex-col mt-1   font-inter mr-[26px]">
+          <div className="flex flex-col mt-1 w-[300px]  font-inter mr-[26px]">
             <div className="text-15px font-medium text-caak-generalblack">
               {comment?.post?.title}
             </div>
           </div>
         </div>
-        <div className="flex items-center w-[330px] mr-[10px]">
+        <div className="flex items-center w-[300px]  mr-[10px]">
           <span className="icon-fi-rs-comment-f text-lg text-caak-aleutian mr-2" />
           <p className="text-caak-generalblack text-13px font-normal mx-2">
             {comment?.comment}

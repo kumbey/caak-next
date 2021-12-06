@@ -2,8 +2,11 @@ const comment0001 = /* GraphQL */ `
   {
     id
     post_item_id
+    parent_id
     comment
     createdAt
+    reacted
+    type
     totals {
       reactions
     }
@@ -33,4 +36,4 @@ const comment0001 = /* GraphQL */ `
   }
 `;
 
-export default comment0001
+export default comment0001;

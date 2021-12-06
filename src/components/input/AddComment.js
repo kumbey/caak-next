@@ -8,9 +8,17 @@ import { getFileUrl, getReturnData } from "../../utility/Util";
 import { createComment } from "../../graphql-custom/comment/mutation";
 import Button from "../button";
 
-const AddComment = ({ activeIndex, post, addCommentRef }) => {
+const AddComment = ({
+  activeIndex,
+  post,
+  addCommentRef,
+  commentInputValue,
+  setCommentInputValue,
+  reply,
+  setReply,
+}) => {
   const [loading, setLoading] = useState(false);
-  const [commentInputValue, setCommentInputValue] = useState("");
+
   const { user, isLogged } = useUser();
   const router = useRouter();
   const item = post.items.items[activeIndex];
@@ -40,13 +48,16 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
                 comment: commentInputValue,
                 post_item_id: item.id,
                 status: "ACTIVE",
-                type: "PARENT",
-                user_id: user.sysUser.id,
-                replyUserID: item.user_id,
+                type: reply.isReplying ? "SUB" : "PARENT",
+                ...(reply.isReplying ? { parent_id: reply.comment_id } : {}),
+                on_to: "POST_ITEM",
+                user_id: user.id,
+                replyUserID: reply.isReplying ? reply.user_id : post.user.id,
               },
             })
           );
           setCommentInputValue("");
+
           item.comments.items.push(getReturnData(resp, false));
         } else {
           router.push({
@@ -59,11 +70,15 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
       }
     }
   };
-
+  useEffect(() => {
+    if (!commentInputValue?.trim().startsWith(reply.user_nickname?.trim())) {
+      setReply({ user_nickname: "", isReplying: false, user_id: null });
+    }
+  }, [commentInputValue]);
   return (
     <div
       className={
-        "bg-white sticky bottom-0 right-0 left-0 flex flex-row justify-between items-center py-3 pl-c11 z-2"
+        "bg-white sticky bottom-0 right-0 left-0 flex flex-row justify-between items-center py-3 pl-c11 z-2 h-[62px]"
       }
     >
       {isLogged ? (
@@ -78,12 +93,12 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
         />
       ) : null}
       <div className={"relative flex w-full justify-center items-center px-2"}>
-        <textarea
+        <input
           ref={addCommentRef}
           value={commentInputValue || ""}
-          rows={1}
+          // rows={2}
           className={
-            "px-2.5 border-0 bg-caak-liquidnitrogen w-full text-caak-darkBlue rounded-square text-16px  focus:ring-1 ring-caak-primary"
+            "px-2.5 border-0 bg-caak-liquidnitrogen w-full text-caak-darkBlue rounded-square text-16px h-[38px] focus:ring-1 ring-caak-primary"
           }
           placeholder={"Сэтгэгдэл үлдээх"}
           onChange={(e) => setCommentInputValue(e.target.value)}
@@ -91,7 +106,6 @@ const AddComment = ({ activeIndex, post, addCommentRef }) => {
             !isLogged &&
             router.push({
               pathname: "/login",
-              state: { background: location },
             })
           }
         />

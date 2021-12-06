@@ -11,8 +11,9 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { isLogged } from "../../utility/Authenty";
 import { useUser } from "../../context/userContext";
+import Video from "../video";
 
-const ViewPostBlogItem = ({ postItem, postId }) => {
+const ViewPostBlogItem = ({ postItem, postId, singleItem }) => {
   const router = useRouter();
   const { user } = useUser();
   const reactionTimer = useRef(null);
@@ -59,9 +60,9 @@ const ViewPostBlogItem = ({ postItem, postId }) => {
         await API.graphql(
           graphqlOperation(createReaction, {
             input: {
-              id: `${postId}#${user.id}`,
-              item_id: postId,
-              on_to: "POST",
+              id: `${postItem.id}#${user.id}`,
+              item_id: postItem.id,
+              on_to: "POST_ITEM",
               type: "CAAK",
               user_id: user.id,
             },
@@ -71,7 +72,7 @@ const ViewPostBlogItem = ({ postItem, postId }) => {
         await API.graphql(
           graphqlOperation(deleteReaction, {
             input: {
-              id: `${postId}#${user.id}`,
+              id: `${postItem.id}#${user.id}`,
             },
           })
         );
@@ -87,86 +88,118 @@ const ViewPostBlogItem = ({ postItem, postId }) => {
 
   return (
     <div className={"flex flex-col mt-[40px]"}>
-      <div className={"relative h-[438px] w-full pt-[4px] "}>
-        <Image
-          className={"rounded-[6px]"}
-          objectFit={"cover"}
-          layout={"fill"}
-          src={getFileUrl(postItem.file)}
-          alt={postItem.file.name}
-        />
-        <div
-          style={{ borderRadius: "16%/50%" }}
-          className={
-            "flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white"
-          }
-        >
-          <div className={"flex flex-row items-center"}>
-            <div
-              onClick={() => localHandler()}
-              className={
-                "group flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
-              }
-            >
-              <span
-                className={`text-[18px] transition duration-200 group-hover:scale-110 caak-button ${
-                  shake ? `shake` : null
-                } ${
-                  isReacted
-                    ? "icon-fi-rs-rock-f text-caak-uclagold"
-                    : "icon-fi-rs-rock-i"
-                }`}
-              />
-            </div>
-            <p
-              className={
-                "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px] ml-[4px]"
-              }
-            >
-              {postItem.totals.reactions}
-            </p>
-          </div>
-          <div className={"flex flex-row items-center ml-[10px]"}>
-            <div
-              className={
-                "group flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
-              }
-            >
-              <span
+      <div className={"relative h-[438px] w-full pt-[4px]"}>
+        {postItem.file.type.startsWith("video") ? (
+          <Video
+            videoClassname={"object-contain rounded-[4px]"}
+            src={getFileUrl(postItem.file)}
+          />
+        ) : (
+          <Image
+            className={"rounded-[6px]"}
+            objectFit={"cover"}
+            layout={"fill"}
+            src={getFileUrl(postItem.file)}
+            alt={postItem.file.name}
+          />
+        )}
+
+        {!singleItem && (
+          <div
+            style={{ borderRadius: "16%/50%" }}
+            className={
+              "flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white"
+            }
+          >
+            <div className={"flex flex-row items-center"}>
+              <div
+                onClick={() => localHandler()}
                 className={
-                  "icon-fi-rs-comment text-caak-cherenkov text-[16.5px] transition duration-200 group-hover:scale-125"
+                  "group flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
                 }
-              />
+              >
+                <span
+                  className={`text-[18px] transition duration-200 group-hover:scale-110 caak-button ${
+                    shake ? `shake` : null
+                  } ${
+                    isReacted
+                      ? "icon-fi-rs-rock-f text-caak-uclagold"
+                      : "icon-fi-rs-rock-i"
+                  }`}
+                />
+              </div>
+              <p
+                className={
+                  "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px] ml-[4px]"
+                }
+              >
+                {postItem.totals.reactions}
+              </p>
             </div>
-            <p
-              className={
-                "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px] ml-[4px]"
+            <div
+              onClick={() =>{
+                console.log(postItem.id)
+                router.push(
+                    {
+                      pathname: `${router.pathname}/[itemId]`,
+                      query: {
+                        id: postId,
+                        itemId: postItem.id,
+                        isModal: true,
+                      },
+                    },
+                    `${router.asPath}/${postItem.id}`
+                )
               }
+
+              }
+              className={"flex flex-row items-center ml-[10px]"}
             >
-              {postItem.totals.comments}
-            </p>
+              <div
+                className={
+                  "group flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
+                }
+              >
+                <span
+                  className={
+                    "icon-fi-rs-comment text-caak-cherenkov text-[16.5px] transition duration-200 group-hover:scale-125"
+                  }
+                />
+              </div>
+              <p
+                className={
+                  "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px] ml-[4px]"
+                }
+              >
+                {postItem.totals.comments}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className={"pt-[20px]"}>
         <p
           className={
-            "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px]"
+            "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
           }
         >
-          <Link
-            href={{
-              pathname: `${router.pathname}/[itemId]`,
-              query: {
-                id: postId,
-                itemId: postItem.id,
-                isModal: true,
-              },
-            }}
-            as={`${router.asPath}/${postItem.id}`}
-          >
-            <a className={"relative"}>{postItem.title}</a>
-          </Link>
+          {!singleItem ? (
+            <Link
+              href={{
+                pathname: `${router.pathname}/[itemId]`,
+                query: {
+                  id: postId,
+                  itemId: postItem.id,
+                  isModal: true,
+                },
+              }}
+              as={`${router.asPath}/${postItem.id}`}
+            >
+              <a className={"relative"}>{postItem.title}</a>
+            </Link>
+          ) : (
+            postItem.title
+          )}
         </p>
       </div>
     </div>

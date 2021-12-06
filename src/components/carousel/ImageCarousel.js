@@ -1,13 +1,19 @@
-import CardVideoContainer from "../card/FeedCard/CardVideoContainer";
 import CardImageContainer from "../card/FeedCard/CardImageContainer";
 import { useEffect, useState } from "react";
 import { getFileUrl } from "../../utility/Util";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import ReactPlayer from "react-player";
 import Video from "../video";
+import Link from "next/link";
 
-const ImageCarousel = ({ items, postId, mediaContainerClassname, card }) => {
+const ImageCarousel = ({
+  items,
+  postId,
+  mediaContainerClassname,
+  card,
+  route,
+  changeActiveIndex,
+}) => {
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchPosition, setTouchPosition] = useState(null);
@@ -45,6 +51,7 @@ const ImageCarousel = ({ items, postId, mediaContainerClassname, card }) => {
     }
     if (activeIndex < items.length - 1) {
       setActiveIndex(activeIndex + 1);
+      changeActiveIndex && changeActiveIndex(activeIndex + 1);
     }
   };
   const prevItem = () => {
@@ -55,6 +62,7 @@ const ImageCarousel = ({ items, postId, mediaContainerClassname, card }) => {
     }
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
+      changeActiveIndex && changeActiveIndex(activeIndex - 1);
     }
   };
 
@@ -77,10 +85,7 @@ const ImageCarousel = ({ items, postId, mediaContainerClassname, card }) => {
   return (
     <div className={"relative h-full w-full overflow-hidden"}>
       <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
-        <div
-          onClick={() => card && router.push(`/post/view/${postId}`)}
-          className={"flex flex-nowrap flex-row items-center h-full w-full"}
-        >
+        <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
           {items.map((item, index) => {
             return (
               <div
@@ -100,42 +105,83 @@ const ImageCarousel = ({ items, postId, mediaContainerClassname, card }) => {
                   } relative flex justify-center items-center  bg-black`}
                 >
                   {item.file.type.startsWith("video") ? (
-                    <Video src={getFileUrl(item.file)} />
+                    <Video
+                      postId={postId}
+                      route
+                      videoClassname={"object-contain rounded-none"}
+                      src={getFileUrl(item.file)}
+                    />
                   ) : (
-                    // <CardVideoContainer
-                    //   indicatorClassname={"top-[15px] right-[12px]"}
-                    //   postId={postId}
-                    //   file={item.file}
-                    // />
                     <div
                       className={
                         "w-full h-full relative overflow-hidden bg-black"
                       }
                     >
-                      <div
-                        className={""}
-                        style={{
-                          width: "10%",
-                          height: "10%",
-                          filter: "blur(2px)",
-                          position: "absolute",
-                          transform: "scale(10)",
-                          left: "50%",
-                          top: "50%",
-                          opacity: "0.3",
-                          // zIndex: -1
-                        }}
-                      >
-                        <div className={"relative w-full h-full"}>
-                          <Image
-                            objectFit={"cover"}
-                            layout={"fill"}
-                            alt={item.file.type}
-                            src={getFileUrl(item.file)}
+                      {route ? (
+                        <Link href={`/post/view/${postId}`}>
+                          <a>
+                            <div
+                              className={""}
+                              style={{
+                                width: "10%",
+                                height: "10%",
+                                filter: "blur(2px)",
+                                position: "absolute",
+                                transform: "scale(10)",
+                                left: "50%",
+                                top: "50%",
+                                opacity: "0.3",
+                                // zIndex: -1
+                              }}
+                            >
+                              <div className={"relative w-full h-full"}>
+                                <Image
+                                  objectFit={"cover"}
+                                  layout={"fill"}
+                                  alt={item.file.type}
+                                  src={getFileUrl(item.file)}
+                                />
+                              </div>
+                            </div>
+                            <CardImageContainer
+                              route
+                              postId={postId}
+                              file={item.file}
+                            />
+                          </a>
+                        </Link>
+                      ) : (
+                        <>
+                          <div
+                            className={""}
+                            style={{
+                              width: "10%",
+                              height: "10%",
+                              filter: "blur(2px)",
+                              position: "absolute",
+                              transform: "scale(10)",
+                              left: "50%",
+                              top: "50%",
+                              opacity: "0.3",
+                              // zIndex: -1
+                            }}
+                          >
+                            <div className={"relative w-full h-full"}>
+                              <Image
+                                objectFit={"cover"}
+                                layout={"fill"}
+                                alt={item.file.type}
+                                src={getFileUrl(item.file)}
+                              />
+                            </div>
+                          </div>
+                          <CardImageContainer
+                            route
+                            postId={postId}
+                            file={item.file}
                           />
-                        </div>
-                      </div>
-                      <CardImageContainer postId={postId} file={item.file} />
+                        </>
+                      )}
                     </div>
                   )}
                 </div>

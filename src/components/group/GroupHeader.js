@@ -66,7 +66,6 @@ const GroupHeader = ({ groupData, ...props }) => {
       // });
     }
   };
-  groupData.role_on_group = "ADMIN";
   return (
     <div className={"flex flex-col items-center justify-center  bg-white"}>
       <div className="lg:w-[966px] w-auto sm:flex sm:justify-between justify-evenly mb-[20px]">

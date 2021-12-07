@@ -12,7 +12,12 @@ import GroupInfo from "../../group/GroupInfo";
 import GroupRules from "../../card/GroupRules";
 import GroupBadge from "../../group/GroupBadge";
 
-const GroupLayout = ({ children, groupData, hideSuggestedGroups }) => {
+const GroupLayout = ({
+  children,
+  groupData,
+  totalMember,
+  hideSuggestedGroups,
+}) => {
   const { isLogged } = useUser();
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
@@ -28,7 +33,7 @@ const GroupLayout = ({ children, groupData, hideSuggestedGroups }) => {
         <div
           className={`rightSideBar bg-none  ${isLaptop ? "hidden" : "block"}`}
         >
-          <GroupInfo groupData={groupData} />
+          <GroupInfo groupData={groupData} totalMember={totalMember} />
           <div className="mt-[16px]">
             {!hideSuggestedGroups && (
               <SuggestedGroupsCard

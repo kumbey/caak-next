@@ -15,7 +15,7 @@ import { getFileUrl } from "../../utility/Util";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const GroupHeader = ({ groupData, ...props }) => {
+const GroupHeader = ({ groupData, totalMember, ...props }) => {
   const { isLogged, cognitoUser } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -96,7 +96,7 @@ const GroupHeader = ({ groupData, ...props }) => {
               </div>
               <div className="flex items-center">
                 <span className={"icon-fi-rs-group-o mr-1"} />
-                <p className="text-sm">{groupData.totals.member} Гишүүн</p>
+                <p className="text-sm">{totalMember} Гишүүн</p>
               </div>
             </div>
           </div>

@@ -1,29 +1,43 @@
-import { useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { getFileUrl, generateTimeAgo } from "../../utility/Util";
 import Divider from "../divider";
 import Button from "../../components/button";
 
 const DashList = ({ imageSrc, post, ...props }) => {
-  console.log(post);
   return (
     <div className=" ">
       <div className="relative flex items-center ">
         <div className="flex w-[400px] items-center">
-          <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
-            <Image
-              className=" bg-white rounded-md"
-              src={getFileUrl(imageSrc)}
-              width={96}
-              height={96}
-              layout="fixed"
-              //   objectFit={"cover"}
-              alt="#"
-            />
-          </div>
+          <Link
+            href={{
+              pathname: `/post/view/${post.id}`,
+            }}
+          >
+            <a>
+              <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
+                <Image
+                  className=" bg-white rounded-md"
+                  src={getFileUrl(imageSrc)}
+                  width={96}
+                  height={96}
+                  layout="fixed"
+                  //   objectFit={"cover"}
+                  alt="#"
+                />
+              </div>
+            </a>
+          </Link>
+
           <div className="flex flex-col  font-inter mr-[26px]">
             <div className="text-15px font-medium text-caak-generalblack">
-              {post.title}
+              <Link
+                href={{
+                  pathname: `/post/view/${post.id}`,
+                }}
+              >
+                <a>{post.title}</a>
+              </Link>
             </div>
             <div className="text-xs font-normal  text-caak-darkBlue">
               {generateTimeAgo(post.createdAt)}
@@ -32,9 +46,17 @@ const DashList = ({ imageSrc, post, ...props }) => {
         </div>
         <div className="flex w-[150px] mr-[10px]">
           <div className="h-full rounded-md bg-caak-extraLight font-inter flex items-center">
-            <p className="text-caak-generalblack text-13px font-normal mx-2">
-              {post.group.name}
-            </p>
+            <Link
+              href={{
+                pathname: `/group/${post.group.id}`,
+              }}
+            >
+              <a>
+                <p className="text-caak-generalblack text-13px font-normal mx-2">
+                  {post.group.name}
+                </p>
+              </a>
+            </Link>
           </div>
         </div>
         <div className="flex text-sm text-caak-darkBlue">

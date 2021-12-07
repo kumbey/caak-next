@@ -49,7 +49,7 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
-  console.log(userList)
+  console.log(userList);
 
   const userComments = await API.graphql({
     query: listCommentByUser,
@@ -197,10 +197,6 @@ const Dashboard = ({ ssrData, ...props }) => {
     };
 
     // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    console.log(userInfo);
   }, []);
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import API from "@aws-amplify/api";
 import Button from "../../components/button";
 import { getFileUrl, getGenderImage } from "../../utility/Util";
@@ -62,9 +63,17 @@ const FollowerList = ({ imageSrc, followedUser, ...props }) => {
             />
           </div>
           <div className="flex flex-col">
-            <div className="text-16px text-caak-generalblack font-semibold font-inter">
-              @{followedUser.nickname}
-            </div>
+            <Link
+              href={{
+                pathname: `/user/${followedUser.id}/profile`,
+              }}
+            >
+              <a>
+                <div className="text-16px text-caak-generalblack font-semibold font-inter">
+                  @{followedUser.nickname}
+                </div>
+              </a>
+            </Link>
             <div className="flex items-center">
               <span className="icon-fi-rs-aura mr-1 text-20px" />
               <p>{followedUser.aura} Аура</p>

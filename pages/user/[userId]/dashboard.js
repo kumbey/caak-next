@@ -1,8 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import StatsItem from "../../../src/components/stats";
+import Image from "next/image";
+
 import { withSSRContext } from "aws-amplify";
-import { getReturnData } from "../../../src/utility/Util";
+import {
+  getFileUrl,
+  getGenderImage,
+  getReturnData,
+} from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
@@ -207,9 +213,26 @@ const Dashboard = ({ ssrData, ...props }) => {
           className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5"
           style={{ height: "48px", width: "48px" }}
         />
-        <div className="text-2xl font-semibold text-caak-generalblack">
-          Дашбоард
+        <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
+          <Image
+            className=" bg-white rounded-full"
+            src={
+              user?.pic ? getFileUrl(user?.pic) : getGenderImage(user?.gender)
+            }
+            width={52}
+            height={52}
+            layout="fixed"
+            //   objectFit={"cover"}
+            alt="#"
+          />
         </div>
+        <div className="text-2xl font-semibold text-caak-generalblack mr-1">
+          @{user.nickname}
+        </div>
+        <span className="icon-fi-rs-verified" />
+      </div>
+      <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
+        Дашбоард
       </div>
       <div className="flex">
         {stats.map((stat, index) => {

@@ -1,5 +1,12 @@
+import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+import DropDown from "../../components/navigation/DropDown";
+import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
+import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
+import AnimatedCaakButton from "../../components/button/animatedCaakButton";
+import { getReturnData, useClickOutSide } from "../../../src/utility/Util";
 
 import {
   generateTimeAgo,
@@ -7,7 +14,45 @@ import {
   getGenderImage,
 } from "../../utility/Util";
 
+const postShareMenu = [
+  {
+    id: 0,
+    title: "Facebook",
+    icon: (
+      <Image width={22} height={22} alt={"facebook icon"} src={FacebookIcon} />
+    ),
+  },
+  {
+    id: 1,
+    title: "Twitter",
+    icon: (
+      <Image width={22} height={22} alt={"twitter icon"} src={TwitterIcon} />
+    ),
+  },
+  {
+    id: 2,
+    title: "Линк хуулах",
+    icon: (
+      <div
+        className={
+          "flex justify-center items-center p-[5px] w-[22px] h-[22px] rounded-full bg-caak-red"
+        }
+      >
+        <span className={"icon-fi-rs-link text-white text-[11px]"} />
+      </div>
+    ),
+  },
+];
+
 const List = ({ video, post, imageSrc, ...props }) => {
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="bg-white relative flex   mx-auto  rounded-lg shadow-card  mb-[24px]">
       <div className="flex m-[15px]">
@@ -69,7 +114,37 @@ const List = ({ video, post, imageSrc, ...props }) => {
               <p>{post.totals.comments}</p>
             </div>
             <div className="flex items-center mr-6">
-              <span className="icon-fi-rs-share text-2xl mr-2 cursor-pointer" />
+              <div
+                ref={menuRef}
+                onClick={toggleMenu}
+                className={
+                  "flex flex-row relative items-center cursor-pointer w-[24px] h-[24px]"
+                }
+              >
+                <i
+                  className={
+                    "icon-fi-rs-share text-caak-generalblack transition duration-150 hover:text-caak-carbonfootprint text-22px mr-1.5"
+                  }
+                />
+                <DropDown
+                  arrow={"bottom"}
+                  className="absolute left-10 bottom-0"
+                  open={isMenuOpen}
+                  onToggle={toggleMenu}
+                  content={postShareMenu.map((data) => (
+                    <div
+                      key={data.id}
+                      style={{ height: "36px" }}
+                      className="z-1 flex items-center cursor-pointer px-c6 hover:bg-caak-liquidnitrogen"
+                    >
+                      {data.icon}
+                      <p className="text-14px text-caak-extraBlack ml-px-12">
+                        {data.title}
+                      </p>
+                    </div>
+                  ))}
+                />
+              </div>
             </div>
           </div>
         </div>

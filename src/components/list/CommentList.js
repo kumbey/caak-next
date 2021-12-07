@@ -13,7 +13,7 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
         <div className="flex w-[300px] items-center">
           <Link
             href={{
-              pathname: `/post/view/${comment.post.id}`,
+              pathname: `/post/view/${comment?.post?.id}`,
             }}
           >
             <a>
@@ -35,7 +35,7 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
           <div className="flex flex-col mt-1 w-[300px]  font-inter mr-[26px]">
             <Link
               href={{
-                pathname: `/post/view/${comment.post.id}`,
+                pathname: `/post/view/${comment?.post?.id}`,
               }}
             >
               <a>

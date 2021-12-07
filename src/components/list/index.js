@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Tooltip from "../tooltip/Tooltip";
+import ProfileHoverCard from "../../components/card/ProfileHoverCard";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -93,15 +95,23 @@ const List = ({ video, post, imageSrc, ...props }) => {
           </Link>
           <div className="flex mt-1 text-xs text-caak-darkBlue font-normal font-inter">
             <div className="mr-[23px]">{post.group.name}</div>
-            <Link
-              href={{
-                pathname: `/user/${post.user_id}/profile`,
-              }}
+            <Tooltip
+              className={"-left-14"}
+              content={
+                <ProfileHoverCard userId={post.user.id} postUser={post.user} />
+              }
             >
-              <a>
-                <div className="mr-[24px]">@{post.user.nickname}</div>
-              </a>
-            </Link>
+              <Link
+                href={{
+                  pathname: `/user/${post.user_id}/profile`,
+                }}
+              >
+                <a>
+                  <div className="mr-[24px]">@{post.user.nickname}</div>
+                </a>
+              </Link>
+            </Tooltip>
+
             <div className="">{generateTimeAgo(post.createdAt)}</div>
           </div>
           <div className="flex mt-2">

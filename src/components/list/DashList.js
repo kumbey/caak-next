@@ -59,20 +59,21 @@ const DashList = ({ imageSrc, post, ...props }) => {
             </Link>
           </div>
         </div>
-        <div className="flex text-sm text-caak-darkBlue">
+        <div className="flex text-sm text-caak-darkBlue mr-2">
           <div className="flex items-center mr-5">
-            <span className="icon-fi-rs-rock-i text-20px mr-2 cursor-pointer" />
+            <span className="icon-fi-rs-rock-i text-20px mr-2 " />
             <p>{post.totals.reactions}</p>
           </div>
           <div className="flex items-center mr-5">
-            <span className="icon-fi-rs-comment-f text-20px mr-2 cursor-pointer" />
+            <span className="icon-fi-rs-comment-o text-20px mr-2 " />
             <p>{post.totals.comments}</p>
           </div>
           <div className="flex items-center">
-            <span className="icon-fi-rs-share text-20px mr-2 cursor-pointer" />
+            <span className="icon-fi-rs-view text-20px mr-2 " />
+            <p>{post.totals.views}</p>
           </div>
         </div>
-        <div className="flex ml-[10px]">
+        <div className="flex ml-[10px] ">
           <Button
             onClick={() => null}
             round

@@ -3,6 +3,7 @@ const comment0001 = /* GraphQL */ `
     id
     post_item_id
     parent_id
+    post_id
     comment
     createdAt
     reacted

@@ -56,7 +56,6 @@ const PassConfirmation = () => {
 
     try {
       setLoading(true);
-      console.log(username);
       await Auth.forgotPassword(username);
 
       setLoading(false);

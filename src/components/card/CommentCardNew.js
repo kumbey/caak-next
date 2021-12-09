@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import CommentSubItemCard from "./CommentSubItemCard";
 import API from "@aws-amplify/api";
 import {
-  onCommentByParent,
   onCommentByPost,
   onCommentByPostItem,
 } from "../../graphql-custom/comment/subscriptions";
@@ -32,13 +31,14 @@ const CommentCardNew = ({
   const [isFetchingComment, setIsFetchingComment] = useState(false);
   const { isLogged } = useUser();
 
-  const listCommentByType = async () => {
+  const listCommentByType = async (fetchComment) => {
     let params;
     if (setup.type === "POST") {
       params = {
         query: listCommentsByDateAndType,
         variables: {
           post_id: setup.id,
+          sortDirection: "DESC",
         },
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       };
@@ -47,6 +47,7 @@ const CommentCardNew = ({
         query: listCommentsByDateAndTypeForItem,
         variables: {
           post_item_id: setup.id,
+          sortDirection: "DESC",
         },
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       };
@@ -54,10 +55,15 @@ const CommentCardNew = ({
     try {
       let resp = await API.graphql(params);
       resp = getReturnData(resp);
-      setComments({
-        nextToken: resp.nextToken,
-        items: [...comments.items, ...resp.items],
-      });
+      fetchComment
+        ? setComments({
+            nextToken: resp.nextToken,
+            items: [...comments.items, ...resp.items],
+          })
+        : setComments({
+            nextToken: resp.nextToken,
+            items: [...resp.items],
+          });
       setIsFetchingComment(false);
     } catch (ex) {
       setIsFetchingComment(false);
@@ -67,6 +73,7 @@ const CommentCardNew = ({
   };
 
   useEffect(() => {
+    // setComments({});
     listCommentByType();
   }, [setup.id]);
 
@@ -77,6 +84,7 @@ const CommentCardNew = ({
         query: onCommentByPost,
         variables: {
           post_id: setup.id,
+          type: "PARENT"
         },
         authMode: "AWS_IAM",
       };
@@ -85,11 +93,11 @@ const CommentCardNew = ({
         query: onCommentByPostItem,
         variables: {
           post_item_id: setup.id,
+          type: "PARENT"
         },
         authMode: "AWS_IAM",
       };
     }
-
     subscriptions.onCommentByPostItem = API.graphql(params).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
@@ -126,7 +134,7 @@ const CommentCardNew = ({
         return true;
       });
     };
-  }, []);
+  }, [setup.id]);
 
   return comments.items ? (
     <div className={"border-t border-caak-titaniumwhite py-[25px] w-full"}>
@@ -155,7 +163,7 @@ const CommentCardNew = ({
       })}
       {comments.nextToken && (
         <div
-          onClick={() => listCommentByType()}
+          onClick={() => listCommentByType({ fetchComment: true })}
           className={
             "text-caak-generalblack font-medium text-[13px] pl-[50px] mb-[10px] cursor-pointer"
           }
@@ -169,7 +177,9 @@ const CommentCardNew = ({
       )}
     </div>
   ) : (
-    <div>Loading</div>
+    <div className={"w-full flex justify-center items-center"}>
+      <Loader className={`bg-caak-primary`} />
+    </div>
   );
 };
 

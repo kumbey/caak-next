@@ -114,6 +114,10 @@ module.exports = {
           cookiedough: "#AC6D00",
           errigalwhite: "#F0F1F4",
           unicornsilver: "#E8E8E8",
+          carbon: {
+            DEFAULT: "#333333",
+            hover: "#4D4D4D",
+          },
         },
         darkblue: {
           DEFAULT: "#6C7392",

@@ -15,7 +15,6 @@ const FollowerList = ({ imageSrc, followedUser, ...props }) => {
   const router = useRouter();
   const { user, isLogged } = useUser();
 
-  console.log(followedUser);
   const [doRender, setDoRender] = useState(0);
   const [loading, setLoading] = useState(false);
 

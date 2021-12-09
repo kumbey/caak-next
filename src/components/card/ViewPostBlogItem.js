@@ -94,14 +94,40 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem }) => {
             videoClassname={"object-contain rounded-[4px]"}
             src={getFileUrl(postItem.file)}
           />
+        ) : !singleItem ? (
+          <Link
+            href={{
+              pathname: `${router.pathname}/[itemId]`,
+              query: {
+                id: postId,
+                itemId: postItem.id,
+                isModal: true,
+              },
+            }}
+            as={`${router.asPath}/${postItem.id}`}
+          >
+            <a>
+              <div className={"relative h-[438px] w-full"}>
+                <Image
+                  className={"rounded-[6px]"}
+                  objectFit={"cover"}
+                  layout={"fill"}
+                  src={getFileUrl(postItem.file)}
+                  alt={postItem.file.name}
+                />
+              </div>
+            </a>
+          </Link>
         ) : (
-          <Image
-            className={"rounded-[6px]"}
-            objectFit={"cover"}
-            layout={"fill"}
-            src={getFileUrl(postItem.file)}
-            alt={postItem.file.name}
-          />
+          <div className={"relative h-[438px] w-full"}>
+            <Image
+              className={"rounded-[6px]"}
+              objectFit={"cover"}
+              layout={"fill"}
+              src={getFileUrl(postItem.file)}
+              alt={postItem.file.name}
+            />
+          </div>
         )}
 
         {!singleItem && (
@@ -137,22 +163,19 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem }) => {
               </p>
             </div>
             <div
-              onClick={() =>{
-                console.log(postItem.id)
+              onClick={() => {
                 router.push(
-                    {
-                      pathname: `${router.pathname}/[itemId]`,
-                      query: {
-                        id: postId,
-                        itemId: postItem.id,
-                        isModal: true,
-                      },
+                  {
+                    pathname: `${router.pathname}/[itemId]`,
+                    query: {
+                      id: postId,
+                      itemId: postItem.id,
+                      isModal: true,
                     },
-                    `${router.asPath}/${postItem.id}`
-                )
-              }
-
-              }
+                  },
+                  `${router.asPath}/${postItem.id}`
+                );
+              }}
               className={"flex flex-row items-center ml-[10px]"}
             >
               <div

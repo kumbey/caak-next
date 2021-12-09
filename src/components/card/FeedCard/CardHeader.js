@@ -17,7 +17,6 @@ const CardHeader = ({
   hideTitle,
   containerClassname,
   titleClassname,
-  viewPost,
 }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -35,14 +34,12 @@ const CardHeader = ({
       <div className={"flex justify-between items-center"}>
         <div className="flex justify-between items-center">
           <div
-            className={`relative border border-caak-titaniumwhite rounded-square ${
-              viewPost ? "w-[30px] h-[30px]" : "w-[34px] h-[34px]"
-            }`}
+            className={`relative border border-caak-titaniumwhite rounded-square w-[34px] h-[34px]`}
           >
             <img
-              className={`object-cover ${
-                viewPost ? "w-[30px] h-[30px]" : "w-[34px] h-[34px]"
-              } m-34px rounded-square`}
+              className={`object-cover 
+              w-[34px] h-[34px]
+              m-34px rounded-square`}
               src={
                 post.group.profile
                   ? getFileUrl(post.group?.profile)
@@ -91,31 +88,17 @@ const CardHeader = ({
                   </a>
                 </Link>
               </Tooltip>
-              {viewPost && (
-                <div className={"flex flex-row items-center"}>
-                  {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
-                  <span
-                    className={
-                      "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
-                    }
-                  >
-                    &nbsp;·&nbsp;{generateTimeAgo(post.updatedAt)}
-                  </span>
-                </div>
-              )}
             </div>
-            {!viewPost && (
-              <div className={"flex flex-row items-center"}>
-                {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
-                <span
-                  className={
-                    "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
-                  }
-                >
-                  {generateTimeAgo(post.updatedAt)}
-                </span>
-              </div>
-            )}
+            <div className={"flex flex-row items-center"}>
+              {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
+              <span
+                className={
+                  "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
+                }
+              >
+                {generateTimeAgo(post.updatedAt)}
+              </span>
+            </div>
           </div>
         </div>
         <div
@@ -146,13 +129,9 @@ const CardHeader = ({
               : "text-15px leading-[18px] tracking-[0.23px]"
           }`}
         >
-          {viewPost ? (
-            post.title
-          ) : (
-            <Link href={`/post/view/${post.id}`}>
-              <a>{post.title}</a>
-            </Link>
-          )}
+          <Link href={`/post/view/${post.id}`}>
+            <a>{post.title}</a>
+          </Link>
         </div>
       )}
     </div>

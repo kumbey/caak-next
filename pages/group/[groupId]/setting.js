@@ -58,9 +58,7 @@ const Setting = ({ ssrData, ...props }) => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    console.log(posts);
-  }, []);
+
 
   return (
     <>

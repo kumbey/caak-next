@@ -64,6 +64,7 @@ const post0004 = /* GraphQL */ `
       id
       name
       profile ${file0001}
+      followed
     }
 
     totals {

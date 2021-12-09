@@ -17,9 +17,10 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import Image from "next/image";
-import Switch from "../../../pages/user/[userId]/Switch";
+import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import useMediaQuery from "../navigation/useMeduaQuery";
+import { getFileUrl } from "../../utility/Util";
 
 const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -32,7 +33,6 @@ const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-
   return (
     <div
       ref={setNodeRef}
@@ -69,7 +69,7 @@ const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
         <Image
           className={"rounded-[5px]"}
           alt={""}
-          src={item.file.url}
+          src={item.file.url ? item.file.url : getFileUrl(item.file)}
           layout={"fill"}
           objectFit={"cover"}
         />
@@ -102,11 +102,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
   const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
-  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-  const isMobile = useMediaQuery("screen and (max-device-width: 600px)");
   const [loaded, setLoaded] = useState(false);
-
-
 
   const maxLengths = {
     title: 200,
@@ -129,7 +125,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
 
   const featuredPostHandler = (index) => {
     const newItems = arrayMove(post.items, index, 0);
-    setPost({ items: newItems });
+    setPost({ ...post, items: newItems });
     setActiveIndex(0);
   };
 
@@ -161,7 +157,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
       return item.id === over.id;
     });
     const newItems = arrayMove(items, oldIndex, newIndex);
-    setPost({ items: newItems });
+    setPost({...post, items: newItems });
     setActiveIndex(event.active.data.current.sortable.index);
   };
 
@@ -296,14 +292,18 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
         </DndContext>
         <div className={"flex flex-col sm:flex-row sm:h-[300px] mt-[20px]"}>
           <div
-            style={{flexBasis: `300px`}}
+            style={{ flexBasis: `300px` }}
             className={
               "w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
             }
           >
             <Image
               alt={""}
-              src={post.items[activeIndex].file.url}
+              src={
+                post.items[activeIndex].file.url
+                  ? post.items[activeIndex].file.url
+                  : getFileUrl(post.items[activeIndex].file)
+              }
               objectFit={"contain"}
               layout={"fill"}
             />

@@ -73,7 +73,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
         className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
       >
         <span className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
+        <p className="text-14px text-caak-extraBlack">
           {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
         </p>
       </div>
@@ -87,7 +87,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
           }
         >
           <span className={"icon-fi-rs-pencil mr-px-12 w-c1  text-16px"} />
-          <p className="text-14px text-caak-extraBlack font-roboto">
+          <p className="text-14px text-caak-extraBlack">
             Постыг засах
           </p>
         </div>
@@ -95,15 +95,15 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
 
       <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  w-c1 text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">Хадгалах</p>
+        <p className="text-14px text-caak-extraBlack">Хадгалах</p>
       </div>
       <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">Репорт</p>
+        <p className="text-14px text-caak-extraBlack">Репорт</p>
       </div>
       {/* <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-hide mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
+        <p className="text-14px text-caak-extraBlack">
           Дахин харагдуулахгүй
         </p>
       </div> */}

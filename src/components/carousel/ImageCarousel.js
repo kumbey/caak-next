@@ -54,16 +54,6 @@ const ImageCarousel = ({
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
       changeActiveIndex && changeActiveIndex(activeIndex - 1);
-      // if (!card) {
-      //   console.log(activeIndex)
-      //   router.push(
-      //     `/post/view/${postId}/${items[activeIndex].id}`,
-      //     undefined,
-      //     // {
-      //     //   shallow: true,
-      //     // }
-      //   );
-      // }
     }
   };
 
@@ -77,7 +67,7 @@ const ImageCarousel = ({
         router.back();
       }
     };
-    document.addEventListener("keydown", handler);
+    !card && document.addEventListener("keydown", handler);
     return () => {
       document.removeEventListener("keydown", handler);
     };

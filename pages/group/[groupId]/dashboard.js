@@ -11,74 +11,96 @@ import {
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
-import { getPostByUser } from "../../../src/graphql-custom/post/queries";
+import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
 import API from "@aws-amplify/api";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
-  listUsersbyFollowing,
-  getUserTotal,
-} from "../../../src/graphql-custom/user/queries";
+  getGroupTotal,
+  getGroupView,
+} from "../../../src/graphql-custom/group/queries";
+
+import { getGroupUsersByGroup } from "../../../src/graphql-custom/group/queries";
 import FollowerList from "../../../src/components/list/FollowerList";
 import CommentList from "../../../src/components/list/CommentList";
-import { useUser } from "../../../src/context/userContext";
 import PendingPost from "../../../src/components/PendingPost/PendingPost";
+import Loader from "../../../src/components/loader";
 
 export async function getServerSideProps({ req, query }) {
-  const { API } = withSSRContext({ req });
+  const { API, Auth } = withSSRContext({ req });
 
-  const resp = await API.graphql({
-    query: getPostByUser,
+  let user = null;
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ex) {
+    user = null;
+  }
+  // console.log(user.attributes);
+  // let userId = user.attributes.sub;
+  let userId = "232b6cf0-f166-42da-884e-3aa4ae8d5504";
+
+  const groupView = await API.graphql({
+    query: getGroupView,
     variables: {
-      user_id: query.userId,
+      id: query.groupId,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+  const resp = await API.graphql({
+    query: getPostByGroup,
+    variables: {
+      group_id: query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 5,
-    },
-  });
-
-  const pendingPosts = await API.graphql({
-    query: getPostByUser,
-    variables: {
-      user_id: query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "PENDING" } },
-      limit: 5,
-    },
-  });
-
-  const userList = await API.graphql({
-    query: listUsersbyFollowing,
-    variables: {
-      followed_user_id: query.userId,
       limit: 6,
     },
   });
 
+  const pendingPosts = await API.graphql({
+    query: getPostByGroup,
+    variables: {
+      group_id: query.groupId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 6,
+    },
+  });
+
+  const userList = await API.graphql({
+    query: getGroupUsersByGroup,
+    variables: {
+      group_id: query.groupId,
+      limit: 6,
+    },
+  });
+  console.log(userList);
+
   const userComments = await API.graphql({
     query: listCommentByUser,
     variables: {
-      user_id: query.userId,
+      user_id: userId,
       sortDirection: "DESC",
     },
   });
 
-  const userTotals = await API.graphql({
-    query: getUserTotal,
+  const groupTotals = await API.graphql({
+    query: getGroupTotal,
     variables: {
-      user_id: query.userId,
+      group_id: query.groupId,
     },
   });
+  console.log(groupTotals);
 
   return {
     props: {
       ssrData: {
         posts: getReturnData(resp),
         pendingPosts: getReturnData(pendingPosts),
+        groupView: getReturnData(groupView),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
-        userTotals: getReturnData(userTotals),
+        groupTotals: getReturnData(groupTotals),
       },
     },
   };
@@ -86,29 +108,31 @@ export async function getServerSideProps({ req, query }) {
 
 const Dashboard = ({ ssrData, ...props }) => {
   const router = useRouter();
-  const { isLogged, user } = useUser();
   const feedRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [userInfo, setUserInfo] = useState(ssrData.userTotals);
+  const [groupTotals, setGroupTotals] = useState(ssrData.groupTotals);
   const [followedUsers, setFollowedUsers] = useState(
     ssrData.userFollower.items
   );
+  console.log(groupTotals);
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
-  let totalReaction =
-    userInfo?.comment_reactions +
-    userInfo?.post_reactions +
-    userInfo?.post_items_reactions;
+  const [groupData, setGroupData] = useState(ssrData.groupView);
+  console.log(groupData);
+  let totalMember =
+    groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
+
+  let totalPost = groupTotals?.confirmed;
 
   const stats = [
     {
       id: 0,
       icon: "icon-fi-rs-aura",
-      number: user?.aura,
+      number: groupData?.aura ? groupData.aura : 2300,
       text: "Нийт аура",
       bgcolor: "",
       color: "",
@@ -116,26 +140,26 @@ const Dashboard = ({ ssrData, ...props }) => {
     {
       id: 1,
       icon: "icon-fi-rs-rock-f",
-      number: totalReaction,
-      text: "Нийт саак",
+      number: totalMember,
+      text: "Гишүүдийн тоо",
       bgcolor: "bg-caak-sweetfrosting",
       color: "text-caak-cookiedough",
     },
     {
       id: 2,
       icon: "icon-fi-rs-comment-f",
-      number: userComments?.length,
-      text: "Нийт сэтгэгдэл",
+      number: totalPost,
+      text: "Постын тоо",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
     },
     {
       id: 3,
-      icon: "icon-fi-rs-view",
-      number: userInfo?.post_views,
-      text: "Нийт пост үзсэн",
-      bgcolor: "bg-caak-errigalwhite",
-      color: "text-caak-darkBlue",
+      icon: "icon-fi-rs-rock-f",
+      number: 1500,
+      text: "Саакын тоо",
+      bgcolor: "bg-caak-sweetfrosting",
+      color: "text-caak-cookiedough",
     },
   ];
 
@@ -147,28 +171,28 @@ const Dashboard = ({ ssrData, ...props }) => {
     },
     {
       id: 1,
-      name: "Дагагчид",
+      name: "Группын гишүүд",
       icon: "icon-fi-rs-friends-o",
     },
+    // {
+    //   id: 2,
+    //   name: "Сэтгэгдэл",
+    //   icon: "icon-fi-rs-comment-o",
+    // },
     {
       id: 2,
-      name: "Сэтгэгдэл",
-      icon: "icon-fi-rs-comment-o",
-    },
-    {
-      id: 3,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
     },
   ];
 
   const [nextPosts] = useListPager({
-    query: getPostByUser,
+    query: getPostByGroup,
     variables: {
-      user_id: router.query.userId,
+      group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 5,
+      limit: 3,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -203,7 +227,6 @@ const Dashboard = ({ ssrData, ...props }) => {
     // eslint-disable-next-line
   }, []);
 
-
   return (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">
@@ -214,9 +237,11 @@ const Dashboard = ({ ssrData, ...props }) => {
         />
         <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
           <Image
-            className=" bg-white rounded-full"
+            className=" bg-white rounded-[10px]"
             src={
-              user?.pic ? getFileUrl(user?.pic) : getGenderImage(user?.gender)
+              groupData?.cover
+                ? getFileUrl(groupData?.cover)
+                : getGenderImage(groupData?.gender)
             }
             width={52}
             height={52}
@@ -226,7 +251,7 @@ const Dashboard = ({ ssrData, ...props }) => {
           />
         </div>
         <div className="text-2xl font-semibold text-caak-generalblack mr-1">
-          @{user.nickname}
+          @{groupData.name}
         </div>
         <span className="icon-fi-rs-verified" />
       </div>
@@ -321,15 +346,15 @@ const Dashboard = ({ ssrData, ...props }) => {
                   return (
                     <FollowerList
                       key={index}
-                      imageSrc={data.cover_pic}
-                      followedUser={data.user}
+                      imageSrc={data?.user?.pic}
+                      followedUser={data?.user}
                     />
                   );
                 })}
               </div>
             ) : null}
 
-            {activeIndex === 2
+            {/* {activeIndex === 2
               ? userComments.length > 0 &&
                 userComments.map((comment, index) => {
                   return (
@@ -341,9 +366,9 @@ const Dashboard = ({ ssrData, ...props }) => {
                     />
                   );
                 })
-              : null}
+              : null} */}
             <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 3
+              {activeIndex === 2
                 ? pendingPosts.length > 0 &&
                   pendingPosts.map((pendingPost, index) => {
                     return (
@@ -358,6 +383,14 @@ const Dashboard = ({ ssrData, ...props }) => {
                   })
                 : null}
             </div>
+          </div>
+          <div ref={feedRef} className={"flex justify-center items-center"}>
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
           </div>
         </div>
       </div>

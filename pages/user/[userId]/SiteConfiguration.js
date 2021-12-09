@@ -10,7 +10,6 @@ export default function SiteConfiguration() {
   };
 
   useEffect(() => {
-    console.log(active);
     localStorage.setItem("autoPlay", active === "true" ? "true" : "false");
   }, [active]);
 

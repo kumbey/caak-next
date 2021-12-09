@@ -204,7 +204,6 @@ export const listCommentByParent = /* GraphQL */ `
             nextToken
         }
     }
-  }
 `;
 export const listCommentByUser = /* GraphQL */ `
     query ListCommentByUser(

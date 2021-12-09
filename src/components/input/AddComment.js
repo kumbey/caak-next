@@ -4,7 +4,7 @@ import Dummy from "dummyjs";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
-import { getFileUrl, getReturnData } from "../../utility/Util";
+import { getFileUrl } from "../../utility/Util";
 import { createComment } from "../../graphql-custom/comment/mutation";
 import Button from "../button";
 
@@ -58,7 +58,7 @@ const AddComment = ({
           );
           setCommentInputValue("");
 
-          item.comments.items.push(getReturnData(resp, false));
+          // item.comments.items.push(getReturnData(resp, false));
         } else {
           router.push({
             pathname: "/login",
@@ -83,7 +83,7 @@ const AddComment = ({
     >
       {isLogged ? (
         <img
-          className="border-caak-primary w-10 h-10 border-2 rounded-full"
+          className="w-[38px] h-[38px] rounded-full"
           src={
             user?.sysUser?.pic
               ? getFileUrl(user.sysUser.pic)

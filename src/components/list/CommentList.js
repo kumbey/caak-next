@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
 import Image from "next/image";
 import Button from "../../components/button";
@@ -10,21 +11,39 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
     <div className="  w-full">
       <div className="relative flex items-center ">
         <div className="flex w-[300px] items-center">
-          <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
-            <Image
-              className=" bg-white rounded-md"
-              src={!imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)}
-              width={96}
-              height={96}
-              layout="fixed"
-              //   objectFit={"cover"}
-              alt="#"
-            />
-          </div>
+          <Link
+            href={{
+              pathname: `/post/view/${comment?.post?.id}`,
+            }}
+          >
+            <a>
+              <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
+                <Image
+                  className=" bg-white rounded-md"
+                  src={
+                    !imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)
+                  }
+                  width={96}
+                  height={96}
+                  layout="fixed"
+                  //   objectFit={"cover"}
+                  alt="#"
+                />
+              </div>
+            </a>
+          </Link>
           <div className="flex flex-col mt-1 w-[300px]  font-inter mr-[26px]">
-            <div className="text-15px font-medium text-caak-generalblack">
-              {comment?.post?.title}
-            </div>
+            <Link
+              href={{
+                pathname: `/post/view/${comment?.post?.id}`,
+              }}
+            >
+              <a>
+                <div className="text-15px font-medium text-caak-generalblack">
+                  {comment?.post?.title}
+                </div>
+              </a>
+            </Link>
           </div>
         </div>
         <div className="flex items-center w-[300px]  mr-[10px]">

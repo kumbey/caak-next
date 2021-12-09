@@ -5,15 +5,14 @@ import Link from "next/link";
 import {
   generateFileUrl,
   getReturnData,
+  sortSearchResultByKeyword,
   useClickOutSide,
   useDebounce,
 } from "../../utility/Util";
 import { API } from "aws-amplify";
-import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
-import { listUsers } from "../../graphql-custom/user/queries";
 import { useRouter } from "next/router";
+import {searchApi} from "../../apis/search";
 
 const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
@@ -24,46 +23,9 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const searchInputRef = useClickOutSide(() => setIsSearchBarOpen(false));
   const debouncedSearchResult = useDebounce(inputValue, 300);
 
-  const getGroups = async () => {
-    const resp = await API.graphql({
-      query: listGroupsForAddPost,
-      authMode: "AWS_IAM",
-      variables: { limit: 4, filter: { name: { contains: inputValue } } },
-    });
-    return getReturnData(resp).items;
-  };
-
-  const getPosts = async () => {
-    const resp = await API.graphql({
-      query: getPostByStatus,
-      authMode: "AWS_IAM",
-      sortDirection: "DESC",
-      variables: {
-        status: "CONFIRMED",
-        filter: { title: { contains: inputValue } },
-        limit: 4,
-      },
-    });
-    return getReturnData(resp).items;
-  };
-
-  const getUsers = async () => {
-    const resp = await API.graphql({
-      query: listUsers,
-      authMode: "AWS_IAM",
-      sortDirection: "DESC",
-      variables: {
-        filter: { nickname: { contains: inputValue } },
-      },
-    });
-    return getReturnData(resp).items;
-  };
-
   const searchQuery = async () => {
-    const queriedGroups = await getGroups();
-    const queriedPosts = await getPosts();
-    const queriedUsers = await getUsers();
-    setSearchResult([...queriedGroups.concat(queriedPosts, queriedUsers)]);
+    const resp = await searchApi({ API, searchQuery: inputValue, limit: 2 });
+    setSearchResult(resp)
   };
 
   useEffect(() => {
@@ -88,7 +50,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   return (
     <div
       ref={searchInputRef}
-      className="relative p-[8px] flex justify-center items-center"
+      className="relative  flex justify-center items-center"
     >
       <div
         className={`${
@@ -117,7 +79,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
 
         {!isSearching ? (
           <div>
-            {searchResult?.map((item, index) => {
+            {sortSearchResultByKeyword(searchResult, inputValue)?.map((item, index) => {
               if (item.nickname) {
                 return (
                   <SearchedGroupItem

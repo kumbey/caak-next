@@ -1,4 +1,4 @@
-const data = [
+export const data = [
   {
     id: 1,
     icon: <span className="icon-fi-rs-profile text-24px" />,
@@ -25,5 +25,3 @@ const data = [
     title: "Нууцлал",
   },
 ];
-
-export default data;

@@ -7,7 +7,6 @@ import {
 import useGroupLayout from "../../../src/hooks/useGroupLayout";
 import { withSSRContext } from "aws-amplify";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
 
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
@@ -15,7 +14,6 @@ import Loader from "../../../src/components/loader";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
 import GroupHeader from "../../../src/components/group/GroupHeader";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import API from "@aws-amplify/api";
 
 import Card from "../../../src/components/card/FeedCard";
 import { useUser } from "../../../src/context/userContext";
@@ -24,14 +22,14 @@ import List from "../../../src/components/list";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
-  let user = null
+  let user;
 
-  try{
-    user = await Auth.currentAuthenticatedUser()
-  }catch (ex){
-    user = null
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ex) {
+    user = null;
   }
-  
+
   const resp = await API.graphql({
     query: getPostByGroup,
     variables: {
@@ -40,7 +38,7 @@ export async function getServerSideProps({ req, query }) {
       filter: { status: { eq: "CONFIRMED" } },
       limit: 6,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   const groupView = await API.graphql({
@@ -48,7 +46,7 @@ export async function getServerSideProps({ req, query }) {
     variables: {
       id: query.groupId,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   return {
@@ -61,7 +59,7 @@ export async function getServerSideProps({ req, query }) {
   };
 }
 
-const Group = ({ ssrData, ...props }) => {
+const Group = ({ ssrData }) => {
   const router = useRouter();
   const GroupLayout = useGroupLayout();
   const [loading, setLoading] = useState(false);
@@ -85,7 +83,7 @@ const Group = ({ ssrData, ...props }) => {
       limit: 6,
       nextToken: ssrData.posts.nextToken,
     },
-    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
 

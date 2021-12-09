@@ -1,9 +1,5 @@
-import React from "react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from "../../../src/context/userContext";
-import { generateFileUrl, useClickOutSide } from "../../../src/utility/Util";
-import DropDownSelect from "../../../src/components/input/DropDownSelect";
+import { generateFileUrl, useClickOutSide } from "../../utility/Util";
+import DropDownSelect from "../input/DropDownSelect";
 
 const SelectGroup = ({
   setIsGroupVisible,
@@ -15,7 +11,6 @@ const SelectGroup = ({
   setPost,
   post,
 }) => {
-  const { user } = useUser();
   // const textareaRef = useRef();
 
   const dropDownClickOutsideRef = useClickOutSide(() => {

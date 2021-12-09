@@ -1,17 +1,20 @@
 export const feedType = [
   {
     id: 0,
-    type: "Тренд",
-    icon: "icon-fi-rs-trend",
-  },
-  {
-    id: 1,
-    type: "Шинэ",
+    title: "Шинэ",
+    type: "DEFAULT",
     icon: "icon-fi-rs-new",
   },
   {
+    id: 1,
+    title: "Тренд",
+    type: "DEFAULT",
+    icon: "icon-fi-rs-trend",
+  },
+  {
     id: 2,
-    type: "Саак",
+    title: "Саак",
+    type: "DEFAULT",
     icon: "icon-fi-rs-caak",
   },
 ];

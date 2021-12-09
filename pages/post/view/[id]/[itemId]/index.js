@@ -6,18 +6,23 @@ import {
   useClickOutSide,
 } from "../../../../../src/utility/Util";
 import { useRouter } from "next/router";
-import PostHeader from "./PostHeader";
+import PostHeader from "../../../../../src/components/viewpost/PostHeader";
 import PostMoreMenu from "../../../../../src/components/card/PostMoreMenu";
 import DropDown from "../../../../../src/components/navigation/DropDown";
 import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import { getPostView } from "../../../../../src/graphql-custom/post/queries";
-import { withSSRContext } from "aws-amplify";
+import { API, graphqlOperation, withSSRContext } from "aws-amplify";
 import Dummy from "dummyjs";
 import Link from "next/link";
 import ImageCarousel from "../../../../../src/components/carousel/ImageCarousel";
 import Button from "../../../../../src/components/button";
 import AddComment from "../../../../../src/components/input/AddComment";
 import CommentCardNew from "../../../../../src/components/card/CommentCardNew";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../../../../src/graphql-custom/GroupUsers/mutation";
+import { useUser } from "../../../../../src/context/userContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -58,6 +63,7 @@ const PostItem = ({ ssrData }) => {
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
   const [loading, setLoading] = useState(true);
+  const { user, isLogged } = useUser();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -70,7 +76,39 @@ const PostItem = ({ ssrData }) => {
   const itemId = router.query.itemId;
   const addCommentRef = useRef();
   const item = post.items.items[activeIndex];
-
+  const followGroup = async () => {
+    try {
+      if (isLogged) {
+        setLoading(true);
+        if (post.group.followed) {
+          await API.graphql(
+            graphqlOperation(deleteGroupUsers, {
+              input: {
+                id: `${post.group_id}#${user.id}`,
+              },
+            })
+          );
+          post.group.followed = false;
+        } else {
+          await API.graphql(
+            graphqlOperation(createGroupUsers, {
+              input: {
+                id: `${post.group_id}#${user.id}`,
+                group_id: post.group_id,
+                user_id: user.id,
+                role: "MEMBER",
+              },
+            })
+          );
+          post.group.followed = true;
+        }
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
   const [blockScroll, allowScroll] = useScrollBlock();
   useEffect(() => {
     blockScroll();
@@ -263,21 +301,31 @@ const PostItem = ({ ssrData }) => {
                 </div>
                 <div>
                   <Button
+                    loading={loading}
+                    onClick={followGroup}
                     icon={
                       <div
                         className={
                           "flex items-center justify-start w-[20px] h-[20px]"
                         }
                       >
-                        <span className={"icon-fi-rs-add-l text-[18px]"} />
+                        <span
+                          className={`${
+                            post.group.followed
+                              ? "icon-fi-rs-check"
+                              : "icon-fi-rs-add-l"
+                          }  text-[18px]`}
+                        />
                       </div>
                     }
                     iconPosition={"left"}
-                    className={
-                      "h-[28px] tracking-[0.18px] justify-between leading-[15px] flex rounded-[6px] text-caak-primary text-[12px] font-semibold uppercase border-[1px] border-caak-primary pr-[12px] pl-[7px] py-[7px]"
-                    }
+                    className={`h-[28px] tracking-[0.18px] justify-between leading-[15px] flex rounded-[6px] ${
+                      post.group.followed
+                        ? "text-gray-400 border-gray-400"
+                        : "text-caak-primary border-caak-primary"
+                    }  text-[12px] font-semibold uppercase border-[1px]  pr-[12px] pl-[7px] py-[7px]`}
                   >
-                    Нэгдэх
+                    {post.group.followed ? "Нэгдсэн" : "Нэгдэх"}
                   </Button>
                 </div>
               </div>
@@ -306,15 +354,6 @@ const PostItem = ({ ssrData }) => {
                   }}
                 />
               </div>
-              {/*<PostBody*/}
-              {/*  commentInputValue={commentInputValue}*/}
-              {/*  setCommentInputValue={setCommentInputValue}*/}
-              {/*  reply={reply}*/}
-              {/*  setReply={setReply}*/}
-              {/*  addCommentRef={addCommentRef}*/}
-              {/*  activeIndex={activeIndex}*/}
-              {/*  post={post}*/}
-              {/*/>*/}
             </div>
           </div>
         </div>

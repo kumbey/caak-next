@@ -122,7 +122,7 @@ const ViewPostLeftReaction = ({ post }) => {
       <div className={"flex flex-col items-center mb-[22px]"}>
         <div
           className={
-            "flex items-center justify-center w-[44px] h-[44px] rounded-full bg-white"
+            "flex items-center cursor-pointer justify-center w-[44px] h-[44px] rounded-full bg-white"
           }
         >
           <span

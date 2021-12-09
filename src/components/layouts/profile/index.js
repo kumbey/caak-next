@@ -1,25 +1,164 @@
 import Image from "next/image";
-import { getFileUrl, getGenderImage } from "../../../utility/Util";
+import {
+  getFileExt,
+  getFileName,
+  getFileUrl,
+  getGenderImage,
+} from "../../../utility/Util";
 import Button from "../../button";
 import SideBarGroups from "../../card/SideBarGroups";
 import { useUser } from "../../../context/userContext";
 import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import awsExports from "../../../aws-exports";
+import Dropzone from "react-dropzone";
+import { ApiFileUpload } from "../../../utility/ApiHelper";
+import { API, graphqlOperation } from "aws-amplify";
+import { updateUser } from "../../../graphql-custom/user/mutation";
+import { deleteFile } from "../../../graphql-custom/file/mutation";
 
 const DefaultUserProfileLayout = ({ user, children }) => {
+  const [uploading, setUploading] = useState(false);
   const { user: signedUser } = useUser();
+
+  const fileParams = (file) => {
+    return {
+      ext: getFileExt(file[0].name),
+      name: getFileName(file[0].name),
+      key: file[0].name,
+      type: file[0].type,
+      url: URL.createObjectURL(file[0]),
+      bucket: awsExports.aws_user_files_s3_bucket,
+      region: awsExports.aws_user_files_s3_bucket_region,
+      level: "public",
+      obj: file[0],
+    };
+  };
+
+  const onDrop = useCallback((file) => {
+    setProfilePictureDropZone(fileParams(file));
+  }, []);
+
+  const onDropCover = useCallback((file) => {
+    setCoverPictureDropZone(fileParams(file));
+  }, []);
+
+  const [profilePictureDropZone, setProfilePictureDropZone] = useState([]);
+  const [coverPictureDropZone, setCoverPictureDropZone] = useState([]);
+
+  const updateImage = async ({ type, array, setArray, signedUser }) => {
+    try {
+      setUploading(true);
+      const resp = await ApiFileUpload(array);
+      await API.graphql(
+        graphqlOperation(updateUser, {
+          input: {
+            id: signedUser.id,
+            ...(type === "cover"
+              ? { cover_pic_id: resp.id }
+              : { pic_id: resp.id }),
+          },
+        })
+      );
+      if (signedUser.cover_pic_id)
+        await API.graphql(
+          graphqlOperation(deleteFile, {
+            input: {
+              ...(type === "cover"
+                ? { id: signedUser.cover_pic_id }
+                : { id: signedUser.pic_id }),
+            },
+          })
+        );
+      if (type === "cover") {
+        signedUser.cover_pic_id = resp;
+      } else {
+        signedUser.pic_id = resp;
+      }
+      setArray({});
+      setUploading(false);
+    } catch (ex) {
+      setUploading(false);
+      console.log(ex);
+    }
+  };
+
+  useEffect(() => {
+    if (coverPictureDropZone.name)
+      updateImage({
+        type: "cover",
+        array: coverPictureDropZone,
+        setArray: setCoverPictureDropZone,
+        signedUser,
+      });
+    // eslint-disable-next-line
+  }, [coverPictureDropZone]);
+
+  useEffect(() => {
+    if (profilePictureDropZone.name)
+      updateImage({
+        type: "profile",
+        array: profilePictureDropZone,
+        setArray: setProfilePictureDropZone,
+        signedUser,
+      });
+    // eslint-disable-next-line
+  }, [profilePictureDropZone]);
 
   return (
     <div className={"flex flex-col"}>
       <div className={"relative w-full h-[240px]"}>
         <Image
           layout={"fill"}
+          objectFit={"cover"}
           alt={user?.cover_pic?.name}
           src={
-            user?.pic?.file
-              ? getFileUrl(user.cover_pic.file)
-              : getGenderImage("default")
+            user?.pic ? getFileUrl(user.cover_pic) : getGenderImage("default")
           }
         />
+        {user.id === signedUser.id && (
+          <Dropzone
+            noClick
+            noKeyboard
+            maxFiles={1}
+            onDropRejected={(e) => console.log(e[0].errors[0].message)}
+            accept={"image/jpeg, image/png, image/gif"}
+            onDropAccepted={onDropCover}
+          >
+            {({ getRootProps, getInputProps }) => (
+              <div
+                {...getRootProps()}
+                className={
+                  "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[40px] bottom-[20px] rounded-square bg-caak-liquidnitrogen"
+                }
+              >
+                {!uploading ? (
+                  <>
+                    <div
+                      className={
+                        "w-[24p] h-[24px] flex items-center justify-center"
+                      }
+                    >
+                      <span
+                        className={
+                          "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                        }
+                      />
+                    </div>
+                    <p
+                      className={"text-[14px] text-caak-generalblack ml-[7px]"}
+                    >
+                      Засах
+                    </p>
+                    <input {...getInputProps()} />
+                  </>
+                ) : (
+                  <p>Uploading...</p>
+                )}
+              </div>
+            )}
+          </Dropzone>
+        )}
       </div>
       <div className={"profileLayoutContainer relative"}>
         <div
@@ -65,31 +204,44 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           <div className={"flex flex-col items-center absolute top-[-74px]"}>
             <div
               className={
-                "w-[148px] h-[148px] relative rounded-full border-[7px] border-caak-liquidnitrogen"
+                "w-[148px] h-[148px] relative rounded-full border-[7px] border-caak-liquidnitrogen bg-white"
               }
             >
               <Image
                 className={"rounded-full"}
                 alt={"user profile"}
                 layout={"fill"}
+                objectFit={"cover"}
                 src={
-                  user?.pic?.file
-                    ? getFileUrl(user.pic.file)
-                    : getGenderImage("default")
+                  user?.pic ? getFileUrl(user.pic) : getGenderImage("default")
                 }
               />
               {signedUser.id === user.id && (
-                <div
-                  className={
-                    "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
-                  }
+                <Dropzone
+                  onDropRejected={(e) => console.log(e[0].errors[0].message)}
+                  accept={"image/jpeg, image/png, image/gif"}
+                  onDropAccepted={onDrop}
                 >
-                  <span
-                    className={
-                      "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
-                    }
-                  />
-                </div>
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      {...getRootProps()}
+                      className={
+                        "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
+                      }
+                    >
+                      {!uploading && (
+                        <>
+                          <span
+                            className={
+                              "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                            }
+                          />
+                          <input {...getInputProps()} />
+                        </>
+                      )}
+                    </div>
+                  )}
+                </Dropzone>
               )}
             </div>
             <div className={"flex flex-row items-center"}>

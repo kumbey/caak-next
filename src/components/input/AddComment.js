@@ -4,9 +4,10 @@ import Dummy from "dummyjs";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
-import { getFileUrl } from "../../utility/Util";
+import {getFileUrl, getReturnData} from "../../utility/Util";
 import { createComment } from "../../graphql-custom/comment/mutation";
 import Button from "../button";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const AddComment = ({
   activeIndex,
@@ -58,7 +59,7 @@ const AddComment = ({
           );
           setCommentInputValue("");
 
-          // item.comments.items.push(getReturnData(resp, false));
+          item.comments.items.push(getReturnData(resp, false));
         } else {
           router.push({
             pathname: "/login",
@@ -71,7 +72,7 @@ const AddComment = ({
     }
   };
   useEffect(() => {
-    if (!commentInputValue?.trim().startsWith(reply.user_nickname?.trim())) {
+    if (!commentInputValue?.trim().startsWith(reply?.user_nickname?.trim())) {
       setReply({ user_nickname: "", isReplying: false, user_id: null });
     }
   }, [commentInputValue]);

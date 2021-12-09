@@ -89,7 +89,7 @@ const Post = ({ ssrData }) => {
           <span className={"icon-fi-rs-close text-white text-[13px]"} />
         </div>
         <div className={"px-[32px] py-[30px]"}>
-          <p className={"text-[22px] text-caak-generalblack font-medium"}>
+          <p className={"text-[22px] text-caak-generalblack font-medium font-roboto tracking-[0.55px] leading-[25px]"}>
             {post.title}
           </p>
         </div>

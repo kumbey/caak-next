@@ -4,7 +4,8 @@ import GroupInfoCard from "../../card/GroupInfoCard";
 import FooterSidebar from "../../footer/FooterSidebar";
 import ViewPostLeftReaction from "../../viewpost/ViewPostLeftReaction";
 import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
+import Image from 'next/image'
 
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -14,7 +15,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
     return () => allowScroll();
   }, [allowScroll, blockScroll]);
 
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const handler = (e) => {
@@ -35,13 +36,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
           containerClassname ? containerClassname : ""
         }`}
       >
-        <div
-          className={
-            "flex items-center bg-caak-bluerhapsody cursor-pointer justify-center absolute top-[-54px] right-[20px] w-[40px] h-[40px] rounded-full"
-          }
-        >
-          <span className={"icon-fi-rs-close text-white text-[13px]"} />
-        </div>
+
         <div className={"viewPostLayoutContainer"}>
           <div className={"viewPostLeftSideBar z-1"}>
             <ViewPostLeftReaction post={post} />

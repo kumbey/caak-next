@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
-import CardHeader from "../../../../src/components/card/FeedCard/CardHeader";
 import { withSSRContext } from "aws-amplify";
-import { getFileUrl, getReturnData } from "../../../../src/utility/Util";
+import {generateTimeAgo, getFileUrl, getReturnData} from "../../../../src/utility/Util";
 import { getPostView } from "../../../../src/graphql-custom/post/queries";
 import Image from "next/image";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
@@ -54,14 +53,47 @@ const Post = ({ ssrData }) => {
       }
     >
       <div className={"bg-white h-full w-full rounded-square"}>
-        <CardHeader
-          viewPost
-          containerClassname={"py-[14px] px-[28px]"}
-          titleClassname={
-            "text-20px font-medium text-caak-generalblack tracking-[0.3px] leading-[24px]"
+        <div className={"flex flex-row absolute top-[-54px] left-[85px]"}>
+          <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
+            <Image
+              className={"rounded-[6px]"}
+              src={getFileUrl(post.group.profile)}
+              layout={"fill"}
+              alt={""}
+            />
+          </div>
+          <div className={"flex flex-col ml-[10px] justify-between"}>
+            <p className={"text-[16px] text-white font-semibold tracking-[0.24px] leading-[19px]"}>
+              {post.group.name} {post.user.verified && <span className={"icon-fi-rs-verified text-[15px]"}/>}
+            </p>
+
+            <div className={"flex flex-row text-[13px] text-white tracking-[0.2px] leading-[16px] font-normal opacity-90"}>
+              <p>
+                @{post.user.nickname}
+              </p>
+              &nbsp;
+              &middot;
+              &nbsp;
+              <p>
+                {generateTimeAgo(post.createdAt)}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={
+            "flex items-center bg-caak-bluerhapsody cursor-pointer justify-center absolute top-[-54px] right-[20px] w-[40px] h-[40px] rounded-full"
           }
-          post={post}
-        />
+        >
+          <span className={"icon-fi-rs-close text-white text-[13px]"} />
+        </div>
+        <div className={"px-[32px] py-[30px]"}>
+          <p className={"text-[22px] text-caak-generalblack font-medium"}>
+            {post.title}
+          </p>
+        </div>
+
         {post.items.items.length > 1 && (
           <div className={"relative h-[444px] w-full pt-[4px]"}>
             {post.items.items[0].file.type.startsWith("video") ? (

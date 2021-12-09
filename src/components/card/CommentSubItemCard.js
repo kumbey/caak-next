@@ -31,12 +31,12 @@ const CommentSubItemCard = ({
       query: onCommentByParent,
       variables: {
         parent_id: parentId,
+        type: "SUB"
       },
       authMode: "AWS_IAM",
     };
     subscriptions.onCommentByPostItem = API.graphql(params).subscribe({
       next: (data) => {
-        console.log(data);
         const onData = getReturnData(data, true);
         setSubscriptionComment(onData);
       },
@@ -48,7 +48,6 @@ const CommentSubItemCard = ({
 
   useEffect(() => {
     if (subscriptionComment) {
-      console.log(subscriptionComment);
       if (
         !subComments.items.find((item) => item.id === subscriptionComment.id)
       ) {
@@ -97,7 +96,6 @@ const CommentSubItemCard = ({
       setSubscriptionComment(false);
     } catch (ex) {
       setIsFetchingComment(false);
-
       console.log(ex);
     }
     setIsFetchingComment(false);
@@ -200,13 +198,6 @@ const CommentSubItemCard = ({
                       render={render}
                       setRender={setRender}
                     />
-                    {/*<div*/}
-                    {/*  className={*/}
-                    {/*    "flex items-center justify-center w-[24px] h-[24px] cursor-pointer"*/}
-                    {/*  }*/}
-                    {/*>*/}
-                    {/*  <span className={"icon-fi-rs-rock-i text-[22px]"} />*/}
-                    {/*</div>*/}
                     <div className={"flex items-center justify-center"}>
                       <p
                         className={"text-13px tracking-[0.2px] leading-[16px]"}

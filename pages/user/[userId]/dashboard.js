@@ -49,7 +49,6 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
-  console.log(userList)
 
   const userComments = await API.graphql({
     query: listCommentByUser,
@@ -94,7 +93,6 @@ const Dashboard = ({ ssrData, ...props }) => {
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
-  console.log(pendingPosts);
   let totalReaction =
     userInfo?.comment_reactions +
     userInfo?.post_reactions +
@@ -199,9 +197,6 @@ const Dashboard = ({ ssrData, ...props }) => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    console.log(userInfo);
-  }, []);
 
   return (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">

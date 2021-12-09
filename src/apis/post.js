@@ -23,7 +23,6 @@ export const crtPost = async (newPost, userId) => {
     const savedPost = getReturnData(
       await API.graphql(graphqlOperation(createPost, { input: post }))
     );
-    console.log("savedPost", savedPost)
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const resp = await ApiFileUpload(item.file);

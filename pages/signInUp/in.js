@@ -1,7 +1,7 @@
 import useModalLayout from "/src/hooks/useModalLayout";
 import { useState, useEffect } from "react";
 
-import Login from "/src/components/login/Login";
+import Login from "../../src/components/login";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 import { useRouter } from "next/router";
 

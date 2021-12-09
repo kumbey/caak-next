@@ -15,7 +15,6 @@ const FollowerList = ({ imageSrc, followedUser, ...props }) => {
   const router = useRouter();
   const { user, isLogged } = useUser();
 
-  console.log(router.query.userId, user);
   console.log(followedUser);
   const [doRender, setDoRender] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -43,7 +42,6 @@ const FollowerList = ({ imageSrc, followedUser, ...props }) => {
       console.log(ex);
     }
   };
-
   return (
     <div className="flex rounded-lg border border-caak-titaniumwhite  w-[390px] h-[108px] mb-[18px] mr-[16px]">
       <div className="flex w-full mx-[16px] my-[16px] items-center justify-between">

@@ -113,6 +113,7 @@ module.exports = {
           sweetfrosting: "#FFF7E5",
           cookiedough: "#AC6D00",
           errigalwhite: "#F0F1F4",
+          unicornsilver: "#E8E8E8",
         },
         darkblue: {
           DEFAULT: "#6C7392",

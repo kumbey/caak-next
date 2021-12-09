@@ -5,14 +5,14 @@ import { generateFileUrl } from "../../utility/Util";
 
 const SearchCard = ({ type, result }) => {
   return result ? (
-    type !== "post" ? (
+    type !== "POST" ? (
       <div
         className={
-          "flex flex-row bg-white shadow-card rounded-square mb-[20px] p-[16px] h-[90px] justify-between"
+          "flex flex-row bg-white shadow-card rounded-square mb-[20px] p-[16px] h-[90px] justify-between w-full"
         }
       >
         <div className={"flex flex-row"}>
-          <div className={"w-[60px] h-[60px] rounded-full bg-red-200"}>
+          <div className={"relative w-[60px] h-[60px] rounded-full bg-red-200"}>
             {result.profile && (
               <Image
                 className={"rounded-square"}
@@ -47,7 +47,7 @@ const SearchCard = ({ type, result }) => {
                 "flex flex-row text-darkblue text-[14px] tracking-[0.21px] leading-[17px]"
               }
             >
-              {type === "group" ? (
+              {result.type === "GROUP" ? (
                 <div className={"flex flex-row items-center text-caak-"}>
                   <div className={"flex items-center  w-[14px] h-[14px]"}>
                     <span className={"icon-fi-rs-globe text-[13px]"} />
@@ -108,7 +108,7 @@ const SearchCard = ({ type, result }) => {
             </div>
             <div
               className={
-                "ml-[20px] w-[100px] h-[100px] relative rounded-square flex-shrink-0"
+                "relative ml-[20px] w-[100px] h-[100px] relative rounded-square flex-shrink-0"
               }
             >
               <Image

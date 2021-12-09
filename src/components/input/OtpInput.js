@@ -1,6 +1,6 @@
 import { IMaskInput } from "react-imask";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const OtpInput = ({
   className,
@@ -22,12 +22,10 @@ const OtpInput = ({
         value: otp.replaceAll("     ", ""),
       },
     });
-    console.log(otp);
     // eslint-disable-next-line
   }, [otp]);
 
   useEffect(() => {
-    console.log(reset);
     if (reset) {
       clearOtp();
     }

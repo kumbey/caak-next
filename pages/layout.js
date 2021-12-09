@@ -8,7 +8,6 @@ import { useUser } from "../src/context/userContext";
 import { feedType } from "../src/components/navigation/sortButtonTypes";
 
 const DefaultFeedLayout = ({ children, columns, hideAura }) => {
-    console.log(hideAura)
   const { isLogged } = useUser();
   //  If columns is undefined, columns is defaults to 3.
   if (columns !== (2 || 3)) {

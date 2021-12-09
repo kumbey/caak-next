@@ -105,8 +105,8 @@ const ViewPostLeftReaction = ({ post }) => {
             className={`caak-button ${shake ? `shake` : null} ${
               isReacted
                 ? "icon-fi-rs-rock-f text-caak-uclagold"
-                : "icon-fi-rs-rock-f"
-            } text-caak-extraBlack text-[27px]`}
+                : "icon-fi-rs-rock-f text-caak-extraBlack"
+            }  text-[27px]`}
           />
         </div>
         <div className={"mt-[6px]"}>

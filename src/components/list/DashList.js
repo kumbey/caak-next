@@ -5,7 +5,6 @@ import Divider from "../divider";
 import Button from "../../components/button";
 
 const DashList = ({ imageSrc, post, ...props }) => {
-  console.log(post);
   return (
     <div className=" ">
       <div className="relative flex items-center ">

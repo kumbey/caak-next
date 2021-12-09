@@ -1,5 +1,4 @@
 import CommentCardNew from "../../../../../src/components/card/CommentCardNew";
-import {useEffect} from "react";
 
 const PostBody = ({
   post,
@@ -10,12 +9,6 @@ const PostBody = ({
   setReply,
   addCommentRef,
 }) => {
-  const item = post.items.items[activeIndex];
-
-  useEffect(()=> {
-    console.log(reply)
-  },[reply])
-
   return (
     <div
       className={"relative flex flex-col justify-between bg-caak-whitesmoke"}

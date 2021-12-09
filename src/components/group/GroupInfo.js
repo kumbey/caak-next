@@ -2,7 +2,7 @@ import Divider from "../divider";
 import { extractDate } from "../../utility/Util";
 import Button from "../button";
 
-const GroupInfo = ({ groupData }) => {
+const GroupInfo = ({ groupData, totalMember, ...props }) => {
   const createdAt = extractDate(groupData.createdAt);
   return (
     <div className=" flex flex-col mb-[16px]">
@@ -22,7 +22,7 @@ const GroupInfo = ({ groupData }) => {
           </div>
           <div className="flex flex-col">
             <p className="text-17px font-inter font-medium text-caak-generalblack">
-              {groupData.totals.member}
+              {totalMember}
             </p>
             <p className="text-14px text-caak-darkBlue">Гишүүн</p>
           </div>

@@ -50,7 +50,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   return (
     <div
       ref={searchInputRef}
-      className="relative p-[8px] flex justify-center items-center"
+      className="relative  flex justify-center items-center"
     >
       <div
         className={`${

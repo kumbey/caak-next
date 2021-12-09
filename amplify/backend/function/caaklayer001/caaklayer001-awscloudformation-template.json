@@ -20,19 +20,23 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersion58bc9a3c": {
+    "LambdaLayerVersion448b38f7": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs14.x"
-        ],
+        "CompatibleRuntimes": {
+          "Ref": "runtimes"
+        },
         "Content": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/caaklayer001-LambdaLayerVersion58bc9a3c-build.zip"
+          "S3Key": {
+            "Ref": "s3Key"
+          }
         },
-        "Description": "Updated layer version 2021-11-30T07:27:09.258Z",
+        "Description": {
+          "Ref": "description"
+        },
         "LayerName": {
           "Fn::Sub": [
             "caaklayer001-${env}",
@@ -47,11 +51,13 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate58bc9a3c": {
+    "LambdaLayerPermissionPrivate448b38f7": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:ap-southeast-1:395091497679:layer:caaklayer001-dev:1",
+        "LayerVersionArn": {
+          "Ref": "LambdaLayerVersion448b38f7"
+        },
         "Principal": {
           "Ref": "AWS::AccountId"
         }
@@ -61,7 +67,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersion58bc9a3c"
+        "Ref": "LambdaLayerVersion448b38f7"
       }
     }
   }

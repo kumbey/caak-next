@@ -335,8 +335,12 @@ export function _modalisOpen(params) {
   for (let i = 0; i, conditions.length > i; i++) {
     const condition = conditions[i];
 
-    if (condition.value === query[condition.key]) {
+    if (condition.value === "DYNAMIC" && query[condition.key]) {
       isOpen = true;
+    }else{
+      if (condition.value === query[condition.key]) {
+        isOpen = true;
+      }
     }
   }
 

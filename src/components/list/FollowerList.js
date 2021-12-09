@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import API from "@aws-amplify/api";
 import Button from "../../components/button";
 import { getFileUrl, getGenderImage } from "../../utility/Util";
@@ -40,7 +41,6 @@ const FollowerList = ({ imageSrc, followedUser, ...props }) => {
       console.log(ex);
     }
   };
-
   return (
     <div className="flex rounded-lg border border-caak-titaniumwhite  w-[390px] h-[108px] mb-[18px] mr-[16px]">
       <div className="flex w-full mx-[16px] my-[16px] items-center justify-between">
@@ -60,9 +60,17 @@ const FollowerList = ({ imageSrc, followedUser, ...props }) => {
             />
           </div>
           <div className="flex flex-col">
-            <div className="text-16px text-caak-generalblack font-semibold font-inter">
-              @{followedUser.nickname}
-            </div>
+            <Link
+              href={{
+                pathname: `/user/${followedUser.id}/profile`,
+              }}
+            >
+              <a>
+                <div className="text-16px text-caak-generalblack font-semibold font-inter">
+                  @{followedUser.nickname}
+                </div>
+              </a>
+            </Link>
             <div className="flex items-center">
               <span className="icon-fi-rs-aura mr-1 text-20px" />
               <p>{followedUser.aura} Аура</p>

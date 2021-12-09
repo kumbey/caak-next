@@ -3,6 +3,7 @@ const comment0003 = /* GraphQL */ `
     comment
     createdAt
     post {
+      id
       title
       items {
         items {

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
 import Button from "../button";
@@ -35,28 +36,50 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
     <>
       <div className="flex w-full justify-evenly  items-center ">
         <div className=" mr-3">
-          <div className={"w-[64px] h-[64px] "}>
-            <Image
-              className=" bg-white rounded-md"
-              src={!imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)}
-              width={64}
-              height={64}
-              layout="responsive"
-              //   objectFit={"cover"}
-              alt="#"
-            />
-          </div>
+          <Link
+            href={{
+              pathname: `/post/view/${post.id}`,
+            }}
+          >
+            <a>
+              <div className={"w-[64px] h-[64px] "}>
+                <Image
+                  className=" bg-white rounded-md"
+                  src={
+                    !imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)
+                  }
+                  width={64}
+                  height={64}
+                  layout="responsive"
+                  //   objectFit={"cover"}
+                  alt="#"
+                />
+              </div>
+            </a>
+          </Link>
         </div>
         <div className="flex  w-[220px]  justify-between">
-          <div className="text-15px  text-caak-generalblack font-inter font-medium">
-            {post.title}
-          </div>
+          <Link
+            href={{
+              pathname: `/post/view/${post.id}`,
+            }}
+          >
+            <a>
+              <div className="text-15px  text-caak-generalblack font-inter font-medium">
+                {post.title}
+              </div>
+            </a>
+          </Link>
         </div>
         <div className="flex w-[200px] text-xs items-center text-caak-darkBlue font-normal font-inter">
           <div className={"w-[28px] h-[28px]  mx-[6px]"}>
             <Image
               className=" bg-white rounded-full"
-              src={!imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)}
+              src={
+                !post?.user?.pic
+                  ? getGenderImage("default")
+                  : getFileUrl(post?.user?.pic)
+              }
               width={28}
               height={28}
               layout="responsive"
@@ -64,7 +87,15 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
               alt="#"
             />
           </div>
-          <div className="mr-[24px]">@{post.user.nickname}</div>
+          <Link
+            href={{
+              pathname: `/user/${post.user_id}/profile`,
+            }}
+          >
+            <a>
+              <div className="mr-[24px]">@{post.user.nickname}</div>
+            </a>
+          </Link>
           <div className="">
             <p className={"text-[14px] tracking-[0.21px]  leading-[16px]"}>
               {`${extractDate(post.createdAt).year}.${

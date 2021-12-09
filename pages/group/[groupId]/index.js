@@ -24,14 +24,14 @@ import List from "../../../src/components/list";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
-  let user = null
+  let user = null;
 
-  try{
-    user = await Auth.currentAuthenticatedUser()
-  }catch (ex){
-    user = null
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ex) {
+    user = null;
   }
-  
+
   const resp = await API.graphql({
     query: getPostByGroup,
     variables: {
@@ -40,7 +40,7 @@ export async function getServerSideProps({ req, query }) {
       filter: { status: { eq: "CONFIRMED" } },
       limit: 6,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   const groupView = await API.graphql({
@@ -48,7 +48,7 @@ export async function getServerSideProps({ req, query }) {
     variables: {
       id: query.groupId,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   return {
@@ -76,6 +76,11 @@ const Group = ({ ssrData, ...props }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [groupData, setGroupData] = useState(ssrData.groupData);
 
+  let totalMember =
+    groupData.totals.member +
+    groupData.totals.admin +
+    groupData.totals.moderator;
+
   const [nextPosts] = useListPager({
     query: getPostByGroup,
     variables: {
@@ -85,7 +90,7 @@ const Group = ({ ssrData, ...props }) => {
       limit: 6,
       nextToken: ssrData.posts.nextToken,
     },
-    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
 
@@ -121,9 +126,13 @@ const Group = ({ ssrData, ...props }) => {
   return (
     loaded && (
       <div>
-        <GroupHeader groupData={groupData} />
+        <GroupHeader groupData={groupData} totalMember={totalMember} />
         <div className={" mt-[32px]"}>
-          <GroupLayout groupData={groupData} columns={2}>
+          <GroupLayout
+            groupData={groupData}
+            totalMember={totalMember}
+            columns={2}
+          >
             <GroupSortButtons
               activeIndex={activeIndex}
               activeView={activeView}

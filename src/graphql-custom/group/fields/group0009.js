@@ -1,14 +1,11 @@
-const group0003 = /* GraphQL */ `
+const group0009 = /* GraphQL */ `
   {
-    nextToken
     items {
       role
       user {
-        gender
-        totals {
-          followers
-        }
         nickname
+        about
+        aura
         cover_pic {
           bucket
           createdAt
@@ -24,28 +21,29 @@ const group0003 = /* GraphQL */ `
           type
           updatedAt
         }
-        aura
+        gender
+        firstname
+        lastname
         pic {
+          bucket
+          createdAt
+          ext
+          external_url
+          id
+          isExternal
+          key
+          level
+          name
           updatedAt
           type
           region
           owner
-          name
-          level
-          key
-          isExternal
-          id
-          external_url
-          ext
-          createdAt
-          bucket
         }
       }
-      group {
-        name
-      }
+      group_id
+      id
     }
   }
 `;
 
-export default group0003;
+export default group0009;

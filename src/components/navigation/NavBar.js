@@ -112,135 +112,145 @@ export default function NavBar() {
     setLoaded(true);
   }, []);
 
-  return loaded && (
-    <Fragment>
-      {isTablet && (
-        <nav
-          className={`navbarDesktop z-5 fixed block w-full bg-white shadow-sm`}
-        >
-          <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
-            <div className="relative flex items-center justify-between w-full h-full">
-              <div className={"flex  items-center justify-center"}>
-                <Logo />
-              </div>
-              {/* Mobile menu button */}
-              <div className="flex">
-                <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
-                >
-                  <span className="sr-only">Open main menu</span>
-                  <span className={"icon-fi-sp-hamburger-menu"} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </nav>
-      )}
-
-      <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-5 fixed w-full bg-white border-t shadow-sm">
-        <div className="flex items-center h-full px-[40px] py-1">
-          <div className="relative flex items-center justify-between w-full h-full">
-            <div className="md:flex flex flex-row items-center hidden ">
-              <Logo onClick={() => router.push("/")} />
-            </div>
-
-            <div className="navbarSearch hidden md:block mx-4">
-              <SearchInput
-                containerStyle={"h-[36px]"}
-                hideLabel
-                placeholder={"Групп болон пост хайх"}
-              />
-            </div>
-
-            <div className={"relative flex h-full w-full md:w-auto"}>
-              <SubMenu
-                params={{
-                  userTotal,
-                  isMenuOpen,
-                  setIsMenuOpen,
-                  type: isTablet ? "mobile" : "web",
-                }}
-              />
-              {!isLogged && (
-                <div className={"hidden md:flex flex-row items-center"}>
-                  <Button
-                    round
-                    skin={"secondary"}
-                    className={"mr-2"}
-                    onClick={() =>
-                      router.push({
-                        pathname: router.pathname,
-                        query: {
-                          ...router.query,
-                          signInUp: "signIn",
-                          isModal: true
-                        }
-                      }, `/signInUp/signIn`, {shallow: true, scroll: false})
-                    }
-                  >
-                    Нэвтрэх
-                  </Button>
-                  <Button
-                    round
-                    skin={"primary"}
-                    className={"mr-2"}
-                    onClick={() =>
-                      router.push({
-                        pathname: router.pathname,
-                        query: {
-                          ...router.query,
-                          signInUp: "signUp",
-                          isModal: true
-                        }
-                      }, `/signInUp/signUp`, {shallow: true, scroll: false})
-                    }
-                  >
-                    Бүртгүүлэх
-                  </Button>
-                </div>
-              )}
-
-              {!isLogged && !isTablet && (
-                <div ref={menuRef} className={"flex items-center relative"}>
-                  <div
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className={
-                      "relative flex cursor-pointer justify-center items-center w-px-34 h-px-34 rounded-full bg-caak-liquidnitrogen"
-                    }
-                  >
-                    <span
-                      className={
-                        "icon-fi-rs-dots text-caak-generalblack text-4px"
-                      }
-                    />
-                    <DropDown
-                      className={"top-8 -right-3"}
-                      open={isMenuOpen}
-                      onToggle={toggleMenu}
-                      content={<NavBarMenu />}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+  return (
+    loaded && (
+      <Fragment>
         {isTablet && (
-          <div
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            // ref={mobileMenuRef}
-            className={`block md:hidden w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
-              isMobileMenuOpen
-                ? "transform translate-x-0"
-                : "transform translate-x-full"
-            }`}
-            id="mobile-menu"
+          <nav
+            className={`navbarDesktop z-5 fixed block w-full bg-white shadow-sm`}
           >
-            <MobileSideMenu setOpen={setIsMobileMenuOpen} />
-          </div>
+            <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
+              <div className="relative flex items-center justify-between w-full h-full">
+                <div className={"flex  items-center justify-center"}>
+                  <Logo />
+                </div>
+                {/* Mobile menu button */}
+                <div className="flex">
+                  <button
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
+                  >
+                    <span className="sr-only">Open main menu</span>
+                    <span className={"icon-fi-sp-hamburger-menu"} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </nav>
         )}
-      </nav>
-    </Fragment>
+
+        <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-5 fixed w-full bg-white border-t shadow-sm">
+          <div className="flex items-center h-full px-[40px] py-1">
+            <div className="relative flex items-center justify-between w-full h-full">
+              <div className="md:flex flex flex-row items-center hidden ">
+                <Logo onClick={() => router.push("/")} />
+              </div>
+
+              <div className="navbarSearch hidden md:block p-[8px] mx-4">
+                <SearchInput
+                  containerStyle={"h-[36px]"}
+                  hideLabel
+                  placeholder={"Групп болон пост хайх"}
+                />
+              </div>
+
+              <div className={"relative flex h-full w-full md:w-auto"}>
+                <SubMenu
+                  params={{
+                    userTotal,
+                    isMenuOpen,
+                    setIsMenuOpen,
+                    type: isTablet ? "mobile" : "web",
+                  }}
+                />
+                {!isLogged && (
+                  <div className={"hidden md:flex flex-row items-center"}>
+                    <Button
+                      round
+                      skin={"secondary"}
+                      className={"mr-2"}
+                      onClick={() =>
+                        router.push(
+                          {
+                            pathname: router.pathname,
+                            query: {
+                              ...router.query,
+                              signInUp: "signIn",
+                              isModal: true,
+                            },
+                          },
+                          `/signInUp/signIn`,
+                          { shallow: true, scroll: false }
+                        )
+                      }
+                    >
+                      Нэвтрэх
+                    </Button>
+                    <Button
+                      round
+                      skin={"primary"}
+                      className={"mr-2"}
+                      onClick={() =>
+                        router.push(
+                          {
+                            pathname: router.pathname,
+                            query: {
+                              ...router.query,
+                              signInUp: "signUp",
+                              isModal: true,
+                            },
+                          },
+                          `/signInUp/signUp`,
+                          { shallow: true, scroll: false }
+                        )
+                      }
+                    >
+                      Бүртгүүлэх
+                    </Button>
+                  </div>
+                )}
+
+                {!isLogged && !isTablet && (
+                  <div ref={menuRef} className={"flex items-center relative"}>
+                    <div
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                      className={
+                        "relative flex cursor-pointer justify-center items-center w-px-34 h-px-34 rounded-full bg-caak-liquidnitrogen"
+                      }
+                    >
+                      <span
+                        className={
+                          "icon-fi-rs-dots text-caak-generalblack text-4px"
+                        }
+                      />
+                      <DropDown
+                        className={"top-8 -right-3"}
+                        open={isMenuOpen}
+                        onToggle={toggleMenu}
+                        content={<NavBarMenu />}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          {isTablet && (
+            <div
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              // ref={mobileMenuRef}
+              className={`block md:hidden w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
+                isMobileMenuOpen
+                  ? "transform translate-x-0"
+                  : "transform translate-x-full"
+              }`}
+              id="mobile-menu"
+            >
+              <MobileSideMenu setOpen={setIsMobileMenuOpen} />
+            </div>
+          )}
+        </nav>
+      </Fragment>
+    )
   );
 }

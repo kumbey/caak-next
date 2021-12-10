@@ -22,7 +22,7 @@ import List from "../../../src/components/list";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
-  let user;
+  let user = null;
 
   try {
     user = await Auth.currentAuthenticatedUser();
@@ -74,6 +74,11 @@ const Group = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [groupData, setGroupData] = useState(ssrData.groupData);
 
+  let totalMember =
+    groupData.totals.member +
+    groupData.totals.admin +
+    groupData.totals.moderator;
+
   const [nextPosts] = useListPager({
     query: getPostByGroup,
     variables: {
@@ -119,9 +124,13 @@ const Group = ({ ssrData }) => {
   return (
     loaded && (
       <div>
-        <GroupHeader groupData={groupData} />
+        <GroupHeader groupData={groupData} totalMember={totalMember} />
         <div className={" mt-[32px]"}>
-          <GroupLayout groupData={groupData} columns={2}>
+          <GroupLayout
+            groupData={groupData}
+            totalMember={totalMember}
+            columns={2}
+          >
             <GroupSortButtons
               activeIndex={activeIndex}
               activeView={activeView}

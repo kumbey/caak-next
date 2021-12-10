@@ -15,7 +15,7 @@
       "function": {
         "caaklayer001": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion58bc9a3c-build.zip"
+          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion448b38f7-build.zip"
         },
         "notification": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",

@@ -138,7 +138,7 @@ function UserProvider(props) {
           query: {
             ...router.query,
             signInUp: "information",
-            step: 3
+            isModal: true
           }
         }, "/signInUp/information", {shallow : true, scroll: false})
 
@@ -149,7 +149,7 @@ function UserProvider(props) {
             query: {
               ...router.query,
               signInUp: "intrst",
-              step: 3
+              isModal: true
             }
           }, "/signInUp/intrst", {shallow : true, scroll: false})
           return false

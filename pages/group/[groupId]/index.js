@@ -124,8 +124,8 @@ const Group = ({ ssrData }) => {
   return (
     loaded && (
       <div>
-        <GroupHeader groupData={groupData} totalMember={totalMember} />
-        <div className={" mt-[32px]"}>
+        {/* <GroupHeader groupData={groupData} totalMember={totalMember} /> */}
+        <div>
           <GroupLayout
             groupData={groupData}
             totalMember={totalMember}

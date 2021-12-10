@@ -113,7 +113,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           objectFit={"cover"}
           alt={user?.cover_pic?.name}
           src={
-            user?.pic ? getFileUrl(user.cover_pic) : getGenderImage("default")
+            user?.cover_pic
+              ? getFileUrl(user?.cover_pic)
+              : getGenderImage("default")
           }
         />
         {user.id === signedUser.id && (
@@ -213,7 +215,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 layout={"fill"}
                 objectFit={"cover"}
                 src={
-                  user?.pic ? getFileUrl(user.pic) : getGenderImage("default")
+                  user?.pic ? getFileUrl(user?.pic) : getGenderImage("default")
                 }
               />
               {signedUser.id === user.id && (

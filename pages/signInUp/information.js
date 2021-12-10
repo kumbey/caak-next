@@ -1,5 +1,5 @@
-import useModalLayout from "/src/hooks/useModalLayout";
-import UserInformation from "/src/components/register/UserInformation";
+import useModalLayout from "../../src/hooks/useModalLayout";
+import UserInformation from "../../src/components/register/UserInformation";
 import WithUserComplete from "../../src/middleware/auth/WithUserComplete";
 
 const Information = ({ ...props }) => {

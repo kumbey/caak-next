@@ -1,4 +1,4 @@
-import useModalLayout from "/src/hooks/useModalLayout";
+import useModalLayout from "../../src/hooks/useModalLayout";
 import { useRouter } from "next/router";
 import Interests from "../../src/components/register/Interests";
 import WithInterestComplete from "../../src/middleware/auth/WithInterestComplete";

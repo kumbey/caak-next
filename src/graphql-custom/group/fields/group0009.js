@@ -3,6 +3,9 @@ const group0009 = /* GraphQL */ `
     items {
       role
       user {
+        totals {
+          followers
+        }
         nickname
         about
         aura

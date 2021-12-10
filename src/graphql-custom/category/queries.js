@@ -1,7 +1,7 @@
 import categoryGetField from "./fields/categoryGetField";
 
-export const getCategoryList = /* GraphQL */ `
-    query GetCategoryList {
+export const listCategorys = /* GraphQL */ `
+    query ListCategorys {
         listCategorys ${categoryGetField}
     }
 `;

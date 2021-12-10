@@ -113,7 +113,8 @@ const GroupHeader = ({ groupData, totalMember, ...props }) => {
           </div>
         </div>
         <div className="flex justify-end  mt-[10px] sm:mt-[73px] ">
-          {groupData.role_on_group === "ADMIN" ? (
+          {groupData.role_on_group === "ADMIN" ||
+          groupData.role_on_group === "MODERATOR" ? (
             <>
               <Link href={`/group/${groupData.id}/dashboard`}>
                 <a className={"w-full"}>

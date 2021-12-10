@@ -52,6 +52,7 @@ export async function getServerSideProps({ req, query }) {
 const Profile = ({ ssrData }) => {
   const [fetchedUser, setFetchedUser] = useState(ssrData.user);
   const [posts, setPosts] = useState(ssrData.posts);
+  const [sortType, setSortType] = useState("POST");
 
   useEffect(() => {
     setPosts(ssrData.posts);
@@ -71,20 +72,21 @@ const Profile = ({ ssrData }) => {
           textClassname={"text-[15px] font-medium"}
           containerClassname={"mb-[20px]"}
           items={userProfileType}
+          setSortType={setSortType}
+          sortType={sortType}
           direction={"row"}
         />
         <div className={"userPostsContainer"}>
-          <UserPostsCard post={posts.items[0]} />
-          <UserPostsCard post={posts.items[1]} />
-          <UserPostsCard post={posts.items[2]} />
-          <UserPostsCard post={posts.items[3]} />
-          <UserPostsCard post={posts.items[4]} />
-          <UserPostsCard post={posts.items[5]} />
-          {/*<UserPostsCard post={posts.items[0]} />*/}
-          {/*<UserPostsCard post={posts.items[0]} />*/}
-          {/*{posts.items.map((post, index) => {*/}
-          {/*  return <UserPostsCard post={post} key={index} />;*/}
-          {/*})}*/}
+          {posts.items.map((items, index) => {
+            if (
+              items.items.items[0].file.type.startsWith("video") &&
+              sortType === "VIDEO"
+            ) {
+              return <UserPostsCard key={index} post={items} />;
+            } else if (sortType === "POST") {
+              return <UserPostsCard key={index} post={items} />;
+            }
+          })}
         </div>
       </div>
     </ProfileLayout>

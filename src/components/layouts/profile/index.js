@@ -113,12 +113,11 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           objectFit={"cover"}
           alt={user?.cover_pic?.name}
           src={
-            user?.pic ? getFileUrl(user.cover_pic) : getGenderImage("default")
+            user?.cover_pic ? getFileUrl(user.cover_pic) : getGenderImage("default")
           }
         />
         {user.id === signedUser.id && (
           <Dropzone
-            noClick
             noKeyboard
             maxFiles={1}
             onDropRejected={(e) => console.log(e[0].errors[0].message)}
@@ -201,7 +200,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           </div>
         </div>
         <div className={"profileLayoutLeftSideBar relative"}>
-          <div className={"flex flex-col items-center absolute top-[-74px]"}>
+          <div className={"flex flex-col w-full items-center absolute top-[-74px]"}>
             <div
               className={
                 "w-[148px] h-[148px] relative rounded-full border-[7px] border-caak-liquidnitrogen bg-white"

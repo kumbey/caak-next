@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SelectGroup from "./SelectGroup";
+import SelectGroup from "../../../src/components/addpost/SelectGroup";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { useRouter } from "next/router";

@@ -7,7 +7,7 @@ import Loader from "/src/components/loader";
 import { getReturnData } from "/src/utility/Util";
 import API from "@aws-amplify/api";
 import { onPostByUser } from "/src/graphql-custom/post/subscription";
-import Card from "/src/components/card/FeedCard/index";
+import Card from "/src/components/card/FeedCard";
 
 export default function UserPosts({ userId, type, card }) {
   const [userPosts, setUserPosts] = useState([]);

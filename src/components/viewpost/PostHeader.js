@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { getReturnData } from "../../../../../src/utility/Util";
-import { useUser } from "../../../../../src/context/userContext";
+import { getReturnData } from "../../utility/Util";
+import { useUser } from "../../context/userContext";
 import { graphqlOperation } from "aws-amplify";
 import API from "@aws-amplify/api";
 import { useRouter } from "next/router";
-import { updatePost } from "../../../../../src/graphql-custom/post/mutation";
-import { getGroupView } from "../../../../../src/graphql-custom/group/queries";
-import updateReaction from "./updateReaction";
-import Button from "../../../../../src/components/button";
+import { updatePost } from "../../graphql-custom/post/mutation";
+import { getGroupView } from "../../graphql-custom/group/queries";
+import updateReaction from "../../apis/post/updateReaction";
+import Button from "../button";
 
 const PostHeader = ({ addCommentRef, post, activeIndex }) => {
   const item = post.items.items[activeIndex];
@@ -86,7 +86,9 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
 
   return (
     <div className={"flex flex-col"}>
-      <div className={"break-words text-[15px] py-[20px] text-caak-generalblack"}>
+      <div
+        className={"break-words text-[15px] py-[20px] text-caak-generalblack"}
+      >
         {item.title}
       </div>
       {/*<div className={"text-caak-darkBlue text-14px pt-2 px-7"}>*/}

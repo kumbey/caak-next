@@ -76,7 +76,6 @@ async function modify(record){
                 ])
             }
         }
-        console.log(resp)
 
         return true
 

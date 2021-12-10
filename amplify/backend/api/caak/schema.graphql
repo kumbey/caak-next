@@ -337,7 +337,8 @@ type GroupUsers @model
     { allow: public, provider: iam, operations: [read]}
   ])
   @key(name: "byUser", fields: ["user_id","role"], queryField:"listGroupByUserAndRole")
-  @key(name: "byGroup", fields: ["group_id"], queryField:"getGroupUsersByGroup"){
+  @key(name: "byGroup", fields: ["group_id"], queryField:"getGroupUsersByGroup")
+  @key(name: "byGroupId", fields: ["group_id","role"], queryField:"listGroupUsersByGroup"){
   id: ID!
   user_id: ID!
   user: User @connection(fields:["user_id"])
@@ -431,15 +432,15 @@ type Subscription {
     @aws_subscribe(mutations: ["notificationAdded"])
     @aws_iam
     @aws_cognito_user_pools
-  onCommentByPostItem(post_item_id: ID!): Comment
+  onCommentByPostItem(post_item_id: ID!, type: String!): Comment
     @aws_subscribe(mutations: ["createComment","updateComment"])
     @aws_iam
     @aws_cognito_user_pools
-  onCommentByPost(post_id: ID!): Comment
+  onCommentByPost(post_id: ID!, type: String!): Comment
     @aws_subscribe(mutations: ["createComment","updateComment"])
     @aws_iam
     @aws_cognito_user_pools
-  onCommentByParent(parent_id: ID!): Comment
+  onCommentByParent(parent_id: ID!, type: String!): Comment
     @aws_subscribe(mutations: ["createComment","updateComment"])
     @aws_iam
     @aws_cognito_user_pools

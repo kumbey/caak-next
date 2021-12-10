@@ -92,7 +92,7 @@ export default function ProfileHoverCard({ userId }) {
   };
   return !loading && profileUser.id ? (
     <div
-      className={`min-w-[300px] min-h-[175px] rounded-square shadow-dropdown px-[18px] py-[16px] bg-white`}
+      className={`min-w-[300px] rounded-square shadow-dropdown px-[18px] py-[16px] bg-white`}
       // style={{ top: "45px" }}
     >
       <div className={"flex flex-col"}>
@@ -111,10 +111,8 @@ export default function ProfileHoverCard({ userId }) {
               }
             />
           </div>
-          <div
-            className={"flex flex-col justify-center items-center ml-[10px]"}
-          >
-            <div className={"flex flex-row items-center"}>
+          <div className={"flex flex-col  items-center ml-[10px]"}>
+            <div className={"flex flex-row self-start"}>
               <p
                 className={
                   "font-bold text-caak-generalblack text-16px tracking-[0.24px] leading-[19px]"
@@ -171,29 +169,37 @@ export default function ProfileHoverCard({ userId }) {
             </p>
           </div>
         </div>
-        <Divider className={"mb-[12px]"} color={"bg-caak-titaniumwhite"} />
         {/*If no user is logged, show only follow button*/}
         {/*And If user is there show follow or unfollow button*/}
         {isLogged ? (
           user.id !== profileUser.id ? (
+            <>
+              <Divider
+                className={"mb-[12px]"}
+                color={"bg-caak-titaniumwhite"}
+              />
+              <button
+                onClick={handleClick}
+                className={
+                  "button small bg-caak-primary text-white font-medium text-15px"
+                }
+              >
+                {profileUser.followed ? "Дагасан" : "Дагах"}
+              </button>
+            </>
+          ) : null
+        ) : (
+          <>
+            <Divider className={"mb-[12px]"} color={"bg-caak-titaniumwhite"} />
             <button
               onClick={handleClick}
               className={
                 "button small bg-caak-primary text-white font-medium text-15px"
               }
             >
-              {profileUser.followed ? "Дагасан" : "Дагах"}
+              Дагах
             </button>
-          ) : null
-        ) : (
-          <button
-            onClick={handleClick}
-            className={
-              "button small bg-caak-primary text-white font-medium text-15px"
-            }
-          >
-            Дагах
-          </button>
+          </>
         )}
       </div>
     </div>

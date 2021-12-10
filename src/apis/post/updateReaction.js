@@ -3,7 +3,7 @@ import API from "@aws-amplify/api";
 import {
   createReaction,
   deleteReaction,
-} from "../../../../../src/graphql-custom/post/mutation";
+} from "../../graphql-custom/post/mutation";
 
 const updateReaction = async ({
   item,

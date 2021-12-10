@@ -10,6 +10,34 @@ import defaultImg from "../../public/assets/images/default.png";
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
 
+export const sortSearchResultByKeyword = (array, keyword) => {
+  array
+      .filter((prof) => {
+        // Filter results by doing case insensitive match on keyword here
+        return prof.keyword
+            .toLowerCase()
+            .includes(keyword?.toLowerCase());
+      })
+      .sort((a, b) => {
+        // Sort results by matching keyword with keyword position in keyword
+        if (
+            a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) >
+            b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
+        ) {
+          return 1;
+        } else if (
+            a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) <
+            b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
+        ) {
+          return -1;
+        } else {
+          if (a.keyword > b.keyword) return 1;
+          else return -1;
+        }
+      });
+  return array;
+};
+
 export function useDebounce(value, delay) {
   // State and setters for debounced value
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -335,8 +363,12 @@ export function _modalisOpen(params) {
   for (let i = 0; i, conditions.length > i; i++) {
     const condition = conditions[i];
 
-    if (condition.value === query[condition.key]) {
+    if (condition.value === "DYNAMIC" && query[condition.key]) {
       isOpen = true;
+    }else{
+      if (condition.value === query[condition.key]) {
+        isOpen = true;
+      }
     }
   }
 

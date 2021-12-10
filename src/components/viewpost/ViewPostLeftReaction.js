@@ -105,8 +105,8 @@ const ViewPostLeftReaction = ({ post }) => {
             className={`caak-button ${shake ? `shake` : null} ${
               isReacted
                 ? "icon-fi-rs-rock-f text-caak-uclagold"
-                : "icon-fi-rs-rock-f"
-            } text-caak-extraBlack text-[27px]`}
+                : "icon-fi-rs-rock-f text-caak-extraBlack"
+            }  text-[27px]`}
           />
         </div>
         <div className={"mt-[6px]"}>
@@ -122,7 +122,7 @@ const ViewPostLeftReaction = ({ post }) => {
       <div className={"flex flex-col items-center mb-[22px]"}>
         <div
           className={
-            "flex items-center justify-center w-[44px] h-[44px] rounded-full bg-white"
+            "flex items-center cursor-pointer justify-center w-[44px] h-[44px] rounded-full bg-white"
           }
         >
           <span

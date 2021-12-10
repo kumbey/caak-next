@@ -6,18 +6,23 @@ import {
   useClickOutSide,
 } from "../../../../../src/utility/Util";
 import { useRouter } from "next/router";
-import PostHeader from "./PostHeader";
-import PostBody from "./PostBody";
+import PostHeader from "../../../../../src/components/viewpost/PostHeader";
 import PostMoreMenu from "../../../../../src/components/card/PostMoreMenu";
 import DropDown from "../../../../../src/components/navigation/DropDown";
 import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import { getPostView } from "../../../../../src/graphql-custom/post/queries";
-import { withSSRContext } from "aws-amplify";
+import { API, graphqlOperation, withSSRContext } from "aws-amplify";
 import Dummy from "dummyjs";
 import Link from "next/link";
 import ImageCarousel from "../../../../../src/components/carousel/ImageCarousel";
 import Button from "../../../../../src/components/button";
 import AddComment from "../../../../../src/components/input/AddComment";
+import CommentCardNew from "../../../../../src/components/card/CommentCardNew";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../../../../src/graphql-custom/GroupUsers/mutation";
+import { useUser } from "../../../../../src/context/userContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -58,7 +63,7 @@ const PostItem = ({ ssrData }) => {
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
   const [loading, setLoading] = useState(true);
-  const [render, setRender] = useState(0)
+  const { user, isLogged } = useUser();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -70,7 +75,40 @@ const PostItem = ({ ssrData }) => {
   const router = useRouter();
   const itemId = router.query.itemId;
   const addCommentRef = useRef();
-
+  const item = post.items.items[activeIndex];
+  const followGroup = async () => {
+    try {
+      if (isLogged) {
+        setLoading(true);
+        if (post.group.followed) {
+          await API.graphql(
+            graphqlOperation(deleteGroupUsers, {
+              input: {
+                id: `${post.group_id}#${user.id}`,
+              },
+            })
+          );
+          post.group.followed = false;
+        } else {
+          await API.graphql(
+            graphqlOperation(createGroupUsers, {
+              input: {
+                id: `${post.group_id}#${user.id}`,
+                group_id: post.group_id,
+                user_id: user.id,
+                role: "MEMBER",
+              },
+            })
+          );
+          post.group.followed = true;
+        }
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
   const [blockScroll, allowScroll] = useScrollBlock();
   useEffect(() => {
     blockScroll();
@@ -78,6 +116,10 @@ const PostItem = ({ ssrData }) => {
       allowScroll();
     };
   }, [allowScroll, blockScroll]);
+
+  useEffect(() => {
+    return () => setReply(null);
+  }, []);
 
   // const createPostView = async () => {
   //   try {
@@ -102,6 +144,15 @@ const PostItem = ({ ssrData }) => {
   //   }
   //   // eslint-disable-next-line
   // }, [post]);
+  useEffect(() => {
+    router.push(
+      `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+  }, [activeIndex]);
 
   useEffect(() => {
     setLoading(false);
@@ -109,18 +160,14 @@ const PostItem = ({ ssrData }) => {
 
   const back = () => {
     if (router.query && router.query.isModal) {
-      router.replace(`/post/view/${post.id}`, undefined, { shallow: true, scroll: false});
+      router.replace(`/post/view/${post.id}`, undefined, {
+        shallow: true,
+        scroll: false,
+      });
     } else {
       router.replace(`/post/view/${post.id}`);
     }
   };
-useEffect(()=> {
-  console.log(post)
-},[post])
-
-  useEffect(()=> {
-    console.log(render)
-  },[render])
 
   return !loading ? (
     <div
@@ -133,13 +180,19 @@ useEffect(()=> {
           "relative backBlur w-full flex justify-center items-center flex-1"
         }
       >
-        <span
-          onClick={back}
+        <div
           className={
-            "absolute cursor-pointer icon-fi-rs-close text-16px text-white top-4 right-4 z-2"
+            "absolute rounded-full flex items-center justify-center top-[20px] left-[20px] z-2 cursor-pointer w-[40px] h-[40px] bg-caak-carbon hover:bg-caak-carbon"
           }
-        />
+        >
+          <span
+            onClick={back}
+            className={"icon-fi-rs-close text-16px text-white"}
+          />
+        </div>
+
         <ImageCarousel
+          viewPostItem
           changeActiveIndex={setActiveIndex}
           mediaContainerClassname={"w-full h-full"}
           postId={post.id}
@@ -248,21 +301,31 @@ useEffect(()=> {
                 </div>
                 <div>
                   <Button
+                    loading={loading}
+                    onClick={followGroup}
                     icon={
                       <div
                         className={
                           "flex items-center justify-start w-[20px] h-[20px]"
                         }
                       >
-                        <span className={"icon-fi-rs-add-l text-[18px]"} />
+                        <span
+                          className={`${
+                            post.group.followed
+                              ? "icon-fi-rs-check"
+                              : "icon-fi-rs-add-l"
+                          }  text-[18px]`}
+                        />
                       </div>
                     }
                     iconPosition={"left"}
-                    className={
-                      "h-[28px] tracking-[0.18px] justify-between leading-[15px] flex rounded-[6px] text-caak-primary text-[12px] font-semibold uppercase border-[1px] border-caak-primary pr-[12px] pl-[7px] py-[7px]"
-                    }
+                    className={`h-[28px] tracking-[0.18px] justify-between leading-[15px] flex rounded-[6px] ${
+                      post.group.followed
+                        ? "text-gray-400 border-gray-400"
+                        : "text-caak-primary border-caak-primary"
+                    }  text-[12px] font-semibold uppercase border-[1px]  pr-[12px] pl-[7px] py-[7px]`}
                   >
-                    Нэгдэх
+                    {post.group.followed ? "Нэгдсэн" : "Нэгдэх"}
                   </Button>
                 </div>
               </div>
@@ -273,15 +336,24 @@ useEffect(()=> {
               />
             </div>
             <div className={"flex-1 w-full bg-caak-liquidnitrogen px-[24px]"}>
-              <PostBody
-                commentInputValue={commentInputValue}
-                setCommentInputValue={setCommentInputValue}
-                reply={reply}
-                setReply={setReply}
-                addCommentRef={addCommentRef}
-                activeIndex={activeIndex}
-                post={post}
-              />
+              <div
+                className={
+                  "relative flex flex-col justify-between bg-caak-whitesmoke"
+                }
+              >
+                <CommentCardNew
+                  addCommentRef={addCommentRef}
+                  commentInputValue={commentInputValue}
+                  setCommentInputValue={setCommentInputValue}
+                  initialComments={post.items.items[activeIndex].comments}
+                  reply={reply}
+                  setReply={setReply}
+                  setup={{
+                    id: item.id,
+                    type: "POST_ITEM",
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>

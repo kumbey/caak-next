@@ -8,7 +8,7 @@ import { useUser } from "../../context/userContext";
 const CommentSection = ({ post }) => {
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
 
   return (
     <div
@@ -17,15 +17,17 @@ const CommentSection = ({ post }) => {
       {/*User*/}
       <div className={"flex flex-row items-center"}>
         <div className={"w-[28px] h-[28px] rounded-full relative"}>
-          <Image
-            width={28}
-            height={28}
-            className={"rounded-full"}
-            src={`${
-              user.pic ? getFileUrl(user.pic) : "https://picsum.photos/50"
-            }`}
-            alt={"profile picture"}
-          />
+          {isLogged ? (
+            <Image
+              width={28}
+              height={28}
+              className={"rounded-full"}
+              src={`${
+                user.pic ? getFileUrl(user.pic) : "https://picsum.photos/50"
+              }`}
+              alt={"profile picture"}
+            />
+          ) : null}
         </div>
         <div className={"ml-[6px]"}>
           <p
@@ -56,7 +58,7 @@ const CommentSection = ({ post }) => {
         setReply={setReply}
         setup={{
           id: post.id,
-          type: "POST"
+          type: "POST",
         }}
       />
     </div>

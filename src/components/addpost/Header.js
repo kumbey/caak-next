@@ -1,4 +1,4 @@
-import Divider from "../../../src/components/divider";
+import Divider from "../divider";
 
 const Header = ({
   title,

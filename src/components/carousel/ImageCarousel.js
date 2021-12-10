@@ -13,6 +13,7 @@ const ImageCarousel = ({
   card,
   route,
   changeActiveIndex,
+  viewPostItem,
 }) => {
   const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -44,22 +45,12 @@ const ImageCarousel = ({
     setTouchPosition(null);
   };
   const nextItem = () => {
-    if (!card) {
-      router.push(`/post/view/${postId}/${items[activeIndex].id}`, undefined, {
-        shallow: true,
-      });
-    }
     if (activeIndex < items.length - 1) {
       setActiveIndex(activeIndex + 1);
       changeActiveIndex && changeActiveIndex(activeIndex + 1);
     }
   };
   const prevItem = () => {
-    if (!card) {
-      router.push(`/post/view/${postId}/${items[activeIndex].id}`, undefined, {
-        shallow: true,
-      });
-    }
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
       changeActiveIndex && changeActiveIndex(activeIndex - 1);
@@ -76,7 +67,7 @@ const ImageCarousel = ({
         router.back();
       }
     };
-    document.addEventListener("keydown", handler);
+    !card && document.addEventListener("keydown", handler);
     return () => {
       document.removeEventListener("keydown", handler);
     };
@@ -84,6 +75,35 @@ const ImageCarousel = ({
 
   return (
     <div className={"relative h-full w-full overflow-hidden"}>
+      {viewPostItem && (
+          <div className={"flex flex-row absolute right-[20px] top-[20px]"}>
+            <div
+                onClick={() => prevItem()}
+                className={
+                  "cursor-pointer flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
+                }
+            >
+            <span
+                className={
+                  "icon-fi-rs-next text-white text-16px rotate-180 pl-[2px]"
+                }
+            />
+            </div>
+            <div
+                onClick={() => nextItem()}
+                className={
+                  "cursor-pointer ml-[8px] flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
+                }
+            >
+            <span
+                className={
+                  "icon-fi-rs-next text-white text-16px pl-[2px]"
+                }
+            />
+            </div>
+          </div>
+
+      )}
       <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
         <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
           {items.map((item, index) => {
@@ -121,13 +141,12 @@ const ImageCarousel = ({
                         <Link href={`/post/view/${postId}`}>
                           <a>
                             <div
-                              className={""}
                               style={{
                                 width: "10%",
                                 height: "10%",
                                 filter: "blur(2px)",
                                 position: "absolute",
-                                transform: "scale(10)",
+                                transform: "scale(12)",
                                 left: "50%",
                                 top: "50%",
                                 opacity: "0.3",
@@ -159,7 +178,7 @@ const ImageCarousel = ({
                               height: "10%",
                               filter: "blur(2px)",
                               position: "absolute",
-                              transform: "scale(10)",
+                              transform: "scale(12)",
                               left: "50%",
                               top: "50%",
                               opacity: "0.3",
@@ -190,7 +209,7 @@ const ImageCarousel = ({
           })}
         </div>
 
-        {activeIndex > 0 && (
+        {!viewPostItem && activeIndex > 0 && (
           <div
             onClick={() => prevItem()}
             className={
@@ -205,7 +224,7 @@ const ImageCarousel = ({
           </div>
         )}
 
-        {activeIndex !== items.length - 1 && (
+        {!viewPostItem && activeIndex !== items.length - 1 && (
           <div
             onClick={() => nextItem()}
             className={

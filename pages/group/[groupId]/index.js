@@ -7,7 +7,6 @@ import {
 import useGroupLayout from "../../../src/hooks/useGroupLayout";
 import { withSSRContext } from "aws-amplify";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
 
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
@@ -15,7 +14,6 @@ import Loader from "../../../src/components/loader";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
 import GroupHeader from "../../../src/components/group/GroupHeader";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import API from "@aws-amplify/api";
 
 import Card from "../../../src/components/card/FeedCard";
 import { useUser } from "../../../src/context/userContext";
@@ -61,7 +59,7 @@ export async function getServerSideProps({ req, query }) {
   };
 }
 
-const Group = ({ ssrData, ...props }) => {
+const Group = ({ ssrData }) => {
   const router = useRouter();
   const GroupLayout = useGroupLayout();
   const [loading, setLoading] = useState(false);

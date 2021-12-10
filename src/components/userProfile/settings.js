@@ -8,7 +8,7 @@ import Informations from "./Informations";
 import SocialLink from "./SocialLink";
 import SiteConfiguration from "./SiteConfiguration";
 import Privacy from "./Privacy";
-import data from "./settingsMenuData";
+import { data } from "../settingsMenuData";
 import { useRouter } from "next/router";
 
 export default function Settings() {

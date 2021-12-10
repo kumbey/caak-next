@@ -1,17 +1,20 @@
 export const feedType = [
   {
     id: 0,
-    type: "Тренд",
-    icon: "icon-fi-rs-trend",
-  },
-  {
-    id: 1,
-    type: "Шинэ",
+    title: "Шинэ",
+    type: "DEFAULT",
     icon: "icon-fi-rs-new",
   },
   {
+    id: 1,
+    title: "Тренд",
+    type: "DEFAULT",
+    icon: "icon-fi-rs-trend",
+  },
+  {
     id: 2,
-    type: "Саак",
+    title: "Саак",
+    type: "DEFAULT",
     icon: "icon-fi-rs-caak",
   },
 ];
@@ -19,18 +22,21 @@ export const feedType = [
 export const searchResultType = [
   {
     id: 0,
-    type: "Бүгд",
+    title: "Бүгд",
+    type: "DEFAULT",
     icon: "icon-fi-rs-grid",
   },
   {
     id: 1,
-    type: "Пост",
-    icon: "icon-fi-rs-post",
+    title: "Групп",
+    type: "GROUP",
+    icon: "icon-fi-rs-group",
   },
   {
     id: 2,
-    type: "Групп",
-    icon: "icon-fi-rs-group",
+    title: "Пост",
+    type: "POST",
+    icon: "icon-fi-rs-post",
   },
 ];
 

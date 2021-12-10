@@ -6,14 +6,14 @@ import "plyr-react/dist/plyr.css";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import Link from "next/link";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 const UserPostsCard = ({ post }) => {
   const firstItem = post ? post.items.items[0] : null;
   const [videoDuration, setVideoDuration] = useState(0);
   const { user } = useUser();
   const [playing, setPlaying] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   return firstItem ? (
     <div
       className={"rounded-[4px] w-full h-[391px] userPostsItem relative group"}
@@ -53,7 +53,7 @@ const UserPostsCard = ({ post }) => {
       )}
       <div
         className={
-          "absolute bottom-0 w-full h-[161px] z-[1] userProfilePostsCardGradient opacity-0 group-hover:opacity-100 transition-all duration-300"
+          "absolute bottom-0 rounded-b-[4px] w-full h-[161px] z-[1] userProfilePostsCardGradient opacity-0 group-hover:opacity-100 transition-all duration-300"
         }
       />
 

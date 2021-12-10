@@ -12,7 +12,6 @@ import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
 import Loader from "../../../src/components/loader";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
-import GroupHeader from "../../../src/components/group/GroupHeader";
 import { useListPager } from "../../../src/utility/ApiHelper";
 
 import Card from "../../../src/components/card/FeedCard";
@@ -124,58 +123,51 @@ const Group = ({ ssrData }) => {
   return (
     loaded && (
       <div>
-        {/* <GroupHeader groupData={groupData} totalMember={totalMember} /> */}
-        <div>
-          <GroupLayout
-            groupData={groupData}
-            totalMember={totalMember}
-            columns={2}
-          >
-            <GroupSortButtons
-              activeIndex={activeIndex}
-              activeView={activeView}
-              setActiveIndex={setActiveIndex}
-              setActiveView={setActiveView}
-              iconSize={"text-[16px]"}
-              containerClassname={"flex-wrap justify-start"}
-              items={GroupType}
-              items2={GroupViewType}
-              direction={"row"}
-              textClassname={"font-medium text-15px"}
+        <GroupLayout
+          groupData={groupData}
+          totalMember={totalMember}
+          columns={2}
+        >
+          <GroupSortButtons
+            activeIndex={activeIndex}
+            activeView={activeView}
+            setActiveIndex={setActiveIndex}
+            setActiveView={setActiveView}
+            iconSize={"text-[16px]"}
+            containerClassname={"flex-wrap justify-start"}
+            items={GroupType}
+            items2={GroupViewType}
+            direction={"row"}
+            textClassname={"font-medium text-15px"}
+          />
+          {posts.length > 0 &&
+            posts.map((data, index) => {
+              return activeView === 0 ? (
+                <Card
+                  key={index}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : activeView === 1 ? (
+                <List
+                  key={index}
+                  imageSrc={data?.items?.items[0]?.file}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : null;
+            })}
+          <div ref={feedRef} className={"flex justify-center items-center"}>
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
             />
-            {posts.length > 0 &&
-              posts.map((data, index) => {
-                return activeView === 0 ? (
-                  <Card
-                    key={index}
-                    video={data?.items?.items[0]?.file?.type?.startsWith(
-                      "video"
-                    )}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
-                ) : activeView === 1 ? (
-                  <List
-                    key={index}
-                    imageSrc={data?.items?.items[0]?.file}
-                    video={data?.items?.items[0]?.file?.type?.startsWith(
-                      "video"
-                    )}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
-                ) : null;
-              })}
-            <div ref={feedRef} className={"flex justify-center items-center"}>
-              <Loader
-                containerClassName={"self-center"}
-                className={`bg-caak-primary ${
-                  loading ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </div>
-          </GroupLayout>
-        </div>
+          </div>
+        </GroupLayout>
       </div>
     )
   );

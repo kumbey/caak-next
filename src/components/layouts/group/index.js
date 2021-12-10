@@ -8,6 +8,7 @@ import GroupInfo from "../../group/GroupInfo";
 import GroupRules from "../../card/GroupRules";
 import GroupBadge from "../../group/GroupBadge";
 import { getFileUrl, getGenderImage } from "../../../utility/Util";
+import GroupInfoCard from "../../card/GroupInfoCard";
 
 const GroupLayout = ({
   children,
@@ -44,6 +45,7 @@ const GroupLayout = ({
             className={`rightSideBar bg-none  ${isLaptop ? "hidden" : "block"}`}
           >
             <GroupInfo groupData={groupData} totalMember={totalMember} />
+
             <div className="mt-[16px]">
               {!hideSuggestedGroups && (
                 <SuggestedGroupsCard

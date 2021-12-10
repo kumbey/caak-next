@@ -43,12 +43,14 @@ export const searchResultType = [
 export const userProfileType = [
   {
     id: 0,
-    type: "Пост",
+    title: "Пост",
+    type: "POST",
     icon: "icon-fi-rs-grid",
   },
   {
     id: 1,
-    type: "Видео",
+    title: "Видео",
+    type: "VIDEO",
     icon: "icon-fi-rs-play",
   },
 ];

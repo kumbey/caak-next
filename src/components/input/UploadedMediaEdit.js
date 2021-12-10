@@ -1,5 +1,5 @@
 import Loader from "../loader";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   arrayMove,
   rectSortingStrategy,
@@ -20,7 +20,8 @@ import Image from "next/image";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import useMediaQuery from "../navigation/useMeduaQuery";
-import { getFileUrl } from "../../utility/Util";
+import { generateFileUrl, getFileUrl } from "../../utility/Util";
+import Video from "../video";
 
 const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -66,13 +67,26 @@ const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
             : "opacity-[0.66] w-[77px] h-[77px]"
         }  bg-white rounded-[5px]`}
       >
-        <Image
-          className={"rounded-[5px]"}
-          alt={""}
-          src={item.file.url ? item.file.url : getFileUrl(item.file)}
-          layout={"fill"}
-          objectFit={"cover"}
-        />
+        {item.file.type.startsWith("video") ? (
+          <Video
+            videoClassname={"object-contain rounded-[4px]"}
+            hideControls
+            smallIndicator
+            src={
+              item.file.url
+                ? getFileUrl(item.file.url)
+                : generateFileUrl(item.file)
+            }
+          />
+        ) : (
+          <Image
+            className={"rounded-[5px]"}
+            alt={""}
+            src={item.file.url ? item.file.url : getFileUrl(item.file)}
+            layout={"fill"}
+            objectFit={"cover"}
+          />
+        )}
       </div>
     </div>
   );
@@ -157,7 +171,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
       return item.id === over.id;
     });
     const newItems = arrayMove(items, oldIndex, newIndex);
-    setPost({...post, items: newItems });
+    setPost({ ...post, items: newItems });
     setActiveIndex(event.active.data.current.sortable.index);
   };
 
@@ -294,19 +308,31 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
           <div
             style={{ flexBasis: `300px` }}
             className={
-              "w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
+              "flex-1 w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
             }
           >
-            <Image
-              alt={""}
-              src={
-                post.items[activeIndex].file.url
-                  ? post.items[activeIndex].file.url
-                  : getFileUrl(post.items[activeIndex].file)
-              }
-              objectFit={"contain"}
-              layout={"fill"}
-            />
+            {post.items[activeIndex].file.type.startsWith("video") ? (
+              <Video
+                smallIndicator
+                videoClassname={"object-contain rounded-[4px]"}
+                src={
+                  post.items[activeIndex].file.url
+                    ? getFileUrl(post.items[activeIndex].file.url)
+                    : generateFileUrl(post.items[activeIndex].file)
+                }
+              />
+            ) : (
+              <Image
+                alt={""}
+                src={
+                  post.items[activeIndex].file.url
+                    ? post.items[activeIndex].file.url
+                    : getFileUrl(post.items[activeIndex].file)
+                }
+                objectFit={"contain"}
+                layout={"fill"}
+              />
+            )}
           </div>
           <div
             style={{ flexBasis: `366px` }}

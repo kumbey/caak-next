@@ -15,7 +15,7 @@ export default function Settings() {
   const router = useRouter();
   const userId = router.query.userId;
   const [user, setUser] = useState();
-  const { user: signedUser, isLogged } = useUser();
+  const { isLogged } = useUser();
 
   const [activeIndex, setActiveIndex] = useState(1);
   useEffect(() => {

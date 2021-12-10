@@ -7,7 +7,11 @@ import SearchInput from "../input/SearchInput";
 import Divider from "../divider";
 import GroupMemberList from "./GroupMemberList";
 
-export default function GroupMemberConfig({ adminList, ...props }) {
+export default function GroupMemberConfig({
+  adminModeratorList,
+  memberList,
+  ...props
+}) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState({});
 
@@ -43,7 +47,10 @@ export default function GroupMemberConfig({ adminList, ...props }) {
         Гишүүдийн тохиргоо
       </p>
       <p className="font-semibold font-inter text-15px text-caak-generalblack mt-[32px] mb-[11px]">
-        Нийт гишүүдын тоо <span className="text-caak-darkBlue">· 17</span>
+        Нийт гишүүдын тоо{" "}
+        <span className="text-caak-darkBlue">
+          · {adminModeratorList?.length + memberList?.length}
+        </span>
       </p>
 
       <SearchInput
@@ -53,10 +60,20 @@ export default function GroupMemberConfig({ adminList, ...props }) {
       />
       <Divider className="my-[18px]" />
       <p className="font-semibold font-inter text-15px text-caak-generalblack  mb-[11px]">
-        Админ & Засварлагч<span className="text-caak-darkBlue">· 3</span>
+        Админ & Засварлагч
+        <span className="text-caak-darkBlue">
+          · {adminModeratorList.length}
+        </span>
       </p>
-      {adminList.map((admin, index) => {
-        return <GroupMemberList key={index} admin={admin} />;
+      {adminModeratorList.map((userList, index) => {
+        return <GroupMemberList key={index} userList={userList} />;
+      })}
+      <Divider className="my-[18px]" />
+      <p className="font-semibold font-inter text-15px text-caak-generalblack  mb-[11px]">
+        Гишүүд<span className="text-caak-darkBlue">· {memberList?.length}</span>
+      </p>
+      {memberList.map((userList, index) => {
+        return <GroupMemberList key={index} userList={userList} />;
       })}
     </div>
   );

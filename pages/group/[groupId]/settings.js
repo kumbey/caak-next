@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import Dummy from "dummyjs";
 import { getUserById } from "/src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
 import { withSSRContext } from "aws-amplify";
 import { getFileUrl } from "/src/utility/Util";
-import { getCategoryList } from "../../../src/graphql-custom/category/queries";
-import {
-  getGroupUsersByGroup,
-  listGroupUsersByGroup,
-} from "../../../src/graphql-custom/group/queries";
-import {
-  getGroupTotal,
-  getGroupView,
-} from "../../../src/graphql-custom/group/queries";
+import { listCategorys } from "../../../src/graphql-custom/category/queries";
+import { listGroupUsersByGroup } from "../../../src/graphql-custom/group/queries";
+import { getGroupView } from "../../../src/graphql-custom/group/queries";
 import { useRouter } from "next/router";
 import { getReturnData } from "../../../src/utility/Util";
 import GroupInformation from "../../../src/components/group/GroupInformation";
@@ -84,16 +77,11 @@ export async function getServerSideProps({ req, query }) {
     },
   });
   const categoryList = await API.graphql({
-    query: getCategoryList,
+    query: listCategorys,
     variables: {
-      group_id: query.groupId,
       sortDirection: "DESC",
-      limit: 6,
-      filter: { role: { eq: "MEMBER" } },
     },
   });
-
-  console.log(adminList);
 
   // const userComments = await API.graphql({
   //   query: listCommentByUser,
@@ -118,7 +106,9 @@ export async function getServerSideProps({ req, query }) {
         // pendingPosts: getReturnData(pendingPosts),
         groupView: getReturnData(groupView),
         adminList: getReturnData(adminList),
-        // userComment: getReturnData(userComments),
+        moderatorList: getReturnData(moderatorList),
+        memberList: getReturnData(memberList),
+        categoryList: getReturnData(categoryList),
         // groupTotals: getReturnData(groupTotals),
       },
     },
@@ -149,7 +139,13 @@ export default function Settings({ ssrData, ...props }) {
   const [activeIndex, setActiveIndex] = useState(1);
 
   const [groupData, setGroupData] = useState(ssrData.groupView);
-  const [adminList, setAdminList] = useState(ssrData.adminList.items);
+  const [memberList, setMemberList] = useState(ssrData.memberList.items);
+  const [adminModeratorList, setAdminModeratorList] = useState([
+    ...ssrData.adminList.items,
+    ...ssrData.moderatorList.items,
+  ]);
+
+  const [categoryList, setCategoryList] = useState(ssrData.categoryList.items);
   useEffect(() => {
     try {
       if (isLogged) {
@@ -168,7 +164,7 @@ export default function Settings({ ssrData, ...props }) {
   }, [user, signedUser.id]);
 
   useEffect(() => {
-    console.log(adminList);
+    console.log(adminModeratorList);
   }, []);
 
   return user ? (
@@ -239,9 +235,15 @@ export default function Settings({ ssrData, ...props }) {
             className="md:ml-c11 sm:ml-0 mb-c11 bg-white rounded-lg settingsDiv"
           >
             {activeIndex === 1 ? (
-              <GroupInformation groupData={groupData} />
+              <GroupInformation
+                categoryList={categoryList}
+                groupData={groupData}
+              />
             ) : activeIndex === 2 ? (
-              <GroupMemberConfig adminList={adminList} />
+              <GroupMemberConfig
+                adminModeratorList={adminModeratorList}
+                memberList={memberList}
+              />
             ) : activeIndex === 3 ? (
               <GroupPrivacy groupData={groupData} />
             ) : null}

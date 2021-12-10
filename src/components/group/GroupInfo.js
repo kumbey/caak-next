@@ -1,17 +1,67 @@
+import Image from "next/image";
+import Link from "next/link";
 import Divider from "../divider";
-import { extractDate } from "../../utility/Util";
+import { extractDate, generateFileUrl } from "../../utility/Util";
 import Button from "../button";
 
 const GroupInfo = ({ groupData, totalMember, ...props }) => {
   const createdAt = extractDate(groupData.createdAt);
   return (
-    <div className=" flex flex-col mb-[16px]">
-      <div className=" h-[48px] w-full rounded-t-lg bg-caak-cardinal ">
-        <h1 className=" ml-[18px] my-[15px] text-white">Группын тухай</h1>
+    <div className=" flex flex-col relative bg-white mb-[16px]">
+      <div className={"h-[34px] w-full relative"}>
+        <Image
+          alt={"group cover"}
+          src={generateFileUrl(groupData?.cover)}
+          layout={"fill"}
+          objectFit={"cover"}
+          className={"rounded-t-square"}
+        />
       </div>
-      <div className={"flex flex-col  px-[18px] rounded-b-lg bg-white "}>
-        <div className="mt-[20px]  ">
-          <p className="text-sm">{groupData.about}</p>
+      <div className={"flex flex-row px-[18px] absolute top-[24px] items-end"}>
+        <Link href={`/group/view/${groupData.id}`}>
+          <a>
+            <div
+              className={
+                "flex items-center w-[48px] h-[48px] relative flex-shrink-0 border border-caak-titaniumwhite rounded-[6px]"
+              }
+            >
+              <Image
+                alt={"profile picture"}
+                src={generateFileUrl(groupData.profile)}
+                objectFit={"cover"}
+                height={48}
+                width={48}
+                className={"rounded-[6px]"}
+              />
+            </div>
+          </a>
+        </Link>
+        <div className={"ml-[11px] flex items-center pb-[10px]"}>
+          <Link href={`/group/view/${groupData.id}`}>
+            <a>
+              <p
+                className={
+                  "text-[15px] font-semibold text-caak-generalblack tracking-[0.23px] leading-[18px] truncate-1"
+                }
+              >
+                {groupData.name}
+              </p>
+            </a>
+          </Link>
+
+          <span className={"icon-fi-rs-verified text-[16px] ml-[3px]"} />
+        </div>
+      </div>
+
+      <div className={"p-[18px] mt-[38px]"}>
+        <div className={"mb-[24px]"}>
+          <p
+            className={
+              "text-15px text-caak-generalblack tracking-[0.23px] leading-[18px] truncate-2"
+            }
+          >
+            {groupData.about}
+          </p>
         </div>
         <div className="flex mt-[22px]">
           <div className="flex flex-col mr-[40px]">

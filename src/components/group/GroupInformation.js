@@ -6,7 +6,11 @@ import Button from "/src/components/button";
 import Input from "../input";
 import Divider from "../divider";
 
-export default function GroupInformation({ groupData }) {
+export default function GroupInformation({
+  categoryList,
+  groupData,
+  ...props
+}) {
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState({});
@@ -227,10 +231,10 @@ export default function GroupInformation({ groupData }) {
         </p>
         {currentIndex === 3 && showInput ? (
           <form
-            className="w-full mt-[10px]"
+            className="flex w-full items-center justify-between mt-[10px]"
             onSubmit={(e) => e.preventDefault()}
           >
-            <Input
+            {/* <Input
               name={"category.name"}
               defaultValue={groupData.category.name}
               autoFocus
@@ -240,14 +244,20 @@ export default function GroupInformation({ groupData }) {
               className={
                 "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
               }
-            />
-            {/* {groupData.category.map((cat, index) => {
-              return (
-                <select key={index} value={cat.name} onChange={handleChange}>
-                  <option value="grapefruit">{cat.name}</option>
-                </select>
-              );
-            })} */}
+            /> */}
+            <select
+              className="min-w-[150px] h-[36px] p-[0px] border-none rounded-lg text-15px font-inter font-normal text-caak-generalblack"
+              // onChange={handleChange}
+              name={"category"}
+            >
+              {categoryList.map((cat, index) => {
+                return (
+                  <option key={index} value={cat.name}>
+                    {cat.name}
+                  </option>
+                );
+              })}
+            </select>
 
             <div className="justify-end mt-[10px] flex items-center pb-3">
               <Button

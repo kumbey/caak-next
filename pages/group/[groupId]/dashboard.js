@@ -23,9 +23,8 @@ import {
 
 import { getGroupUsersByGroup } from "../../../src/graphql-custom/group/queries";
 import FollowerList from "../../../src/components/list/FollowerList";
-import CommentList from "../../../src/components/list/CommentList";
-import PendingPost from "../../../src/components/PendingPost/PendingPost";
 import Loader from "../../../src/components/loader";
+import GroupPostItem from "../../../src/components/group/GroupPostItem";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -36,9 +35,7 @@ export async function getServerSideProps({ req, query }) {
   } catch (ex) {
     user = null;
   }
-  // console.log(user.attributes);
-  // let userId = user.attributes.sub;
-  let userId = "232b6cf0-f166-42da-884e-3aa4ae8d5504";
+  let userId = user.attributes.sub;
 
   const groupView = await API.graphql({
     query: getGroupView,
@@ -66,6 +63,15 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
+  const archivedPosts = await API.graphql({
+    query: getPostByGroup,
+    variables: {
+      group_id: query.groupId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "ARCHIVED" } },
+      limit: 6,
+    },
+  });
 
   const userList = await API.graphql({
     query: getGroupUsersByGroup,
@@ -74,7 +80,6 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
-  console.log(userList);
 
   const userComments = await API.graphql({
     query: listCommentByUser,
@@ -90,13 +95,14 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
     },
   });
-  console.log(groupTotals);
+  console.log(archivedPosts);
 
   return {
     props: {
       ssrData: {
         posts: getReturnData(resp),
         pendingPosts: getReturnData(pendingPosts),
+        archivedPosts: getReturnData(archivedPosts),
         groupView: getReturnData(groupView),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
@@ -117,12 +123,13 @@ const Dashboard = ({ ssrData, ...props }) => {
   const [followedUsers, setFollowedUsers] = useState(
     ssrData.userFollower.items
   );
-  console.log(groupTotals);
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
+  const [archivedPosts, setArchivedPosts] = useState(
+    ssrData.archivedPosts.items
+  );
   const [groupData, setGroupData] = useState(ssrData.groupView);
-  console.log(groupData);
   let totalMember =
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
 
@@ -183,6 +190,11 @@ const Dashboard = ({ ssrData, ...props }) => {
       id: 2,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
+    },
+    {
+      id: 3,
+      name: "Архивлагдсан постууд",
+      icon: "icon-fi-rs-archive",
     },
   ];
 
@@ -348,6 +360,7 @@ const Dashboard = ({ ssrData, ...props }) => {
                       key={index}
                       imageSrc={data?.user?.pic}
                       followedUser={data?.user}
+                      groupData={groupData}
                     />
                   );
                 })}
@@ -373,12 +386,34 @@ const Dashboard = ({ ssrData, ...props }) => {
                   pendingPosts.map((pendingPost, index) => {
                     return (
                       <>
-                        <PendingPost
+                        <GroupPostItem
                           key={index}
                           imageSrc={pendingPost?.items?.items[0]?.file}
-                          pendingPost={pendingPost}
+                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={pendingPost}
+                          className="ph:mb-4 sm:mb-4"
                         />
                       </>
+                    );
+                  })
+                : null}
+            </div>
+            <div className=" flex flex-col items-center max-w-[877px] justify-center">
+              {activeIndex === 3
+                ? archivedPosts.length > 0 &&
+                  archivedPosts.map((archivedPost, index) => {
+                    return (
+                      <GroupPostItem
+                        key={index}
+                        // imageSrc={archivedPost?.items?.items[0]?.file}
+                        // video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
+                        //   "video"
+                        // )}
+                        post={archivedPost}
+                        className="ph:mb-4 sm:mb-4"
+                      />
                     );
                   })
                 : null}

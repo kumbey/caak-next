@@ -119,17 +119,12 @@ const Dashboard = ({ ssrData, ...props }) => {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [groupTotals, setGroupTotals] = useState(ssrData.groupTotals);
-  const [followedUsers, setFollowedUsers] = useState(
-    ssrData.userFollower.items
-  );
-  const [userComments, setUserComments] = useState(ssrData.userComment.items);
+  const [groupTotals] = useState(ssrData.groupTotals);
+  const [followedUsers] = useState(ssrData.userFollower.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
-  const [archivedPosts, setArchivedPosts] = useState(
-    ssrData.archivedPosts.items
-  );
-  const [groupData, setGroupData] = useState(ssrData.groupView);
+  const [pendingPosts] = useState(ssrData.pendingPosts.items);
+  const [archivedPosts] = useState(ssrData.archivedPosts.items);
+  const [groupData] = useState(ssrData.groupView);
   let totalMember =
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
 
@@ -204,7 +199,7 @@ const Dashboard = ({ ssrData, ...props }) => {
       group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 3,
+      limit: 6,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -358,6 +353,7 @@ const Dashboard = ({ ssrData, ...props }) => {
                   return (
                     <FollowerList
                       key={index}
+                      type={"group"}
                       imageSrc={data?.user?.pic}
                       followedUser={data?.user}
                       groupData={groupData}

@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
-import {generateTimeAgo, getFileUrl, getReturnData} from "../../../../src/utility/Util";
+import {
+  generateTimeAgo,
+  getFileUrl,
+  getReturnData,
+} from "../../../../src/utility/Util";
 import { getPostView } from "../../../../src/graphql-custom/post/queries";
 import Image from "next/image";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -39,6 +44,7 @@ export async function getServerSideProps({ req, query }) {
 }
 
 const Post = ({ ssrData }) => {
+  const router = useRouter();
   const [post, setPost] = useState(ssrData.post);
   useEffect(() => {
     setPost(ssrData.post);
@@ -63,20 +69,25 @@ const Post = ({ ssrData }) => {
             />
           </div>
           <div className={"flex flex-col ml-[10px] justify-between"}>
-            <p className={"text-[16px] text-white font-semibold tracking-[0.24px] leading-[19px]"}>
-              {post.group.name} {post.user.verified && <span className={"icon-fi-rs-verified text-[15px]"}/>}
+            <p
+              className={
+                "text-[16px] text-white font-semibold tracking-[0.24px] leading-[19px]"
+              }
+            >
+              {post.group.name}{" "}
+              {post.user.verified && (
+                <span className={"icon-fi-rs-verified text-[15px]"} />
+              )}
             </p>
 
-            <div className={"flex flex-row text-[13px] text-white tracking-[0.2px] leading-[16px] font-normal opacity-90"}>
-              <p>
-                @{post.user.nickname}
-              </p>
-              &nbsp;
-              &middot;
-              &nbsp;
-              <p>
-                {generateTimeAgo(post.createdAt)}
-              </p>
+            <div
+              className={
+                "flex flex-row text-[13px] text-white tracking-[0.2px] leading-[16px] font-normal opacity-90"
+              }
+            >
+              <p>@{post.user.nickname}</p>
+              &nbsp; &middot; &nbsp;
+              <p>{generateTimeAgo(post.createdAt)}</p>
             </div>
           </div>
         </div>
@@ -85,11 +96,16 @@ const Post = ({ ssrData }) => {
           className={
             "flex items-center bg-caak-bluerhapsody cursor-pointer justify-center absolute top-[-54px] right-[20px] w-[40px] h-[40px] rounded-full"
           }
+          onClick={() => router.back()}
         >
           <span className={"icon-fi-rs-close text-white text-[13px]"} />
         </div>
         <div className={"px-[32px] py-[30px]"}>
-          <p className={"text-[22px] text-caak-generalblack font-medium font-roboto tracking-[0.55px] leading-[25px]"}>
+          <p
+            className={
+              "text-[22px] text-caak-generalblack font-medium font-roboto tracking-[0.55px] leading-[25px]"
+            }
+          >
             {post.title}
           </p>
         </div>

@@ -26,19 +26,7 @@ export default function GroupInformation({
     element.target.style.height = element.target.scrollHeight + "px";
   }
 
-  const captionHandler = (e) => {
-    const arr = [...groupData.items];
-    const currentItem = arr[activeIndex];
-    currentItem.title = e.target.value;
-    setPost({ ...groupData, items: arr });
-  };
-
-  const postTitleHandler = (e) => {
-    setPost((prev) => ({ ...prev, title: e.target.value }));
-  };
-
   const handleSubmit = async (e) => {
-    console.log(e.target);
     if (text !== e.target.value) {
       await API.graphql(
         graphqlOperation(updateGroup, {
@@ -48,6 +36,7 @@ export default function GroupInformation({
           },
         })
       );
+      groupData.name = text.name;
       setText("");
     }
     setShowInput(false);
@@ -69,9 +58,6 @@ export default function GroupInformation({
     setText({ ...text, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    console.log(groupData);
-  }, []);
   return (
     <div className="flex flex-col">
       <p

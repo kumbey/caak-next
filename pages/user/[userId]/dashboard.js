@@ -183,160 +183,158 @@ const Dashboard = ({ ssrData, ...props }) => {
     // eslint-disable-next-line
   }, []);
 
-  return (
-    loaded && (
-      <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
-        <div className="flex items-center mb-[40px]">
-          <span
-            onClick={() => router.back()}
-            className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5"
-            style={{ height: "48px", width: "48px" }}
+  return isLogged && loaded ? (
+    <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
+      <div className="flex items-center mb-[40px]">
+        <span
+          onClick={() => router.back()}
+          className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5"
+          style={{ height: "48px", width: "48px" }}
+        />
+        <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
+          <Image
+            className=" bg-white rounded-full"
+            src={
+              user?.pic ? getFileUrl(user?.pic) : getGenderImage(user?.gender)
+            }
+            width={52}
+            height={52}
+            layout="fixed"
+            //   objectFit={"cover"}
+            alt="#"
           />
-          <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-            <Image
-              className=" bg-white rounded-full"
-              src={
-                user?.pic ? getFileUrl(user?.pic) : getGenderImage(user?.gender)
-              }
-              width={52}
-              height={52}
-              layout="fixed"
-              //   objectFit={"cover"}
-              alt="#"
+        </div>
+        <div className="text-2xl font-semibold text-caak-generalblack mr-1">
+          @{user?.nickname}
+        </div>
+        <span className="icon-fi-rs-verified" />
+      </div>
+      <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
+        Дашбоард
+      </div>
+      <div className="flex">
+        {stats.map((stat, index) => {
+          return (
+            <StatsItem
+              key={index}
+              id={index}
+              icon={stat.icon}
+              number={stat.number}
+              text={stat.text}
+              color={stat.color}
+              bgcolor={stat.bgcolor}
             />
+          );
+        })}
+      </div>
+      <div className="flex mt-[25px] ">
+        <div
+          className={
+            "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mr-[20px] "
+          }
+        >
+          <div className="flex flex-col mt-[28px] ml-[32px]">
+            {dashMenu.map((menu, index) => {
+              return (
+                <div
+                  onClick={() => setActiveIndex(index)}
+                  className={`flex items-center mb-[28px] cursor-pointer`}
+                  key={index}
+                >
+                  <span
+                    className={` ${menu.icon} ${
+                      activeIndex === index
+                        ? "text-caak-primary"
+                        : "text-caak-generalblack"
+                    } text-xl `}
+                  />
+                  <p
+                    className={`ml-3 text-base font-inter font-medium text-caak-generalblack ${
+                      activeIndex === index
+                        ? "text-caak-primary"
+                        : "text-caak-generalblack"
+                    }`}
+                  >
+                    {menu.name}
+                  </p>
+                </div>
+              );
+            })}
           </div>
-          <div className="text-2xl font-semibold text-caak-generalblack mr-1">
-            @{user.nickname}
+        </div>
+        <div className="flex flex-col w-full">
+          <div className="flex justify-between">
+            <div className="font-inter font-semibold text-20px text-caak-generalblack">
+              {dashMenu[activeIndex].name}
+            </div>
+            <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+              <div className="flex items-center  mx-[12px] my-[10px]">
+                <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                  Сүүлд нэмэгдсэн
+                </p>
+                <span className="icon-fi-rs-triangle text-14px" />
+              </div>
+            </div>
           </div>
-          <span className="icon-fi-rs-verified" />
-        </div>
-        <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
-          Дашбоард
-        </div>
-        <div className="flex">
-          {stats.map((stat, index) => {
-            return (
-              <StatsItem
-                key={index}
-                id={index}
-                icon={stat.icon}
-                number={stat.number}
-                text={stat.text}
-                color={stat.color}
-                bgcolor={stat.bgcolor}
-              />
-            );
-          })}
-        </div>
-        <div className="flex mt-[25px] ">
           <div
             className={
-              "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mr-[20px] "
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px]"
             }
           >
-            <div className="flex flex-col mt-[28px] ml-[32px]">
-              {dashMenu.map((menu, index) => {
-                return (
-                  <div
-                    onClick={() => setActiveIndex(index)}
-                    className={`flex items-center mb-[28px] cursor-pointer`}
-                    key={index}
-                  >
-                    <span
-                      className={` ${menu.icon} ${
-                        activeIndex === index
-                          ? "text-caak-primary"
-                          : "text-caak-generalblack"
-                      } text-xl `}
+            {activeIndex === 0
+              ? posts.length > 0 &&
+                posts.map((post, index) => {
+                  return (
+                    <DashList
+                      key={index}
+                      imageSrc={post?.items?.items[0]?.file}
+                      post={post}
+                      className="ph:mb-4 sm:mb-4"
                     />
-                    <p
-                      className={`ml-3 text-base font-inter font-medium text-caak-generalblack ${
-                        activeIndex === index
-                          ? "text-caak-primary"
-                          : "text-caak-generalblack"
-                      }`}
-                    >
-                      {menu.name}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="flex flex-col w-full">
-            <div className="flex justify-between">
-              <div className="font-inter font-semibold text-20px text-caak-generalblack">
-                {dashMenu[activeIndex].name}
+                  );
+                })
+              : null}
+            {activeIndex === 1 ? (
+              <div className=" flex flex-row flex-wrap ">
+                {followedUsers.map((data, index) => {
+                  return (
+                    <FollowerList
+                      key={index}
+                      type={"user"}
+                      imageSrc={data.cover_pic}
+                      followedUser={data.user}
+                    />
+                  );
+                })}
               </div>
-              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                <div className="flex items-center  mx-[12px] my-[10px]">
-                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                    Сүүлд нэмэгдсэн
-                  </p>
-                  <span className="icon-fi-rs-triangle text-14px" />
-                </div>
-              </div>
-            </div>
-            <div
-              className={
-                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px]"
-              }
-            >
-              {activeIndex === 0
-                ? posts.length > 0 &&
-                  posts.map((post, index) => {
-                    return (
-                      <DashList
-                        key={index}
-                        imageSrc={post?.items?.items[0]?.file}
-                        post={post}
-                        className="ph:mb-4 sm:mb-4"
-                      />
-                    );
-                  })
-                : null}
-              {activeIndex === 1 ? (
-                <div className=" flex flex-row flex-wrap ">
-                  {followedUsers.map((data, index) => {
-                    return (
-                      <FollowerList
-                        key={index}
-                        type={"user"}
-                        imageSrc={data.cover_pic}
-                        followedUser={data.user}
-                      />
-                    );
-                  })}
-                </div>
-              ) : null}
+            ) : null}
 
-              {activeIndex === 2
-                ? userComments.length > 0 &&
-                  userComments.map((comment, index) => {
-                    return (
-                      <CommentList
-                        key={index}
-                        imageSrc={comment?.post?.items?.items[0]?.file}
-                        comment={comment}
-                        className="ph:mb-4 sm:mb-4"
-                      />
-                    );
-                  })
-                : null}
-            </div>
-            <div ref={feedRef} className={"flex justify-center items-center"}>
-              <Loader
-                containerClassName={"self-center"}
-                className={`bg-caak-primary ${
-                  loading ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </div>
+            {activeIndex === 2
+              ? userComments.length > 0 &&
+                userComments.map((comment, index) => {
+                  return (
+                    <CommentList
+                      key={index}
+                      imageSrc={comment?.post?.items?.items[0]?.file}
+                      comment={comment}
+                      className="ph:mb-4 sm:mb-4"
+                    />
+                  );
+                })
+              : null}
+          </div>
+          <div ref={feedRef} className={"flex justify-center items-center"}>
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
           </div>
         </div>
       </div>
-    )
-  );
+    </div>
+  ) : null;
 };
 
 export default Dashboard;

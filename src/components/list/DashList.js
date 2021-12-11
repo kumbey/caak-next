@@ -1,31 +1,10 @@
 import Link from "next/link";
-import { useState } from "react";
 import Image from "next/image";
 import { getFileUrl, generateTimeAgo } from "../../utility/Util";
 import Divider from "../divider";
 import Button from "../../components/button";
-import { updatePost } from "../../graphql-custom/post/mutation";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
 
 const DashList = ({ imageSrc, post, ...props }) => {
-  const [loading, setLoading] = useState(false);
-
-  const postHandler = async (id, status) => {
-    setLoading(true);
-    try {
-      await API.graphql(
-        graphqlOperation(updatePost, {
-          input: { id, status, expectedVersion: post.version },
-        })
-      );
-      setLoading(false);
-    } catch (ex) {
-      setLoading(false);
-
-      console.log(ex);
-    }
-  };
   return (
     <div className=" ">
       <div className="relative flex items-center ">
@@ -95,16 +74,18 @@ const DashList = ({ imageSrc, post, ...props }) => {
           </div>
         </div>
         <div className="flex ml-[10px] ">
-          <Button
-            onClick={() => postHandler(post.id, "ARCHIVED")}
-            loading={loading}
-            round
-            className={
-              "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-16px bg-white relative"
-            }
-          >
-            <p className="">Архивлах</p>
-          </Button>
+          <Link href={`/post/edit/${post.id}`}>
+            <a>
+              <Button
+                round
+                className={
+                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-16px bg-white relative"
+                }
+              >
+                <p className="">Засах</p>
+              </Button>
+            </a>
+          </Link>
         </div>
       </div>
       <Divider color={"border-titaniumwhite"} className={"pb-5"} />

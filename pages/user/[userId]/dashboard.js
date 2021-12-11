@@ -23,7 +23,6 @@ import {
 import FollowerList from "../../../src/components/list/FollowerList";
 import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
-import PendingPost from "../../../src/components/PendingPost/PendingPost";
 
 export async function getServerSideProps({ req, query }) {
   const { API } = withSSRContext({ req });
@@ -155,11 +154,6 @@ const Dashboard = ({ ssrData, ...props }) => {
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
     },
-    {
-      id: 3,
-      name: "Хүлээгдэж буй постууд",
-      icon: "icon-fi-rs-pending",
-    },
   ];
 
   const [nextPosts] = useListPager({
@@ -202,7 +196,6 @@ const Dashboard = ({ ssrData, ...props }) => {
 
     // eslint-disable-next-line
   }, []);
-
 
   return (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
@@ -342,22 +335,6 @@ const Dashboard = ({ ssrData, ...props }) => {
                   );
                 })
               : null}
-            <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 3
-                ? pendingPosts.length > 0 &&
-                  pendingPosts.map((pendingPost, index) => {
-                    return (
-                      <>
-                        <PendingPost
-                          key={index}
-                          imageSrc={pendingPost?.items?.items[0]?.file}
-                          pendingPost={pendingPost}
-                        />
-                      </>
-                    );
-                  })
-                : null}
-            </div>
           </div>
         </div>
       </div>

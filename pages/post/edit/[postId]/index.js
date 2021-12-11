@@ -90,7 +90,6 @@ export async function getServerSideProps({ req, res, query }) {
 
 const EditPost = ({ ssrData, error }) => {
   const router = useRouter();
-  console.log(error)
   const AddPostLayout = useAddPostLayout();
   const { user } = useUser();
 

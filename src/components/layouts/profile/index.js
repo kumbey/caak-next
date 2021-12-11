@@ -202,7 +202,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           </div>
         </div>
         <div className={"profileLayoutLeftSideBar relative"}>
-          <div className={"flex flex-col items-center absolute top-[-74px]"}>
+          <div className={"flex flex-col w-full items-center absolute top-[-74px]"}>
             <div
               className={
                 "w-[148px] h-[148px] relative rounded-full border-[7px] border-caak-liquidnitrogen bg-white"

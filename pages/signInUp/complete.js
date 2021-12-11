@@ -1,4 +1,4 @@
-import useModalLayout from "/src/hooks/useModalLayout";
+import useModalLayout from "../../src/hooks/useModalLayout";
 import Completed from "../../src/components/register/completed";
 
 const Complete = ({ ...props }) => {

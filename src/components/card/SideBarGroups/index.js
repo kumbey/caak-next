@@ -64,6 +64,7 @@ const SideBarGroups = ({ title, addGroup, maxColumns, role, initialData, userId 
               notification={15}
               name={group.group.name}
               image={getFileUrl(group.group.profile)}
+              groupId={group.id}
             />
           );
         } else {

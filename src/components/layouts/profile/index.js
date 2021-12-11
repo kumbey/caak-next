@@ -120,7 +120,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
         />
         {user.id === signedUser.id && (
           <Dropzone
-            noClick
             noKeyboard
             maxFiles={1}
             onDropRejected={(e) => console.log(e[0].errors[0].message)}

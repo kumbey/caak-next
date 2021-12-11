@@ -13,7 +13,7 @@ import {
 } from "../../utility/Util";
 import Divider from "../divider";
 
-const GroupPostItem = ({ imageSrc, post, ...props }) => {
+const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
   const [loading, setLoading] = useState(false);
 
   const postHandler = async (id, status) => {
@@ -31,7 +31,6 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
       console.log(ex);
     }
   };
-
   return (
     <>
       <div className="flex w-full justify-evenly  items-center ">
@@ -72,7 +71,7 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
           </Link>
         </div>
         <div className="flex w-[200px] text-xs items-center text-caak-darkBlue font-normal font-inter">
-          <div className={"w-[28px] h-[28px]  mx-[6px]"}>
+          <div className={"w-[28px] h-[28px]  mx-[6px] flex-shrink-0"}>
             <Image
               className=" bg-white rounded-full"
               src={
@@ -83,7 +82,6 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
               width={28}
               height={28}
               layout="responsive"
-              //   objectFit={"cover"}
               alt="#"
             />
           </div>
@@ -113,13 +111,15 @@ const GroupPostItem = ({ imageSrc, post, ...props }) => {
           >
             Зөвшөөрөх
           </Button>
-          <Button
-            loading={loading}
-            onClick={() => postHandler(post.id, "ARCHIVED")}
-            className="text-caak-generalblack text-15px w-full bg-white border"
-          >
-            Татгалзах
-          </Button>
+          {post.status !== "ARCHIVED" && (
+            <Button
+              loading={loading}
+              onClick={() => postHandler(post.id, "ARCHIVED")}
+              className="text-caak-generalblack text-15px w-full bg-white border"
+            >
+              Татгалзах
+            </Button>
+          )}
         </div>
       </div>
       <Divider color={"border-titaniumwhite"} className={"w-full py-4"} />

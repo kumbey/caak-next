@@ -32,6 +32,7 @@ import DropDown from "../../navigation/DropDown";
 import PostMoreMenu from "../../card/PostMoreMenu";
 import Link from "next/link";
 import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
+import GroupAdminPanel from "../../group/GroupAdminPanel";
 
 const GroupLayout = ({
   children,
@@ -327,7 +328,7 @@ const GroupLayout = ({
                     </div>
                   </div>
                   <div className="flex justify-end">
-                    {groupData.role_on_group === "ADMIN" ||
+                    {/* {groupData.role_on_group === "ADMIN" ||
                     groupData.role_on_group === "MODERATOR" ? (
                       <>
                         <Link href={`/group/${groupData.id}/dashboard`}>
@@ -383,26 +384,24 @@ const GroupLayout = ({
                           </a>
                         </Link>
                       </>
-                    ) : (
-                      <>
-                        <Button
-                          loading={loading}
-                          className="h-[36px] w-[124px] rounded-lg text-caak-generalblack text-base font-medium font-inter"
-                          icon={
-                            <span className="icon-fi-rs-add-group-f  mr-1" />
-                          }
-                          iconPosition="left"
-                          onClick={handleFollow}
-                          skin={`${
-                            groupData.followed
-                              ? "bg-caak-titaniumwhite"
-                              : "bg-caak-cardinal"
-                          }`}
-                        >
-                          {groupData.followed ? "Нэгдсэн" : "Нэгдэх"}
-                        </Button>
-                      </>
-                    )}
+                    ) :  */}
+
+                    <>
+                      <Button
+                        loading={loading}
+                        className="h-[36px] w-[124px] rounded-lg text-caak-generalblack text-base font-medium font-inter"
+                        icon={<span className="icon-fi-rs-add-group-f  mr-1" />}
+                        iconPosition="left"
+                        onClick={handleFollow}
+                        skin={`${
+                          groupData.followed
+                            ? "bg-caak-titaniumwhite"
+                            : "bg-caak-cardinal"
+                        }`}
+                      >
+                        {groupData.followed ? "Нэгдсэн" : "Нэгдэх"}
+                      </Button>
+                    </>
                     <div
                       ref={menuRef}
                       onClick={toggleMenu}
@@ -443,6 +442,10 @@ const GroupLayout = ({
                 isLaptop ? "hidden" : "block"
               }`}
             >
+              {groupData.role_on_group === "ADMIN" ||
+              groupData.role_on_group === "MODERATOR" ? (
+                <GroupAdminPanel groupData={groupData} />
+              ) : null}
               <GroupInfo groupData={groupData} totalMember={totalMember} />
 
               <div className="mt-[16px]">

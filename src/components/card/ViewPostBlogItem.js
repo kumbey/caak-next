@@ -2,89 +2,11 @@ import Image from "next/image";
 import { getFileUrl } from "../../utility/Util";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import {
-  createReaction,
-  deleteReaction,
-} from "../../graphql-custom/post/mutation";
-import { useEffect, useRef, useState } from "react";
-import { isLogged } from "../../utility/Authenty";
-import { useUser } from "../../context/userContext";
 import Video from "../video";
+import AnimatedCaakButton from "../button/animatedCaakButton";
 
-const ViewPostBlogItem = ({ postItem, postId, singleItem }) => {
+const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
   const router = useRouter();
-  const { user } = useUser();
-  const reactionTimer = useRef(null);
-  const initReacted = useRef(null);
-  const [shake, setShake] = useState(false);
-  const [isReacted, setIsReacted] = useState(postItem.reacted);
-  const animate = () => {
-    // Button begins to shake
-    setShake(true);
-
-    // Buttons stops to animate after 2 seconds
-    setTimeout(() => setShake(false), 500);
-  };
-  const localHandler = () => {
-    if (isLogged) {
-      setIsReacted(!isReacted);
-      if (reactionTimer.current) {
-        clearTimeout(reactionTimer.current);
-      }
-
-      if (!isReacted) {
-        postItem.totals.reactions += 1;
-        animate();
-      } else {
-        if (postItem.totals.reactions > 0) postItem.totals.reactions -= 1;
-      }
-      if (initReacted.current !== !isReacted) {
-        reactionTimer.current = setTimeout(
-          () => reactionHandler(!isReacted),
-          3000
-        );
-      }
-    } else {
-      history.push({
-        pathname: "/login",
-        // state: { background: location },
-      });
-    }
-  };
-
-  const reactionHandler = async (type) => {
-    try {
-      if (type) {
-        await API.graphql(
-          graphqlOperation(createReaction, {
-            input: {
-              id: `${postItem.id}#${user.id}`,
-              item_id: postItem.id,
-              on_to: "POST_ITEM",
-              type: "CAAK",
-              user_id: user.id,
-            },
-          })
-        );
-      } else {
-        await API.graphql(
-          graphqlOperation(deleteReaction, {
-            input: {
-              id: `${postItem.id}#${user.id}`,
-            },
-          })
-        );
-      }
-      initReacted.current = type;
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-  useEffect(() => {
-    initReacted.current = postItem.reacted;
-  }, []);
 
   return (
     <div className={"flex flex-col mt-[40px]"}>
@@ -102,9 +24,12 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem }) => {
                 id: postId,
                 itemId: postItem.id,
                 isModal: true,
+                itemIndex: index,
               },
             }}
             as={`${router.asPath}/${postItem.id}`}
+            shallow={true}
+            scroll={false}
           >
             <a>
               <div className={"relative h-[438px] w-full"}>
@@ -132,36 +57,22 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem }) => {
 
         {!singleItem && (
           <div
-            style={{ borderRadius: "16%/50%" }}
             className={
-              "flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white"
+              "flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white rounded-[100px]"
             }
           >
-            <div className={"flex flex-row items-center"}>
-              <div
-                onClick={() => localHandler()}
-                className={
-                  "group flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
-                }
-              >
-                <span
-                  className={`text-[18px] transition duration-200 group-hover:scale-110 caak-button ${
-                    shake ? `shake` : null
-                  } ${
-                    isReacted
-                      ? "icon-fi-rs-rock-f text-caak-uclagold"
-                      : "icon-fi-rs-rock-i"
-                  }`}
-                />
-              </div>
-              <p
-                className={
-                  "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px] ml-[4px]"
-                }
-              >
-                {postItem.totals.reactions}
-              </p>
-            </div>
+            <AnimatedCaakButton
+              reactionType={"POST_ITEM"}
+              itemId={postItem.id}
+              totals={postItem.totals}
+              reacted={postItem.reacted}
+              textClassname={
+                "text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal ml-[4px]"
+              }
+              iconContainerClassname={"w-[18px] h-[18px] mb-[2px]"}
+              iconColor={"text-caak-nocturnal"}
+              iconClassname={"text-[18px]"}
+            />
             <div
               onClick={() => {
                 router.push(
@@ -185,13 +96,13 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem }) => {
               >
                 <span
                   className={
-                    "icon-fi-rs-comment text-caak-cherenkov text-[16.5px] transition duration-200 group-hover:scale-125"
+                    "icon-fi-rs-comment text-caak-cherenkov text-[16.5px]"
                   }
                 />
               </div>
               <p
                 className={
-                  "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px] ml-[4px]"
+                  "text-[13px] text-caak-darkBlue font-medium tracking-[0.21px] leading-[16px] ml-[4px]"
                 }
               >
                 {postItem.totals.comments}

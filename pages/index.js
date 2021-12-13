@@ -69,7 +69,7 @@ export async function getServerSideProps({ req, res }) {
   };
 }
 
-const Feed = ({ ssrData, ...props }) => {
+const Feed = ({ ssrData }) => {
   const FeedLayout = useFeedLayout();
   const feedRef = useRef();
   const { user, isLogged } = useUser();
@@ -87,6 +87,7 @@ const Feed = ({ ssrData, ...props }) => {
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [sortType, setSortType] = useState("DEFAULT");
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
 
@@ -226,6 +227,8 @@ const Feed = ({ ssrData, ...props }) => {
             >
               <FeedSortButtons
                 items={feedType}
+                sortType={sortType}
+                setSortType={setSortType}
                 hide={isLogged}
                 containerClassname={"mb-[19px] justify-center"}
                 direction={"row"}

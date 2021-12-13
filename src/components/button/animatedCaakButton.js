@@ -1,4 +1,3 @@
-import { isLogged } from "../../utility/Authenty";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import {
@@ -7,21 +6,32 @@ import {
 } from "../../graphql-custom/post/mutation";
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "../../context/userContext";
+import { useRouter } from "next/router";
 
 const AnimatedCaakButton = ({
   totals,
   sub,
   reacted,
   reactionType,
-  commentId,
-  render,
-  setRender,
+  itemId,
+  bottomTotals,
+  iconContainerClassname,
+  iconClassname,
+  iconColor,
+  textClassname,
+  hideCaakText,
+  activeIconColor,
+  activeBackgroundColor,
+  filledIcon,
 }) => {
   const [shake, setShake] = useState(false);
+  const [render, setRender] = useState(0)
   const reactionTimer = useRef(null);
   const initReacted = useRef(null);
   const [isReacted, setIsReacted] = useState(reacted);
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
+  const router = useRouter();
+
   useEffect(() => {
     setIsReacted(reacted);
   }, [reacted]);
@@ -52,32 +62,42 @@ const AnimatedCaakButton = ({
       if (initReacted.current !== !isReacted) {
         reactionTimer.current = setTimeout(
           () => reactionHandler(!isReacted),
-          3000
+          2000
         );
       }
     } else {
-      history.push({
-        pathname: "/login",
-      });
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "signIn",
+            isModal: true,
+          },
+        },
+        `/signInUp/signIn`,
+        { shallow: true }
+      );
     }
   };
 
   const reactionHandler = async (type) => {
+    const on_to = () => {
+      if (reactionType === "COMMENT") {
+        return "COMMENT";
+      } else if (reactionType === "POST") {
+        return "POST";
+      } else if (reactionType === "POST_ITEM") {
+        return "POST_ITEM";
+      }
+    };
     try {
       if (type) {
-        const on_to = () => {
-          if (reactionType === "COMMENT") {
-            return "COMMENT";
-          } else if (reactionType === "POST") {
-            if (sub) return "POST_ITEM";
-            return "POST";
-          }
-        };
         await API.graphql(
           graphqlOperation(createReaction, {
             input: {
-              id: `${commentId}#${user.id}`,
-              item_id: commentId,
+              id: `${itemId}#${user.id}`,
+              item_id: itemId,
               on_to: on_to(),
               type: "CAAK",
               user_id: user.id,
@@ -88,7 +108,7 @@ const AnimatedCaakButton = ({
         await API.graphql(
           graphqlOperation(deleteReaction, {
             input: {
-              id: `${commentId}#${user.id}`,
+              id: `${itemId}#${user.id}`,
             },
           })
         );
@@ -100,18 +120,45 @@ const AnimatedCaakButton = ({
   };
   return (
     <div
-      onClick={() => localHandler()}
-      className={`caak-button ${
-        shake ? `shake` : null
-      } w-[24px] h-[24px] cursor-pointer`}
+      className={`flex ${bottomTotals ? "flex-col" : "flex-row"} items-center`}
     >
-      <span
-        className={`${
-          isReacted
-            ? "icon-fi-rs-rock-f text-caak-uclagold"
-            : "icon-fi-rs-rock-i"
-        }  text-[23px]`}
-      />
+      <div
+        onClick={() => localHandler()}
+        className={`caak-button ${shake ? `shake` : null} ${
+          iconContainerClassname ? iconContainerClassname : ""
+        } ${
+          isReacted ? activeBackgroundColor : `bg-white`
+        } cursor-pointer flex items-center justify-center`}
+      >
+        {filledIcon ? (
+          <span
+            className={`${iconClassname ? iconClassname : ""} ${
+              isReacted
+                ? `${filledIcon ? "icon-fi-rs-rock-f" : "icon-fi-rs-rock-i"} ${
+                    activeIconColor ? activeIconColor : "text-caak-uclagold"
+                  }`
+                : `${filledIcon ? "icon-fi-rs-rock-f" : "icon-fi-rs-rock-i"} ${
+                    iconColor ? iconColor : "text-caak-nocturnal"
+                  }`
+            }`}
+          />
+        ) : (
+          <span
+            className={`${iconClassname ? iconClassname : ""} ${
+              isReacted
+                ? `icon-fi-rs-rock-f ${
+                    activeIconColor ? activeIconColor : "text-caak-uclagold"
+                  }`
+                : `icon-fi-rs-rock-i ${
+                    iconColor ? iconColor : "text-caak-nocturnal"
+                  }`
+            }`}
+          />
+        )}
+      </div>
+      <p className={`${textClassname ? textClassname : "text-caak-scriptink"}`}>
+        {totals.reactions + `${hideCaakText ? "" : " саак"}`}
+      </p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { generateTimeAgo, getFileUrl, getReturnData } from "../../utility/Util";
+import {generateTimeAgo, getFileUrl, getGenderImage, getReturnData} from "../../utility/Util";
 import { API } from "aws-amplify";
 import { listCommentByParent } from "../../graphql-custom/comment/queries";
 import { useUser } from "../../context/userContext";
@@ -31,14 +31,14 @@ const CommentSubItemCard = ({
       query: onCommentByParent,
       variables: {
         parent_id: parentId,
-        type: "SUB"
+        type: "SUB",
       },
       authMode: "AWS_IAM",
     };
     subscriptions.onCommentByPostItem = API.graphql(params).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        setSubscriptionComment(onData);
+        setSubscriptionComment({ ...onData, totals: { reactions: 0 } });
       },
       error: (error) => {
         console.warn(error);
@@ -122,7 +122,7 @@ const CommentSubItemCard = ({
                   src={`${
                     subComment?.user?.pic
                       ? getFileUrl(subComment.user.pic)
-                      : "https://picsum.photos/50"
+                      : getGenderImage(subComment.user.gender).src
                   }`}
                   alt={"user profile"}
                 />
@@ -191,20 +191,19 @@ const CommentSubItemCard = ({
                   >
                     <AnimatedCaakButton
                       reactionType={"COMMENT"}
-                      commentId={subComment.id}
-                      totals={subComment.totals}
                       sub
+                      itemId={subComment.id}
+                      totals={subComment.totals}
                       reacted={subComment.reacted}
-                      render={render}
-                      setRender={setRender}
+                      hideCaakText
+                      bottomTotals
+                      textClassname={
+                        "text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal"
+                      }
+                      iconContainerClassname={"w-[24px] h-[24px] mb-[2px] bg-transparent"}
+                      iconColor={"text-caak-nocturnal"}
+                      iconClassname={"text-[23px]"}
                     />
-                    <div className={"flex items-center justify-center"}>
-                      <p
-                        className={"text-13px tracking-[0.2px] leading-[16px]"}
-                      >
-                        {subComment.totals?.reactions}
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>

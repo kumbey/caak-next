@@ -19,11 +19,13 @@ const Tooltip = ({ children, content, className, style }) => {
       // When to show the tooltip
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
+      onTouchStart={showTip}
     >
       {/* Wrapping */}
       {children}
       {debounced && (
         <div
+          onTouchEnd={hideTip}
           ref={(el) => {
             if (!el) return null;
             const itemClientRect = el.getBoundingClientRect();
@@ -33,7 +35,7 @@ const Tooltip = ({ children, content, className, style }) => {
               el.style.top = "-11.6rem";
             }
           }}
-          className={`Tooltip-Tip ${className && className}`}
+          className={`Tooltip-Tip ${className ? className : ""}`}
           style={style}
         >
           {/* Content */}

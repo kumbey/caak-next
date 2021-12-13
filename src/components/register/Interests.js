@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Button from "/src/components/button";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { getCategoryList } from "../../graphql-custom/category/queries";
+import { listCategorys } from "../../graphql-custom/category/queries";
 import { createUserCategory } from "../../graphql-custom/category/mutation";
 import { useUser } from "../../context/userContext";
 import { getReturnData } from "../../utility/Util";
@@ -52,7 +52,7 @@ export default function Interests() {
   };
 
   const fetchCat = async () => {
-    const resp = await API.graphql(graphqlOperation(getCategoryList))
+    const resp = await API.graphql(graphqlOperation(listCategorys))
     setCategories(getReturnData(resp).items)
   };
 

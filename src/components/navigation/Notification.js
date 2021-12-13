@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { generateFileUrl } from "../../utility/Util";
-import Dummy from "dummyjs";
+import {generateFileUrl, generateTimeAgo, getGenderImage} from "../../utility/Util";
 
 const Notification = ({ item, ...props }) => {
   const [text] = useState({
     short: "",
     long: "",
   });
-
   const button = () => {
     if (item.action === "POST_CONFIRMED") {
       text.short = `таны пост`;
@@ -16,13 +14,10 @@ const Notification = ({ item, ...props }) => {
       return (
         <div
           className={
-            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5 p-1 bg-caak-algalfuel rounded-full"
+            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-[18px] h-[18px] bg-caak-algalfuel rounded-full"
           }
         >
-          <span
-            style={{ fontSize: "8px" }}
-            className={"icon-fi-rs-thick-check text-white "}
-          />
+          <span className={"icon-fi-rs-thick-check text-[10px] text-white "} />
         </div>
       );
     } else if (
@@ -40,13 +35,10 @@ const Notification = ({ item, ...props }) => {
       return (
         <div
           className={
-            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5  p-1 bg-caak-absoluteapricot rounded-full"
+            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-[18px] h-[18px]  bg-caak-absoluteapricot rounded-full"
           }
         >
-          <span
-            style={{ fontSize: "10px" }}
-            className={"icon-fi-rs-add text-white "}
-          />
+          <span className={"icon-fi-rs-add-l text-[12px] text-white "} />
         </div>
       );
     } else if (
@@ -65,12 +57,11 @@ const Notification = ({ item, ...props }) => {
       return (
         <div
           className={
-            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5  p-1 bg-caak-primary rounded-full"
+            "flex items-center justify-center absolute -right-2 border-[1.8px] border-white -bottom-0.5 w-[18px] h-[18px]  bg-caak-bleachedsilk1 rounded-full"
           }
         >
           <span
-            style={{ fontSize: "10px" }}
-            className={"icon-fr-rs-caak-active text-white "}
+            className={"icon-fi-rs-rock-f text-caak-uclagold text-[13px]"}
           />
         </div>
       );
@@ -81,13 +72,10 @@ const Notification = ({ item, ...props }) => {
       return (
         <div
           className={
-            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5  p-1 bg-caak-darkBlue rounded-full"
+            "flex items-center justify-center absolute -right-2 border-[1.8px] border-white -bottom-0.5 w-[18px] h-[18px] bg-caak-darkBlue rounded-full"
           }
         >
-          <span
-            style={{ fontSize: "10px" }}
-            className={"icon-fi-rs-comment text-white "}
-          />
+          <span className={"icon-fi-rs-comment-f text-[9px] text-white "} />
         </div>
       );
     } else if (item.action === "USER_FOLLOWED") {
@@ -97,7 +85,7 @@ const Notification = ({ item, ...props }) => {
       return (
         <div
           className={
-            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5  p-1 bg-caak-bleudefrance rounded-full"
+            "flex items-center justify-center absolute -right-2 border-[1.8px] border-white -bottom-0.5 w-[18px] h-[18px]  bg-caak-bleudefrance rounded-full"
           }
         >
           <span
@@ -116,63 +104,50 @@ const Notification = ({ item, ...props }) => {
       } flex flex-row justify-between items-center  pl-[14px] pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite`}
     >
       <div className={"flex flex-row"}>
-        <div className={"avatar relative"}>
-          {/*{item.seen === "FALSE" && (*/}
-          {/*  <div*/}
-          {/*    className={*/}
-          {/*      "absolute -left-3 top-4  w-2 h-2 bg-caak-bleudefrance rounded-full"*/}
-          {/*    }*/}
-          {/*  />*/}
-          {/*)}*/}
-
+        <div className={"avatar relative self-center"}>
           <div className={"flex justify-center items-center w-[38px] h-[38px]"}>
             <img
               className={"rounded-full w-full h-full object-cover"}
               src={
-                item.from_user?.pic
-                  ? generateFileUrl(item.from_user?.pic)
-                  : Dummy.image("50x50")
+                item.from_user.pic
+                  ? generateFileUrl(item.from_user.pic)
+                  : getGenderImage(item.from_user.gender).src
               }
               alt={""}
             />
           </div>
 
-          {/*<div*/}
-          {/*  className={*/}
-          {/*    "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5  p-1 bg-caak-absoluteapricot rounded-full"*/}
-          {/*  }*/}
-          {/*>*/}
           {button()}
-          {/*  <span*/}
-          {/*    style={{ fontSize: "6px" }}*/}
-          {/*    className={"icon-fi-rs-check text-white "}*/}
-          {/*  />*/}
-          {/*</div>*/}
         </div>
-        <div
-          className={"flex flex-row flex-wrap items-center ml-3 content-center"}
-        >
-          <span
+        <div className={"flex flex-col"}>
+          <div
             className={
-              "text-15px text-caak-generalblack font-medium tracking-[0.23px] leading-[16px]"
+              "flex flex-row flex-wrap items-center ml-3 content-center"
             }
           >
-            {`${item.from_user?.nickname}`}
-          </span>
-          <span
-            className={
-              "text-14px text-caak-darkBlue tracking-[0.21px] leading-[16px]"
-            }
-          >
-            &nbsp;{text.short}
-          </span>
-          <span
-            className={
-              "text-14px text-caak-generalblack tracking-[0.21px] leading-[16px]"
-            }
-          >
-            &nbsp;{text.long}
-          </span>
+            <span
+              className={
+                "text-15px text-caak-generalblack font-medium tracking-[0.23px] leading-[16px]"
+              }
+            >
+              {`${item.from_user?.nickname}`}
+            </span>
+            <span
+              className={
+                "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px]"
+              }
+            >
+              &nbsp;{text.short}&nbsp;
+            </span>
+            <span
+              className={
+                "text-[14px] text-caak-generalblack tracking-[0.21px] leading-[16px]"
+              }
+            >
+             {text.long}
+            </span>
+          </div>
+          <p className={"ml-3 text-[13px] text-caak-darkBlue tracking-[0.2px] leading-[19px]"}>{generateTimeAgo(item.createdAt)}</p>
         </div>
       </div>
       {/*Post Image*/}

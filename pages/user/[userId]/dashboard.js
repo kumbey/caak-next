@@ -26,7 +26,13 @@ import { useUser } from "../../../src/context/userContext";
 import Loader from "../../../src/components/loader";
 
 export async function getServerSideProps({ req, query }) {
-  const { API } = withSSRContext({ req });
+  const { API, Auth } = withSSRContext({ req });
+  let user = null;
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ex) {
+    user = null;
+  }
 
   const resp = await API.graphql({
     query: getPostByUser,
@@ -34,8 +40,20 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 10,
+      limit: 5,
     },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+  });
+
+  const pendingPosts = await API.graphql({
+    query: getPostByUser,
+    variables: {
+      user_id: query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 5,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
 
   const userList = await API.graphql({
@@ -44,6 +62,7 @@ export async function getServerSideProps({ req, query }) {
       followed_user_id: query.userId,
       limit: 6,
     },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
 
   const userComments = await API.graphql({
@@ -52,6 +71,7 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
     },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
 
   const userTotals = await API.graphql({
@@ -59,6 +79,7 @@ export async function getServerSideProps({ req, query }) {
     variables: {
       user_id: query.userId,
     },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
   });
 
   return {

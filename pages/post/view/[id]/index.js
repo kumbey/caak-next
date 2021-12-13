@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
 import {
@@ -12,6 +12,10 @@ import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
 import { useRouter } from "next/router";
+import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction"
+import Tooltip from "../../../../src/components/tooltip/Tooltip"
+import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard"
+import Link from "next/link";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -46,59 +50,101 @@ export async function getServerSideProps({ req, query }) {
 const Post = ({ ssrData }) => {
   const router = useRouter();
   const [post, setPost] = useState(ssrData.post);
+  const commentRef = useRef();
+  const { jumpToComment } = router.query;
+
   useEffect(() => {
     setPost(ssrData.post);
   }, [ssrData.post]);
+
+  useEffect(() => {
+    if (jumpToComment) {
+      if (commentRef.current) {
+        commentRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [jumpToComment]);
 
   const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   return post ? (
     <ViewPostModal
       post={post}
       containerClassname={
-        "w-full max-w-[1183px] mx-auto my-[78px] rounded-b-square z-[0]"
+        "w-full flex flex-row max-w-[1200px] mx-auto my-[78px] rounded-b-square z-[0]"
       }
     >
+      {/*<Head>*/}
+      {/*  <meta name="description" content={post.description} />*/}
+      {/*  <meta property="og:title" content={post.title} />*/}
+      {/*  <meta property="og:type" content="article" />*/}
+      {/*  <meta*/}
+      {/*    property="og:image"*/}
+      {/*    content={getFileUrl(post.items.items[0].file)}*/}
+      {/*  />*/}
+      {/*  <title>{post.title}</title>*/}
+      {/*</Head>*/}
+      <div className={"viewPostLeftSideBar z-1"}>
+        <ViewPostLeftReaction commentRef={commentRef} post={post} />
+      </div>
       <div className={"bg-white h-full w-full rounded-square"}>
-        <div className={"flex flex-row absolute top-[-54px] left-[85px]"}>
-          <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
-            <Image
-              className={"rounded-[6px]"}
-              src={getFileUrl(post.group.profile)}
-              layout={"fill"}
-              alt={""}
-            />
-          </div>
-          <div className={"flex flex-col ml-[10px] justify-between"}>
-            <p
-              className={
-                "text-[16px] text-white font-semibold tracking-[0.24px] leading-[19px]"
-              }
-            >
-              {post.group.name}{" "}
-              {post.user.verified && (
-                <span className={"icon-fi-rs-verified text-[15px]"} />
-              )}
-            </p>
-
-            <div
-              className={
-                "flex flex-row text-[13px] text-white tracking-[0.2px] leading-[16px] font-normal opacity-90"
-              }
-            >
-              <p>@{post.user.nickname}</p>
-              &nbsp; &middot; &nbsp;
-              <p>{generateTimeAgo(post.createdAt)}</p>
-            </div>
-          </div>
-        </div>
-
         <div
           className={
-            "flex items-center bg-caak-bluerhapsody cursor-pointer justify-center absolute top-[-54px] right-[20px] w-[40px] h-[40px] rounded-full"
+            "absolute flex flex-row justify-between w-full top-[-54px] right-0 pl-[69px]"
           }
           onClick={() => router.back()}
         >
-          <span className={"icon-fi-rs-close text-white text-[13px]"} />
+          <div className={"flex flex-row "}>
+            <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
+              <Image
+                className={"rounded-[6px]"}
+                src={getFileUrl(post.group.profile)}
+                layout={"fill"}
+                objectFit={"cover"}
+                alt={""}
+              />
+            </div>
+            <div className={"flex flex-col ml-[10px] justify-between"}>
+              <Link href={`/group/${post.group.id}`}>
+                <a>
+                  <p
+                    className={
+                      "text-[16px] text-white font-semibold tracking-[0.24px] leading-[19px]"
+                    }
+                  >
+                    {post.group.name}{" "}
+                    {post.user.verified && (
+                      <span className={"icon-fi-rs-verified text-[15px]"} />
+                    )}
+                  </p>
+                </a>
+              </Link>
+
+              <div
+                className={
+                  "flex relative flex-row text-[13px] text-white tracking-[0.2px] leading-[16px] font-normal"
+                }
+              >
+                <Tooltip
+                  className={"-left-6"}
+                  content={<ProfileHoverCard userId={post.user.id} />}
+                >
+                  <p className={"cursor-pointer opacity-90"}>
+                    @{post.user.nickname}
+                  </p>
+                </Tooltip>
+                &nbsp; &middot; &nbsp;
+                <p>{generateTimeAgo(post.createdAt)}</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={
+              "flex items-center bg-caak-bluerhapsody cursor-pointer justify-center w-[40px] h-[40px] rounded-full"
+            }
+          >
+            <span className={"icon-fi-rs-close text-white text-[13px]"} />
+          </div>
         </div>
         <div className={"px-[32px] py-[30px]"}>
           <p
@@ -152,7 +198,7 @@ const Post = ({ ssrData }) => {
             );
           })}
         </div>
-        <CommentSection post={post} />
+        <CommentSection commentRef={commentRef} post={post} />
       </div>
     </ViewPostModal>
   ) : null;

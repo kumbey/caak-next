@@ -1,64 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
 import Image from "next/image";
 import Button from "../../components/button";
 import Divider from "../divider";
-import { useUser } from "../../context/userContext";
-import { API } from "aws-amplify";
-import { deleteComment } from "../../graphql-custom/comment/mutation";
 
-const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
-  const { isLogged } = useUser();
-  const [loading, setLoading] = useState(false);
+const CommentList = ({ comment, imageSrc, ...props }) => {
   const createdAt = extractDate(comment.createdAt);
-
-  const deleteComments = async (id) => {
-    if (isLogged)
-      try {
-        setLoading(true);
-        let resp = await API.graphql({
-          query: deleteComment,
-          variables: {
-            input: {
-              id: id,
-            },
-          },
-        });
-
-        setLoading(false);
-      } catch (ex) {
-        setLoading(false);
-        console.log(ex);
-      }
-  };
-  let filteredComments;
-  const handleDelete = async (id) => {
-    if (comment.sub.items.length === 0) {
-      filteredComments = userComments.filter(
-        (ucomment) => ucomment.id !== comment.id
-      );
-      await deleteComments(comment.id);
-      setUserComments(filteredComments);
-    } else {
-      comment.sub.items.map((sub, index) => {
-        deleteComments(sub.id);
-      });
-      filteredComments = await userComments.filter(
-        (comm) => id !== comm.parent_id
-      );
-
-      setUserComments(filteredComments);
-
-      await deleteComments(comment.id);
-    }
-
-    filteredComments = filteredComments.filter(
-      (ucomment) => ucomment.id !== comment.id
-    );
-    setUserComments(filteredComments);
-  };
-
   return (
     <div className="  w-full">
       <div className="relative flex items-center ">
@@ -109,8 +57,7 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
         </div>
         <div className="flex mr-[10px]">
           <Button
-            onClick={() => handleDelete(comment.id)}
-            loading={loading}
+            onClick={() => null}
             round
             className={
               "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-15px bg-white relative"

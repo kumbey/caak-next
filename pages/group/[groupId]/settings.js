@@ -146,7 +146,6 @@ export default function Settings({ ssrData, ...props }) {
   ]);
 
   const [categoryList, setCategoryList] = useState(ssrData.categoryList.items);
-
   useEffect(() => {
     try {
       if (isLogged) {
@@ -163,6 +162,10 @@ export default function Settings({ ssrData, ...props }) {
     }
     // eslint-disable-next-line
   }, [user, signedUser.id]);
+
+  useEffect(() => {
+    console.log(adminModeratorList);
+  }, []);
 
   return user ? (
     <div

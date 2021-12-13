@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 
 import Dummy from "dummyjs";
-import { getUserById } from "../../../src/utility/ApiHelper";
+import { getUserById } from "/src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
 import { getFileUrl } from "/src/utility/Util";
-import Informations from "../../../src/components/userProfile/Informations";
-import SocialLink from "../../../src/components/userProfile/SocialLink";
-import SiteConfiguration from "../../../src/components/userProfile/SiteConfiguration";
-import Privacy from "../../../src/components/userProfile/Privacy";
-import { data } from "../../../src/components/settingsMenuData";
+import Informations from "./Informations";
+import SocialLink from "./SocialLink";
+import SiteConfiguration from "./SiteConfiguration";
+import Privacy from "./Privacy";
+import { data } from "../settingsMenuData";
 import { useRouter } from "next/router";
 
 export default function Settings() {

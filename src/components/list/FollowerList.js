@@ -1,50 +1,24 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import API from "@aws-amplify/api";
 import Button from "../../components/button";
 import { getFileUrl, getGenderImage } from "../../utility/Util";
-import { API, graphqlOperation } from "aws-amplify";
 import Image from "next/image";
-import { deleteFollowedUsers } from "../../graphql-custom/user/mutation";
-import { deleteGroupUsers } from "../../graphql-custom/GroupUsers/mutation";
+import {
+  createFollowedUsers,
+  deleteFollowedUsers,
+} from "../../graphql-custom/user/mutation";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
 
-const FollowerList = ({
-  imageSrc,
-  followedUser,
-  groupData,
-  type,
-  ...props
-}) => {
+const FollowerList = ({ imageSrc, followedUser, ...props }) => {
   const router = useRouter();
-  const { user, isLogged, user: signedUser } = useUser();
-  const [forceRender, setForceRender] = useState(0);
+  const { user, isLogged } = useUser();
 
+  const [doRender, setDoRender] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const deleteFollowFromGroup = async () => {
-    try {
-      setLoading(true);
-      if (groupData.followed) {
-        await API.graphql(
-          graphqlOperation(deleteGroupUsers, {
-            input: {
-              id: `${groupData.id}#${followedUser.id}`,
-            },
-          })
-        );
-        groupData.followed = false;
-        groupData.totals.member -= 1;
-        setForceRender(forceRender + 1);
-      }
-      setLoading(false);
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
-  };
-
-  const deleteFollowFromUser = async () => {
+  const deleteFollowUser = async () => {
     try {
       if (isLogged) {
         setLoading(true);
@@ -53,22 +27,20 @@ const FollowerList = ({
           query: deleteFollowedUsers,
           variables: {
             input: {
-              id: `${router.query.userId}#${followedUser.id}`,
+              id: `${followedUser.id}#${router.query.userId}`,
             },
           },
         });
-
-        signedUser.followed = false;
-        signedUser.totals.followers -= 1;
-        setForceRender(forceRender + 1);
+        user.totals.followers -= 1;
+        user.followed = false;
+        setDoRender(doRender + 1);
+        setLoading(false);
       }
-      setLoading(false);
     } catch (ex) {
       setLoading(false);
       console.log(ex);
     }
   };
-
   return (
     <div className="flex rounded-lg border border-caak-titaniumwhite  w-[390px] h-[108px] mb-[18px] mr-[16px]">
       <div className="flex w-full mx-[16px] my-[16px] items-center justify-between">
@@ -110,11 +82,7 @@ const FollowerList = ({
             className="h-c13 w-28"
             icon={<span className="icon-fi-rs-add-friend mr-1" />}
             iconPosition="left"
-            onClick={
-              type === "user"
-                ? () => deleteFollowFromUser()
-                : () => deleteFollowFromGroup()
-            }
+            onClick={deleteFollowUser}
             skin={`bg-caak-titaniumwhite`}
             loading={loading}
           >

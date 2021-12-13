@@ -23,8 +23,9 @@ import {
 
 import { getGroupUsersByGroup } from "../../../src/graphql-custom/group/queries";
 import FollowerList from "../../../src/components/list/FollowerList";
+import CommentList from "../../../src/components/list/CommentList";
+import PendingPost from "../../../src/components/PendingPost/PendingPost";
 import Loader from "../../../src/components/loader";
-import GroupPostItem from "../../../src/components/group/GroupPostItem";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -35,7 +36,9 @@ export async function getServerSideProps({ req, query }) {
   } catch (ex) {
     user = null;
   }
-  let userId = user.attributes.sub;
+  // console.log(user.attributes);
+  // let userId = user.attributes.sub;
+  let userId = "232b6cf0-f166-42da-884e-3aa4ae8d5504";
 
   const groupView = await API.graphql({
     query: getGroupView,
@@ -63,15 +66,6 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
-  const archivedPosts = await API.graphql({
-    query: getPostByGroup,
-    variables: {
-      group_id: query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "ARCHIVED" } },
-      limit: 6,
-    },
-  });
 
   const userList = await API.graphql({
     query: getGroupUsersByGroup,
@@ -80,6 +74,7 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
+  console.log(userList);
 
   const userComments = await API.graphql({
     query: listCommentByUser,
@@ -95,14 +90,13 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
     },
   });
-  console.log(archivedPosts);
+  console.log(groupTotals);
 
   return {
     props: {
       ssrData: {
         posts: getReturnData(resp),
         pendingPosts: getReturnData(pendingPosts),
-        archivedPosts: getReturnData(archivedPosts),
         groupView: getReturnData(groupView),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
@@ -119,12 +113,16 @@ const Dashboard = ({ ssrData, ...props }) => {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [groupTotals] = useState(ssrData.groupTotals);
-  const [followedUsers] = useState(ssrData.userFollower.items);
+  const [groupTotals, setGroupTotals] = useState(ssrData.groupTotals);
+  const [followedUsers, setFollowedUsers] = useState(
+    ssrData.userFollower.items
+  );
+  console.log(groupTotals);
+  const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [pendingPosts] = useState(ssrData.pendingPosts.items);
-  const [archivedPosts] = useState(ssrData.archivedPosts.items);
-  const [groupData] = useState(ssrData.groupView);
+  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
+  const [groupData, setGroupData] = useState(ssrData.groupView);
+  console.log(groupData);
   let totalMember =
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
 
@@ -186,11 +184,6 @@ const Dashboard = ({ ssrData, ...props }) => {
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
     },
-    {
-      id: 3,
-      name: "Архивлагдсан постууд",
-      icon: "icon-fi-rs-archive",
-    },
   ];
 
   const [nextPosts] = useListPager({
@@ -199,7 +192,7 @@ const Dashboard = ({ ssrData, ...props }) => {
       group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 3,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -353,10 +346,8 @@ const Dashboard = ({ ssrData, ...props }) => {
                   return (
                     <FollowerList
                       key={index}
-                      type={"group"}
                       imageSrc={data?.user?.pic}
                       followedUser={data?.user}
-                      groupData={groupData}
                     />
                   );
                 })}
@@ -382,34 +373,12 @@ const Dashboard = ({ ssrData, ...props }) => {
                   pendingPosts.map((pendingPost, index) => {
                     return (
                       <>
-                        <GroupPostItem
+                        <PendingPost
                           key={index}
                           imageSrc={pendingPost?.items?.items[0]?.file}
-                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={pendingPost}
-                          className="ph:mb-4 sm:mb-4"
+                          pendingPost={pendingPost}
                         />
                       </>
-                    );
-                  })
-                : null}
-            </div>
-            <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 3
-                ? archivedPosts.length > 0 &&
-                  archivedPosts.map((archivedPost, index) => {
-                    return (
-                      <GroupPostItem
-                        key={index}
-                        // imageSrc={archivedPost?.items?.items[0]?.file}
-                        // video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
-                        //   "video"
-                        // )}
-                        post={archivedPost}
-                        className="ph:mb-4 sm:mb-4"
-                      />
                     );
                   })
                 : null}

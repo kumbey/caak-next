@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  findMatchIndex,
   generateTimeAgo,
   getFileUrl,
   getReturnData,
@@ -62,9 +63,9 @@ export async function getServerSideProps({ req, query }) {
 const PostItem = ({ ssrData }) => {
   const [post, setPost] = useState(ssrData.post);
   const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState(
-    router.query.itemIndex ? parseInt(router.query.itemIndex) : 0
-  );
+
+  const [activeIndex, setActiveIndex] = useState(findMatchIndex(post.items.items, "id", router.query.itemId));
+
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
   // const [loading, setLoading] = useState(true);
@@ -78,9 +79,8 @@ const PostItem = ({ ssrData }) => {
     setIsMenuOpen(false);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const itemId = router.query.itemId;
   const addCommentRef = useRef();
-  const item = post.items.items[activeIndex];
+  const [item, setItem] = useState(post.items.items[activeIndex]);
   const followGroup = async () => {
     try {
       if (isLogged) {
@@ -132,6 +132,7 @@ const PostItem = ({ ssrData }) => {
   }, []);
 
   useEffect(() => {
+    setItem(post.items.items[activeIndex])
     router.push(
       {
         pathname: `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
@@ -144,9 +145,9 @@ const PostItem = ({ ssrData }) => {
     );
   }, [activeIndex]);
 
-  // useEffect(() => {
-  //   setLoading(false);
-  // }, []);
+  useEffect(() => {
+    setActiveIndex(findMatchIndex(post.items.items, "id", router.query.itemId))
+  }, [router.query]);
 
   const back = () => {
     if (router.query && router.query.isModal) {
@@ -177,7 +178,7 @@ const PostItem = ({ ssrData }) => {
         <title>{item.title}</title>
         <meta name="description" content={post.description} />
 
-        <meta property="og:url" content={`/post/view/${post.id}/${itemId}`} />
+        {/*<meta property="og:url" content={`/post/view/${post.id}/${router.query.itemId}`} />*/}
         <meta property="og:type" content="website" />
         <meta property="og:title" content={item.title} />
         <meta property="og:description" content={post.description} />
@@ -252,7 +253,7 @@ const PostItem = ({ ssrData }) => {
                   content={
                     <PostMoreMenu
                       groupId={post.group.id}
-                      postId={itemId}
+                      postId={router.query.itemId}
                       postUser={post.user}
                     />
                   }

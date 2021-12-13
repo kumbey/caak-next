@@ -378,6 +378,18 @@ export async function fetcher(url) {
   return resp.json();
 }
 
+export function findMatchIndex(arr, key, value){
+    let index = -1
+    for(let i=0; i < arr.length; i++){
+      if(arr[i][key] === value){
+          index = i
+          break
+      }
+    }
+
+    return index
+}
+
 const object = {
   useQuery,
   mailNumber,

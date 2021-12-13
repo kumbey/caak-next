@@ -148,7 +148,7 @@ const CardFooter = ({ totals, postId, reacted }) => {
               }
             />
             <DropDown
-              arrow={"bottom"}
+              arrow={"bottomRight"}
               className="absolute right-0 bottom-12"
               open={isMenuOpen}
               onToggle={toggleMenu}

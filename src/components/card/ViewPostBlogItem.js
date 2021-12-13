@@ -62,12 +62,14 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
             }
           >
             <AnimatedCaakButton
+              disableOnClick
               reactionType={"POST_ITEM"}
+              hideCaakText
               itemId={postItem.id}
               totals={postItem.totals}
               reacted={postItem.reacted}
               textClassname={
-                "text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal ml-[4px]"
+                "text-[14px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal ml-[4px]"
               }
               iconContainerClassname={"w-[18px] h-[18px] mb-[2px]"}
               iconColor={"text-caak-nocturnal"}
@@ -96,13 +98,13 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               >
                 <span
                   className={
-                    "icon-fi-rs-comment text-caak-cherenkov text-[16.5px]"
+                    "icon-fi-rs-comment-o text-caak-scriptink text-[16.5px]"
                   }
                 />
               </div>
               <p
                 className={
-                  "text-[13px] text-caak-darkBlue font-medium tracking-[0.21px] leading-[16px] ml-[4px]"
+                  "text-[14px] text-caak-darkBlue font-medium tracking-[0.21px] leading-[16px] ml-[4px]"
                 }
               >
                 {postItem.totals.comments}
@@ -111,7 +113,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
           </div>
         )}
       </div>
-      <div className={"pt-[20px]"}>
+      <div className={"pt-[13px]"}>
         <p
           className={
             "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"

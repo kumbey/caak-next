@@ -224,6 +224,7 @@ export default function NavBar() {
                         }
                       />
                       <DropDown
+                          arrow={"topRight"}
                         className={"top-8 -right-3"}
                         open={isMenuOpen}
                         onToggle={toggleMenu}

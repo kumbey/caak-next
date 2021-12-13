@@ -138,6 +138,7 @@ const SubMenu = ({ params }) => {
           }
         >
           <DropDown
+              arrow={"topRight"}
             open={params.isMenuOpen}
             onToggle={toggleMenu}
             content={<NavBarMenu />}

@@ -56,6 +56,7 @@ export const update = async (oldPost, userId) => {
                 }
             }
 
+            console.log(currentPost)
             //DELETE OLD ITEMS
             for (let i = 0; i < currentPost.items.length; i++) {
                 let currentItem = currentPost.item[i];

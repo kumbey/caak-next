@@ -12,6 +12,10 @@ import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
 import { useRouter } from "next/router";
+import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction"
+import Tooltip from "../../../../src/components/tooltip/Tooltip"
+import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard"
+import Link from "next/link";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -47,7 +51,6 @@ const Post = ({ ssrData }) => {
   const router = useRouter();
   const [post, setPost] = useState(ssrData.post);
   const commentRef = useRef();
-  const router = useRouter();
   const { jumpToComment } = router.query;
 
   useEffect(() => {

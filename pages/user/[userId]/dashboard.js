@@ -54,7 +54,7 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "PENDING" } },
-      limit: 5,
+      limit: 6,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -73,6 +73,7 @@ export async function getServerSideProps({ req, query }) {
     variables: {
       user_id: query.userId,
       sortDirection: "DESC",
+      limit: 10,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -100,7 +101,9 @@ export async function getServerSideProps({ req, query }) {
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
   const { isLogged, user } = useUser();
-  const feedRef = useRef();
+  const postRef = useRef();
+  const followerRef = useRef();
+  const commentRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -182,7 +185,34 @@ const Dashboard = ({ ssrData }) => {
     },
     nextToken: ssrData.posts.nextToken,
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
+  const [nextComments] = useListPager({
+    query: listCommentByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      limit: 10,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+  const [nextFollowers] = useListPager({
+    query: listUsersbyFollowed,
+    variables: {
+      user_id: router.query.userId,
+      limit: 6,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+  const [setPostScroll] = useInfiniteScroll(posts, setPosts, postRef);
+  const [setCommentScroll] = useInfiniteScroll(
+    userComments,
+    setUserComments,
+    commentRef
+  );
+  const [setFollowerScroll] = useInfiniteScroll(
+    followedUsers,
+    setFollowedUsers,
+    followerRef
+  );
 
   const fetchPosts = async (data, setData) => {
     try {
@@ -190,6 +220,40 @@ const Dashboard = ({ ssrData }) => {
         setLoading(true);
 
         const resp = await nextPosts();
+        if (resp) {
+          setData([...data, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchComments = async (data, setData) => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextComments();
+        if (resp) {
+          setData([...data, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchFollowers = async (data, setData) => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextFollowers();
         if (resp) {
           setData([...data, ...resp]);
         }
@@ -280,12 +344,16 @@ const Dashboard = ({ ssrData }) => {
 
     setLoaded(true);
     setPostScroll(fetchPosts);
+    setCommentScroll(fetchComments);
+    setFollowerScroll(fetchFollowers);
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
         return true;
       });
       setPostScroll(null);
+      setCommentScroll(null);
+      setFollowerScroll(null);
     };
 
     // eslint-disable-next-line
@@ -435,7 +503,18 @@ const Dashboard = ({ ssrData }) => {
                 })
               : null}
           </div>
-          <div ref={feedRef} className={"flex justify-center items-center"}>
+          <div
+            ref={
+              activeIndex === 0
+                ? postRef
+                : activeIndex === 1
+                ? followerRef
+                : activeIndex === 2
+                ? commentRef
+                : null
+            }
+            className={"flex justify-center items-center"}
+          >
             <Loader
               containerClassName={"self-center"}
               className={`bg-caak-primary ${

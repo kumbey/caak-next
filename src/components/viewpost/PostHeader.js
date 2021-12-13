@@ -148,7 +148,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
                     />
                   </div>
                 </FacebookShareButton>
-                <TwitterShareButton url={`${pathName}/${post.id}/post/view/${item.id}`}>
+                <TwitterShareButton url={`${pathName}/post/view/${post.id}/${item.id}`}>
                   <div
                     className={
                       "flex items-center ml-[7px] bg-caak-twitter rounded-full justify-center w-[22px] h-[22px] cursor-pointer"

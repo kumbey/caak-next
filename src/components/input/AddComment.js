@@ -1,13 +1,11 @@
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import Dummy from "dummyjs";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
-import {getFileUrl, getReturnData} from "../../utility/Util";
+import { getFileUrl, getGenderImage, getReturnData } from "../../utility/Util";
 import { createComment } from "../../graphql-custom/comment/mutation";
 import Button from "../button";
-import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const AddComment = ({
   activeIndex,
@@ -23,6 +21,7 @@ const AddComment = ({
   const { user, isLogged } = useUser();
   const router = useRouter();
   const item = post.items.items[activeIndex];
+  const [render, setRender] = useState(0);
 
   //Press Enter key to comment
   useEffect(() => {
@@ -58,12 +57,22 @@ const AddComment = ({
             })
           );
           setCommentInputValue("");
-
+          item.totals.comments++;
           item.comments.items.push(getReturnData(resp, false));
+          setRender(render + 1)
         } else {
-          router.push({
-            pathname: "/login",
-          });
+          router.push(
+            {
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                signInUp: "signIn",
+                isModal: true,
+              },
+            },
+            `/signInUp/signIn`,
+            { shallow: true }
+          );
         }
         setLoading(false);
       } catch (ex) {
@@ -84,13 +93,9 @@ const AddComment = ({
     >
       {isLogged ? (
         <img
-          className="w-[38px] h-[38px] rounded-full"
-          src={
-            user?.sysUser?.pic
-              ? getFileUrl(user.sysUser.pic)
-              : Dummy.image("50x50")
-          }
-          alt="Alex"
+          className="w-[38px] h-[38px] rounded-full object-cover"
+          src={user?.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
+          alt="User"
         />
       ) : null}
       <div className={"relative flex w-full justify-center items-center px-2"}>
@@ -105,9 +110,18 @@ const AddComment = ({
           onChange={(e) => setCommentInputValue(e.target.value)}
           onFocus={() =>
             !isLogged &&
-            router.push({
-              pathname: "/login",
-            })
+            router.push(
+              {
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  signInUp: "signIn",
+                  isModal: true,
+                },
+              },
+              `/signInUp/signIn`,
+              { shallow: true }
+            )
           }
         />
         {/*TODO Emoji, File upload*/}
@@ -125,7 +139,7 @@ const AddComment = ({
         loading={loading}
         onClick={() => addComment()}
         className={
-          "bg-white text-caak-primary py-2 text-15px font-medium h-full border-0 shadow-none"
+          "bg-white text-caak-primary px-[2px] text-15px font-medium h-full border-0 shadow-none"
         }
       >
         Илгээх

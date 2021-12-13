@@ -1,7 +1,7 @@
 import CardHeader from "./FeedCard/CardHeader";
 import Divider from "../divider";
 import Image from "next/image";
-import { generateFileUrl } from "../../utility/Util";
+import {generateFileUrl, getGenderImage} from "../../utility/Util";
 
 const SearchCard = ({ type, result }) => {
   return result ? (
@@ -12,15 +12,15 @@ const SearchCard = ({ type, result }) => {
         }
       >
         <div className={"flex flex-row"}>
-          <div className={"relative w-[60px] h-[60px] rounded-full bg-red-200"}>
+          <div className={"relative w-[60px] h-[60px] rounded-full"}>
             {result.profile && (
               <Image
                 className={"rounded-square"}
                 width={60}
                 height={60}
                 objectFit={"cover"}
-                alt={"sda"}
-                src={generateFileUrl(result.profile)}
+                alt={"Group"}
+                src={result.profile ? generateFileUrl(result.profile) : getGenderImage(result.gender).src}
               />
             )}
             {result.pic && (
@@ -29,8 +29,8 @@ const SearchCard = ({ type, result }) => {
                 width={60}
                 height={60}
                 objectFit={"cover"}
-                alt={"sda"}
-                src={generateFileUrl(result.pic)}
+                alt={"User"}
+                src={result.pic ? generateFileUrl(result.pic) : getGenderImage(result.gender).src}
               />
             )}
           </div>

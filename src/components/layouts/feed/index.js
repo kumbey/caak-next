@@ -22,6 +22,7 @@ const DefaultFeedLayout = ({
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
+  const [sortType, setSortType] = useState("DEFAULT")
 
   useEffect(() => {
     setLoaded(true);
@@ -36,7 +37,7 @@ const DefaultFeedLayout = ({
       <div className={"feedLayoutContainer"}>
         {columns === 3 && (
           <div className={`leftSideBar ${isTablet ? "hidden" : "block"}`}>
-            <FeedSortButtons items={feedType} direction={"column"} />
+            <FeedSortButtons items={feedType} direction={"column"} sortType={sortType} setSortType={setSortType} />
             <Divider color={"border-titaniumwhite"} className={"py-5"} />
             <SideBarGroups
               role={"ADMIN"}

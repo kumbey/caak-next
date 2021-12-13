@@ -17,7 +17,7 @@ import { feedType } from "../src/components/navigation/sortButtonTypes";
 
 export async function getServerSideProps({ req, res }) {
   const { API, Auth } = withSSRContext({ req });
-  let user = null;
+  let user;
 
   try {
     user = await Auth.currentAuthenticatedUser();
@@ -69,11 +69,11 @@ export async function getServerSideProps({ req, res }) {
   };
 }
 
-const Feed = ({ ssrData, ...props }) => {
+const Feed = ({ ssrData }) => {
   const FeedLayout = useFeedLayout();
   const feedRef = useRef();
   const { user, isLogged } = useUser();
-
+  const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [nextPosts] = useListPager({
     query: getPostByStatus,
@@ -225,6 +225,8 @@ const Feed = ({ ssrData, ...props }) => {
               {...(isLogged ? { columns: 3 } : { columns: 2 })}
             >
               <FeedSortButtons
+                setSortType={setSortType}
+                sortType={sortType}
                 items={feedType}
                 hide={isLogged}
                 containerClassname={"mb-[19px] justify-center"}

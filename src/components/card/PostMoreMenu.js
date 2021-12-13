@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 
 export default function PostMoreMenu({ postUser, postId, groupId }) {
   const { user, isLogged } = useUser();
-  const history = useRouter();
+  const router = useRouter();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -63,9 +63,18 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
       <div
         onClick={() =>
           !isLogged
-            ? history.push({
-                pathname: `/login`,
-              })
+            ? router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    signInUp: "signIn",
+                    isModal: true,
+                  },
+                },
+                `/signInUp/signIn`,
+                { shallow: true }
+              )
             : groupFollowed
             ? leaveGroup()
             : joinGroup()
@@ -81,15 +90,13 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
         <div
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>
-            history.push({
+            router.push({
               pathname: `/post/edit/${postId}`,
             })
           }
         >
           <span className={"icon-fi-rs-pencil mr-px-12 w-c1  text-16px"} />
-          <p className="text-14px text-caak-extraBlack">
-            Постыг засах
-          </p>
+          <p className="text-14px text-caak-extraBlack">Постыг засах</p>
         </div>
       )}
 

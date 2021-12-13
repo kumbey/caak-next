@@ -23,7 +23,6 @@ const Card = ({ post }) => {
           postId={post.id}
           title={post.title}
           totals={post.totals}
-          items={post.items.items}
         />
       </div>
     )

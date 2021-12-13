@@ -2,21 +2,19 @@ import React, { useEffect, useState } from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
-import { getFileUrl, useClickOutSide } from "../../utility/Util";
+import {getFileUrl, getGenderImage, useClickOutSide} from "../../utility/Util";
 import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
-import Dummy from "dummyjs";
 import { useRouter } from "next/router";
 import NotificationDropDown from "./NotificationDropDown";
 
 const SubMenu = ({ params }) => {
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
-  const history = useRouter();
+  const router = useRouter();
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
-
   const menuRef = useClickOutSide(() => {
     params.setIsMenuOpen(false);
   });
@@ -50,13 +48,26 @@ const SubMenu = ({ params }) => {
             roundedSquare
             skin={"transparent"}
             className={
-              "w-[26px] h-[26px] px-0 py-0 flex justify-center items-center hover:bg-transparent"
+              "w-[34px] h-[32px] px-0 py-0 flex justify-center items-center bg-caak-primary"
             }
-            icon={<span className={"icon-fi-rs-add text-22px"} />}
+            icon={
+              <span className={"icon-fi-rs-add-l text-white text-[22px]"} />
+            }
             onClick={() =>
-              history.push({
-                pathname: isLogged ? "/post/add" : "/login",
-              })
+              isLogged
+                ? router.push("/post/add")
+                : router.push(
+                    {
+                      pathname: router.pathname,
+                      query: {
+                        ...router.query,
+                        signInUp: "signIn",
+                        isModal: true,
+                      },
+                    },
+                    `/signInUp/signIn`,
+                    { shallow: true }
+                  )
             }
           />
         </div>
@@ -65,10 +76,18 @@ const SubMenu = ({ params }) => {
           onClick={() => {
             isLogged
               ? setIsNotificationMenu((oldState) => !oldState)
-              : history.push({
-                  pathname: "/login",
-                  // state: { background: location },
-                });
+              : router.push(
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      signInUp: "signIn",
+                      isModal: true,
+                    },
+                  },
+                  `/signInUp/signIn`,
+                  { shallow: true }
+                );
           }}
           className={`${
             isNotificationMenu ? "bg-caak-liquidnitrogen" : ""
@@ -124,12 +143,12 @@ const SubMenu = ({ params }) => {
             content={<NavBarMenu />}
             className={"top-8 -right-3 w-[215px]"}
           />
-          {isLogged && user? (
+          {isLogged && user ? (
             <img
               ref={menuRef}
               onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
               alt={user.nickname}
-              src={user.pic ? getFileUrl(user.pic) : Dummy.img("50x50")}
+              src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
               className={
                 "block mr-0 w-[36px] h-[36px] object-cover rounded-full"
               }
@@ -149,11 +168,11 @@ const SubMenu = ({ params }) => {
   //   <spa
   //     onClick={() =
   //       checkUser(user
-  //         ? history.push(
+  //         ? router.push(
   //             pathname: "/post/add/new"
   //             state: { background: location }
   //           }
-  //         : history.push(
+  //         : router.push(
   //             pathname: "/login"
   //             state: { background: location }
   //           }
@@ -165,7 +184,7 @@ const SubMenu = ({ params }) => {
   //     onClick={() =>
   //       checkUser(user
   //         ? setIsNotificationMenu((oldState) => !oldState
-  //         : history.push(
+  //         : router.push(
   //             pathname: "/login"
   //             state: { background: location }
   //           })
@@ -184,7 +203,7 @@ const SubMenu = ({ params }) => {
   //   {checkUser(user) ?
   //     <im
   //       onClick={() =
-  //         history.push(
+  //         router.push(
   //           pathname: `/user/${user.sysUser.id}/profile`
   //         }
   //
@@ -199,7 +218,7 @@ const SubMenu = ({ params }) => {
   //   ) :
   //     <spa
   //       onClick={() =>
-  //         history.push(
+  //         router.push(
   //           pathname: "/login"
   //         })
   //       }

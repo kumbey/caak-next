@@ -69,12 +69,12 @@ const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
       >
         {item.file.type.startsWith("video") ? (
           <Video
-            videoClassname={"object-contain rounded-[4px]"}
+            videoClassname={"object-cover rounded-[4px]"}
             hideControls
             smallIndicator
             src={
               item.file.url
-                ? getFileUrl(item.file.url)
+                ? item.file.url
                 : generateFileUrl(item.file)
             }
           />
@@ -183,7 +183,6 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
   useEffect(() => {
     setLoaded(true);
   }, []);
-
   return (
     <div>
       {errors && (
@@ -317,7 +316,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
                 videoClassname={"object-contain rounded-[4px]"}
                 src={
                   post.items[activeIndex].file.url
-                    ? getFileUrl(post.items[activeIndex].file.url)
+                    ? post.items[activeIndex].file.url
                     : generateFileUrl(post.items[activeIndex].file)
                 }
               />

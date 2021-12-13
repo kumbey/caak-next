@@ -19,7 +19,7 @@ export default function NavBarMenu({ type }) {
                       "icon-fi-rs-profile text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
                     }
                   />
-                  <p className="text-14px text-caak-extraBlack font-roboto">
+                  <p className="text-14px text-caak-extraBlack">
                     Миний профайл
                   </p>
                 </div>
@@ -35,7 +35,7 @@ export default function NavBarMenu({ type }) {
                     "icon-fi-rs-save-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
                   }
                 />
-                <p className="text-14px text-caak-extraBlack font-roboto">
+                <p className="text-14px text-caak-extraBlack">
                   Хадгалсан постууд
                 </p>
               </div>
@@ -52,7 +52,7 @@ export default function NavBarMenu({ type }) {
                     }
                   />
                 </div>
-                <p className="text-14px text-caak-extraBlack font-roboto">
+                <p className="text-14px text-caak-extraBlack">
                   Тохиргоо
                 </p>
               </div>
@@ -71,7 +71,7 @@ export default function NavBarMenu({ type }) {
               />
             </div>
 
-            <p className="text-14px text-caak-extraBlack font-roboto">
+            <p className="text-14px text-caak-extraBlack">
               Шөнийн горим
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function NavBarMenu({ type }) {
                 "icon-fi-rs-auro text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
               }
             />
-            <p className="text-14px text-caak-extraBlack font-roboto">
+            <p className="text-14px text-caak-extraBlack">
               Аура гэж юу вэ?
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function NavBarMenu({ type }) {
               "icon-fi-rs-refresh text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
             }
           />
-          <p className="text-14px text-caak-extraBlack font-roboto">
+          <p className="text-14px text-caak-extraBlack">
             Шинэ өөрчлөлтүүд
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function NavBarMenu({ type }) {
             <span
               className={"icon-fi-rs-help text-[18px] w-[20px] h-[18px] mr-2"}
             />
-            <p className="text-14px text-caak-extraBlack font-roboto">
+            <p className="text-14px text-caak-extraBlack">
               Тусламж
             </p>
           </div>
@@ -127,7 +127,7 @@ export default function NavBarMenu({ type }) {
             <span
               className={"icon-fi-rs-exit text-[18px] w-[20px] h-[18px] mr-2"}
             />
-            <p className="text-14px text-caak-extraBlack font-roboto">Гарах</p>
+            <p className="text-14px text-caak-extraBlack">Гарах</p>
           </div>
         </>
       )}

@@ -1,19 +1,18 @@
 import useScrollBlock from "../../../hooks/useScrollBlock";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import GroupInfoCard from "../../card/GroupInfoCard";
 import FooterSidebar from "../../footer/FooterSidebar";
-import ViewPostLeftReaction from "../../viewpost/ViewPostLeftReaction";
 import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import { useRouter } from "next/router";
-import Image from 'next/image'
 
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
+  const viewPostRef = useRef();
 
-  useEffect(() => {
-    blockScroll();
-    return () => allowScroll();
-  }, [allowScroll, blockScroll]);
+  // useEffect(() => {
+  //   blockScroll();
+  //   return () => allowScroll();
+  // }, [allowScroll, blockScroll]);
 
   const router = useRouter();
 
@@ -30,28 +29,22 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   }, []);
 
   return (
-    <div className={`backdrop bg-black bg-opacity-80`}>
+    <div id={"backdrop"} className={`backdrop bg-black bg-opacity-80`}>
       <div
         className={`rounded-lg relative ${
           containerClassname ? containerClassname : ""
         }`}
       >
-
-        <div className={"viewPostLayoutContainer"}>
-          <div className={"viewPostLeftSideBar z-1"}>
-            <ViewPostLeftReaction post={post} />
+        <div className={"viewPostLayoutContainer relative flex-col items-center  px-[20px] lg:items-start lg:px-0 lg:flex-row"}>
+          <div ref={viewPostRef} className={"viewPostItem"}>
+            {children}
           </div>
-          <div className={"viewPostItem"}>{children}</div>
           <div className={"rightSideBar"}>
             <GroupInfoCard
               containerClassname={"mb-[16px]"}
               groupId={post.group_id}
             />
             <GroupTrendPostsCard groupId={post.group_id} />
-            {/*<GroupTopMembersCard*/}
-            {/*  containerClassname={"mb-[16px]"}*/}
-            {/*  groupId={post.group_id}*/}
-            {/*/>*/}
             <FooterSidebar
               containerClassname={"bg-white p-[20px] rounded-square"}
             />

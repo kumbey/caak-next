@@ -13,6 +13,7 @@ const comment0001 = /* GraphQL */ `
     }
     user {
       firstname
+      gender
       id
       followed
       aura

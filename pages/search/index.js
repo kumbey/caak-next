@@ -12,8 +12,8 @@ import SearchCardGroup from "../../src/components/card/SearchCardGroup";
 import { sortSearchResultByKeyword } from "../../src/utility/Util";
 
 export async function getServerSideProps({ req, query }) {
-  const { API } = withSSRContext({ req });
-  const data = await searchApi({ API, searchQuery: query.q, limit: 4 });
+  const { API, Auth } = withSSRContext({ req });
+  const data = await searchApi({ API, searchQuery: query.q, limit: 4, Auth });
 
   return {
     props: {
@@ -72,25 +72,35 @@ const Search = ({ ssrData }) => {
           <div className={"pt-[20px] w-full"}>
             <div className={"flex flex-row flex-wrap w-full"}>
               {!loading ? (
-                sortSearchResultByKeyword(searchResult, router.query.q).map((item, index) => {
-                  if (item.type === "GROUP" && sortType === "GROUP") {
-                    return (
-                      <SearchCardGroup
-                        key={index}
-                        type={sortType}
-                        result={item}
-                      />
-                    );
-                  } else if (sortType === "DEFAULT") {
-                    return (
-                      <SearchCard type={item.type} key={index} result={item} />
-                    );
-                  } else if (sortType === "POST" && item.type === "POST") {
-                    return (
-                      <SearchCard type={item.type} key={index} result={item} />
-                    );
+                sortSearchResultByKeyword(searchResult, router.query.q).map(
+                  (item, index) => {
+                    if (item.type === "GROUP" && sortType === "GROUP") {
+                      return (
+                        <SearchCardGroup
+                          key={index}
+                          type={sortType}
+                          result={item}
+                        />
+                      );
+                    } else if (sortType === "DEFAULT") {
+                      return (
+                        <SearchCard
+                          type={item.type}
+                          key={index}
+                          result={item}
+                        />
+                      );
+                    } else if (sortType === "POST" && item.type === "POST") {
+                      return (
+                        <SearchCard
+                          type={item.type}
+                          key={index}
+                          result={item}
+                        />
+                      );
+                    }
                   }
-                })
+                )
               ) : (
                 <div className={"flex justify-center items-center self-center"}>
                   <Loader

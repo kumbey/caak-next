@@ -107,6 +107,7 @@ export const listCommentsByDateAndType = /* GraphQL */ `
                     nickname
                     pic ${file0001}
                     id
+                    gender
                 }
                 parent_id
                 sub {
@@ -153,6 +154,7 @@ export const listCommentsByDateAndTypeForItem = /* GraphQL */ `
                     nickname
                     pic ${file0001}
                     id
+                    gender
                 }
                 parent_id
                 sub {
@@ -199,6 +201,7 @@ export const listCommentByParent = /* GraphQL */ `
                     nickname
                     pic ${file0001}
                     id
+                    gender
                 }
             }
             nextToken

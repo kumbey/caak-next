@@ -12,29 +12,27 @@ const regexNumber = "^[0-9]{8}$";
 
 export const sortSearchResultByKeyword = (array, keyword) => {
   array
-      .filter((prof) => {
-        // Filter results by doing case insensitive match on keyword here
-        return prof.keyword
-            .toLowerCase()
-            .includes(keyword?.toLowerCase());
-      })
-      .sort((a, b) => {
-        // Sort results by matching keyword with keyword position in keyword
-        if (
-            a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) >
-            b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
-        ) {
-          return 1;
-        } else if (
-            a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) <
-            b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
-        ) {
-          return -1;
-        } else {
-          if (a.keyword > b.keyword) return 1;
-          else return -1;
-        }
-      });
+    .filter((prof) => {
+      // Filter results by doing case insensitive match on keyword here
+      return prof.keyword.toLowerCase().includes(keyword?.toLowerCase());
+    })
+    .sort((a, b) => {
+      // Sort results by matching keyword with keyword position in keyword
+      if (
+        a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) >
+        b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
+      ) {
+        return 1;
+      } else if (
+        a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) <
+        b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
+      ) {
+        return -1;
+      } else {
+        if (a.keyword > b.keyword) return 1;
+        else return -1;
+      }
+    });
   return array;
 };
 
@@ -78,7 +76,7 @@ export const getFileName = (fileName) => {
 };
 
 export const useClickOutSide = (handler) => {
-  let domNode = useRef();
+  const domNode = useRef();
 
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
@@ -274,11 +272,11 @@ export function generateTimeAgo(date) {
   } else if (diff.hours !== 0) {
     return diff.hours + " цаг";
   } else if (diff.minutes !== 0) {
-    return diff.minutes + " минут";
+    return diff.minutes + " мин";
   } else if (diff.seconds !== 0) {
-    return diff.seconds + " секунд";
+    return diff.seconds + " сек";
   } else {
-    return "Саяхан";
+    return "Сая";
   }
 }
 
@@ -365,7 +363,7 @@ export function _modalisOpen(params) {
 
     if (condition.value === "DYNAMIC" && query[condition.key]) {
       isOpen = true;
-    }else{
+    } else {
       if (condition.value === query[condition.key]) {
         isOpen = true;
       }

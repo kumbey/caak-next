@@ -14,6 +14,7 @@ import {
   createGroupUsers,
   deleteGroupUsers,
 } from "../../graphql-custom/GroupUsers/mutation";
+import { useRouter } from "next/router";
 
 const GroupInfoCard = ({ groupId, containerClassname }) => {
   const [group, setGroup] = useState({});
@@ -22,6 +23,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
   const [forceRender, setForceRender] = useState(0);
 
   const { isLogged, user } = useUser();
+  const router = useRouter();
 
   const followGroup = async () => {
     try {
@@ -31,8 +33,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           await API.graphql(
             graphqlOperation(deleteGroupUsers, {
               input: {
-                group_id: group.id,
-                user_id: user.id,
+                id: `${group.id}#${user.id}`,
               },
             })
           );
@@ -43,6 +44,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           await API.graphql(
             graphqlOperation(createGroupUsers, {
               input: {
+                id: `${group.id}#${user.id}`,
                 group_id: group.id,
                 user_id: user.id,
                 role: "MEMBER",
@@ -54,6 +56,19 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           setForceRender(forceRender + 1);
         }
         setLoading(false);
+      } else {
+        router.push(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              signInUp: "signIn",
+              isModal: true,
+            },
+          },
+          `/signInUp/signIn`,
+          { shallow: true }
+        );
       }
     } catch (ex) {
       setLoading(false);
@@ -188,15 +203,13 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             "flex flex-col justify-between text-caak-generalblack mb-[23px]"
           }
         >
-          <div className={"flex flex-row items-center mb-[5px] text-caak-darkBlue"}>
+          <div
+            className={"flex flex-row items-center mb-[5px] text-caak-darkBlue"}
+          >
             <div
               className={"flex justify-center items-center w-[22px] h-[22px]"}
             >
-              <span
-                className={
-                  "icon-fi-rs-birth text-[20px]"
-                }
-              />
+              <span className={"icon-fi-rs-birth text-[20px]"} />
             </div>
             <div className={"ml-[8px]"}>
               <p className={"text-[14px] tracking-[0.21px]  leading-[16px]"}>
@@ -238,9 +251,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
         </div>
       </div>
     </div>
-  ) : (
-    <div>Loading...</div>
-  );
+  ) : null;
 };
 
 export default GroupInfoCard;

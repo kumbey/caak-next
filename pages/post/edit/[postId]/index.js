@@ -22,7 +22,6 @@ export async function getServerSideProps({ req, res, query }) {
     user = null;
   }
 
-
   const getGroups = async () => {
     try {
       const grData = {
@@ -68,14 +67,18 @@ export async function getServerSideProps({ req, res, query }) {
   const post = await getPostById();
   const groups = await getGroups();
 
-  return {
-    props: {
-      ssrData: {
-        post: post,
-        groups: groups,
+  if (post.status === "PENDING") {
+    return { notFound: true };
+  } else {
+    return {
+      props: {
+        ssrData: {
+          post: post,
+          groups: groups,
+        },
       },
-    },
-  };
+    };
+  }
 }
 
 const EditPost = ({ ssrData, error }) => {

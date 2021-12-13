@@ -77,6 +77,15 @@ const ImageCarousel = ({
       {viewPostItem && (
         <div className={"flex flex-row absolute right-[20px] top-[20px]"}>
           <div
+            className={
+              "flex items-center justify-center w-[67px] h-[40px] bg-black z-2 rounded-[100px] border-[1px] border-white bg-opacity-[0.84] border-opacity-[0.24] mr-[12px]"
+            }
+          >
+            <p className={"text-[16px] font-roboto text-white"}>{`${
+              activeIndex + 1
+            }/${items.length}`}</p>
+          </div>
+          <div
             onClick={() => prevItem()}
             className={
               "cursor-pointer flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
@@ -230,23 +239,25 @@ const ImageCarousel = ({
             />
           </div>
         )}
-        <div
-          className={
-            "flex flex-row absolute right-1/2 translate-x-1/2 bottom-6 z-[10]"
-          }
-        >
-          {items.length > 1 &&
-            items.map((_, index) => {
-              return (
-                <div
-                  key={index}
-                  className={`rounded-full mr-1.5 w-[8px] h-[8px] bg-white ${
-                    activeIndex === index ? "bg-opacity-100" : "bg-opacity-40"
-                  } `}
-                />
-              );
-            })}
-        </div>
+        {card && (
+          <div
+            className={
+              "flex flex-row absolute right-1/2 translate-x-1/2 bottom-6 z-[10]"
+            }
+          >
+            {items.length > 1 &&
+              items.map((_, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`rounded-full mr-1.5 w-[8px] h-[8px] bg-white ${
+                      activeIndex === index ? "bg-opacity-100" : "bg-opacity-40"
+                    } `}
+                  />
+                );
+              })}
+          </div>
+        )}
       </div>
     </div>
   );

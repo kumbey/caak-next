@@ -4,10 +4,12 @@ import Image from "next/image";
 import { getUserById } from "/src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
 import { withSSRContext } from "aws-amplify";
-import { getFileUrl } from "/src/utility/Util";
+import { getFileUrl, getGenderImage } from "/src/utility/Util";
 import { listCategorys } from "../../../src/graphql-custom/category/queries";
-import { listGroupUsersByGroup } from "../../../src/graphql-custom/group/queries";
-import { getGroupView } from "../../../src/graphql-custom/group/queries";
+import {
+  getGroupView,
+  listGroupUsersByGroup,
+} from "../../../src/graphql-custom/group/queries";
 import { useRouter } from "next/router";
 import { getReturnData } from "../../../src/utility/Util";
 import GroupInformation from "../../../src/components/group/GroupInformation";
@@ -182,7 +184,7 @@ export default function Settings({ ssrData, ...props }) {
               src={
                 groupData?.cover
                   ? getFileUrl(groupData?.cover)
-                  : getGenderImage(groupData?.gender)
+                  : getGenderImage(groupData?.gender).src
               }
               width={52}
               height={52}

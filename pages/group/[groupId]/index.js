@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import {
   GroupType,
@@ -73,7 +73,7 @@ const Group = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [groupData, setGroupData] = useState(ssrData.groupData);
 
-  let totalMember =
+  const totalMember =
     groupData.totals.member +
     groupData.totals.admin +
     groupData.totals.moderator;

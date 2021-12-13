@@ -45,6 +45,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
 
   const [profilePictureDropZone, setProfilePictureDropZone] = useState([]);
   const [coverPictureDropZone, setCoverPictureDropZone] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const updateImage = async ({ type, array, setArray, signedUser }) => {
     try {
@@ -105,7 +106,11 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     // eslint-disable-next-line
   }, [profilePictureDropZone]);
 
-  return (
+  useEffect(() => {
+    setLoading(true);
+  }, []);
+
+  return loading ? (
     <div className={"flex flex-col"}>
       <div className={"relative w-full h-[240px]"}>
         <Image
@@ -202,7 +207,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           </div>
         </div>
         <div className={"profileLayoutLeftSideBar relative"}>
-          <div className={"flex flex-col w-full items-center absolute top-[-74px]"}>
+          <div
+            className={"flex flex-col w-full items-center absolute top-[-74px]"}
+          >
             <div
               className={
                 "w-[148px] h-[148px] relative rounded-full border-[7px] border-caak-liquidnitrogen bg-white"
@@ -503,7 +510,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
         <div className={"profileLayoutPosts ml-[40px]"}>{children}</div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default DefaultUserProfileLayout;

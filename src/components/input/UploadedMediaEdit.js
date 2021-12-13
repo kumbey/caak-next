@@ -209,7 +209,6 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
             onInput={auto_grow}
             maxLength={maxLengths.title}
             placeholder={"Гарчиг"}
-            style={{ resize: "none" }}
             value={post.title}
             onChange={postTitleHandler}
             className={
@@ -234,7 +233,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
               setPost((prev) => ({ ...prev, description: e.target.value }))
             }
             className={
-              "addPostTextarea overflow-hidden min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border-[1px] border-caak-titaniumwhite focus:ring-caak-primary"
+              "addPostTextarea overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border-[1px] border-caak-titaniumwhite focus:ring-caak-primary"
             }
             rows={2}
           />

@@ -12,10 +12,11 @@ import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
 import { useRouter } from "next/router";
-import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction"
-import Tooltip from "../../../../src/components/tooltip/Tooltip"
-import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard"
+import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
+import Tooltip from "../../../../src/components/tooltip/Tooltip";
+import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
 import Link from "next/link";
+import Head from "next/head";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -73,24 +74,27 @@ const Post = ({ ssrData }) => {
         "w-full flex flex-row max-w-[1200px] mx-auto my-[78px] rounded-b-square z-[0]"
       }
     >
-      {/*<Head>*/}
-      {/*  <meta name="description" content={post.description} />*/}
-      {/*  <meta property="og:title" content={post.title} />*/}
-      {/*  <meta property="og:type" content="article" />*/}
-      {/*  <meta*/}
-      {/*    property="og:image"*/}
-      {/*    content={getFileUrl(post.items.items[0].file)}*/}
-      {/*  />*/}
-      {/*  <title>{post.title}</title>*/}
-      {/*</Head>*/}
-      <div className={"viewPostLeftSideBar z-1"}>
-        <ViewPostLeftReaction commentRef={commentRef} post={post} />
-      </div>
+      <Head>
+        <meta name="description" content={post.description} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:image"
+          content={getFileUrl(post.items.items[0].file)}
+        />
+        <title>{post.title}</title>
+      </Head>
+      {post.status === "CONFIRMED" && (
+        <div className={"viewPostLeftSideBar z-1"}>
+          <ViewPostLeftReaction commentRef={commentRef} post={post} />
+        </div>
+      )}
+
       <div className={"bg-white h-full w-full rounded-square"}>
         <div
-          className={
-            "absolute flex flex-row justify-between w-full top-[-54px] right-0 pl-[69px]"
-          }
+          className={`absolute flex flex-row justify-between w-full top-[-54px] ${
+            post.status === "CONFIRMED" ? "pl-[69px]" : ""
+          } right-0 `}
           onClick={() => router.back()}
         >
           <div className={"flex flex-row "}>
@@ -152,7 +156,11 @@ const Post = ({ ssrData }) => {
               "text-[22px] text-caak-generalblack font-medium font-roboto tracking-[0.55px] leading-[25px]"
             }
           >
-            {post.title}
+            {`${post.title}`}
+          </p>
+          <p className={"text-caak-scriptink"}>
+            {post.status === "PENDING" ? " (Шалгагдаж буй пост)" : ""}
+            {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
           </p>
         </div>
 
@@ -175,9 +183,9 @@ const Post = ({ ssrData }) => {
         )}
 
         <div
-          className={
-            "px-[52px] pt-[26px] pb-[52px] bg-white border-b border-caak-titaniumwhite"
-          }
+          className={`px-[52px] pt-[26px] pb-[52px] bg-white ${
+            post.status === "CONFIRMED" ? "" : "rounded-square"
+          } border-b border-caak-titaniumwhite`}
         >
           <p
             className={
@@ -198,7 +206,9 @@ const Post = ({ ssrData }) => {
             );
           })}
         </div>
-        <CommentSection commentRef={commentRef} post={post} />
+        {post.status === "CONFIRMED" && (
+          <CommentSection commentRef={commentRef} post={post} />
+        )}
       </div>
     </ViewPostModal>
   ) : null;

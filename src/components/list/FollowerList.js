@@ -23,8 +23,6 @@ const FollowerList = ({
   const [loading, setLoading] = useState(false);
 
   const deleteFollowFromGroup = async () => {
-    console.log("delet from group");
-
     try {
       setLoading(true);
       if (groupData.followed) {
@@ -71,7 +69,6 @@ const FollowerList = ({
     }
   };
 
-  console.log(signedUser);
   return (
     <div className="flex rounded-lg border border-caak-titaniumwhite  w-[390px] h-[108px] mb-[18px] mr-[16px]">
       <div className="flex w-full mx-[16px] my-[16px] items-center justify-between">

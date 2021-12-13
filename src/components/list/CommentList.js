@@ -11,7 +11,6 @@ import { deleteComment } from "../../graphql-custom/comment/mutation";
 const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
   const { isLogged } = useUser();
   const [loading, setLoading] = useState(false);
-  // console.log(comment.sub.items);
   const createdAt = extractDate(comment.createdAt);
 
   const deleteComments = async (id) => {
@@ -27,8 +26,6 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
           },
         });
 
-        console.log(resp.data.deleteComment);
-
         setLoading(false);
       } catch (ex) {
         setLoading(false);
@@ -37,16 +34,13 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
   };
   let filteredComments;
   const handleDelete = async (id) => {
-    console.log(id);
     if (comment.sub.items.length === 0) {
-      console.log("NO sub");
       filteredComments = userComments.filter(
         (ucomment) => ucomment.id !== comment.id
       );
       await deleteComments(comment.id);
       setUserComments(filteredComments);
     } else {
-      console.log("HAS sub");
       comment.sub.items.map((sub, index) => {
         deleteComments(sub.id);
       });
@@ -55,8 +49,7 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
       );
 
       setUserComments(filteredComments);
-      console.log(filteredComments);
-      console.log("ddd");
+
       await deleteComments(comment.id);
     }
 

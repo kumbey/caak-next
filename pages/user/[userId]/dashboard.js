@@ -183,10 +183,6 @@ const Dashboard = ({ ssrData, ...props }) => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    console.log(userComments);
-  }, []);
-
   return isLogged && loaded ? (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">

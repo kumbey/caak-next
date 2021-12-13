@@ -1,7 +1,18 @@
 const comment0003 = /* GraphQL */ `
   {
     comment
+    id
+    parent_id
+    post_id
     createdAt
+    sub {
+      items {
+        comment
+        parent_id
+        id
+        post_id
+      }
+    }
     post {
       id
       title

@@ -11,10 +11,6 @@ import Image from "next/image";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
-import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
-import Link from "next/link";
-import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
-import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import { useRouter } from "next/router";
 
 export async function getServerSideProps({ req, query }) {
@@ -48,6 +44,7 @@ export async function getServerSideProps({ req, query }) {
 }
 
 const Post = ({ ssrData }) => {
+  const router = useRouter();
   const [post, setPost] = useState(ssrData.post);
   const commentRef = useRef();
   const router = useRouter();
@@ -91,6 +88,7 @@ const Post = ({ ssrData }) => {
           className={
             "absolute flex flex-row justify-between w-full top-[-54px] right-0 pl-[69px]"
           }
+          onClick={() => router.back()}
         >
           <div className={"flex flex-row "}>
             <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>

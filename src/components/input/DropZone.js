@@ -24,15 +24,16 @@ const DropZone = ({
     multiple: true,
   });
 
-  useEffect(() => {
+  const fileChoosed = async () => {
     if (post.items.length + dropZoneFiles.length > 50) {
       alert("maxFiles 50 files");
     } else {
       const files = [];
-      dropZoneFiles.map((file, index) => {
+      for(let index=0; index < dropZoneFiles.length; index++) {
 
+        let file = dropZoneFiles[index]
 
-        const options = { 
+        const options = {
           maxSizeMB: 1,
           useWebWorker: true
         }
@@ -56,20 +57,20 @@ const DropZone = ({
             level: "public",
             obj: file,
           },
-        };
+        }
 
-        // if(post.length <= 0 && index === 0){
-        //     postData.featured = true
-        // }
         files.push(fileData);
-        return false;
-      });
+      }
 
       if (files.length > 0) {
         const items = [...post.items, ...files];
         setPost({ ...post, items: items });
       }
     }
+  }
+
+  useEffect(() => {
+    fileChoosed()
     // eslint-disable-next-line
   }, [dropZoneFiles]);
 

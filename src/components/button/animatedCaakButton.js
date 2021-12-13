@@ -9,6 +9,7 @@ import { useUser } from "../../context/userContext";
 import { useRouter } from "next/router";
 
 const AnimatedCaakButton = ({
+  disableOnClick,
   totals,
   sub,
   reacted,
@@ -25,7 +26,7 @@ const AnimatedCaakButton = ({
   filledIcon,
 }) => {
   const [shake, setShake] = useState(false);
-  const [render, setRender] = useState(0)
+  const [render, setRender] = useState(0);
   const reactionTimer = useRef(null);
   const initReacted = useRef(null);
   const [isReacted, setIsReacted] = useState(reacted);
@@ -123,7 +124,7 @@ const AnimatedCaakButton = ({
       className={`flex ${bottomTotals ? "flex-col" : "flex-row"} items-center`}
     >
       <div
-        onClick={() => localHandler()}
+        onClick={() => !disableOnClick && localHandler()}
         className={`caak-button ${shake ? `shake` : null} ${
           iconContainerClassname ? iconContainerClassname : ""
         } ${

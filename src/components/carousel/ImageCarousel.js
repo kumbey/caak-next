@@ -14,11 +14,10 @@ const ImageCarousel = ({
   route,
   changeActiveIndex,
   viewPostItem,
+    index
 }) => {
   const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState(
-    router.query.itemIndex ? parseInt(router.query.itemIndex) : 0
-  );
+  const [activeIndex, setActiveIndex] = useState(index);
   const [touchPosition, setTouchPosition] = useState(null);
   //Swipe left, right on mobile screen
   const handleTouchStart = (e) => {

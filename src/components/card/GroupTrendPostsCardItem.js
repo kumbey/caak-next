@@ -57,12 +57,12 @@ const GroupTrendPostsCardItem = ({ item }) => {
               className={"flex justify-center items-center w-[20px] h-[20px]"}
             >
               <span
-                className={"icon-fi-rs-rock-f text-caak-uclagold text-[20px]"}
+                className={"icon-fi-rs-rock-i text-caak-scriptink text-[20px]"}
               />
             </div>
             <p
               className={
-                "text-caak-darkBlue tracking-[0.23px] leading-[18px] text-[15px] ml-[4px]"
+                "text-caak-nocturnal tracking-[0.23px] leading-[18px] text-[15px] ml-[4px]"
               }
             >
               {item.totals.reactions}
@@ -77,13 +77,13 @@ const GroupTrendPostsCardItem = ({ item }) => {
             >
               <span
                 className={
-                  "icon-fi-rs-comment text-caak-cherenkov text-[18.33px]"
+                  "icon-fi-rs-comment-o text-caak-scriptink text-[20px]"
                 }
               />
             </div>
             <p
               className={
-                "text-[14px] text-caak-darkBlue font-medium tracking-[0.21px] leading-[16px] ml-[4px]"
+                "text-[15px] text-caak-nocturnal tracking-[0.21px] leading-[16px] ml-[4px]"
               }
             >
               {item.totals.comments}

@@ -10,7 +10,7 @@ import AnimatedCaakButton from "../button/animatedCaakButton";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 
 const PostHeader = ({ addCommentRef, post, activeIndex }) => {
-  const item = post.items.items[activeIndex];
+  const [item, setItem] = useState(post.items.items[activeIndex]);
   const { isLogged } = useUser();
   const [userRole, setUserRole] = useState("");
   const [loading, setLoading] = useState(false);
@@ -52,10 +52,13 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setPathName(window.location.href);
-    }
+    setPathName(window.location.origin);
   }, []);
+
+  useEffect(() => {
+    setPathName(window.location.origin);
+    setItem(post.items.items[activeIndex])
+  }, [activeIndex]);
 
   return (
     <>
@@ -132,7 +135,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
               <div
                 className={"flex flex-row items-center justify-center ml-[7px]"}
               >
-                <FacebookShareButton url={pathName}>
+                <FacebookShareButton url={`${pathName}/post/view/${post.id}/${item.id}`}>
                   <div
                     className={
                       "flex items-center justify-center w-[22px] h-[22px] rounded-full bg-caak-facebook cursor-pointer"
@@ -145,7 +148,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
                     />
                   </div>
                 </FacebookShareButton>
-                <TwitterShareButton url={pathName}>
+                <TwitterShareButton url={`${pathName}/${post.id}/post/view/${item.id}`}>
                   <div
                     className={
                       "flex items-center ml-[7px] bg-caak-twitter rounded-full justify-center w-[22px] h-[22px] cursor-pointer"
@@ -159,7 +162,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
                 <div
                   onClick={() => {
                     if (typeof navigator !== "undefined")
-                      navigator.clipboard.writeText(`${pathName}`);
+                      navigator.clipboard.writeText(`${pathName}/post/view/${post.id}/${item.id}`);
                   }}
                   className={
                     "flex items-center ml-[7px] justify-center w-[22px] h-[22px] rounded-full bg-caak-red cursor-pointer"

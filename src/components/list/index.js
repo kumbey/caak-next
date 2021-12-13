@@ -137,8 +137,8 @@ const List = ({ video, post, imageSrc, ...props }) => {
                   }
                 />
                 <DropDown
-                  arrow={"bottom"}
-                  className="absolute left-10 bottom-0"
+                  arrow={"bottomLeft"}
+                  className="left-[-15px] bottom-8"
                   open={isMenuOpen}
                   onToggle={toggleMenu}
                   content={postShareMenu.map((data) => (

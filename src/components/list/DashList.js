@@ -74,18 +74,15 @@ const DashList = ({ imageSrc, post, ...props }) => {
           </div>
         </div>
         <div className="flex ml-[10px] ">
-          <Link href={`/post/edit/${post.id}`}>
-            <a>
-              <Button
-                round
-                className={
-                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-16px bg-white relative"
-                }
-              >
-                <p className="">Засах</p>
-              </Button>
-            </a>
-          </Link>
+          <Button
+            onClick={() => null}
+            round
+            className={
+              "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-16px bg-white relative"
+            }
+          >
+            <p className="">Засах</p>
+          </Button>
         </div>
       </div>
       <Divider color={"border-titaniumwhite"} className={"pb-5"} />

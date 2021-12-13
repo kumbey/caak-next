@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import StatsItem from "../../../src/components/stats";
 import Image from "next/image";
 
-import { withSSRContext } from "aws-amplify";
+import { API, withSSRContext } from "aws-amplify";
 import {
   getFileUrl,
   getGenderImage,
@@ -13,30 +13,30 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
-import API from "@aws-amplify/api";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
   getGroupTotal,
+  getGroupUsersByGroup,
   getGroupView,
 } from "../../../src/graphql-custom/group/queries";
-
-import { getGroupUsersByGroup } from "../../../src/graphql-custom/group/queries";
 import FollowerList from "../../../src/components/list/FollowerList";
 import Loader from "../../../src/components/loader";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
+import { useUser } from "../../../src/context/userContext";
+import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
 
-  let user = null;
+  let user;
   try {
     user = await Auth.currentAuthenticatedUser();
   } catch (ex) {
     user = null;
   }
-  let userId = user.attributes.sub;
+  const userId = user.attributes.sub;
 
   const groupView = await API.graphql({
     query: getGroupView,
@@ -112,7 +112,7 @@ export async function getServerSideProps({ req, query }) {
   };
 }
 
-const Dashboard = ({ ssrData, ...props }) => {
+const Dashboard = ({ ssrData }) => {
   const router = useRouter();
   const feedRef = useRef();
 
@@ -126,13 +126,18 @@ const Dashboard = ({ ssrData, ...props }) => {
     ssrData.userFollower.items
   );
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [pendingPosts] = useState(ssrData.pendingPosts.items);
-  const [archivedPosts] = useState(ssrData.archivedPosts.items);
+  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
+  const [archivedPosts, setArchivedPosts] = useState(
+    ssrData.archivedPosts.items
+  );
   const [groupData] = useState(ssrData.groupView);
-  let totalMember =
+  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const subscriptions = {};
+  const { isLogged } = useUser();
+  const totalMember =
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
 
-  let totalPost = groupTotals?.confirmed;
+  const totalPost = groupTotals?.confirmed;
 
   const stats = [
     {
@@ -180,11 +185,6 @@ const Dashboard = ({ ssrData, ...props }) => {
       name: "Группын гишүүд",
       icon: "icon-fi-rs-friends-o",
     },
-    // {
-    //   id: 2,
-    //   name: "Сэтгэгдэл",
-    //   icon: "icon-fi-rs-comment-o",
-    // },
     {
       id: 2,
       name: "Хүлээгдэж буй постууд",
@@ -196,7 +196,6 @@ const Dashboard = ({ ssrData, ...props }) => {
       icon: "icon-fi-rs-archive",
     },
   ];
-
   const [nextPosts] = useListPager({
     query: getPostByGroup,
     variables: {
@@ -207,7 +206,6 @@ const Dashboard = ({ ssrData, ...props }) => {
     },
     nextToken: ssrData.posts.nextToken,
   });
-
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
 
   const fetchPosts = async (data, setData) => {
@@ -227,11 +225,105 @@ const Dashboard = ({ ssrData, ...props }) => {
       console.log(ex);
     }
   };
+  const subscrib = () => {
+    let authMode = "AWS_IAM";
+    if (isLogged) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+    subscriptions.onPostByGroupConfirmed = API.graphql({
+      query: onPostByGroup,
+      variables: {
+        group_id: groupData.id,
+        status: "CONFIRMED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+
+    subscriptions.onPostByGroupPending = API.graphql({
+      query: onPostByGroup,
+      variables: {
+        group_id: groupData.id,
+        status: "PENDING",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+    subscriptions.onPostByGroupArchived = API.graphql({
+      query: onPostByGroup,
+      variables: {
+        group_id: groupData.id,
+        status: "ARCHIVED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
 
   useEffect(() => {
+    if (subscriptionPosts) {
+      if (subscriptionPosts.status === "CONFIRMED") {
+        const filteredPending = pendingPosts.filter(
+          (item) => item.id !== subscriptionPosts.id
+        );
+        const filteredArchived = archivedPosts.filter(
+          (item) => item.id !== subscriptionPosts.id
+        );
+
+        setPosts((prev) => [subscriptionPosts, ...prev]);
+        setPendingPosts(filteredPending);
+        setArchivedPosts(filteredArchived);
+      } else if (subscriptionPosts.status === "PENDING") {
+        const filtered = pendingPosts.filter(
+          (item) => item.id !== subscriptionPosts.id
+        );
+        const filteredConfirmed = posts.filter(
+          (item) => item.id !== subscriptionPosts.id
+        );
+
+        setPosts(filteredConfirmed);
+        setPendingPosts([subscriptionPosts, ...filtered]);
+      } else if (subscriptionPosts.status === "ARCHIVED") {
+        const filtered = pendingPosts.filter(
+          (item) => item.id !== subscriptionPosts.id
+        );
+        setPendingPosts(filtered);
+        setArchivedPosts((prev) => [subscriptionPosts, ...prev]);
+      }
+    }
+    // eslint-disable-next-line
+  }, [subscriptionPosts]);
+
+  useEffect(() => {
+    subscrib();
     setLoaded(true);
     setPostScroll(fetchPosts);
     return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
       setPostScroll(null);
     };
 

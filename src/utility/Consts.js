@@ -18,6 +18,7 @@ const Consts = {
   regexPassword: /^(?=.*[0-9])(?=.*[a-z]).{8,}$/,
   regexDate: /^\d{4}-\d{2}-\d{2}$/,
   regexNumber: /[^\d.]/gi,
+  regexImage: /((^|, )(image\/)(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF))+$/,
   SS_UserKey: "user",
   SS_CognitoUserKey: "uc",
   SS_UserSignUp: "signUpKey",

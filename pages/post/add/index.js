@@ -15,6 +15,8 @@ import UploadedMediaEdit from "../../../src/components/input/UploadedMediaEdit";
 import DropZoneWithCaption from "../../../src/components/input/DropZoneWithCaption";
 import useAddPostLayout from "../../../src/hooks/useAddPostLayout";
 import Button from "../../../src/components/button";
+import WithAuth from "../../../src/middleware/auth/WithAuth";
+import Post from "../view/[id]";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -59,6 +61,9 @@ const AddPost = () => {
       setSelectedGroupId(groupId);
       setPermissionDenied(false);
     }
+
+    console.log(user)
+
     const handler = (e) => {
       if (e.keyCode === 27) {
         history.back();
@@ -223,4 +228,4 @@ const AddPost = () => {
     </div>
   ) : null;
 };
-export default AddPost;
+export default WithAuth(AddPost)

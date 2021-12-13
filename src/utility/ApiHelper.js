@@ -6,8 +6,6 @@ import { useUser } from "../context/userContext";
 import { createFile } from "../graphql-custom/file/mutation";
 import { checkUser } from "./Util";
 import { getUser } from "../graphql-custom/user/queries";
-import Consts from "./Consts";
-import imageCompression from 'browser-image-compression';
 
 /**
  * @param id input of user
@@ -29,14 +27,6 @@ export const ApiFileUpload = async (file) => {
     let fileObj = fileData.obj;
     delete fileData["obj"];
     delete fileData["url"];
-
-    const options = { 
-      maxSizeMB: 1,
-      useWebWorker: true
-    }
-    if(Consts.regexImage.test(fileData.type)){
-        fileObj = await imageCompression(fileObj, options)
-    }
 
     if (!fileData.id) {
       let resp = await API.graphql(

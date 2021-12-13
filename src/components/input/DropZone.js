@@ -2,6 +2,8 @@ import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import awsExports from "../../aws-exports";
 import { getFileExt, getFileName } from "../../utility/Util";
+import imageCompression from 'browser-image-compression';
+import Consts from "../../utility/Consts";
 
 const DropZone = ({
   setPost,
@@ -28,6 +30,17 @@ const DropZone = ({
     } else {
       const files = [];
       dropZoneFiles.map((file, index) => {
+
+
+        const options = { 
+          maxSizeMB: 1,
+          useWebWorker: true
+        }
+
+        if(Consts.regexImage.test(file.type)){
+          file = await imageCompression(file, options)
+        }
+
         const fileData = {
           id: post.items.length === 0 ? index + 1 : post.items.length + index + 1,
           title: "",

@@ -83,7 +83,7 @@ const Dashboard = ({ ssrData, ...props }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [userInfo] = useState(ssrData.userTotals);
   const [followedUsers] = useState(ssrData.userFollower.items);
-  const [userComments] = useState(ssrData.userComment.items);
+  const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
   let totalReaction =
     userInfo?.comment_reactions +
@@ -181,6 +181,10 @@ const Dashboard = ({ ssrData, ...props }) => {
     };
 
     // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    console.log(userComments);
   }, []);
 
   return isLogged && loaded ? (
@@ -315,8 +319,11 @@ const Dashboard = ({ ssrData, ...props }) => {
                   return (
                     <CommentList
                       key={index}
+                      index={index}
                       imageSrc={comment?.post?.items?.items[0]?.file}
                       comment={comment}
+                      userComments={userComments}
+                      setUserComments={setUserComments}
                       className="ph:mb-4 sm:mb-4"
                     />
                   );

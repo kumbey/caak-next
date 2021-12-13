@@ -8,18 +8,17 @@ import { useUser } from "../../context/userContext";
 import { API } from "aws-amplify";
 import { deleteComment } from "../../graphql-custom/comment/mutation";
 
-const CommentList = ({ comment, imageSrc, ...props }) => {
+const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
   const { isLogged } = useUser();
   const [loading, setLoading] = useState(false);
-  console.log(comment.sub.items);
+  // console.log(comment.sub.items);
   const createdAt = extractDate(comment.createdAt);
 
   const deleteComments = async (id) => {
     if (isLogged)
       try {
         setLoading(true);
-        console.log("started call api");
-        await API.graphql({
+        let resp = await API.graphql({
           query: deleteComment,
           variables: {
             input: {
@@ -27,7 +26,8 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
             },
           },
         });
-        console.log("after  api");
+
+        console.log(resp.data.deleteComment);
 
         setLoading(false);
       } catch (ex) {
@@ -35,20 +35,35 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
         console.log(ex);
       }
   };
-
-  const handleDelete = async () => {
-    console.log("delete");
-
+  let filteredComments;
+  const handleDelete = async (id) => {
+    console.log(id);
     if (comment.sub.items.length === 0) {
-      console.log("no sub");
+      console.log("NO sub");
+      filteredComments = userComments.filter(
+        (ucomment) => ucomment.id !== comment.id
+      );
       await deleteComments(comment.id);
+      setUserComments(filteredComments);
     } else {
-      console.log("has sub");
+      console.log("HAS sub");
       comment.sub.items.map((sub, index) => {
         deleteComments(sub.id);
       });
+      filteredComments = await userComments.filter(
+        (comm) => id !== comm.parent_id
+      );
+
+      setUserComments(filteredComments);
+      console.log(filteredComments);
+      console.log("ddd");
       await deleteComments(comment.id);
     }
+
+    filteredComments = filteredComments.filter(
+      (ucomment) => ucomment.id !== comment.id
+    );
+    setUserComments(filteredComments);
   };
 
   return (
@@ -101,7 +116,7 @@ const CommentList = ({ comment, imageSrc, ...props }) => {
         </div>
         <div className="flex mr-[10px]">
           <Button
-            onClick={() => handleDelete()}
+            onClick={() => handleDelete(comment.id)}
             loading={loading}
             round
             className={

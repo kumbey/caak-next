@@ -3,7 +3,9 @@ const group0003 = /* GraphQL */ `
     nextToken
     items {
       role
+      user_id
       user {
+        id
         gender
         totals {
           followers

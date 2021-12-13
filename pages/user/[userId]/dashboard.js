@@ -23,7 +23,7 @@ import {
 import FollowerList from "../../../src/components/list/FollowerList";
 import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
-import PendingPost from "../../../src/components/PendingPost/PendingPost";
+import Loader from "../../../src/components/loader";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -86,7 +86,6 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
-        pendingPosts: getReturnData(pendingPosts),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
         userTotals: getReturnData(userTotals),
@@ -103,13 +102,10 @@ const Dashboard = ({ ssrData, ...props }) => {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [userInfo, setUserInfo] = useState(ssrData.userTotals);
-  const [followedUsers, setFollowedUsers] = useState(
-    ssrData.userFollower.items
-  );
+  const [userInfo] = useState(ssrData.userTotals);
+  const [followedUsers] = useState(ssrData.userFollower.items);
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
   let totalReaction =
     userInfo?.comment_reactions +
     userInfo?.post_reactions +
@@ -166,11 +162,6 @@ const Dashboard = ({ ssrData, ...props }) => {
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
     },
-    {
-      id: 3,
-      name: "Хүлээгдэж буй постууд",
-      icon: "icon-fi-rs-pending",
-    },
   ];
 
   const [nextPosts] = useListPager({
@@ -179,11 +170,10 @@ const Dashboard = ({ ssrData, ...props }) => {
       user_id: router.query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 5,
+      limit: 10,
     },
     nextToken: ssrData.posts.nextToken,
   });
-
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
 
   const fetchPosts = async (data, setData) => {
@@ -214,8 +204,7 @@ const Dashboard = ({ ssrData, ...props }) => {
     // eslint-disable-next-line
   }, []);
 
-
-  return (
+  return isLogged && loaded ? (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">
         <span
@@ -237,7 +226,7 @@ const Dashboard = ({ ssrData, ...props }) => {
           />
         </div>
         <div className="text-2xl font-semibold text-caak-generalblack mr-1">
-          @{user.nickname}
+          @{user?.nickname}
         </div>
         <span className="icon-fi-rs-verified" />
       </div>
@@ -332,6 +321,7 @@ const Dashboard = ({ ssrData, ...props }) => {
                   return (
                     <FollowerList
                       key={index}
+                      type={"user"}
                       imageSrc={data.cover_pic}
                       followedUser={data.user}
                     />
@@ -346,34 +336,29 @@ const Dashboard = ({ ssrData, ...props }) => {
                   return (
                     <CommentList
                       key={index}
+                      index={index}
                       imageSrc={comment?.post?.items?.items[0]?.file}
                       comment={comment}
+                      userComments={userComments}
+                      setUserComments={setUserComments}
                       className="ph:mb-4 sm:mb-4"
                     />
                   );
                 })
               : null}
-            <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 3
-                ? pendingPosts.length > 0 &&
-                  pendingPosts.map((pendingPost, index) => {
-                    return (
-                      <>
-                        <PendingPost
-                          key={index}
-                          imageSrc={pendingPost?.items?.items[0]?.file}
-                          pendingPost={pendingPost}
-                        />
-                      </>
-                    );
-                  })
-                : null}
-            </div>
+          </div>
+          <div ref={feedRef} className={"flex justify-center items-center"}>
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
           </div>
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default Dashboard;

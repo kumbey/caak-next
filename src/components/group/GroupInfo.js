@@ -103,17 +103,20 @@ const GroupInfo = ({ groupData, totalMember, ...props }) => {
               {groupData.category.name}
             </p>
           </div>
-          <div>
-            <Button
-              className={
-                "font-medium  w-full mt-5 mb-c1 bg-caak-cardinal text-16px text-white border border-caak-titaniumwhite h-[44px]"
-              }
-              iconPosition="left"
-              icon={<span className="icon-fi-rs-edit mr-1 text-lg" />}
-            >
-              Группын мэдээлэл засах
-            </Button>
-          </div>
+          {(groupData.role_on_group === "ADMIN" ||
+            groupData.role_on_group === "MODERATOR") && (
+            <div>
+              <Button
+                className={
+                  "font-medium  w-full mt-5 mb-c1 bg-caak-cardinal text-16px text-white border border-caak-titaniumwhite h-[44px]"
+                }
+                iconPosition="left"
+                icon={<span className="icon-fi-rs-edit mr-1 text-lg" />}
+              >
+                Группын мэдээлэл засах
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>

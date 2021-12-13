@@ -1,9 +1,23 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useClickOutSide } from "../../utility/Util";
+import DropDown from "../navigation/DropDown";
 import { getFileUrl, getGenderImage } from "../../utility/Util";
+import MemberMoreMenu from "./MemberMoreMenu";
 
 const GroupMemberList = ({ userList, ...props }) => {
   const [tag, setTag] = useState({ color: "", text: "" });
+  const [loading, setLoading] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   const tagColor = () => {
     if (userList?.role === "ADMIN") {
       setTag({
@@ -31,7 +45,7 @@ const GroupMemberList = ({ userList, ...props }) => {
     tagColor();
   }, []);
   return (
-    <div className="flex justify-between mb-[20px]">
+    <div className="flex justify-between items-center mb-[20px]">
       <div className="flex items-center">
         <div className="">
           <div className={"w-[48px] h-[48px] mr-[8px] relative"}>
@@ -67,7 +81,19 @@ const GroupMemberList = ({ userList, ...props }) => {
           </div>
         </div>
       </div>
-      <div className="">dots</div>
+      <div
+        ref={menuRef}
+        onClick={toggleMenu}
+        className={`flex justify-center flex-shrink-0 ml-3 w-[35px] h-[35px] transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-titaniumwhite rounded-full`}
+      >
+        <span className=" icon-fi-rs-dots rounded-full h-full p-2 cursor-pointer  hover:bg-caak-liquidnitrogen" />
+        <DropDown
+          className={"top-5"}
+          open={isMenuOpen}
+          onToggle={toggleMenu}
+          content={<MemberMoreMenu />}
+        />
+      </div>
     </div>
   );
 };

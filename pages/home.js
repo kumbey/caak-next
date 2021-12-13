@@ -5,7 +5,6 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { checkUser, getReturnData } from "../src/utility/Util";
 import { getPostByStatus } from "../src/graphql-custom/post/queries";
-import useInfiniteScroll from "../src/hooks/useFetch";
 import Loader from "../src/components/loader";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
@@ -14,6 +13,7 @@ import useFeedLayout from "../src/hooks/useFeedLayout";
 import { listGroupByUserAndRole } from "../src/graphql-custom/GroupUsers/queries";
 import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
 import { feedType } from "../src/components/navigation/sortButtonTypes";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export async function getServerSideProps({ req, res }) {
   const { API, Auth } = withSSRContext({ req });
@@ -71,7 +71,6 @@ export async function getServerSideProps({ req, res }) {
 
 const Feed = ({ ssrData }) => {
   const FeedLayout = useFeedLayout();
-  const feedRef = useRef();
   const { user, isLogged } = useUser();
   const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
@@ -84,23 +83,22 @@ const Feed = ({ ssrData }) => {
     },
     nextToken: ssrData.posts.nextToken,
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
+
   const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
 
   //FORCE RENDER STATE
   const [render, setRender] = useState(0);
 
-  const fetchPosts = async (data, setData) => {
+  const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPosts();
         if (resp) {
-          setData([...data, ...resp]);
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
         }
 
         setLoading(false);
@@ -185,18 +183,6 @@ const Feed = ({ ssrData }) => {
   }, [subscripedPost]);
 
   useEffect(() => {
-    // fetchPosts(posts, setPosts);
-    setLoaded(true);
-    setPostScroll(fetchPosts);
-
-    return () => {
-      setPostScroll(null);
-    };
-
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     subscrip();
 
     return () => {
@@ -210,7 +196,6 @@ const Feed = ({ ssrData }) => {
   }, [user]);
 
   return (
-    loaded && (
       <div id={"feed"} className={"site-container"}>
         <div className={`px-0 w-full relative`}>
           <div
@@ -232,32 +217,37 @@ const Feed = ({ ssrData }) => {
                 containerClassname={"mb-[19px] justify-center"}
                 direction={"row"}
               />
-              {posts.length > 0 &&
-                posts.map((data, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      video={data?.items?.items[0]?.file?.type?.startsWith(
-                        "video"
-                      )}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  );
-                })}
-              <div ref={feedRef} className={"flex justify-center items-center"}>
-                <Loader
+              <InfiniteScroll
+                dataLength={posts.length}
+                next={fetchPosts}
+                hasMore={true}
+                loader={<Loader
                   containerClassName={"self-center"}
                   className={`bg-caak-primary ${
                     loading ? "opacity-100" : "opacity-0"
                   }`}
-                />
-              </div>
+                />}
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                { 
+                  posts.map((data, index) => {
+                    return (
+                      <Card
+                        key={index}
+                        video={data?.items?.items[0]?.file?.type?.startsWith(
+                          "video"
+                        )}
+                        post={data}
+                        className="ph:mb-4 sm:mb-4"
+                      />
+                    );
+                  })
+                }
+              </InfiniteScroll>
             </FeedLayout>
           </div>
         </div>
       </div>
     )
-  );
 };
 export default Feed;

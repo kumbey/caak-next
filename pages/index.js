@@ -86,7 +86,6 @@ const Feed = ({ ssrData }) => {
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [sortType, setSortType] = useState("DEFAULT");
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
@@ -186,8 +185,7 @@ const Feed = ({ ssrData }) => {
   }, [subscripedPost]);
 
   useEffect(() => {
-    // fetchPosts(posts, setPosts);
-    setLoaded(true);
+
     setPostScroll(fetchPosts);
 
     return () => {
@@ -211,7 +209,6 @@ const Feed = ({ ssrData }) => {
   }, [user]);
 
   return (
-    loaded && (
       <div id={"feed"} className={"site-container"}>
         <div className={`px-0 w-full relative`}>
           <div
@@ -259,6 +256,5 @@ const Feed = ({ ssrData }) => {
         </div>
       </div>
     )
-  );
 };
 export default Feed;

@@ -114,7 +114,10 @@ export async function getServerSideProps({ req, query }) {
 
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
-  const feedRef = useRef();
+  const postRef = useRef();
+  const followerRef = useRef();
+  const pendingRef = useRef();
+  const archivedRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -206,7 +209,50 @@ const Dashboard = ({ ssrData }) => {
     },
     nextToken: ssrData.posts.nextToken,
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
+  const [nextFollowers] = useListPager({
+    query: getGroupUsersByGroup,
+    variables: {
+      group_id: router.query.groupId,
+      limit: 6,
+    },
+    // nextToken: ssrData.followedUsers.nextToken,
+  });
+  const [nextPending] = useListPager({
+    query: getPostByGroup,
+    variables: {
+      group_id: router.query.groupId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 6,
+    },
+    nextToken: ssrData.pendingPosts.nextToken,
+  });
+  const [nextArchived] = useListPager({
+    query: getPostByGroup,
+    variables: {
+      group_id: router.query.groupId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "ARCHIVED" } },
+      limit: 6,
+    },
+    nextToken: ssrData.archivedPosts.nextToken,
+  });
+  const [setPostScroll] = useInfiniteScroll(posts, setPosts, postRef);
+  const [setFollowerScroll] = useInfiniteScroll(
+    followedUsers,
+    setFollowedUsers,
+    followerRef
+  );
+  const [setPendingScroll] = useInfiniteScroll(
+    pendingPosts,
+    setPendingPosts,
+    pendingRef
+  );
+  const [setArchivedScroll] = useInfiniteScroll(
+    archivedPosts,
+    setArchivedPosts,
+    archivedRef
+  );
 
   const fetchPosts = async (data, setData) => {
     try {
@@ -214,6 +260,57 @@ const Dashboard = ({ ssrData }) => {
         setLoading(true);
 
         const resp = await nextPosts();
+        if (resp) {
+          setData([...data, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchFollowers = async (data, setData) => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextFollowers();
+        if (resp) {
+          setData([...data, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchPending = async (data, setData) => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextPending();
+        if (resp) {
+          setData([...data, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchArchived = async (data, setData) => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextArchived();
         if (resp) {
           setData([...data, ...resp]);
         }
@@ -319,12 +416,18 @@ const Dashboard = ({ ssrData }) => {
     subscrib();
     setLoaded(true);
     setPostScroll(fetchPosts);
+    setFollowerScroll(fetchFollowers);
+    setPendingScroll(fetchPending);
+    setArchivedScroll(fetchArchived);
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
         return true;
       });
       setPostScroll(null);
+      setFollowerScroll(null);
+      setPendingScroll(null);
+      setArchivedScroll(null);
     };
 
     // eslint-disable-next-line
@@ -514,7 +617,20 @@ const Dashboard = ({ ssrData }) => {
                 : null}
             </div>
           </div>
-          <div ref={feedRef} className={"flex justify-center items-center"}>
+          <div
+            ref={
+              activeIndex === 0
+                ? postRef
+                : activeIndex === 1
+                ? followerRef
+                : activeIndex === 2
+                ? pendingRef
+                : activeIndex === 3
+                ? archivedRef
+                : null
+            }
+            className={"flex justify-center items-center"}
+          >
             <Loader
               containerClassName={"self-center"}
               className={`bg-caak-primary ${

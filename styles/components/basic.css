@@ -349,11 +349,9 @@
 
   .viewPostLeftSideBar {
     position: sticky;
-    height: calc(
-      100vh - (var(--topBarSize) + (var(--viewPostPadding) * 3))
-    ) !important;
+    height: 100% !important;
     flex-grow: 1;
-    top: calc(var(--topBarSize) + var(--containerPaddingTop) + 60px);
+    top: calc(var(--topBarSize) + var(--containerPaddingTop) + 80px);
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
     max-width: 44px;

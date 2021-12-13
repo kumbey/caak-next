@@ -110,7 +110,6 @@ export const pdtPost = async (oldPost, userId) => {
       //DELETE OLD ITEMS
       for (let i = 0; i < currentPost.items.items.length; i++) {
         const currentItem = currentPost.items.items[i];
-        console.log(currentItem)
         if (!items.find((item) => item.id === currentItem.id)) {
           await API.graphql(
             graphqlOperation(deletePostItems, { input: { id: currentItem.id } })

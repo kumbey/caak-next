@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import { withSSRContext } from "aws-amplify";
 import {
+  checkUser,
   getFileUrl,
   getGenderImage,
   getReturnData,
@@ -13,7 +14,6 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
-import API from "@aws-amplify/api";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
@@ -24,6 +24,8 @@ import FollowerList from "../../../src/components/list/FollowerList";
 import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
 import Loader from "../../../src/components/loader";
+import API from "@aws-amplify/api";
+import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -42,18 +44,7 @@ export async function getServerSideProps({ req, query }) {
       filter: { status: { eq: "CONFIRMED" } },
       limit: 5,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
-  });
-
-  const pendingPosts = await API.graphql({
-    query: getPostByUser,
-    variables: {
-      user_id: query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "PENDING" } },
-      limit: 5,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   const userList = await API.graphql({
@@ -62,7 +53,7 @@ export async function getServerSideProps({ req, query }) {
       followed_user_id: query.userId,
       limit: 6,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   const userComments = await API.graphql({
@@ -71,7 +62,7 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   const userTotals = await API.graphql({
@@ -79,7 +70,7 @@ export async function getServerSideProps({ req, query }) {
     variables: {
       user_id: query.userId,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
   return {
@@ -94,7 +85,7 @@ export async function getServerSideProps({ req, query }) {
   };
 }
 
-const Dashboard = ({ ssrData, ...props }) => {
+const Dashboard = ({ ssrData }) => {
   const router = useRouter();
   const { isLogged, user } = useUser();
   const feedRef = useRef();
@@ -106,7 +97,9 @@ const Dashboard = ({ ssrData, ...props }) => {
   const [followedUsers] = useState(ssrData.userFollower.items);
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
-  let totalReaction =
+  const [subscripedPost, setSubscripedPost] = useState(0);
+  const subscriptions = {};
+  const totalReaction =
     userInfo?.comment_reactions +
     userInfo?.post_reactions +
     userInfo?.post_items_reactions;
@@ -194,10 +187,89 @@ const Dashboard = ({ ssrData, ...props }) => {
     }
   };
 
+  const subscrip = () => {
+    let authMode = "AWS_IAM";
+
+    if (checkUser(user)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+
+    subscriptions.onPostUpdateByStatus = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "CONFIRMED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "add",
+        });
+      },
+    });
+
+    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "ARCHIVED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
+      },
+    });
+
+    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "PENDING",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
+      },
+    });
+  };
+
   useEffect(() => {
+    if (subscripedPost) {
+      const postIndex = posts.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
+
+      if (subscripedPost.type === "add") {
+        if (postIndex <= -1) {
+          setPosts([subscripedPost.post, ...posts]);
+        }
+      } else {
+        if (postIndex > -1) {
+          posts.splice(postIndex, 1);
+          // setRender(render + 1);
+        }
+      }
+    }
+    // eslint-disable-next-line
+  }, [subscripedPost]);
+
+  useEffect(() => {
+    subscrip();
+
     setLoaded(true);
     setPostScroll(fetchPosts);
     return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
       setPostScroll(null);
     };
 

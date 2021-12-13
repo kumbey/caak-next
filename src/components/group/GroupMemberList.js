@@ -29,7 +29,6 @@ const GroupMemberList = ({ userList, ...props }) => {
   };
   useEffect(() => {
     tagColor();
-    console.log(tagColor());
   }, []);
   return (
     <div className="flex justify-between mb-[20px]">

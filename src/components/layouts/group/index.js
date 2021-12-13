@@ -41,7 +41,6 @@ const GroupLayout = ({
   hideSuggestedGroups,
 }) => {
   const { isLogged, user: signedUser } = useUser();
-  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -206,50 +205,52 @@ const GroupLayout = ({
                   : getGenderImage("default")
               }
             />
-            {isLogged && (
-              <Dropzone
-                noKeyboard
-                maxFiles={1}
-                onDropRejected={(e) => console.log(e[0].errors[0].message)}
-                accept={"image/jpeg, image/png, image/gif"}
-                onDropAccepted={onDropCover}
-              >
-                {({ getRootProps, getInputProps }) => (
-                  <div
-                    {...getRootProps()}
-                    className={
-                      "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[40px] bottom-[20px] rounded-square bg-caak-liquidnitrogen"
-                    }
-                  >
-                    {!uploading ? (
-                      <>
-                        <div
-                          className={
-                            "w-[24p] h-[24px] flex items-center justify-center"
-                          }
-                        >
-                          <span
+            {isLogged &&
+              (groupData.role_on_group === "ADMIN" ||
+                groupData.role_on_group === "MODERATOR") && (
+                <Dropzone
+                  noKeyboard
+                  maxFiles={1}
+                  onDropRejected={(e) => console.log(e[0].errors[0].message)}
+                  accept={"image/jpeg, image/png, image/gif"}
+                  onDropAccepted={onDropCover}
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      {...getRootProps()}
+                      className={
+                        "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[40px] bottom-[20px] rounded-square bg-caak-liquidnitrogen"
+                      }
+                    >
+                      {!uploading ? (
+                        <>
+                          <div
                             className={
-                              "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                              "w-[24p] h-[24px] flex items-center justify-center"
                             }
-                          />
-                        </div>
-                        <p
-                          className={
-                            "text-[14px] text-caak-generalblack ml-[7px]"
-                          }
-                        >
-                          Засах
-                        </p>
-                        <input {...getInputProps()} />
-                      </>
-                    ) : (
-                      <p>Uploading...</p>
-                    )}
-                  </div>
-                )}
-              </Dropzone>
-            )}
+                          >
+                            <span
+                              className={
+                                "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                              }
+                            />
+                          </div>
+                          <p
+                            className={
+                              "text-[14px] text-caak-generalblack ml-[7px]"
+                            }
+                          >
+                            Засах
+                          </p>
+                          <input {...getInputProps()} />
+                        </>
+                      ) : (
+                        <p>Uploading...</p>
+                      )}
+                    </div>
+                  )}
+                </Dropzone>
+              )}
           </div>
         </div>
         <div className="w-full flex items-center mb-[20px]">
@@ -273,35 +274,37 @@ const GroupLayout = ({
                         : getGenderImage("default")
                     }
                   />
-                  {isLogged && (
-                    <Dropzone
-                      onDropRejected={(e) =>
-                        console.log(e[0].errors[0].message)
-                      }
-                      accept={"image/jpeg, image/png, image/gif"}
-                      onDropAccepted={onDrop}
-                    >
-                      {({ getRootProps, getInputProps }) => (
-                        <div
-                          {...getRootProps()}
-                          className={
-                            "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
-                          }
-                        >
-                          {!uploading && (
-                            <>
-                              <span
-                                className={
-                                  "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
-                                }
-                              />
-                              <input {...getInputProps()} />
-                            </>
-                          )}
-                        </div>
-                      )}
-                    </Dropzone>
-                  )}
+                  {isLogged &&
+                    (groupData.role_on_group === "ADMIN" ||
+                      groupData.role_on_group === "MODERATOR") && (
+                      <Dropzone
+                        onDropRejected={(e) =>
+                          console.log(e[0].errors[0].message)
+                        }
+                        accept={"image/jpeg, image/png, image/gif"}
+                        onDropAccepted={onDrop}
+                      >
+                        {({ getRootProps, getInputProps }) => (
+                          <div
+                            {...getRootProps()}
+                            className={
+                              "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
+                            }
+                          >
+                            {!uploading && (
+                              <>
+                                <span
+                                  className={
+                                    "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                                  }
+                                />
+                                <input {...getInputProps()} />
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </Dropzone>
+                    )}
                 </div>
                 <div
                   className={

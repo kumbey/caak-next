@@ -118,7 +118,9 @@ const Dashboard = ({ ssrData, ...props }) => {
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(
+    router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
+  );
   const [groupTotals] = useState(ssrData.groupTotals);
   const [followedUsers] = useState(ssrData.userFollower.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
@@ -233,6 +235,8 @@ const Dashboard = ({ ssrData, ...props }) => {
 
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {}, [router.query]);
 
   return (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">

@@ -113,6 +113,10 @@ export default function GroupInformation({
                   </div>
                   <div className={"input"}>
                     <textarea
+                      //  overflow-y: scroll;
+                      //  height: 100px;
+                      //  resize: none;
+
                       onInput={auto_grow}
                       style={{ resize: "none" }}
                       defaultValue={groupData.about}
@@ -120,7 +124,7 @@ export default function GroupInformation({
                       type={"text"}
                       onChange={handleChange}
                       className={
-                        "overflow-hidden min-h-[110px] text-[15px] pt-[25px] pr-[55px] text-caak-generalblack font-inter font-normal w-full rounded-[6px] border-[1px] "
+                        "overflow-y-scroll resize-y min-h-[110px] text-[15px] pt-[25px] pr-[55px] text-caak-generalblack font-inter font-normal w-full rounded-[6px] border-[1px] "
                       }
                       rows={2}
                     />

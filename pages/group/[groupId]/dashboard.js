@@ -25,6 +25,7 @@ import { getGroupUsersByGroup } from "../../../src/graphql-custom/group/queries"
 import FollowerList from "../../../src/components/list/FollowerList";
 import Loader from "../../../src/components/loader";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
+import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -95,7 +96,6 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
     },
   });
-  console.log(archivedPosts);
 
   return {
     props: {
@@ -122,7 +122,9 @@ const Dashboard = ({ ssrData, ...props }) => {
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
   const [groupTotals] = useState(ssrData.groupTotals);
-  const [followedUsers] = useState(ssrData.userFollower.items);
+  const [followedUsers, setFollowedUsers] = useState(
+    ssrData.userFollower.items
+  );
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [pendingPosts] = useState(ssrData.pendingPosts.items);
   const [archivedPosts] = useState(ssrData.archivedPosts.items);
@@ -355,11 +357,12 @@ const Dashboard = ({ ssrData, ...props }) => {
               <div className=" flex flex-row flex-wrap ">
                 {followedUsers.map((data, index) => {
                   return (
-                    <FollowerList
+                    <GroupFollowerList
                       key={index}
-                      type={"group"}
                       imageSrc={data?.user?.pic}
-                      followedUser={data?.user}
+                      followedUser={data}
+                      followedUsers={followedUsers}
+                      setFollowedUsers={setFollowedUsers}
                       groupData={groupData}
                     />
                   );

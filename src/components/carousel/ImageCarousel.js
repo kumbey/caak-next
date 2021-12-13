@@ -16,14 +16,15 @@ const ImageCarousel = ({
   viewPostItem,
 }) => {
   const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(
+    router.query.itemIndex ? parseInt(router.query.itemIndex) : 0
+  );
   const [touchPosition, setTouchPosition] = useState(null);
   //Swipe left, right on mobile screen
   const handleTouchStart = (e) => {
     const touchDown = e.touches[0].clientX;
     setTouchPosition(touchDown);
   };
-
   const handleTouchMove = (e) => {
     const touchDown = touchPosition;
 
@@ -63,8 +64,6 @@ const ImageCarousel = ({
         nextItem();
       } else if (e.keyCode === 37) {
         prevItem();
-      } else if (e.keyCode === 27) {
-        router.back();
       }
     };
     !card && document.addEventListener("keydown", handler);
@@ -76,33 +75,28 @@ const ImageCarousel = ({
   return (
     <div className={"relative h-full w-full overflow-hidden"}>
       {viewPostItem && (
-          <div className={"flex flex-row absolute right-[20px] top-[20px]"}>
-            <div
-                onClick={() => prevItem()}
-                className={
-                  "cursor-pointer flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
-                }
-            >
+        <div className={"flex flex-row absolute right-[20px] top-[20px]"}>
+          <div
+            onClick={() => prevItem()}
+            className={
+              "cursor-pointer flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
+            }
+          >
             <span
-                className={
-                  "icon-fi-rs-next text-white text-16px rotate-180 pl-[2px]"
-                }
+              className={
+                "icon-fi-rs-next text-white text-16px rotate-180 pl-[2px]"
+              }
             />
-            </div>
-            <div
-                onClick={() => nextItem()}
-                className={
-                  "cursor-pointer ml-[8px] flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
-                }
-            >
-            <span
-                className={
-                  "icon-fi-rs-next text-white text-16px pl-[2px]"
-                }
-            />
-            </div>
           </div>
-
+          <div
+            onClick={() => nextItem()}
+            className={
+              "cursor-pointer ml-[8px] flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
+            }
+          >
+            <span className={"icon-fi-rs-next text-white text-16px pl-[2px]"} />
+          </div>
+        </div>
       )}
       <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
         <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>

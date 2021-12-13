@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useUser } from "../../../../src/context/userContext";
 import { useEffect, useState } from "react";
 import { getReturnData } from "../../../../src/utility/Util";
-import { graphqlOperation, withSSRContext } from "aws-amplify";
+import { withSSRContext } from "aws-amplify";
 import { listGroupsForAddPost } from "../../../../src/graphql-custom/group/queries";
 import { getPost } from "../../../../src/graphql-custom/post/queries";
 import { pdtPost } from "../../../../src/apis/post";
@@ -22,17 +22,6 @@ export async function getServerSideProps({ req, res, query }) {
     user = null;
   }
 
-  if (!user) {
-    res.statusCode = 404;
-    return {
-      props: {
-        error: {
-          code: 404,
-          message: "Permission denied",
-        },
-      },
-    };
-  }
 
   const getGroups = async () => {
     try {
@@ -41,8 +30,10 @@ export async function getServerSideProps({ req, res, query }) {
         member: [],
       };
 
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-
+      let resp = await API.graphql({
+        query: listGroupsForAddPost,
+        authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
       resp = getReturnData(resp).items;
 
       for (let i = 0; i < resp.length; i++) {
@@ -56,7 +47,6 @@ export async function getServerSideProps({ req, res, query }) {
           grData.adminModerator.push(item);
         }
       }
-
       return grData;
     } catch (ex) {
       console.log(ex);
@@ -69,7 +59,7 @@ export async function getServerSideProps({ req, res, query }) {
       variables: {
         id: query.postId,
       },
-      authMode: "AMAZON_COGNITO_USER_POOLS",
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
     resp = getReturnData(resp);
     return resp;
@@ -102,9 +92,6 @@ const EditPost = ({ ssrData, error }) => {
     ...ssrData.post,
     items: ssrData.post.items.items,
   });
-
-
-
 
   useEffect(() => {
     setSelectedGroupId(post.group_id);
@@ -153,7 +140,7 @@ const EditPost = ({ ssrData, error }) => {
       await pdtPost(post, user.id);
       setLoading(false);
 
-      router.push({ pathname: `/user/${user.id}/profile` });
+      // router.push({ pathname: `/user/${user.id}/profile` });
       // setActiveIndex(2)
     } catch (ex) {
       setLoading(false);

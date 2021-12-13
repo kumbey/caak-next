@@ -220,7 +220,7 @@ export default function NavBar() {
                     >
                       <span
                         className={
-                          "icon-fi-rs-dots text-caak-generalblack text-4px"
+                          "icon-fi-rs-dots text-caak-generalblack text-[20px]"
                         }
                       />
                       <DropDown

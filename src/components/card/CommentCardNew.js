@@ -84,7 +84,7 @@ const CommentCardNew = ({
         query: onCommentByPost,
         variables: {
           post_id: setup.id,
-          type: "PARENT"
+          type: "PARENT",
         },
         authMode: "AWS_IAM",
       };
@@ -93,7 +93,7 @@ const CommentCardNew = ({
         query: onCommentByPostItem,
         variables: {
           post_item_id: setup.id,
-          type: "PARENT"
+          type: "PARENT",
         },
         authMode: "AWS_IAM",
       };
@@ -101,7 +101,7 @@ const CommentCardNew = ({
     subscriptions.onCommentByPostItem = API.graphql(params).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        setSubscriptionComment(onData);
+        setSubscriptionComment({ ...onData, totals: { reactions: 0 } });
       },
       error: (error) => {
         console.warn(error);
@@ -137,45 +137,47 @@ const CommentCardNew = ({
   }, [setup.id]);
 
   return comments.items ? (
-    <div className={"border-t border-caak-titaniumwhite py-[25px] w-full"}>
-      {comments.items.map((comment, index) => {
-        return comment.type === "PARENT" ? (
-          <CommentItemCard
-            addCommentRef={addCommentRef}
-            reply={reply}
-            setReply={setReply}
-            setCommentInputValue={setCommentInputValue}
-            comment={comment}
-            key={index}
+    comments.items.length !== 0 ? (
+      <div className={"border-t border-caak-titaniumwhite py-[25px] w-full"}>
+        {comments.items.map((comment, index) => {
+          return comment.type === "PARENT" ? (
+            <CommentItemCard
+              addCommentRef={addCommentRef}
+              reply={reply}
+              setReply={setReply}
+              setCommentInputValue={setCommentInputValue}
+              comment={comment}
+              key={index}
+            >
+              <div className={"mt-[12px]"}>
+                <CommentSubItemCard
+                  addCommentRef={addCommentRef}
+                  reply={reply}
+                  setReply={setReply}
+                  setCommentInputValue={setCommentInputValue}
+                  parentId={comment.id}
+                  maxComment={2}
+                />
+              </div>
+            </CommentItemCard>
+          ) : null;
+        })}
+        {comments.nextToken && (
+          <div
+            onClick={() => listCommentByType({ fetchComment: true })}
+            className={
+              "text-caak-generalblack font-medium text-[13px] pl-[50px] mb-[10px] cursor-pointer"
+            }
           >
-            <div className={"mt-[12px]"}>
-              <CommentSubItemCard
-                addCommentRef={addCommentRef}
-                reply={reply}
-                setReply={setReply}
-                setCommentInputValue={setCommentInputValue}
-                parentId={comment.id}
-                maxComment={2}
-              />
-            </div>
-          </CommentItemCard>
-        ) : null;
-      })}
-      {comments.nextToken && (
-        <div
-          onClick={() => listCommentByType({ fetchComment: true })}
-          className={
-            "text-caak-generalblack font-medium text-[13px] pl-[50px] mb-[10px] cursor-pointer"
-          }
-        >
-          {isFetchingComment ? (
-            <Loader className={`bg-caak-primary self-center`} />
-          ) : (
-            "Илүү ихийг үзэх"
-          )}
-        </div>
-      )}
-    </div>
+            {isFetchingComment ? (
+              <Loader className={`bg-caak-primary self-center`} />
+            ) : (
+              "Илүү ихийг үзэх"
+            )}
+          </div>
+        )}
+      </div>
+    ) : null
   ) : (
     <div className={"w-full flex justify-center items-center"}>
       <Loader className={`bg-caak-primary`} />

@@ -4,7 +4,7 @@ import Divider from "../divider";
 import { extractDate, generateFileUrl } from "../../utility/Util";
 import Button from "../button";
 
-const GroupInfo = ({ groupData, totalMember, ...props }) => {
+const GroupInfo = ({ groupData, totalMember }) => {
   const createdAt = extractDate(groupData.createdAt);
   return (
     <div className=" flex flex-col relative bg-white mb-[16px]">

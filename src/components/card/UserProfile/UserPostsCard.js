@@ -2,7 +2,6 @@ import Image from "next/image";
 import { getFileUrl } from "../../../utility/Util";
 import { useUser } from "../../../context/userContext";
 import ItemsCounterCard from "../ItemsCounterCard";
-import "plyr-react/dist/plyr.css";
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import Link from "next/link";

@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { generateTimeAgo, getFileUrl } from "../../utility/Util";
+import {generateTimeAgo, getFileUrl, getGenderImage} from "../../utility/Util";
 import AnimatedCaakButton from "../button/animatedCaakButton";
-import { useState } from "react";
 
 const CommentItemCard = ({
   children,
@@ -11,12 +10,9 @@ const CommentItemCard = ({
   setCommentInputValue,
   addCommentRef,
 }) => {
-  const [render, setRender] = useState(0);
   return (
     <div
-      className={`flex flex-row justify-between ${
-        subComment ? "" : ""
-      } w-full`}
+      className={`flex flex-row justify-between ${subComment ? "" : ""} w-full`}
     >
       <div className={"flex flex-row w-full"}>
         {/*User Profile Picture*/}
@@ -32,7 +28,7 @@ const CommentItemCard = ({
             src={`${
               comment?.user?.pic
                 ? getFileUrl(comment.user.pic)
-                : "https://picsum.photos/50"
+                : getGenderImage(comment.user.gender).src
             }`}
             alt={"user profile"}
           />
@@ -93,21 +89,19 @@ const CommentItemCard = ({
                 </div>
               </div>
             </div>
-            <div className={"flex flex-col text-caak-aleutian self-start"}>
+            <div className={"self-start"}>
               <AnimatedCaakButton
                 reactionType={"COMMENT"}
-                commentId={comment.id}
+                itemId={comment.id}
                 totals={comment.totals}
-                sub
                 reacted={comment.reacted}
-                render={render}
-                setRender={setRender}
+                hideCaakText
+                bottomTotals
+                textClassname={"text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal"}
+                iconContainerClassname={"w-[24px] h-[24px] bg-transparent"}
+                iconColor={"text-caak-nocturnal"}
+                iconClassname={"text-[23px]"}
               />
-              <div className={"flex items-center justify-center"}>
-                <p className={"text-[13px] tracking-[0.2px] leading-[16px]"}>
-                  {comment.totals?.reactions}
-                </p>
-              </div>
             </div>
           </div>
 

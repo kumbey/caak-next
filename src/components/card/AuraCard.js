@@ -4,10 +4,12 @@ import registerImage from "../../../public/assets/images/Register.png";
 import Image from "next/image";
 import { useUser } from "../../context/userContext";
 import useHover from "../../hooks/useHover";
+import { useRouter } from "next/router";
 
 const AuraCard = () => {
   const { isLogged } = useUser();
   const [hoverRef, isHovered] = useHover();
+  const router = useRouter();
 
   return isLogged ? (
     <div className={`auraCard`}>
@@ -53,6 +55,20 @@ const AuraCard = () => {
         Шинэ мэдрэмж үүсгэцгээе!
       </div>
       <button
+        onClick={() => {
+          router.push(
+            {
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                signInUp: "signUp",
+                isModal: true,
+              },
+            },
+            `/signInUp/signUp`,
+            { shallow: true }
+          );
+        }}
         ref={hoverRef}
         className={
           "button w-[280px] h-c9 font-medium text-14px bg-black text-white  hover:bg-caak-extraBlack-hover"

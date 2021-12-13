@@ -178,7 +178,7 @@ const PostItem = ({ ssrData }) => {
         <title>{item.title}</title>
         <meta name="description" content={post.description} />
 
-        {/*<meta property="og:url" content={`/post/view/${post.id}/${router.query.itemId}`} />*/}
+        <meta property="og:url" content={`/post/view/${post.id}/${router.query.itemId}`} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={item.title} />
         <meta property="og:description" content={post.description} />

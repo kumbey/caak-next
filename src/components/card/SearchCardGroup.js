@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Button from "../button";
-import { generateFileUrl, getFileUrl } from "../../utility/Util";
+import {
+  generateFileUrl,
+  getFileUrl,
+  getGenderImage,
+} from "../../utility/Util";
 
 const SearchCardGroup = ({ result, sortType }) => {
   return sortType !== "DEFAULT" ? (
@@ -46,13 +50,16 @@ const SearchCardGroup = ({ result, sortType }) => {
           </Button>
         </div>
         <div className={"relative w-full h-full"}>
-          <Image
-            className={"rounded-t-square"}
+          <img
+            className={"rounded-t-square object-cover w-[300px] h-[58px]"}
             alt={""}
-            src={"https://picsum.photos/300"}
+            src={
+              result.cover_pic
+                ? getFileUrl(result.cover_pic)
+                : getGenderImage("default").src
+            }
             width={300}
             height={58}
-            objectFit={"cover"}
           />
         </div>
       </div>
@@ -65,7 +72,11 @@ const SearchCardGroup = ({ result, sortType }) => {
           >
             <Image
               className={"rounded-square"}
-              src={getFileUrl(result.profile)}
+              src={
+                result.profile
+                  ? getFileUrl(result.profile)
+                  : getGenderImage("default").src
+              }
               alt={""}
               width={58}
               height={58}

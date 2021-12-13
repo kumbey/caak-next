@@ -5,7 +5,7 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import { getFileUrl } from "../../utility/Util";
+import {getFileUrl, getGenderImage} from "../../utility/Util";
 import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
 import { useRouter } from "next/router";
@@ -84,10 +84,18 @@ export default function ProfileHoverCard({ userId }) {
         deleteFollowUser();
       }
     } else {
-      router.push({
-        pathname: `/login`,
-        // state: { background: location },
-      });
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "signIn",
+            isModal: true,
+          },
+        },
+        `/signInUp/signIn`,
+        { shallow: true, scroll: false }
+      );
     }
   };
   return !loading && profileUser.id ? (
@@ -107,7 +115,7 @@ export default function ProfileHoverCard({ userId }) {
               src={
                 profileUser.pic
                   ? getFileUrl(profileUser.pic)
-                  : "https://picsum.photos/50x50"
+                  : getGenderImage(profileUser.gender)
               }
             />
           </div>
@@ -120,18 +128,22 @@ export default function ProfileHoverCard({ userId }) {
               >
                 {profileUser.nickname}
               </p>
-              <div
-                className={"flex items-center justify-center w-[17px] h-[17px]"}
-              >
-                <span className="icon-fi-rs-verified text-[14px] text-caak-buttonblue" />
-              </div>
+              {profileUser.verified && (
+                <div
+                  className={
+                    "flex items-center justify-center w-[17px] h-[17px]"
+                  }
+                >
+                  <span className="icon-fi-rs-verified text-[14px] text-caak-buttonblue" />
+                </div>
+              )}
             </div>
             <p
               className={
                 "text-14px text-caak-generalblack self-start tracking-[0.21px] leading-[16px]"
               }
             >
-              {profileUser.about}
+              {profileUser.about ? profileUser.about : "Саак хэрэглэгч"}
             </p>
           </div>
         </div>

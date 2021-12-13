@@ -64,7 +64,7 @@ const GroupLayout = ({
         await API.graphql(
           graphqlOperation(deleteGroupUsers, {
             input: {
-              id: `${groupData.id}#${cognitoUser.attributes.sub}`,
+              id: `${groupData.id}#${signedUser.id}`,
             },
           })
         );
@@ -75,9 +75,9 @@ const GroupLayout = ({
         await API.graphql(
           graphqlOperation(createGroupUsers, {
             input: {
-              id: `${groupData.id}#${cognitoUser.attributes.sub}`,
+              id: `${groupData.id}#${signedUser.id}`,
               group_id: groupData.id,
-              user_id: cognitoUser.attributes.sub,
+              user_id: signedUser.id,
               role: "MEMBER",
             },
           })

@@ -4,7 +4,6 @@ import SearchedGroupItem from "./SearchedGroupItem";
 import Link from "next/link";
 import {
   generateFileUrl,
-  getReturnData,
   sortSearchResultByKeyword,
   useClickOutSide,
   useDebounce,

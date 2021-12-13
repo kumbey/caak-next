@@ -28,6 +28,7 @@ const Video = ({
   route,
   hideControls,
   smallIndicator,
+  thumbnailIcon,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -71,6 +72,7 @@ const Video = ({
       } relative w-full h-full group`}
     >
       <ReactPlayer
+        light={thumbnailIcon}
         ref={videoRef}
         playing={isPlaying}
         muted={isMuted}

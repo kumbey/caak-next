@@ -19,6 +19,7 @@ import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
   listUsersbyFollowing,
   getUserTotal,
+  listUsersbyFollowed,
 } from "../../../src/graphql-custom/user/queries";
 import FollowerList from "../../../src/components/list/FollowerList";
 import CommentList from "../../../src/components/list/CommentList";
@@ -47,10 +48,21 @@ export async function getServerSideProps({ req, query }) {
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
-  const userList = await API.graphql({
-    query: listUsersbyFollowing,
+  const pendingPosts = await API.graphql({
+    query: getPostByUser,
     variables: {
-      followed_user_id: query.userId,
+      user_id: query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 5,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+
+  const userList = await API.graphql({
+    query: listUsersbyFollowed,
+    variables: {
+      user_id: query.userId,
       limit: 6,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
@@ -94,7 +106,10 @@ const Dashboard = ({ ssrData }) => {
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [userInfo] = useState(ssrData.userTotals);
-  const [followedUsers] = useState(ssrData.userFollower.items);
+  const [followedUsers, setFollowedUsers] = useState(
+    ssrData.userFollower.items
+  );
+
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [subscripedPost, setSubscripedPost] = useState(0);
@@ -393,9 +408,10 @@ const Dashboard = ({ ssrData }) => {
                   return (
                     <FollowerList
                       key={index}
-                      type={"user"}
-                      imageSrc={data.cover_pic}
-                      followedUser={data.user}
+                      imageSrc={data?.cover_pic}
+                      followedUser={data}
+                      followedUsers={followedUsers}
+                      setFollowedUsers={setFollowedUsers}
                     />
                   );
                 })}

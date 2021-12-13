@@ -23,6 +23,7 @@ import {
 import FollowerList from "../../../src/components/list/FollowerList";
 import Loader from "../../../src/components/loader";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
+import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 
@@ -117,9 +118,13 @@ const Dashboard = ({ ssrData }) => {
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(
+    router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
+  );
   const [groupTotals] = useState(ssrData.groupTotals);
-  const [followedUsers] = useState(ssrData.userFollower.items);
+  const [followedUsers, setFollowedUsers] = useState(
+    ssrData.userFollower.items
+  );
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
   const [archivedPosts, setArchivedPosts] = useState(
@@ -325,6 +330,8 @@ const Dashboard = ({ ssrData }) => {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {}, [router.query]);
+
   return (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">
@@ -442,11 +449,12 @@ const Dashboard = ({ ssrData }) => {
               <div className=" flex flex-row flex-wrap ">
                 {followedUsers.map((data, index) => {
                   return (
-                    <FollowerList
+                    <GroupFollowerList
                       key={index}
-                      type={"group"}
                       imageSrc={data?.user?.pic}
-                      followedUser={data?.user}
+                      followedUser={data}
+                      followedUsers={followedUsers}
+                      setFollowedUsers={setFollowedUsers}
                       groupData={groupData}
                     />
                   );

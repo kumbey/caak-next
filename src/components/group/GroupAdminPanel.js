@@ -60,45 +60,24 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
                 onClick={() => {
                   router.push(
                     {
-                      pathname: `${router.asPath}/${menu.path}`,
-                      //   query: {
-                      //     keyword: 2,
-                      //   },
-                    }
-                    // `${router.asPath}/${menu.path}`
+                      pathname: `${router.pathname}/${menu.path}`,
+                      query: {
+                        activeIndex: menu.id === 0 ? 2 : 0,
+                      },
+                    },
+                    `${router.asPath}/${menu.path}`
                   );
                 }}
-                className="flex text-caak-generalblack text-14px font-normal font-inter items-center cursor-pointer mb-[10px]"
+                className="flex text-caak-generalblack hover:text-caak-primary text-14px font-normal font-inter items-center cursor-pointer mb-[10px]"
                 key={index}
               >
-                <span
-                  className={` ${menu.icon} ${
-                    activeIndex === index
-                      ? "text-caak-primary"
-                      : "text-caak-generalblack"
-                  } text-xl mr-2`}
-                />
-                <p
-                  className={`ml-3 text-14px font-inter font-medium text-caak-generalblack ${
-                    activeIndex === index
-                      ? "text-caak-primary"
-                      : "text-caak-generalblack"
-                  }`}
-                >
+                <span className={` ${menu.icon}  text-xl mr-2`} />
+                <p className={`ml-3 text-14px font-inter  font-medium  `}>
                   {menu.name}
                 </p>
               </div>
             );
           })}
-          {activeIndex === 1
-            ? router.push({ pathname: `/group/${groupData.id}/dashboard` })
-            : null}
-          {activeIndex === 2
-            ? router.push(
-                { pathname: `/group/${groupData.id}/settings` },
-                { shallow: true, scroll: false }
-              )
-            : null}
         </div>
       </div>
     </div>

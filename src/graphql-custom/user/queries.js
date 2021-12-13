@@ -2,6 +2,7 @@ import user0001 from "./fields/user0001";
 import user0006 from "./fields/user0006";
 import user0004 from "./fields/user0004";
 import user0005 from "./fields/user0005";
+import user0007 from "./fields/user0007";
 
 export const getUser = /* GraphQL */ `
     query GetUser($id: ID!) {
@@ -52,6 +53,29 @@ export const listUsersbyFollowing = /* GraphQL */ `
             )
         {
             items ${user0005}
+            nextToken
+        }
+    }
+`;
+
+export const listUsersbyFollowed = /* GraphQL */ `
+    query ListUsersbyFollowed(
+            $user_id: ID,
+            $sortDirection: ModelSortDirection,
+            $filter: ModelFollowedUsersFilterInput,
+            $limit: Int,
+            $nextToken: String
+        ) {
+            listUsersbyFollowed
+            (
+                user_id: $user_id,
+		        sortDirection: $sortDirection,
+		        filter: $filter,
+		        limit: $limit,
+		        nextToken: $nextToken
+            )
+        {
+            items ${user0007}
             nextToken
         }
     }

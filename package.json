@@ -16,6 +16,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "aws-amplify": "^4.3.5",
+    "browser-image-compression": "^1.0.17",
     "crypto-js": "^4.1.1",
     "dummyjs": "^1.1.7",
     "luxon": "^2.1.1",

@@ -104,16 +104,14 @@ export const pdtPost = async (oldPost, userId) => {
           await API.graphql(
             graphqlOperation(updatePostItems, { input: postItem })
           );
-          console.log("asd")
         }
       }
 
       //DELETE OLD ITEMS
-      for (let i = 0; i < currentPost.items.length; i++) {
-      console.log(currentPost)
-        const currentItem = currentPost.item[i];
+      for (let i = 0; i < currentPost.items.items.length; i++) {
+        const currentItem = currentPost.items.items[i];
+        console.log(currentItem)
         if (!items.find((item) => item.id === currentItem.id)) {
-          console.log("asd");
           await API.graphql(
             graphqlOperation(deletePostItems, { input: { id: currentItem.id } })
           );

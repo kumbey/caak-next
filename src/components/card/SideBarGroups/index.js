@@ -6,7 +6,14 @@ import { useUser } from "../../../context/userContext";
 import { API, graphqlOperation } from "aws-amplify";
 import { listGroupByUserAndRole } from "../../../graphql-custom/GroupUsers/queries";
 
-const SideBarGroups = ({ title, addGroup, maxColumns, role, initialData, userId }) => {
+const SideBarGroups = ({
+  title,
+  addGroup,
+  maxColumns,
+  role,
+  initialData,
+  userId,
+}) => {
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const { isLogged, user } = useUser();
   const listGroups = async () => {
@@ -64,7 +71,7 @@ const SideBarGroups = ({ title, addGroup, maxColumns, role, initialData, userId 
               notification={15}
               name={group.group.name}
               image={getFileUrl(group.group.profile)}
-              groupId={group.id}
+              groupId={group.group_id}
             />
           );
         } else {

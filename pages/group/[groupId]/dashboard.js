@@ -121,6 +121,7 @@ const Dashboard = ({ ssrData }) => {
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
@@ -182,21 +183,25 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
+      length: posts.length,
     },
     {
       id: 1,
       name: "Группын гишүүд",
       icon: "icon-fi-rs-friends-o",
+      length: followedUsers.length,
     },
     {
       id: 2,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
+      length: pendingPosts.length,
     },
     {
       id: 3,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-archive",
+      length: archivedPosts.length,
     },
   ];
   const [nextPosts] = useListPager({
@@ -433,8 +438,6 @@ const Dashboard = ({ ssrData }) => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {}, [router.query]);
-
   return (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">
@@ -517,37 +520,66 @@ const Dashboard = ({ ssrData }) => {
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <div className="flex justify-between">
-            <div className="font-inter font-semibold text-20px text-caak-generalblack">
-              {dashMenu[activeIndex].name}
-            </div>
-            <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-              <div className="flex items-center  mx-[12px] my-[10px]">
-                <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                  Сүүлд нэмэгдсэн
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <div className="font-inter font-normal text-16px text-caak-generalblack mr-[10px]">
+                {dashMenu[activeIndex].name}
+              </div>
+              <div className="text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <p className="text-caak-bleudefrance text-opacity-100 mx-2 ">
+                  {dashMenu[activeIndex].length}
                 </p>
-                <span className="icon-fi-rs-triangle text-14px" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                Шүүлтүүр
+              </p>
+              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                <div className="flex items-center  mx-[12px] my-[10px]">
+                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                    Сүүлд нэмэгдсэн
+                  </p>
+                  <span className="icon-fi-rs-triangle text-14px" />
+                </div>
               </div>
             </div>
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[14px]"
             }
           >
-            {activeIndex === 0
-              ? posts.length > 0 &&
-                posts.map((post, index) => {
-                  return (
-                    <DashList
-                      key={index}
-                      imageSrc={post?.items?.items[0]?.file}
-                      post={post}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  );
-                })
-              : null}
+            {activeIndex === 0 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[182px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[158px]">
+                    Хандалт
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                {posts.length > 0 &&
+                  posts.map((post, index) => {
+                    return (
+                      <DashList
+                        key={index}
+                        imageSrc={post?.items?.items[0]?.file}
+                        post={post}
+                        className="ph:mb-4 sm:mb-4"
+                      />
+                    );
+                  })}
+              </div>
+            ) : null}
+
             {activeIndex === 1 ? (
               <div className=" flex flex-row flex-wrap ">
                 {followedUsers.map((data, index) => {
@@ -565,22 +597,23 @@ const Dashboard = ({ ssrData }) => {
               </div>
             ) : null}
 
-            {/* {activeIndex === 2
-              ? userComments.length > 0 &&
-                userComments.map((comment, index) => {
-                  return (
-                    <CommentList
-                      key={index}
-                      imageSrc={comment?.post?.items?.items[0]?.file}
-                      comment={comment}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  );
-                })
-              : null} */}
-            <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 2
-                ? pendingPosts.length > 0 &&
+            {activeIndex === 2 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                {pendingPosts.length > 0 &&
                   pendingPosts.map((pendingPost, index) => {
                     return (
                       <>
@@ -595,49 +628,64 @@ const Dashboard = ({ ssrData }) => {
                         />
                       </>
                     );
-                  })
-                : null}
-            </div>
-            <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 3
-                ? archivedPosts.length > 0 &&
+                  })}
+              </div>
+            ) : null}
+
+            {activeIndex === 3 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                {archivedPosts.length > 0 &&
                   archivedPosts.map((archivedPost, index) => {
                     return (
                       <GroupPostItem
                         key={index}
-                        // imageSrc={archivedPost?.items?.items[0]?.file}
-                        // video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
-                        //   "video"
-                        // )}
+                        imageSrc={archivedPost?.items?.items[0]?.file}
+                        video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
+                          "video"
+                        )}
                         post={archivedPost}
                         className="ph:mb-4 sm:mb-4"
                       />
                     );
-                  })
-                : null}
-            </div>
+                  })}
+              </div>
+            ) : null}
           </div>
-          <div
-            ref={
-              activeIndex === 0
-                ? postRef
-                : activeIndex === 1
-                ? followerRef
-                : activeIndex === 2
-                ? pendingRef
-                : activeIndex === 3
-                ? archivedRef
-                : null
-            }
-            className={"flex justify-center items-center"}
-          >
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          </div>
+        </div>
+        <div
+          ref={
+            activeIndex === 0
+              ? postRef
+              : activeIndex === 1
+              ? followerRef
+              : activeIndex === 2
+              ? pendingRef
+              : activeIndex === 3
+              ? archivedRef
+              : null
+          }
+          className={"flex justify-center items-center"}
+        >
+          <Loader
+            containerClassName={"self-center"}
+            className={`bg-caak-primary ${
+              loading ? "opacity-100" : "opacity-0"
+            }`}
+          />
         </div>
       </div>
     </div>

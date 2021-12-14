@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import StatsItem from "../../../src/components/stats";
 import Image from "next/image";
-
 import { API, withSSRContext } from "aws-amplify";
 import {
   getFileUrl,
@@ -36,6 +35,7 @@ export async function getServerSideProps({ req, query }) {
   } catch (ex) {
     user = null;
   }
+  if (!user) return { notFound: true };
   const userId = user?.attributes?.sub;
 
   const groupView = await API.graphql({

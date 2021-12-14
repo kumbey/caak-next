@@ -36,7 +36,7 @@ export async function getServerSideProps({ req, query }) {
   } catch (ex) {
     user = null;
   }
-
+  if (!user) return { notFound: true };
   const resp = await API.graphql({
     query: getPostByUser,
     variables: {

@@ -101,7 +101,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               >
                 <span
                   className={
-                    "icon-fi-rs-comment-o text-caak-scriptink text-[16.5px]"
+                    "icon-fi-rs-comment text-caak-buttonblue text-[16.5px]"
                   }
                 />
               </div>

@@ -5,6 +5,8 @@ import {
   getGenderImage,
 } from "../../utility/Util";
 import AnimatedCaakButton from "../button/animatedCaakButton";
+import ProfileHoverCard from "./ProfileHoverCard";
+import Tooltip from "../tooltip/Tooltip";
 
 const CommentItemCard = ({
   children,
@@ -28,6 +30,7 @@ const CommentItemCard = ({
         >
           <Image
             className={"rounded-full"}
+            objectFit={"cover"}
             width={subComment ? 26 : 38}
             height={subComment ? 26 : 38}
             src={`${
@@ -38,25 +41,30 @@ const CommentItemCard = ({
             alt={"user profile"}
           />
         </div>
-        <div className={`flex flex-col ml-[12px] w-full rounded-square ${
+        <div
+          className={`flex flex-col ml-[12px] w-full rounded-square ${
             jumpToCommentId === comment.id ? "commentFade" : ""
-        }`}>
+          }`}
+        >
           <div className={"mb-[4px]"}>
-            <p
-              className={
-                "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
-              }
+            <Tooltip
+              className={"-left-6"}
+              content={<ProfileHoverCard userId={comment.user.id} />}
             >
-              {comment?.user?.nickname}
-            </p>
+              <p
+                className={
+                  "cursor-pointer text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
+                }
+              >
+                {comment?.user?.nickname}
+              </p>
+            </Tooltip>
           </div>
 
           <div className={"flex flex-row items-center justify-between"}>
             <div className={"flex flex-col justify-center"}>
               <p
-                className={
-                  `text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] break-all`
-                }
+                className={`text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] break-all`}
               >
                 {comment.comment}
               </p>

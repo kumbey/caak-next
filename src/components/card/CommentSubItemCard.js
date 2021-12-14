@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 import { onCommentByParent } from "../../graphql-custom/comment/subscriptions";
 import Loader from "../loader";
+import ProfileHoverCard from "./ProfileHoverCard";
+import Tooltip from "../tooltip/Tooltip";
 
 const CommentSubItemCard = ({
   setReply,
@@ -78,7 +80,6 @@ const CommentSubItemCard = ({
     };
   }, []);
 
-  const [render, setRender] = useState(0);
   const listSubCommentByParentId = async () => {
     setIsFetchingComment(true);
     try {
@@ -123,6 +124,7 @@ const CommentSubItemCard = ({
               >
                 <Image
                   className={"rounded-full"}
+                  objectFit={"cover"}
                   width={26}
                   height={26}
                   src={`${
@@ -139,13 +141,18 @@ const CommentSubItemCard = ({
                 }`}
               >
                 <div className={"mb-[4px]"}>
-                  <p
-                    className={
-                      "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
-                    }
+                  <Tooltip
+                    className={"-left-6"}
+                    content={<ProfileHoverCard userId={subComment.user.id} />}
                   >
-                    {subComment?.user?.nickname}
-                  </p>
+                    <p
+                      className={
+                        "cursor-pointer text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
+                      }
+                    >
+                      {subComment?.user?.nickname}
+                    </p>
+                  </Tooltip>
                 </div>
 
                 <div className={"flex flex-row items-center justify-between"}>

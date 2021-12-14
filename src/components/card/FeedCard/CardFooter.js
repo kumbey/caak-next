@@ -130,7 +130,7 @@ const CardFooter = ({ totals, postId, reacted }) => {
             >
               <span
                 className={
-                  "icon-fi-rs-comment-o text-[22px] mr-1.5 transition duration-150 text-caak-scriptink group-hover:text-caak-carbonfootprint"
+                  "icon-fi-rs-comment-o text-[21px] mr-1.5 transition duration-150 text-caak-scriptink group-hover:text-caak-carbonfootprint"
                 }
               />
               <span className={"text-[15px] text-caak-nocturnal"}>

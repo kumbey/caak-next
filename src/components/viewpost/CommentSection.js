@@ -2,7 +2,7 @@ import { useState } from "react";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
 import CommentCardNew from "../card/CommentCardNew";
 
-const CommentSection = ({ post, commentRef }) => {
+const CommentSection = ({ post, commentRef, jumpToCommentId }) => {
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
 
@@ -25,6 +25,7 @@ const CommentSection = ({ post, commentRef }) => {
       />
 
       <CommentCardNew
+        jumpToCommentId={jumpToCommentId}
         commentInputValue={commentInputValue}
         setCommentInputValue={setCommentInputValue}
         reply={reply}

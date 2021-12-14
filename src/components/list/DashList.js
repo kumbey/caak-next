@@ -1,12 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getFileUrl, generateTimeAgo } from "../../utility/Util";
-import Divider from "../divider";
+import { generateTimeAgo, getFileUrl } from "../../utility/Util";
 import Button from "../../components/button";
 
-const DashList = ({ imageSrc, post, ...props }) => {
+const DashList = ({ imageSrc, post }) => {
   return (
-    <div className=" ">
+    <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <div className="relative flex items-center ">
         <div className="flex w-[400px] items-center">
           <Link
@@ -15,14 +14,14 @@ const DashList = ({ imageSrc, post, ...props }) => {
             }}
           >
             <a>
-              <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
+              <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
                 <Image
                   className=" bg-white rounded-md"
                   src={getFileUrl(imageSrc)}
-                  width={96}
-                  height={96}
+                  width={64}
+                  height={64}
                   layout="fixed"
-                  //   objectFit={"cover"}
+                  objectFit={"cover"}
                   alt="#"
                 />
               </div>
@@ -88,7 +87,6 @@ const DashList = ({ imageSrc, post, ...props }) => {
           </Link>
         </div>
       </div>
-      <Divider color={"border-titaniumwhite"} className={"pb-5"} />
     </div>
   );
 };

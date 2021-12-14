@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Notification from "./Notification";
 import { useUser } from "../../context/userContext";
-import {  getReturnData } from "../../utility/Util";
+import { getReturnData } from "../../utility/Util";
 import { useListPager } from "../../utility/ApiHelper";
 import {
   getNotification,
@@ -19,7 +19,8 @@ import { getComment } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
 import useInfiniteScroll from "../../hooks/useFetch";
 import { useRouter } from "next/router";
-import {isLogged} from "../../utility/Authenty";
+import { isLogged } from "../../utility/Authenty";
+import { getPost } from "../../graphql-custom/post/queries";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [notifications, setNotifications] = useState([]);
@@ -101,7 +102,6 @@ const NotificationDropDown = ({ isOpen }) => {
   const handleNotificationClick = async (index) => {
     try {
       const item = notifications[index];
-
       if (item.seen === "FALSE") {
         await API.graphql(
           graphqlOperation(updateNotification, {
@@ -119,17 +119,14 @@ const NotificationDropDown = ({ isOpen }) => {
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          // state: { background: location },
         });
       } else if (item.action === "POST_PENDING") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          // state: { background: location },
         });
       } else if (item.action === "POST_ARCHIVED") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          // state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
         let resp = await API.graphql(
@@ -138,9 +135,8 @@ const NotificationDropDown = ({ isOpen }) => {
         resp = getReturnData(resp);
         history.push({
           pathname: `/post/view/${resp.post_id}`,
-          // state: { background: location },
         });
-      } else if (item.action === "COMMENT_WRITED") {
+      } else if (item.action === "POST_ITEM_COMMENT_WRITED") {
         let resp = await API.graphql(
           graphqlOperation(getComment, { id: item.item_id })
         );
@@ -150,9 +146,24 @@ const NotificationDropDown = ({ isOpen }) => {
         );
         resp = getReturnData(resp);
         history.push({
-          pathname: `/post/view/${resp.post_id}`,
-          // state: { background: location },
+          pathname: `/post/view/${resp.post_id}/${resp.id}`,
         });
+      } else if (item.action === "POST_COMMENT_WRITED") {
+        let resp = await API.graphql(
+          graphqlOperation(getComment, { id: item.item_id })
+        );
+        resp = getReturnData(resp);
+        resp = await API.graphql(
+          graphqlOperation(getPost, { id: resp.post_id })
+        );
+        resp = getReturnData(resp);
+        history.push(
+          {
+            pathname: `/post/view/${resp.id}`,
+            query: { jumpToComment: item.item_id },
+          },
+          `/post/view/${resp.id}`
+        );
       } else if (item.action === "USER_FOLLOWED") {
         history.push({
           pathname: `/user/${item.item_id}/profile`,
@@ -214,7 +225,6 @@ const NotificationDropDown = ({ isOpen }) => {
     }
     // eslint-disable-next-line
   }, [subscripNotifcation]);
-
 
   return (
     <div

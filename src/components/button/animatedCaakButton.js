@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 const AnimatedCaakButton = ({
   disableOnClick,
   totals,
-  sub,
   reacted,
   reactionType,
   itemId,
@@ -24,6 +23,7 @@ const AnimatedCaakButton = ({
   activeIconColor,
   activeBackgroundColor,
   filledIcon,
+  setReacted,
 }) => {
   const [shake, setShake] = useState(false);
   const [render, setRender] = useState(0);
@@ -48,16 +48,19 @@ const AnimatedCaakButton = ({
   const localHandler = () => {
     if (isLogged) {
       setIsReacted(!isReacted);
+      setReacted(!isReacted);
       if (reactionTimer.current) {
         clearTimeout(reactionTimer.current);
       }
 
       if (!isReacted) {
         totals.reactions += 1;
+        // reacted = true;
         animate();
         setRender(render + 1);
       } else {
         if (totals.reactions > 0) totals.reactions -= 1;
+        // reacted = false;
         setRender(render + 1);
       }
       if (initReacted.current !== !isReacted) {

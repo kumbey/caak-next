@@ -2,7 +2,6 @@ import CardImageContainer from "../card/FeedCard/CardImageContainer";
 import { useEffect, useState } from "react";
 import { getFileUrl } from "../../utility/Util";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import Video from "../video";
 import Link from "next/link";
 
@@ -14,10 +13,9 @@ const ImageCarousel = ({
   route,
   changeActiveIndex,
   viewPostItem,
-    index
+  index,
 }) => {
-  const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState(index);
+  const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
   const [touchPosition, setTouchPosition] = useState(null);
   //Swipe left, right on mobile screen
   const handleTouchStart = (e) => {
@@ -225,7 +223,6 @@ const ImageCarousel = ({
             />
           </div>
         )}
-
         {!viewPostItem && activeIndex !== items.length - 1 && (
           <div
             onClick={() => nextItem()}
@@ -240,21 +237,25 @@ const ImageCarousel = ({
         )}
         {card && (
           <div
-            className={
-              "flex flex-row absolute right-1/2 translate-x-1/2 bottom-6 z-[10]"
-            }
+            className={`absolute right-1/2 translate-x-1/2 bottom-6 z-[10] w-[154px]`}
           >
-            {items.length > 1 &&
-              items.map((_, index) => {
-                return (
-                  <div
-                    key={index}
-                    className={`rounded-full mr-1.5 w-[8px] h-[8px] bg-white ${
-                      activeIndex === index ? "bg-opacity-100" : "bg-opacity-40"
-                    } `}
-                  />
-                );
-              })}
+            <div
+              className={`flex flex-row overflow-hidden w-full ${
+                activeIndex > 10 ? `transform translate-x-[-${activeIndex + 14}px]` : ""
+              }`}
+            >
+              {items.length > 1 &&
+                items.map((_, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`flex-shrink-0 rounded-full mr-[6px] w-[8px] h-[8px] bg-opacity-100 bg-white ${
+                        activeIndex === index ? `` : "bg-opacity-40"
+                      }`}
+                    />
+                  );
+                })}
+            </div>
           </div>
         )}
       </div>

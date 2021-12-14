@@ -13,6 +13,8 @@ import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
 import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
 import { useUser } from "../../../src/context/userContext";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -33,6 +35,7 @@ export async function getServerSideProps({ req, query }) {
         user_id: userId,
         sortDirection: "DESC",
         filter: { status: { eq: "CONFIRMED" } },
+        limit: 6
       },
     });
     return getReturnData(resp);
@@ -61,7 +64,7 @@ export async function getServerSideProps({ req, query }) {
 
 const Profile = ({ ssrData }) => {
   const [fetchedUser, setFetchedUser] = useState(ssrData.user);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(ssrData.posts);
   const [sortType, setSortType] = useState("POST");
   const [subscripedPost, setSubscripedPost] = useState(0);
@@ -70,23 +73,30 @@ const Profile = ({ ssrData }) => {
   const profileRef = useRef();
   const [render, setRender] = useState(0);
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, profileRef);
+  const router = useRouter();
+  const { userId } = router.query;
   const [nextPosts] = useListPager({
     query: getPostByUser,
     variables: {
+      user_id: userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 3,
     },
     nextToken: ssrData.posts.nextToken,
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
-  const fetchPosts = async (data, setData) => {
+  const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPosts();
         if (resp) {
-          setData([...data, ...resp]);
+          setPosts((nextPosts) => ({
+            ...nextPosts,
+            items: [...nextPosts.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -169,6 +179,10 @@ const Profile = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [subscripedPost]);
 
+  useEffect(()=> {
+    fetchPosts()
+  },[])
+
   useEffect(() => {
     setPosts(ssrData.posts);
   }, [ssrData.posts]);
@@ -206,24 +220,34 @@ const Profile = ({ ssrData }) => {
           sortType={sortType}
           direction={"row"}
         />
-        <div className={"userPostsContainer"}>
-          {posts.items.map((items, index) => {
-            if (
-              items.items.items[0].file.type.startsWith("video") &&
-              sortType === "VIDEO"
-            ) {
-              return <UserPostsCard key={index} post={items} />;
-            } else if (sortType === "POST") {
-              return <UserPostsCard key={index} post={items} />;
-            }
-          })}
-        </div>
-      </div>
-      <div ref={profileRef} className={"flex justify-center items-center"}>
-        <Loader
-          containerClassName={"self-center"}
-          className={`bg-caak-primary ${loading ? "opacity-100" : "opacity-0"}`}
-        />
+
+        <InfiniteScroll
+          dataLength={posts.items.length}
+          next={fetchPosts}
+          hasMore={true}
+          loader={
+            <Loader
+              containerClassName={"self-center w-full"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          }
+          endMessage={<h4>Nothing more to show</h4>}
+        >
+          <div className={"userPostsContainer"}>
+            {posts.items.map((items, index) => {
+              if (
+                items.items.items[0].file.type.startsWith("video") &&
+                sortType === "VIDEO"
+              ) {
+                return <UserPostsCard key={index} post={items} />;
+              } else if (sortType === "POST") {
+                return <UserPostsCard key={index} post={items} />;
+              }
+            })}
+          </div>
+        </InfiniteScroll>
       </div>
     </ProfileLayout>
   );

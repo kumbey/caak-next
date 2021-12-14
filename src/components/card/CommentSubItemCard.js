@@ -1,5 +1,10 @@
 import Image from "next/image";
-import {generateTimeAgo, getFileUrl, getGenderImage, getReturnData} from "../../utility/Util";
+import {
+  generateTimeAgo,
+  getFileUrl,
+  getGenderImage,
+  getReturnData,
+} from "../../utility/Util";
 import { API } from "aws-amplify";
 import { listCommentByParent } from "../../graphql-custom/comment/queries";
 import { useUser } from "../../context/userContext";
@@ -7,6 +12,8 @@ import { useEffect, useState } from "react";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 import { onCommentByParent } from "../../graphql-custom/comment/subscriptions";
 import Loader from "../loader";
+import ProfileHoverCard from "./ProfileHoverCard";
+import Tooltip from "../tooltip/Tooltip";
 
 const CommentSubItemCard = ({
   setReply,
@@ -14,6 +21,7 @@ const CommentSubItemCard = ({
   parentId,
   maxComment,
   addCommentRef,
+  jumpToCommentId,
 }) => {
   const { isLogged } = useUser();
   const subscriptions = {};
@@ -72,7 +80,6 @@ const CommentSubItemCard = ({
     };
   }, []);
 
-  const [render, setRender] = useState(0);
   const listSubCommentByParentId = async () => {
     setIsFetchingComment(true);
     try {
@@ -117,6 +124,7 @@ const CommentSubItemCard = ({
               >
                 <Image
                   className={"rounded-full"}
+                  objectFit={"cover"}
                   width={26}
                   height={26}
                   src={`${
@@ -127,15 +135,24 @@ const CommentSubItemCard = ({
                   alt={"user profile"}
                 />
               </div>
-              <div className={"flex flex-col ml-[12px] w-full"}>
+              <div
+                className={`flex flex-col ml-[12px] w-full ${
+                  jumpToCommentId === subComment.id ? "commentFade" : ""
+                }`}
+              >
                 <div className={"mb-[4px]"}>
-                  <p
-                    className={
-                      "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
-                    }
+                  <Tooltip
+                    className={"-left-6"}
+                    content={<ProfileHoverCard userId={subComment.user.id} />}
                   >
-                    {subComment?.user?.nickname}
-                  </p>
+                    <p
+                      className={
+                        "cursor-pointer text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
+                      }
+                    >
+                      {subComment?.user?.nickname}
+                    </p>
+                  </Tooltip>
                 </div>
 
                 <div className={"flex flex-row items-center justify-between"}>
@@ -195,12 +212,17 @@ const CommentSubItemCard = ({
                       itemId={subComment.id}
                       totals={subComment.totals}
                       reacted={subComment.reacted}
+                      setReacted={(changedReacted) => {
+                        subComment.reacted = changedReacted;
+                      }}
                       hideCaakText
                       bottomTotals
                       textClassname={
                         "text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal"
                       }
-                      iconContainerClassname={"w-[24px] h-[24px] mb-[2px] bg-transparent"}
+                      iconContainerClassname={
+                        "w-[24px] h-[24px] mb-[2px] bg-transparent"
+                      }
                       iconColor={"text-caak-nocturnal"}
                       iconClassname={"text-[23px]"}
                     />

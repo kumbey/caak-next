@@ -46,7 +46,7 @@ const postShareMenu = [
   },
 ];
 
-const List = ({ video, post, imageSrc, ...props }) => {
+const List = ({ video, post, imageSrc }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -68,6 +68,7 @@ const List = ({ video, post, imageSrc, ...props }) => {
               <div className={"w-[96px] h-[96px] relative"}>
                 <Image
                   className=" bg-white rounded-3xl"
+                  objectFit={"cover"}
                   src={
                     !imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)
                   }

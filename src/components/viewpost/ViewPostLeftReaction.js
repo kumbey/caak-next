@@ -25,26 +25,30 @@ const ViewPostLeftReaction = ({ post, commentRef }) => {
     <div className={"flex flex-col items-center"}>
       <div className={"flex flex-col items-center mb-[22px]"}>
         <AnimatedCaakButton
-            reactionType={"POST"}
-            itemId={post.id}
-            totals={post.totals}
-            reacted={post.reacted}
-            hideCaakText
-            bottomTotals
-            textClassname={"text-[13px] tracking-[0.2px] leading-[16px] text-white mt-[6px]"}
-            iconContainerClassname={"w-[44px] h-[44px] rounded-full"}
-            iconColor={"text-caak-extrablack"}
-            iconClassname={"text-[23px]"}
-            activeIconColor={"text-white"}
-            activeBackgroundColor={"bg-caak-primary"}
-            filledIcon
+          reactionType={"POST"}
+          itemId={post.id}
+          totals={post.totals}
+          reacted={post.reacted}
+          setReacted={(changedReacted) => {
+            post.reacted = changedReacted;
+          }}
+          hideCaakText
+          bottomTotals
+          textClassname={
+            "text-[13px] tracking-[0.2px] leading-[16px] text-white mt-[6px]"
+          }
+          iconContainerClassname={"w-[44px] h-[44px] rounded-full"}
+          iconColor={"text-caak-extrablack"}
+          iconClassname={"text-[23px]"}
+          activeIconColor={"text-white"}
+          activeBackgroundColor={"bg-caak-primary"}
+          filledIcon
         />
-
       </div>
       <div
         onClick={() => {
           if (commentRef.current) {
-           commentRef.current.scrollIntoView({behavior: "smooth"})
+            commentRef.current.scrollIntoView({ behavior: "smooth" });
           }
         }}
         className={"flex flex-col items-center mb-[22px]"}

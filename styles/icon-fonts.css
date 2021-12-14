@@ -26,6 +26,51 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-fi-rs-image-f:before {
+  content: "\e9b1";
+}
+.icon-fi-rs-location:before {
+  content: "\e9b2";
+}
+.icon-fi-rs-preview:before {
+  content: "\e9b3";
+}
+.icon-fi-rs-rule:before {
+  content: "\e9b4";
+}
+.icon-fi-rs-safety:before {
+  content: "\e9b5";
+}
+.icon-fi-rs-warning-1:before {
+  content: "\e9b6";
+}
+.icon-fi-rs-add-user-o:before {
+  content: "\e9a8";
+}
+.icon-fi-rs-clock-o:before {
+  content: "\e9a9";
+}
+.icon-fi-rs-edit-full:before {
+  content: "\e9aa";
+}
+.icon-fi-rs-group-entered:before {
+  content: "\e9ab";
+}
+.icon-fi-rs-lock-o:before {
+  content: "\e9ac";
+}
+.icon-fi-rs-pending-posts:before {
+  content: "\e9ad";
+}
+.icon-fi-rs-pin-o:before {
+  content: "\e9ae";
+}
+.icon-fi-rs-reward-o:before {
+  content: "\e9af";
+}
+.icon-fi-rs-sort:before {
+  content: "\e9b0";
+}
 .icon-fi-rs-add-group-f-1:before {
   content: "\e992";
 }
@@ -44,14 +89,14 @@
 .icon-fi-rs-edit-f:before {
   content: "\e997";
 }
-.icon-fi-rs-facebook.path1:before {
+.icon-fi-rs-facebook .path1:before {
   content: "\e998";
-  /*color: rgb(255, 255, 255);*/
+  color: rgb(255, 255, 255);
 }
-.icon-fi-rs-facebook.path2:before {
+.icon-fi-rs-facebook .path2:before {
   content: "\e999";
-  /*margin-left: -1em;*/
-  /*color: rgb(33, 41, 60);*/
+  margin-left: -1em;
+  color: rgb(33, 41, 60);
 }
 .icon-fi-rs-grid-o:before {
   content: "\e99a";

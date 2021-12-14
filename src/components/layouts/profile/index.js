@@ -16,9 +16,12 @@ import { ApiFileUpload } from "../../../utility/ApiHelper";
 import { API, graphqlOperation } from "aws-amplify";
 import { updateUser } from "../../../graphql-custom/user/mutation";
 import { deleteFile } from "../../../graphql-custom/file/mutation";
+import Loader from "../../loader";
 
 const DefaultUserProfileLayout = ({ user, children }) => {
-  const [uploading, setUploading] = useState(false);
+  const [uploadingProfile, setUploadingProfile] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
+
   const { user: signedUser } = useUser();
 
   const fileParams = (file) => {
@@ -47,62 +50,75 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   const [coverPictureDropZone, setCoverPictureDropZone] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const updateImage = async ({ type, array, setArray, signedUser }) => {
+  const updateImage = async ({ type, array, setArray, user, signedUser }) => {
     try {
-      setUploading(true);
       const resp = await ApiFileUpload(array);
       await API.graphql(
         graphqlOperation(updateUser, {
           input: {
-            id: signedUser.id,
+            id: user.id,
             ...(type === "cover"
               ? { cover_pic_id: resp.id }
               : { pic_id: resp.id }),
           },
         })
       );
-      if (signedUser.cover_pic_id)
+      if (user.cover_pic_id)
         await API.graphql(
           graphqlOperation(deleteFile, {
             input: {
               ...(type === "cover"
-                ? { id: signedUser.cover_pic_id }
-                : { id: signedUser.pic_id }),
+                ? { id: user.cover_pic_id }
+                : { id: user.pic_id }),
             },
           })
         );
       if (type === "cover") {
-        signedUser.cover_pic_id = resp;
+        signedUser.cover_pic = resp;
+        user.cover_pic = resp;
       } else {
-        signedUser.pic_id = resp;
+        signedUser.pic = resp;
+        user.pic = resp;
       }
       setArray({});
-      setUploading(false);
     } catch (ex) {
-      setUploading(false);
       console.log(ex);
     }
   };
-
   useEffect(() => {
-    if (coverPictureDropZone.name)
+    console.log(signedUser);
+  }, [signedUser]);
+  useEffect(() => {
+    if (coverPictureDropZone.name) {
+      setUploadingCover(true);
       updateImage({
         type: "cover",
         array: coverPictureDropZone,
         setArray: setCoverPictureDropZone,
+        user,
         signedUser,
+      }).then(() => {
+        setUploadingCover(false);
       });
+    }
+
     // eslint-disable-next-line
   }, [coverPictureDropZone]);
 
   useEffect(() => {
-    if (profilePictureDropZone.name)
+    if (profilePictureDropZone.name) {
+      setUploadingProfile(true);
       updateImage({
         type: "profile",
         array: profilePictureDropZone,
         setArray: setProfilePictureDropZone,
+        user,
         signedUser,
+      }).then(() => {
+        setUploadingProfile(false);
       });
+    }
+
     // eslint-disable-next-line
   }, [profilePictureDropZone]);
 
@@ -113,6 +129,19 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   return loading ? (
     <div className={"flex flex-col"}>
       <div className={"relative w-full h-[240px]"}>
+        {uploadingCover && (
+          <div
+            className={
+              "flex items-center justify-center absolute top-0 bg-white w-full h-full z-[1]"
+            }
+          >
+            <Loader
+              containerClassName={"w-full"}
+              className={`bg-caak-primary`}
+            />
+          </div>
+        )}
+
         <Image
           layout={"fill"}
           objectFit={"cover"}
@@ -138,7 +167,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[40px] bottom-[20px] rounded-square bg-caak-liquidnitrogen"
                 }
               >
-                {!uploading ? (
+                {!uploadingCover ? (
                   <>
                     <div
                       className={
@@ -159,14 +188,16 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                     <input {...getInputProps()} />
                   </>
                 ) : (
-                  <p>Uploading...</p>
+                  <p className={"text-[14px] text-caak-generalblack ml-[7px]"}>
+                    Хадгалж байна
+                  </p>
                 )}
               </div>
             )}
           </Dropzone>
         )}
       </div>
-      <div className={"profileLayoutContainer relative"}>
+      <div className={"profileLayoutContainer relative z-[2]"}>
         <div
           className={
             "flex flex-row items-center h-[50px] bg-white rounded-[100px] py-[8px] px-[24px] bg-white absolute userProfileBadge"
@@ -215,6 +246,19 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 "w-[148px] h-[148px] relative rounded-full border-[7px] border-caak-liquidnitrogen bg-white"
               }
             >
+              {uploadingProfile && (
+                <div
+                  className={
+                    "flex items-center justify-center w-full h-full bg-white absolute top-0 rounded-full z-[1] bg-opacity-80"
+                  }
+                >
+                  <Loader
+                    containerClassName={"w-full"}
+                    className={`bg-caak-primary`}
+                  />
+                </div>
+              )}
+
               <Image
                 className={"rounded-full"}
                 alt={"user profile"}
@@ -224,7 +268,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   user?.pic ? getFileUrl(user?.pic) : getGenderImage("default")
                 }
               />
-              {signedUser.id === user.id && (
+              {signedUser.id === user.id && !uploadingProfile && (
                 <Dropzone
                   onDropRejected={(e) => console.log(e[0].errors[0].message)}
                   accept={"image/jpeg, image/png, image/gif"}
@@ -237,16 +281,12 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
                       }
                     >
-                      {!uploading && (
-                        <>
-                          <span
-                            className={
-                              "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
-                            }
-                          />
-                          <input {...getInputProps()} />
-                        </>
-                      )}
+                      <span
+                        className={
+                          "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                        }
+                      />
+                      <input {...getInputProps()} />
                     </div>
                   )}
                 </Dropzone>

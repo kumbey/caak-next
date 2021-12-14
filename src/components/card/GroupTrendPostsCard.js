@@ -42,6 +42,7 @@ const GroupTrendPostsCard = ({ groupId }) => {
   useEffect(() => {
     getPostsByStatus().then(() => setLoading(false));
     // getGroupById();
+    // eslint-disable-next-line
   }, [groupId]);
 
   return !loading ? (

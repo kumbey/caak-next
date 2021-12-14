@@ -43,6 +43,7 @@ const GroupMemberList = ({ userList, ...props }) => {
   };
   useEffect(() => {
     tagColor();
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="flex justify-between items-center mb-[20px]">

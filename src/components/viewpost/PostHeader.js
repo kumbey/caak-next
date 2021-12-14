@@ -13,6 +13,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
   useEffect(() => {
     setPathName(window.location.origin);
     setItem(post.items.items[activeIndex]);
+    // eslint-disable-next-line
   }, [activeIndex]);
 
   return (

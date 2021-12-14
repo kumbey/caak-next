@@ -31,6 +31,7 @@ const Index = ({ postItemId, isCommentOpen, maxComments }) => {
 
   useEffect(() => {
     getCommentsById();
+    // eslint-disable-next-line
   }, [postItemId]);
 
   return isCommentOpen ? (

@@ -4,13 +4,12 @@ import Input from "../input";
 import Validate from "../../utility/Validate";
 import Auth from "@aws-amplify/auth";
 import Consts from "/src/utility/Consts";
-import { nanoid } from 'nanoid'
+import { nanoid } from "nanoid";
 
 import { useRouter } from "next/router";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 const Register = () => {
-
   const { lsSet } = useLocalStorage("session");
 
   const [error, setError] = useState("");
@@ -23,7 +22,7 @@ const Register = () => {
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [loading, setLoading] = useState(false);
 
-  let condition = activeType === "phone";
+  const condition = activeType === "phone";
 
   const validate = {
     ...(condition
@@ -64,38 +63,41 @@ const Register = () => {
   const doSubmit = async () => {
     try {
       setLoading(true);
-      let usr = {};
+      const usr = {};
 
       usr.username = nanoid(10);
       usr.attributes = {
-        profile: `https://caak.mn/u/${usr.username}`
+        profile: `https://caak.mn/u/${usr.username}`,
         // preferred_username: usr.username
-      }
-      if(condition){
-          usr.attributes.phone_number = "+976" + phoneNumber
-      }else{
-        usr.attributes.email = email
+      };
+      if (condition) {
+        usr.attributes.phone_number = "+976" + phoneNumber;
+      } else {
+        usr.attributes.email = email;
       }
       usr.password = password;
 
       const resp = await Auth.signUp(usr);
 
-      lsSet(Consts.SS_UserSignUp, {...resp, password});
+      lsSet(Consts.SS_UserSignUp, { ...resp, password });
 
-      if(router.query.isModal){
-        router.replace({
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            signInUp: "confirm",
-          },   
-        }, "/signInUp/confirmation", {shallow: true, scroll: false})
-      }else{
+      if (router.query.isModal) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              signInUp: "confirm",
+            },
+          },
+          "/signInUp/confirmation",
+          { shallow: true, scroll: false }
+        );
+      } else {
         router.replace("/signInUp/confirm", undefined, {
-          shallow: true
-        })
+          shallow: true,
+        });
       }
-
     } catch (ex) {
       setLoading(false);
       if (ex.code === "UsernameExistsException") {
@@ -115,6 +117,7 @@ const Register = () => {
     setPassword("");
     setPasswordRepeat("");
     setErrors({});
+    // eslint-disable-next-line
   }, [activeType]);
 
   useEffect(() => {

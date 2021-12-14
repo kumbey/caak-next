@@ -181,6 +181,7 @@ const Profile = ({ ssrData }) => {
 
   useEffect(()=> {
     fetchPosts()
+    // eslint-disable-next-line
   },[])
 
   useEffect(() => {

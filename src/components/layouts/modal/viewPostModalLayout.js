@@ -26,6 +26,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
     return () => {
       document.removeEventListener("keydown", handler);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

@@ -37,6 +37,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
       setSearchResult([]);
       setIsSearching(false);
     }
+    // eslint-disable-next-line
   }, [debouncedSearchResult]);
   const handler = (e) => {
     if (e.keyCode === 13) {

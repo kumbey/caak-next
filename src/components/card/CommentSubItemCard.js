@@ -78,6 +78,7 @@ const CommentSubItemCard = ({
         return true;
       });
     };
+    // eslint-disable-next-line
   }, []);
 
   const listSubCommentByParentId = async () => {
@@ -110,6 +111,7 @@ const CommentSubItemCard = ({
 
   useEffect(() => {
     listSubCommentByParentId();
+    // eslint-disable-next-line
   }, [parentId]);
 
   return subComments.items ? (

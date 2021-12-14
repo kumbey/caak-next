@@ -76,6 +76,7 @@ const CommentCardNew = ({
   useEffect(() => {
     // setComments({});
     listCommentByType();
+    // eslint-disable-next-line
   }, [setup.id]);
 
   const subscrip = () => {
@@ -135,6 +136,7 @@ const CommentCardNew = ({
         return true;
       });
     };
+    // eslint-disable-next-line
   }, [setup.id]);
 
   return comments.items ? (

@@ -143,10 +143,12 @@ const PostItem = ({ ssrData }) => {
         shallow: true,
       }
     );
+    // eslint-disable-next-line
   }, [activeIndex]);
 
   useEffect(() => {
     setActiveIndex(findMatchIndex(post.items.items, "id", router.query.itemId))
+    // eslint-disable-next-line
   }, [router.query]);
 
   const back = () => {

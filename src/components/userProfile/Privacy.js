@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Switch from "./Switch";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
@@ -14,6 +14,22 @@ export default function Privacy() {
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+  const localFollow = localStorage.getItem("isFollowedGroup");
+  const localCreated = localStorage.getItem("isCreatedGroup");
+
+  const [isFollowedGroup, setIsFollowedGroup] = useState(
+    localFollow ? localFollow : "false"
+  );
+  const [isCreatedGroup, setIsCreatedGroup] = useState(
+    localCreated ? localCreated : "false"
+  );
+
+  const toggleFollow = () => {
+    setIsFollowedGroup(isFollowedGroup === "true" ? "false" : "true");
+  };
+  const toggleCreated = () => {
+    setIsCreatedGroup(isCreatedGroup === "true" ? "false" : "true");
+  };
 
   const validate = {
     oldPassword: {
@@ -74,7 +90,16 @@ export default function Privacy() {
       }
     }
   };
-
+  useEffect(() => {
+    localStorage.setItem(
+      "isFollowedGroup",
+      isFollowedGroup === "true" ? "true" : "false"
+    );
+    localStorage.setItem(
+      "isCreatedGroup",
+      isCreatedGroup === "true" ? "true" : "false"
+    );
+  }, [isFollowedGroup, isCreatedGroup]);
   return (
     <>
       <p
@@ -93,7 +118,10 @@ export default function Privacy() {
           className="px-c3 flex items-center justify-between w-full border-b"
         >
           <p className="text-16px font-medium">Элссэн группуудыг ил харуулах</p>
-          <Switch />
+          <Switch
+            toggle={toggleFollow}
+            active={isFollowedGroup === "true" ? true : false}
+          />
         </div>
         <div
           style={{ paddingBlock: "14px" }}
@@ -102,7 +130,10 @@ export default function Privacy() {
           <p className="text-16px font-medium">
             Миний үүсгэсэн группуудыг ил харуулах
           </p>
-          <Switch />
+          <Switch
+            toggle={toggleCreated}
+            active={isCreatedGroup === "true" ? true : false}
+          />
         </div>
         <div
           style={{ paddingBlock: "14px" }}

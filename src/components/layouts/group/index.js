@@ -33,6 +33,7 @@ import PostMoreMenu from "../../card/PostMoreMenu";
 import Link from "next/link";
 import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
+import { useRouter } from "next/router";
 
 const GroupLayout = ({
   children,
@@ -40,6 +41,7 @@ const GroupLayout = ({
   totalMember,
   hideSuggestedGroups,
 }) => {
+  const router = useRouter();
   const { isLogged, user: signedUser } = useUser();
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
@@ -395,7 +397,22 @@ const GroupLayout = ({
                         className="h-[36px] w-[124px] rounded-lg text-caak-generalblack text-base font-medium font-inter"
                         icon={<span className="icon-fi-rs-add-group-f  mr-1" />}
                         iconPosition="left"
-                        onClick={handleFollow}
+                        onClick={() =>
+                          !isLogged
+                            ? router.push(
+                                {
+                                  pathname: router.pathname,
+                                  query: {
+                                    ...router.query,
+                                    signInUp: "signIn",
+                                    isModal: true,
+                                  },
+                                },
+                                `/signInUp/signIn`,
+                                { shallow: true }
+                              )
+                            : handleFollow()
+                        }
                         skin={`${
                           groupData.followed
                             ? "bg-caak-titaniumwhite"
@@ -467,8 +484,6 @@ const GroupLayout = ({
                   "mt-[16px] bg-white rounded-square p-[20px]"
                 }
               />
-
-              {!isLogged && <FooterSidebar />}
             </div>
           </div>
         </div>

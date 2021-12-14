@@ -105,6 +105,9 @@ const CardFooter = ({ totals, postId, reacted }) => {
               <AnimatedCaakButton
                 reactionType={"POST"}
                 reacted={reacted}
+                setReacted={(changedReacted) => {
+                  reacted = changedReacted;
+                }}
                 totals={totals}
                 itemId={postId}
                 iconContainerClassname={"w-[24px] h-[24px]"}

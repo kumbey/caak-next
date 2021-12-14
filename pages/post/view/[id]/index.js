@@ -95,7 +95,7 @@ const Post = ({ ssrData }) => {
           className={`absolute flex flex-row justify-between w-full top-[-54px] ${
             post.status === "CONFIRMED" ? "pl-[69px]" : ""
           } right-0 `}
-          onClick={() => router.back()}
+          onClick={() => router.push("/")}
         >
           <div className={"flex flex-row "}>
             <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
@@ -207,7 +207,11 @@ const Post = ({ ssrData }) => {
           })}
         </div>
         {post.status === "CONFIRMED" && (
-          <CommentSection commentRef={commentRef} post={post} />
+          <CommentSection
+            jumpToCommentId={jumpToComment}
+            commentRef={commentRef}
+            post={post}
+          />
         )}
       </div>
     </ViewPostModal>

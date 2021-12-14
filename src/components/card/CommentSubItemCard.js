@@ -1,5 +1,10 @@
 import Image from "next/image";
-import {generateTimeAgo, getFileUrl, getGenderImage, getReturnData} from "../../utility/Util";
+import {
+  generateTimeAgo,
+  getFileUrl,
+  getGenderImage,
+  getReturnData,
+} from "../../utility/Util";
 import { API } from "aws-amplify";
 import { listCommentByParent } from "../../graphql-custom/comment/queries";
 import { useUser } from "../../context/userContext";
@@ -14,6 +19,7 @@ const CommentSubItemCard = ({
   parentId,
   maxComment,
   addCommentRef,
+  jumpToCommentId,
 }) => {
   const { isLogged } = useUser();
   const subscriptions = {};
@@ -127,7 +133,11 @@ const CommentSubItemCard = ({
                   alt={"user profile"}
                 />
               </div>
-              <div className={"flex flex-col ml-[12px] w-full"}>
+              <div
+                className={`flex flex-col ml-[12px] w-full ${
+                  jumpToCommentId === subComment.id ? "commentFade" : ""
+                }`}
+              >
                 <div className={"mb-[4px]"}>
                   <p
                     className={
@@ -195,12 +205,17 @@ const CommentSubItemCard = ({
                       itemId={subComment.id}
                       totals={subComment.totals}
                       reacted={subComment.reacted}
+                      setReacted={(changedReacted) => {
+                        subComment.reacted = changedReacted;
+                      }}
                       hideCaakText
                       bottomTotals
                       textClassname={
                         "text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal"
                       }
-                      iconContainerClassname={"w-[24px] h-[24px] mb-[2px] bg-transparent"}
+                      iconContainerClassname={
+                        "w-[24px] h-[24px] mb-[2px] bg-transparent"
+                      }
                       iconColor={"text-caak-nocturnal"}
                       iconClassname={"text-[23px]"}
                     />

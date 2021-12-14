@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   GroupType,
@@ -6,7 +6,6 @@ import {
 } from "../../../src/components/navigation/sortButtonTypes";
 import useGroupLayout from "../../../src/hooks/useGroupLayout";
 import { withSSRContext } from "aws-amplify";
-import useInfiniteScroll from "../../../src/hooks/useFetch";
 
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
@@ -18,6 +17,7 @@ import Card from "../../../src/components/card/FeedCard";
 import { useUser } from "../../../src/context/userContext";
 import { getGroupView } from "../../../src/graphql-custom/group/queries";
 import List from "../../../src/components/list";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -68,8 +68,6 @@ const Group = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeView, setActiveView] = useState(0);
 
-  const feedRef = useRef();
-
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [groupData, setGroupData] = useState(ssrData.groupData);
 
@@ -85,20 +83,18 @@ const Group = ({ ssrData }) => {
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
       limit: 6,
-      nextToken: ssrData.posts.nextToken,
     },
+    nextToken: ssrData.posts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
-
-  const fetchPosts = async (data, setData) => {
+  const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPosts();
         if (resp) {
-          setData([...data, ...resp]);
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
         }
 
         setLoading(false);
@@ -111,13 +107,6 @@ const Group = ({ ssrData }) => {
 
   useEffect(() => {
     setLoaded(true);
-    setPostScroll(fetchPosts);
-
-    return () => {
-      setPostScroll(null);
-    };
-
-    // eslint-disable-next-line
   }, []);
 
   return (
@@ -140,8 +129,21 @@ const Group = ({ ssrData }) => {
             direction={"row"}
             textClassname={"font-medium text-15px"}
           />
-          {posts.length > 0 &&
-            posts.map((data, index) => {
+          <InfiniteScroll
+            dataLength={posts.length}
+            next={fetchPosts}
+            hasMore={true}
+            loader={
+              <Loader
+                containerClassName={"self-center w-full"}
+                className={`bg-caak-primary ${
+                  loading ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            }
+            endMessage={<h4>Nothing more to show</h4>}
+          >
+            {posts.map((data, index) => {
               return activeView === 0 ? (
                 <Card
                   key={index}
@@ -159,14 +161,7 @@ const Group = ({ ssrData }) => {
                 />
               ) : null;
             })}
-          <div ref={feedRef} className={"flex justify-center items-center"}>
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          </div>
+          </InfiniteScroll>
         </GroupLayout>
       </div>
     )

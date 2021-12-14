@@ -65,7 +65,7 @@ const Notification = ({ item, ...props }) => {
           />
         </div>
       );
-    } else if (item.action === "COMMENT_WRITED") {
+    } else if (item.action === "POST_ITEM_COMMENT_WRITED" || item.action === "POST_COMMENT_WRITED") {
       text.short = `таны пост`;
       text.long = `сэтгэгдэл үлдээлээ`;
 

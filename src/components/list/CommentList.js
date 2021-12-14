@@ -17,7 +17,7 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
     if (isLogged)
       try {
         setLoading(true);
-        let resp = await API.graphql({
+        await API.graphql({
           query: deleteComment,
           variables: {
             input: {
@@ -41,7 +41,7 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
       await deleteComments(comment.id);
       setUserComments(filteredComments);
     } else {
-      comment.sub.items.map((sub, index) => {
+      comment.sub.items.map((sub) => {
         deleteComments(sub.id);
       });
       filteredComments = await userComments.filter(
@@ -60,7 +60,7 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
   };
 
   return (
-    <div className="  w-full">
+    <div className="w-full first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px]">
       <div className="relative flex items-center ">
         <div className="flex w-[300px] items-center">
           <Link
@@ -69,16 +69,16 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
             }}
           >
             <a>
-              <div className={"w-[96px] h-[96px] mr-[12px] relative"}>
+              <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
                 <Image
                   className=" bg-white rounded-md"
                   src={
                     !imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)
                   }
-                  width={96}
-                  height={96}
+                  width={64}
+                  height={64}
                   layout="fixed"
-                  //   objectFit={"cover"}
+                  objectFit={"cover"}
                   alt="#"
                 />
               </div>
@@ -120,7 +120,7 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
           </Button>
         </div>
       </div>
-      <Divider color={"border-titaniumwhite"} className={"pb-5"} />
+      {/*<Divider color={"border-titaniumwhite"} className={"pb-5"} />*/}
     </div>
   );
 };

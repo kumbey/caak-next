@@ -84,6 +84,7 @@ const AddComment = ({
     if (!commentInputValue?.trim().startsWith(reply?.user_nickname?.trim())) {
       setReply({ user_nickname: "", isReplying: false, user_id: null });
     }
+    // eslint-disable-next-line
   }, [commentInputValue]);
   return (
     <div

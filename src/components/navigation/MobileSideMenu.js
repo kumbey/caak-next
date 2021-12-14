@@ -1,13 +1,13 @@
 import Button from "../button";
 import { useUser } from "../../context/userContext";
-import { checkUser, getFileUrl } from "../../utility/Util";
+import { getFileUrl } from "../../utility/Util";
 import React from "react";
 import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
 import Link from "next/link";
 
 const MobileSideMenu = ({ setOpen }) => {
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
 
   return (
     <div className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white">
@@ -25,29 +25,31 @@ const MobileSideMenu = ({ setOpen }) => {
         />
       </div>
       <div className={`relative p-2`}>
-        {checkUser(user) && (
+        {isLogged && (
           <div className={"relative flex flex-row items-center"}>
             <Link
               href={
-                checkUser(user) ? `/user/${user.sysUser.id}/profile` : "/login"
+                isLogged ? `/user/${user.sysUser.id}/profile` : "/login"
                 // state: { background: location },
               }
             >
-              <div className={"cursor-pointer "}>
-                {checkUser(user) ? (
-                  <img
-                    alt={user.sysUser.nickname}
-                    src={
-                      user.sysUser.pic
-                        ? getFileUrl(user.sysUser.pic)
-                        : Dummy.img("50x50")
-                    }
-                    className={"block w-c13 h-c13 object-cover rounded-full"}
-                  />
-                ) : (
-                  <span className="icon-fi-rs-profile text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
-                )}
-              </div>
+              <a>
+                <div className={"cursor-pointer "}>
+                  {isLogged ? (
+                    <img
+                      alt={user.sysUser.nickname}
+                      src={
+                        user.sysUser.pic
+                          ? getFileUrl(user.sysUser.pic)
+                          : Dummy.img("50x50")
+                      }
+                      className={"block w-c13 h-c13 object-cover rounded-full"}
+                    />
+                  ) : (
+                    <span className="icon-fi-rs-profile text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
+                  )}
+                </div>
+              </a>
             </Link>
 
             <div className={"flex flex-col items-center justify-center  px-3"}>
@@ -58,13 +60,15 @@ const MobileSideMenu = ({ setOpen }) => {
                       pathname: `/user/${user.sysUser.id}/profile`,
                     }}
                   >
-                    <span
-                      className={
-                        "text-generalblack text-14px font-bold cursor-pointer"
-                      }
-                    >
-                      {user.sysUser.nickname}
-                    </span>
+                    <a>
+                      <span
+                        className={
+                          "text-generalblack text-14px font-bold cursor-pointer"
+                        }
+                      >
+                        {user.sysUser.nickname}
+                      </span>
+                    </a>
                   </Link>
                   <div className={"flex flex-row items-center self-start"}>
                     <span className={"icon-fi-rs-auro auroGradient mr-1"} />
@@ -80,7 +84,7 @@ const MobileSideMenu = ({ setOpen }) => {
           </div>
         )}
         <NavBarMenu type={"mobile"} />
-        {checkUser(user) && (
+        {isLogged && (
           <Button
             round
             className={" h-12 w-full"}
@@ -95,7 +99,7 @@ const MobileSideMenu = ({ setOpen }) => {
           </Button>
         )}
       </div>
-      {!checkUser(user) && (
+      {!isLogged && (
         <div className={"flex flex-col"}>
           <Button
             round

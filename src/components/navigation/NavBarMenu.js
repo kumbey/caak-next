@@ -52,9 +52,7 @@ export default function NavBarMenu({ type }) {
                     }
                   />
                 </div>
-                <p className="text-14px text-caak-extraBlack">
-                  Тохиргоо
-                </p>
+                <p className="text-14px text-caak-extraBlack">Тохиргоо</p>
               </div>
             </a>
           </Link>
@@ -71,9 +69,7 @@ export default function NavBarMenu({ type }) {
               />
             </div>
 
-            <p className="text-14px text-caak-extraBlack">
-              Шөнийн горим
-            </p>
+            <p className="text-14px text-caak-extraBlack">Шөнийн горим</p>
           </div>
         </a>
       </Link>
@@ -86,23 +82,21 @@ export default function NavBarMenu({ type }) {
                 "icon-fi-rs-auro text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
               }
             />
-            <p className="text-14px text-caak-extraBlack">
-              Аура гэж юу вэ?
-            </p>
+            <p className="text-14px text-caak-extraBlack">Аура гэж юу вэ?</p>
           </div>
         </a>
       </Link>
       <Link href={`/newcaak`}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-refresh text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack">
-            Шинэ өөрчлөлтүүд
-          </p>
-        </div>
+        <a>
+          <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+            <span
+              className={
+                "icon-fi-rs-refresh text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+              }
+            />
+            <p className="text-14px text-caak-extraBlack">Шинэ өөрчлөлтүүд</p>
+          </div>
+        </a>
       </Link>
 
       <Link href={`/user/profile`}>
@@ -111,9 +105,7 @@ export default function NavBarMenu({ type }) {
             <span
               className={"icon-fi-rs-help text-[18px] w-[20px] h-[18px] mr-2"}
             />
-            <p className="text-14px text-caak-extraBlack">
-              Тусламж
-            </p>
+            <p className="text-14px text-caak-extraBlack">Тусламж</p>
           </div>
         </a>
       </Link>

@@ -96,6 +96,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
     } catch (ex) {
       console.log(ex);
     }
+    // eslint-disable-next-line
   }, [groupId]);
 
   return !isDataFetched ? (

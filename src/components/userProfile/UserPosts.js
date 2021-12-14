@@ -88,7 +88,7 @@ export default function UserPosts({ userId, type, card }) {
       if (!loading) {
         setLoading(true);
 
-        let resp = await nextPosts();
+        const resp = await nextPosts();
 
         if (resp) {
           setData([...data, ...resp]);

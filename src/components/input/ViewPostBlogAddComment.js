@@ -27,6 +27,7 @@ const ViewPostBlogAddComment = ({
     if (!commentInputValue?.trim().startsWith(reply.user_nickname?.trim())) {
       setReply({ user_nickname: "", isReplying: false, user_id: null });
     }
+    // eslint-disable-next-line
   }, [commentInputValue]);
 
   const addComment = async () => {

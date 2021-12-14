@@ -48,9 +48,6 @@ export default function GroupPrivacy({ groupData }) {
     // setText({ ...text, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    console.log(groupData);
-  }, []);
   return (
     <div className="flex flex-col">
       <p

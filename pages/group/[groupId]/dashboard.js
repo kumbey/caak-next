@@ -36,7 +36,7 @@ export async function getServerSideProps({ req, query }) {
   } catch (ex) {
     user = null;
   }
-  const userId = user.attributes.sub;
+  const userId = user?.attributes?.sub;
 
   const groupView = await API.graphql({
     query: getGroupView,

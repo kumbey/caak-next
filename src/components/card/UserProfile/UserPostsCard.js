@@ -65,7 +65,7 @@ const UserPostsCard = ({ post }) => {
         <ItemsCounterCard count={post.items.items.length} />
       )}
 
-      {post.user.id === user.id && (
+      {post.user.id === user?.id && (
         <div
           onClick={() => router.push(`/post/edit/${post.id}`)}
           className={

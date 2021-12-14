@@ -20,6 +20,7 @@ const CommentCardNew = ({
   setReply,
   setup,
   addCommentRef,
+  jumpToCommentId,
 }) => {
   const [comments, setComments] = useState({
     items: [],
@@ -142,6 +143,7 @@ const CommentCardNew = ({
         {comments.items.map((comment, index) => {
           return comment.type === "PARENT" ? (
             <CommentItemCard
+              jumpToCommentId={jumpToCommentId}
               addCommentRef={addCommentRef}
               reply={reply}
               setReply={setReply}
@@ -151,6 +153,7 @@ const CommentCardNew = ({
             >
               <div className={"mt-[12px]"}>
                 <CommentSubItemCard
+                  jumpToCommentId={jumpToCommentId}
                   addCommentRef={addCommentRef}
                   reply={reply}
                   setReply={setReply}

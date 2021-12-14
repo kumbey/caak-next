@@ -68,6 +68,9 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               itemId={postItem.id}
               totals={postItem.totals}
               reacted={postItem.reacted}
+              setReacted={(changedReacted) => {
+                postItem.reacted = changedReacted;
+              }}
               textClassname={
                 "text-[14px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal ml-[4px]"
               }
@@ -98,7 +101,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               >
                 <span
                   className={
-                    "icon-fi-rs-comment-o text-caak-scriptink text-[16.5px]"
+                    "icon-fi-rs-comment text-caak-buttonblue text-[16.5px]"
                   }
                 />
               </div>

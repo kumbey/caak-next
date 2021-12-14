@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import StatsItem from "../../../src/components/stats";
 import Image from "next/image";
@@ -11,13 +11,11 @@ import {
   getReturnData,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
-  listUsersbyFollowing,
   getUserTotal,
   listUsersbyFollowed,
 } from "../../../src/graphql-custom/user/queries";
@@ -27,6 +25,7 @@ import { useUser } from "../../../src/context/userContext";
 import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
 import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -43,17 +42,6 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 5,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const pendingPosts = await API.graphql({
-    query: getPostByUser,
-    variables: {
-      user_id: query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "PENDING" } },
       limit: 6,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
@@ -101,18 +89,15 @@ export async function getServerSideProps({ req, query }) {
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
   const { isLogged, user } = useUser();
-  const postRef = useRef();
-  const followerRef = useRef();
-  const commentRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [userInfo] = useState(ssrData.userTotals);
+
   const [followedUsers, setFollowedUsers] = useState(
     ssrData.userFollower.items
   );
-
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [subscripedPost, setSubscripedPost] = useState(0);
@@ -181,7 +166,7 @@ const Dashboard = ({ ssrData }) => {
       user_id: router.query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 10,
+      limit: 5,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -192,6 +177,8 @@ const Dashboard = ({ ssrData }) => {
       sortDirection: "DESC",
       limit: 10,
     },
+    nextToken: ssrData.userComment.nextToken,
+
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
   const [nextFollowers] = useListPager({
@@ -201,27 +188,17 @@ const Dashboard = ({ ssrData }) => {
       limit: 6,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    nextToken: ssrData.userFollower.nextToken,
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, postRef);
-  const [setCommentScroll] = useInfiniteScroll(
-    userComments,
-    setUserComments,
-    commentRef
-  );
-  const [setFollowerScroll] = useInfiniteScroll(
-    followedUsers,
-    setFollowedUsers,
-    followerRef
-  );
 
-  const fetchPosts = async (data, setData) => {
+  const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPosts();
         if (resp) {
-          setData([...data, ...resp]);
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
         }
 
         setLoading(false);
@@ -231,14 +208,14 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchComments = async (data, setData) => {
+  const fetchComments = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextComments();
         if (resp) {
-          setData([...data, ...resp]);
+          setUserComments((nextComments) => [...nextComments, ...resp]);
         }
 
         setLoading(false);
@@ -248,14 +225,14 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchFollowers = async (data, setData) => {
+  const fetchFollowers = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextFollowers();
         if (resp) {
-          setData([...data, ...resp]);
+          setUserComments((nextComments) => [...nextComments, ...resp]);
         }
 
         setLoading(false);
@@ -341,19 +318,13 @@ const Dashboard = ({ ssrData }) => {
 
   useEffect(() => {
     subscrip();
-
+    fetchPosts();
     setLoaded(true);
-    setPostScroll(fetchPosts);
-    setCommentScroll(fetchComments);
-    setFollowerScroll(fetchFollowers);
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
         return true;
       });
-      setPostScroll(null);
-      setCommentScroll(null);
-      setFollowerScroll(null);
     };
 
     // eslint-disable-next-line
@@ -454,12 +425,25 @@ const Dashboard = ({ ssrData }) => {
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px] mb-[20px]"
             }
           >
-            {activeIndex === 0
-              ? posts.length > 0 &&
-                posts.map((post, index) => {
+            {activeIndex === 0 ? (
+              <InfiniteScroll
+                dataLength={posts.length}
+                next={fetchPosts}
+                hasMore={true}
+                loader={
+                  <Loader
+                    containerClassName={`self-center w-full ${
+                      loading ? "" : "hidden"
+                    }`}
+                    className={`bg-caak-primary`}
+                  />
+                }
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                {posts.map((post, index) => {
                   return (
                     <DashList
                       key={index}
@@ -468,59 +452,72 @@ const Dashboard = ({ ssrData }) => {
                       className="ph:mb-4 sm:mb-4"
                     />
                   );
-                })
-              : null}
-            {activeIndex === 1 ? (
-              <div className=" flex flex-row flex-wrap ">
-                {followedUsers.map((data, index) => {
-                  return (
-                    <FollowerList
-                      key={index}
-                      imageSrc={data?.cover_pic}
-                      followedUser={data}
-                      followedUsers={followedUsers}
-                      setFollowedUsers={setFollowedUsers}
-                    />
-                  );
                 })}
-              </div>
+              </InfiniteScroll>
+            ) : null}
+            {activeIndex === 1 ? (
+              <InfiniteScroll
+                dataLength={followedUsers.length}
+                next={fetchFollowers}
+                hasMore={true}
+                loader={
+                  <Loader
+                    containerClassName={`self-center w-full ${
+                      loading ? "" : "hidden"
+                    }`}
+                    className={`bg-caak-primary`}
+                  />
+                }
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                <div className=" flex flex-row flex-wrap ">
+                  {followedUsers.map((data, index) => {
+                    return (
+                      <FollowerList
+                        key={index}
+                        imageSrc={data?.cover_pic}
+                        followedUser={data}
+                        followedUsers={followedUsers}
+                        setFollowedUsers={setFollowedUsers}
+                      />
+                    );
+                  })}
+                </div>
+              </InfiniteScroll>
             ) : null}
 
             {activeIndex === 2
-              ? userComments.length > 0 &&
-                userComments.map((comment, index) => {
-                  return (
-                    <CommentList
-                      key={index}
-                      index={index}
-                      imageSrc={comment?.post?.items?.items[0]?.file}
-                      comment={comment}
-                      userComments={userComments}
-                      setUserComments={setUserComments}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  );
-                })
+              ? userComments.length > 0 && (
+                  <InfiniteScroll
+                    dataLength={userComments.length}
+                    next={fetchComments}
+                    hasMore={true}
+                    loader={
+                      <Loader
+                        containerClassName={`self-center w-full ${
+                          loading ? "" : "hidden"
+                        }`}
+                        className={`bg-caak-primary`}
+                      />
+                    }
+                    endMessage={<h4>Nothing more to show</h4>}
+                  >
+                    {userComments.map((comment, index) => {
+                      return (
+                        <CommentList
+                          key={index}
+                          index={index}
+                          imageSrc={comment?.post?.items?.items[0]?.file}
+                          comment={comment}
+                          userComments={userComments}
+                          setUserComments={setUserComments}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                  </InfiniteScroll>
+                )
               : null}
-          </div>
-          <div
-            ref={
-              activeIndex === 0
-                ? postRef
-                : activeIndex === 1
-                ? followerRef
-                : activeIndex === 2
-                ? commentRef
-                : null
-            }
-            className={"flex justify-center items-center"}
-          >
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
           </div>
         </div>
       </div>

@@ -25,6 +25,7 @@ import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Divider from "../../../src/components/divider";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -527,12 +528,12 @@ const Dashboard = ({ ssrData }) => {
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[14px] mb-[50px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px] mb-[50px]"
             }
           >
             {activeIndex === 0 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[16px]">
+                <div className="flex ">
                   <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
                     Пост
                   </p>
@@ -546,6 +547,8 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
+                <Divider className={"my-[16px]"} />
+
                 <InfiniteScroll
                   dataLength={posts.length}
                   next={fetchPosts}
@@ -590,7 +593,7 @@ const Dashboard = ({ ssrData }) => {
                 }
                 endMessage={<h4>Nothing more to show</h4>}
               >
-                <div className=" flex flex-row flex-wrap ">
+                <div className=" flex flex-row flex-wrap justify-between">
                   {followedUsers.map((data, index) => {
                     return (
                       <GroupFollowerList
@@ -609,7 +612,7 @@ const Dashboard = ({ ssrData }) => {
 
             {activeIndex === 2 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[16px]">
+                <div className="flex">
                   <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
                     Пост
                   </p>
@@ -637,6 +640,8 @@ const Dashboard = ({ ssrData }) => {
                   }
                   endMessage={<h4>Nothing more to show</h4>}
                 >
+                  <Divider className={"mt-[16px]"} />
+
                   {pendingPosts.length > 0 &&
                     pendingPosts.map((pendingPost, index) => {
                       return (
@@ -673,6 +678,8 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
+                <Divider className={"mb-[16px]"} />
+
                 <InfiniteScroll
                   dataLength={archivedPosts.length}
                   next={fetchArchived}

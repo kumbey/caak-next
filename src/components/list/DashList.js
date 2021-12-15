@@ -29,7 +29,7 @@ const DashList = ({ imageSrc, post }) => {
           </Link>
 
           <div className="flex flex-col  font-inter mr-[26px]">
-            <div className="truncate-3 text-15px font-medium text-caak-generalblack">
+            <div className="truncate-2 text-15px font-medium text-caak-generalblack">
               <Link
                 href={{
                   pathname: `/post/view/${post.id}`,
@@ -44,7 +44,7 @@ const DashList = ({ imageSrc, post }) => {
           </div>
         </div>
         <div className="flex w-[107px] mr-[128px]">
-          <div className="truncate-3 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
+          <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
             <Link
               href={{
                 pathname: `/group/${post.group.id}`,

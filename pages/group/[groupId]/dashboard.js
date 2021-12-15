@@ -9,7 +9,6 @@ import {
   getReturnData,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
 
@@ -115,10 +114,6 @@ export async function getServerSideProps({ req, query }) {
 
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
-  const postRef = useRef();
-  const followerRef = useRef();
-  const pendingRef = useRef();
-  const archivedRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -143,6 +138,7 @@ const Dashboard = ({ ssrData }) => {
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
 
   const totalPost = groupTotals?.confirmed;
+  const totalPending = groupTotals?.pending;
 
   const stats = [
     {
@@ -184,19 +180,19 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
-      length: posts.length,
+      length: totalPost,
     },
     {
       id: 1,
       name: "Группын гишүүд",
       icon: "icon-fi-rs-friends-o",
-      length: followedUsers.length,
+      length: totalMember,
     },
     {
       id: 2,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
-      length: pendingPosts.length,
+      length: totalPending,
     },
     // {
     //   id: 3,

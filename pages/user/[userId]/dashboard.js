@@ -123,6 +123,11 @@ const Dashboard = ({ ssrData }) => {
     userInfo?.post_reactions +
     userInfo?.post_items_reactions;
 
+  const totalPost = userInfo?.confirmed;
+  const totalMember = userInfo?.followers;
+  const totalComment = userInfo?.comments;
+  const totalArchived = userInfo?.archived;
+
   const stats = [
     {
       id: 0,
@@ -143,7 +148,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 2,
       icon: "icon-fi-rs-comment-f",
-      number: userComments?.length,
+      number: totalComment,
       text: "Нийт сэтгэгдэл",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
@@ -163,22 +168,25 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
+      length: totalPost,
     },
     {
       id: 1,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-archive",
-      // length: archivedPosts.length,
+      length: totalArchived,
     },
     {
       id: 2,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
+      length: totalMember,
     },
     {
       id: 3,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
+      length: totalComment,
     },
   ];
 
@@ -343,8 +351,6 @@ const Dashboard = ({ ssrData }) => {
         });
       },
     });
-
-    console.log(subscriptions);
   };
 
   useEffect(() => {
@@ -366,7 +372,6 @@ const Dashboard = ({ ssrData }) => {
         }
       }
     }
-    console.log(subscripedPost);
     // eslint-disable-next-line
   }, [subscripedPost]);
 
@@ -466,8 +471,15 @@ const Dashboard = ({ ssrData }) => {
         </div>
         <div className="flex flex-col w-full">
           <div className="flex justify-between">
-            <div className="font-inter font-semibold text-20px text-caak-generalblack">
-              {dashMenu[activeIndex].name}
+            <div className="flex items-center">
+              <div className="font-inter font-normal text-16px text-caak-generalblack mr-[10px]">
+                {dashMenu[activeIndex].name}
+              </div>
+              <div className="text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <p className="text-caak-bleudefrance text-opacity-100 mx-2 ">
+                  {dashMenu[activeIndex].length}
+                </p>
+              </div>
             </div>
             <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
               <div className="flex items-center  mx-[12px] my-[10px]">
@@ -484,31 +496,48 @@ const Dashboard = ({ ssrData }) => {
             }
           >
             {activeIndex === 0 ? (
-              <InfiniteScroll
-                dataLength={posts.length}
-                next={fetchPosts}
-                hasMore={true}
-                loader={
-                  <Loader
-                    containerClassName={`self-center w-full ${
-                      loading ? "" : "hidden"
-                    }`}
-                    className={`bg-caak-primary`}
-                  />
-                }
-                endMessage={<h4>Nothing more to show</h4>}
-              >
-                {posts.map((post, index) => {
-                  return (
-                    <DashList
-                      key={index}
-                      imageSrc={post?.items?.items[0]?.file}
-                      post={post}
-                      className="ph:mb-4 sm:mb-4"
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
+                    Групп
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[161px]">
+                    Хандалт
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"mb-[16px]"} />
+                <InfiniteScroll
+                  dataLength={posts.length}
+                  next={fetchPosts}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
                     />
-                  );
-                })}
-              </InfiniteScroll>
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {posts.map((post, index) => {
+                    return (
+                      <DashList
+                        key={index}
+                        imageSrc={post?.items?.items[0]?.file}
+                        post={post}
+                        className="ph:mb-4 sm:mb-4"
+                      />
+                    );
+                  })}
+                </InfiniteScroll>
+              </div>
             ) : null}
 
             {activeIndex === 1 ? (
@@ -574,7 +603,7 @@ const Dashboard = ({ ssrData }) => {
                 }
                 endMessage={<h4>Nothing more to show</h4>}
               >
-                <div className=" flex flex-row flex-wrap ">
+                <div className=" flex flex-row flex-wrap justify-between">
                   {followedUsers.map((data, index) => {
                     return (
                       <FollowerList

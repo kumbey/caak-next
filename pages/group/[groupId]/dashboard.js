@@ -19,12 +19,12 @@ import {
   getGroupUsersByGroup,
   getGroupView,
 } from "../../../src/graphql-custom/group/queries";
-import FollowerList from "../../../src/components/list/FollowerList";
 import Loader from "../../../src/components/loader";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -242,31 +242,15 @@ const Dashboard = ({ ssrData }) => {
     },
     nextToken: ssrData.archivedPosts.nextToken,
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, postRef);
-  const [setFollowerScroll] = useInfiniteScroll(
-    followedUsers,
-    setFollowedUsers,
-    followerRef
-  );
-  const [setPendingScroll] = useInfiniteScroll(
-    pendingPosts,
-    setPendingPosts,
-    pendingRef
-  );
-  const [setArchivedScroll] = useInfiniteScroll(
-    archivedPosts,
-    setArchivedPosts,
-    archivedRef
-  );
 
-  const fetchPosts = async (data, setData) => {
+  const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPosts();
         if (resp) {
-          setData([...data, ...resp]);
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
         }
 
         setLoading(false);
@@ -276,14 +260,14 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchFollowers = async (data, setData) => {
+  const fetchFollowers = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextFollowers();
         if (resp) {
-          setData([...data, ...resp]);
+          setFollowedUsers((nextFollowers) => [...nextFollowers, ...resp]);
         }
 
         setLoading(false);
@@ -293,14 +277,14 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchPending = async (data, setData) => {
+  const fetchPending = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPending();
         if (resp) {
-          setData([...data, ...resp]);
+          setPendingPosts((nextPending) => [...nextPending, ...resp]);
         }
 
         setLoading(false);
@@ -310,14 +294,14 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchArchived = async (data, setData) => {
+  const fetchArchived = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextArchived();
         if (resp) {
-          setData([...data, ...resp]);
+          setArchivedPosts((nextArchived) => [...nextArchived, ...resp]);
         }
 
         setLoading(false);
@@ -420,19 +404,15 @@ const Dashboard = ({ ssrData }) => {
   useEffect(() => {
     subscrib();
     setLoaded(true);
-    setPostScroll(fetchPosts);
-    setFollowerScroll(fetchFollowers);
-    setPendingScroll(fetchPending);
-    setArchivedScroll(fetchArchived);
+    fetchPosts();
+    fetchFollowers();
+    fetchPending();
+    fetchArchived();
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
         return true;
       });
-      setPostScroll(null);
-      setFollowerScroll(null);
-      setPendingScroll(null);
-      setArchivedScroll(null);
     };
 
     // eslint-disable-next-line
@@ -547,7 +527,7 @@ const Dashboard = ({ ssrData }) => {
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[14px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[14px] mb-[50px]"
             }
           >
             {activeIndex === 0 ? (
@@ -566,35 +546,65 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
-                {posts.length > 0 &&
-                  posts.map((post, index) => {
-                    return (
-                      <DashList
-                        key={index}
-                        imageSrc={post?.items?.items[0]?.file}
-                        post={post}
-                        className="ph:mb-4 sm:mb-4"
-                      />
-                    );
-                  })}
+                <InfiniteScroll
+                  dataLength={posts.length}
+                  next={fetchPosts}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {posts.length > 0 &&
+                    posts.map((post, index) => {
+                      return (
+                        <DashList
+                          key={index}
+                          imageSrc={post?.items?.items[0]?.file}
+                          post={post}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
               </div>
             ) : null}
 
             {activeIndex === 1 ? (
-              <div className=" flex flex-row flex-wrap ">
-                {followedUsers.map((data, index) => {
-                  return (
-                    <GroupFollowerList
-                      key={index}
-                      imageSrc={data?.user?.pic}
-                      followedUser={data}
-                      followedUsers={followedUsers}
-                      setFollowedUsers={setFollowedUsers}
-                      groupData={groupData}
-                    />
-                  );
-                })}
-              </div>
+              <InfiniteScroll
+                dataLength={followedUsers.length}
+                next={fetchFollowers}
+                hasMore={true}
+                loader={
+                  <Loader
+                    containerClassName={`self-center w-full ${
+                      loading ? "" : "hidden"
+                    }`}
+                    className={`bg-caak-primary`}
+                  />
+                }
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                <div className=" flex flex-row flex-wrap ">
+                  {followedUsers.map((data, index) => {
+                    return (
+                      <GroupFollowerList
+                        key={index}
+                        imageSrc={data?.user?.pic}
+                        followedUser={data}
+                        followedUsers={followedUsers}
+                        setFollowedUsers={setFollowedUsers}
+                        groupData={groupData}
+                      />
+                    );
+                  })}
+                </div>
+              </InfiniteScroll>
             ) : null}
 
             {activeIndex === 2 ? (
@@ -613,22 +623,37 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
-                {pendingPosts.length > 0 &&
-                  pendingPosts.map((pendingPost, index) => {
-                    return (
-                      <>
-                        <GroupPostItem
-                          key={index}
-                          imageSrc={pendingPost?.items?.items[0]?.file}
-                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={pendingPost}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      </>
-                    );
-                  })}
+                <InfiniteScroll
+                  dataLength={pendingPosts.length}
+                  next={fetchPending}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {pendingPosts.length > 0 &&
+                    pendingPosts.map((pendingPost, index) => {
+                      return (
+                        <>
+                          <GroupPostItem
+                            key={index}
+                            imageSrc={pendingPost?.items?.items[0]?.file}
+                            video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={pendingPost}
+                            className="ph:mb-4 sm:mb-4"
+                          />
+                        </>
+                      );
+                    })}
+                </InfiniteScroll>
               </div>
             ) : null}
 
@@ -648,44 +673,38 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
-                {archivedPosts.length > 0 &&
-                  archivedPosts.map((archivedPost, index) => {
-                    return (
-                      <GroupPostItem
-                        key={index}
-                        imageSrc={archivedPost?.items?.items[0]?.file}
-                        video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
-                          "video"
-                        )}
-                        post={archivedPost}
-                        className="ph:mb-4 sm:mb-4"
-                      />
-                    );
-                  })}
+                <InfiniteScroll
+                  dataLength={archivedPosts.length}
+                  next={fetchArchived}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {archivedPosts.length > 0 &&
+                    archivedPosts.map((archivedPost, index) => {
+                      return (
+                        <GroupPostItem
+                          key={index}
+                          imageSrc={archivedPost?.items?.items[0]?.file}
+                          video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={archivedPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
               </div>
             ) : null}
           </div>
-        </div>
-        <div
-          ref={
-            activeIndex === 0
-              ? postRef
-              : activeIndex === 1
-              ? followerRef
-              : activeIndex === 2
-              ? pendingRef
-              : activeIndex === 3
-              ? archivedRef
-              : null
-          }
-          className={"flex justify-center items-center"}
-        >
-          <Loader
-            containerClassName={"self-center"}
-            className={`bg-caak-primary ${
-              loading ? "opacity-100" : "opacity-0"
-            }`}
-          />
         </div>
       </div>
     </div>

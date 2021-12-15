@@ -26,6 +26,8 @@ import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
 import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Divider from "../../../src/components/divider";
+import GroupPostItem from "../../../src/components/group/GroupPostItem";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -42,6 +44,16 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
+      limit: 6,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+  const archivedPosts = await API.graphql({
+    query: getPostByUser,
+    variables: {
+      user_id: query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "ARCHIVED" } },
       limit: 6,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
@@ -78,6 +90,7 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
+        archivedPosts: getReturnData(archivedPosts),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
         userTotals: getReturnData(userTotals),
@@ -100,6 +113,9 @@ const Dashboard = ({ ssrData }) => {
   );
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
+  const [archivedPosts, setArchivedPosts] = useState(
+    ssrData.archivedPosts.items
+  );
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const totalReaction =
@@ -150,11 +166,17 @@ const Dashboard = ({ ssrData }) => {
     },
     {
       id: 1,
+      name: "Архивлагдсан постууд",
+      icon: "icon-fi-rs-archive",
+      // length: archivedPosts.length,
+    },
+    {
+      id: 2,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
     },
     {
-      id: 2,
+      id: 3,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
     },
@@ -169,6 +191,16 @@ const Dashboard = ({ ssrData }) => {
       limit: 5,
     },
     nextToken: ssrData.posts.nextToken,
+  });
+  const [nextArchived] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "ARCHIVED" } },
+      limit: 5,
+    },
+    nextToken: ssrData.archivedPosts.nextToken,
   });
   const [nextComments] = useListPager({
     query: listCommentByUser,
@@ -199,6 +231,23 @@ const Dashboard = ({ ssrData }) => {
         const resp = await nextPosts();
         if (resp) {
           setPosts((nextPosts) => [...nextPosts, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchArchived = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextArchived();
+        if (resp) {
+          setArchivedPosts((nextArchived) => [...nextArchived, ...resp]);
         }
 
         setLoading(false);
@@ -294,6 +343,8 @@ const Dashboard = ({ ssrData }) => {
         });
       },
     });
+
+    console.log(subscriptions);
   };
 
   useEffect(() => {
@@ -306,6 +357,8 @@ const Dashboard = ({ ssrData }) => {
         if (postIndex <= -1) {
           setPosts([subscripedPost.post, ...posts]);
         }
+      } else if (subscripedPost.type === "remove") {
+        setArchivedPosts([subscripedPost.archivedPost, ...archivedPosts]);
       } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
@@ -313,12 +366,14 @@ const Dashboard = ({ ssrData }) => {
         }
       }
     }
+    console.log(subscripedPost);
     // eslint-disable-next-line
   }, [subscripedPost]);
 
   useEffect(() => {
     subscrip();
     fetchPosts();
+    fetchArchived();
     setLoaded(true);
     return () => {
       Object.keys(subscriptions).map((key) => {
@@ -455,7 +510,56 @@ const Dashboard = ({ ssrData }) => {
                 })}
               </InfiniteScroll>
             ) : null}
+
             {activeIndex === 1 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"mb-[16px]"} />
+                <InfiniteScroll
+                  dataLength={archivedPosts.length}
+                  next={fetchArchived}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {archivedPosts.length > 0 &&
+                    archivedPosts.map((archivedPost, index) => {
+                      return (
+                        <GroupPostItem
+                          key={index}
+                          imageSrc={archivedPost?.items?.items[0]?.file}
+                          video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={archivedPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
+              </div>
+            ) : null}
+            {activeIndex === 2 ? (
               <InfiniteScroll
                 dataLength={followedUsers.length}
                 next={fetchFollowers}
@@ -486,7 +590,7 @@ const Dashboard = ({ ssrData }) => {
               </InfiniteScroll>
             ) : null}
 
-            {activeIndex === 2
+            {activeIndex === 3
               ? userComments.length > 0 && (
                   <InfiniteScroll
                     dataLength={userComments.length}

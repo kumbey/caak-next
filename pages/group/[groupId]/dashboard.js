@@ -65,15 +65,15 @@ export async function getServerSideProps({ req, query }) {
       limit: 6,
     },
   });
-  const archivedPosts = await API.graphql({
-    query: getPostByGroup,
-    variables: {
-      group_id: query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "ARCHIVED" } },
-      limit: 6,
-    },
-  });
+  // const archivedPosts = await API.graphql({
+  //   query: getPostByGroup,
+  //   variables: {
+  //     group_id: query.groupId,
+  //     sortDirection: "DESC",
+  //     filter: { status: { eq: "ARCHIVED" } },
+  //     limit: 6,
+  //   },
+  // });
 
   const userList = await API.graphql({
     query: getGroupUsersByGroup,
@@ -103,7 +103,7 @@ export async function getServerSideProps({ req, query }) {
       ssrData: {
         posts: getReturnData(resp),
         pendingPosts: getReturnData(pendingPosts),
-        archivedPosts: getReturnData(archivedPosts),
+        // archivedPosts: getReturnData(archivedPosts),
         groupView: getReturnData(groupView),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
@@ -132,9 +132,9 @@ const Dashboard = ({ ssrData }) => {
   );
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
-  const [archivedPosts, setArchivedPosts] = useState(
-    ssrData.archivedPosts.items
-  );
+  // const [archivedPosts, setArchivedPosts] = useState(
+  //   ssrData.archivedPosts.items
+  // );
   const [groupData] = useState(ssrData.groupView);
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
@@ -198,12 +198,12 @@ const Dashboard = ({ ssrData }) => {
       icon: "icon-fi-rs-pending",
       length: pendingPosts.length,
     },
-    {
-      id: 3,
-      name: "Архивлагдсан постууд",
-      icon: "icon-fi-rs-archive",
-      length: archivedPosts.length,
-    },
+    // {
+    //   id: 3,
+    //   name: "Архивлагдсан постууд",
+    //   icon: "icon-fi-rs-archive",
+    //   length: archivedPosts.length,
+    // },
   ];
   const [nextPosts] = useListPager({
     query: getPostByGroup,
@@ -233,16 +233,16 @@ const Dashboard = ({ ssrData }) => {
     },
     nextToken: ssrData.pendingPosts.nextToken,
   });
-  const [nextArchived] = useListPager({
-    query: getPostByGroup,
-    variables: {
-      group_id: router.query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "ARCHIVED" } },
-      limit: 6,
-    },
-    nextToken: ssrData.archivedPosts.nextToken,
-  });
+  // const [nextArchived] = useListPager({
+  //   query: getPostByGroup,
+  //   variables: {
+  //     group_id: router.query.groupId,
+  //     sortDirection: "DESC",
+  //     filter: { status: { eq: "ARCHIVED" } },
+  //     limit: 6,
+  //   },
+  //   nextToken: ssrData.archivedPosts.nextToken,
+  // });
 
   const fetchPosts = async () => {
     try {
@@ -295,23 +295,23 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchArchived = async () => {
-    try {
-      if (!loading) {
-        setLoading(true);
+  // const fetchArchived = async () => {
+  //   try {
+  //     if (!loading) {
+  //       setLoading(true);
 
-        const resp = await nextArchived();
-        if (resp) {
-          setArchivedPosts((nextArchived) => [...nextArchived, ...resp]);
-        }
+  //       const resp = await nextArchived();
+  //       if (resp) {
+  //         setArchivedPosts((nextArchived) => [...nextArchived, ...resp]);
+  //       }
 
-        setLoading(false);
-      }
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
-  };
+  //       setLoading(false);
+  //     }
+  //   } catch (ex) {
+  //     setLoading(false);
+  //     console.log(ex);
+  //   }
+  // };
   const subscrib = () => {
     let authMode = "AWS_IAM";
     if (isLogged) {
@@ -374,13 +374,13 @@ const Dashboard = ({ ssrData }) => {
         const filteredPending = pendingPosts.filter(
           (item) => item.id !== subscriptionPosts.id
         );
-        const filteredArchived = archivedPosts.filter(
-          (item) => item.id !== subscriptionPosts.id
-        );
+        // const filteredArchived = archivedPosts.filter(
+        //   (item) => item.id !== subscriptionPosts.id
+        // );
 
         setPosts((prev) => [subscriptionPosts, ...prev]);
         setPendingPosts(filteredPending);
-        setArchivedPosts(filteredArchived);
+        // setArchivedPosts(filteredArchived);
       } else if (subscriptionPosts.status === "PENDING") {
         const filtered = pendingPosts.filter(
           (item) => item.id !== subscriptionPosts.id
@@ -396,7 +396,7 @@ const Dashboard = ({ ssrData }) => {
           (item) => item.id !== subscriptionPosts.id
         );
         setPendingPosts(filtered);
-        setArchivedPosts((prev) => [subscriptionPosts, ...prev]);
+        // setArchivedPosts((prev) => [subscriptionPosts, ...prev]);
       }
     }
     // eslint-disable-next-line
@@ -408,7 +408,7 @@ const Dashboard = ({ ssrData }) => {
     fetchPosts();
     fetchFollowers();
     fetchPending();
-    fetchArchived();
+    // fetchArchived();
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();

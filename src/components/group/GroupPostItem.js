@@ -32,7 +32,7 @@ const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
           <div className="flex w-[306px] items-center mr-[36px]">
             <Link
               href={{
-                pathname: `/post/view/${post.id}`,
+                pathname: `/post/view/${post?.id}`,
               }}
             >
               <a>
@@ -55,7 +55,7 @@ const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
             </Link>
             <Link
               href={{
-                pathname: `/post/view/${post.id}`,
+                pathname: `/post/view/${post?.id}`,
               }}
             >
               <a>
@@ -104,16 +104,31 @@ const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
               }.${extractDate(post.createdAt).day}`}
             </p>
           </div>
+          {post.status === "ARCHIVED" ? (
+            <div className=" flex w-[224px] ">
+              <Link href={`/post/edit/${post.id}`}>
+                <a>
+                  <Button
+                    round
+                    className={
+                      "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                    }
+                  >
+                    <p className="">Засах</p>
+                  </Button>
+                </a>
+              </Link>
+            </div>
+          ) : (
+            <div className=" flex w-[224px] ">
+              <Button
+                loading={loading}
+                onClick={() => postHandler(post.id, "CONFIRMED")}
+                className="bg-caak-cardinal w-[112px] text-14px font-inter font-medium  mr-[10px] text-white"
+              >
+                Зөвшөөрөх
+              </Button>
 
-          <div className=" flex w-[224px] ">
-            <Button
-              loading={loading}
-              onClick={() => postHandler(post.id, "CONFIRMED")}
-              className="bg-caak-cardinal w-[112px] text-14px font-inter font-medium  mr-[10px] text-white"
-            >
-              Зөвшөөрөх
-            </Button>
-            {post.status !== "ARCHIVED" && (
               <Button
                 loading={loading}
                 onClick={() => postHandler(post.id, "ARCHIVED")}
@@ -121,8 +136,8 @@ const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
               >
                 Татгалзах
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </>

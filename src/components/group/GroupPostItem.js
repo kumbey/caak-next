@@ -5,13 +5,7 @@ import Button from "../button";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import {
-  extractDate,
-  generateTimeAgo,
-  getFileUrl,
-  getGenderImage,
-} from "../../utility/Util";
-import Divider from "../divider";
+import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
 
 const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
   const [loading, setLoading] = useState(false);

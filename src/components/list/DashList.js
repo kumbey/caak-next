@@ -4,6 +4,7 @@ import { generateTimeAgo, getFileUrl } from "../../utility/Util";
 import Button from "../../components/button";
 
 const DashList = ({ imageSrc, post }) => {
+  console.log(post);
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <div className="relative flex items-center ">
@@ -43,7 +44,7 @@ const DashList = ({ imageSrc, post }) => {
             </div>
           </div>
         </div>
-        <div className="flex w-[107px] mr-[128px]">
+        <div className="flex w-[185px] mr-[50px]">
           <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
             <Link
               href={{
@@ -52,7 +53,7 @@ const DashList = ({ imageSrc, post }) => {
             >
               <a>
                 <p className="text-caak-generalblack text-13px font-normal mx-2">
-                  @{post.user.nickname}
+                  @{post.group.name}
                 </p>
               </a>
             </Link>

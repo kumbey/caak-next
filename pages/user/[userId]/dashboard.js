@@ -475,7 +475,7 @@ const Dashboard = ({ ssrData }) => {
   }, []);
 
   return isLogged && loaded ? (
-    <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
+    <div className=" max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">
         <span
           onClick={() => router.back()}
@@ -708,6 +708,7 @@ const Dashboard = ({ ssrData }) => {
                     archivedPosts.items.map((archivedPost, index) => {
                       return (
                         <GroupPostItem
+                          type={"user"}
                           key={index}
                           imageSrc={archivedPost?.items?.items[0]?.file}
                           video={archivedPost?.items?.items[0]?.file?.type?.startsWith(

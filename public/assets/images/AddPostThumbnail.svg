@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="146.661" height="122.803" viewBox="0 0 146.661 122.803">
+    <defs>
+        <filter id="Rectangle_42" x="0" y="13" width="87.029" height="97.282" filterUnits="userSpaceOnUse">
+            <feOffset dy="5"/>
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feFlood flood-opacity=".071"/>
+            <feComposite operator="in" in2="blur"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="Rectangle_42-2" x="38" y="0" width="108.661" height="122.803" filterUnits="userSpaceOnUse">
+            <feOffset dy="5"/>
+            <feGaussianBlur stdDeviation="5" result="blur-2"/>
+            <feFlood flood-opacity=".071"/>
+            <feComposite operator="in" in2="blur-2"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .cls-1{fill:#fff}.cls-2{fill:#21293c}
+        </style>
+    </defs>
+    <g id="Thumb" transform="translate(15 10)">
+        <g id="Video" transform="rotate(-14.98 92.077 12.087)">
+            <g transform="rotate(15 136.97 -39.654)" style="filter:url(#Rectangle_42)">
+                <rect id="Rectangle_42-3" data-name="Rectangle 42" class="cls-1" width="43.5" height="58" rx="10" transform="matrix(.97 -.26 .26 .97 15 34.26)"/>
+            </g>
+            <path id="Path_74" data-name="Path 74" class="cls-2" d="M2.2 11.809A2.206 2.206 0 0 1 0 9.61V2.2A2.206 2.206 0 0 1 2.2 0h9.169a2.191 2.191 0 0 1 2.2 2.2v7.41a2.205 2.205 0 0 1-2.2 2.2zm15.92-1.386-3.453-1.979v-5.1L18.1 1.363a1.123 1.123 0 0 1 .374-.154A1.324 1.324 0 0 1 20.1 2.485V9.28a1.34 1.34 0 0 1-.176.66 1.322 1.322 0 0 1-1.14.666 1.307 1.307 0 0 1-.664-.183z" transform="translate(11.95 23.258)"/>
+        </g>
+        <g id="Photo" transform="rotate(14.98 29.25 222.82)">
+            <g transform="matrix(.97 -.26 .26 .97 -73.78 9.42)" style="filter:url(#Rectangle_42-2)">
+                <rect id="Rectangle_42-4" data-name="Rectangle 42" class="cls-1" width="60" height="80" rx="10" transform="matrix(.97 .26 -.26 .97 73.71 10)"/>
+            </g>
+            <path id="Path_73" data-name="Path 73" class="cls-2" d="M1.4 28A1.323 1.323 0 0 1 0 26.6V1.4A1.323 1.323 0 0 1 1.4 0h25.2A1.323 1.323 0 0 1 28 1.4v25.2a1.322 1.322 0 0 1-1.4 1.4zm1.4-5.6 8.4-8.4 4.2 4.2 7-7 2.8 2.8V2.8H2.8zm2.8-14a2.8 2.8 0 1 1 2.8 2.8 2.8 2.8 0 0 1-2.8-2.8z" transform="translate(16 26)"/>
+        </g>
+    </g>
+</svg>

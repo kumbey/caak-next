@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Divider from "../divider";
-import { extractDate, generateFileUrl } from "../../utility/Util";
+import {extractDate, generateFileUrl, getGenderImage} from "../../utility/Util";
 import Button from "../button";
 
 const GroupInfo = ({ groupData, totalMember }) => {
@@ -11,7 +11,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
       <div className={"h-[34px] w-full relative"}>
         <Image
           alt={"group cover"}
-          src={generateFileUrl(groupData?.cover)}
+          src={groupData.cover ? generateFileUrl(groupData?.cover) : getGenderImage("default")}
           layout={"fill"}
           objectFit={"cover"}
           className={"rounded-t-square"}
@@ -27,7 +27,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
             >
               <Image
                 alt={"profile picture"}
-                src={generateFileUrl(groupData.profile)}
+                src={groupData.profile ? generateFileUrl(groupData?.profile) : getGenderImage("default")}
                 objectFit={"cover"}
                 height={48}
                 width={48}

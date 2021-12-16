@@ -10,7 +10,7 @@ import {
 } from "../../../src/graphql-custom/group/queries";
 import { getReturnData } from "../../../src/utility/Util";
 import { getPost } from "../../../src/graphql-custom/post/queries";
-import { crtPost, pdtPost } from "../../../src/apis/post";
+import { crtPost } from "../../../src/apis/post";
 import UploadedMediaEdit from "../../../src/components/input/UploadedMediaEdit";
 import DropZoneWithCaption from "../../../src/components/input/DropZoneWithCaption";
 import useAddPostLayout from "../../../src/hooks/useAddPostLayout";
@@ -153,16 +153,9 @@ const AddPost = () => {
   const uploadPost = async () => {
     try {
       setLoading(true);
-      if (groupId === "new") {
-        await crtPost(post, user.id);
-      } else if (postId) {
-        await pdtPost(post, user.id);
-      } else {
-        await crtPost(post, user.id);
-      }
+      await crtPost(post, user.id);
 
       setLoading(false);
-      // closeModal(history, state);
 
       history.push({ pathname: `/user/${user.id}/profile` }, { index: 2 });
       // setActiveIndex(2)
@@ -171,7 +164,6 @@ const AddPost = () => {
       console.log(ex);
     }
   };
-
   return !permissionDenied ? (
     <div className={"addPostPadding"}>
       <AddPostLayout selectedGroup={selectedGroup}>
@@ -202,6 +194,7 @@ const AddPost = () => {
 
             <div className={"flex flex-row pb-4 px-4 justify-end"}>
               <Button
+                onClick={() => history.back()}
                 className={
                   "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
                 }

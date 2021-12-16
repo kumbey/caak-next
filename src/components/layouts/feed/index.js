@@ -14,6 +14,7 @@ const DefaultFeedLayout = ({
   columns,
   myGroups,
   adminModeratorGroups,
+  allGroups,
   hideAura,
   hideSuggestedGroups,
   search,
@@ -22,8 +23,7 @@ const DefaultFeedLayout = ({
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
-  const [sortType, setSortType] = useState("DEFAULT")
-
+  const [sortType, setSortType] = useState("DEFAULT");
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -36,24 +36,35 @@ const DefaultFeedLayout = ({
     loaded && (
       <div className={"feedLayoutContainer"}>
         {columns === 3 && (
-          <div className={`leftSideBar ${isTablet ? "hidden" : "block"}`}>
-            <FeedSortButtons items={feedType} direction={"column"} sortType={sortType} setSortType={setSortType} />
-            <Divider color={"border-titaniumwhite"} className={"py-5"} />
+          <div
+            className={`leftSideBar pr-[10px] overflow-hidden hover:overflow-y-scroll ${
+              isTablet ? "hidden" : "block"
+            }`}
+          >
+            <FeedSortButtons
+              items={feedType}
+              direction={"column"}
+              sortType={sortType}
+              setSortType={setSortType}
+            />
             <SideBarGroups
-              role={"ADMIN"}
-              maxColumns={3}
+              role={["ADMIN","MODERATOR"]}
+              // maxColumns={3}
               addGroup
               initialData={adminModeratorGroups}
               title={"Миний группүүд"}
             />
-            <Divider color={"border-titaniumwhite"} className={"py-5"} />
             <SideBarGroups
-              role={"MEMBER"}
-              maxColumns={4}
+              role={["MEMBER"]}
+              // maxColumns={0}
               initialData={myGroups}
               title={"Дагасан группүүд"}
             />
-            <Divider color={"border-titaniumwhite"} className={"py-5"} />
+            <SideBarGroups
+              role={["NOT_MEMBER"]}
+              initialData={allGroups}
+              title={"Бүх групп"}
+            />
             {isLogged && <FooterSidebar />}
           </div>
         )}

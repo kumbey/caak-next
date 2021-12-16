@@ -67,7 +67,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               hideCaakText
               itemId={postItem.id}
               totals={postItem.totals}
-              reacted={postItem.reacted}
+              reacted={true}
               setReacted={(changedReacted) => {
                 postItem.reacted = changedReacted;
               }}

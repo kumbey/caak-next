@@ -67,9 +67,9 @@ export async function getServerSideProps({ req, res, query }) {
   const post = await getPostById();
   const groups = await getGroups();
 
-  if (post.status === "PENDING") {
-    return { notFound: true };
-  } else {
+  // if (post.status === "PENDING") {
+  //   return { notFound: true };
+  // } else {
     return {
       props: {
         ssrData: {
@@ -78,10 +78,10 @@ export async function getServerSideProps({ req, res, query }) {
         },
       },
     };
-  }
+  // }
 }
 
-const EditPost = ({ ssrData, error }) => {
+const EditPost = ({ ssrData }) => {
   const router = useRouter();
   const AddPostLayout = useAddPostLayout();
   const { user } = useUser();
@@ -150,7 +150,6 @@ const EditPost = ({ ssrData, error }) => {
       console.log(ex);
     }
   };
-
   return (
     <div className={"addPostPadding"}>
       <AddPostLayout selectedGroup={selectedGroup}>

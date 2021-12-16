@@ -8,6 +8,7 @@ const AddPostCardSmall = ({ post, setPost }) => {
       }
     >
       <DropZone
+        hideThumbnailImage
         className={"h-full w-full bg-white"}
         post={post}
         setPost={setPost}

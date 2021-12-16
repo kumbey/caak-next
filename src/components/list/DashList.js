@@ -8,7 +8,6 @@ import {
 import Button from "../../components/button";
 
 const DashList = ({ imageSrc, post, type }) => {
-  console.log(post);
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <div className="relative flex items-center ">

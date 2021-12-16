@@ -31,6 +31,7 @@ const user0001 = /* GraphQL */ `{
       following
       confirmed
     }
+    meta
   }`;
 
 export default user0001;

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   generateTimeAgo,
   getFileUrl,
+  getGenderImage,
   useClickOutSide,
 } from "../../../utility/Util";
 import Dummy from "dummyjs";
@@ -10,6 +11,7 @@ import DropDown from "../../navigation/DropDown";
 import PostMoreMenu from "../PostMoreMenu";
 import Link from "next/link";
 import ProfileHoverCard from "../ProfileHoverCard";
+import Image from "next/image";
 
 const CardHeader = ({
   post,
@@ -31,35 +33,33 @@ const CardHeader = ({
         containerClassname ? containerClassname : "p-[16px]"
       } `}
     >
-      <div className={"flex justify-between items-center"}>
-        <div className="flex justify-between items-center">
+      <div className={"flex justify-between items-center h-[34px]"}>
+        <div className="flex justify-between items-center h-full">
           <div
-            className={`relative border border-caak-titaniumwhite rounded-square w-[34px] h-[34px]`}
+            className={`relative flex-shrink-0 border border-caak-titaniumwhite rounded-square w-[34px] h-[34px]`}
           >
-            <img
-              className={`object-cover 
-              w-[34px] h-[34px]
-              m-34px rounded-square`}
+            <Image
+              className={`rounded-square`}
+              width={34}
+              height={34}
               src={
                 post.group.profile
                   ? getFileUrl(post.group?.profile)
-                  : Dummy.img("100x100")
+                  : getGenderImage("default")
               }
-              alt="Alex"
+              alt="Group profile"
             />
           </div>
 
-          <div className="ml-3">
+          <div className="flex flex-col justify-between ml-[8px] h-full">
             <div className={"flex flex-row items-center"}>
-              <Link href={`/group/${post.group.id}`}>
-                <a>
-                  <span className="mr-1 font-semibold cursor-pointer text-generalblack text-14px leading-[16px] tracking-[0.21px]">
-                    {post.group.name}
-                  </span>
-                </a>
-              </Link>
-              {verifiedUser ? (
-                <i
+              <span className="mr-1 font-semibold cursor-pointer text-generalblack text-14px leading-[16px] tracking-[0.21px]">
+                <Link href={`/group/${post.group.id}`}>
+                  <a>{post.group.name}</a>
+                </Link>
+              </span>
+              {post.group.verified ? (
+                <span
                   className={
                     "icon-fi-rs-verified text-caak-buttonblue text-13px mr-1.5"
                   }
@@ -67,6 +67,9 @@ const CardHeader = ({
               ) : (
                 ""
               )}
+            </div>
+            <div className={"flex flex-row items-center h-[16px]"}>
+              {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
               <Tooltip
                 className={"-left-14"}
                 content={
@@ -76,21 +79,32 @@ const CardHeader = ({
                   />
                 }
               >
-                <Link
-                  href={{
-                    pathname: `/user/${post.user.id}/profile`,
-                  }}
-                >
-                  <a>
-                    <p className="cursor-pointer hover:underline text-generalblack text-13px leading-[16px] tracking-[0.2px]">
-                      @{post.user.nickname}
-                    </p>
-                  </a>
-                </Link>
+                <div className={"flex flex-row items-center"}>
+                  <Link
+                    href={{
+                      pathname: `/user/${post.user.id}/profile`,
+                    }}
+                  >
+                    <a>
+                      <p className="cursor-pointer hover:underline text-generalblack text-[13px] leading-[16px] tracking-[0.2px]">
+                        @{post.user.nickname}
+                      </p>
+                    </a>
+                  </Link>
+                  {post.user.verified ? (
+                    <span
+                      className={
+                        "icon-fi-rs-verified text-caak-buttonblue text-13px mr-1.5"
+                      }
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
               </Tooltip>
-            </div>
-            <div className={"flex flex-row items-center"}>
-              {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
+              <span className={"flex items-center text-darkblue"}>
+                &nbsp;&#903;&nbsp;
+              </span>
               <span
                 className={
                   "text-darkblue text-12px leading-[15px] tracking-[0.18px]"

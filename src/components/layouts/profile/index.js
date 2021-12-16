@@ -13,14 +13,13 @@ import { useCallback, useEffect, useState } from "react";
 import {
   createFollowedUsers,
   deleteFollowedUsers,
+  updateUser,
 } from "../../../graphql-custom/user/mutation";
-import { getUserById } from "../../../utility/ApiHelper";
+import { ApiFileUpload } from "../../../utility/ApiHelper";
 
 import awsExports from "../../../aws-exports";
 import Dropzone from "react-dropzone";
-import { ApiFileUpload } from "../../../utility/ApiHelper";
 import { API, graphqlOperation } from "aws-amplify";
-import { updateUser } from "../../../graphql-custom/user/mutation";
 import { deleteFile } from "../../../graphql-custom/file/mutation";
 import Loader from "../../loader";
 import { useRouter } from "next/router";
@@ -28,10 +27,8 @@ import { useRouter } from "next/router";
 const DefaultUserProfileLayout = ({ user, children }) => {
   const router = useRouter();
   const userId = router.query.userId;
-  const [uploading, setUploading] = useState(false);
   const { user: signedUser, isLogged } = useUser();
   const [doRender, setDoRender] = useState(0);
-
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
 
@@ -97,7 +94,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     }
   };
 
-
   const handleClick = () => {
     if (isLogged) {
       if (!user.followed) {
@@ -121,24 +117,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     }
   };
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   if (userId)
-  //     if (isLogged) {
-  //       getUserById({ id: userId, setUser: setProfileUser }).then(() =>
-  //         setLoading(false)
-  //       );
-  //     } else {
-  //       getUserById({
-  //         id: userId,
-  //         setUser: setProfileUser,
-  //         authMode: "AWS_IAM",
-  //       }).then(() => setLoading(false));
-  //     }
-
-  //   // eslint-disable-next-line
-  // }, [userId]);
-
   const createFollowUser = async () => {
     await API.graphql({
       query: createFollowedUsers,
@@ -155,12 +133,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     setDoRender(doRender + 1);
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     setProfileUser(null);
-  //   };
-  // }, []);
-
   const deleteFollowUser = async () => {
     await API.graphql({
       query: deleteFollowedUsers,
@@ -175,9 +147,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     setDoRender(doRender + 1);
   };
 
-  useEffect(() => {
-    console.log(signedUser);
-  }, [signedUser]);
   useEffect(() => {
     if (coverPictureDropZone.name) {
       setUploadingCover(true);
@@ -294,7 +263,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           }
         >
           <p className={"text-caak-extraBlack text-[15px] font-medium"}>
-            Цолнууд
+            Шагналууд
           </p>
           <div className={"ml-[12px] flex flex-row"}>
             <div
@@ -623,17 +592,11 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 />
               </div>
             </div>
-            <div
-              className={
-                "border-t-[1px] border-b-[1px] border-caak-titaniumwhite py-[18px]"
-              }
-            >
+            <div className={"h-screen overflow-y-auto"}>
               <SideBarGroups
-                role={"ADMIN"}
-                maxColumns={3}
-                userId={user?.id}
-                // initialData={adminModeratorGroups}
-                title={"Үүсгэсэн группүүд"}
+                role={["ADMIN", "MODERATOR"]}
+                userId={user.id}
+                title={"Группүүд"}
               />
             </div>
           </div>

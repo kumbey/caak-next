@@ -301,6 +301,7 @@
   }
 
   .profileLayoutLeftSideBar {
+    height: calc(100vh - 280px);
     flex-basis: 232px;
     min-width: 232px;
     max-width: 232px;

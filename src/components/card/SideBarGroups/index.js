@@ -17,6 +17,7 @@ const SideBarGroups = ({
   maxColumns,
   role,
   initialData,
+  userId,
 }) => {
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const { isLogged, user } = useUser();
@@ -34,7 +35,7 @@ const SideBarGroups = ({
         } else {
           const resp = await API.graphql(
             graphqlOperation(listGroupByUserAndRole, {
-              user_id: user.id,
+              user_id: userId ? userId : user.id,
               role: { eq: role[i] },
             })
           );
@@ -54,10 +55,10 @@ const SideBarGroups = ({
 
   useEffect(() => {
     if (!initialData && isLogged) {
-      getGroups()
+      getGroups();
     }
     // eslint-disable-next-line
-  }, [isLogged]);
+  }, [isLogged, userId]);
 
   return groupData && groupData.length > 0 ? (
     <div

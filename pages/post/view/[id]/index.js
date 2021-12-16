@@ -195,15 +195,16 @@ const Post = ({ ssrData }) => {
             {post.description}
           </p>
           {post.items.items.map((item, index) => {
-            return (
-              <ViewPostBlogItem
-                singleItem={post.items.items.length <= 1}
-                key={index}
-                index={index}
-                postId={post.id}
-                postItem={item}
-              />
-            );
+            if (index > 0)
+              return (
+                <ViewPostBlogItem
+                  singleItem={post.items.items.length <= 1}
+                  key={index}
+                  index={index}
+                  postId={post.id}
+                  postItem={item}
+                />
+              );
           })}
         </div>
         {post.status === "CONFIRMED" && (

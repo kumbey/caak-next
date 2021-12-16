@@ -473,6 +473,21 @@
   .commentFade {
     animation: highlight 1s;
   }
+
+  .imageContainer {
+    width: 100%;
+  }
+
+  .imageContainer > span {
+    position: unset !important;
+  }
+
+  .imageContainer img {
+    object-fit: cover;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+  }
 }
 .react-player {
   position: absolute;

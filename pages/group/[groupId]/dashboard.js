@@ -118,7 +118,7 @@ const Dashboard = ({ ssrData }) => {
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [render, setRender] = useState(0)
+  const [render, setRender] = useState(0);
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
@@ -379,12 +379,12 @@ const Dashboard = ({ ssrData }) => {
         if (postIndex <= -1) {
           setPosts([subscriptionPosts, ...posts]);
           pendingPosts.splice(pendingIndex, 1);
-          setRender(render + 1)
+          setRender(render + 1);
         }
       } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          setRender(render + 1)
+          setRender(render + 1);
         }
       }
 
@@ -395,13 +395,13 @@ const Dashboard = ({ ssrData }) => {
         //
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          setRender(render + 1)
+          setRender(render + 1);
         }
       }
       if (subscriptionPosts.status === "ARCHIVED") {
         if (pendingIndex > -1) {
           pendingPosts.splice(pendingIndex, 1);
-          setRender(render + 1)
+          setRender(render + 1);
         }
       }
     }
@@ -507,11 +507,13 @@ const Dashboard = ({ ssrData }) => {
         <div className="flex flex-col w-full">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <div className="font-inter font-normal text-16px text-caak-generalblack mr-[10px]">
+              <p
+                className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
+              >
                 {dashMenu[activeIndex].name}
-              </div>
-              <div className="text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
-                <p className="text-caak-bleudefrance text-opacity-100 mx-2 ">
+              </p>
+              <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <p className="text-caak-bleudefrance text-opacity-100 ">
                   {dashMenu[activeIndex].length}
                 </p>
               </div>
@@ -598,7 +600,7 @@ const Dashboard = ({ ssrData }) => {
                 }
                 endMessage={<h4>Nothing more to show</h4>}
               >
-                <div className=" flex flex-row flex-wrap justify-between">
+                <div className=" flex flex-row flex-wrap justify-between ">
                   {followedUsers.map((data, index) => {
                     return (
                       <GroupFollowerList

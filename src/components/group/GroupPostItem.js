@@ -6,6 +6,8 @@ import { updatePost } from "../../graphql-custom/post/mutation";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
+import Tooltip from "../tooltip/Tooltip";
+import ProfileHoverCard from "../card/ProfileHoverCard";
 
 const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
   const [loading, setLoading] = useState(false);
@@ -80,22 +82,26 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
                 }
                 width={28}
                 height={28}
-                layout="responsive"
+                objectFit="cover"
                 alt="#"
               />
             </div>
-
-            <Link
-              href={{
-                pathname: `/user/${post.user_id}/profile`,
-              }}
+            <Tooltip
+              className={"-left-14"}
+              content={<ProfileHoverCard userId={post.user.id} />}
             >
-              <a>
-                <div className="break-all truncate-3 text-13px font-inter font-normal text-caak-darkBlue">
-                  @{post.user.nickname}
-                </div>
-              </a>
-            </Link>
+              <Link
+                href={{
+                  pathname: `/user/${post.user_id}/profile`,
+                }}
+              >
+                <a>
+                  <div className="break-all truncate-3 text-13px font-inter font-normal text-caak-darkBlue">
+                    @{post.user.nickname}
+                  </div>
+                </a>
+              </Link>
+            </Tooltip>
           </div>
           <div className="flex w-[61px] mr-[28px]">
             <p

@@ -5,6 +5,8 @@ import { getFileUrl, getGenderImage } from "../../utility/Util";
 import { API, graphqlOperation } from "aws-amplify";
 import Image from "next/image";
 import { deleteGroupUsers } from "../../graphql-custom/GroupUsers/mutation";
+import Tooltip from "../tooltip/Tooltip";
+import ProfileHoverCard from "../card/ProfileHoverCard";
 
 const GroupFollowerList = ({
   imageSrc,
@@ -59,17 +61,22 @@ const GroupFollowerList = ({
             />
           </div>
           <div className="flex flex-col">
-            <Link
-              href={{
-                pathname: `/user/${followedUser.user_id}/profile`,
-              }}
+            <Tooltip
+              className={"-left-14"}
+              content={<ProfileHoverCard userId={followedUser.user_id} />}
             >
-              <a>
-                <div className="text-15px text-caak-generalblack font-semibold font-inter">
-                  @{followedUser?.user?.nickname}
-                </div>
-              </a>
-            </Link>
+              <Link
+                href={{
+                  pathname: `/user/${followedUser.user_id}/profile`,
+                }}
+              >
+                <a>
+                  <div className="text-15px text-caak-generalblack font-semibold font-inter">
+                    @{followedUser?.user?.nickname}
+                  </div>
+                </a>
+              </Link>
+            </Tooltip>
             <div className="flex items-center">
               <span className="icon-fi-rs-aura mr-1 text-20px" />
               <p className="font-inter font-medium text-14px text-caak-darkBlue">

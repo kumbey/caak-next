@@ -7,6 +7,8 @@ import Image from "next/image";
 import { deleteFollowedUsers } from "../../graphql-custom/user/mutation";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
+import Tooltip from "../tooltip/Tooltip";
+import ProfileHoverCard from "../card/ProfileHoverCard";
 
 const FollowerList = ({
   imageSrc,
@@ -67,17 +69,24 @@ const FollowerList = ({
             />
           </div>
           <div className="flex flex-col">
-            <Link
-              href={{
-                pathname: `/user/${followedUser.followed_user_id}/profile`,
-              }}
+            <Tooltip
+              className={"-left-14"}
+              content={
+                <ProfileHoverCard userId={followedUser.followed_user_id} />
+              }
             >
-              <a>
-                <div className="text-15px text-caak-generalblack font-semibold font-inter">
-                  @{followedUser.follower_user.nickname}
-                </div>
-              </a>
-            </Link>
+              <Link
+                href={{
+                  pathname: `/user/${followedUser.followed_user_id}/profile`,
+                }}
+              >
+                <a>
+                  <div className="text-15px text-caak-generalblack font-semibold font-inter">
+                    @{followedUser.follower_user.nickname}
+                  </div>
+                </a>
+              </Link>
+            </Tooltip>
             <div className="flex items-center">
               <span className="icon-fi-rs-aura mr-1 text-20px" />
               <p className="font-inter font-medium text-14px text-caak-darkBlue">

@@ -572,11 +572,13 @@ const Dashboard = ({ ssrData }) => {
         <div className="flex flex-col w-full">
           <div className="flex justify-between">
             <div className="flex items-center">
-              <div className="font-inter font-normal text-16px text-caak-generalblack mr-[10px]">
+              <p
+                className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
+              >
                 {dashMenu[activeIndex].name}
-              </div>
-              <div className="text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
-                <p className="text-caak-bleudefrance text-opacity-100 mx-2 ">
+              </p>
+              <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <p className="text-caak-bleudefrance text-opacity-100 ">
                   {dashMenu[activeIndex].length}
                 </p>
               </div>

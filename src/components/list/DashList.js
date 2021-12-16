@@ -6,6 +6,8 @@ import {
   getGenderImage,
 } from "../../utility/Util";
 import Button from "../../components/button";
+import Tooltip from "../tooltip/Tooltip";
+import ProfileHoverCard from "../card/ProfileHoverCard";
 
 const DashList = ({ imageSrc, post, type }) => {
   return (
@@ -49,34 +51,41 @@ const DashList = ({ imageSrc, post, type }) => {
         </div>
         <div className="flex w-[185px] mr-[50px]">
           {type === "group" ? (
-            <div className="flex items-center w-[141px] mr-[69px]">
-              <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>
-                <Image
-                  className=" bg-white rounded-full"
-                  src={
-                    !post?.user?.pic
-                      ? getGenderImage("default")
-                      : getFileUrl(post?.user?.pic)
-                  }
-                  width={28}
-                  height={28}
-                  layout="responsive"
-                  alt="#"
-                />
-              </div>
+            <Tooltip
+              className={"-left-14"}
+              content={
+                <ProfileHoverCard userId={post.user.id} postUser={post.user} />
+              }
+            >
+              <div className="flex items-center w-[141px] mr-[69px]">
+                <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>
+                  <Image
+                    className=" bg-white rounded-full"
+                    src={
+                      !post?.user?.pic
+                        ? getGenderImage("default")
+                        : getFileUrl(post?.user?.pic)
+                    }
+                    width={28}
+                    height={28}
+                    objectFit="cover"
+                    alt="#"
+                  />
+                </div>
 
-              <Link
-                href={{
-                  pathname: `/user/${post.user_id}/profile`,
-                }}
-              >
-                <a>
-                  <div className=" text-13px font-inter font-normal text-caak-darkBlue">
-                    @{post.user.nickname}
-                  </div>
-                </a>
-              </Link>
-            </div>
+                <Link
+                  href={{
+                    pathname: `/user/${post.user_id}/profile`,
+                  }}
+                >
+                  <a>
+                    <div className=" text-13px font-inter font-normal text-caak-darkBlue">
+                      @{post.user.nickname}
+                    </div>
+                  </a>
+                </Link>
+              </div>
+            </Tooltip>
           ) : type === "user" ? (
             <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
               <Link
@@ -86,7 +95,7 @@ const DashList = ({ imageSrc, post, type }) => {
               >
                 <a>
                   <p className="text-caak-generalblack text-13px font-normal mx-2">
-                    @{post.group.name}
+                    {post.group.name}
                   </p>
                 </a>
               </Link>

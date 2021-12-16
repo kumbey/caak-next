@@ -47,7 +47,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
                     width={64}
                     height={64}
                     layout="responsive"
-                    //   objectFit={"cover"}
+                    objectFit={"cover"}
                     alt="#"
                   />
                 </div>

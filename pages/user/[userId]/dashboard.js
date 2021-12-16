@@ -26,6 +26,8 @@ import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
 import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Divider from "../../../src/components/divider";
+import GroupPostItem from "../../../src/components/group/GroupPostItem";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -42,16 +44,37 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 20,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+  const pendingPosts = await API.graphql({
+    query: getPostByUser,
+    variables: {
+      user_id: query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
-  const userList = await API.graphql({
+  const archivedPosts = await API.graphql({
+    query: getPostByUser,
+    variables: {
+      user_id: query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "ARCHIVED" } },
+      limit: 20,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+
+  const followedUsers = await API.graphql({
     query: listUsersbyFollowed,
     variables: {
       user_id: query.userId,
-      limit: 6,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -61,7 +84,7 @@ export async function getServerSideProps({ req, query }) {
     variables: {
       user_id: query.userId,
       sortDirection: "DESC",
-      limit: 10,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -78,8 +101,10 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
-        userFollower: getReturnData(userList),
-        userComment: getReturnData(userComments),
+        pendingPosts: getReturnData(pendingPosts),
+        archivedPosts: getReturnData(archivedPosts),
+        followedUsers: getReturnData(followedUsers),
+        userComments: getReturnData(userComments),
         userTotals: getReturnData(userTotals),
       },
     },
@@ -93,19 +118,26 @@ const Dashboard = ({ ssrData }) => {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [userInfo] = useState(ssrData.userTotals);
+  const [userTotals] = useState(ssrData.userTotals);
 
-  const [followedUsers, setFollowedUsers] = useState(
-    ssrData.userFollower.items
-  );
-  const [userComments, setUserComments] = useState(ssrData.userComment.items);
-  const [posts, setPosts] = useState(ssrData.posts.items);
+  const [followedUsers, setFollowedUsers] = useState(ssrData.followedUsers);
+  const [userComments, setUserComments] = useState(ssrData.userComments);
+  const [posts, setPosts] = useState(ssrData.posts);
+  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts);
+
+  const [archivedPosts, setArchivedPosts] = useState(ssrData.archivedPosts);
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const totalReaction =
-    userInfo?.comment_reactions +
-    userInfo?.post_reactions +
-    userInfo?.post_items_reactions;
+    userTotals?.comment_reactions +
+    userTotals?.post_reactions +
+    userTotals?.post_items_reactions;
+
+  const totalPost = userTotals?.confirmed;
+  const totalMember = userTotals?.followers;
+  const totalComment = userTotals?.comments;
+  const totalArchived = userTotals?.archived;
+  const totalPending = userTotals?.pending;
 
   const stats = [
     {
@@ -127,7 +159,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 2,
       icon: "icon-fi-rs-comment-f",
-      number: userComments?.length,
+      number: totalComment,
       text: "Нийт сэтгэгдэл",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
@@ -135,7 +167,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 3,
       icon: "icon-fi-rs-view",
-      number: userInfo?.post_views,
+      number: userTotals?.post_views,
       text: "Нийт пост үзсэн",
       bgcolor: "bg-caak-errigalwhite",
       color: "text-caak-darkBlue",
@@ -147,16 +179,31 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
+      length: totalPost,
     },
     {
       id: 1,
-      name: "Дагагчид",
-      icon: "icon-fi-rs-friends-o",
+      name: "Хүлээгдэж буй постууд",
+      icon: "icon-fi-rs-pending",
+      length: totalPending,
     },
     {
       id: 2,
+      name: "Архивлагдсан постууд",
+      icon: "icon-fi-rs-archive",
+      length: totalArchived,
+    },
+    {
+      id: 3,
+      name: "Дагагчид",
+      icon: "icon-fi-rs-friends-o",
+      length: totalMember,
+    },
+    {
+      id: 4,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
+      length: totalComment,
     },
   ];
 
@@ -166,18 +213,38 @@ const Dashboard = ({ ssrData }) => {
       user_id: router.query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 5,
+      limit: 20,
     },
-    nextToken: ssrData.posts.nextToken,
+    nextToken: posts.nextToken,
+  });
+  const [nextPending] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 20,
+    },
+    nextToken: pendingPosts.nextToken,
+  });
+  const [nextArchived] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "ARCHIVED" } },
+      limit: 20,
+    },
+    nextToken: archivedPosts.nextToken,
   });
   const [nextComments] = useListPager({
     query: listCommentByUser,
     variables: {
       user_id: router.query.userId,
       sortDirection: "DESC",
-      limit: 10,
+      limit: 20,
     },
-    nextToken: ssrData.userComment.nextToken,
+    nextToken: userComments.nextToken,
 
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -185,12 +252,11 @@ const Dashboard = ({ ssrData }) => {
     query: listUsersbyFollowed,
     variables: {
       user_id: router.query.userId,
-      limit: 6,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    nextToken: ssrData.userFollower.nextToken,
+    nextToken: followedUsers.nextToken,
   });
-
   const fetchPosts = async () => {
     try {
       if (!loading) {
@@ -198,7 +264,51 @@ const Dashboard = ({ ssrData }) => {
 
         const resp = await nextPosts();
         if (resp) {
-          setPosts((nextPosts) => [...nextPosts, ...resp]);
+          setPosts((nextPosts) => ({
+            ...nextPosts,
+            items: [...nextPosts.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+
+  const fetchPending = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextPending();
+        if (resp) {
+          setPendingPosts((nextPending) => ({
+            ...nextPending,
+            items: [...nextPending.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchArchived = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextArchived();
+        if (resp) {
+          setArchivedPosts((nextArchived) => ({
+            ...nextArchived,
+            items: [...nextArchived.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -215,7 +325,10 @@ const Dashboard = ({ ssrData }) => {
 
         const resp = await nextComments();
         if (resp) {
-          setUserComments((nextComments) => [...nextComments, ...resp]);
+          setUserComments((nextComments) => ({
+            ...nextComments,
+            items: [...nextComments.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -232,7 +345,10 @@ const Dashboard = ({ ssrData }) => {
 
         const resp = await nextFollowers();
         if (resp) {
-          setUserComments((nextComments) => [...nextComments, ...resp]);
+          setFollowedUsers((nextFollowers) => ({
+            ...nextFollowers,
+            items: [...nextFollowers.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -298,18 +414,46 @@ const Dashboard = ({ ssrData }) => {
 
   useEffect(() => {
     if (subscripedPost) {
+      const pendingIndex = pendingPosts.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
       const postIndex = posts.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
-
-      if (subscripedPost.type === "add") {
-        if (postIndex <= -1) {
-          setPosts([subscripedPost.post, ...posts]);
+      const archivedIndex = archivedPosts.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
+      if (subscripedPost.post.status === "CONFIRMED") {
+        if (subscripedPost.type === "add") {
+          if (postIndex <= -1) {
+            setPosts([subscripedPost.post, ...posts]);
+            pendingPosts.splice(pendingIndex, 1);
+            archivedPosts.splice(archivedIndex, 1);
+          }
+        } else {
+          if (postIndex > -1) {
+            posts.splice(postIndex, 1);
+            // setRender(render + 1);
+          }
         }
-      } else {
+      }
+      if (subscripedPost.post.status === "PENDING") {
+        if (pendingIndex === -1) {
+          setPendingPosts([subscripedPost.post, ...pendingPosts]);
+        }
+        if (archivedIndex > -1) {
+          archivedPosts.splice(archivedIndex, 1);
+        }
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          // setRender(render + 1);
+        }
+      }
+      if (subscripedPost.post.status === "ARCHIVED") {
+        if (archivedIndex === -1) {
+          setArchivedPosts([subscripedPost.post, ...archivedPosts]);
+        }
+        if (pendingIndex > -1) {
+          pendingPosts.splice(pendingIndex, 1);
         }
       }
     }
@@ -318,7 +462,7 @@ const Dashboard = ({ ssrData }) => {
 
   useEffect(() => {
     subscrip();
-    fetchPosts();
+
     setLoaded(true);
     return () => {
       Object.keys(subscriptions).map((key) => {
@@ -411,8 +555,15 @@ const Dashboard = ({ ssrData }) => {
         </div>
         <div className="flex flex-col w-full">
           <div className="flex justify-between">
-            <div className="font-inter font-semibold text-20px text-caak-generalblack">
-              {dashMenu[activeIndex].name}
+            <div className="flex items-center">
+              <div className="font-inter font-normal text-16px text-caak-generalblack mr-[10px]">
+                {dashMenu[activeIndex].name}
+              </div>
+              <div className="text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <p className="text-caak-bleudefrance text-opacity-100 mx-2 ">
+                  {dashMenu[activeIndex].length}
+                </p>
+              </div>
             </div>
             <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
               <div className="flex items-center  mx-[12px] my-[10px]">
@@ -429,35 +580,150 @@ const Dashboard = ({ ssrData }) => {
             }
           >
             {activeIndex === 0 ? (
-              <InfiniteScroll
-                dataLength={posts.length}
-                next={fetchPosts}
-                hasMore={true}
-                loader={
-                  <Loader
-                    containerClassName={`self-center w-full ${
-                      loading ? "" : "hidden"
-                    }`}
-                    className={`bg-caak-primary`}
-                  />
-                }
-                endMessage={<h4>Nothing more to show</h4>}
-              >
-                {posts.map((post, index) => {
-                  return (
-                    <DashList
-                      key={index}
-                      imageSrc={post?.items?.items[0]?.file}
-                      post={post}
-                      className="ph:mb-4 sm:mb-4"
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
+                    Групп
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[161px]">
+                    Хандалт
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"mb-[16px]"} />
+                <InfiniteScroll
+                  dataLength={posts.items.length}
+                  next={fetchPosts}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
                     />
-                  );
-                })}
-              </InfiniteScroll>
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {posts.items.map((post, index) => {
+                    return (
+                      <DashList
+                        key={index}
+                        imageSrc={post?.items?.items[0]?.file}
+                        post={post}
+                        className="ph:mb-4 sm:mb-4"
+                      />
+                    );
+                  })}
+                </InfiniteScroll>
+              </div>
             ) : null}
+
             {activeIndex === 1 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"mb-[16px]"} />
+                <InfiniteScroll
+                  dataLength={pendingPosts.items.length}
+                  next={fetchPending}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {pendingPosts.items.length > 0 &&
+                    pendingPosts.items.map((pendingPost, index) => {
+                      return (
+                        <GroupPostItem
+                          type={"user"}
+                          key={index}
+                          imageSrc={pendingPost?.items?.items[0]?.file}
+                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={pendingPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
+              </div>
+            ) : null}
+            {activeIndex === 2 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"mb-[16px]"} />
+                <InfiniteScroll
+                  dataLength={archivedPosts.items.length}
+                  next={fetchArchived}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {archivedPosts.items.length > 0 &&
+                    archivedPosts.items.map((archivedPost, index) => {
+                      return (
+                        <GroupPostItem
+                          key={index}
+                          imageSrc={archivedPost?.items?.items[0]?.file}
+                          video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={archivedPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
+              </div>
+            ) : null}
+            {activeIndex === 3 ? (
               <InfiniteScroll
-                dataLength={followedUsers.length}
+                dataLength={followedUsers.items.length}
                 next={fetchFollowers}
                 hasMore={true}
                 loader={
@@ -470,8 +736,8 @@ const Dashboard = ({ ssrData }) => {
                 }
                 endMessage={<h4>Nothing more to show</h4>}
               >
-                <div className=" flex flex-row flex-wrap ">
-                  {followedUsers.map((data, index) => {
+                <div className=" flex flex-row flex-wrap justify-between">
+                  {followedUsers.items.map((data, index) => {
                     return (
                       <FollowerList
                         key={index}
@@ -486,10 +752,10 @@ const Dashboard = ({ ssrData }) => {
               </InfiniteScroll>
             ) : null}
 
-            {activeIndex === 2
-              ? userComments.length > 0 && (
+            {activeIndex === 4
+              ? userComments.items.length > 0 && (
                   <InfiniteScroll
-                    dataLength={userComments.length}
+                    dataLength={userComments.items.length}
                     next={fetchComments}
                     hasMore={true}
                     loader={
@@ -502,14 +768,14 @@ const Dashboard = ({ ssrData }) => {
                     }
                     endMessage={<h4>Nothing more to show</h4>}
                   >
-                    {userComments.map((comment, index) => {
+                    {userComments.items.map((comment, index) => {
                       return (
                         <CommentList
                           key={index}
                           index={index}
                           imageSrc={comment?.post?.items?.items[0]?.file}
                           comment={comment}
-                          userComments={userComments}
+                          userComments={userComments.items}
                           setUserComments={setUserComments}
                           className="ph:mb-4 sm:mb-4"
                         />

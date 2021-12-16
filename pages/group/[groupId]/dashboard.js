@@ -9,7 +9,6 @@ import {
   getReturnData,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import useInfiniteScroll from "../../../src/hooks/useFetch";
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
 
@@ -19,12 +18,13 @@ import {
   getGroupUsersByGroup,
   getGroupView,
 } from "../../../src/graphql-custom/group/queries";
-import FollowerList from "../../../src/components/list/FollowerList";
 import Loader from "../../../src/components/loader";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Divider from "../../../src/components/divider";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -51,7 +51,7 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 20,
     },
   });
 
@@ -61,24 +61,24 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "PENDING" } },
-      limit: 6,
+      limit: 20,
     },
   });
-  const archivedPosts = await API.graphql({
-    query: getPostByGroup,
-    variables: {
-      group_id: query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "ARCHIVED" } },
-      limit: 6,
-    },
-  });
+  // const archivedPosts = await API.graphql({
+  //   query: getPostByGroup,
+  //   variables: {
+  //     group_id: query.groupId,
+  //     sortDirection: "DESC",
+  //     filter: { status: { eq: "ARCHIVED" } },
+  //     limit: 6,
+  //   },
+  // });
 
   const userList = await API.graphql({
     query: getGroupUsersByGroup,
     variables: {
       group_id: query.groupId,
-      limit: 6,
+      limit: 20,
     },
   });
 
@@ -102,7 +102,7 @@ export async function getServerSideProps({ req, query }) {
       ssrData: {
         posts: getReturnData(resp),
         pendingPosts: getReturnData(pendingPosts),
-        archivedPosts: getReturnData(archivedPosts),
+        // archivedPosts: getReturnData(archivedPosts),
         groupView: getReturnData(groupView),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
@@ -114,13 +114,10 @@ export async function getServerSideProps({ req, query }) {
 
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
-  const postRef = useRef();
-  const followerRef = useRef();
-  const pendingRef = useRef();
-  const archivedRef = useRef();
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
@@ -130,9 +127,9 @@ const Dashboard = ({ ssrData }) => {
   );
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
-  const [archivedPosts, setArchivedPosts] = useState(
-    ssrData.archivedPosts.items
-  );
+  // const [archivedPosts, setArchivedPosts] = useState(
+  //   ssrData.archivedPosts.items
+  // );
   const [groupData] = useState(ssrData.groupView);
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
@@ -141,6 +138,7 @@ const Dashboard = ({ ssrData }) => {
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
 
   const totalPost = groupTotals?.confirmed;
+  const totalPending = groupTotals?.pending;
 
   const stats = [
     {
@@ -182,22 +180,26 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
+      length: totalPost,
     },
     {
       id: 1,
       name: "Группын гишүүд",
       icon: "icon-fi-rs-friends-o",
+      length: totalMember,
     },
     {
       id: 2,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
+      length: totalPending,
     },
-    {
-      id: 3,
-      name: "Архивлагдсан постууд",
-      icon: "icon-fi-rs-archive",
-    },
+    // {
+    //   id: 3,
+    //   name: "Архивлагдсан постууд",
+    //   icon: "icon-fi-rs-archive",
+    //   length: archivedPosts.length,
+    // },
   ];
   const [nextPosts] = useListPager({
     query: getPostByGroup,
@@ -205,7 +207,7 @@ const Dashboard = ({ ssrData }) => {
       group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 20,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -213,7 +215,7 @@ const Dashboard = ({ ssrData }) => {
     query: getGroupUsersByGroup,
     variables: {
       group_id: router.query.groupId,
-      limit: 6,
+      limit: 20,
     },
     // nextToken: ssrData.followedUsers.nextToken,
   });
@@ -223,45 +225,29 @@ const Dashboard = ({ ssrData }) => {
       group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "PENDING" } },
-      limit: 6,
+      limit: 20,
     },
     nextToken: ssrData.pendingPosts.nextToken,
   });
-  const [nextArchived] = useListPager({
-    query: getPostByGroup,
-    variables: {
-      group_id: router.query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "ARCHIVED" } },
-      limit: 6,
-    },
-    nextToken: ssrData.archivedPosts.nextToken,
-  });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, postRef);
-  const [setFollowerScroll] = useInfiniteScroll(
-    followedUsers,
-    setFollowedUsers,
-    followerRef
-  );
-  const [setPendingScroll] = useInfiniteScroll(
-    pendingPosts,
-    setPendingPosts,
-    pendingRef
-  );
-  const [setArchivedScroll] = useInfiniteScroll(
-    archivedPosts,
-    setArchivedPosts,
-    archivedRef
-  );
+  // const [nextArchived] = useListPager({
+  //   query: getPostByGroup,
+  //   variables: {
+  //     group_id: router.query.groupId,
+  //     sortDirection: "DESC",
+  //     filter: { status: { eq: "ARCHIVED" } },
+  //     limit: 6,
+  //   },
+  //   nextToken: ssrData.archivedPosts.nextToken,
+  // });
 
-  const fetchPosts = async (data, setData) => {
+  const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPosts();
         if (resp) {
-          setData([...data, ...resp]);
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
         }
 
         setLoading(false);
@@ -271,14 +257,14 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchFollowers = async (data, setData) => {
+  const fetchFollowers = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextFollowers();
         if (resp) {
-          setData([...data, ...resp]);
+          setFollowedUsers((nextFollowers) => [...nextFollowers, ...resp]);
         }
 
         setLoading(false);
@@ -288,14 +274,14 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchPending = async (data, setData) => {
+  const fetchPending = async () => {
     try {
       if (!loading) {
         setLoading(true);
 
         const resp = await nextPending();
         if (resp) {
-          setData([...data, ...resp]);
+          setPendingPosts((nextPending) => [...nextPending, ...resp]);
         }
 
         setLoading(false);
@@ -305,23 +291,23 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const fetchArchived = async (data, setData) => {
-    try {
-      if (!loading) {
-        setLoading(true);
+  // const fetchArchived = async () => {
+  //   try {
+  //     if (!loading) {
+  //       setLoading(true);
 
-        const resp = await nextArchived();
-        if (resp) {
-          setData([...data, ...resp]);
-        }
+  //       const resp = await nextArchived();
+  //       if (resp) {
+  //         setArchivedPosts((nextArchived) => [...nextArchived, ...resp]);
+  //       }
 
-        setLoading(false);
-      }
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
-  };
+  //       setLoading(false);
+  //     }
+  //   } catch (ex) {
+  //     setLoading(false);
+  //     console.log(ex);
+  //   }
+  // };
   const subscrib = () => {
     let authMode = "AWS_IAM";
     if (isLogged) {
@@ -384,13 +370,13 @@ const Dashboard = ({ ssrData }) => {
         const filteredPending = pendingPosts.filter(
           (item) => item.id !== subscriptionPosts.id
         );
-        const filteredArchived = archivedPosts.filter(
-          (item) => item.id !== subscriptionPosts.id
-        );
+        // const filteredArchived = archivedPosts.filter(
+        //   (item) => item.id !== subscriptionPosts.id
+        // );
 
         setPosts((prev) => [subscriptionPosts, ...prev]);
         setPendingPosts(filteredPending);
-        setArchivedPosts(filteredArchived);
+        // setArchivedPosts(filteredArchived);
       } else if (subscriptionPosts.status === "PENDING") {
         const filtered = pendingPosts.filter(
           (item) => item.id !== subscriptionPosts.id
@@ -406,7 +392,7 @@ const Dashboard = ({ ssrData }) => {
           (item) => item.id !== subscriptionPosts.id
         );
         setPendingPosts(filtered);
-        setArchivedPosts((prev) => [subscriptionPosts, ...prev]);
+        // setArchivedPosts((prev) => [subscriptionPosts, ...prev]);
       }
     }
     // eslint-disable-next-line
@@ -415,25 +401,17 @@ const Dashboard = ({ ssrData }) => {
   useEffect(() => {
     subscrib();
     setLoaded(true);
-    setPostScroll(fetchPosts);
-    setFollowerScroll(fetchFollowers);
-    setPendingScroll(fetchPending);
-    setArchivedScroll(fetchArchived);
+
+    // fetchArchived();
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
         return true;
       });
-      setPostScroll(null);
-      setFollowerScroll(null);
-      setPendingScroll(null);
-      setArchivedScroll(null);
     };
 
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {}, [router.query]);
 
   return (
     <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
@@ -517,126 +495,217 @@ const Dashboard = ({ ssrData }) => {
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <div className="flex justify-between">
-            <div className="font-inter font-semibold text-20px text-caak-generalblack">
-              {dashMenu[activeIndex].name}
-            </div>
-            <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-              <div className="flex items-center  mx-[12px] my-[10px]">
-                <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                  Сүүлд нэмэгдсэн
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <div className="font-inter font-normal text-16px text-caak-generalblack mr-[10px]">
+                {dashMenu[activeIndex].name}
+              </div>
+              <div className="text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <p className="text-caak-bleudefrance text-opacity-100 mx-2 ">
+                  {dashMenu[activeIndex].length}
                 </p>
-                <span className="icon-fi-rs-triangle text-14px" />
+              </div>
+            </div>
+            <div className="flex items-center">
+              <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                Шүүлтүүр
+              </p>
+              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                <div className="flex items-center  mx-[12px] my-[10px]">
+                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                    Сүүлд нэмэгдсэн
+                  </p>
+                  <span className="icon-fi-rs-triangle text-14px" />
+                </div>
               </div>
             </div>
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px] mb-[50px]"
             }
           >
-            {activeIndex === 0
-              ? posts.length > 0 &&
-                posts.map((post, index) => {
-                  return (
-                    <DashList
-                      key={index}
-                      imageSrc={post?.items?.items[0]?.file}
-                      post={post}
-                      className="ph:mb-4 sm:mb-4"
+            {activeIndex === 0 ? (
+              <div className="flex flex-col">
+                <div className="flex ">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[182px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[158px]">
+                    Хандалт
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"my-[16px]"} />
+
+                <InfiniteScroll
+                  dataLength={posts.length}
+                  next={fetchPosts}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
                     />
-                  );
-                })
-              : null}
-            {activeIndex === 1 ? (
-              <div className=" flex flex-row flex-wrap ">
-                {followedUsers.map((data, index) => {
-                  return (
-                    <GroupFollowerList
-                      key={index}
-                      imageSrc={data?.user?.pic}
-                      followedUser={data}
-                      followedUsers={followedUsers}
-                      setFollowedUsers={setFollowedUsers}
-                      groupData={groupData}
-                    />
-                  );
-                })}
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {posts.length > 0 &&
+                    posts.map((post, index) => {
+                      return (
+                        <DashList
+                          key={index}
+                          imageSrc={post?.items?.items[0]?.file}
+                          post={post}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
               </div>
             ) : null}
 
-            {/* {activeIndex === 2
-              ? userComments.length > 0 &&
-                userComments.map((comment, index) => {
-                  return (
-                    <CommentList
-                      key={index}
-                      imageSrc={comment?.post?.items?.items[0]?.file}
-                      comment={comment}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  );
-                })
-              : null} */}
-            <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 2
-                ? pendingPosts.length > 0 &&
-                  pendingPosts.map((pendingPost, index) => {
+            {activeIndex === 1 ? (
+              <InfiniteScroll
+                dataLength={followedUsers.length}
+                next={fetchFollowers}
+                hasMore={true}
+                loader={
+                  <Loader
+                    containerClassName={`self-center w-full ${
+                      loading ? "" : "hidden"
+                    }`}
+                    className={`bg-caak-primary`}
+                  />
+                }
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                <div className=" flex flex-row flex-wrap justify-between">
+                  {followedUsers.map((data, index) => {
                     return (
-                      <>
-                        <GroupPostItem
-                          key={index}
-                          imageSrc={pendingPost?.items?.items[0]?.file}
-                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={pendingPost}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      </>
-                    );
-                  })
-                : null}
-            </div>
-            <div className=" flex flex-col items-center max-w-[877px] justify-center">
-              {activeIndex === 3
-                ? archivedPosts.length > 0 &&
-                  archivedPosts.map((archivedPost, index) => {
-                    return (
-                      <GroupPostItem
+                      <GroupFollowerList
                         key={index}
-                        // imageSrc={archivedPost?.items?.items[0]?.file}
-                        // video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
-                        //   "video"
-                        // )}
-                        post={archivedPost}
-                        className="ph:mb-4 sm:mb-4"
+                        imageSrc={data?.user?.pic}
+                        followedUser={data}
+                        followedUsers={followedUsers}
+                        setFollowedUsers={setFollowedUsers}
+                        groupData={groupData}
                       />
                     );
-                  })
-                : null}
-            </div>
-          </div>
-          <div
-            ref={
-              activeIndex === 0
-                ? postRef
-                : activeIndex === 1
-                ? followerRef
-                : activeIndex === 2
-                ? pendingRef
-                : activeIndex === 3
-                ? archivedRef
-                : null
-            }
-            className={"flex justify-center items-center"}
-          >
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
+                  })}
+                </div>
+              </InfiniteScroll>
+            ) : null}
+
+            {activeIndex === 2 ? (
+              <div className="flex flex-col">
+                <div className="flex">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <InfiniteScroll
+                  dataLength={pendingPosts.length}
+                  next={fetchPending}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  <Divider className={"mt-[16px]"} />
+
+                  {pendingPosts.length > 0 &&
+                    pendingPosts.map((pendingPost, index) => {
+                      return (
+                        <>
+                          <GroupPostItem
+                            type={"group"}
+                            key={index}
+                            imageSrc={pendingPost?.items?.items[0]?.file}
+                            video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={pendingPost}
+                            className="ph:mb-4 sm:mb-4"
+                          />
+                        </>
+                      );
+                    })}
+                </InfiniteScroll>
+              </div>
+            ) : null}
+
+            {activeIndex === 3 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"mb-[16px]"} />
+
+                <InfiniteScroll
+                  dataLength={archivedPosts.length}
+                  next={fetchArchived}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {archivedPosts.length > 0 &&
+                    archivedPosts.map((archivedPost, index) => {
+                      return (
+                        <GroupPostItem
+                          key={index}
+                          imageSrc={archivedPost?.items?.items[0]?.file}
+                          video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={archivedPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

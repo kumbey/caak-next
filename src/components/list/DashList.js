@@ -7,7 +7,7 @@ const DashList = ({ imageSrc, post }) => {
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <div className="relative flex items-center ">
-        <div className="flex w-[400px] items-center">
+        <div className="flex w-[304px] mr-[18px] items-center">
           <Link
             href={{
               pathname: `/post/view/${post.id}`,
@@ -29,7 +29,7 @@ const DashList = ({ imageSrc, post }) => {
           </Link>
 
           <div className="flex flex-col  font-inter mr-[26px]">
-            <div className="truncate-3 text-15px font-medium text-caak-generalblack">
+            <div className="truncate-2 text-15px font-medium text-caak-generalblack">
               <Link
                 href={{
                   pathname: `/post/view/${post.id}`,
@@ -38,13 +38,13 @@ const DashList = ({ imageSrc, post }) => {
                 <a>{post.title}</a>
               </Link>
             </div>
-            <div className="text-xs font-normal  text-caak-darkBlue">
+            <div className="text-xs font-normal font-inter  text-caak-darkBlue">
               {generateTimeAgo(post.createdAt)}
             </div>
           </div>
         </div>
-        <div className="flex w-[150px] mr-[10px]">
-          <div className="truncate-3 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
+        <div className="flex w-[107px] mr-[128px]">
+          <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
             <Link
               href={{
                 pathname: `/group/${post.group.id}`,
@@ -52,24 +52,30 @@ const DashList = ({ imageSrc, post }) => {
             >
               <a>
                 <p className="text-caak-generalblack text-13px font-normal mx-2">
-                  {post.group.name}
+                  @{post.user.nickname}
                 </p>
               </a>
             </Link>
           </div>
         </div>
-        <div className="flex text-sm text-caak-darkBlue mr-2">
+        <div className="flex text-sm text-caak-darkBlue w-[166px] mr-[32px]">
           <div className="flex items-center mr-5">
-            <span className="icon-fi-rs-rock-i text-20px mr-2 " />
-            <p>{post.totals.reactions}</p>
+            <span className="icon-fi-rs-rock-i text-caak-scriptink text-20px mr-[6px] " />
+            <p className="font-inter font-normal text-14px text-caak-darkBlue">
+              {post.totals.reactions}
+            </p>
           </div>
           <div className="flex items-center mr-5">
-            <span className="icon-fi-rs-comment-o text-20px mr-2 " />
-            <p>{post.totals.comments}</p>
+            <span className="icon-fi-rs-comment-o text-caak-scriptink text-20px mr-[6px] " />
+            <p className="font-inter font-normal text-14px text-caak-darkBlue">
+              {post.totals.comments}
+            </p>
           </div>
           <div className="flex items-center">
-            <span className="icon-fi-rs-view text-20px mr-2 " />
-            <p>{post.totals.views}</p>
+            <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
+            <p className="font-inter font-normal text-14px text-caak-darkBlue">
+              {post.totals.views}
+            </p>
           </div>
         </div>
         <div className="flex ml-[10px] ">
@@ -78,7 +84,7 @@ const DashList = ({ imageSrc, post }) => {
               <Button
                 round
                 className={
-                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-16px bg-white relative"
+                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
                 }
               >
                 <p className="">Засах</p>

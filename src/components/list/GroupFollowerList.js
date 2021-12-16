@@ -41,8 +41,8 @@ const GroupFollowerList = ({
     }
   };
   return (
-    <div className="flex rounded-lg border border-caak-titaniumwhite  w-[390px] h-[108px] mb-[18px] mr-[16px]">
-      <div className="flex w-full mx-[16px] my-[16px] items-center justify-between">
+    <div className="flex rounded-lg border border-caak-titaniumwhite  w-[430px] h-[108px] mb-[18px] ">
+      <div className="flex w-full mx-[20px] my-[20px] items-center justify-between">
         <div className="flex items-center">
           <div className={"w-[68px] h-[68px] mr-[12px] relative"}>
             <Image
@@ -54,7 +54,7 @@ const GroupFollowerList = ({
               }
               width={68}
               height={68}
-              layout="fixed"
+              objectFit="cover"
               alt="#"
             />
           </div>
@@ -65,21 +65,25 @@ const GroupFollowerList = ({
               }}
             >
               <a>
-                <div className="text-16px text-caak-generalblack font-semibold font-inter">
+                <div className="text-15px text-caak-generalblack font-semibold font-inter">
                   @{followedUser?.user?.nickname}
                 </div>
               </a>
             </Link>
             <div className="flex items-center">
               <span className="icon-fi-rs-aura mr-1 text-20px" />
-              <p>{followedUser?.user?.aura} Аура</p>
+              <p className="font-inter font-medium text-14px text-caak-darkBlue">
+                {followedUser?.user?.aura} Аура
+              </p>
             </div>
           </div>
         </div>
         <div className="flex mr-[6px]">
           <Button
-            className="h-c13 w-28"
-            icon={<span className="icon-fi-rs-add-friend mr-1" />}
+            className="h-c13 w-28 text-14px font-inter font-medium text-caak-generalblack"
+            icon={
+              <span className="icon-fi-rs-remove-friend-f text-20px mr-1" />
+            }
             iconPosition="left"
             onClick={() => deleteFollowFromGroup()}
             skin={`bg-caak-titaniumwhite`}

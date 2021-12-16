@@ -1,12 +1,16 @@
-const FooterSidebar = ({containerClassname}) => {
+const FooterSidebar = ({ containerClassname }) => {
   return (
-    <div className={`flex flex-col text-12px text-caak-darkBlue ${containerClassname ? containerClassname : ""}`}>
+    <div
+      className={`flex flex-col text-12px text-caak-darkBlue ${
+        containerClassname ? containerClassname : ""
+      }`}
+    >
       <div className={"flex flex-wrap my-[4px]"}>
         <div>Асуулт хариулт ·&nbsp;</div>
-        <div>Холбоо барих</div>
+        <div>Холбоо барих ·&nbsp;</div>
         <div>Сурталчилгаа · &nbsp;</div>
-        <div>Үйлчилгээний нөхцөл</div>
-        <div>Нууцлал</div>
+        <div>Үйлчилгээний нөхцөл ·&nbsp;</div>
+        <div>Нууцлал </div>
       </div>
       <div className={"my-[4px]"}>©2021 Caak Holding llc</div>
     </div>

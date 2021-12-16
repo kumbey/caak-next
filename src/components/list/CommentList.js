@@ -100,7 +100,7 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
         </div>
         <div className="flex items-center w-[300px]  mr-[10px]">
           <span className="icon-fi-rs-comment-f text-lg text-caak-aleutian mr-2" />
-          <p className=" text-caak-generalblack text-13px font-normal mx-2">
+          <p className="truncate-3 text-caak-generalblack text-13px font-normal mx-2">
             {comment?.comment}
           </p>
         </div>

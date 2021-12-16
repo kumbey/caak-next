@@ -10,6 +10,12 @@ import SideBarGroups from "../../card/SideBarGroups";
 import { useUser } from "../../../context/userContext";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import {
+  createFollowedUsers,
+  deleteFollowedUsers,
+} from "../../../graphql-custom/user/mutation";
+import { getUserById } from "../../../utility/ApiHelper";
+
 import awsExports from "../../../aws-exports";
 import Dropzone from "react-dropzone";
 import { ApiFileUpload } from "../../../utility/ApiHelper";
@@ -17,12 +23,17 @@ import { API, graphqlOperation } from "aws-amplify";
 import { updateUser } from "../../../graphql-custom/user/mutation";
 import { deleteFile } from "../../../graphql-custom/file/mutation";
 import Loader from "../../loader";
+import { useRouter } from "next/router";
 
 const DefaultUserProfileLayout = ({ user, children }) => {
+  const router = useRouter();
+  const userId = router.query.userId;
+  const [uploading, setUploading] = useState(false);
+  const { user: signedUser, isLogged } = useUser();
+  const [doRender, setDoRender] = useState(0);
+
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
-
-  const { user: signedUser } = useUser();
 
   const fileParams = (file) => {
     return {
@@ -86,6 +97,87 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     }
   };
 
+
+  const handleClick = () => {
+    if (isLogged) {
+      if (!user.followed) {
+        createFollowUser();
+      } else if (user.followed) {
+        deleteFollowUser();
+      }
+    } else {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "signIn",
+            isModal: true,
+          },
+        },
+        `/signInUp/signIn`,
+        { shallow: true, scroll: false }
+      );
+    }
+  };
+
+  // useEffect(() => {
+  //   setLoading(true);
+  //   if (userId)
+  //     if (isLogged) {
+  //       getUserById({ id: userId, setUser: setProfileUser }).then(() =>
+  //         setLoading(false)
+  //       );
+  //     } else {
+  //       getUserById({
+  //         id: userId,
+  //         setUser: setProfileUser,
+  //         authMode: "AWS_IAM",
+  //       }).then(() => setLoading(false));
+  //     }
+
+  //   // eslint-disable-next-line
+  // }, [userId]);
+
+  const createFollowUser = async () => {
+    await API.graphql({
+      query: createFollowedUsers,
+      variables: {
+        input: {
+          followed_user_id: user.id,
+          user_id: user.id,
+          id: `${user.id}#${user.id}`,
+        },
+      },
+    });
+    user.totals.followers += 1;
+    user.followed = true;
+    setDoRender(doRender + 1);
+  };
+
+  // useEffect(() => {
+  //   return () => {
+  //     setProfileUser(null);
+  //   };
+  // }, []);
+
+  const deleteFollowUser = async () => {
+    await API.graphql({
+      query: deleteFollowedUsers,
+      variables: {
+        input: {
+          id: `${user.id}#${user.id}`,
+        },
+      },
+    });
+    user.totals.followers -= 1;
+    user.followed = false;
+    setDoRender(doRender + 1);
+  };
+
+  useEffect(() => {
+    console.log(signedUser);
+  }, [signedUser]);
   useEffect(() => {
     if (coverPictureDropZone.name) {
       setUploadingCover(true);
@@ -150,7 +242,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               : getGenderImage("default")
           }
         />
-        {user.id === signedUser.id && (
+        {user?.id === signedUser?.id && (
           <Dropzone
             noKeyboard
             maxFiles={1}
@@ -296,9 +388,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   "text-caak-extraBlack text-[18px] font-semibold my-[8px]"
                 }
               >
-                @{user.nickname}
+                @{user?.nickname}
               </p>
-              {user.verified && (
+              {user?.verified && (
                 <div
                   className={
                     "w-[18px] h-[18px] flex items-center justify-center ml-[5px]"
@@ -310,7 +402,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
             </div>
 
             <p className={"text-caak-generalblack text-[15px] my-[4px]"}>
-              {user.about}
+              {user?.about}
             </p>
             {/*Aura, followers, post*/}
             <div
@@ -324,7 +416,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                     "text-caak-generalblack font-semibold text-[16px] tracking-[0.24px] leading-[19px]"
                   }
                 >
-                  {user.aura}
+                  {user?.aura}
                 </p>
                 <p
                   className={
@@ -340,7 +432,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                     "text-caak-generalblack font-semibold text-[16px] tracking-[0.24px] leading-[19px]"
                   }
                 >
-                  {user.totals.followers}
+                  {user?.totals?.followers}
                 </p>
                 <p
                   className={
@@ -356,7 +448,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                     "text-caak-generalblack font-semibold text-[16px] tracking-[0.24px] leading-[19px]"
                   }
                 >
-                  {user.totals.confirmed}
+                  {user?.totals?.confirmed}
                 </p>
                 <p
                   className={
@@ -375,9 +467,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 "flex flex-col w-full text-[16px] font-medium tracking-[0.24px] leading-[19px] mb-[20px]"
               }
             >
-              {signedUser.id === user.id ? (
+              {signedUser?.id === userId ? (
                 <>
-                  <Link href={`/user/${user.id}/settings`}>
+                  <Link href={`/user/${userId}/settings`}>
                     <a className={"w-full"}>
                       <Button
                         className={
@@ -403,7 +495,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       </Button>
                     </a>
                   </Link>
-                  <Link href={`/user/${user.id}/dashboard`}>
+                  <Link href={`/user/${userId}/dashboard`}>
                     <a className={"w-full"}>
                       <Button
                         className={
@@ -433,6 +525,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               ) : (
                 <Button
                   className={"rounded-[100px] h-[44px] shadow-none"}
+                  onClick={() => handleClick()}
                   skin={"primary"}
                   iconPosition={"left"}
                   icon={
@@ -449,7 +542,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                     </div>
                   }
                 >
-                  Дагах
+                  {user?.followed ? "Дагасан" : "Дагах"}
                 </Button>
               )}
             </div>
@@ -538,7 +631,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               <SideBarGroups
                 role={"ADMIN"}
                 maxColumns={3}
-                userId={user.id}
+                userId={user?.id}
                 // initialData={adminModeratorGroups}
                 title={"Үүсгэсэн группүүд"}
               />

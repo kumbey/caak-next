@@ -71,6 +71,17 @@ const ImageCarousel = ({
 
   return (
     <div className={"relative h-full w-full overflow-hidden"}>
+      {!viewPostItem && (
+        <div
+          className={
+            "flex items-center justify-center absolute top-[10px] right-[10px] z-[1] bg-black bg-opacity-60 rounded-[100px] px-[10px] py-[1px]"
+          }
+        >
+          <p className={"text-[12px] font-roboto text-white"}>{`${
+            activeIndex + 1
+          }/${items.length}`}</p>
+        </div>
+      )}
       {viewPostItem && (
         <div className={"flex flex-row absolute right-[20px] top-[20px]"}>
           <div
@@ -235,29 +246,29 @@ const ImageCarousel = ({
             />
           </div>
         )}
-        {card && (
-          <div
-            className={`absolute right-1/2 translate-x-1/2 bottom-6 z-[10] w-[154px]`}
-          >
-            <div
-              className={`flex flex-row overflow-hidden w-full ${
-                activeIndex > 10 ? `transform translate-x-[-${activeIndex + 14}px]` : ""
-              }`}
-            >
-              {items.length > 1 &&
-                items.map((_, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={`flex-shrink-0 rounded-full mr-[6px] w-[8px] h-[8px] bg-opacity-100 bg-white ${
-                        activeIndex === index ? `` : "bg-opacity-40"
-                      }`}
-                    />
-                  );
-                })}
-            </div>
-          </div>
-        )}
+        {/*{card && (*/}
+        {/*  <div*/}
+        {/*    className={`absolute right-1/2 translate-x-1/2 bottom-6 z-[1] w-[154px]`}*/}
+        {/*  >*/}
+        {/*    <div*/}
+        {/*      className={`flex flex-row overflow-hidden w-full ${*/}
+        {/*        activeIndex > 10 ? `transform translate-x-[-${activeIndex + 14}px]` : ""*/}
+        {/*      }`}*/}
+        {/*    >*/}
+        {/*      {items.length > 1 &&*/}
+        {/*        items.map((_, index) => {*/}
+        {/*          return (*/}
+        {/*            <div*/}
+        {/*              key={index}*/}
+        {/*              className={`flex-shrink-0 rounded-full mr-[6px] w-[8px] h-[8px] bg-opacity-100 bg-white ${*/}
+        {/*                activeIndex === index ? `` : "bg-opacity-40"*/}
+        {/*              }`}*/}
+        {/*            />*/}
+        {/*          );*/}
+        {/*        })}*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </div>
     </div>
   );

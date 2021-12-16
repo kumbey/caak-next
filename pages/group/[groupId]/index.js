@@ -111,59 +111,53 @@ const Group = ({ ssrData }) => {
 
   return (
     loaded && (
-      <div>
-        <GroupLayout
-          groupData={groupData}
-          totalMember={totalMember}
-          columns={2}
+      <GroupLayout groupData={groupData} totalMember={totalMember} columns={2}>
+        <GroupSortButtons
+          activeIndex={activeIndex}
+          activeView={activeView}
+          setActiveIndex={setActiveIndex}
+          setActiveView={setActiveView}
+          iconSize={"text-[16px]"}
+          containerClassname={"flex-wrap justify-start"}
+          items={GroupType}
+          items2={GroupViewType}
+          direction={"row"}
+          textClassname={"font-medium text-15px"}
+        />
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={fetchPosts}
+          hasMore={true}
+          loader={
+            <Loader
+              containerClassName={"self-center w-full"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          }
+          endMessage={<h4>Nothing more to show</h4>}
         >
-          <GroupSortButtons
-            activeIndex={activeIndex}
-            activeView={activeView}
-            setActiveIndex={setActiveIndex}
-            setActiveView={setActiveView}
-            iconSize={"text-[16px]"}
-            containerClassname={"flex-wrap justify-start"}
-            items={GroupType}
-            items2={GroupViewType}
-            direction={"row"}
-            textClassname={"font-medium text-15px"}
-          />
-          <InfiniteScroll
-            dataLength={posts.length}
-            next={fetchPosts}
-            hasMore={true}
-            loader={
-              <Loader
-                containerClassName={"self-center w-full"}
-                className={`bg-caak-primary ${
-                  loading ? "opacity-100" : "opacity-0"
-                }`}
+          {posts.map((data, index) => {
+            return activeView === 0 ? (
+              <Card
+                key={index}
+                video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                post={data}
+                className="ph:mb-4 sm:mb-4"
               />
-            }
-            endMessage={<h4>Nothing more to show</h4>}
-          >
-            {posts.map((data, index) => {
-              return activeView === 0 ? (
-                <Card
-                  key={index}
-                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                  post={data}
-                  className="ph:mb-4 sm:mb-4"
-                />
-              ) : activeView === 1 ? (
-                <List
-                  key={index}
-                  imageSrc={data?.items?.items[0]?.file}
-                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                  post={data}
-                  className="ph:mb-4 sm:mb-4"
-                />
-              ) : null;
-            })}
-          </InfiniteScroll>
-        </GroupLayout>
-      </div>
+            ) : activeView === 1 ? (
+              <List
+                key={index}
+                imageSrc={data?.items?.items[0]?.file}
+                video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                post={data}
+                className="ph:mb-4 sm:mb-4"
+              />
+            ) : null;
+          })}
+        </InfiniteScroll>
+      </GroupLayout>
     )
   );
 };

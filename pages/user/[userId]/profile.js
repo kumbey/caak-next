@@ -1,14 +1,13 @@
 import { withSSRContext } from "aws-amplify";
 import { getUser } from "../../../src/graphql-custom/user/queries";
 import { getReturnData } from "../../../src/utility/Util";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import useModalLayout from "../../../src/hooks/useModalLayout";
 import FeedSortButtons from "../../../src/components/navigation/FeedSortButtons";
 import { userProfileType } from "../../../src/components/navigation/sortButtonTypes";
 import UserPostsCard from "../../../src/components/card/UserProfile/UserPostsCard";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import useInfiniteScroll from "../../../src/hooks/useFetch";
 import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
 import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
@@ -35,7 +34,7 @@ export async function getServerSideProps({ req, query }) {
         user_id: userId,
         sortDirection: "DESC",
         filter: { status: { eq: "CONFIRMED" } },
-        limit: 6
+        limit: 20,
       },
     });
     return getReturnData(resp);
@@ -70,9 +69,7 @@ const Profile = ({ ssrData }) => {
   const [subscripedPost, setSubscripedPost] = useState(0);
   const { isLogged } = useUser();
   const subscriptions = {};
-  const profileRef = useRef();
   const [render, setRender] = useState(0);
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, profileRef);
   const router = useRouter();
   const { userId } = router.query;
   const [nextPosts] = useListPager({
@@ -179,10 +176,10 @@ const Profile = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [subscripedPost]);
 
-  useEffect(()=> {
-    fetchPosts()
-    // eslint-disable-next-line
-  },[])
+  // useEffect(()=> {
+  //   fetchPosts()
+  //   // eslint-disable-next-line
+  // },[])
 
   useEffect(() => {
     setPosts(ssrData.posts);
@@ -191,13 +188,11 @@ const Profile = ({ ssrData }) => {
   useEffect(() => {
     subscrip();
 
-    setPostScroll(fetchPosts);
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
         return true;
       });
-      setPostScroll(null);
     };
 
     // eslint-disable-next-line

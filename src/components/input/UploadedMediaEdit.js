@@ -19,9 +19,20 @@ import {
 import Image from "next/image";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import useMediaQuery from "../navigation/useMeduaQuery";
-import { generateFileUrl, getFileUrl } from "../../utility/Util";
+import {generateFileUrl, getGenderImage} from "../../utility/Util";
 import Video from "../video";
+
+const thumbnailImageHandler = (item) => {
+  if (item.file) {
+    if (item.file.url) {
+      return item.file.url;
+    } else {
+      return generateFileUrl(item.file)
+    }
+  } else {
+    return getGenderImage("default").src;
+  }
+};
 
 const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -34,6 +45,7 @@ const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
   return (
     <div
       ref={setNodeRef}
@@ -67,22 +79,28 @@ const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
             : "opacity-[0.66] w-[77px] h-[77px]"
         }  bg-white rounded-[5px]`}
       >
-        {item.file.type.startsWith("video") ? (
+        {item.loading && (
+          <div
+            className={
+              "flex items-center justify-center w-full h-full bg-white bg-opacity-80 z-[1]"
+            }
+          >
+            <Loader className={"bg-caak-primary"} />
+          </div>
+        )}
+
+        {item.file?.type?.startsWith("video") ? (
           <Video
             videoClassname={"object-cover rounded-[4px]"}
             hideControls
             smallIndicator
-            src={
-              item.file.url
-                ? item.file.url
-                : generateFileUrl(item.file)
-            }
+            src={thumbnailImageHandler(item)}
           />
         ) : (
           <Image
             className={"rounded-[5px]"}
             alt={""}
-            src={item.file.url ? item.file.url : getFileUrl(item.file)}
+            src={thumbnailImageHandler(item)}
             layout={"fill"}
             objectFit={"cover"}
           />
@@ -108,13 +126,14 @@ function CardsWrapper({ children }) {
   );
 }
 
-const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
+const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [allowComment, setAllowComment] = useState(true);
   const [draft, setDraft] = useState(false);
   const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const [sortItems, setSortItems] = useState(post.items);
 
   const [loaded, setLoaded] = useState(false);
 
@@ -156,7 +175,6 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
 
   const onDragStartHandler = (event) => {
     setActiveIndex(event.active.data.current.sortable.index);
-    setActiveId(parseInt(event.active.id));
   };
 
   const onDragEndHandler = (event) => {
@@ -172,7 +190,8 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
     });
     const newItems = arrayMove(items, oldIndex, newIndex);
     setPost({ ...post, items: newItems });
-    setActiveIndex(event.active.data.current.sortable.index);
+    setActiveIndex(newIndex);
+    setActiveId(parseInt(event.active.id))
   };
 
   function auto_grow(element) {
@@ -183,6 +202,11 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
   useEffect(() => {
     setLoaded(true);
   }, []);
+
+  useEffect(() => {
+    setSortItems([...post.items]);
+  }, [post]);
+
   return (
     <div>
       {errors && (
@@ -261,7 +285,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
           onDragStart={onDragStartHandler}
           onDragEnd={onDragEndHandler}
         >
-          <SortableContext items={post.items} strategy={rectSortingStrategy}>
+          <SortableContext items={sortItems} strategy={rectSortingStrategy}>
             <CardsWrapper>
               {post.items.map((item, index) => {
                 return (
@@ -309,24 +333,16 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading, uploadPost }) => {
               "flex-1 w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
             }
           >
-            {post.items[activeIndex].file.type.startsWith("video") ? (
+            {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
                 smallIndicator
                 videoClassname={"object-contain rounded-[4px]"}
-                src={
-                  post.items[activeIndex].file.url
-                    ? post.items[activeIndex].file.url
-                    : generateFileUrl(post.items[activeIndex].file)
-                }
+                src={thumbnailImageHandler(post.items[activeIndex])}
               />
             ) : (
               <Image
                 alt={""}
-                src={
-                  post.items[activeIndex].file.url
-                    ? post.items[activeIndex].file.url
-                    : getFileUrl(post.items[activeIndex].file)
-                }
+                src={thumbnailImageHandler(post.items[activeIndex])}
                 objectFit={"contain"}
                 layout={"fill"}
               />

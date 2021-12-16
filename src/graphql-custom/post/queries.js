@@ -36,15 +36,15 @@ export const getPostByStatus = /* GraphQL */ `
 
 export const getPostByUser = /* GraphQL */ `
     query GetPostByUser(
-        $user_id: ID!, 
-        $sortDirection: ModelSortDirection,  
-        $filter: ModelPostFilterInput,  
+        $user_id: ID!,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelPostFilterInput,
         $limit: Int,
         $nextToken: String) {
         getPostByUser(
             user_id: $user_id,
-            sortDirection: $sortDirection, 
-            filter: $filter,  
+            sortDirection: $sortDirection,
+            filter: $filter,
             limit: $limit,
             nextToken: $nextToken
         )
@@ -58,17 +58,17 @@ export const getPostByUser = /* GraphQL */ `
 
 export const getPostByGroup = /* GraphQL */ `
     query GetPostByGroup(
-        $group_id: ID!, 
-        $sortDirection: ModelSortDirection,  
-        $filter: ModelPostFilterInput,  
+        $group_id: ID!,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelPostFilterInput,
         $limit: Int,
         $nextToken: String) {
-            getPostByGroup(
-                group_id: $group_id,
-                sortDirection: $sortDirection, 
-                filter: $filter,  
-                limit: $limit,
-                nextToken: $nextToken
+        getPostByGroup(
+            group_id: $group_id,
+            sortDirection: $sortDirection,
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken
         )
         {
             items ${post0004}
@@ -78,3 +78,25 @@ export const getPostByGroup = /* GraphQL */ `
     }
 `;
 
+export const listPostOrderByReactions = /* GraphQL */ `
+    query ListPostOrderByReactions(
+        $search_key: String,
+        $reactions: ModelIntKeyConditionInput,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelPostTotalFilterInput,
+        $limit: Int,
+        $nextToken: String) {
+        listPostOrderByReactions(
+            search_key: $group_id,
+            sortDirection: $sortDirection,
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken
+        )
+        {
+            items ${post0004}
+            nextToken
+        }
+
+    }
+`;

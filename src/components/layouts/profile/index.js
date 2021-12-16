@@ -85,9 +85,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
       console.log(ex);
     }
   };
-  useEffect(() => {
-    console.log(signedUser);
-  }, [signedUser]);
+
   useEffect(() => {
     if (coverPictureDropZone.name) {
       setUploadingCover(true);

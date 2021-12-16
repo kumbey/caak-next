@@ -9,7 +9,7 @@ const DropDown = ({ open, onToggle, className, content, arrow }) => {
       >
         {content ? content : null}
         <div
-          className={`absolute  inset-0 z-[-1] flex  
+          className={`absolute inset-0 z-[-1] flex  
           ${
             arrow === "bottomRight" ? "rotate-180 justify-start mr-6 -mb-2" : ""
           } 

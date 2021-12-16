@@ -1,10 +1,15 @@
 import SideBarGroupItem from "./SideBarGroupItem";
 import { useEffect, useState } from "react";
-import { getFileUrl, getReturnData } from "../../../utility/Util";
+import {
+  getFileUrl,
+  getGenderImage,
+  getReturnData,
+} from "../../../utility/Util";
 import ViewMoreText from "./ViewMoreText";
 import { useUser } from "../../../context/userContext";
 import { API, graphqlOperation } from "aws-amplify";
 import { listGroupByUserAndRole } from "../../../graphql-custom/GroupUsers/queries";
+import { listGroups } from "../../../graphql/queries";
 
 const SideBarGroups = ({
   title,
@@ -12,43 +17,54 @@ const SideBarGroups = ({
   maxColumns,
   role,
   initialData,
-  userId,
 }) => {
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const { isLogged, user } = useUser();
-  const listGroups = async () => {
+  const fetchGroups = async (user, role) => {
     try {
-      let groups = await API.graphql(
-        graphqlOperation(listGroupByUserAndRole, {
-          user_id: userId ? userId : user.id,
-          role: { eq: role },
-        })
-      );
-      groups = getReturnData(groups).items;
-
-      if (role === "ADMIN") {
-        let moderatorGroups = await API.graphql(
-          graphqlOperation(listGroupByUserAndRole, {
-            user_id: user.id,
-            role: { eq: "MODERATOR" },
-          })
-        );
-        moderatorGroups = getReturnData(moderatorGroups).items;
-        setGroupData(groups.concat(moderatorGroups));
-      } else {
-        setGroupData(groups);
+      if (!user) {
+        return null;
       }
+
+      let retData = [];
+      for (let i = 0; i < role.length; i++) {
+        if (role[i] === "NOT_MEMBER") {
+          const resp = await API.graphql(graphqlOperation(listGroups));
+          retData = [...retData, ...getReturnData(resp).items];
+        } else {
+          const resp = await API.graphql(
+            graphqlOperation(listGroupByUserAndRole, {
+              user_id: user.id,
+              role: { eq: role[i] },
+            })
+          );
+          retData = [...retData, ...getReturnData(resp).items];
+        }
+      }
+      return retData;
     } catch (ex) {
       console.log(ex);
+      return null;
     }
   };
+  const getGroups = async () => {
+    const groups = await fetchGroups(user, [...role]);
+    setGroupData(groups);
+  };
+
   useEffect(() => {
-    if (!initialData && isLogged) listGroups();
+    if (!initialData && isLogged) {
+      getGroups()
+    }
     // eslint-disable-next-line
   }, [isLogged]);
 
   return groupData && groupData.length > 0 ? (
-    <div className={"flex flex-col px-[6px]"}>
+    <div
+      className={
+        "flex flex-col px-[6px] py-[18px] border-t-[1px] border-caak-titaniumwhite"
+      }
+    >
       <div className={"flex flex-row justify-between items-center mb-[6px]"}>
         <div className={"font-semibold text-caak-generalblack text-15px "}>
           {title}
@@ -64,18 +80,30 @@ const SideBarGroups = ({
         )}
       </div>
       {groupData.map((group, index) => {
-        if (index < maxColumns) {
-          return (
-            <SideBarGroupItem
-              key={index}
-              notification={15}
-              name={group.group.name}
-              image={getFileUrl(group.group.profile)}
-              groupId={group.group_id}
-            />
-          );
+        let params = {};
+        if (group.group) {
+          params = {
+            name: group.group.name,
+            image: group.group.profile
+              ? getFileUrl(group.group.profile)
+              : getGenderImage("default").src,
+            groupId: group.group_id,
+          };
         } else {
-          return null;
+          params = {
+            name: group.name,
+            image: group.profile
+              ? getFileUrl(group.profile)
+              : getGenderImage("default").src,
+            groupId: group.id,
+          };
+        }
+        if (maxColumns) {
+          if (index < maxColumns) {
+            return <SideBarGroupItem key={index} {...params} />;
+          } else return null;
+        } else {
+          return <SideBarGroupItem key={index} {...params} />;
         }
       })}
 

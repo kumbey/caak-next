@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import StatsItem from "../../../src/components/stats";
 import Image from "next/image";
@@ -25,6 +25,7 @@ import { useUser } from "../../../src/context/userContext";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Divider from "../../../src/components/divider";
+import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -117,7 +118,7 @@ const Dashboard = ({ ssrData }) => {
 
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-
+  const [render, setRender] = useState(0)
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
@@ -126,7 +127,9 @@ const Dashboard = ({ ssrData }) => {
     ssrData.userFollower.items
   );
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
+  const [pendingPosts, setPendingPosts] = useState(
+    ssrData.pendingPosts.items ? ssrData.pendingPosts.items : []
+  );
   // const [archivedPosts, setArchivedPosts] = useState(
   //   ssrData.archivedPosts.items
   // );
@@ -364,35 +367,42 @@ const Dashboard = ({ ssrData }) => {
     });
   };
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (subscriptionPosts) {
+      const pendingIndex = pendingPosts.findIndex(
+        (post) => post.id === subscriptionPosts.id
+      );
+      const postIndex = posts.findIndex(
+        (post) => post.id === subscriptionPosts.id
+      );
       if (subscriptionPosts.status === "CONFIRMED") {
-        const filteredPending = pendingPosts.filter(
-          (item) => item.id !== subscriptionPosts.id
-        );
-        // const filteredArchived = archivedPosts.filter(
-        //   (item) => item.id !== subscriptionPosts.id
-        // );
+        if (postIndex <= -1) {
+          setPosts([subscriptionPosts, ...posts]);
+          pendingPosts.splice(pendingIndex, 1);
+          setRender(render + 1)
+        }
+      } else {
+        if (postIndex > -1) {
+          posts.splice(postIndex, 1);
+          setRender(render + 1)
+        }
+      }
 
-        setPosts((prev) => [subscriptionPosts, ...prev]);
-        setPendingPosts(filteredPending);
-        // setArchivedPosts(filteredArchived);
-      } else if (subscriptionPosts.status === "PENDING") {
-        const filtered = pendingPosts.filter(
-          (item) => item.id !== subscriptionPosts.id
-        );
-        const filteredConfirmed = posts.filter(
-          (item) => item.id !== subscriptionPosts.id
-        );
-
-        setPosts(filteredConfirmed);
-        setPendingPosts([subscriptionPosts, ...filtered]);
-      } else if (subscriptionPosts.status === "ARCHIVED") {
-        const filtered = pendingPosts.filter(
-          (item) => item.id !== subscriptionPosts.id
-        );
-        setPendingPosts(filtered);
-        // setArchivedPosts((prev) => [subscriptionPosts, ...prev]);
+      if (subscriptionPosts.status === "PENDING") {
+        if (pendingIndex === -1) {
+          setPendingPosts([subscriptionPosts, ...pendingPosts]);
+        }
+        //
+        if (postIndex > -1) {
+          posts.splice(postIndex, 1);
+          setRender(render + 1)
+        }
+      }
+      if (subscriptionPosts.status === "ARCHIVED") {
+        if (pendingIndex > -1) {
+          pendingPosts.splice(pendingIndex, 1);
+          setRender(render + 1)
+        }
       }
     }
     // eslint-disable-next-line

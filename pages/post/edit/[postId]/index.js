@@ -143,8 +143,15 @@ const EditPost = ({ ssrData }) => {
       await pdtPost(post, user.id);
       setLoading(false);
 
-      // router.push({ pathname: `/user/${user.id}/profile` });
-      // setActiveIndex(2)
+      router.push(
+        {
+          pathname: `/user/${user.id}/dashboard`,
+          query: {
+            activeIndex: 1,
+          },
+        },
+        `/user/${user.id}/dashboard`
+      );
     } catch (ex) {
       setLoading(false);
       console.log(ex);

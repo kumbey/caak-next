@@ -9,8 +9,12 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
   const router = useRouter();
 
   return (
-    <div className={"flex flex-col mt-[40px]"}>
-      <div className={"relative h-[438px] w-full pt-[4px]"}>
+    <div className={"flex flex-col w-full mt-[40px] max-h-[800px]"}>
+      <div
+        className={
+          "relative pt-[4px]"
+        }
+      >
         {postItem.file.type.startsWith("video") ? (
           <Video
             videoClassname={"object-contain rounded-[4px]"}
@@ -32,9 +36,9 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
             scroll={false}
           >
             <a>
-              <div className={"relative h-[438px] w-full"}>
+              <div className={"relative imageContainer max-h-[800px]"}>
                 <Image
-                  className={"rounded-[6px]"}
+                  className={"rounded-[6px] custom-img max-h-[800px]"}
                   objectFit={"cover"}
                   layout={"fill"}
                   src={getFileUrl(postItem.file)}

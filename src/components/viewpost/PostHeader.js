@@ -89,12 +89,12 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
               >
                 <div
                   className={
-                    "flex items-center justify-center w-[22px] h-[22px] rounded-full bg-caak-facebook cursor-pointer"
+                    "flex items-center justify-center w-[22px] h-[22px] rounded-full cursor-pointer"
                   }
                 >
                   <span
                     className={
-                      "icon-fi-rs-facebook text-white text-[20px]"
+                      "icon-fi-rs-facebook path2 text-caak-facebook text-[22px]"
                     }
                   />
                 </div>

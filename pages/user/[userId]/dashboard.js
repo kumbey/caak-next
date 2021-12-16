@@ -28,6 +28,7 @@ import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscript
 import InfiniteScroll from "react-infinite-scroll-component";
 import Divider from "../../../src/components/divider";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
+import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -114,16 +115,19 @@ export async function getServerSideProps({ req, query }) {
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
   const { isLogged, user } = useUser();
-
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(
+    router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
+  );
   const [userTotals] = useState(ssrData.userTotals);
-
   const [followedUsers, setFollowedUsers] = useState(ssrData.followedUsers);
   const [userComments, setUserComments] = useState(ssrData.userComments);
   const [posts, setPosts] = useState(ssrData.posts);
-  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts);
+  const [pendingPosts, setPendingPosts] = useState(
+    ssrData.pendingPosts ? ssrData.pendingPosts : []
+  );
+  const [render, setRender] = useState(0);
 
   const [archivedPosts, setArchivedPosts] = useState(ssrData.archivedPosts);
   const [subscripedPost, setSubscripedPost] = useState(0);
@@ -412,48 +416,60 @@ const Dashboard = ({ ssrData }) => {
     });
   };
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (subscripedPost) {
-      const pendingIndex = pendingPosts?.findIndex(
+      const pendingIndex = pendingPosts.items.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
-      const postIndex = posts.findIndex(
+      const postIndex = posts.items.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
-      const archivedIndex = archivedPosts.findIndex(
+      const archivedIndex = archivedPosts.items.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
       if (subscripedPost.post.status === "CONFIRMED") {
         if (subscripedPost.type === "add") {
           if (postIndex <= -1) {
-            setPosts([subscripedPost.post, ...posts]);
-            pendingPosts.splice(pendingIndex, 1);
-            archivedPosts.splice(archivedIndex, 1);
+            setPosts({
+              ...posts,
+              items: [subscripedPost.post, ...posts.items],
+            });
+            pendingPosts.items.splice(pendingIndex, 1);
+            archivedPosts.items.splice(archivedIndex, 1);
+            setRender(render + 1);
           }
         } else {
           if (postIndex > -1) {
             posts.splice(postIndex, 1);
-            // setRender(render + 1);
+            setRender(render + 1);
           }
         }
       }
       if (subscripedPost.post.status === "PENDING") {
         if (pendingIndex === -1) {
-          setPendingPosts([subscripedPost.post, ...pendingPosts]);
+          setPendingPosts({
+            ...pendingPosts,
+            items: [subscripedPost.post, ...pendingPosts.items],
+          });
         }
         if (archivedIndex > -1) {
-          archivedPosts.splice(archivedIndex, 1);
+          archivedPosts.items.splice(archivedIndex, 1);
         }
         if (postIndex > -1) {
-          posts.splice(postIndex, 1);
+          posts.items.splice(postIndex, 1);
+          setRender(render + 1);
         }
       }
       if (subscripedPost.post.status === "ARCHIVED") {
         if (archivedIndex === -1) {
-          setArchivedPosts([subscripedPost.post, ...archivedPosts]);
+          setArchivedPosts({
+            ...archivedPosts,
+            items: [subscripedPost.post, ...archivedPosts.items],
+          });
         }
         if (pendingIndex > -1) {
-          pendingPosts.splice(pendingIndex, 1);
+          pendingPosts.items.splice(pendingIndex, 1);
+          setRender(render + 1);
         }
       }
     }

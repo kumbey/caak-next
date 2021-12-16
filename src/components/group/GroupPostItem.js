@@ -7,7 +7,7 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
 
-const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
+const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
   const [loading, setLoading] = useState(false);
 
   const postHandler = async (id, status) => {
@@ -104,7 +104,8 @@ const GroupPostItem = ({ imageSrc, post, video, ...props }) => {
               }.${extractDate(post.createdAt).day}`}
             </p>
           </div>
-          {post.status === "ARCHIVED" ? (
+          {post.status === "ARCHIVED" ||
+          (post.status === "PENDING" && type === "user") ? (
             <div className=" flex w-[224px] ">
               <Link href={`/post/edit/${post.id}`}>
                 <a>

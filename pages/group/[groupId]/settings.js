@@ -102,7 +102,6 @@ export async function getServerSideProps({ req, query }) {
   //     group_id: query.groupId,
   //   },
   // });
-  // console.log(groupTotals);
 
   return {
     props: {

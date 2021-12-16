@@ -44,17 +44,28 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
+  const pendingPosts = await API.graphql({
+    query: getPostByUser,
+    variables: {
+      user_id: query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 20,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+
   const archivedPosts = await API.graphql({
     query: getPostByUser,
     variables: {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "ARCHIVED" } },
-      limit: 6,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -63,7 +74,7 @@ export async function getServerSideProps({ req, query }) {
     query: listUsersbyFollowed,
     variables: {
       user_id: query.userId,
-      limit: 6,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -73,7 +84,7 @@ export async function getServerSideProps({ req, query }) {
     variables: {
       user_id: query.userId,
       sortDirection: "DESC",
-      limit: 10,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -90,6 +101,7 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
+        pendingPosts: getReturnData(pendingPosts),
         archivedPosts: getReturnData(archivedPosts),
         userFollower: getReturnData(userList),
         userComment: getReturnData(userComments),
@@ -113,6 +125,8 @@ const Dashboard = ({ ssrData }) => {
   );
   const [userComments, setUserComments] = useState(ssrData.userComment.items);
   const [posts, setPosts] = useState(ssrData.posts.items);
+  const [pendingPosts, setPendingPosts] = useState(ssrData.pendingPosts.items);
+
   const [archivedPosts, setArchivedPosts] = useState(
     ssrData.archivedPosts.items
   );
@@ -127,6 +141,7 @@ const Dashboard = ({ ssrData }) => {
   const totalMember = userInfo?.followers;
   const totalComment = userInfo?.comments;
   const totalArchived = userInfo?.archived;
+  const totalPending = userInfo?.pending;
 
   const stats = [
     {
@@ -172,18 +187,24 @@ const Dashboard = ({ ssrData }) => {
     },
     {
       id: 1,
+      name: "Хүлээгдэж буй постууд",
+      icon: "icon-fi-rs-pending",
+      length: totalPending,
+    },
+    {
+      id: 2,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-archive",
       length: totalArchived,
     },
     {
-      id: 2,
+      id: 3,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
       length: totalMember,
     },
     {
-      id: 3,
+      id: 4,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
       length: totalComment,
@@ -196,7 +217,17 @@ const Dashboard = ({ ssrData }) => {
       user_id: router.query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 5,
+      limit: 20,
+    },
+    nextToken: ssrData.posts.nextToken,
+  });
+  const [nextPending] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 20,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -206,7 +237,7 @@ const Dashboard = ({ ssrData }) => {
       user_id: router.query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "ARCHIVED" } },
-      limit: 5,
+      limit: 20,
     },
     nextToken: ssrData.archivedPosts.nextToken,
   });
@@ -215,7 +246,7 @@ const Dashboard = ({ ssrData }) => {
     variables: {
       user_id: router.query.userId,
       sortDirection: "DESC",
-      limit: 10,
+      limit: 20,
     },
     nextToken: ssrData.userComment.nextToken,
 
@@ -225,7 +256,7 @@ const Dashboard = ({ ssrData }) => {
     query: listUsersbyFollowed,
     variables: {
       user_id: router.query.userId,
-      limit: 6,
+      limit: 20,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.userFollower.nextToken,
@@ -239,6 +270,24 @@ const Dashboard = ({ ssrData }) => {
         const resp = await nextPosts();
         if (resp) {
           setPosts((nextPosts) => [...nextPosts, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+
+  const fetchPending = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextPending();
+        if (resp) {
+          setPosts((nextPending) => [...nextPending, ...resp]);
         }
 
         setLoading(false);
@@ -355,20 +404,46 @@ const Dashboard = ({ ssrData }) => {
 
   useEffect(() => {
     if (subscripedPost) {
+      const pendingIndex = pendingPosts.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
       const postIndex = posts.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
-
-      if (subscripedPost.type === "add") {
-        if (postIndex <= -1) {
-          setPosts([subscripedPost.post, ...posts]);
+      const archivedIndex = archivedPosts.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
+      if (subscripedPost.post.status === "CONFIRMED") {
+        if (subscripedPost.type === "add") {
+          if (postIndex <= -1) {
+            setPosts([subscripedPost.post, ...posts]);
+            pendingPosts.splice(pendingIndex, 1);
+            archivedPosts.splice(archivedIndex, 1);
+          }
+        } else {
+          if (postIndex > -1) {
+            posts.splice(postIndex, 1);
+            // setRender(render + 1);
+          }
         }
-      } else if (subscripedPost.type === "remove") {
-        setArchivedPosts([subscripedPost.archivedPost, ...archivedPosts]);
-      } else {
+      }
+      if (subscripedPost.post.status === "PENDING") {
+        if (pendingIndex === -1) {
+          setPendingPosts([subscripedPost.post, ...pendingPosts]);
+        }
+        if (archivedIndex > -1) {
+          archivedPosts.splice(archivedIndex, 1);
+        }
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          // setRender(render + 1);
+        }
+      }
+      if (subscripedPost.post.status === "ARCHIVED") {
+        if (archivedIndex === -1) {
+          setArchivedPosts([subscripedPost.post, ...archivedPosts]);
+        }
+        if (pendingIndex > -1) {
+          pendingPosts.splice(pendingIndex, 1);
         }
       }
     }
@@ -377,8 +452,7 @@ const Dashboard = ({ ssrData }) => {
 
   useEffect(() => {
     subscrip();
-    fetchPosts();
-    fetchArchived();
+
     setLoaded(true);
     return () => {
       Object.keys(subscriptions).map((key) => {
@@ -558,6 +632,55 @@ const Dashboard = ({ ssrData }) => {
                 </div>
                 <Divider className={"mb-[16px]"} />
                 <InfiniteScroll
+                  dataLength={pendingPosts.length}
+                  next={fetchArchived}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {pendingPosts.length > 0 &&
+                    pendingPosts.map((pendingPost, index) => {
+                      return (
+                        <GroupPostItem
+                          type={"user"}
+                          key={index}
+                          imageSrc={pendingPost?.items?.items[0]?.file}
+                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={pendingPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                </InfiniteScroll>
+              </div>
+            ) : null}
+            {activeIndex === 2 ? (
+              <div className="flex flex-col">
+                <div className="flex mb-[16px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                    Пост
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                    Гишүүн
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                    Огноо
+                  </p>
+                  <p className="font-inter font-normal text-14px text-caak-generalblack">
+                    Үйлдэл
+                  </p>
+                </div>
+                <Divider className={"mb-[16px]"} />
+                <InfiniteScroll
                   dataLength={archivedPosts.length}
                   next={fetchArchived}
                   hasMore={true}
@@ -588,7 +711,7 @@ const Dashboard = ({ ssrData }) => {
                 </InfiniteScroll>
               </div>
             ) : null}
-            {activeIndex === 2 ? (
+            {activeIndex === 3 ? (
               <InfiniteScroll
                 dataLength={followedUsers.length}
                 next={fetchFollowers}
@@ -619,7 +742,7 @@ const Dashboard = ({ ssrData }) => {
               </InfiniteScroll>
             ) : null}
 
-            {activeIndex === 3
+            {activeIndex === 4
               ? userComments.length > 0 && (
                   <InfiniteScroll
                     dataLength={userComments.length}

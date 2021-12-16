@@ -51,7 +51,7 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 20,
     },
   });
 
@@ -61,7 +61,7 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "PENDING" } },
-      limit: 6,
+      limit: 20,
     },
   });
   // const archivedPosts = await API.graphql({
@@ -78,7 +78,7 @@ export async function getServerSideProps({ req, query }) {
     query: getGroupUsersByGroup,
     variables: {
       group_id: query.groupId,
-      limit: 6,
+      limit: 20,
     },
   });
 
@@ -207,7 +207,7 @@ const Dashboard = ({ ssrData }) => {
       group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
+      limit: 20,
     },
     nextToken: ssrData.posts.nextToken,
   });
@@ -215,7 +215,7 @@ const Dashboard = ({ ssrData }) => {
     query: getGroupUsersByGroup,
     variables: {
       group_id: router.query.groupId,
-      limit: 6,
+      limit: 20,
     },
     // nextToken: ssrData.followedUsers.nextToken,
   });
@@ -225,7 +225,7 @@ const Dashboard = ({ ssrData }) => {
       group_id: router.query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "PENDING" } },
-      limit: 6,
+      limit: 20,
     },
     nextToken: ssrData.pendingPosts.nextToken,
   });
@@ -401,9 +401,7 @@ const Dashboard = ({ ssrData }) => {
   useEffect(() => {
     subscrib();
     setLoaded(true);
-    fetchPosts();
-    fetchFollowers();
-    fetchPending();
+
     // fetchArchived();
     return () => {
       Object.keys(subscriptions).map((key) => {
@@ -643,6 +641,7 @@ const Dashboard = ({ ssrData }) => {
                       return (
                         <>
                           <GroupPostItem
+                            type={"group"}
                             key={index}
                             imageSrc={pendingPost?.items?.items[0]?.file}
                             video={pendingPost?.items?.items[0]?.file?.type?.startsWith(

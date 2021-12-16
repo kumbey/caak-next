@@ -70,15 +70,15 @@ export async function getServerSideProps({ req, res, query }) {
   // if (post.status === "PENDING") {
   //   return { notFound: true };
   // } else {
-    return {
-      props: {
-        ssrData: {
-          post: post,
-          groups: groups,
-        },
+  return {
+    props: {
+      ssrData: {
+        post: post,
+        groups: groups,
       },
-    };
-  // }
+    },
+    // };
+  };
 }
 
 const EditPost = ({ ssrData }) => {

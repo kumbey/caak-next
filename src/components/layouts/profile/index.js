@@ -97,6 +97,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     }
   };
 
+
   const handleClick = () => {
     if (isLogged) {
       if (!user.followed) {

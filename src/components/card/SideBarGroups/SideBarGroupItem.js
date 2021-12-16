@@ -17,6 +17,7 @@ const SideBarGroupItem = ({ name, notification, image, groupId }) => {
               alt={"group icon"}
               width={32}
               height={32}
+              objectFit={"cover"}
             />
 
             <div

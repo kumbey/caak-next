@@ -1,13 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import DropDown from "../navigation/DropDown";
-import { isLogged } from "../../utility/Authenty";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import {
-  createReaction,
-  deleteReaction,
-} from "../../graphql-custom/post/mutation";
-import { useUser } from "../../context/userContext";
 import { useClickOutSide } from "../../utility/Util";
 import ViewPostMoreMenu from "./ViewPostMoreMenu";
 import AnimatedCaakButton from "../button/animatedCaakButton";

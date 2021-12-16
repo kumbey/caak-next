@@ -147,7 +147,7 @@ const CardFooter = ({ totals, postId, reacted }) => {
           >
             <span
               className={
-                "icon-fi-rs-share-o text-caak-scriptink transition duration-150 text-[22px] mr-1.5"
+                "icon-fi-rs-share-o text-caak-scriptink transition duration-150 text-[22px]"
               }
             />
             <DropDown

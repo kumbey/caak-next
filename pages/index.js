@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../src/components/card/FeedCard";
 import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
@@ -14,8 +14,9 @@ import { listGroupByUserAndRole } from "../src/graphql-custom/GroupUsers/queries
 import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
 import { feedType } from "../src/components/navigation/sortButtonTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { listGroups } from "../src/graphql/queries";
 
-export async function getServerSideProps({ req, res }) {
+export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
   let user;
 
@@ -43,13 +44,18 @@ export async function getServerSideProps({ req, res }) {
 
       let retData = [];
       for (let i = 0; i < role.length; i++) {
-        const resp = await API.graphql(
-          graphqlOperation(listGroupByUserAndRole, {
-            user_id: user.attributes.sub,
-            role: { eq: role[i] },
-          })
-        );
-        retData = [...retData, ...getReturnData(resp).items];
+        if (role[i] === "NOT_MEMBER") {
+          const resp = await API.graphql(graphqlOperation(listGroups));
+          retData = [...retData, ...getReturnData(resp).items];
+        } else {
+          const resp = await API.graphql(
+            graphqlOperation(listGroupByUserAndRole, {
+              user_id: user.attributes.sub,
+              role: { eq: role[i] },
+            })
+          );
+          retData = [...retData, ...getReturnData(resp).items];
+        }
       }
       return retData;
     } catch (ex) {
@@ -62,6 +68,7 @@ export async function getServerSideProps({ req, res }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
+        allGroups: await fetchGroups(user, ["NOT_MEMBER"]),
         myGroups: await fetchGroups(user, ["MEMBER"]),
         adminModerator: await fetchGroups(user, ["ADMIN", "MODERATOR"]),
       },
@@ -204,8 +211,9 @@ const Feed = ({ ssrData }) => {
           } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
           <FeedLayout
-            adminModeratorGroups={ssrData.adminModeratorGroups}
+            adminModeratorGroups={ssrData.adminModerator}
             myGroups={ssrData.myGroups}
+            allGroups={ssrData.allGroups}
             buttonType={feedType}
             {...(isLogged ? { columns: 3 } : { columns: 2 })}
           >

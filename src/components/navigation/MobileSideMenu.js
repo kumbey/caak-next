@@ -29,7 +29,7 @@ const MobileSideMenu = ({ setOpen }) => {
           <div className={"relative flex flex-row items-center"}>
             <Link
               href={
-                isLogged ? `/user/${user.sysUser.id}/profile` : "/login"
+                isLogged ? `/user/${user.id}/profile` : "/login"
                 // state: { background: location },
               }
             >
@@ -37,10 +37,10 @@ const MobileSideMenu = ({ setOpen }) => {
                 <div className={"cursor-pointer "}>
                   {isLogged ? (
                     <img
-                      alt={user.sysUser.nickname}
+                      alt={user.nickname}
                       src={
-                        user.sysUser.pic
-                          ? getFileUrl(user.sysUser.pic)
+                        user.pic
+                          ? getFileUrl(user.pic)
                           : Dummy.img("50x50")
                       }
                       className={"block w-c13 h-c13 object-cover rounded-full"}
@@ -57,7 +57,7 @@ const MobileSideMenu = ({ setOpen }) => {
                 <div className="flex flex-col items-center">
                   <Link
                     href={{
-                      pathname: `/user/${user.sysUser.id}/profile`,
+                      pathname: `/user/${user.id}/profile`,
                     }}
                   >
                     <a>
@@ -66,7 +66,7 @@ const MobileSideMenu = ({ setOpen }) => {
                           "text-generalblack text-14px font-bold cursor-pointer"
                         }
                       >
-                        {user.sysUser.nickname}
+                        {user.nickname}
                       </span>
                     </a>
                   </Link>
@@ -75,7 +75,7 @@ const MobileSideMenu = ({ setOpen }) => {
                     <span
                       className={"text-14px text-caak-darkBlue font-medium"}
                     >
-                      {user.sysUser.aura}
+                      {user.aura}
                     </span>
                   </div>
                 </div>

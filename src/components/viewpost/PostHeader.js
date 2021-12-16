@@ -94,7 +94,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
                 >
                   <span
                     className={
-                      "icon-fi-rs-facebook path1 text-white text-[20px]"
+                      "icon-fi-rs-facebook text-white text-[20px]"
                     }
                   />
                 </div>

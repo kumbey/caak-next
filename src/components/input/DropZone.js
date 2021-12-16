@@ -1,8 +1,15 @@
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import AddPostThumbnailImage from "/public/assets/images/AddPostThumbnail.svg";
 import awsExports from "../../aws-exports";
-import { getFileExt, getFileName } from "../../utility/Util";
-import imageCompression from 'browser-image-compression';
+import {
+  findMatchIndex,
+  getFileExt,
+  getFileName,
+  getGenderImage,
+} from "../../utility/Util";
+import imageCompression from "browser-image-compression";
 import Consts from "../../utility/Consts";
 
 const DropZone = ({
@@ -14,6 +21,7 @@ const DropZone = ({
   subTitleStyle,
   titleStyle,
   icon,
+  hideThumbnailImage,
 }) => {
   const [dropZoneFiles, setDropZoneFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -25,25 +33,19 @@ const DropZone = ({
   });
 
   const fileChoosed = async () => {
-    if (post.items.length + dropZoneFiles.length > 50) {
-      alert("maxFiles 50 files");
+    if (post.items.length + dropZoneFiles.length > 60) {
+      alert("Зөвшөөрөгдсөн зурагны нийт тоо 60");
     } else {
-      const files = [];
-      for(let index=0; index < dropZoneFiles.length; index++) {
+      const localPost = { ...post };
+      const postItemLength = post.items.length;
+      const toCompressFiles = [];
 
-        let file = dropZoneFiles[index]
-
-        const options = {
-          maxSizeMB: 1,
-          useWebWorker: true
-        }
-
-        if(Consts.regexImage.test(file.type)){
-          file = await imageCompression(file, options)
-        }
+      for (let index = 0; index < dropZoneFiles.length; index++) {
+        const file = dropZoneFiles[index];
+        const realIndex = postItemLength + index + 1;
 
         const fileData = {
-          id: post.items.length === 0 ? index + 1 : post.items.length + index + 1,
+          id: realIndex,
           title: "",
           post_id: post.id,
           file: {
@@ -51,26 +53,53 @@ const DropZone = ({
             name: getFileName(file.name),
             key: file.name,
             type: file.type,
-            url: URL.createObjectURL(file),
+            url: "",
             bucket: awsExports.aws_user_files_s3_bucket,
             region: awsExports.aws_user_files_s3_bucket_region,
             level: "public",
             obj: file,
           },
+        };
+
+        if (Consts.regexImage.test(file.type)) {
+          fileData.url = getGenderImage("default").src;
+          fileData.loading = true;
+          toCompressFiles.push(fileData);
+        } else {
+          fileData.url = URL.createObjectURL(file);
         }
 
-        files.push(fileData);
+        localPost.items.push(fileData);
       }
 
-      if (files.length > 0) {
-        const items = [...post.items, ...files];
-        setPost({ ...post, items: items });
-      }
+      setPost({ ...localPost });
+      compressFiles(toCompressFiles);
     }
-  }
+  };
+
+  const compressFiles = async (files) => {
+    for (let index = 0; index < files.length; index++) {
+      const curItem = files[index];
+
+      const options = {
+        maxSizeMB: 1,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(curItem.file.obj, options);
+
+      curItem.file.obj = compressedFile;
+      curItem.file.url = URL.createObjectURL(compressedFile);
+      const curIndex = findMatchIndex(post.items, "id", curItem.id);
+      const postItems = post.items;
+      postItems[curIndex].file = curItem.file;
+      delete postItems[curIndex].loading
+      setPost((prev) => ({ ...prev, items: [...postItems] }));
+    }
+  };
 
   useEffect(() => {
-    fileChoosed()
+    fileChoosed();
     // eslint-disable-next-line
   }, [dropZoneFiles]);
 
@@ -84,6 +113,12 @@ const DropZone = ({
     >
       <input {...getInputProps()} />
       {icon && icon}
+      {!hideThumbnailImage && (
+        <div className={"relative w-[116px] h-[93px]"}>
+          <Image priority={true} alt={""} layout={"fill"} src={AddPostThumbnailImage} />
+        </div>
+      )}
+
       <span className={`${titleStyle}`}>{title}</span>
       <span className={`${subTitleStyle}`}>{subTitle}</span>
     </div>

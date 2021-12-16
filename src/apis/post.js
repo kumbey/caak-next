@@ -26,7 +26,7 @@ export const crtPost = async (newPost, userId) => {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const resp = await ApiFileUpload(item.file);
-      const postItem = _objectWithoutKeys(item, ["file", "chosen", "id"]);
+      const postItem = _objectWithoutKeys(item, ["file", "chosen", "id", "url"]);
       postItem.file_id = resp.id;
       postItem.order = i;
       postItem.post_id = savedPost.id;
@@ -88,8 +88,13 @@ export const pdtPost = async (oldPost, userId) => {
       // UPDATE POST ITEM
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        const postItem = _objectWithoutKeys(item, ["file", "chosen"]);
-        if (!item.id) {
+        const postItem = _objectWithoutKeys(item, [
+          "file",
+          "url",
+          "chosen",
+          "id",
+        ]);
+        if (typeof item.id === "number") {
           const resp = await ApiFileUpload(item.file);
           postItem.file_id = resp.id;
           postItem.order = i;
@@ -99,6 +104,7 @@ export const pdtPost = async (oldPost, userId) => {
             graphqlOperation(createPostItems, { input: postItem })
           );
         } else {
+          postItem.id = item.id;
           postItem.order = i;
           postItem.user_id = userId;
           await API.graphql(

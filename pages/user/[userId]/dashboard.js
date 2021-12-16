@@ -414,7 +414,7 @@ const Dashboard = ({ ssrData }) => {
 
   useEffect(() => {
     if (subscripedPost) {
-      const pendingIndex = pendingPosts.findIndex(
+      const pendingIndex = pendingPosts?.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
       const postIndex = posts.findIndex(
@@ -614,6 +614,7 @@ const Dashboard = ({ ssrData }) => {
                     return (
                       <DashList
                         key={index}
+                        type={"user"}
                         imageSrc={post?.items?.items[0]?.file}
                         post={post}
                         className="ph:mb-4 sm:mb-4"

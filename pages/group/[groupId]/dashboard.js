@@ -562,6 +562,7 @@ const Dashboard = ({ ssrData }) => {
                       return (
                         <DashList
                           key={index}
+                          type={"group"}
                           imageSrc={post?.items?.items[0]?.file}
                           post={post}
                           className="ph:mb-4 sm:mb-4"

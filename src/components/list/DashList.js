@@ -1,9 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { generateTimeAgo, getFileUrl } from "../../utility/Util";
+import {
+  generateTimeAgo,
+  getFileUrl,
+  getGenderImage,
+} from "../../utility/Util";
 import Button from "../../components/button";
 
-const DashList = ({ imageSrc, post }) => {
+const DashList = ({ imageSrc, post, type }) => {
   console.log(post);
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
@@ -45,19 +49,50 @@ const DashList = ({ imageSrc, post }) => {
           </div>
         </div>
         <div className="flex w-[185px] mr-[50px]">
-          <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
-            <Link
-              href={{
-                pathname: `/group/${post.group.id}`,
-              }}
-            >
-              <a>
-                <p className="text-caak-generalblack text-13px font-normal mx-2">
-                  @{post.group.name}
-                </p>
-              </a>
-            </Link>
-          </div>
+          {type === "group" ? (
+            <div className="flex items-center w-[141px] mr-[69px]">
+              <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>
+                <Image
+                  className=" bg-white rounded-full"
+                  src={
+                    !post?.user?.pic
+                      ? getGenderImage("default")
+                      : getFileUrl(post?.user?.pic)
+                  }
+                  width={28}
+                  height={28}
+                  layout="responsive"
+                  alt="#"
+                />
+              </div>
+
+              <Link
+                href={{
+                  pathname: `/user/${post.user_id}/profile`,
+                }}
+              >
+                <a>
+                  <div className=" text-13px font-inter font-normal text-caak-darkBlue">
+                    @{post.user.nickname}
+                  </div>
+                </a>
+              </Link>
+            </div>
+          ) : type === "user" ? (
+            <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
+              <Link
+                href={{
+                  pathname: `/group/${post.group.id}`,
+                }}
+              >
+                <a>
+                  <p className="text-caak-generalblack text-13px font-normal mx-2">
+                    @{post.group.name}
+                  </p>
+                </a>
+              </Link>
+            </div>
+          ) : null}
         </div>
         <div className="flex text-sm text-caak-darkBlue w-[166px] mr-[32px]">
           <div className="flex items-center mr-5">

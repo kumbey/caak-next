@@ -8,6 +8,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
+import Video from "../video";
 
 const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
   const [loading, setLoading] = useState(false);
@@ -43,19 +44,28 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
             >
               <a>
                 <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
-                  <Image
-                    className=" bg-white rounded-md"
-                    src={
-                      !imageSrc
-                        ? getGenderImage("default")
-                        : getFileUrl(imageSrc)
-                    }
-                    width={64}
-                    height={64}
-                    layout="responsive"
-                    objectFit={"cover"}
-                    alt="#"
-                  />
+                  {video ? (
+                    <Video
+                      videoClassname={"object-contain rounded-[4px]"}
+                      src={getFileUrl(video)}
+                      thumbnailIcon
+                      hideControls
+                    />
+                  ) : (
+                    <Image
+                      className=" bg-white rounded-md"
+                      src={
+                        !imageSrc
+                          ? getGenderImage("default")
+                          : getFileUrl(imageSrc)
+                      }
+                      width={64}
+                      height={64}
+                      layout="responsive"
+                      objectFit={"cover"}
+                      alt="#"
+                    />
+                  )}
                 </div>
               </a>
             </Link>

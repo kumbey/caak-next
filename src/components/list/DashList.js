@@ -8,8 +8,9 @@ import {
 import Button from "../../components/button";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
+import Video from "../video";
 
-const DashList = ({ imageSrc, post, type }) => {
+const DashList = ({ imageSrc, post, type, video }) => {
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <div className="relative flex items-center ">
@@ -21,15 +22,23 @@ const DashList = ({ imageSrc, post, type }) => {
           >
             <a>
               <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
-                <Image
-                  className=" bg-white rounded-md"
-                  src={getFileUrl(imageSrc)}
-                  width={64}
-                  height={64}
-                  layout="fixed"
-                  objectFit={"cover"}
-                  alt="#"
-                />
+                {video ? (
+                  <Video
+                    videoClassname={"object-contain rounded-[4px]"}
+                    src={getFileUrl(video)}
+                    thumbnailIcon
+                    hideControls
+                  />
+                ) : (
+                  <Image
+                    className=" bg-white rounded-md"
+                    src={getFileUrl(imageSrc)}
+                    width={64}
+                    height={64}
+                    objectFit={"cover"}
+                    alt="#"
+                  />
+                )}
               </div>
             </a>
           </Link>
@@ -128,7 +137,7 @@ const DashList = ({ imageSrc, post, type }) => {
               <Button
                 round
                 className={
-                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-15px bg-white relative"
                 }
               >
                 <p className="">Засах</p>

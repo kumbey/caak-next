@@ -7,8 +7,15 @@ import Divider from "../divider";
 import { useUser } from "../../context/userContext";
 import { API } from "aws-amplify";
 import { deleteComment } from "../../graphql-custom/comment/mutation";
+import Video from "../video";
 
-const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
+const CommentList = ({
+  comment,
+  imageSrc,
+  userComments,
+  setUserComments,
+  video,
+}) => {
   const { isLogged } = useUser();
   const [loading, setLoading] = useState(false);
   const createdAt = extractDate(comment.createdAt);
@@ -70,17 +77,28 @@ const CommentList = ({ comment, imageSrc, userComments, setUserComments }) => {
           >
             <a>
               <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
-                <Image
-                  className=" bg-white rounded-md"
-                  src={
-                    !imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)
-                  }
-                  width={64}
-                  height={64}
-                  layout="fixed"
-                  objectFit={"cover"}
-                  alt="#"
-                />
+                {video ? (
+                  <Video
+                    videoClassname={"object-contain rounded-[4px]"}
+                    src={getFileUrl(video)}
+                    thumbnailIcon
+                    hideControls
+                  />
+                ) : (
+                  <Image
+                    className=" bg-white rounded-md"
+                    src={
+                      !imageSrc
+                        ? getGenderImage("default")
+                        : getFileUrl(imageSrc)
+                    }
+                    width={64}
+                    height={64}
+                    layout="fixed"
+                    objectFit={"cover"}
+                    alt="#"
+                  />
+                )}
               </div>
             </a>
           </Link>

@@ -69,7 +69,7 @@ const Group = ({ ssrData }) => {
   const subscriptions = {};
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeView, setActiveView] = useState(0);
-  const [render, setRender] = useState(0)
+  const [render, setRender] = useState(0);
 
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [groupData] = useState(ssrData.groupData);
@@ -153,13 +153,13 @@ const Group = ({ ssrData }) => {
         (post) => post.id === subscriptionPosts.id
       );
       if (subscriptionPosts.status === "CONFIRMED") {
-        console.log("CONFIRMED")
+        console.log("CONFIRMED");
         if (postIndex <= -1) {
           setPosts([subscriptionPosts, ...posts]);
         }
       } else {
         posts.splice(postIndex, 1);
-        setRender(render + 1)
+        setRender(render + 1);
       }
     }
     // eslint-disable-next-line

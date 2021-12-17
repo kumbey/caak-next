@@ -8,13 +8,13 @@ export const feedType = [
   {
     id: 1,
     title: "Тренд",
-    type: "DEFAULT",
+    type: "TREND",
     icon: "icon-fi-rs-trend",
   },
   {
     id: 2,
     title: "Саак",
-    type: "DEFAULT",
+    type: "CAAK",
     icon: "icon-fi-rs-caak",
   },
 ];

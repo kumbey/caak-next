@@ -4,7 +4,10 @@ import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { checkUser, getReturnData } from "../src/utility/Util";
-import { getPostByStatus } from "../src/graphql-custom/post/queries";
+import {
+  getPostByStatus,
+  listPostOrderByReactions,
+} from "../src/graphql-custom/post/queries";
 import Loader from "../src/components/loader";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
@@ -15,6 +18,8 @@ import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
 import { feedType } from "../src/components/navigation/sortButtonTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { listGroups } from "../src/graphql/queries";
+import {useWrapper} from "../src/context/wrapperContext";
+import Head from "next/head";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -79,8 +84,8 @@ export async function getServerSideProps({ req }) {
 const Feed = ({ ssrData }) => {
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
-  const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
+  const {feedSortType, setFeedSortType} = useWrapper()
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -188,59 +193,65 @@ const Feed = ({ ssrData }) => {
   }, [user]);
 
   return (
-    <div id={"feed"} className={"site-container"}>
-      <div className={`px-0 w-full relative`}>
-        <div
-          className={`h-full flex ${
-            isLogged ? "flex-row items-start" : "flex-col items-center"
-          } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
-        >
-          <FeedLayout
-            adminModeratorGroups={ssrData.adminModerator}
-            myGroups={ssrData.myGroups}
-            allGroups={ssrData.allGroups}
-            buttonType={feedType}
-            {...(isLogged ? { columns: 3 } : { columns: 2 })}
-          >
-            <FeedSortButtons
-              setSortType={setSortType}
-              sortType={sortType}
-              items={feedType}
-              hide={isLogged}
-              containerClassname={"mb-[19px] justify-center"}
-              direction={"row"}
-            />
-            <InfiniteScroll
-              dataLength={posts.length}
-              next={fetchPosts}
-              hasMore={true}
-              loader={
-                <Loader
-                  containerClassName={"self-center w-full"}
-                  className={`bg-caak-primary ${
-                    loading ? "opacity-100" : "opacity-0"
-                  }`}
-                />
-              }
-              endMessage={<h4>Nothing more to show</h4>}
+      <>
+        <Head>
+          <title>Нүүр</title>
+        </Head>
+        <div id={"feed"} className={"site-container"}>
+          <div className={`px-0 w-full relative`}>
+            <div
+                className={`h-full flex ${
+                    isLogged ? "flex-row items-start" : "flex-col items-center"
+                } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
             >
-              {posts.map((data, index) => {
-                return (
-                  <Card
-                    key={index}
-                    video={data?.items?.items[0]?.file?.type?.startsWith(
-                      "video"
-                    )}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
-                );
-              })}
-            </InfiniteScroll>
-          </FeedLayout>
+              <FeedLayout
+                  adminModeratorGroups={ssrData.adminModerator}
+                  myGroups={ssrData.myGroups}
+                  allGroups={ssrData.allGroups}
+                  buttonType={feedType}
+                  {...(isLogged ? { columns: 3 } : { columns: 2 })}
+              >
+                <FeedSortButtons
+                    setSortType={setFeedSortType}
+                    sortType={feedSortType}
+                    items={feedType}
+                    hide={isLogged}
+                    containerClassname={"mb-[19px] justify-center"}
+                    direction={"row"}
+                />
+                <InfiniteScroll
+                    dataLength={posts.length}
+                    next={fetchPosts}
+                    hasMore={true}
+                    loader={
+                      <Loader
+                          containerClassName={"self-center w-full"}
+                          className={`bg-caak-primary ${
+                              loading ? "opacity-100" : "opacity-0"
+                          }`}
+                      />
+                    }
+                    endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {posts.map((data, index) => {
+                    return (
+                        <Card
+                            key={index}
+                            video={data?.items?.items[0]?.file?.type?.startsWith(
+                                "video"
+                            )}
+                            post={data}
+                            className="ph:mb-4 sm:mb-4"
+                        />
+                    );
+                  })}
+                </InfiniteScroll>
+              </FeedLayout>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </>
+
   );
 };
 export default Feed;

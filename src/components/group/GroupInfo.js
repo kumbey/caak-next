@@ -1,7 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import Divider from "../divider";
-import {extractDate, generateFileUrl, getGenderImage} from "../../utility/Util";
+import {
+  extractDate,
+  generateFileUrl,
+  getGenderImage,
+} from "../../utility/Util";
 import Button from "../button";
 
 const GroupInfo = ({ groupData, totalMember }) => {
@@ -11,7 +15,11 @@ const GroupInfo = ({ groupData, totalMember }) => {
       <div className={"h-[34px] w-full relative"}>
         <Image
           alt={"group cover"}
-          src={groupData.cover ? generateFileUrl(groupData?.cover) : getGenderImage("default")}
+          src={
+            groupData.cover
+              ? generateFileUrl(groupData?.cover)
+              : getGenderImage("default")
+          }
           layout={"fill"}
           objectFit={"cover"}
           className={"rounded-t-square"}
@@ -27,7 +35,11 @@ const GroupInfo = ({ groupData, totalMember }) => {
             >
               <Image
                 alt={"profile picture"}
-                src={groupData.profile ? generateFileUrl(groupData?.profile) : getGenderImage("default")}
+                src={
+                  groupData.profile
+                    ? generateFileUrl(groupData?.profile)
+                    : getGenderImage("default")
+                }
                 objectFit={"cover"}
                 height={48}
                 width={48}
@@ -78,7 +90,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
           </div>
         </div>
         <Divider
-          className={"h-[1px] mt-[21px] mb-[21px]"}
+          className={"h-[1px] mt-[20px] mb-[16px]"}
           color={"border-caak-titaniumwhite"}
         />
         <div className="flex flex-col ">
@@ -96,12 +108,16 @@ const GroupInfo = ({ groupData, totalMember }) => {
           color={"border-caak-titaniumwhite"}
         />
         <div className="flex flex-col">
-          <div className="text-caak-darkBlue text-sm">Грүппын төрөл</div>
-          <div className="flex items-center justify-center  flex-shrink-1 mt-2.5 h-[35px] rounded-full border-2 border-caak-liquidnitrogen">
-            <span className={`${groupData.category.icon} mr-2`} />
-            <p className="font-medium font-inter text-15px">
-              {groupData.category.name}
-            </p>
+          <div className="text-caak-darkBlue text-sm mb-[10px]">
+            Грүппын төрөл
+          </div>
+          <div className="flex  items-center  w-auto h-[35px] rounded-full border-2 border-caak-liquidnitrogen">
+            <div className="flex items-center mx-[16px]">
+              <span className={`${groupData.category.icon} mr-2`} />
+              <p className="font-medium font-inter text-15px">
+                {groupData.category.name}
+              </p>
+            </div>
           </div>
           {(groupData.role_on_group === "ADMIN" ||
             groupData.role_on_group === "MODERATOR") && (

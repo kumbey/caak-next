@@ -585,12 +585,30 @@ const Dashboard = ({ ssrData }) => {
                 </p>
               </div>
             </div>
-            <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-              <div className="flex items-center  mx-[12px] my-[10px]">
-                <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                  Сүүлд нэмэгдсэн
-                </p>
-                <span className="icon-fi-rs-triangle text-14px" />
+            <div className="flex items-center justify-between">
+              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                Хандалт
+              </p>
+
+              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                <div className="flex items-center  mx-[12px] my-[10px]">
+                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                    Бүгд
+                  </p>
+                  <span className="icon-fi-rs-triangle text-14px" />
+                </div>
+              </div>
+              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                Огноо
+              </p>
+
+              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                <div className="flex items-center  mx-[12px] my-[10px]">
+                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                    Сүүлд нэмэгдсэн
+                  </p>
+                  <span className="icon-fi-rs-triangle text-14px" />
+                </div>
               </div>
             </div>
           </div>

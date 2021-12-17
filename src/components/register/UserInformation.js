@@ -12,10 +12,8 @@ import DateInput from "../input/MaskedInput";
 import { useUser } from "../../context/userContext";
 
 const UserInformation = ({ nextStep }) => {
-
   const router = useRouter();
-  const { lsGet, lsRemove } = useLocalStorage("session");
-  const { cognitoUser } = useUser()
+  const { cognitoUser } = useUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -56,12 +54,29 @@ const UserInformation = ({ nextStep }) => {
         nickname: nickname,
         gender: gender,
         birthdate: birthdate,
-        status: "ACTIVE"
+        status: "ACTIVE",
+      };
+
+      await saveUserData(usr);
+      if (router.query.isModal) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              signInUp: "intrst",
+            },
+          },
+          "/signInUp/intrst",
+          { shallow: true, scroll: false }
+        );
+      } else {
+        router.replace("/signInUp/intrst", undefined, {
+          shallow: true,
+          scroll: false,
+        });
       }
-
-      await saveUserData(usr)
       setLoading(false);
-
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -75,7 +90,6 @@ const UserInformation = ({ nextStep }) => {
       authMode: "AWS_IAM",
     });
   };
-
 
   return router.query.isModal ? (
     <>
@@ -137,7 +151,7 @@ const UserInformation = ({ nextStep }) => {
         </div>
       </form>
     </>
-  ) : null
+  ) : null;
 };
 
 export default UserInformation;

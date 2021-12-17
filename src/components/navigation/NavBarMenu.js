@@ -4,14 +4,14 @@ import Divider from "../divider";
 import Link from "next/link";
 
 export default function NavBarMenu({ type }) {
-  const { user, isLogged, logout } = useUser();
+  const { user, isLogged } = useUser();
 
   return (
     <div className={`dropdown-item-wrapper`}>
       {isLogged && (
         <Fragment>
           {type !== "mobile" && (
-            <Link href={`/user/${user.id}/profile`}>
+            <Link href={`/user/${user.id}/profile`} shallow={true}>
               <a>
                 <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span
@@ -112,15 +112,16 @@ export default function NavBarMenu({ type }) {
       {isLogged && type !== "mobile" && (
         <>
           <Divider className={"my-2"} />
-          <div
-            onClick={() => logout()}
-            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
-          >
-            <span
-              className={"icon-fi-rs-exit text-[18px] w-[20px] h-[18px] mr-2"}
-            />
-            <p className="text-14px text-caak-extraBlack">Гарах</p>
-          </div>
+          <Link href={`/signInUp/out`} shallow={true}>
+            <div
+              className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+            >
+              <span
+                className={"icon-fi-rs-exit text-[18px] w-[20px] h-[18px] mr-2"}
+              />
+              <p className="text-14px text-caak-extraBlack">Гарах</p>
+            </div>
+          </Link>
         </>
       )}
     </div>

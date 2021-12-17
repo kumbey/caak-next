@@ -6,9 +6,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { closeModal } from "../../src/utility/Util";
 import Button from "../../src/components/button";
-import { isLogged } from "../../src/utility/Authenty";
 import { useUser } from "../../src/context/userContext";
 import useModalLayout from "../../src/hooks/useModalLayout";
 import { useRouter } from "next/router";
@@ -18,7 +16,6 @@ const SignInUp = ({ ...props }) => {
   const ModalLayout = useModalLayout();
   const router = useRouter();
   const type = router.query.signInUp;
-  const history = useRouter();
 
   const host = "/signInUp/federated/";
   const windowName = "_blank";
@@ -29,8 +26,6 @@ const SignInUp = ({ ...props }) => {
     const timer = setInterval(function () {
       if (opened.closed) {
         clearInterval(timer);
-        isLogged(user, setUser);
-        closeModal(history, state);
       }
     }, 100);
   };

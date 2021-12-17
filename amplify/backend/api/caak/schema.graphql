@@ -201,8 +201,7 @@ type PostTotal @model(mutations: null)
     { allow: public, provider: iam, operations: [read]}
   ])
   @key(fields:["post_id"])
-  @key(name:"orderByReactions", fields:["status","reactions"] queryField:"listPostOrderByReactions")
-  @key(name:"byGroupOrderByReactions", fields:["group_id","status","reactions"] queryField:"listPostByGroupOrderByReactions"){
+  @key(name:"orderByReactions", fields:["status","total_reactions"] queryField:"listPostOrderByReactions"){
   post_id: ID!
   post: Post @connection(fields:["post_id"])
   status: String

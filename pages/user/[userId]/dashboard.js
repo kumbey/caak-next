@@ -24,7 +24,7 @@ import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
 import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
-import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
+import {onPostByUser, onPostUpdateByStatus} from "../../../src/graphql-custom/post/subscription";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Divider from "../../../src/components/divider";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
@@ -371,9 +371,10 @@ const Dashboard = ({ ssrData }) => {
     }
 
     subscriptions.onPostUpdateByStatus = API.graphql({
-      query: onPostUpdateByStatus,
+      query: onPostByUser,
       variables: {
         status: "CONFIRMED",
+        user_id: user.id,
       },
       authMode: authMode,
     }).subscribe({
@@ -385,10 +386,11 @@ const Dashboard = ({ ssrData }) => {
       },
     });
 
-    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
-      query: onPostUpdateByStatus,
+    subscriptions.onPostByUserDeleted = API.graphql({
+      query: onPostByUser,
       variables: {
         status: "ARCHIVED",
+        user_id: user.id,
       },
       authMode: authMode,
     }).subscribe({
@@ -400,10 +402,11 @@ const Dashboard = ({ ssrData }) => {
       },
     });
 
-    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
-      query: onPostUpdateByStatus,
+    subscriptions.onPostByUserDeleted = API.graphql({
+      query: onPostByUser,
       variables: {
         status: "PENDING",
+        user_id: user.id,
       },
       authMode: authMode,
     }).subscribe({

@@ -10,7 +10,7 @@ import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
-import { onPostUpdateByStatus } from "../../../src/graphql-custom/post/subscription";
+import {onPostByUser, onPostUpdateByStatus} from "../../../src/graphql-custom/post/subscription";
 import { useUser } from "../../../src/context/userContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
@@ -112,9 +112,10 @@ const Profile = ({ ssrData }) => {
     }
 
     subscriptions.onPostUpdateByStatus = API.graphql({
-      query: onPostUpdateByStatus,
+      query: onPostByUser,
       variables: {
         status: "CONFIRMED",
+        user_id: userId
       },
       authMode: authMode,
     }).subscribe({
@@ -126,10 +127,12 @@ const Profile = ({ ssrData }) => {
       },
     });
 
-    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
-      query: onPostUpdateByStatus,
+    subscriptions.onPostByUserDeleted = API.graphql({
+      query: onPostByUser,
       variables: {
         status: "ARCHIVED",
+        user_id: userId
+
       },
       authMode: authMode,
     }).subscribe({
@@ -141,10 +144,11 @@ const Profile = ({ ssrData }) => {
       },
     });
 
-    subscriptions.onPostUpdateByStatusPending = API.graphql({
-      query: onPostUpdateByStatus,
+    subscriptions.onPostByUserPending = API.graphql({
+      query: onPostByUser,
       variables: {
         status: "PENDING",
+        user_id: userId
       },
       authMode: authMode,
     }).subscribe({

@@ -36,10 +36,10 @@ const OtpInput = ({
   };
   return (
     <div className="mx-c13">
-      <div className="flex justify-center w-full">
+      <div className="flex flex-col items-center justify-center w-full">
         <IMaskInput
           {...props}
-          className={`w-[350px] justify-center h-[42px] text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite  ${className}   ${
+          className={`w-[350px] justify-center rounded-lg  h-[42px] text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite  ${className}   ${
             errorMessage ? ` border border-caak-red` : ``
           }`}
           onInput={(e) => setOtp(e.target.value)}

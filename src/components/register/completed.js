@@ -10,17 +10,26 @@ const Completed = () => {
   const router = useRouter();
 
   const hide = () => {
-    if(router.query.isModal){
-      router.replace({
-        pathname: router.pathname,
-        query: _objectWithoutKeys(...router.query, ["signInUp"])
-      }, undefined, {shallow: true, scroll: false})
-    }else{
+    setLoading(true);
+    if (router.query.isModal) {
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: _objectWithoutKeys(router.query, ["signInUp"]),
+        },
+        undefined,
+        { shallow: true, scroll: false }
+      );
+      setLoading(false);
+    } else {
+      setLoading(false);
+
       router.replace("/", undefined, {
-        shallow: true, scroll: false
-      })
+        shallow: true,
+        scroll: false,
+      });
     }
-  }
+  };
 
   return (
     <div className={`backdrop flex justify-center items-center`}>

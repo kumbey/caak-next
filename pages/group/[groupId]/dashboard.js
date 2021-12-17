@@ -518,10 +518,23 @@ const Dashboard = ({ ssrData }) => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center">
-              <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                Шүүлтүүр
+            <div className="flex items-center justify-between">
+              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                Хандалт
               </p>
+
+              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                <div className="flex items-center  mx-[12px] my-[10px]">
+                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                    Бүгд
+                  </p>
+                  <span className="icon-fi-rs-triangle text-14px" />
+                </div>
+              </div>
+              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                Огноо
+              </p>
+
               <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
                 <div className="flex items-center  mx-[12px] my-[10px]">
                   <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
@@ -534,7 +547,7 @@ const Dashboard = ({ ssrData }) => {
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px] mb-[50px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[16px] mb-[50px]"
             }
           >
             {activeIndex === 0 ? (
@@ -600,7 +613,7 @@ const Dashboard = ({ ssrData }) => {
                 }
                 endMessage={<h4>Nothing more to show</h4>}
               >
-                <div className=" flex flex-row flex-wrap justify-between ">
+                <div className=" flex flex-row flex-wrap justify-between mt-[14px]">
                   {followedUsers.map((data, index) => {
                     return (
                       <GroupFollowerList

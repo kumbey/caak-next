@@ -81,7 +81,11 @@ async function changeReactions(newImg, increase){
             const post = await PostDB.get(postItem.post_id)
 
             await PostItemsTotal.modify(postItem.id, items)
-            await PostTotal.modify(post.id , items)
+            await PostTotal.modify(post.id , {
+                field: "total_reactions",
+                increase: increase,
+                count: 1
+            })
             items[0].field = "post_items_reactions"
             await UserTotal.modify(post.user_id, items)
 

@@ -11,7 +11,7 @@ async function insert(record){
         const newImg = getValuesFromRecord(NewImage)
 
         //CREATE NEW POST TOTAL
-        await PostTotal.insert(newImg.id)
+        await PostTotal.insert(newImg)
 
         //UPDATE USER TOTAL
         await UserTotal.modify(newImg.user_id, [
@@ -44,7 +44,15 @@ async function modify(record){
         const { NewImage, OldImage } = record
         const newImg = getValuesFromRecord(NewImage)
         const oldImg = getValuesFromRecord(OldImage)
-
+        
+        if(newImg.group_id !== oldImg.group_id){
+            await PostTotal.update({
+                post_id: newImg.id,
+                group_id: newImg.group_id,
+                status: newImg.status,
+                "group_id#status": `${newImg.group_id}#${newImg.status}`
+            },["post_id"], "post_id")
+        }
 
         if(newImg.status !== oldImg.status && newImg.status !== "POSTING"){
              

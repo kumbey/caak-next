@@ -96,13 +96,17 @@ const db = (table , client) => {
         }
     }
     
-    async function update(data, pass){
+    async function update(data, pass, idField){
         try {
 
             if(!pass){
                 pass = ["id"]
             }
 
+            if(!idField){
+                idField: "id"
+            }
+            
             const now = new Date().toISOString()
             
             data.updatedAt = now
@@ -111,9 +115,9 @@ const db = (table , client) => {
             const params = {
                 TableName: tableName,
                 Key:{
-                    id: data.id,
+                    [idField]: data[idField],
                 },
-                ConditionExpression: "attribute_exists(id)",
+                ConditionExpression: `attribute_exists(${idField})`,
                 UpdateExpression: expression,
                 ExpressionAttributeValues: values,
                 ExpressionAttributeNames: names,

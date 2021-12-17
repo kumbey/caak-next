@@ -111,6 +111,8 @@ export const updateUser = /* GraphQL */ `
       status
       followed
       verified
+      employed
+      meta
       createdAt
       updatedAt
       pic {
@@ -184,6 +186,8 @@ export const updateUser = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -222,6 +226,8 @@ export const deleteUser = /* GraphQL */ `
       status
       followed
       verified
+      employed
+      meta
       createdAt
       updatedAt
       pic {
@@ -295,6 +301,8 @@ export const deleteUser = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -339,6 +347,8 @@ export const createFollowedUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -417,6 +427,8 @@ export const createFollowedUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -509,6 +521,8 @@ export const updateFollowedUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -587,6 +601,8 @@ export const updateFollowedUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -679,6 +695,8 @@ export const deleteFollowedUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -757,6 +775,8 @@ export const deleteFollowedUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -945,6 +965,7 @@ export const createPost = /* GraphQL */ `
       category_id
       reacted
       updatedAt
+      owned
       createdAt
       version
       user {
@@ -963,6 +984,8 @@ export const createPost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -1041,6 +1064,8 @@ export const createPost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -1128,13 +1153,34 @@ export const createPost = /* GraphQL */ `
       }
       totals {
         post_id
+        status
         search_id
+        group_id
+        search_key
         reactions
+        total_reactions
         comments
         views
         shares
         createdAt
         updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          updatedAt
+          owned
+          createdAt
+          version
+        }
       }
       comments {
         items {
@@ -1163,6 +1209,7 @@ export const createPost = /* GraphQL */ `
         rating
         followed
         role_on_group
+        featured
         createdAt
         updatedAt
         profile {
@@ -1211,6 +1258,8 @@ export const createPost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -1264,6 +1313,7 @@ export const updatePost = /* GraphQL */ `
       category_id
       reacted
       updatedAt
+      owned
       createdAt
       version
       user {
@@ -1282,6 +1332,8 @@ export const updatePost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -1360,6 +1412,8 @@ export const updatePost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -1447,13 +1501,34 @@ export const updatePost = /* GraphQL */ `
       }
       totals {
         post_id
+        status
         search_id
+        group_id
+        search_key
         reactions
+        total_reactions
         comments
         views
         shares
         createdAt
         updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          updatedAt
+          owned
+          createdAt
+          version
+        }
       }
       comments {
         items {
@@ -1482,6 +1557,7 @@ export const updatePost = /* GraphQL */ `
         rating
         followed
         role_on_group
+        featured
         createdAt
         updatedAt
         profile {
@@ -1530,6 +1606,8 @@ export const updatePost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -1583,6 +1661,7 @@ export const deletePost = /* GraphQL */ `
       category_id
       reacted
       updatedAt
+      owned
       createdAt
       version
       user {
@@ -1601,6 +1680,8 @@ export const deletePost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -1679,6 +1760,8 @@ export const deletePost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -1766,13 +1849,34 @@ export const deletePost = /* GraphQL */ `
       }
       totals {
         post_id
+        status
         search_id
+        group_id
+        search_key
         reactions
+        total_reactions
         comments
         views
         shares
         createdAt
         updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          updatedAt
+          owned
+          createdAt
+          version
+        }
       }
       comments {
         items {
@@ -1801,6 +1905,7 @@ export const deletePost = /* GraphQL */ `
         rating
         followed
         role_on_group
+        featured
         createdAt
         updatedAt
         profile {
@@ -1849,6 +1954,8 @@ export const deletePost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -1929,6 +2036,7 @@ export const createPostItems = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -1947,6 +2055,8 @@ export const createPostItems = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -1966,6 +2076,8 @@ export const createPostItems = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -1981,8 +2093,12 @@ export const createPostItems = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -2001,6 +2117,7 @@ export const createPostItems = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -2079,6 +2196,7 @@ export const updatePostItems = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -2097,6 +2215,8 @@ export const updatePostItems = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -2116,6 +2236,8 @@ export const updatePostItems = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -2131,8 +2253,12 @@ export const updatePostItems = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -2151,6 +2277,7 @@ export const updatePostItems = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -2229,6 +2356,7 @@ export const deletePostItems = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -2247,6 +2375,8 @@ export const deletePostItems = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -2266,6 +2396,8 @@ export const deletePostItems = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -2281,8 +2413,12 @@ export const deletePostItems = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -2301,6 +2437,7 @@ export const deletePostItems = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -2504,6 +2641,8 @@ export const createComment = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -2582,6 +2721,8 @@ export const createComment = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -2657,6 +2798,7 @@ export const createComment = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -2675,6 +2817,8 @@ export const createComment = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -2694,6 +2838,8 @@ export const createComment = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -2709,8 +2855,12 @@ export const createComment = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -2729,6 +2879,7 @@ export const createComment = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -2773,6 +2924,7 @@ export const createComment = /* GraphQL */ `
           category_id
           reacted
           updatedAt
+          owned
           createdAt
           version
         }
@@ -2850,6 +3002,8 @@ export const updateComment = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -2928,6 +3082,8 @@ export const updateComment = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -3003,6 +3159,7 @@ export const updateComment = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -3021,6 +3178,8 @@ export const updateComment = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3040,6 +3199,8 @@ export const updateComment = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3055,8 +3216,12 @@ export const updateComment = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -3075,6 +3240,7 @@ export const updateComment = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -3119,6 +3285,7 @@ export const updateComment = /* GraphQL */ `
           category_id
           reacted
           updatedAt
+          owned
           createdAt
           version
         }
@@ -3196,6 +3363,8 @@ export const deleteComment = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -3274,6 +3443,8 @@ export const deleteComment = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -3349,6 +3520,7 @@ export const deleteComment = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -3367,6 +3539,8 @@ export const deleteComment = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3386,6 +3560,8 @@ export const deleteComment = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3401,8 +3577,12 @@ export const deleteComment = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -3421,6 +3601,7 @@ export const deleteComment = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -3465,6 +3646,7 @@ export const deleteComment = /* GraphQL */ `
           category_id
           reacted
           updatedAt
+          owned
           createdAt
           version
         }
@@ -3621,6 +3803,8 @@ export const createReportedPost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -3696,6 +3880,7 @@ export const createReportedPost = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -3714,6 +3899,8 @@ export const createReportedPost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3733,6 +3920,8 @@ export const createReportedPost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3748,8 +3937,12 @@ export const createReportedPost = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -3768,6 +3961,7 @@ export const createReportedPost = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -3810,6 +4004,8 @@ export const updateReportedPost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -3885,6 +4081,7 @@ export const updateReportedPost = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -3903,6 +4100,8 @@ export const updateReportedPost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3922,6 +4121,8 @@ export const updateReportedPost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -3937,8 +4138,12 @@ export const updateReportedPost = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -3957,6 +4162,7 @@ export const updateReportedPost = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -3999,6 +4205,8 @@ export const deleteReportedPost = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -4074,6 +4282,7 @@ export const deleteReportedPost = /* GraphQL */ `
         category_id
         reacted
         updatedAt
+        owned
         createdAt
         version
         user {
@@ -4092,6 +4301,8 @@ export const deleteReportedPost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -4111,6 +4322,8 @@ export const deleteReportedPost = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -4126,8 +4339,12 @@ export const deleteReportedPost = /* GraphQL */ `
         }
         totals {
           post_id
+          status
           search_id
+          group_id
+          search_key
           reactions
+          total_reactions
           comments
           views
           shares
@@ -4146,6 +4363,7 @@ export const deleteReportedPost = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -4234,6 +4452,8 @@ export const createGroupUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -4305,6 +4525,7 @@ export const createGroupUsers = /* GraphQL */ `
         rating
         followed
         role_on_group
+        featured
         createdAt
         updatedAt
         profile {
@@ -4353,6 +4574,8 @@ export const createGroupUsers = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -4416,6 +4639,8 @@ export const updateGroupUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -4487,6 +4712,7 @@ export const updateGroupUsers = /* GraphQL */ `
         rating
         followed
         role_on_group
+        featured
         createdAt
         updatedAt
         profile {
@@ -4535,6 +4761,8 @@ export const updateGroupUsers = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -4598,6 +4826,8 @@ export const deleteGroupUsers = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -4669,6 +4899,7 @@ export const deleteGroupUsers = /* GraphQL */ `
         rating
         followed
         role_on_group
+        featured
         createdAt
         updatedAt
         profile {
@@ -4717,6 +4948,8 @@ export const deleteGroupUsers = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }
@@ -4766,6 +4999,7 @@ export const createGroup = /* GraphQL */ `
       rating
       followed
       role_on_group
+      featured
       createdAt
       updatedAt
       profile {
@@ -4814,6 +5048,8 @@ export const createGroup = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -4920,6 +5156,7 @@ export const createGroup = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -4941,6 +5178,7 @@ export const updateGroup = /* GraphQL */ `
       rating
       followed
       role_on_group
+      featured
       createdAt
       updatedAt
       profile {
@@ -4989,6 +5227,8 @@ export const updateGroup = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -5095,6 +5335,7 @@ export const updateGroup = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -5116,6 +5357,7 @@ export const deleteGroup = /* GraphQL */ `
       rating
       followed
       role_on_group
+      featured
       createdAt
       updatedAt
       profile {
@@ -5164,6 +5406,8 @@ export const deleteGroup = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -5270,6 +5514,7 @@ export const deleteGroup = /* GraphQL */ `
           rating
           followed
           role_on_group
+          featured
           createdAt
           updatedAt
         }
@@ -5310,6 +5555,8 @@ export const createNotification = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -5408,6 +5655,8 @@ export const updateNotification = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -5506,6 +5755,8 @@ export const deleteNotification = /* GraphQL */ `
         status
         followed
         verified
+        employed
+        meta
         createdAt
         updatedAt
         pic {
@@ -5592,6 +5843,8 @@ export const createUser = /* GraphQL */ `
       status
       followed
       verified
+      employed
+      meta
       createdAt
       updatedAt
       pic {
@@ -5665,6 +5918,8 @@ export const createUser = /* GraphQL */ `
           status
           followed
           verified
+          employed
+          meta
           createdAt
           updatedAt
         }

@@ -20,7 +20,7 @@ const SignInUp = ({ ...props }) => {
   const type = router.query.signInUp;
   const history = useRouter();
 
-  const host = "/federated/login/";
+  const host = "/signInUp/federated/";
   const windowName = "_blank";
   const { user, setUser } = useUser();
 

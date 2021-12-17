@@ -10,6 +10,7 @@ async function insert(record){
 
         const { NewImage } = record
         const newImg = getValuesFromRecord(NewImage)
+        let notifi_action = ""
 
         //CREATE NEW COMMENT TOTAL
         await CommentTotal.insert(newImg.id)
@@ -24,6 +25,7 @@ async function insert(record){
         ])
 
         if(newImg.on_to === "POST_ITEM"){
+            notifi_action = "POST_ITEM_COMMENT_WRITED"
             await PostItemsTotal.modify(newImg.post_item_id, [
                 {
                     field: "comments",
@@ -32,6 +34,7 @@ async function insert(record){
                 }
             ])
         }else{
+            notifi_action = "POST_COMMENT_WRITED"
             await PostTotal.modify(newImg.post_id, [
                 {
                     field: "comments",
@@ -46,7 +49,7 @@ async function insert(record){
             section: "USER",
             type: "COMMENT",
             item_id: newImg.id,
-            action: `COMMENT_WRITED`,
+            action: notifi_action,
             from: newImg.user_id,
             to: newImg.replyUserID,
             seen: "FALSE",

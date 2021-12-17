@@ -41,6 +41,8 @@ type User @model
   totals: UserTotal @connection(fields:["id"])
   followed: Boolean @function(name:"resolverBoolean-${env}")
   verified: Boolean
+  employed: String
+  meta: String
 }
 
 type UserTotal @model(mutations: null)
@@ -148,7 +150,8 @@ type Post @model @versioned
   ])
   @key(name: "byStatus", fields:["status","updatedAt"] , queryField:"getPostByStatus")
   @key(name: "byGroup", fields:["group_id","updatedAt"] , queryField:"getPostByGroup")
-  @key(name: "byUser", fields:["user_id","updatedAt"] , queryField:"getPostByUser"){
+  @key(name: "byUser", fields:["user_id","updatedAt"] , queryField:"getPostByUser")
+  @key(name: "byOwner", fields:["owned","updatedAt"] , queryField:"listPostByOwned"){
   id: ID!
   title: String!
   description: String
@@ -168,6 +171,7 @@ type Post @model @versioned
   reacted: Boolean @function(name:"resolverBoolean-${env}")
   comments: [Comment] @connection(keyName:"byPostQ", fields:["id"])
   updatedAt: AWSDateTime!
+  owned: String
 }
 
 type PostItems @model
@@ -196,10 +200,17 @@ type PostTotal @model(mutations: null)
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(fields:["post_id"]){
+  @key(fields:["post_id"])
+  @key(name:"orderByReactions", fields:["status","reactions"] queryField:"listPostOrderByReactions")
+  @key(name:"byGroupOrderByReactions", fields:["group_id","status","reactions"] queryField:"listPostByGroupOrderByReactions"){
   post_id: ID!
+  post: Post @connection(fields:["post_id"])
+  status: String
   search_id: ID!
+  group_id: ID
+  search_key: String
   reactions: Int!
+  total_reactions: Int!
   comments: Int!
   views: Int!
   shares: Int!
@@ -351,7 +362,8 @@ type Group @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
-  ]){
+  ])
+  @key(name: "byFeatured", fields: ["featured","name"], queryField:"listGroupByFeatured"){
   id: ID!
   name: String!
   category_id: ID!
@@ -367,6 +379,7 @@ type Group @model
   followed: Boolean @function(name:"resolverBoolean-${env}")
   role_on_group: String @function(name:"userRoleOnGroup-${env}")
   username: GroupUsername! @connection(fields:["id"])
+  featured: String
 }
 
 type GroupUsername @model(mutations: null)

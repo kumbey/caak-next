@@ -506,8 +506,7 @@ const Dashboard = ({ ssrData }) => {
             }
             width={52}
             height={52}
-            layout="fixed"
-            //   objectFit={"cover"}
+            objectFit={"cover"}
             alt="#"
           />
         </div>
@@ -572,11 +571,13 @@ const Dashboard = ({ ssrData }) => {
         <div className="flex flex-col w-full">
           <div className="flex justify-between">
             <div className="flex items-center">
-              <div className="font-inter font-normal text-16px text-caak-generalblack mr-[10px]">
+              <p
+                className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
+              >
                 {dashMenu[activeIndex].name}
-              </div>
-              <div className="text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
-                <p className="text-caak-bleudefrance text-opacity-100 mx-2 ">
+              </p>
+              <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <p className="text-caak-bleudefrance text-opacity-100 ">
                   {dashMenu[activeIndex].length}
                 </p>
               </div>
@@ -592,12 +593,12 @@ const Dashboard = ({ ssrData }) => {
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px] mb-[20px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[16px] mb-[20px]"
             }
           >
             {activeIndex === 0 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[16px]">
+                <div className="flex mb-[13px] ">
                   <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
                     Пост
                   </p>
@@ -611,7 +612,7 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
-                <Divider className={"mb-[16px]"} />
+                <Divider className={"mb-[20px] bg-caak-titaniumwhite"} />
                 <InfiniteScroll
                   dataLength={posts.items.length}
                   next={fetchPosts}
@@ -632,6 +633,9 @@ const Dashboard = ({ ssrData }) => {
                         key={index}
                         type={"user"}
                         imageSrc={post?.items?.items[0]?.file}
+                        video={post?.items?.items[0]?.file?.type?.startsWith(
+                          "video"
+                        )}
                         post={post}
                         className="ph:mb-4 sm:mb-4"
                       />
@@ -643,21 +647,21 @@ const Dashboard = ({ ssrData }) => {
 
             {activeIndex === 1 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[16px]">
-                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                <div className="flex mb-[13px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
                     Пост
                   </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
                     Гишүүн
                   </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
                     Огноо
                   </p>
                   <p className="font-inter font-normal text-14px text-caak-generalblack">
                     Үйлдэл
                   </p>
                 </div>
-                <Divider className={"mb-[16px]"} />
+                <Divider className={"mb-[20px]"} />
                 <InfiniteScroll
                   dataLength={pendingPosts.items.length}
                   next={fetchPending}
@@ -692,21 +696,21 @@ const Dashboard = ({ ssrData }) => {
             ) : null}
             {activeIndex === 2 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[16px]">
-                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                <div className="flex mb-[13px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
                     Пост
                   </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
                     Гишүүн
                   </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
                     Огноо
                   </p>
                   <p className="font-inter font-normal text-14px text-caak-generalblack">
                     Үйлдэл
                   </p>
                 </div>
-                <Divider className={"mb-[16px]"} />
+                <Divider className={"mb-[20px]"} />
                 <InfiniteScroll
                   dataLength={archivedPosts.items.length}
                   next={fetchArchived}
@@ -754,7 +758,7 @@ const Dashboard = ({ ssrData }) => {
                 }
                 endMessage={<h4>Nothing more to show</h4>}
               >
-                <div className=" flex flex-row flex-wrap justify-between">
+                <div className="mt-[14px] flex flex-row flex-wrap justify-between">
                   {followedUsers.items.map((data, index) => {
                     return (
                       <FollowerList
@@ -772,34 +776,54 @@ const Dashboard = ({ ssrData }) => {
 
             {activeIndex === 4
               ? userComments.items.length > 0 && (
-                  <InfiniteScroll
-                    dataLength={userComments.items.length}
-                    next={fetchComments}
-                    hasMore={true}
-                    loader={
-                      <Loader
-                        containerClassName={`self-center w-full ${
-                          loading ? "" : "hidden"
-                        }`}
-                        className={`bg-caak-primary`}
-                      />
-                    }
-                    endMessage={<h4>Nothing more to show</h4>}
-                  >
-                    {userComments.items.map((comment, index) => {
-                      return (
-                        <CommentList
-                          key={index}
-                          index={index}
-                          imageSrc={comment?.post?.items?.items[0]?.file}
-                          comment={comment}
-                          userComments={userComments.items}
-                          setUserComments={setUserComments}
-                          className="ph:mb-4 sm:mb-4"
+                  <div className="flex flex-col">
+                    <div className="flex mb-[13px] ">
+                      <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
+                        Пост
+                      </p>
+                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[240px]">
+                        Сэтгэгдэл
+                      </p>
+                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[80px]">
+                        Огноо
+                      </p>
+                      <p className="font-inter font-normal text-14px text-caak-generalblack">
+                        Үйлдэл
+                      </p>
+                    </div>
+                    <Divider className={"mb-[20px] bg-caak-titaniumwhite"} />
+                    <InfiniteScroll
+                      dataLength={userComments.items.length}
+                      next={fetchComments}
+                      hasMore={true}
+                      loader={
+                        <Loader
+                          containerClassName={`self-center w-full ${
+                            loading ? "" : "hidden"
+                          }`}
+                          className={`bg-caak-primary`}
                         />
-                      );
-                    })}
-                  </InfiniteScroll>
+                      }
+                      endMessage={<h4>Nothing more to show</h4>}
+                    >
+                      {userComments.items.map((comment, index) => {
+                        return (
+                          <CommentList
+                            key={index}
+                            index={index}
+                            imageSrc={comment?.post?.items?.items[0]?.file}
+                            video={comment?.post?.items.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            comment={comment}
+                            userComments={userComments.items}
+                            setUserComments={setUserComments}
+                            className="ph:mb-4 sm:mb-4"
+                          />
+                        );
+                      })}
+                    </InfiniteScroll>
+                  </div>
                 )
               : null}
           </div>

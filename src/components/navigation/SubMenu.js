@@ -93,9 +93,12 @@ const SubMenu = ({ params }) => {
             isNotificationMenu ? "bg-caak-liquidnitrogen" : ""
           } relative flex items-center justify-center w-[50px] h-[36px] mr-0 md:mr-[10px] cursor-pointer rounded-square  hover:bg-caak-liquidnitrogen transition duration-100`}
         >
-          <span
-            className={`icon-fi-rs-notification text-22px text-caak-generalblack text-21px`}
-          />
+            <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
+                 <span
+                     className={`icon-fi-rs-notification text-22px text-caak-generalblack text-[22px]`}
+                 />
+            </div>
+
           {parseInt(params.userTotal.unseen) > 0 ? (
             <div
               className={

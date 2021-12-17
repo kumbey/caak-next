@@ -19,7 +19,7 @@ export const Accordion = ({
 
   return (
     <div className="flex flex-col flex-1">
-      <button
+      <div
         className="box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between text-left"
         onClick={toggleAccordion}
       >
@@ -33,7 +33,7 @@ export const Accordion = ({
             } inline-block`}
           />
         </div>
-      </button>
+      </div>
       <div
         ref={contentSpace}
         style={{ maxHeight: `${height}` }}

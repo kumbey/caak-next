@@ -56,27 +56,31 @@ const Confirmation = ({ usr }) => {
       setLoading(true);
       await Auth.confirmSignUp(username, code);
       await Auth.signIn(username, password);
-      lsRemove(Consts.SS_UserSignUp)
-      
-      if(router.query.isModal){
-        router.replace({
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            signInUp: "information",
-          },   
-        }, "/signInUp/information", {shallow: true, scroll: false})
-      }else{
+      lsRemove(Consts.SS_UserSignUp);
+
+      if (router.query.isModal) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              signInUp: "information",
+            },
+          },
+          "/signInUp/information",
+          { shallow: true, scroll: false }
+        );
+      } else {
         router.replace("/signInUp/information", undefined, {
           shallow: true,
-          scroll: false
-        })
+          scroll: false,
+        });
       }
 
       setLoading(false);
     } catch (ex) {
       setLoading(false);
-      console.log(JSON.stringify(ex))
+      console.log(JSON.stringify(ex));
       if (ex.code === "CodeMismatchException") {
         setErrors({
           ...errors,
@@ -167,7 +171,7 @@ const Confirmation = ({ usr }) => {
         </div>
       </form>
     </div>
-  ) : null
-}
+  ) : null;
+};
 
 export default Confirmation;

@@ -16,6 +16,7 @@ import DropZoneWithCaption from "../../../src/components/input/DropZoneWithCapti
 import useAddPostLayout from "../../../src/hooks/useAddPostLayout";
 import Button from "../../../src/components/button";
 import WithAuth from "../../../src/middleware/auth/WithAuth";
+import Head from "next/head";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -165,57 +166,66 @@ const AddPost = () => {
     }
   };
   return !permissionDenied ? (
-    <div className={"addPostPadding"}>
-      <AddPostLayout selectedGroup={selectedGroup}>
-        <div className={`flex flex-col justify-center items-center pb-[38px]`}>
+    <>
+      <Head>
+        <title>Шинэ пост нэмэх</title>
+      </Head>
+      <div className={"addPostPadding"}>
+        <AddPostLayout selectedGroup={selectedGroup}>
           <div
-            className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
+            className={`flex flex-col justify-center items-center pb-[38px]`}
           >
-            <SelectGroup
-              containerClassName={"mt-[28px]"}
-              groupData={groupData}
-              isGroupVisible={isGroupVisible}
-              setIsGroupVisible={setIsGroupVisible}
-              selectedGroup={selectedGroup}
-              setSelectedGroup={setSelectedGroup}
-              setPost={setPost}
-              post={post}
-            />
-            {post.items.length !== 0 ? (
-              <UploadedMediaEdit
+            <div
+              className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
+            >
+              <SelectGroup
+                containerClassName={"mt-[28px]"}
+                groupData={groupData}
+                isGroupVisible={isGroupVisible}
+                setIsGroupVisible={setIsGroupVisible}
+                selectedGroup={selectedGroup}
+                setSelectedGroup={setSelectedGroup}
                 setPost={setPost}
                 post={post}
-                loading={loading}
-                uploadPost={uploadPost}
               />
-            ) : (
-              <DropZoneWithCaption post={post} setPost={setPost} />
-            )}
+              {post.items.length !== 0 ? (
+                <UploadedMediaEdit
+                  selectedGroup={selectedGroup}
+                  add
+                  setPost={setPost}
+                  post={post}
+                  loading={loading}
+                  uploadPost={uploadPost}
+                />
+              ) : (
+                <DropZoneWithCaption post={post} setPost={setPost} />
+              )}
 
-            <div className={"flex flex-row pb-4 px-4 justify-end"}>
-              <Button
-                onClick={() => history.back()}
-                className={
-                  "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
-                }
-              >
-                Болих
-              </Button>
-              <Button
-                onClick={() => uploadPost()}
-                // disabled
-                className={
-                  "mr-2 mt-4 text-17px border border-caak-titaniumwhite w-[190px] h-[44px]"
-                }
-              >
-                Нийтлэх
-              </Button>
+              <div className={"flex flex-row pb-4 px-4 justify-end"}>
+                <Button
+                  onClick={() => history.back()}
+                  className={
+                    "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
+                  }
+                >
+                  Болих
+                </Button>
+                <Button
+                  onClick={() => uploadPost()}
+                  // disabled
+                  className={
+                    "mr-2 mt-4 text-17px border border-caak-titaniumwhite w-[190px] h-[44px]"
+                  }
+                >
+                  Нийтлэх
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-        {/*</Backdrop>*/}
-      </AddPostLayout>
-    </div>
+          {/*</Backdrop>*/}
+        </AddPostLayout>
+      </div>
+    </>
   ) : null;
 };
 export default WithAuth(AddPost);

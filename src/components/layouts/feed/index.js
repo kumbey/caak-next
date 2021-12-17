@@ -8,6 +8,7 @@ import { useUser } from "../../../context/userContext";
 import useMediaQuery from "../../navigation/useMeduaQuery";
 import { useEffect, useState } from "react";
 import { feedType } from "../../navigation/sortButtonTypes";
+import {useWrapper} from "../../../context/wrapperContext";
 
 const DefaultFeedLayout = ({
   children,
@@ -23,7 +24,8 @@ const DefaultFeedLayout = ({
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
-  const [sortType, setSortType] = useState("DEFAULT");
+  const {sortFeedType, setFeedSortType} = useWrapper();
+
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -44,8 +46,8 @@ const DefaultFeedLayout = ({
             <FeedSortButtons
               items={feedType}
               direction={"column"}
-              sortType={sortType}
-              setSortType={setSortType}
+              sortType={sortFeedType}
+              setSortType={setFeedSortType}
             />
             <SideBarGroups
               role={["ADMIN","MODERATOR"]}

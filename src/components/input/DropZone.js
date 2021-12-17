@@ -66,7 +66,7 @@ const DropZone = ({
           fileData.loading = true;
           toCompressFiles.push(fileData);
         } else {
-          fileData.url = URL.createObjectURL(file);
+          fileData.file.url = URL.createObjectURL(file);
         }
 
         localPost.items.push(fileData);

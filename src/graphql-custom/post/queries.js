@@ -81,20 +81,25 @@ export const getPostByGroup = /* GraphQL */ `
 export const listPostOrderByReactions = /* GraphQL */ `
     query ListPostOrderByReactions(
         $search_key: String,
-        $reactions: ModelIntKeyConditionInput,
+#        $reactions: ModelIntKeyConditionInput,
         $sortDirection: ModelSortDirection,
         $filter: ModelPostTotalFilterInput,
         $limit: Int,
         $nextToken: String) {
         listPostOrderByReactions(
-            search_key: $group_id,
+            search_key: $search_key,
             sortDirection: $sortDirection,
             filter: $filter,
             limit: $limit,
             nextToken: $nextToken
         )
         {
-            items ${post0004}
+            items {
+                post {
+                    id
+                    title
+                }
+            }
             nextToken
         }
 

@@ -71,7 +71,7 @@ const ImageCarousel = ({
 
   return (
     <div className={"relative h-full w-full overflow-hidden"}>
-      {!viewPostItem && (
+      {card && items.length > 1 && (
         <div
           className={
             "flex items-center justify-center absolute top-[10px] right-[10px] z-[1] bg-black bg-opacity-60 rounded-[100px] px-[10px] py-[1px]"
@@ -86,7 +86,7 @@ const ImageCarousel = ({
         <div className={"flex flex-row absolute right-[20px] top-[20px]"}>
           <div
             className={
-              "flex items-center justify-center w-[67px] h-[40px] bg-black z-2 rounded-[100px] border-[1px] border-white bg-opacity-[0.84] border-opacity-[0.24] mr-[12px]"
+              "flex items-center justify-center w-[67px] h-[40px] bg-caak-carbon z-2 rounded-[100px] mr-[12px]"
             }
           >
             <p className={"text-[16px] font-roboto text-white"}>{`${

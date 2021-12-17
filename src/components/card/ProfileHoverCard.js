@@ -5,12 +5,13 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import {getFileUrl, getGenderImage} from "../../utility/Util";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
 import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Divider from "../divider";
+import { createPortal } from "react-dom";
 
 export default function ProfileHoverCard({ userId }) {
   const { user, isLogged } = useUser();

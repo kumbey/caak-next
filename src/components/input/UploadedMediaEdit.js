@@ -1,5 +1,5 @@
 import Loader from "../loader";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   arrayMove,
   rectSortingStrategy,
@@ -19,7 +19,7 @@ import {
 import Image from "next/image";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import {generateFileUrl, getGenderImage} from "../../utility/Util";
+import { generateFileUrl, getGenderImage } from "../../utility/Util";
 import Video from "../video";
 
 const thumbnailImageHandler = (item) => {
@@ -27,7 +27,7 @@ const thumbnailImageHandler = (item) => {
     if (item.file.url) {
       return item.file.url;
     } else {
-      return generateFileUrl(item.file)
+      return generateFileUrl(item.file);
     }
   } else {
     return getGenderImage("default").src;
@@ -118,7 +118,7 @@ function CardsWrapper({ children }) {
         flexDirection: "row",
         flexWrap: "wrap",
         maxHeight: "168px",
-        overflowY: "overlay",
+        overflowY: "scroll",
       }}
     >
       {children}
@@ -126,17 +126,26 @@ function CardsWrapper({ children }) {
   );
 }
 
-const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
+const UploadedMediaEdit = ({
+  setPost,
+  post,
+  errors,
+  loading,
+  add,
+  selectedGroup,
+}) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [allowComment, setAllowComment] = useState(true);
+  const [caakContent, setCaakContent] = useState(false);
+
   const [draft, setDraft] = useState(false);
   const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
+  const [viewDescription, setViewDescription] = useState(!add);
 
   const [loaded, setLoaded] = useState(false);
-
   const maxLengths = {
     title: 200,
     imageDescription: 500,
@@ -191,7 +200,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
     const newItems = arrayMove(items, oldIndex, newIndex);
     setPost({ ...post, items: newItems });
     setActiveIndex(newIndex);
-    setActiveId(parseInt(event.active.id))
+    setActiveId(parseInt(event.active.id));
   };
 
   function auto_grow(element) {
@@ -230,6 +239,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
       <div className={"px-[18px] mt-[12px]"}>
         <div className={"w-full block relative"}>
           <textarea
+            onFocus={auto_grow}
             onInput={auto_grow}
             maxLength={maxLengths.title}
             placeholder={"Гарчиг"}
@@ -247,8 +257,13 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
             {post.title?.length || 0}/{maxLengths.title}
           </span>
         </div>
-        <div className={"w-full block mt-[12px]"}>
+        <div
+          className={`w-full block mt-[12px] ${
+            !viewDescription ? "hidden" : ""
+          }`}
+        >
           <textarea
+            onFocus={auto_grow}
             onInput={auto_grow}
             placeholder={"Оршил"}
             style={{ resize: "none" }}
@@ -261,6 +276,21 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
             }
             rows={2}
           />
+        </div>
+        <div
+          onClick={() => setViewDescription(!viewDescription)}
+          className={`flex flex-row items-center ${
+            viewDescription ? "text-caak-generalblack" : "text-caak-primary"
+          }  justify-end cursor-pointer`}
+        >
+          <div className={"flex items-center justify-center w-[14px] h-[14px]"}>
+            <span
+              className={`${
+                viewDescription ? "icon-fi-rs-minus-1" : "icon-fi-rs-add-l "
+              } text-[9.33px]`}
+            />
+          </div>
+          <p className={"text-[13px]"}>Оршил</p>
         </div>
       </div>
 
@@ -375,7 +405,7 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
       </div>
       <div
         className={
-          "bg-white px-[28px] py-[20px] h-[181px] border-b-[1px] border-t-[1px] border-caak-titaniumwhite"
+          "bg-white px-[28px] py-[20px] border-b-[1px] border-t-[1px] border-caak-titaniumwhite"
         }
       >
         <div className={"flex items-center justify-between"}>
@@ -384,6 +414,15 @@ const UploadedMediaEdit = ({ setPost, post, errors, loading }) => {
           </p>
         </div>
         <div className={"w-[265px]"}>
+          {(selectedGroup.role_on_group === "ADMIN" ||
+            selectedGroup.role_on_group === "MODERATOR") && (
+            <div className={"flex flex-row justify-between mt-[16px]"}>
+              <p className={"text-[15px] text-caak-generalblack"}>
+                Саак контент
+              </p>
+              <Switch toggle={setCaakContent} active={caakContent} />
+            </div>
+          )}
           <div className={"flex flex-row justify-between mt-[16px]"}>
             <p className={"text-[15px] text-caak-generalblack"}>
               Сэтгэгдэл зөвшөөрөх

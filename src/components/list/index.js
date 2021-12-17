@@ -7,14 +7,13 @@ import Link from "next/link";
 import DropDown from "../../components/navigation/DropDown";
 import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
-import AnimatedCaakButton from "../../components/button/animatedCaakButton";
-import { getReturnData, useClickOutSide } from "../../../src/utility/Util";
-
 import {
   generateTimeAgo,
   getFileUrl,
   getGenderImage,
+  useClickOutSide,
 } from "../../utility/Util";
+import PostMoreMenu from "../card/PostMoreMenu";
 
 const postShareMenu = [
   {
@@ -47,117 +46,183 @@ const postShareMenu = [
 ];
 
 const List = ({ video, post, imageSrc }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const toggleMoreMenu = () => {
+    setIsMoreMenuOpen(!isMoreMenuOpen);
   };
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
+  const moreMenuRef = useClickOutSide(() => {
+    setIsMoreMenuOpen(false);
+  });
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
-    <div className="bg-white relative flex   mx-auto  rounded-lg shadow-card  mb-[24px]">
-      <div className="flex m-[15px]">
-        <div className=" mr-3">
-          <Link
-            href={{
-              pathname: `/post/view/${post.id}`,
-            }}
-          >
-            <a>
-              <div className={"w-[96px] h-[96px] relative"}>
-                <Image
-                  className=" bg-white rounded-3xl"
-                  objectFit={"cover"}
-                  src={
-                    !imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)
-                  }
-                  width={96}
-                  height={96}
-                  layout="responsive"
-                  //   objectFit={"cover"}
-                  alt="#"
-                />
-              </div>
-            </a>
-          </Link>
-        </div>
-        <div className="flex flex-col ">
-          <Link
-            href={{
-              pathname: `/post/view/${post.id}`,
-            }}
-          >
-            <a>
-              <div className="text-15px text-caak-generalblack font-inter font-medium">
-                {post.title}
-              </div>
-            </a>
-          </Link>
-          <div className="flex mt-1 text-xs text-caak-darkBlue font-normal font-inter">
-            <div className="mr-[23px]">{post.group.name}</div>
-            <Tooltip
-              className={"-left-14"}
-              content={
-                <ProfileHoverCard userId={post.user.id} postUser={post.user} />
-              }
+    <div className="bg-white relative flex mx-auto border-b-[1px] border-caak-titaniumwhite last:rounded-b-[8px] first:rounded-t-[8px]">
+      <div className="flex m-[15px] w-full justify-between">
+        <div className={"flex"}>
+          <div className=" mr-[12px]">
+            <Link
+              href={{
+                pathname: `/post/view/${post.id}`,
+              }}
             >
-              <Link
-                href={{
-                  pathname: `/user/${post.user_id}/profile`,
-                }}
-              >
-                <a>
-                  <div className="mr-[24px]">@{post.user.nickname}</div>
-                </a>
-              </Link>
-            </Tooltip>
-
-            <div className="">{generateTimeAgo(post.createdAt)}</div>
+              <a>
+                <div className={"w-[102px] h-[76px] relative"}>
+                  <Image
+                    className=" bg-white rounded-[4px]"
+                    objectFit={"cover"}
+                    src={
+                      !imageSrc
+                        ? getGenderImage("default")
+                        : getFileUrl(imageSrc)
+                    }
+                    width={102}
+                    height={76}
+                    layout="responsive"
+                    //   objectFit={"cover"}
+                    alt="#"
+                  />
+                </div>
+              </a>
+            </Link>
           </div>
-          <div className="flex mt-2">
-            <div className="flex items-center mr-6 ">
-              <span className="icon-fi-rs-rock-i text-2xl mr-2 cursor-pointer" />
-              <p>{post.totals.reactions}</p>
-            </div>
-            <div className="flex items-center mr-6">
-              <span className="icon-fi-rs-comment-f text-2xl mr-2 cursor-pointer" />
-              <p>{post.totals.comments}</p>
-            </div>
-            <div className="flex items-center mr-6">
-              <div
-                ref={menuRef}
-                onClick={toggleMenu}
-                className={
-                  "flex flex-row relative items-center cursor-pointer w-[24px] h-[24px]"
-                }
-              >
-                <i
-                  className={
-                    "icon-fi-rs-share text-caak-generalblack transition duration-150 hover:text-caak-carbonfootprint text-22px mr-1.5"
+          <div className="flex flex-col justify-between">
+            <Link
+              href={{
+                pathname: `/post/view/${post.id}`,
+              }}
+            >
+              <a>
+                <div className="text-[15px] tracking-[0.23px] leading-[19px] font-inter text-caak-generalblack">
+                  {post.title}
+                </div>
+              </a>
+            </Link>
+            <div className="flex mt-[4px] items-center text-caak-darkBlue text-[12px] font-inter">
+              <div className={"flex flex-row items-center"}>
+                <p className="mr-[2px] text-[12px] tracking-[0.18px] leading-[15px]">{`/${post.group.name}`}</p>
+                <Tooltip
+                  className={"-left-14"}
+                  content={
+                    <ProfileHoverCard
+                      userId={post.user.id}
+                      postUser={post.user}
+                    />
                   }
-                />
-                <DropDown
-                  arrow={"bottomLeft"}
-                  className="left-[-15px] bottom-8"
-                  open={isMenuOpen}
-                  onToggle={toggleMenu}
-                  content={postShareMenu.map((data) => (
-                    <div
-                      key={data.id}
-                      style={{ height: "36px" }}
-                      className="z-1 flex items-center cursor-pointer px-c6 hover:bg-caak-liquidnitrogen"
-                    >
-                      {data.icon}
-                      <p className="text-14px text-caak-extraBlack ml-px-12">
-                        {data.title}
+                >
+                  <Link
+                    href={{
+                      pathname: `/user/${post.user_id}/profile`,
+                    }}
+                  >
+                    <a>
+                      <p className="text-[12px] tracking-[0.18px] leading-[15px]">
+                        @{post.user.nickname}
                       </p>
-                    </div>
-                  ))}
-                />
+                    </a>
+                  </Link>
+                </Tooltip>
+              </div>
+              <p>&nbsp; &middot; &nbsp;</p>
+              <p className="text-[12px] tracking-[0.18px] leading-[15px]">
+                {generateTimeAgo(post.createdAt)}
+              </p>
+            </div>
+            <div className="flex mt-[12px]">
+              <div className="flex items-center mr-[18px]">
+                <div
+                  className={
+                    "flex items-end justify-center w-[20px] h-[20px] cursor-pointer"
+                  }
+                >
+                  <span className="icon-fi-rs-rock-i text-[19.17px] text-caak-scriptink" />
+                </div>
+                <p
+                  className={
+                    "ml-[4px] text-[14px] font-medium text-caak-nocturnal"
+                  }
+                >
+                  {post.totals.reactions}
+                </p>
+              </div>
+              <div className="flex items-center mr-[18px]">
+                <div
+                  className={
+                    "flex items-end justify-center w-[20px] h-[20px] cursor-pointer"
+                  }
+                >
+                  <span className="icon-fi-rs-comment-o text-caak-scriptink text-[17.5px]" />
+                </div>
+                <p
+                  className={
+                    "ml-[4px] text-[14px] font-medium text-caak-nocturnal"
+                  }
+                >
+                  {post.totals.comments}
+                </p>
+              </div>
+              <div className="flex items-center mr-6">
+                <div
+                  ref={menuRef}
+                  onClick={toggleMenu}
+                  className={
+                    "flex flex-row relative items-center cursor-pointer w-[20px] h-[20px]"
+                  }
+                >
+                  <span
+                    className={
+                      "icon-fi-rs-share-o text-caak-generalblack transition duration-150 hover:text-caak-carbonfootprint text-[18.33px] mr-1.5"
+                    }
+                  />
+                  <DropDown
+                    arrow={"bottomLeft"}
+                    className="left-[-15px] bottom-8"
+                    open={isMenuOpen}
+                    onToggle={toggleMenu}
+                    content={postShareMenu.map((data) => (
+                      <div
+                        key={data.id}
+                        style={{ height: "36px" }}
+                        className="flex items-center cursor-pointer z-1 px-c6 hover:bg-caak-liquidnitrogen"
+                      >
+                        {data.icon}
+                        <p className="text-14px text-caak-extraBlack ml-px-12">
+                          {data.title}
+                        </p>
+                      </div>
+                    ))}
+                  />
+                </div>
               </div>
             </div>
           </div>
+        </div>
+
+        <div
+          ref={moreMenuRef}
+          onClick={toggleMoreMenu}
+          className={`flex justify-center flex-shrink-0 w-[35px] h-[35px] transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
+        >
+          <span className="icon-fi-rs-dots text-22px" />
+          <DropDown
+            arrow={"topRight"}
+            open={isMoreMenuOpen}
+            onToggle={toggleMoreMenu}
+            content={
+              <PostMoreMenu
+                groupId={post.group.id}
+                postId={post.id}
+                postUser={post.user}
+              />
+            }
+            className={"top-6 -right-3"}
+          />
         </div>
       </div>
     </div>

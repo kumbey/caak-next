@@ -9,7 +9,6 @@ const FeedSortButtons = ({
   iconSize,
   iconContainerSize,
   textClassname,
-  sortType,
   setSortType,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);

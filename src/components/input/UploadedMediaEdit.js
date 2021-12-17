@@ -414,7 +414,7 @@ const UploadedMediaEdit = ({
           </p>
         </div>
         <div className={"w-[265px]"}>
-          {(selectedGroup.role_on_group === "ADMIN" ||
+          {selectedGroup && (selectedGroup.role_on_group === "ADMIN" ||
             selectedGroup.role_on_group === "MODERATOR") && (
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>

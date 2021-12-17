@@ -1,5 +1,6 @@
 import { generateFileUrl, useClickOutSide } from "../../utility/Util";
 import DropDownSelect from "../input/DropDownSelect";
+import { useEffect, useState } from "react";
 
 const SelectGroup = ({
   setIsGroupVisible,
@@ -9,23 +10,10 @@ const SelectGroup = ({
   groupData,
   containerClassName,
   setPost,
-  post,
 }) => {
-  // const textareaRef = useRef();
-
   const dropDownClickOutsideRef = useClickOutSide(() => {
     setIsGroupVisible(false);
   });
-
-  const onChangeText = (e) => {
-    setPost({ ...post, title: e.target.value });
-  };
-
-  // useEffect(() => {
-  //   textareaRef.current.style.height = "0px";
-  //   const scrollHeight = textareaRef.current.scrollHeight;
-  //   textareaRef.current.style.height = scrollHeight + "px";
-  // }, [post.title]);
 
   return (
     <div className={`flex flex-col ${containerClassName}`}>

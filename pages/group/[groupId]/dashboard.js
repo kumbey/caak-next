@@ -197,12 +197,6 @@ const Dashboard = ({ ssrData }) => {
       icon: "icon-fi-rs-pending",
       length: totalPending,
     },
-    // {
-    //   id: 3,
-    //   name: "Архивлагдсан постууд",
-    //   icon: "icon-fi-rs-archive",
-    //   length: archivedPosts.length,
-    // },
   ];
   const [nextPosts] = useListPager({
     query: getPostByGroup,
@@ -518,10 +512,23 @@ const Dashboard = ({ ssrData }) => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center">
-              <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                Шүүлтүүр
+            <div className="flex items-center justify-between">
+              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                Хандалт
               </p>
+
+              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                <div className="flex items-center  mx-[12px] my-[10px]">
+                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                    Бүгд
+                  </p>
+                  <span className="icon-fi-rs-triangle text-14px" />
+                </div>
+              </div>
+              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                Огноо
+              </p>
+
               <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
                 <div className="flex items-center  mx-[12px] my-[10px]">
                   <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
@@ -534,7 +541,7 @@ const Dashboard = ({ ssrData }) => {
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[30px] mb-[50px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[16px] mb-[50px]"
             }
           >
             {activeIndex === 0 ? (
@@ -600,7 +607,7 @@ const Dashboard = ({ ssrData }) => {
                 }
                 endMessage={<h4>Nothing more to show</h4>}
               >
-                <div className=" flex flex-row flex-wrap justify-between ">
+                <div className=" flex flex-row flex-wrap justify-between mt-[14px]">
                   {followedUsers.map((data, index) => {
                     return (
                       <GroupFollowerList
@@ -664,56 +671,6 @@ const Dashboard = ({ ssrData }) => {
                             className="ph:mb-4 sm:mb-4"
                           />
                         </>
-                      );
-                    })}
-                </InfiniteScroll>
-              </div>
-            ) : null}
-
-            {activeIndex === 3 ? (
-              <div className="flex flex-col">
-                <div className="flex mb-[16px]">
-                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
-                    Пост
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
-                    Гишүүн
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
-                    Огноо
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack">
-                    Үйлдэл
-                  </p>
-                </div>
-                <Divider className={"mb-[16px]"} />
-
-                <InfiniteScroll
-                  dataLength={archivedPosts.length}
-                  next={fetchArchived}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={`self-center w-full ${
-                        loading ? "" : "hidden"
-                      }`}
-                      className={`bg-caak-primary`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {archivedPosts.length > 0 &&
-                    archivedPosts.map((archivedPost, index) => {
-                      return (
-                        <GroupPostItem
-                          key={index}
-                          imageSrc={archivedPost?.items?.items[0]?.file}
-                          video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={archivedPost}
-                          className="ph:mb-4 sm:mb-4"
-                        />
                       );
                     })}
                 </InfiniteScroll>

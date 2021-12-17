@@ -85,11 +85,6 @@ export default function SocialLink() {
   };
 
   useEffect(() => {
-    console.log(text);
-    console.log(user.meta);
-  }, [text, user]);
-
-  useEffect(() => {
     setText(JSON.parse(user.meta));
   }, [user]);
 

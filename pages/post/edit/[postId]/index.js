@@ -157,6 +157,7 @@ const EditPost = ({ ssrData }) => {
       console.log(ex);
     }
   };
+
   return (
     <div className={"addPostPadding"}>
       <AddPostLayout selectedGroup={selectedGroup}>
@@ -176,6 +177,7 @@ const EditPost = ({ ssrData }) => {
             />
             {post.items.length !== 0 ? (
               <UploadedMediaEdit
+                selectedGroup={selectedGroup}
                 setPost={setPost}
                 post={post}
                 loading={loading}

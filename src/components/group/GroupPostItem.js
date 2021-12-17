@@ -82,36 +82,54 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
             </Link>
           </div>
           <div className="flex items-center w-[141px] mr-[69px]">
-            <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>
-              <Image
-                className=" bg-white rounded-full"
-                src={
-                  !post?.user?.pic
-                    ? getGenderImage("default")
-                    : getFileUrl(post?.user?.pic)
-                }
-                width={28}
-                height={28}
-                objectFit="cover"
-                alt="#"
-              />
-            </div>
-            <Tooltip
-              className={"-left-14"}
-              content={<ProfileHoverCard userId={post.user.id} />}
-            >
-              <Link
-                href={{
-                  pathname: `/user/${post.user_id}/profile`,
-                }}
-              >
-                <a>
-                  <div className="break-all truncate-3 text-13px font-inter font-normal text-caak-darkBlue">
-                    @{post.user.nickname}
-                  </div>
-                </a>
-              </Link>
-            </Tooltip>
+            {type === "group" ? (
+              <>
+                <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>
+                  <Image
+                    className=" bg-white rounded-full"
+                    src={
+                      !post?.user?.pic
+                        ? getGenderImage("default")
+                        : getFileUrl(post?.user?.pic)
+                    }
+                    width={28}
+                    height={28}
+                    objectFit="cover"
+                    alt="#"
+                  />
+                </div>
+                <Tooltip
+                  className={"-left-14"}
+                  content={<ProfileHoverCard userId={post.user.id} />}
+                >
+                  <Link
+                    href={{
+                      pathname: `/user/${post.user_id}/profile`,
+                    }}
+                  >
+                    <a>
+                      <div className="break-all truncate-3 text-13px font-inter font-normal text-caak-darkBlue">
+                        @{post.user.nickname}
+                      </div>
+                    </a>
+                  </Link>
+                </Tooltip>
+              </>
+            ) : type === "user" ? (
+              <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
+                <Link
+                  href={{
+                    pathname: `/group/${post.group.id}`,
+                  }}
+                >
+                  <a>
+                    <p className="text-caak-generalblack text-13px font-normal mx-2">
+                      {post.group.name}
+                    </p>
+                  </a>
+                </Link>
+              </div>
+            ) : null}
           </div>
           <div className="flex w-[61px] mr-[28px]">
             <p

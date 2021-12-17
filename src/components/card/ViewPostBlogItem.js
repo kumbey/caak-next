@@ -9,17 +9,15 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
   const router = useRouter();
 
   return (
-    <div className={"flex flex-col w-full mt-[40px] max-h-[800px]"}>
-      <div
-        className={
-          "relative pt-[4px]"
-        }
-      >
+    <div className={"flex flex-col w-full mt-[40px]"}>
+      <div className={"relative pt-[4px]"}>
         {postItem.file.type.startsWith("video") ? (
-          <Video
-            videoClassname={"object-contain rounded-[4px]"}
-            src={getFileUrl(postItem.file)}
-          />
+          <div className={"w-full h-[438px]"}>
+            <Video
+              videoClassname={"object-contain rounded-[4px] h-full"}
+              src={getFileUrl(postItem.file)}
+            />
+          </div>
         ) : !singleItem ? (
           <Link
             href={{
@@ -36,11 +34,9 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
             scroll={false}
           >
             <a>
-              <div className={"relative imageContainer max-h-[800px]"}>
-                <Image
-                  className={"rounded-[6px] custom-img max-h-[800px]"}
-                  objectFit={"cover"}
-                  layout={"fill"}
+              <div className={"relative max-h-[800px]"}>
+                <img
+                  className={"rounded-[6px] object-cover w-full max-h-[800px]"}
                   src={getFileUrl(postItem.file)}
                   alt={postItem.file.name}
                 />
@@ -66,12 +62,12 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
             }
           >
             <AnimatedCaakButton
-              disableOnClick
+              // disableOnClick
               reactionType={"POST_ITEM"}
               hideCaakText
               itemId={postItem.id}
               totals={postItem.totals}
-              reacted={true}
+              reacted={postItem.reacted}
               setReacted={(changedReacted) => {
                 postItem.reacted = changedReacted;
               }}

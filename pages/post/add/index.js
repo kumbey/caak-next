@@ -46,6 +46,7 @@ const AddPost = () => {
     group_id: "",
     category_id: "",
     items: [],
+    owned: "",
   });
 
   useEffect(() => {
@@ -165,6 +166,7 @@ const AddPost = () => {
       console.log(ex);
     }
   };
+
   return !permissionDenied ? (
     <>
       <Head>

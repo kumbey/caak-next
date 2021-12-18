@@ -136,8 +136,12 @@ const UploadedMediaEdit = ({
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [allowComment, setAllowComment] = useState(true);
-  const [caakContent, setCaakContent] = useState(false);
+  const [allowComment, setAllowComment] = useState(
+    post?.commentType ? post.commentType : false
+  );
+  const [caakContent, setCaakContent] = useState(
+    post?.owned === "CAAK" ? true : false
+  );
 
   const [draft, setDraft] = useState(false);
   const [boost, setBoost] = useState(false);
@@ -211,6 +215,14 @@ const UploadedMediaEdit = ({
   useEffect(() => {
     setLoaded(true);
   }, []);
+
+  useEffect(() => {
+    setPost({
+      ...post,
+      commentType: allowComment ? true : false,
+      owned: caakContent ? "CAAK" : null,
+    });
+  }, [allowComment, caakContent]);
 
   useEffect(() => {
     setSortItems([...post.items]);
@@ -414,15 +426,16 @@ const UploadedMediaEdit = ({
           </p>
         </div>
         <div className={"w-[265px]"}>
-          {selectedGroup && (selectedGroup.role_on_group === "ADMIN" ||
-            selectedGroup.role_on_group === "MODERATOR") && (
-            <div className={"flex flex-row justify-between mt-[16px]"}>
-              <p className={"text-[15px] text-caak-generalblack"}>
-                Саак контент
-              </p>
-              <Switch toggle={setCaakContent} active={caakContent} />
-            </div>
-          )}
+          {selectedGroup &&
+            (selectedGroup.role_on_group === "ADMIN" ||
+              selectedGroup.role_on_group === "MODERATOR") && (
+              <div className={"flex flex-row justify-between mt-[16px]"}>
+                <p className={"text-[15px] text-caak-generalblack"}>
+                  Саак контент
+                </p>
+                <Switch toggle={setCaakContent} active={caakContent} />
+              </div>
+            )}
           <div className={"flex flex-row justify-between mt-[16px]"}>
             <p className={"text-[15px] text-caak-generalblack"}>
               Сэтгэгдэл зөвшөөрөх

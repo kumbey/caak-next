@@ -1,6 +1,6 @@
 {
   "authSelections": "identityPoolAndUserPool",
-  "resourceName": "caak7c5cc3bf",
+  "resourceName": "caak011228e1",
   "serviceType": "imported",
   "region": "ap-southeast-1",
   "aliasAttributes": [
@@ -8,7 +8,10 @@
     "phone_number",
     "preferred_username"
   ],
-  "authProvidersUserPool": [],
+  "authProvidersUserPool": [
+    "Facebook",
+    "Google"
+  ],
   "requiredAttributes": [
     "profile"
   ],

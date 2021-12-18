@@ -15,7 +15,7 @@
       "function": {
         "caaklayer001": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion448b38f7-build.zip"
+          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion26fba011-build.zip"
         },
         "notification": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
@@ -39,7 +39,7 @@
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/triggerTables-57487064774667766f78-build.zip"
+          "s3Key": "amplify-builds/triggerTables-3447746f6a5052325934-build.zip"
         },
         "userRoleOnGroup": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
@@ -51,75 +51,7 @@
         }
       },
       "auth": {
-        "caak7c5cc3bf": {
-          "userPoolId": "ap-southeast-1_rIO08tyP8",
-          "userPoolName": "caak-auth",
-          "webClientId": "3ucknqne71hmd7bqhmbiatic7u",
-          "nativeClientId": "3kkpqu5hd46hd29k7gfubjvoqe",
-          "identityPoolId": "ap-southeast-1:da79ac62-2f04-4e38-b4d8-d3b9b918b315",
-          "identityPoolName": "caak-idp",
-          "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
-          "authRoleName": "Cognito_caakidpAuth_Role",
-          "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
-          "unauthRoleName": "Cognito_caakidpUnauth_Role"
-        }
-      }
-    }
-  },
-  "prod": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-caak-prod-180235-authRole",
-      "UnauthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-prod-180235-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-prod-180235-authRole",
-      "Region": "ap-southeast-1",
-      "DeploymentBucketName": "amplify-caak-prod-180235-deployment",
-      "UnauthRoleName": "amplify-caak-prod-180235-unauthRole",
-      "StackName": "amplify-caak-prod-180235",
-      "StackId": "arn:aws:cloudformation:ap-southeast-1:395091497679:stack/amplify-caak-prod-180235/cd593fe0-5bfb-11ec-9209-069d7f8a7db2",
-      "AmplifyAppId": "d36nkdl3p18em1"
-    },
-    "categories": {
-      "function": {
-        "notification": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/notification-655362574c32334c7974-build.zip"
-        },
-        "resolverBoolean": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/resolverBoolean-48664d7a337736414174-build.zip"
-        },
-        "totals": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/totals-682b773342515a796532-build.zip"
-        },
-        "totalsTrigger": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/totalsTrigger-44516535577956436c36-build.zip"
-        },
-        "triggerNotification": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/triggerNotification-546e6e6259594f724548-build.zip"
-        },
-        "triggerTables": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/triggerTables-57487064774667766f78-build.zip"
-        },
-        "userRoleOnGroup": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/userRoleOnGroup-684b68486a79734e4944-build.zip"
-        },
-        "aura": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/aura-6865396d4269552f4d2b-build.zip"
-        },
-        "caaklayer001": {
-          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion3f6ecf98-build.zip"
-        }
-      },
-      "auth": {
-        "caak7c5cc3bf": {
+        "caak011228e1": {
           "userPoolId": "ap-southeast-1_rIO08tyP8",
           "userPoolName": "caak-auth",
           "webClientId": "3ucknqne71hmd7bqhmbiatic7u",

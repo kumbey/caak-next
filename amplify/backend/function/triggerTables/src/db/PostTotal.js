@@ -5,16 +5,20 @@ const Counter = require("/opt/tables/Counter")
 const DBClient = DB(process.env.API_CAAK_POSTTOTALTABLE_NAME, docClient)
 const CountClient = Counter(process.env.API_CAAK_POSTTOTALTABLE_NAME, docClient)
 
-async function insert(id){
+async function insert(newImg){
     try{
 
         let data = {
             disableGenId: true,
             pkey: "post_id",
             __typename: "PostTotal",
-            post_id: id,
-            search_id: id,
+            post_id: newImg.id,
+            status: newImg.status,
+            search_id: newImg.id,
+            group_id: newImg.group_id,
+            search_key: "P",
             reactions: 0,
+            total_reactions: 0,
             comments: 0,
             views: 0,
             shares: 0

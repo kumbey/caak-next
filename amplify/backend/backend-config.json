@@ -1,6 +1,6 @@
 {
   "auth": {
-    "caak7c5cc3bf": {
+    "caak011228e1": {
       "service": "Cognito",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",

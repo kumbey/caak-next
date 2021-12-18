@@ -120,44 +120,51 @@ function UserProvider(props) {
   }, []);
 
   const isLoginValid = async () => {
-    const usr = await Auth.currentAuthenticatedUser();
+    try{
+      const usr = await Auth.currentAuthenticatedUser();
+    
+      if (usr) {
+        if (!Object.is(usr, cognitoUser)) {
+          setCognitoUser(usr);
+        }
 
-    if (usr) {
-      if (!Object.is(usr, cognitoUser)) {
-        setCognitoUser(usr);
-      }
+        let resp = await API.graphql(
+          graphqlOperation(getUser, { id: usr.attributes.sub })
+        );
 
-      let resp = await API.graphql(
-        graphqlOperation(getUser, { id: usr.attributes.sub })
-      );
-
-      resp = getReturnData(resp)
-      if(!resp){
-        router.push({
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            signInUp: "information",
-            isModal: true
-          }
-        }, "/signInUp/information", {shallow : true, scroll: false})
-
-      }else{
-        if(resp.category && resp.category.items.length <= 0){
+        resp = getReturnData(resp)
+        if(!resp){
           router.push({
             pathname: router.pathname,
             query: {
               ...router.query,
-              signInUp: "intrst",
+              signInUp: "information",
               isModal: true
             }
-          }, "/signInUp/intrst", {shallow : true, scroll: false})
-          return false
+          }, "/signInUp/information", {shallow : true, scroll: false})
+
+        }else{
+          if(resp.category && resp.category.items.length <= 0){
+            router.push({
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                signInUp: "intrst",
+                isModal: true
+              }
+            }, "/signInUp/intrst", {shallow : true, scroll: false})
+            return false
+          }
+          setUser(resp);
         }
-        setUser(resp);
+        
+      } else {
+        setIsLogged(false);
+        setUser(null);
+        setCognitoUser(null);
       }
-      
-    } else {
+    }catch(ex){
+      console.log(ex)
       setIsLogged(false);
       setUser(null);
       setCognitoUser(null);

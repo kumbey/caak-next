@@ -6,7 +6,11 @@ import Button from "../button";
 import { useRouter } from "next/router";
 import Validate from "/src/utility/Validate";
 import Consts from "/src/utility/Consts";
-import { checkUsername, closeModal, _objectWithoutKeys } from "../../utility/Util";
+import {
+  checkUsername,
+  closeModal,
+  _objectWithoutKeys,
+} from "../../utility/Util";
 
 const Login = ({ nextStep }) => {
   const router = useRouter();
@@ -32,15 +36,18 @@ const Login = ({ nextStep }) => {
 
   const { handleChange, errors, setErrors, handleSubmit } = Validate(validate);
 
-
   async function doSignIn() {
     try {
       setLoading(true);
       await Auth.signIn(checkUsername(username), password);
-      router.replace({
-        pathname: router.pathname,
-        query: _objectWithoutKeys(...router.query, ["signInUp"])
-      }, undefined,{ shallow: true, scroll: false });
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: _objectWithoutKeys(...router.query, ["signInUp"]),
+        },
+        undefined,
+        { shallow: true, scroll: false }
+      );
       setLoading(false);
     } catch (ex) {
       setLoading(false);
@@ -87,22 +94,18 @@ const Login = ({ nextStep }) => {
             }
           />
         </div>
-        <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
+        <div className="px-c8 ph:px-c2 text-white text-14px flex items-center justify-between mt-5">
           <Button
             loading={loading}
             onClick={() => handleSubmit(doSignIn)}
             className={
-              "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-secondprimary"
+              "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-primary"
             }
           >
             Нэвтрэх
           </Button>
           <div className="text-caak-blue text-15px">
-            <span
-              className="ml- cursor-pointer"
-            >
-              Нууц үгээ мартсан уу?
-            </span>
+            <span className="ml- cursor-pointer">Нууц үгээ мартсан уу?</span>
           </div>
         </div>
       </form>

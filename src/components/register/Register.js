@@ -211,7 +211,7 @@ const Register = () => {
           <Button
             loading={loading}
             onClick={() => handleSubmit(doSubmit)}
-            className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary  ${
+            className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-primary  ${
               isValid
                 ? "bg-caak-primary text-white"
                 : "bg-caak-titaniumwhite text-caak-shit"

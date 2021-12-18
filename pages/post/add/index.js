@@ -46,7 +46,6 @@ const AddPost = () => {
     group_id: "",
     category_id: "",
     items: [],
-    owned: "",
   });
 
   useEffect(() => {

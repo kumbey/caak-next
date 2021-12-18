@@ -81,7 +81,7 @@ const ForgotPass = ({ nextStep }) => {
             loading={loading}
             onClick={() => submitHandler()}
             className={
-              "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
+              "rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
             }
           >
             Сэргээх код авах

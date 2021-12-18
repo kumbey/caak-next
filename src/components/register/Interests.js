@@ -11,7 +11,7 @@ import { getReturnData } from "../../utility/Util";
 export default function Interests() {
   const router = useRouter();
   const { cognitoUser } = useUser();
-  const userId = cognitoUser ? cognitoUser.attributes.sub : null
+  const userId = cognitoUser ? cognitoUser.attributes.sub : null;
 
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
@@ -33,17 +33,25 @@ export default function Interests() {
       for (var i = 0; i < selected.length; i++) {
         await API.graphql(
           graphqlOperation(createUserCategory, {
-            input: { id: `${selected[i]}#${userId}`, category_id: selected[i], user_id: userId },
+            input: {
+              id: `${selected[i]}#${userId}`,
+              category_id: selected[i],
+              user_id: userId,
+            },
           })
         );
       }
-      router.replace({
+      router.replace(
+        {
           pathname: router.pathname,
-          query:{
+          query: {
             ...router.query,
-            signInUp: "complete"
-          }
-      },`/signInUp/complete`, { shallow: true, scroll: false});
+            signInUp: "complete",
+          },
+        },
+        `/signInUp/complete`,
+        { shallow: true, scroll: false }
+      );
       setLoading(false);
     } catch (ex) {
       setLoading(false);
@@ -52,8 +60,8 @@ export default function Interests() {
   };
 
   const fetchCat = async () => {
-    const resp = await API.graphql(graphqlOperation(listCategorys))
-    setCategories(getReturnData(resp).items)
+    const resp = await API.graphql(graphqlOperation(listCategorys));
+    setCategories(getReturnData(resp).items);
   };
 
   useEffect(() => {
@@ -108,17 +116,17 @@ export default function Interests() {
       >
         Хамгийн багадаа 3-ыг сонгоно уу!
       </p>
-      <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
+      <div className=" px-c8 ph:px-c2 text-white text-14px flex items-center justify-between mt-5">
         <Button
           loading={loading}
           onClick={() => submitHandler()}
           className={
-            "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
+            "rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
           }
         >
           Дуусгах
         </Button>
       </div>
     </div>
-  ) : null
+  ) : null;
 }

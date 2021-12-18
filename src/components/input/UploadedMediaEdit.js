@@ -220,7 +220,7 @@ const UploadedMediaEdit = ({
     setPost({
       ...post,
       commentType: allowComment ? true : false,
-      owned: caakContent ? "CAAK" : null,
+      ...(caakContent ? { owned: "CAAK" } : {}),
     });
   }, [allowComment, caakContent]);
 

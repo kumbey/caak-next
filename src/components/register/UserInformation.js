@@ -138,12 +138,12 @@ const UserInformation = ({ nextStep }) => {
 
           <Gender setGender={setGender} gender={gender} label={"Таны хүйс"} />
         </div>
-        <div className=" px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
+        <div className=" px-c8 ph:px-c2 text-white text-14px flex items-center justify-between mt-5">
           <Button
             loading={loading}
             onClick={() => handleSubmit(doSubmit)}
             className={
-              "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
+              "rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
             }
           >
             Үргэлжлүүлэх

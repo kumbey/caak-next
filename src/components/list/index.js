@@ -16,37 +16,7 @@ import {
 } from "../../utility/Util";
 import PostMoreMenu from "../card/PostMoreMenu";
 
-const postShareMenu = [
-  {
-    id: 0,
-    title: "Facebook",
-    icon: (
-      <Image width={22} height={22} alt={"facebook icon"} src={FacebookIcon} />
-    ),
-  },
-  {
-    id: 1,
-    title: "Twitter",
-    icon: (
-      <Image width={22} height={22} alt={"twitter icon"} src={TwitterIcon} />
-    ),
-  },
-  {
-    id: 2,
-    title: "Линк хуулах",
-    icon: (
-      <div
-        className={
-          "flex justify-center items-center p-[5px] w-[22px] h-[22px] rounded-full bg-caak-red"
-        }
-      >
-        <span className={"icon-fi-rs-link text-white text-[11px]"} />
-      </div>
-    ),
-  },
-];
-
-const List = ({ video, post, imageSrc }) => {
+const List = ({ post, imageSrc }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [pathName, setPathName] = useState("");

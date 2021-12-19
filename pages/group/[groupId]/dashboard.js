@@ -428,8 +428,7 @@ const Dashboard = ({ ssrData }) => {
             }
             width={52}
             height={52}
-            layout="fixed"
-            //   objectFit={"cover"}
+            objectFit={"cover"}
             alt="#"
           />
         </div>

@@ -10,36 +10,6 @@ import AnimatedCaakButton from "../../button/animatedCaakButton";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { useRouter } from "next/router";
 
-const postShareMenu = [
-  {
-    id: 0,
-    title: "Facebook",
-    icon: (
-      <Image width={22} height={22} alt={"facebook icon"} src={FacebookIcon} />
-    ),
-  },
-  {
-    id: 1,
-    title: "Twitter",
-    icon: (
-      <Image width={22} height={22} alt={"twitter icon"} src={TwitterIcon} />
-    ),
-  },
-  {
-    id: 2,
-    title: "Линк хуулах",
-    icon: (
-      <div
-        className={
-          "flex justify-center items-center p-[5px] w-[22px] h-[22px] rounded-full bg-caak-red"
-        }
-      >
-        <span className={"icon-fi-rs-link text-white text-[11px]"} />
-      </div>
-    ),
-  },
-];
-
 const CardFooter = ({ totals, postId, reacted }) => {
   const [subscripTotal, setSubscripTotal] = useState();
   const router = useRouter();
@@ -99,12 +69,6 @@ const CardFooter = ({ totals, postId, reacted }) => {
   useEffect(() => {
     setPathName(window.location.origin);
   }, []);
-
-  // useEffect(() => {
-  //   setPathName(window.location.origin);
-  //   setItem(post.items.items[activeIndex]);
-  //   // eslint-disable-next-line
-  // }, [activeIndex]);
 
   return (
     <>
@@ -170,20 +134,6 @@ const CardFooter = ({ totals, postId, reacted }) => {
               open={isMenuOpen}
               onToggle={toggleMenu}
               content={
-                // postShareMenu.map((data) => (
-                //   <div
-                //     key={data.id}
-                //     style={{ height: "36px" }}
-                //     className="z-1 flex items-center cursor-pointer px-c6 hover:bg-caak-liquidnitrogen"
-                //     onClick={handleShare}
-                //   >
-                //     {data.icon}
-                //     <p className="text-14px text-caak-extraBlack ml-px-12">
-                //       {data.title}
-                //     </p>
-                //   </div>
-                // ))
-
                 <div className={"flex flex-row items-center"}>
                   <div className={"flex flex-col  justify-start  z-1    "}>
                     <div className="hover:bg-caak-liquidnitrogen w-full px-c6">

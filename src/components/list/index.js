@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../../components/card/ProfileHoverCard";
 
@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import DropDown from "../../components/navigation/DropDown";
 import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
+import { FacebookShareButton, TwitterShareButton } from "next-share";
 import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
 import {
   generateTimeAgo,
@@ -48,6 +49,7 @@ const postShareMenu = [
 const List = ({ video, post, imageSrc }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const [pathName, setPathName] = useState("");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -61,6 +63,10 @@ const List = ({ video, post, imageSrc }) => {
   const moreMenuRef = useClickOutSide(() => {
     setIsMoreMenuOpen(false);
   });
+
+  useEffect(() => {
+    setPathName(window.location.origin);
+  }, []);
 
   return (
     <div className="bg-white relative flex mx-auto border-b-[1px] border-caak-titaniumwhite last:rounded-b-[8px] first:rounded-t-[8px]">
@@ -84,8 +90,8 @@ const List = ({ video, post, imageSrc }) => {
                     }
                     width={102}
                     height={76}
-                    layout="responsive"
-                    //   objectFit={"cover"}
+                    objectFit={"cover"}
+                    objectPosition={"top"}
                     alt="#"
                   />
                 </div>
@@ -185,18 +191,84 @@ const List = ({ video, post, imageSrc }) => {
                     className="left-[-15px] bottom-8"
                     open={isMenuOpen}
                     onToggle={toggleMenu}
-                    content={postShareMenu.map((data) => (
-                      <div
-                        key={data.id}
-                        style={{ height: "36px" }}
-                        className="flex items-center cursor-pointer z-1 px-c6 hover:bg-caak-liquidnitrogen"
-                      >
-                        {data.icon}
-                        <p className="text-14px text-caak-extraBlack ml-px-12">
-                          {data.title}
-                        </p>
+                    content={
+                      <div className={"flex flex-row items-center"}>
+                        <div
+                          className={"flex flex-col  justify-start  z-1    "}
+                        >
+                          <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                            <FacebookShareButton
+                              url={`${pathName}/post/view/${post.id}`}
+                            >
+                              <div
+                                className={
+                                  "flex items-center rounded-full cursor-pointer h-[36px] "
+                                }
+                              >
+                                <Image
+                                  width={22}
+                                  height={22}
+                                  alt={"facebook icon"}
+                                  src={FacebookIcon}
+                                />
+                                <p className="text-14px text-caak-extraBlack ml-px-12">
+                                  Facebook
+                                </p>
+                              </div>
+                            </FacebookShareButton>
+                          </div>
+                          <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                            <TwitterShareButton
+                              url={`${pathName}/post/view/${post.id}`}
+                            >
+                              <div
+                                className={
+                                  "flex items-center rounded-full cursor-pointer h-[36px]"
+                                }
+                              >
+                                <Image
+                                  width={22}
+                                  height={22}
+                                  alt={"twitter icon"}
+                                  src={TwitterIcon}
+                                />
+                                <p className="text-14px text-caak-extraBlack ml-px-12">
+                                  Twitter
+                                </p>
+                              </div>
+                            </TwitterShareButton>
+                          </div>
+                          <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                            <div
+                              onClick={() => {
+                                if (typeof navigator !== "undefined")
+                                  navigator.clipboard.writeText(
+                                    `${pathName}/post/view/${post.id}`
+                                  );
+                              }}
+                              className={
+                                "flex items-center  rounded-full cursor-pointer h-[36px]"
+                              }
+                            >
+                              <div
+                                className={
+                                  "flex justify-center items-center p-[5px] w-[22px] h-[22px] rounded-full bg-caak-red"
+                                }
+                              >
+                                <span
+                                  className={
+                                    "icon-fi-rs-link text-white text-[11px]"
+                                  }
+                                />
+                              </div>
+                              <p className="text-14px text-caak-extraBlack ml-px-12">
+                                Линк хуулах
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    ))}
+                    }
                   />
                 </div>
               </div>

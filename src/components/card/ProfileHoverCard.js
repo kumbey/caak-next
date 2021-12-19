@@ -11,7 +11,6 @@ import Loader from "../loader";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Divider from "../divider";
-import { createPortal } from "react-dom";
 
 export default function ProfileHoverCard({ userId }) {
   const { user, isLogged } = useUser();
@@ -19,9 +18,6 @@ export default function ProfileHoverCard({ userId }) {
   const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  // useEffect(() => {
-  //   console.log("FOLLOW: ", postUser.followed);
-  // }, [postUser.followed]);
 
   useEffect(() => {
     setLoading(true);

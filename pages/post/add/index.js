@@ -20,9 +20,9 @@ import Head from "next/head";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
-  const history = useRouter();
+  const router = useRouter();
   // const { state } = useLocation();
-  const { postId, groupId } = history.query;
+  const { postId, groupId } = router.query;
   const { user } = useUser();
 
   const [isGroupVisible, setIsGroupVisible] = useState(false);
@@ -64,7 +64,7 @@ const AddPost = () => {
 
     const handler = (e) => {
       if (e.keyCode === 27) {
-        history.back();
+        router.back();
       }
     };
     document.addEventListener("keydown", handler);
@@ -158,8 +158,15 @@ const AddPost = () => {
 
       setLoading(false);
 
-      history.push({ pathname: `/user/${user.id}/profile` }, { index: 2 });
-      // setActiveIndex(2)
+      router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 1,
+            },
+          },
+          `/user/${user.id}/dashboard`
+      );
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -204,7 +211,7 @@ const AddPost = () => {
 
               <div className={"flex flex-row pb-4 px-4 justify-end"}>
                 <Button
-                  onClick={() => history.back()}
+                  onClick={() => router.back()}
                   className={
                     "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
                   }

@@ -24,7 +24,7 @@ import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
 import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
-import {onPostByUser, onPostUpdateByStatus} from "../../../src/graphql-custom/post/subscription";
+import {onPostByUser} from "../../../src/graphql-custom/post/subscription";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Divider from "../../../src/components/divider";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
@@ -148,7 +148,7 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       icon: "icon-fi-rs-aura",
       number: user?.aura,
-      text: "Нийт аура",
+      text: "Аура",
       bgcolor: "",
       color: "",
     },
@@ -156,7 +156,7 @@ const Dashboard = ({ ssrData }) => {
       id: 1,
       icon: "icon-fi-rs-rock-f",
       number: totalReaction,
-      text: "Нийт саак",
+      text: "Саак",
       bgcolor: "bg-caak-sweetfrosting",
       color: "text-caak-cookiedough",
     },
@@ -164,7 +164,7 @@ const Dashboard = ({ ssrData }) => {
       id: 2,
       icon: "icon-fi-rs-comment-f",
       number: totalComment,
-      text: "Нийт сэтгэгдэл",
+      text: "Сэтгэгдэл",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
     },
@@ -172,7 +172,7 @@ const Dashboard = ({ ssrData }) => {
       id: 3,
       icon: "icon-fi-rs-view",
       number: userTotals?.post_views,
-      text: "Нийт пост үзсэн",
+      text: "Пост үзсэн",
       bgcolor: "bg-caak-errigalwhite",
       color: "text-caak-darkBlue",
     },
@@ -494,7 +494,7 @@ const Dashboard = ({ ssrData }) => {
   }, []);
 
   return isLogged && loaded ? (
-    <div className=" max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
+    <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">
         <span
           onClick={() => router.back()}
@@ -536,10 +536,10 @@ const Dashboard = ({ ssrData }) => {
           );
         })}
       </div>
-      <div className="flex mt-[25px] ">
+      <div className="flex flex-col xl:flex-row mt-[25px] ">
         <div
           className={
-            "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mr-[20px] "
+            "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mr-0 lg:mr-[20px] "
           }
         >
           <div className="flex flex-col mt-[28px] ml-[32px]">
@@ -572,8 +572,8 @@ const Dashboard = ({ ssrData }) => {
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <div className="flex justify-between">
-            <div className="flex items-center">
+          <div className="flex flex-wrap justify-between mt-[10px]">
+            <div className="flex items-center my-[10px] md:my-0">
               <p
                 className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
               >
@@ -585,41 +585,45 @@ const Dashboard = ({ ssrData }) => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                Хандалт
-              </p>
+            <div className="flex items-center justify-between flex-wrap md:mb-0 mb-[10px]">
+              <div className={"flex flex-row items-center"}>
+                <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                  Хандалт
+                </p>
 
-              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                <div className="flex items-center  mx-[12px] my-[10px]">
-                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                    Бүгд
-                  </p>
-                  <span className="icon-fi-rs-triangle text-14px" />
+                <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                  <div className="flex items-center  mx-[12px] my-[10px]">
+                    <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                      Бүгд
+                    </p>
+                    <span className="icon-fi-rs-triangle text-14px" />
+                  </div>
                 </div>
               </div>
-              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                Огноо
-              </p>
+              <div className={"flex flex-row items-center"}>
+                <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                  Огноо
+                </p>
 
-              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                <div className="flex items-center  mx-[12px] my-[10px]">
-                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                    Сүүлд нэмэгдсэн
-                  </p>
-                  <span className="icon-fi-rs-triangle text-14px" />
+                <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                  <div className="flex items-center  mx-[12px] my-[10px]">
+                    <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                      Сүүлд нэмэгдсэн
+                    </p>
+                    <span className="icon-fi-rs-triangle text-14px" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[16px] mb-[20px]"
+              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px]"
             }
           >
             {activeIndex === 0 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[13px] ">
+                <div className="mb-[13px] hidden md:flex ">
                   <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
                     Пост
                   </p>
@@ -633,7 +637,7 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
-                <Divider className={"mb-[20px] bg-caak-titaniumwhite"} />
+                <Divider className={"mb-[20px] bg-caak-titaniumwhite hidden md:flex"} />
                 <InfiniteScroll
                   dataLength={posts.items.length}
                   next={fetchPosts}
@@ -668,7 +672,7 @@ const Dashboard = ({ ssrData }) => {
 
             {activeIndex === 1 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[13px]">
+                <div className="hidden md:flex mb-[13px]">
                   <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
                     Пост
                   </p>
@@ -682,7 +686,7 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
-                <Divider className={"mb-[20px]"} />
+                <Divider className={"hidden md:flex mb-[20px]"} />
                 <InfiniteScroll
                   dataLength={pendingPosts.items.length}
                   next={fetchPending}
@@ -717,7 +721,7 @@ const Dashboard = ({ ssrData }) => {
             ) : null}
             {activeIndex === 2 ? (
               <div className="flex flex-col">
-                <div className="flex mb-[13px]">
+                <div className="hidden md:flex mb-[13px]">
                   <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
                     Пост
                   </p>
@@ -731,7 +735,7 @@ const Dashboard = ({ ssrData }) => {
                     Үйлдэл
                   </p>
                 </div>
-                <Divider className={"mb-[20px]"} />
+                <Divider className={"hidden md:flex mb-[20px]"} />
                 <InfiniteScroll
                   dataLength={archivedPosts.items.length}
                   next={fetchArchived}
@@ -798,7 +802,7 @@ const Dashboard = ({ ssrData }) => {
             {activeIndex === 4
               ? userComments.items.length > 0 && (
                   <div className="flex flex-col">
-                    <div className="flex mb-[13px] ">
+                    <div className="hidden md:flex mb-[13px] ">
                       <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
                         Пост
                       </p>
@@ -812,7 +816,7 @@ const Dashboard = ({ ssrData }) => {
                         Үйлдэл
                       </p>
                     </div>
-                    <Divider className={"mb-[20px] bg-caak-titaniumwhite"} />
+                    <Divider className={"hidden md:flex mb-[20px] bg-caak-titaniumwhite"} />
                     <InfiniteScroll
                       dataLength={userComments.items.length}
                       next={fetchComments}

@@ -9,7 +9,7 @@ const CommentSection = ({ post, commentRef, jumpToCommentId }) => {
   return (
     <div
       ref={commentRef}
-      className={"flex flex-col bg-white py-[16px] px-[29px] rounded-b-square"}
+      className={"flex flex-col bg-white py-[4px] px-[8px] md:py-[16px] md:px-[29px] rounded-b-square"}
     >
       {/*User*/}
 

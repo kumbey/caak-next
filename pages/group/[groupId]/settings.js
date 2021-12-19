@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import tipsSvg from "/public/assets/images/lifebuoy.svg";
 
 import { getUserById } from "/src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
@@ -16,6 +17,7 @@ import GroupInformation from "../../../src/components/group/GroupInformation";
 import GroupPrivacy from "../../../src/components/group/GroupPrivacy";
 import GroupMemberConfig from "../../../src/components/group/GroupMemberConfig";
 import GroupRule from "../../../src/components/group/GroupRule";
+import GroupCaution from "../../../src/components/group/GroupCaution";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -134,11 +136,16 @@ export default function Settings({ ssrData, ...props }) {
     },
     {
       id: 2,
+      icon: <Image alt={""} src={tipsSvg} height={24} width={24} />,
+      title: "Анхаарах зүйлс",
+    },
+    {
+      id: 3,
       icon: <span className="icon-fi-rs-group-o text-22px" />,
       title: "Гишүүдын тохиргоо",
     },
     {
-      id: 3,
+      id: 4,
       icon: <span className="icon-fi-rs-locker text-22px" />,
       title: "Нууцлал",
     },
@@ -246,13 +253,15 @@ export default function Settings({ ssrData, ...props }) {
                 groupData={groupData}
               />
             ) : activeIndex === 1 ? (
-              <GroupRule categoryList={categoryList} groupData={groupData} />
+              <GroupRule groupData={groupData} />
             ) : activeIndex === 2 ? (
+              <GroupCaution groupData={groupData} />
+            ) : activeIndex === 3 ? (
               <GroupMemberConfig
                 adminModeratorList={adminModeratorList}
                 memberList={memberList}
               />
-            ) : activeIndex === 3 ? (
+            ) : activeIndex === 4 ? (
               <GroupPrivacy groupData={groupData} />
             ) : null}
           </div>

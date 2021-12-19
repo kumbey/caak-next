@@ -462,7 +462,7 @@
     min-width: 280px;
     max-width: 290px;
     width: clamp(280px, 100%, 290px);
-    height: 217px;
+    height: 270px;
   }
 
   .settingsDiv {
@@ -520,28 +520,6 @@
     margin: 70px auto;
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-  }
-
-  .videoPlayerSeek {
-    -webkit-appearance: none;
-    background: white;
-    opacity: 1;
-  }
-
-  .videoPlayerSeek::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #FFF;
-    cursor: pointer;
-  }
-  .videoPlayerSeek::-moz-range-thumb {
-    width: 10px;
-    height: 10px;
-    background: #fff; /* Green background */
-    cursor: pointer; /* Cursor on hover */
   }
 }
 

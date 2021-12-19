@@ -1,26 +1,102 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useClickOutSide } from "../../utility/Util";
 import clipboardImg from "../../../public/assets/images/clipboard.svg";
 import Button from "../button";
 import { useRouter } from "next/router";
 import GroupRuleEdit from "./GroupRuleEdit";
+import API from "@aws-amplify/api";
+import { updateGroup } from "../../graphql-custom/group/mutation";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 
 import GroupRuleItem from "./GroupRuleItem";
 
-const GroupRule = ({ userList, ...props }) => {
+const GroupRule = ({ groupData, ...props }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFilled, setIsFilled] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [text, setText] = useState();
+  const [type, setType] = useState();
 
+  const close = () => {
+    setIsModalOpen(false);
+  };
   const handleClick = () => {
+    setType("new");
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleDelete = async (index) => {
+    let parsed = JSON.parse(groupData?.g_rules);
+    parsed.splice(index, 1);
+    groupData.g_rules = JSON.stringify([...parsed]);
+
+    await API.graphql(
+      graphqlOperation(updateGroup, {
+        input: {
+          id: router.query.groupId,
+          g_rules: JSON.stringify(parsed),
+        },
+      })
+    );
+  };
+
+  const handleSubmit = async () => {
+    if (groupData.g_rules !== "") {
+      let parsed = JSON.parse(groupData?.g_rules);
+
+      if (type === "edit") {
+        parsed[activeIndex].title = text.title;
+        parsed[activeIndex].description = text.description;
+        groupData.g_rules = JSON.stringify([...parsed]);
+      } else if (type === "new") {
+        parsed = [...parsed, text];
+        groupData.g_rules = JSON.stringify([...parsed]);
+      }
+      await API.graphql(
+        graphqlOperation(updateGroup, {
+          input: {
+            id: router.query.groupId,
+            g_rules: JSON.stringify(parsed),
+          },
+        })
+      );
+    } else {
+      try {
+        await API.graphql(
+          graphqlOperation(updateGroup, {
+            input: {
+              id: router.query.groupId,
+              g_rules: JSON.stringify([text]),
+            },
+          })
+        );
+        groupData.g_rules = JSON.stringify([text]);
+      } catch (ex) {
+        console.log(ex);
+      }
+    }
+    close();
+  };
+
+  const fetch = async () => {
+    await API.graphql(
+      graphqlOperation(updateGroup, {
+        input: {
+          id: router.query.groupId,
+          g_rules: "",
+        },
+      })
+    );
+  };
+  useEffect(() => {
+    // fetch();
+    console.log(type);
+  }, [type]);
   return (
     <div className="flex ">
-      {isFilled ? (
+      {groupData?.g_rules ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">
             <p className="font-inter font-semibold text-20px text-caak-generalblack">
@@ -38,10 +114,22 @@ const GroupRule = ({ userList, ...props }) => {
               Нэмэх
             </Button>
           </div>
-          <GroupRuleItem setIsModalOpen={setIsModalOpen} />
-          <GroupRuleItem />
-          <GroupRuleItem />
-          <GroupRuleItem />
+          {groupData.g_rules !== "" &&
+            JSON.parse(groupData.g_rules).map((rule, index) => {
+              return (
+                <GroupRuleItem
+                  setActiveIndex={setActiveIndex}
+                  description={rule?.description}
+                  title={rule?.title}
+                  key={index}
+                  index={index}
+                  setType={setType}
+                  handleSubmit={handleSubmit}
+                  handleDelete={handleDelete}
+                  setIsModalOpen={setIsModalOpen}
+                />
+              );
+            })}
         </div>
       ) : (
         <div className="flex justify-between items-center py-[70px] px-[100px]">
@@ -80,7 +168,18 @@ const GroupRule = ({ userList, ...props }) => {
           </div>
         </div>
       )}
-      {isModalOpen && <GroupRuleEdit setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && (
+        <GroupRuleEdit
+          activeIndex={activeIndex}
+          setIsModalOpen={setIsModalOpen}
+          groupData={groupData}
+          type={type}
+          handleSubmit={handleSubmit}
+          text={text}
+          setText={setText}
+          close={close}
+        />
+      )}
     </div>
   );
 };

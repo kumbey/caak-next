@@ -28,7 +28,7 @@ export default function SocialLink() {
       text: "Instagram",
       name: "instagram",
       value: text?.instagram ? text.instagram : "",
-      icon: "",
+      icon: "icon-fi-rs-ig",
     },
     {
       id: 1,
@@ -125,20 +125,28 @@ export default function SocialLink() {
               </div>
               {currentIndex === index && showInput ? (
                 <form
-                  className={`flex w-full mt-[10px] items-end flex-col`}
+                  className={`flex w-full mt-[10px]  flex-col`}
                   onSubmit={(e) => e.preventDefault()}
                 >
-                  <Input
-                    name={menu.name}
-                    defaultValue={menu.value}
-                    type="text"
-                    // value={currentUser.title}
-                    onChange={handleChange}
-                    className={
-                      "border mr-2 border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                    }
-                  />
-                  <div className=" my-auto flex items-center pb-3">
+                  <div className="flex items-center ">
+                    <div className="text-caak-darkBlue text-sm pb-2">
+                      www.{menu.name}.com/
+                    </div>
+                    <div className="w-full">
+                      <Input
+                        name={menu.name}
+                        defaultValue={menu.value}
+                        type="text"
+                        // value={currentUser.title}
+                        onChange={handleChange}
+                        className={
+                          "border mr-2 border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className=" my-auto flex items-center justify-end pb-3">
                     <Button
                       loading={loading}
                       onClick={() => handleCancel()}

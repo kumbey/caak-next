@@ -256,7 +256,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           </Dropzone>
         )}
       </div>
-      <div className={"profileLayoutContainer flex-col md:flex-row relative z-[2]"}>
+      <div
+        className={"profileLayoutContainer flex-col md:flex-row relative z-[2]"}
+      >
         <div
           className={
             "hidden md:flex flex-row items-center h-[50px] bg-white rounded-[100px] py-[8px] px-[24px] bg-white absolute userProfileBadge"
@@ -518,66 +520,126 @@ const DefaultUserProfileLayout = ({ user, children }) => {
 
             {/*Social addresses*/}
             <div className={"flex flex-col w-full"}>
-              <div className={"flex flex-row items-center mb-[10px]"}>
-                <div
-                  className={
-                    "flex items-center justify-start w-[24px] h-[24px]"
-                  }
+              {JSON.parse(user?.meta).facebook && (
+                <a
+                  href={`https://www.facebook.com/${
+                    JSON.parse(user?.meta).facebook
+                  }`}
+                  target="_blank"
                 >
-                  <span
+                  <div
                     className={
-                      "icon-fi-rs-facebook path2 text-caak-generalblack text-[22px]"
+                      "flex flex-row items-center mb-[10px] cursor-pointer"
                     }
-                  />
-                </div>
-                <p
-                  className={
-                    "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
-                  }
+                  >
+                    <div
+                      className={
+                        "flex items-center justify-start w-[24px] h-[24px]"
+                      }
+                    >
+                      <span
+                        className={
+                          "icon-fi-rs-facebook  text-caak-generalblack text-[22px]"
+                        }
+                      />
+                    </div>
+                    <p
+                      className={
+                        "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
+                      }
+                    >
+                      {JSON.parse(user?.meta).facebook}
+                    </p>
+                  </div>
+                </a>
+              )}
+              {JSON.parse(user?.meta).twitter && (
+                <a
+                  href={`https://www.twitter.com/${
+                    JSON.parse(user?.meta).twitter
+                  }`}
+                  target="_blank"
                 >
-                  undercoverosh
-                </p>
-              </div>
-              <div className={"flex flex-row items-center mb-[10px]"}>
-                <div
-                  className={
-                    "flex items-center justify-start w-[24px] h-[24px]"
-                  }
+                  <div className={"flex flex-row items-center mb-[10px]"}>
+                    <div
+                      className={
+                        "flex items-center justify-start w-[24px] h-[24px]"
+                      }
+                    >
+                      <span
+                        className={
+                          "icon-fi-rs-twitter text-caak-generalblack text-[22px]"
+                        }
+                      />
+                    </div>
+                    <p
+                      className={
+                        "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
+                      }
+                    >
+                      {JSON.parse(user?.meta).twitter}
+                    </p>
+                  </div>
+                </a>
+              )}
+              {JSON.parse(user?.meta).instagram && (
+                <a
+                  href={`https://www.instagram.com/${
+                    JSON.parse(user?.meta).instagram
+                  }`}
+                  target="_blank"
                 >
-                  <span
-                    className={
-                      "icon-fi-rs-twitter text-caak-generalblack text-[22px]"
-                    }
-                  />
-                </div>
-                <p
-                  className={
-                    "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
-                  }
+                  <div className={"flex flex-row items-center mb-[10px]"}>
+                    <div
+                      className={
+                        "flex items-center justify-start w-[24px] h-[24px]"
+                      }
+                    >
+                      <span
+                        className={
+                          "icon-fi-rs-ig text-caak-generalblack text-[20px]"
+                        }
+                      />
+                    </div>
+                    <p
+                      className={
+                        "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
+                      }
+                    >
+                      {JSON.parse(user?.meta).instagram}
+                    </p>
+                  </div>
+                </a>
+              )}
+              {JSON.parse(user?.meta).tiktok && (
+                <a
+                  href={`https://www.tiktok.com/@${
+                    JSON.parse(user?.meta).tiktok
+                  }`}
+                  target="_blank"
                 >
-                  chewyu
-                </p>
-              </div>
-              <div className={"flex flex-row items-center"}>
-                <div
-                  className={
-                    "flex items-center justify-start w-[24px] h-[24px]"
-                  }
-                >
-                  <span
-                    className={
-                      "icon-fi-rs-ig text-caak-generalblack text-[20px]"
-                    }
-                  />
-                </div>
-                <p
-                  className={
-                    "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
-                  }
-                >
-                  chewyu
-                </p>
-              </div>
+                  <div className={"flex flex-row items-center"}>
+                    <div
+                      className={
+                        "flex items-center justify-start w-[24px] h-[24px]"
+                      }
+                    >
+                      <span
+                        className={
+                          "icon-fi-rs-tiktok text-caak-generalblack text-[20px]"
+                        }
+                      />
+                    </div>
+                    <p
+                      className={
+                        "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
+                      }
+                    >
+                      {JSON.parse(user?.meta).tiktok}
+                    </p>
+                  </div>
+                </a>
+              )}
             </div>
             <div className={"w-full my-[20px]"}>
               <div
@@ -601,7 +663,13 @@ const DefaultUserProfileLayout = ({ user, children }) => {
             </div>
           </div>
         </div>
-        <div className={"profileLayoutPosts relative top-[-74px] sm:top-0 mt-[10px] ml-0 md:ml-[40px]"}>{children}</div>
+        <div
+          className={
+            "profileLayoutPosts relative top-[-74px] sm:top-0 mt-[10px] ml-0 md:ml-[40px]"
+          }
+        >
+          {children}
+        </div>
       </div>
     </div>
   ) : null;

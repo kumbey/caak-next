@@ -71,7 +71,7 @@ const GroupMemberList = ({ userList, ...props }) => {
               @{userList?.user?.nickname}
             </div>
             <div
-              className={`flex items-center px-[8px] rounded ${tag.color}
+              className={`flex items-center h-[18px] px-[8px] rounded ${tag.color}
                bg-opacity-10`}
             >
               <p className={`font-inter font-normal text-12px`}>{tag.text}</p>

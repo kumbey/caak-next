@@ -103,7 +103,7 @@ export default function Interests() {
               ) : (
                 <span className={`mr-1.5 text-18px ${data.icon}`} />
               )}
-              <p className="text-15px font-medium">s{data.name}</p>
+              <p className="text-15px font-medium">{data.name}</p>
             </div>
           );
         })}

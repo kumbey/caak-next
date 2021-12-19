@@ -23,7 +23,7 @@ const GroupCautionItem = ({
   };
   return (
     <div className="flex flex-row justify-between w-full  mt-[20px] border-b-[1px]">
-      <div className={"flex flex-row items-center"}>
+      <div className={"flex flex-row "}>
         <div className="flex items-center justify-center w-[20px] h-[20px]">
           <span className="icon-fi-rs-drag text-20px text-caak-aleutian mr-[10px]" />
         </div>

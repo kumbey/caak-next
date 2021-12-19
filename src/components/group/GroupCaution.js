@@ -103,7 +103,7 @@ const GroupCaution = ({ groupData, ...props }) => {
       {groupData?.g_attentions !== "" ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">
-            <p className="font-inter font-semibold text-20px text-caak-generalblack">
+            <p className="font-semibold text-caak-aleutian font-intertext-20px text-22px">
               Дүрэм
             </p>
             <Button

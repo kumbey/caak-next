@@ -6,6 +6,7 @@ const post0004 = /* GraphQL */ `
     title
     description
     commentType
+    owned
     status
     user_id
     group_id

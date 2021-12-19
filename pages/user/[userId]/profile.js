@@ -10,7 +10,7 @@ import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
-import {onPostByUser, onPostUpdateByStatus} from "../../../src/graphql-custom/post/subscription";
+import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
 import { useUser } from "../../../src/context/userContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
@@ -87,13 +87,14 @@ const Profile = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPosts) => ({
-            ...nextPosts,
-            items: [...nextPosts.items, ...resp],
-          }));
+        if (posts.nextToken) {
+          const resp = await nextPosts();
+          if (resp) {
+            setPosts((nextPosts) => ({
+              ...nextPosts,
+              items: [...nextPosts.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -115,7 +116,7 @@ const Profile = ({ ssrData }) => {
       query: onPostByUser,
       variables: {
         status: "CONFIRMED",
-        user_id: userId
+        user_id: userId,
       },
       authMode: authMode,
     }).subscribe({
@@ -131,8 +132,7 @@ const Profile = ({ ssrData }) => {
       query: onPostByUser,
       variables: {
         status: "ARCHIVED",
-        user_id: userId
-
+        user_id: userId,
       },
       authMode: authMode,
     }).subscribe({
@@ -148,7 +148,7 @@ const Profile = ({ ssrData }) => {
       query: onPostByUser,
       variables: {
         status: "PENDING",
-        user_id: userId
+        user_id: userId,
       },
       authMode: authMode,
     }).subscribe({
@@ -179,11 +179,6 @@ const Profile = ({ ssrData }) => {
     }
     // eslint-disable-next-line
   }, [subscripedPost]);
-
-  // useEffect(()=> {
-  //   fetchPosts()
-  //   // eslint-disable-next-line
-  // },[])
 
   useEffect(() => {
     setPosts(ssrData.posts);

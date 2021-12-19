@@ -13,7 +13,7 @@ const ItemsCounterCard = ({ count, containerClassname, duration }) => {
     <div
       className={`${
         containerClassname ? containerClassname : ""
-      } flex flex-row items-center  absolute top-[10px] right-[10px] `}
+      } flex flex-row items-center absolute top-[10px]`}
     >
       {typeof duration !== "undefined" ? (
         <div

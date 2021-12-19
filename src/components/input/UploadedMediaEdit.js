@@ -377,6 +377,7 @@ const UploadedMediaEdit = ({
           >
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
+                durationIndicator={true}
                 smallIndicator
                 videoClassname={"object-contain rounded-[4px]"}
                 src={thumbnailImageHandler(post.items[activeIndex])}

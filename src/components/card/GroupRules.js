@@ -1,9 +1,33 @@
 import { Accordion } from "../accordion/Accordion";
 import Image from "next/image";
 import ruleSvg from "../../../public/assets/images/clipboard.svg";
+import { API } from "aws-amplify";
+import { getGroupRules } from "../../graphql-custom/group/queries";
+import { getReturnData } from "../../utility/Util";
+import { useEffect, useState } from "react";
 
-const GroupRules = () => {
-  return (
+const GroupRules = ({ groupId }) => {
+  const [groupRules, setGroupRules] = useState();
+
+  const getGroupRule = async () => {
+    let resp = await API.graphql({
+      query: getGroupRules,
+      variables: { id: groupId },
+    });
+    resp = getReturnData(resp);
+    if (resp.g_rules.length < 0) {
+      setGroupRules(JSON.parse(resp.g_rules));
+    }
+    else {
+      setGroupRules(null)
+    }
+  };
+
+  useEffect(() => {
+    getGroupRule();
+  }, [groupId]);
+
+  return groupRules ? (
     <div
       className={"flex flex-col bg-white rounded-square pb-[20px] mb-[16px]"}
     >
@@ -97,7 +121,7 @@ const GroupRules = () => {
         </ol>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default GroupRules;

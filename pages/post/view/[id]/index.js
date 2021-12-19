@@ -245,7 +245,7 @@ const Post = ({ ssrData }) => {
               if (post.items.items.length === 1) {
                 return (
                   <ViewPostBlogItem
-                    singleItem
+                    // singleItem
                     key={index}
                     index={index}
                     postId={post.id}

@@ -412,7 +412,7 @@ const GroupLayout = ({
             groupData.role_on_group === "MODERATOR" ? (
               <GroupAdminPanel groupData={groupData} />
             ) : null}
-            <GroupTopMembersCard groupId={groupData.id}/>
+            {/*<GroupTopMembersCard groupId={groupData.id}/>*/}
             <div className="mt-[16px]">
               {!hideSuggestedGroups && (
                 <SuggestedGroupsCard

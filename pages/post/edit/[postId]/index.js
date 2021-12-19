@@ -12,6 +12,7 @@ import UploadedMediaEdit from "../../../../src/components/input/UploadedMediaEdi
 import DropZoneWithCaption from "../../../../src/components/input/DropZoneWithCaption";
 import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
+import { getUser } from "../../../../src/graphql-custom/user/queries";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -21,7 +22,6 @@ export async function getServerSideProps({ req, res, query }) {
   } catch (ex) {
     user = null;
   }
-
   const getGroups = async () => {
     try {
       const grData = {
@@ -65,11 +65,11 @@ export async function getServerSideProps({ req, res, query }) {
   };
 
   const post = await getPostById();
+  if (post.user.id !== user.attributes.sub) {
+    return { notFound: true };
+  }
   const groups = await getGroups();
 
-  // if (post.status === "PENDING") {
-  //   return { notFound: true };
-  // } else {
   return {
     props: {
       ssrData: {
@@ -77,7 +77,6 @@ export async function getServerSideProps({ req, res, query }) {
         groups: groups,
       },
     },
-    // };
   };
 }
 

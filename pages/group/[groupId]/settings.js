@@ -196,8 +196,7 @@ export default function Settings({ ssrData, ...props }) {
               }
               width={52}
               height={52}
-              layout="fixed"
-              //   objectFit={"cover"}
+              objectFit={"cover"}
               alt="#"
             />
           </div>

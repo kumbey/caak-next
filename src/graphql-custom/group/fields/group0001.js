@@ -3,6 +3,7 @@ import user0001 from "../../user/fields/user0001";
 
 const group0001 = /* GraphQL */ `{
     id
+    g_rules
     name
     category_id
     category{

@@ -1,8 +1,19 @@
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { useEffect, useState } from "react";
+import { updateGroup } from "../../graphql-custom/group/mutation";
 import { useRouter } from "next/router";
 import Button from "../button";
 
-const GroupRuleEdit = ({ setIsModalOpen }) => {
+const GroupRuleEdit = ({
+  groupData,
+  activeIndex,
+  type,
+  handleSubmit,
+  setText,
+  text,
+  close,
+}) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -16,30 +27,12 @@ const GroupRuleEdit = ({ setIsModalOpen }) => {
     element.target.style.height = element.target.scrollHeight + "px";
   }
 
-  const close = () => {
-    setIsModalOpen(false);
-  };
-
-  //   const handleSubmit = async (e) => {
-  //     if (text !== e.target.value) {
-  //       await API.graphql(
-  //         graphqlOperation(updateGroup, {
-  //           input: {
-  //             id: groupData.id,
-  //             ...text,
-  //           },
-  //         })
-  //       );
-  //       groupData.name = text.name;
-  //       setText("");
-  //     }
-  //     setShowInput(false);
-  //     setCol(false);
-  //   };
-
   const handleChange = (e) => {
     setText({ ...text, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    console.log(type);
+  }, []);
   return (
     <div className="popup_modal ">
       <div className="popup_modal-content rounded-xl">
@@ -71,8 +64,12 @@ const GroupRuleEdit = ({ setIsModalOpen }) => {
                         onInput={auto_grow}
                         maxLength={maxLengths.title}
                         style={{ resize: "none" }}
-                        // defaultValue={groupData.name}
-                        name={"name"}
+                        defaultValue={
+                          groupData?.g_rules
+                            ? JSON.parse(groupData?.g_rules)[activeIndex]?.title
+                            : ""
+                        }
+                        name={"title"}
                         type={"text"}
                         onChange={handleChange}
                         className={
@@ -101,8 +98,13 @@ const GroupRuleEdit = ({ setIsModalOpen }) => {
 
                         onInput={auto_grow}
                         style={{ resize: "none" }}
-                        // defaultValue={groupData.about}
-                        name={"about"}
+                        defaultValue={
+                          groupData?.g_rules
+                            ? JSON.parse(groupData.g_rules)[activeIndex]
+                                ?.description
+                            : ""
+                        }
+                        name={"description"}
                         type={"text"}
                         onChange={handleChange}
                         className={
@@ -123,10 +125,10 @@ const GroupRuleEdit = ({ setIsModalOpen }) => {
                   </Button>
                   <Button
                     loading={loading}
-                    // onClick={handleSubmit}
+                    onClick={handleSubmit}
                     className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
                   >
-                    Нэмэх
+                    {type === "new" ? "Нэмэх" : "Засах"}
                   </Button>
                 </div>
               </div>

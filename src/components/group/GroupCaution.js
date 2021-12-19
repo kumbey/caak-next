@@ -1,22 +1,22 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useClickOutSide } from "../../utility/Util";
-import clipboardImg from "../../../public/assets/images/clipboard.svg";
 import Button from "../button";
+import tipsSvg from "/public/assets/images/lifebuoy.svg";
 import { useRouter } from "next/router";
-import GroupRuleEdit from "./GroupRuleEdit";
 import API from "@aws-amplify/api";
 import { updateGroup } from "../../graphql-custom/group/mutation";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 
-import GroupRuleItem from "./GroupRuleItem";
+import GroupCautionEdit from "./GroupCautionEdit";
+import GroupCautionItem from "./GroupCautionItem";
 
-const GroupRule = ({ groupData, ...props }) => {
+const GroupCaution = ({ groupData, ...props }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [text, setText] = useState();
+  const [caution, setCaution] = useState();
   const [type, setType] = useState();
 
   const close = () => {
@@ -29,41 +29,40 @@ const GroupRule = ({ groupData, ...props }) => {
 
   const handleDelete = async (index) => {
     let parsed =
-      groupData?.g_rules !== "" ? JSON.parse(groupData?.g_rules) : "";
+      groupData?.g_attentions !== "" ? JSON.parse(groupData?.g_attentions) : "";
     parsed.splice(index, 1);
-    groupData.g_rules = JSON.stringify([...parsed]);
+    groupData.g_attentions = JSON.stringify([...parsed]);
     if (parsed.length === 0) {
-      groupData.g_rules = "";
+      groupData.g_attentions = "";
       parsed = "";
     }
     await API.graphql(
       graphqlOperation(updateGroup, {
         input: {
           id: router.query.groupId,
-          g_rules: parsed.length === 0 ? parsed : JSON.stringify(parsed),
+          g_attentions: parsed.length === 0 ? parsed : JSON.stringify(parsed),
         },
       })
     );
   };
 
   const handleSubmit = async () => {
-    if (groupData.g_rules !== "") {
-      let parsed = JSON.parse(groupData?.g_rules);
+    if (groupData.g_attentions !== "") {
+      let parsed = JSON.parse(groupData?.g_attentions);
 
       if (type === "edit") {
-        parsed[activeIndex].title = text?.title;
-        parsed[activeIndex].description = text?.description;
-        groupData.g_rules = JSON.stringify([...parsed]);
+        parsed[activeIndex] = caution;
+
+        groupData.g_attentions = JSON.stringify([...parsed]);
       } else if (type === "new") {
-        setText({});
-        parsed = [...parsed, text];
-        groupData.g_rules = JSON.stringify([...parsed]);
+        parsed = [...parsed, caution];
+        groupData.g_attentions = JSON.stringify([...parsed]);
       }
       await API.graphql(
         graphqlOperation(updateGroup, {
           input: {
             id: router.query.groupId,
-            g_rules: JSON.stringify(parsed),
+            g_attentions: JSON.stringify(parsed),
           },
         })
       );
@@ -73,11 +72,11 @@ const GroupRule = ({ groupData, ...props }) => {
           graphqlOperation(updateGroup, {
             input: {
               id: router.query.groupId,
-              g_rules: JSON.stringify([text]),
+              g_attentions: JSON.stringify([caution]),
             },
           })
         );
-        groupData.g_rules = JSON.stringify([text]);
+        groupData.g_attentions = JSON.stringify([caution]);
       } catch (ex) {
         console.log(ex);
       }
@@ -90,7 +89,7 @@ const GroupRule = ({ groupData, ...props }) => {
       graphqlOperation(updateGroup, {
         input: {
           id: router.query.groupId,
-          g_rules: "",
+          g_attentions: "",
         },
       })
     );
@@ -100,7 +99,7 @@ const GroupRule = ({ groupData, ...props }) => {
   }, []);
   return (
     <div className="flex ">
-      {groupData?.g_rules !== "" ? (
+      {groupData?.g_attentions !== "" ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">
             <p className="font-inter font-semibold text-20px text-caak-generalblack">
@@ -118,13 +117,12 @@ const GroupRule = ({ groupData, ...props }) => {
               Нэмэх
             </Button>
           </div>
-          {groupData?.g_rules !== "" &&
-            JSON.parse(groupData?.g_rules).map((rule, index) => {
+          {groupData?.g_attentions !== "" &&
+            JSON.parse(groupData?.g_attentions).map((att, index) => {
               return (
-                <GroupRuleItem
+                <GroupCautionItem
                   setActiveIndex={setActiveIndex}
-                  description={rule?.description}
-                  title={rule?.title}
+                  title={att?.title}
                   key={index}
                   index={index}
                   setType={setType}
@@ -139,21 +137,16 @@ const GroupRule = ({ groupData, ...props }) => {
         <div className="flex justify-between items-center py-[70px] px-[100px]">
           <div className="flex flex-col items-center ">
             <div className="flex mb-[20px]">
-              <div className="mr-[10px] h-[28px] w-[23px]">
-                <Image
-                  src={clipboardImg}
-                  height={28}
-                  width={23}
-                  objectFit="cover"
-                />
+              <div className="mr-[10px] h-[28px] w-[28px]">
+                <Image src={tipsSvg} height={28} width={28} objectFit="cover" />
               </div>
               <p className="font-inter font-semibold text-20px text-caak-generalblack">
-                Дүрэм
+                Анхаарах зүйлс
               </p>
             </div>
             <div className="mb-[20px]">
-              <p className="text-15px font-inter font-normal text-caak-aleutian">
-                Группын дүрэм хараахан бичигдээгүй байна.
+              <p className="text-15px font-inter font-normal text-caak-aleutian text-center">
+                Группын Анхаарах зүйлс хараахан бичигдээгүй байна.
               </p>
             </div>
             <div className="">
@@ -174,14 +167,14 @@ const GroupRule = ({ groupData, ...props }) => {
         </div>
       )}
       {isModalOpen && (
-        <GroupRuleEdit
+        <GroupCautionEdit
           activeIndex={activeIndex}
           setIsModalOpen={setIsModalOpen}
           groupData={groupData}
           type={type}
           handleSubmit={handleSubmit}
-          text={text}
-          setText={setText}
+          caution={caution}
+          setCaution={setCaution}
           close={close}
         />
       )}
@@ -189,4 +182,4 @@ const GroupRule = ({ groupData, ...props }) => {
   );
 };
 
-export default GroupRule;
+export default GroupCaution;

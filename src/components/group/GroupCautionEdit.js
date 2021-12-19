@@ -5,13 +5,13 @@ import { updateGroup } from "../../graphql-custom/group/mutation";
 import { useRouter } from "next/router";
 import Button from "../button";
 
-const GroupRuleEdit = ({
+const GroupCautionEdit = ({
   groupData,
   activeIndex,
   type,
   handleSubmit,
-  setText,
-  text,
+  setCaution,
+  caution,
   close,
 }) => {
   const router = useRouter();
@@ -28,7 +28,7 @@ const GroupRuleEdit = ({
   }
 
   const handleChange = (e) => {
-    setText({ ...text, [e.target.name]: e.target.value });
+    setCaution({ ...caution, [e.target.name]: e.target.value });
   };
   useEffect(() => {
     console.log(type);
@@ -49,7 +49,7 @@ const GroupRuleEdit = ({
         <div className="flex flex-col  px-[24px] pb-[20px] ">
           <div className="">
             <p className="font-inter font-semibold text-15px text-caak-generalblack">
-              Гарчиг болон тайлбар
+              Гарчиг
             </p>
             <form className="w-full" onSubmit={(e) => e.preventDefault()}>
               <div className="flex flex-col w-full">
@@ -83,38 +83,8 @@ const GroupRuleEdit = ({
                         "absolute top-1/2 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
                       }
                     >
-                      {/* {JSON.parse(groupData?.g_rules)[activeIndex]?.title
-                        .length || 0}
-                      /{maxLengths.title} */}
+                      {/* {groupData.name?.length || 0}/{maxLengths.title} */}
                     </span>
-                  </div>
-                  <div className={"w-full relative block mt-[12px]"}>
-                    <div className="absolute flex flex-row items-center text-12px font-inter font-normal text-caak-darkBlue left-[13px] top-[20px] -translate-y-1/2 ">
-                      Тайлбар
-                    </div>
-                    <div className={"input"}>
-                      <textarea
-                        //  overflow-y: scroll;
-                        //  height: 100px;
-                        //  resize: none;
-
-                        onInput={auto_grow}
-                        style={{ resize: "none" }}
-                        defaultValue={
-                          groupData?.g_rules
-                            ? JSON.parse(groupData.g_rules)[activeIndex]
-                                ?.description
-                            : ""
-                        }
-                        name={"description"}
-                        type={"text"}
-                        onChange={handleChange}
-                        className={
-                          "overflow-y-scroll resize-y min-h-[110px] text-[15px] pt-[25px] pr-[55px] text-caak-generalblack font-inter font-normal w-full rounded-[6px] border-[1px] "
-                        }
-                        rows={2}
-                      />
-                    </div>
                   </div>
                 </div>
                 <div className="justify-end mt-[10px] flex items-center pb-3">
@@ -142,4 +112,4 @@ const GroupRuleEdit = ({
   );
 };
 
-export default GroupRuleEdit;
+export default GroupCautionEdit;

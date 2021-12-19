@@ -4,6 +4,7 @@ import user0001 from "../../user/fields/user0001";
 const group0001 = /* GraphQL */ `{
     id
     g_rules
+    g_attentions
     name
     g_rules
     g_attentions

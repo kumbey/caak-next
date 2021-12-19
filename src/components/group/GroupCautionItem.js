@@ -11,6 +11,7 @@ const GroupCautionItem = ({
   index,
   setActiveIndex,
   handleDelete,
+  setText,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

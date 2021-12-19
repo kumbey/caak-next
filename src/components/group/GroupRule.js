@@ -55,7 +55,6 @@ const GroupRule = ({ groupData, ...props }) => {
         parsed[activeIndex].description = text?.description;
         groupData.g_rules = JSON.stringify([...parsed]);
       } else if (type === "new") {
-        setText({});
         parsed = [...parsed, text];
         groupData.g_rules = JSON.stringify([...parsed]);
       }

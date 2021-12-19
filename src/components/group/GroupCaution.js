@@ -16,7 +16,7 @@ const GroupCaution = ({ groupData, ...props }) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [caution, setCaution] = useState();
+  const [text, setText] = useState();
   const [type, setType] = useState();
 
   const close = () => {
@@ -24,6 +24,7 @@ const GroupCaution = ({ groupData, ...props }) => {
   };
   const handleClick = () => {
     setType("new");
+    setText("");
     setIsModalOpen(!isModalOpen);
   };
 
@@ -51,11 +52,11 @@ const GroupCaution = ({ groupData, ...props }) => {
       let parsed = JSON.parse(groupData?.g_attentions);
 
       if (type === "edit") {
-        parsed[activeIndex] = caution;
+        parsed[activeIndex] = text;
 
         groupData.g_attentions = JSON.stringify([...parsed]);
       } else if (type === "new") {
-        parsed = [...parsed, caution];
+        parsed = [...parsed, text];
         groupData.g_attentions = JSON.stringify([...parsed]);
       }
       await API.graphql(
@@ -72,11 +73,11 @@ const GroupCaution = ({ groupData, ...props }) => {
           graphqlOperation(updateGroup, {
             input: {
               id: router.query.groupId,
-              g_attentions: JSON.stringify([caution]),
+              g_attentions: JSON.stringify([text]),
             },
           })
         );
-        groupData.g_attentions = JSON.stringify([caution]);
+        groupData.g_attentions = JSON.stringify([text]);
       } catch (ex) {
         console.log(ex);
       }
@@ -129,6 +130,7 @@ const GroupCaution = ({ groupData, ...props }) => {
                   handleSubmit={handleSubmit}
                   handleDelete={handleDelete}
                   setIsModalOpen={setIsModalOpen}
+                  setText={setText}
                 />
               );
             })}
@@ -173,8 +175,8 @@ const GroupCaution = ({ groupData, ...props }) => {
           groupData={groupData}
           type={type}
           handleSubmit={handleSubmit}
-          caution={caution}
-          setCaution={setCaution}
+          text={text}
+          setText={setText}
           close={close}
         />
       )}

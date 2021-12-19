@@ -15,6 +15,7 @@ import { getReturnData } from "../../../src/utility/Util";
 import GroupInformation from "../../../src/components/group/GroupInformation";
 import GroupPrivacy from "../../../src/components/group/GroupPrivacy";
 import GroupMemberConfig from "../../../src/components/group/GroupMemberConfig";
+import GroupRule from "../../../src/components/group/GroupRule";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -122,9 +123,14 @@ export async function getServerSideProps({ req, query }) {
 export default function Settings({ ssrData, ...props }) {
   const data = [
     {
-      id: 1,
+      id: 0,
       icon: <span className="icon-fi-rs-settings text-24px" />,
       title: "Группын тохиргоо",
+    },
+    {
+      id: 1,
+      icon: <span className="icon-fi-rs-rule text-24px" />,
+      title: "Дүрэм",
     },
     {
       id: 2,
@@ -140,7 +146,7 @@ export default function Settings({ ssrData, ...props }) {
   const router = useRouter();
   const [user, setUser] = useState();
   const { user: signedUser, isLogged } = useUser();
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const [groupData, setGroupData] = useState(ssrData.groupView);
   const [memberList, setMemberList] = useState(ssrData.memberList.items);
@@ -212,13 +218,13 @@ export default function Settings({ ssrData, ...props }) {
         <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
           <div
             style={{ marginTop: "24px" }}
-            className="settingsMenuPanel px-c3  bg-white rounded-lg"
+            className="settingsMenuPanel px-c3 bg-white rounded-lg py-[30px]"
           >
             {data.map(({ icon, title, id }) => (
               <div
                 key={id}
                 onClick={() => setActiveIndex(id)}
-                style={{ marginTop: "30px", marginBottom: "24px" }}
+                style={{ marginBottom: "20px" }}
                 className={`flex items-center cursor-pointer 
                                     ${
                                       id === activeIndex
@@ -235,11 +241,13 @@ export default function Settings({ ssrData, ...props }) {
             style={{ marginTop: "24px" }}
             className="md:ml-c11 sm:ml-0 mb-c11 bg-white rounded-lg settingsDiv"
           >
-            {activeIndex === 1 ? (
+            {activeIndex === 0 ? (
               <GroupInformation
                 categoryList={categoryList}
                 groupData={groupData}
               />
+            ) : activeIndex === 1 ? (
+              <GroupRule categoryList={categoryList} groupData={groupData} />
             ) : activeIndex === 2 ? (
               <GroupMemberConfig
                 adminModeratorList={adminModeratorList}

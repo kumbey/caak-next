@@ -7,6 +7,7 @@ import Image from "next/image";
 import FacebookIcon from "../../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../../public/assets/images/Twitter-Color.svg";
 import AnimatedCaakButton from "../../button/animatedCaakButton";
+import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { useRouter } from "next/router";
 
 const postShareMenu = [
@@ -43,6 +44,7 @@ const CardFooter = ({ totals, postId, reacted }) => {
   const [subscripTotal, setSubscripTotal] = useState();
   const router = useRouter();
   const [render, setRender] = useState(0);
+  const [pathName, setPathName] = useState("");
   const subscriptions = {};
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -52,6 +54,8 @@ const CardFooter = ({ totals, postId, reacted }) => {
   });
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleShare = () => {};
 
   const subscrip = () => {
     subscriptions.onChangedTotalsBy = API.graphql({
@@ -91,6 +95,16 @@ const CardFooter = ({ totals, postId, reacted }) => {
     }
     // eslint-disable-next-line
   }, [subscripTotal]);
+
+  useEffect(() => {
+    setPathName(window.location.origin);
+  }, []);
+
+  // useEffect(() => {
+  //   setPathName(window.location.origin);
+  //   setItem(post.items.items[activeIndex]);
+  //   // eslint-disable-next-line
+  // }, [activeIndex]);
 
   return (
     <>
@@ -155,18 +169,94 @@ const CardFooter = ({ totals, postId, reacted }) => {
               className="absolute right-0 bottom-12"
               open={isMenuOpen}
               onToggle={toggleMenu}
-              content={postShareMenu.map((data) => (
-                <div
-                  key={data.id}
-                  style={{ height: "36px" }}
-                  className="z-1 flex items-center cursor-pointer px-c6 hover:bg-caak-liquidnitrogen"
-                >
-                  {data.icon}
-                  <p className="text-14px text-caak-extraBlack ml-px-12">
-                    {data.title}
-                  </p>
+              content={
+                // postShareMenu.map((data) => (
+                //   <div
+                //     key={data.id}
+                //     style={{ height: "36px" }}
+                //     className="z-1 flex items-center cursor-pointer px-c6 hover:bg-caak-liquidnitrogen"
+                //     onClick={handleShare}
+                //   >
+                //     {data.icon}
+                //     <p className="text-14px text-caak-extraBlack ml-px-12">
+                //       {data.title}
+                //     </p>
+                //   </div>
+                // ))
+
+                <div className={"flex flex-row items-center"}>
+                  <div className={"flex flex-col  justify-start  z-1    "}>
+                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                      <FacebookShareButton
+                        url={`${pathName}/post/view/${postId}`}
+                      >
+                        <div
+                          className={
+                            "flex items-center rounded-full cursor-pointer h-[36px] "
+                          }
+                        >
+                          <Image
+                            width={22}
+                            height={22}
+                            alt={"facebook icon"}
+                            src={FacebookIcon}
+                          />
+                          <p className="text-14px text-caak-extraBlack ml-px-12">
+                            Facebook
+                          </p>
+                        </div>
+                      </FacebookShareButton>
+                    </div>
+                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                      <TwitterShareButton
+                        url={`${pathName}/post/view/${postId}`}
+                      >
+                        <div
+                          className={
+                            "flex items-center rounded-full cursor-pointer h-[36px]"
+                          }
+                        >
+                          <Image
+                            width={22}
+                            height={22}
+                            alt={"twitter icon"}
+                            src={TwitterIcon}
+                          />
+                          <p className="text-14px text-caak-extraBlack ml-px-12">
+                            Twitter
+                          </p>
+                        </div>
+                      </TwitterShareButton>
+                    </div>
+                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                      <div
+                        onClick={() => {
+                          if (typeof navigator !== "undefined")
+                            navigator.clipboard.writeText(
+                              `${pathName}/post/view/${postId}`
+                            );
+                        }}
+                        className={
+                          "flex items-center  rounded-full cursor-pointer h-[36px]"
+                        }
+                      >
+                        <div
+                          className={
+                            "flex justify-center items-center p-[5px] w-[22px] h-[22px] rounded-full bg-caak-red"
+                          }
+                        >
+                          <span
+                            className={"icon-fi-rs-link text-white text-[11px]"}
+                          />
+                        </div>
+                        <p className="text-14px text-caak-extraBlack ml-px-12">
+                          Линк хуулах
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              ))}
+              }
             />
           </div>
         </div>

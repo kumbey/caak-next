@@ -42,7 +42,7 @@ export default function NavBarMenu({ type }) {
             </a>
           </Link>
 
-          <Link href={`/user/${user.id}/Settings`}>
+          <Link href={`/user/${user.id}/settings`}>
             <a>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                 <div className={"flex justify-center items-center"}>
@@ -113,9 +113,7 @@ export default function NavBarMenu({ type }) {
         <>
           <Divider className={"my-2"} />
           <Link href={`/signInUp/out`} shallow={true}>
-            <div
-              className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
-            >
+            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
               <span
                 className={"icon-fi-rs-exit text-[18px] w-[20px] h-[18px] mr-2"}
               />

@@ -47,12 +47,12 @@ const Completed = () => {
             Таны сонирхлын дагуу танд зориулан <br /> фостуудыг бэлтэж байна.
           </p>
         </div>{" "}
-        <div className="my-[40px] px-[40px] ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between ">
+        <div className="my-[40px] px-[40px] ph:px-c2 text-white text-14px flex items-center justify-between ">
           <Button
             loading={loading}
             onClick={hide}
             className={
-              "disabled: rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
+              "disabled: rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
             }
           >
             {loading ? (

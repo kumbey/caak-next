@@ -172,6 +172,7 @@ const AddPost = () => {
       console.log(ex);
     }
   };
+
   return !permissionDenied ? (
     <>
       <Head>

@@ -125,7 +125,7 @@ export default function SocialLink() {
               </div>
               {currentIndex === index && showInput ? (
                 <form
-                  className={`flex w-full mt-[10px] items-center`}
+                  className={`flex w-full mt-[10px] items-end flex-col`}
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <Input
@@ -138,7 +138,7 @@ export default function SocialLink() {
                       "border mr-2 border-caak-titaniumwhite  bg-caak-liquidnitrogen"
                     }
                   />
-                  <div className="justify-end my-auto flex items-center pb-3">
+                  <div className=" my-auto flex items-center pb-3">
                     <Button
                       loading={loading}
                       onClick={() => handleCancel()}

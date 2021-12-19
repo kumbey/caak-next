@@ -581,6 +581,9 @@ const Dashboard = ({ ssrData }) => {
                           key={index}
                           type={"group"}
                           imageSrc={post?.items?.items[0]?.file}
+                          video={post?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
                           post={post}
                           className="ph:mb-4 sm:mb-4"
                         />

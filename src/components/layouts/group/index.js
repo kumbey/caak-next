@@ -364,7 +364,7 @@ const GroupLayout = ({
                   <>
                     <Button
                       loading={loading}
-                      className="h-[36px] w-[124px] rounded-lg text-caak-generalblack text-base font-medium font-inter"
+                      className="h-[36px] w-[124px] rounded-lg text-white text-base font-medium font-inter"
                       icon={<span className="icon-fi-rs-add-group-f  mr-1" />}
                       iconPosition="left"
                       onClick={handleFollow}

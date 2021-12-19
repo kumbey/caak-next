@@ -55,6 +55,10 @@
     padding-top: var(--topBarSize);
   }
 
+  .viewPostCarousel {
+    flex-basis: 448px;
+  }
+
   .viewPendingPost {
     max-width: 800px;
     min-width: 320px;
@@ -82,16 +86,16 @@
   .backdrop {
     z-index: 4;
     position: fixed;
-    overflow: auto;
+    overflow-y: auto;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
     min-height: 100vh;
-    min-width: max-content;
+    /*min-width: max-content;*/
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(6px);
-    padding-top: var(--topBarSize);
+    /*padding-top: var(--topBarSize);*/
   }
 
   .caak-button.shake {
@@ -136,6 +140,10 @@
 
     .viewPost {
       padding-bottom: var(--bottomTabSize);
+    }
+
+    .viewPostCarousel {
+      flex-basis: 50%;
     }
 
     .notificationMobile {
@@ -221,17 +229,15 @@
   }
 
   .auroGradient {
-    background: transparent
-      conic-gradient(
-        from 264deg at 50% 50%,
-        rgba(244, 173, 87, 1) 0%,
-        rgba(247, 88, 49, 1) 30.32%,
-        rgba(108, 65, 228, 1) 50.32%,
-        rgba(80, 121, 241, 1) 66.97%,
-        rgba(45, 235, 217, 1) 80.51%,
-        rgba(244, 173, 87, 1) 100%
-      )
-      0 0 no-repeat padding-box;
+    background: transparent conic-gradient(
+            from 264deg at 50% 50%,
+            rgba(244, 173, 87, 1) 0%,
+            rgba(247, 88, 49, 1) 30.32%,
+            rgba(108, 65, 228, 1) 50.32%,
+            rgba(80, 121, 241, 1) 66.97%,
+            rgba(45, 235, 217, 1) 80.51%,
+            rgba(244, 173, 87, 1) 100%
+    ) 0 0 no-repeat padding-box;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -281,8 +287,7 @@
   }
 
   .userProfilePostsCardGradient {
-    background: transparent
-      linear-gradient(180deg, #00000000 0%, #000000cc 100%) 0% 0% no-repeat;
+    background: transparent linear-gradient(180deg, #00000000 0%, #000000cc 100%) 0% 0% no-repeat;
   }
 
   .userProfileBadge {
@@ -301,7 +306,7 @@
   }
 
   .profileLayoutLeftSideBar {
-    height: calc(100vh - 280px);
+    /*height: calc(100vh - 280px);*/
     flex-basis: 232px;
     min-width: 232px;
     max-width: 232px;
@@ -320,9 +325,6 @@
     margin-bottom: 20px;
   }
 
-  /*.userPostsItem + .userPostsItem{*/
-  /*  margin-left: 20px;*/
-  /*}*/
   .feedCard {
     width: var(--card-width);
   }
@@ -337,15 +339,12 @@
   }
 
   .viewPostItem {
-    /*flex-shrink: 0;*/
     flex-grow: 1;
     display: flex;
     flex-direction: row;
-    flex-basis: 859px;
+    /*flex-basis: 859px;*/
     width: 100%;
     min-width: 320px;
-    /*margin-right: 20px;*/
-    /*margin-left: 20px;*/
     max-width: 859px;
   }
 
@@ -359,7 +358,6 @@
     max-width: 44px;
     min-width: 44px;
     flex-basis: 44px;
-    margin-right: 25px;
   }
 
   .feedLayoutContainer {
@@ -408,6 +406,30 @@
     .feedLayoutContainer {
       @apply px-0;
     }
+
+    .profileLayoutLeftSideBar {
+      flex-basis: initial;
+      max-width: initial;
+    }
+
+    .profileLayoutPosts {
+      flex-basis: initial;
+      max-width: initial;
+    }
+
+    .profileLayoutContainer {
+      padding-bottom: var(--bottomTabSize);
+    }
+
+    .userPostsContainer {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .rightSideBar {
+      display: none;
+    }
   }
 
   .rightSideBar {
@@ -442,9 +464,9 @@
 
   .settingsDiv {
     width: clamp(
-      var(--minSettingsPanelWidth),
-      100%,
-      var(--maxSettingsPanelWidth)
+            var(--minSettingsPanelWidth),
+            100%,
+            var(--maxSettingsPanelWidth)
     );
   }
 
@@ -474,6 +496,31 @@
   .commentFade {
     animation: highlight 1s;
   }
+
+
+  .popup_modal {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    z-index: 5;
+    overflow: auto;
+    position: fixed;
+    background: rgba(0, 0, 0, .8);
+
+  }
+
+  .popup_modal-content {
+    min-width: 320px;
+    width: clamp(320px, 100%, 450px);
+    background: #FFF;
+    max-width: 450px;
+    margin: 70px auto;
+    position: relative;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  }
+
 }
 
 .react-player {

@@ -238,9 +238,8 @@ const PostItem = ({ ssrData }) => {
           </div>
           {/*</div>*/}
           <div
-            style={{ flexBasis: "448px" }}
             className={
-              "relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll h-full"
+              "viewPostCarousel relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll h-full"
             }
           >
             <div className={"flex-1"}>

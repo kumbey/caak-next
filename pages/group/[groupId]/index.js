@@ -179,7 +179,12 @@ const Group = ({ ssrData }) => {
   }, []);
 
   return loaded ? (
-    <GroupLayout groupData={groupData} totalMember={totalMember} columns={2}>
+    <GroupLayout
+      hideSuggestedGroups
+      groupData={groupData}
+      totalMember={totalMember}
+      columns={2}
+    >
       <GroupSortButtons
         activeIndex={activeIndex}
         activeView={activeView}
@@ -195,6 +200,8 @@ const Group = ({ ssrData }) => {
       <InfiniteScroll
         dataLength={posts.length}
         next={fetchPosts}
+        refreshFunction={fetchPosts}
+        pullDownToRefresh={true}
         hasMore={true}
         loader={
           <Loader

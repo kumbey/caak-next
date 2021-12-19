@@ -19,7 +19,8 @@ const Tooltip = ({ children, content, className, style }) => {
       // When to show the tooltip
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
-      onTouchStart={showTip}
+      onTouchStart={hideTip}
+      onTouchEnd={hideTip}
     >
       {/* Wrapping */}
       {children}

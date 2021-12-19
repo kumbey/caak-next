@@ -17,10 +17,9 @@ const FollowerList = ({
   type,
   followedUsers,
   setFollowedUsers,
-  ...props
 }) => {
   const router = useRouter();
-  const { user, isLogged, user: signedUser } = useUser();
+  const { isLogged, user: signedUser } = useUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -51,8 +50,8 @@ const FollowerList = ({
   };
 
   return (
-    <div className="flex rounded-lg border border-caak-titaniumwhite  w-[430px] h-[108px] mb-[18px] ">
-      <div className="flex w-full mx-[20px] my-[20px] items-center justify-between">
+    <div className="flex rounded-lg border border-caak-titaniumwhite w-full mb-[18px] ">
+      <div className="flex flex-col sm:flex-row w-full mx-[20px] my-[20px] items-start justify-between">
         <div className="flex items-center">
           <div className={"w-[68px] h-[68px] mr-[12px] relative"}>
             <Image
@@ -95,7 +94,7 @@ const FollowerList = ({
             </div>
           </div>
         </div>
-        <div className="flex mr-[6px]">
+        <div className="flex self-end md:self-center mr-[6px]">
           <Button
             className="h-c13 w-28 text-14px font-inter font-medium text-caak-generalblack"
             icon={

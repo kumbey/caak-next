@@ -211,7 +211,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               : getGenderImage("default")
           }
         />
-        {user?.id === signedUser?.id && (
+        {isLogged && user?.id === signedUser?.id && (
           <Dropzone
             noKeyboard
             maxFiles={1}
@@ -223,7 +223,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               <div
                 {...getRootProps()}
                 className={
-                  "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[40px] bottom-[20px] rounded-square bg-caak-liquidnitrogen"
+                  "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[10px] md:right-[40px] bottom-[10px] md:bottom-[20px] rounded-square bg-caak-liquidnitrogen"
                 }
               >
                 {!uploadingCover ? (
@@ -256,10 +256,10 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           </Dropzone>
         )}
       </div>
-      <div className={"profileLayoutContainer relative z-[2]"}>
+      <div className={"profileLayoutContainer flex-col md:flex-row relative z-[2]"}>
         <div
           className={
-            "flex flex-row items-center h-[50px] bg-white rounded-[100px] py-[8px] px-[24px] bg-white absolute userProfileBadge"
+            "hidden md:flex flex-row items-center h-[50px] bg-white rounded-[100px] py-[8px] px-[24px] bg-white absolute userProfileBadge"
           }
         >
           <p className={"text-caak-extraBlack text-[15px] font-medium"}>
@@ -298,7 +298,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
         </div>
         <div className={"profileLayoutLeftSideBar relative"}>
           <div
-            className={"flex flex-col w-full items-center absolute top-[-74px]"}
+            className={"flex flex-col w-full items-center relative top-[-74px]"}
           >
             <div
               className={
@@ -592,7 +592,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 />
               </div>
             </div>
-            <div className={"h-screen overflow-y-auto"}>
+            <div className={"hidden md:block h-screen overflow-y-auto"}>
               <SideBarGroups
                 role={["ADMIN", "MODERATOR"]}
                 userId={user.id}
@@ -601,7 +601,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
             </div>
           </div>
         </div>
-        <div className={"profileLayoutPosts ml-[40px]"}>{children}</div>
+        <div className={"profileLayoutPosts relative top-[-74px] sm:top-0 mt-[10px] ml-0 md:ml-[40px]"}>{children}</div>
       </div>
     </div>
   ) : null;

@@ -14,7 +14,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <div className="relative flex items-center ">
-        <div className="flex w-[304px] mr-[18px] items-center">
+        <div className="flex flex-shrink-0 w-[240px] mr-[18px] items-center">
           <Link
             href={{
               pathname: `/post/view/${post.id}`,
@@ -58,7 +58,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
             </div>
           </div>
         </div>
-        <div className="flex w-[185px] mr-[50px]">
+        <div className="flex flex-shrink-0 w-[185px] mr-[50px]">
           {type === "group" ? (
             <Tooltip
               className={"-left-14"}
@@ -88,7 +88,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                   }}
                 >
                   <a>
-                    <div className=" text-13px font-inter font-normal text-caak-darkBlue">
+                    <div className=" text-[13px] font-inter font-normal text-caak-darkBlue">
                       @{post.user.nickname}
                     </div>
                   </a>

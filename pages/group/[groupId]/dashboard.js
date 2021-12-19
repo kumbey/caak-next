@@ -148,7 +148,7 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       icon: "icon-fi-rs-aura",
       number: groupData?.aura ? groupData.aura : 2300,
-      text: "Нийт аура",
+      text: "Аура",
       bgcolor: "",
       color: "",
     },
@@ -156,7 +156,7 @@ const Dashboard = ({ ssrData }) => {
       id: 1,
       icon: "icon-fi-rs-rock-f",
       number: totalMember,
-      text: "Гишүүдийн тоо",
+      text: "Гишүүд",
       bgcolor: "bg-caak-sweetfrosting",
       color: "text-caak-cookiedough",
     },
@@ -164,17 +164,9 @@ const Dashboard = ({ ssrData }) => {
       id: 2,
       icon: "icon-fi-rs-comment-f",
       number: totalPost,
-      text: "Постын тоо",
+      text: "Пост",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
-    },
-    {
-      id: 3,
-      icon: "icon-fi-rs-rock-f",
-      number: 1500,
-      text: "Саакын тоо",
-      bgcolor: "bg-caak-sweetfrosting",
-      color: "text-caak-cookiedough",
     },
   ];
 
@@ -418,7 +410,7 @@ const Dashboard = ({ ssrData }) => {
   }, []);
 
   return (
-    <div className="max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
+    <div className="max-w-[1240px] mx-auto flex flex-col justify-center px-[10px] lg:px-0 mt-[50px]">
       <div className="flex items-center mb-[40px]">
         <span
           onClick={() => router.back()}
@@ -440,7 +432,7 @@ const Dashboard = ({ ssrData }) => {
             alt="#"
           />
         </div>
-        <div className="text-2xl font-semibold text-caak-generalblack mr-1">
+        <div className="text-[18px] md:text-[22px] font-semibold text-caak-generalblack mr-1">
           @{groupData.name}
         </div>
         <span className="icon-fi-rs-verified" />
@@ -448,7 +440,7 @@ const Dashboard = ({ ssrData }) => {
       <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
         Дашбоард
       </div>
-      <div className="flex">
+      <div className="flex w-full md:flex-row">
         {stats.map((stat, index) => {
           return (
             <StatsItem
@@ -463,10 +455,10 @@ const Dashboard = ({ ssrData }) => {
           );
         })}
       </div>
-      <div className="flex mt-[25px] ">
+      <div className="flex flex-col xl:flex-row mt-[25px] ">
         <div
           className={
-            "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mr-[20px] "
+            "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mb-[20px] mr-0 md:mr-[20px] "
           }
         >
           <div className="flex flex-col mt-[28px] ml-[32px]">
@@ -499,10 +491,10 @@ const Dashboard = ({ ssrData }) => {
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
+          <div className="flex flex-wrap justify-between items-center">
+            <div className="flex items-center mb-[10px] sm:mb-0">
               <p
-                className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
+                className={`text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px]`}
               >
                 {dashMenu[activeIndex].name}
               </p>
@@ -512,41 +504,47 @@ const Dashboard = ({ ssrData }) => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                Хандалт
-              </p>
+            <div className="flex flex-wrap items-center justify-between">
+              <div className={"flex flex-row items-center mb-[10px] sm:mb-0"}>
+                <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                  Хандалт
+                </p>
 
-              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                <div className="flex items-center  mx-[12px] my-[10px]">
-                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                    Бүгд
-                  </p>
-                  <span className="icon-fi-rs-triangle text-14px" />
+                <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                  <div className="flex items-center  mx-[12px] my-[10px]">
+                    <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                      Бүгд
+                    </p>
+                    <span className="icon-fi-rs-triangle text-14px" />
+                  </div>
                 </div>
               </div>
-              <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                Огноо
-              </p>
 
-              <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                <div className="flex items-center  mx-[12px] my-[10px]">
-                  <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                    Сүүлд нэмэгдсэн
-                  </p>
-                  <span className="icon-fi-rs-triangle text-14px" />
+              <div className={"flex flex-row items-center"}>
+                <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                  Огноо
+                </p>
+
+                <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                  <div className="flex items-center  mx-[12px] my-[10px]">
+                    <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                      Сүүлд нэмэгдсэн
+                    </p>
+                    <span className="icon-fi-rs-triangle text-14px" />
+                  </div>
                 </div>
               </div>
+
             </div>
           </div>
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] pl-[30px] pr-[30px] pt-[16px] mb-[50px]"
+              "flex flex-col rounded-lg bg-caak-emptiness mt-[15px] px-[8px] lg:px-[30px] pt-[16px] mb-[50px]"
             }
           >
             {activeIndex === 0 ? (
               <div className="flex flex-col">
-                <div className="flex ">
+                <div className="hidden md:flex">
                   <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
                     Пост
                   </p>
@@ -626,11 +624,11 @@ const Dashboard = ({ ssrData }) => {
 
             {activeIndex === 2 ? (
               <div className="flex flex-col">
-                <div className="flex">
-                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[320px]">
+                <div className="hidden md:flex pb-[16px] mb-[16px] border-b-[1px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px] md:mr-[320px]">
                     Пост
                   </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[148px]">
+                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[100px] md:mr-[148px]">
                     Гишүүн
                   </p>
                   <p className="font-inter font-normal text-14px text-caak-generalblack mr-[46px]">
@@ -654,7 +652,7 @@ const Dashboard = ({ ssrData }) => {
                   }
                   endMessage={<h4>Nothing more to show</h4>}
                 >
-                  <Divider className={"mt-[16px]"} />
+                  {/*<Divider className={"hidden md:flex mt-[16px]"} />*/}
 
                   {pendingPosts.length > 0 &&
                     pendingPosts.map((pendingPost, index) => {

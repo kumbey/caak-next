@@ -6,6 +6,7 @@ import { useState } from "react";
 import ReactPlayer from "react-player";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import useDeviceDetect from "../../../hooks/useDeviceDetect";
 
 const UserPostsCard = ({ post }) => {
   const firstItem = post ? post.items.items[0] : null;
@@ -13,6 +14,8 @@ const UserPostsCard = ({ post }) => {
   const { user } = useUser();
   const [playing, setPlaying] = useState(false);
   const router = useRouter();
+  const { isMobile } = useDeviceDetect();
+
   return firstItem ? (
     <div
       className={"rounded-[4px] w-full h-[391px] userPostsItem relative group"}
@@ -51,9 +54,9 @@ const UserPostsCard = ({ post }) => {
         </div>
       )}
       <div
-        className={
-          "absolute bottom-0 rounded-b-[4px] w-full h-[161px] z-[1] userProfilePostsCardGradient opacity-0 group-hover:opacity-100 transition-all duration-300"
-        }
+        className={`absolute bottom-0 rounded-b-[4px] w-full h-[161px] z-[1] userProfilePostsCardGradient ${
+          isMobile ? "opacity-100" : "opacity-0"
+        } group-hover:opacity-100 transition-all duration-300`}
       />
 
       {firstItem.file.type.startsWith("video") ? (
@@ -68,9 +71,9 @@ const UserPostsCard = ({ post }) => {
       {post.user.id === user?.id && (
         <div
           onClick={() => router.push(`/post/edit/${post.id}`)}
-          className={
-            "cursor-pointer w-[28px] h-[28px] bg-white rounded-full z-[1] absolute top-[12px] left-[12px] p-[6px] hidden group-hover:block"
-          }
+          className={`cursor-pointer w-[28px] h-[28px] bg-white rounded-full z-[1] absolute top-[12px] left-[12px] p-[6px] ${
+            isMobile ? "block" : "hidden"
+          } group-hover:block`}
         >
           <div className={"flex items-center justify-center w-[16px] h-[16px]"}>
             <span className={"icon-fi-rs-edit-f text-black text-[14px]"} />
@@ -79,9 +82,9 @@ const UserPostsCard = ({ post }) => {
       )}
 
       <div
-        className={
-          "flex flex-col absolute bottom-[18px] pr-[18px] left-[18px] z-[2] opacity-0 group-hover:opacity-100 transition-all duration-300"
-        }
+        className={`flex flex-col absolute bottom-[18px] pr-[18px] left-[18px] z-[2] ${
+          isMobile ? "opacity-100" : "opacity-0"
+        } group-hover:opacity-100 transition-all duration-300`}
       >
         <Link href={`/post/view/${post.id}`}>
           <a>

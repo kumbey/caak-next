@@ -209,16 +209,16 @@ const Profile = ({ ssrData }) => {
   const ProfileLayout = useModalLayout({ layoutName: "userProfile" });
   return (
     <ProfileLayout user={fetchedUser}>
-      <div className={"pt-[42px]"}>
+      <div className={"pt-0 md:pt-[42px]"}>
         <FeedSortButtons
           iconSize={"text-[17px]"}
           iconContainerSize={"w-[20px] h-[20px]"}
           textClassname={"text-[15px] font-medium"}
-          containerClassname={"mb-[20px]"}
+          containerClassname={"mb-[20px] flex-wrap"}
           items={userProfileType}
           setSortType={setSortType}
           sortType={sortType}
-          direction={"row"}
+          direction={"col"}
         />
 
         <InfiniteScroll

@@ -5,9 +5,11 @@ import React from "react";
 import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const MobileSideMenu = ({ setOpen }) => {
-  const { user, isLogged } = useUser();
+  const { user, isLogged, logout } = useUser();
+  const router = useRouter();
 
   return (
     <div className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white">
@@ -38,11 +40,7 @@ const MobileSideMenu = ({ setOpen }) => {
                   {isLogged ? (
                     <img
                       alt={user.nickname}
-                      src={
-                        user.pic
-                          ? getFileUrl(user.pic)
-                          : Dummy.img("50x50")
-                      }
+                      src={user.pic ? getFileUrl(user.pic) : Dummy.img("50x50")}
                       className={"block w-c13 h-c13 object-cover rounded-full"}
                     />
                   ) : (
@@ -90,9 +88,7 @@ const MobileSideMenu = ({ setOpen }) => {
             className={" h-12 w-full"}
             skin={"secondary"}
             onClick={() =>
-              history.push({
-                pathname: "/logout",
-              })
+              logout()
             }
           >
             Гарах
@@ -106,10 +102,18 @@ const MobileSideMenu = ({ setOpen }) => {
             className={"mb-2 h-12"}
             skin={"secondary"}
             onClick={() =>
-              history.push({
-                pathname: "/login",
-                // state: { background: location },
-              })
+                router.push(
+                    {
+                        pathname: router.pathname,
+                        query: {
+                            ...router.query,
+                            signInUp: "signIn",
+                            isModal: true,
+                        },
+                    },
+                    `/signInUp/signIn`,
+                    { shallow: true }
+                )
             }
           >
             Нэвтрэх
@@ -119,10 +123,18 @@ const MobileSideMenu = ({ setOpen }) => {
             className={"h-12"}
             skin={"primary"}
             onClick={() =>
-              history.push({
-                pathname: "/register",
-                // state: { background: location },
-              })
+                router.push(
+                    {
+                        pathname: router.pathname,
+                        query: {
+                            ...router.query,
+                            signInUp: "signUp",
+                            isModal: true,
+                        },
+                    },
+                    `/signInUp/signUp`,
+                    { shallow: true }
+                )
             }
           >
             Бүртгүүлэх

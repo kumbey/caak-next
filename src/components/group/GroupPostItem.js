@@ -36,7 +36,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
             type === "user" ? "justify-between" : ""
           }`}
         >
-          <div className="flex w-[306px] items-center mr-[36px]">
+          <div className="flex w-[180px] md:w-[280px] lg:w-[306px] flex-shrink-0 items-center mr-[10px] md:mr-[36px]">
             <Link
               href={{
                 pathname: `/post/view/${post?.id}`,
@@ -81,7 +81,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
               </a>
             </Link>
           </div>
-          <div className="flex items-center w-[141px] mr-[69px]">
+          <div className="flex flex-shrink-0 items-center w-[141px] mr-[10px] md:mr-[69px]">
             {type === "group" ? (
               <>
                 <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>

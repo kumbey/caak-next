@@ -520,7 +520,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
 
             {/*Social addresses*/}
             <div className={"flex flex-col w-full"}>
-              {JSON.parse(user?.meta).facebook && (
+              {JSON.parse(user?.meta)?.facebook && (
                 <a
                   href={`https://www.facebook.com/${
                     JSON.parse(user?.meta).facebook
@@ -553,7 +553,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   </div>
                 </a>
               )}
-              {JSON.parse(user?.meta).twitter && (
+              {JSON.parse(user?.meta)?.twitter && (
                 <a
                   href={`https://www.twitter.com/${
                     JSON.parse(user?.meta).twitter
@@ -582,7 +582,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   </div>
                 </a>
               )}
-              {JSON.parse(user?.meta).instagram && (
+              {JSON.parse(user?.meta)?.instagram && (
                 <a
                   href={`https://www.instagram.com/${
                     JSON.parse(user?.meta).instagram
@@ -611,7 +611,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   </div>
                 </a>
               )}
-              {JSON.parse(user?.meta).tiktok && (
+              {JSON.parse(user?.meta)?.tiktok && (
                 <a
                   href={`https://www.tiktok.com/@${
                     JSON.parse(user?.meta).tiktok

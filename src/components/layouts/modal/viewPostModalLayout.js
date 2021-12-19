@@ -1,4 +1,3 @@
-import useScrollBlock from "../../../hooks/useScrollBlock";
 import { useEffect, useRef } from "react";
 import GroupInfoCard from "../../card/GroupInfoCard";
 import FooterSidebar from "../../footer/FooterSidebar";
@@ -6,9 +5,8 @@ import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import { useRouter } from "next/router";
 
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
-  const [blockScroll, allowScroll] = useScrollBlock();
+  // const [blockScroll, allowScroll] = useScrollBlock();
   const viewPostRef = useRef();
-
   // useEffect(() => {
   //   blockScroll();
   //   return () => allowScroll();
@@ -36,7 +34,11 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
           containerClassname ? containerClassname : ""
         }`}
       >
-        <div className={"viewPostLayoutContainer relative flex-col items-center  px-[20px] lg:items-start lg:px-0 lg:flex-row"}>
+        <div
+          className={
+            "viewPostLayoutContainer relative items-center sm:items-start md:px-[20px] lg:px-0"
+          }
+        >
           <div ref={viewPostRef} className={"viewPostItem"}>
             {children}
           </div>

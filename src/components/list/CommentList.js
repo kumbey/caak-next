@@ -69,7 +69,7 @@ const CommentList = ({
   return (
     <div className="w-full first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px]">
       <div className="relative flex items-center ">
-        <div className="flex w-[300px] items-center">
+        <div className="flex w-[200px] md:w-[300px] items-center">
           <Link
             href={{
               pathname: `/post/view/${comment?.post?.id}`,
@@ -102,7 +102,7 @@ const CommentList = ({
               </div>
             </a>
           </Link>
-          <div className="flex flex-col mt-1 w-[300px]  font-inter mr-[26px]">
+          <div className="flex flex-col mt-1 w-[300px] font-inter mr-[26px]">
             <Link
               href={{
                 pathname: `/post/view/${comment?.post?.id}`,
@@ -116,7 +116,7 @@ const CommentList = ({
             </Link>
           </div>
         </div>
-        <div className="flex items-center w-[300px]  mr-[10px]">
+        <div className="flex items-center w-[300px] min-w-[200px] mr-[10px]">
           <span className="icon-fi-rs-comment-f text-lg text-caak-aleutian mr-2" />
           <p className="truncate-3 text-caak-generalblack text-13px font-normal mx-2">
             {comment?.comment}

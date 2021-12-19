@@ -9,7 +9,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
   const router = useRouter();
 
   return (
-    <div className={"flex flex-col w-full mt-[40px]"}>
+    <div className={"flex flex-col w-full mb-[40px] last:mb-0"}>
       <div className={"relative pt-[4px]"}>
         {postItem.file.type.startsWith("video") ? (
           <div className={"w-full h-[438px]"}>

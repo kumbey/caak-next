@@ -62,9 +62,9 @@ const GroupSortButtons = ({
         </div>
         <div className="flex w-[80px] h-[36px] px-[5px] py-[4px] mb-[19px]  items-center justify-center bg-white rounded-lg">
           <div
-            className={`flex items-center w-full justify-between ${
+            className={`flex flex-nowrap items-center w-full justify-between ${
               direction === "column" ? "flex-col" : "flex-row"
-            } ${containerClassname ? containerClassname : ""}`}
+            }`}
           >
             {items2.map(({ icon, id }) => {
               return (

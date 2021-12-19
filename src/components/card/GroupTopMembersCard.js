@@ -45,7 +45,7 @@ const GroupTopMembersCard = ({ groupId, containerClassname }) => {
         </p>
       </div>
       {users.map((user, index) => {
-        return <GroupTopMemberCardItem user={user} key={index} />;
+        return <GroupTopMemberCardItem color={"border-caak-flashoforange bg-caak-flashoforange"} user={user} key={index} />;
       })}
       {/*<GroupTopMemberCardItem*/}
       {/*  color={"border-caak-flashoforange bg-caak-flashoforange"}*/}

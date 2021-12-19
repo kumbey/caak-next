@@ -4,7 +4,7 @@ import { useClickOutSide } from "../../utility/Util";
 import ViewPostMoreMenu from "./ViewPostMoreMenu";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 
-const ViewPostLeftReaction = ({ post, commentRef }) => {
+const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -14,7 +14,7 @@ const ViewPostLeftReaction = ({ post, commentRef }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className={"flex flex-col items-center"}>
+    <div className={`${containerClassname} flex flex-col items-center`}>
       <div className={"flex flex-col items-center mb-[22px]"}>
         <AnimatedCaakButton
           reactionType={"POST"}

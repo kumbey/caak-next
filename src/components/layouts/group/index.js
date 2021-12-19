@@ -31,6 +31,8 @@ import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
 import { useRouter } from "next/router";
 import Loader from "../../loader";
+import TopMembers from "../../Sidebar/TopMembers";
+import GroupTopMembersCard from "../../card/GroupTopMembersCard";
 
 const GroupLayout = ({
   children,
@@ -274,12 +276,12 @@ const GroupLayout = ({
         </div>
       </div>
       <div className="w-full flex items-center mb-[20px] relative">
-        <div className={"bg-white w-full h-[110px] relative"}>
-          <div className="absolute z-[1] px-[20px] left-1/2 -translate-x-1/2 top-[-58px] flex flex-row w-full bg-transparent max-w-[966px] mx-auto">
-            <div className="flex flex-row items-end w-full">
+        <div className={"bg-white w-full p-[10px] md:h-[110px] relative"}>
+          <div className="relative md:absolute z-[1] px-[2px] md:px-[20px] md:left-1/2 md:-translate-x-1/2 md:top-[-58px] flex flex-row w-full bg-white md:bg-transparent max-w-[966px] mx-auto">
+            <div className="flex flex-row items-start md:items-end w-full">
               <div
                 className={
-                  "w-[148px] h-[148px] flex-shrink-0 relative rounded-[34px] border-[6px] bg-white border-white"
+                  "w-[100px] h-[100px] md:w-[148px] md:h-[148px] flex-shrink-0 relative rounded-[34px] border-[6px] bg-white border-white"
                 }
               >
                 {uploadingProfile && (
@@ -336,14 +338,14 @@ const GroupLayout = ({
               </div>
               <div
                 className={
-                  "flex flex-row justify-between items-center w-full mb-[16px] ml-[24px]"
+                  "flex md:flex-row flex-col justify-between md:items-center w-full md:mb-[16px] ml-[24px]"
                 }
               >
-                <div className={"flex flex-col"}>
+                <div className={"flex flex-col mb-[10px] md:mb-0"}>
                   <div>
-                    <h1 className="text-24px font-bold">{groupData.name}</h1>
+                    <h1 className="text-[18px] md:text-24px font-bold">{groupData.name}</h1>
                   </div>
-                  <div className="flex">
+                  <div className="flex md:flex-row flex-col">
                     <div className="flex mr-[22px] items-center">
                       <span className={"icon-fi-rs-aura mr-1"} />
                       <p className="text-sm">2434 Аура</p>
@@ -358,7 +360,7 @@ const GroupLayout = ({
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-end">
+                <div className="flex flex-row justify-start md:justify-end">
                   <>
                     <Button
                       loading={loading}
@@ -410,8 +412,7 @@ const GroupLayout = ({
             groupData.role_on_group === "MODERATOR" ? (
               <GroupAdminPanel groupData={groupData} />
             ) : null}
-            <GroupInfo groupData={groupData} totalMember={totalMember} />
-
+            <GroupTopMembersCard groupId={groupData.id}/>
             <div className="mt-[16px]">
               {!hideSuggestedGroups && (
                 <SuggestedGroupsCard

@@ -14,6 +14,7 @@ const post0002 = /* GraphQL */ `{
     version
     user {
         firstname
+        id
         pic ${file0001}
     }
     items {

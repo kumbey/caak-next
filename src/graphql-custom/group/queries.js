@@ -21,6 +21,15 @@ export const getGroupView = /* GraphQL */ `
     }
 `;
 
+export const getGroupRules = /* GraphQL */ `
+  query getGroup($id: ID!) {
+    getGroup(id: $id) {
+      id
+      g_rules
+    }
+  }
+`;
+
 export const getGroupCard = /* GraphQL */ `
     query getGroup($id: ID!) {
         getGroup(id: $id) ${group0006}

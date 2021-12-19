@@ -229,15 +229,17 @@
   }
 
   .auroGradient {
-    background: transparent conic-gradient(
-            from 264deg at 50% 50%,
-            rgba(244, 173, 87, 1) 0%,
-            rgba(247, 88, 49, 1) 30.32%,
-            rgba(108, 65, 228, 1) 50.32%,
-            rgba(80, 121, 241, 1) 66.97%,
-            rgba(45, 235, 217, 1) 80.51%,
-            rgba(244, 173, 87, 1) 100%
-    ) 0 0 no-repeat padding-box;
+    background: transparent
+      conic-gradient(
+        from 264deg at 50% 50%,
+        rgba(244, 173, 87, 1) 0%,
+        rgba(247, 88, 49, 1) 30.32%,
+        rgba(108, 65, 228, 1) 50.32%,
+        rgba(80, 121, 241, 1) 66.97%,
+        rgba(45, 235, 217, 1) 80.51%,
+        rgba(244, 173, 87, 1) 100%
+      )
+      0 0 no-repeat padding-box;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -287,7 +289,8 @@
   }
 
   .userProfilePostsCardGradient {
-    background: transparent linear-gradient(180deg, #00000000 0%, #000000cc 100%) 0% 0% no-repeat;
+    background: transparent
+      linear-gradient(180deg, #00000000 0%, #000000cc 100%) 0% 0% no-repeat;
   }
 
   .userProfileBadge {
@@ -464,9 +467,9 @@
 
   .settingsDiv {
     width: clamp(
-            var(--minSettingsPanelWidth),
-            100%,
-            var(--maxSettingsPanelWidth)
+      var(--minSettingsPanelWidth),
+      100%,
+      var(--maxSettingsPanelWidth)
     );
   }
 
@@ -497,7 +500,6 @@
     animation: highlight 1s;
   }
 
-
   .popup_modal {
     top: 0;
     left: 0;
@@ -507,20 +509,40 @@
     z-index: 5;
     overflow: auto;
     position: fixed;
-    background: rgba(0, 0, 0, .8);
-
+    background: rgba(0, 0, 0, 0.8);
   }
 
   .popup_modal-content {
     min-width: 320px;
     width: clamp(320px, 100%, 450px);
-    background: #FFF;
+    background: #fff;
     max-width: 450px;
     margin: 70px auto;
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
 
+  .videoPlayerSeek {
+    -webkit-appearance: none;
+    background: white;
+    opacity: 1;
+  }
+
+  .videoPlayerSeek::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #FFF;
+    cursor: pointer;
+  }
+  .videoPlayerSeek::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    background: #fff; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
 }
 
 .react-player {

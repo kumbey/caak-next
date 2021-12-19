@@ -61,6 +61,7 @@ const UserPostsCard = ({ post }) => {
 
       {firstItem.file.type.startsWith("video") ? (
         <ItemsCounterCard
+          containerClassname={"right-[10px]"}
           duration={videoDuration}
           count={post.items.items.length}
         />

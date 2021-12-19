@@ -79,29 +79,27 @@ export const getPostByGroup = /* GraphQL */ `
 `;
 
 export const listPostOrderByReactions = /* GraphQL */ `
-    query ListPostOrderByReactions(
-        $search_key: String,
-#        $reactions: ModelIntKeyConditionInput,
-        $sortDirection: ModelSortDirection,
-        $filter: ModelPostTotalFilterInput,
-        $limit: Int,
-        $nextToken: String) {
-        listPostOrderByReactions(
-            search_key: $search_key,
-            sortDirection: $sortDirection,
-            filter: $filter,
-            limit: $limit,
-            nextToken: $nextToken
-        )
-        {
-            items {
-                post {
-                    id
-                    title
-                }
-            }
-            nextToken
-        }
-
+  query ListPostOrderByReactions(
+    $status: String
+#    $total_reactions: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostTotalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostOrderByReactions(
+      status: $status
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        post 
+        ${post0004}
+        
+      }
+      nextToken
     }
+  }
 `;

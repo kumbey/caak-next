@@ -6,10 +6,15 @@ import Storage from "@aws-amplify/storage";
 import awsExports from "../src/aws-exports";
 import NavBar from "../src/components/navigation/NavBar";
 import Modals from "../src/components/modals";
+import NProgress from 'nprogress'; //nprogress module
+import "nprogress/nprogress.css"; //styles of nprogress
+import Router from 'next/router';
 
 Amplify.configure({ ...awsExports, ssr: true });
 Storage.configure({ level: "public" });
-
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 function MyApp({ Component, pageProps }) {
   return (

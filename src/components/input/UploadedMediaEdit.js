@@ -365,6 +365,7 @@ const UploadedMediaEdit = ({
           >
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
+                durationIndicator={true}
                 smallIndicator
                 videoClassname={"object-contain rounded-[4px]"}
                 src={thumbnailImageHandler(post.items[activeIndex])}
@@ -414,15 +415,16 @@ const UploadedMediaEdit = ({
           </p>
         </div>
         <div className={"w-[265px]"}>
-          {selectedGroup && (selectedGroup.role_on_group === "ADMIN" ||
-            selectedGroup.role_on_group === "MODERATOR") && (
-            <div className={"flex flex-row justify-between mt-[16px]"}>
-              <p className={"text-[15px] text-caak-generalblack"}>
-                Саак контент
-              </p>
-              <Switch toggle={setCaakContent} active={caakContent} />
-            </div>
-          )}
+          {selectedGroup &&
+            (selectedGroup.role_on_group === "ADMIN" ||
+              selectedGroup.role_on_group === "MODERATOR") && (
+              <div className={"flex flex-row justify-between mt-[16px]"}>
+                <p className={"text-[15px] text-caak-generalblack"}>
+                  Саак контент
+                </p>
+                <Switch toggle={setCaakContent} active={caakContent} />
+              </div>
+            )}
           <div className={"flex flex-row justify-between mt-[16px]"}>
             <p className={"text-[15px] text-caak-generalblack"}>
               Сэтгэгдэл зөвшөөрөх

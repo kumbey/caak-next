@@ -48,7 +48,7 @@ const GroupTrendPostsCard = ({ groupId }) => {
   return !loading ? (
     <div className={"flex flex-col bg-white rounded-square p-[18px] mb-[16px]"}>
       <p className={"text-caak-extraBlack font-semibold text-[15px] mb-[18px]"}>
-        Тренд болж буй постууд
+        Тренд постууд
       </p>
       {posts.items.map((item, index) => {
         return <GroupTrendPostsCardItem item={item} key={index} />;

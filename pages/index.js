@@ -4,7 +4,10 @@ import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { checkUser, getReturnData } from "../src/utility/Util";
-import { getPostByStatus } from "../src/graphql-custom/post/queries";
+import {
+  getPostByStatus,
+  listPostOrderByReactions,
+} from "../src/graphql-custom/post/queries";
 import Loader from "../src/components/loader";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
@@ -29,7 +32,6 @@ export async function getServerSideProps({ req }) {
     user = null;
   }
 
-  //TODO Change sort by createdAt
   const resp = await API.graphql({
     query: getPostByStatus,
     variables: {
@@ -83,6 +85,7 @@ const Feed = ({ ssrData }) => {
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
   const [posts, setPosts] = useState(ssrData.posts.items);
+  const [trendingPosts, setTrendingPosts] = useState({});
   const { feedSortType, setFeedSortType } = useWrapper();
   const [nextPosts] = useListPager({
     query: getPostByStatus,
@@ -94,11 +97,19 @@ const Feed = ({ ssrData }) => {
     nextToken: ssrData.posts.nextToken,
   });
 
+  const [nextTrendingPosts] = useListPager({
+    query: listPostOrderByReactions,
+    variables: {
+      status: "POSTING",
+      limit: 6,
+    },
+    nextToken: trendingPosts.nextToken,
+  });
+
   const [loading, setLoading] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-
   //FORCE RENDER STATE
   const [render, setRender] = useState(0);
 
@@ -110,6 +121,27 @@ const Feed = ({ ssrData }) => {
         const resp = await nextPosts();
         if (resp) {
           setPosts((nextPosts) => [...nextPosts, ...resp]);
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+
+  const fetchTrendingPosts = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextTrendingPosts();
+        if (resp) {
+          setTrendingPosts((nextTrendingPosts) => ({
+            ...nextTrendingPosts,
+            items: [...nextTrendingPosts.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -158,6 +190,22 @@ const Feed = ({ ssrData }) => {
     });
   };
 
+  const fetchTrendPosts = async () => {
+    try {
+      let resp = await API.graphql({
+        query: listPostOrderByReactions,
+        variables: {
+          status: "POSTING",
+          limit: 6,
+        },
+      });
+      resp = getReturnData(resp);
+      setTrendingPosts(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
   useEffect(() => {
     if (subscripedPost) {
       const postIndex = posts.findIndex(
@@ -191,6 +239,15 @@ const Feed = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [user]);
 
+  useEffect(() => {
+    if (feedSortType === "TREND") {
+      if (typeof trendingPosts.items === "undefined") {
+        fetchTrendPosts();
+      }
+    }
+    // eslint-disable-next-line
+  }, [feedSortType]);
+
   return (
     <>
       <Head>
@@ -218,33 +275,77 @@ const Feed = ({ ssrData }) => {
                 containerClassname={"mb-[19px] justify-center"}
                 direction={"row"}
               />
-              <InfiniteScroll
-                dataLength={posts.length}
-                next={fetchPosts}
-                hasMore={true}
-                loader={
-                  <Loader
-                    containerClassName={"self-center w-full"}
-                    className={`bg-caak-primary ${
-                      loading ? "opacity-100" : "opacity-0"
-                    }`}
-                  />
-                }
-                endMessage={<h4>Nothing more to show</h4>}
-              >
-                {posts.map((data, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      video={data?.items?.items[0]?.file?.type?.startsWith(
-                        "video"
-                      )}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4"
+              {(feedSortType === "DEFAULT" || feedSortType === "CAAK") && (
+                <InfiniteScroll
+                  dataLength={posts.length}
+                  next={fetchPosts}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={"self-center w-full"}
+                      className={`bg-caak-primary ${
+                        loading ? "opacity-100" : "opacity-0"
+                      }`}
                     />
-                  );
-                })}
-              </InfiniteScroll>
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {posts.map((data, index) => {
+                    if (feedSortType === "CAAK" && data.owned === "CAAK") {
+                      return (
+                        <Card
+                          key={index}
+                          video={data?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={data}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    } else if (feedSortType === "DEFAULT") {
+                      return (
+                        <Card
+                          key={index}
+                          video={data?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={data}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    }
+                  })}
+                </InfiniteScroll>
+              )}
+              {feedSortType === "TREND" && trendingPosts.items?.length > 0 ? (
+                <InfiniteScroll
+                  dataLength={trendingPosts.items?.length}
+                  next={fetchTrendingPosts}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={"self-center w-full"}
+                      className={`bg-caak-primary ${
+                        loading ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  {trendingPosts.items.map((data, index) => {
+                    return (
+                      <Card
+                        key={index}
+                        video={data.post?.items?.items[0]?.file?.type?.startsWith(
+                          "video"
+                        )}
+                        post={data.post}
+                        className="ph:mb-4 sm:mb-4"
+                      />
+                    );
+                  })}
+                </InfiniteScroll>
+              ) : null}
             </FeedLayout>
           </div>
         </div>

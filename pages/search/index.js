@@ -10,6 +10,8 @@ import SearchCard from "../../src/components/card/SearchCard";
 import Loader from "../../src/components/loader";
 import SearchCardGroup from "../../src/components/card/SearchCardGroup";
 import { sortSearchResultByKeyword } from "../../src/utility/Util";
+import Head from "next/head";
+import Consts  from "../../src/utility/Consts";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -41,79 +43,93 @@ const Search = ({ ssrData }) => {
   }, [router.query]);
 
   return (
-    <div>
-      <div
-        className={
-          "flex flex-col items-center justify-center h-[110px] bg-white"
-        }
-      >
-        <h1 className={"text-22px font-medium text-caak-generalblack"}>
-          {router.query.q}
-        </h1>
-        <p
+    <>
+      <Head>
+        <title>
+          {router.query.q} Хайлтын илэрц - {Consts.siteMainTitle}
+        </title>
+      </Head>
+      <div>
+        <div
           className={
-            "text-14px tracking-[0.21px] leading-[16px] text-caak-aleutian"
+            "flex flex-col items-center justify-center h-[110px] bg-white"
           }
         >
-          Хайлтын илэрц
-        </p>
-      </div>
-      <div className={"site-container"}>
-        <SearchLayout search buttonType={searchResultType} hideAura columns={2}>
-          <FeedSortButtons
-            iconSize={"text-[16px]"}
-            containerClassname={"flex-wrap justify-start"}
-            items={searchResultType}
-            direction={"row"}
-            textClassname={"font-medium text-15px"}
-            setSortType={setSortType}
-            sortType={sortType}
-          />
-          <div className={"pt-[20px] w-full"}>
-            <div className={"flex flex-row flex-wrap w-full"}>
-              {!loading ? (
-                sortSearchResultByKeyword(searchResult, router.query.q).map(
-                  (item, index) => {
-                    if (item.type === "GROUP" && sortType === "GROUP") {
-                      return (
-                        <SearchCardGroup
-                          key={index}
-                          type={sortType}
-                          result={item}
-                        />
-                      );
-                    } else if (sortType === "DEFAULT") {
-                      return (
-                        <SearchCard
-                          type={item.type}
-                          key={index}
-                          result={item}
-                        />
-                      );
-                    } else if (sortType === "POST" && item.type === "POST") {
-                      return (
-                        <SearchCard
-                          type={item.type}
-                          key={index}
-                          result={item}
-                        />
-                      );
+          <h1 className={"text-22px font-medium text-caak-generalblack"}>
+            {router.query.q}
+          </h1>
+          <p
+            className={
+              "text-14px tracking-[0.21px] leading-[16px] text-caak-aleutian"
+            }
+          >
+            Хайлтын илэрц
+          </p>
+        </div>
+        <div className={"site-container"}>
+          <SearchLayout
+            search
+            buttonType={searchResultType}
+            hideAura
+            columns={2}
+          >
+            <FeedSortButtons
+              iconSize={"text-[16px]"}
+              containerClassname={"flex-wrap justify-start"}
+              items={searchResultType}
+              direction={"row"}
+              textClassname={"font-medium text-15px"}
+              setSortType={setSortType}
+              sortType={sortType}
+            />
+            <div className={"pt-[20px] w-full"}>
+              <div className={"flex flex-row flex-wrap w-full"}>
+                {!loading ? (
+                  sortSearchResultByKeyword(searchResult, router.query.q).map(
+                    (item, index) => {
+                      if (item.type === "GROUP" && sortType === "GROUP") {
+                        return (
+                          <SearchCardGroup
+                            key={index}
+                            type={sortType}
+                            result={item}
+                          />
+                        );
+                      } else if (sortType === "DEFAULT") {
+                        return (
+                          <SearchCard
+                            type={item.type}
+                            key={index}
+                            result={item}
+                          />
+                        );
+                      } else if (sortType === "POST" && item.type === "POST") {
+                        return (
+                          <SearchCard
+                            type={item.type}
+                            key={index}
+                            result={item}
+                          />
+                        );
+                      }
                     }
-                  }
-                )
-              ) : (
-                <div className={"flex justify-center items-center self-center"}>
-                  <Loader
-                    containerClassName={"self-center"}
-                    className={`bg-caak-primary`}
-                  />
-                </div>
-              )}
+                  )
+                ) : (
+                  <div
+                    className={"flex justify-center items-center self-center"}
+                  >
+                    <Loader
+                      containerClassName={"self-center"}
+                      className={`bg-caak-primary`}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </SearchLayout>
+          </SearchLayout>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

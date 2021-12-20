@@ -26,6 +26,7 @@ import { useUser } from "../../../../../src/context/userContext";
 import ProfileHoverCard from "../../../../../src/components/card/ProfileHoverCard";
 import Tooltip from "../../../../../src/components/tooltip/Tooltip";
 import Head from "next/head";
+import Consts from "../../../../../src/utility/Consts";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -180,7 +181,9 @@ const PostItem = ({ ssrData }) => {
   return (
     <>
       <Head>
-        <title>{item.title}</title>
+        <title>
+          {item.title} - {Consts.siteMainTitle}
+        </title>
         <meta name="description" content={post.description} />
 
         <meta
@@ -191,19 +194,6 @@ const PostItem = ({ ssrData }) => {
         <meta property="og:title" content={item.title} />
         <meta property="og:description" content={post.description} />
         <meta property="og:image" content={getFileUrl(item.file)} />
-
-        {/*<meta name="twitter:card" content="summary_large_image" />*/}
-        {/*<meta*/}
-        {/*  property="twitter:domain"*/}
-        {/*  content="occupied-programming-fbi-bacteria.trycloudflare.com"*/}
-        {/*/>*/}
-        {/*<meta*/}
-        {/*  property="twitter:url"*/}
-        {/*  content={}*/}
-        {/*/>*/}
-        {/*<meta name="twitter:title" content="123" />*/}
-        {/*<meta name="twitter:description" content="adsadadsa" />*/}
-        {/*<meta name="twitter:image" content="" />*/}
       </Head>
       {!loading ? (
         <div
@@ -384,28 +374,30 @@ const PostItem = ({ ssrData }) => {
                     post={post}
                   />
                 </div>
-                <div
-                  className={"flex-1 w-full bg-caak-liquidnitrogen px-[24px]"}
-                >
+                {post.status === "CONFIRMED" && (
                   <div
-                    className={
-                      "relative flex flex-col justify-between bg-caak-whitesmoke"
-                    }
+                    className={"flex-1 w-full bg-caak-liquidnitrogen px-[24px]"}
                   >
-                    <CommentCardNew
-                      addCommentRef={addCommentRef}
-                      commentInputValue={commentInputValue}
-                      setCommentInputValue={setCommentInputValue}
-                      initialComments={post.items.items[activeIndex].comments}
-                      reply={reply}
-                      setReply={setReply}
-                      setup={{
-                        id: item.id,
-                        type: "POST_ITEM",
-                      }}
-                    />
+                    <div
+                      className={
+                        "relative flex flex-col justify-between bg-caak-whitesmoke"
+                      }
+                    >
+                      <CommentCardNew
+                        addCommentRef={addCommentRef}
+                        commentInputValue={commentInputValue}
+                        setCommentInputValue={setCommentInputValue}
+                        initialComments={post.items.items[activeIndex].comments}
+                        reply={reply}
+                        setReply={setReply}
+                        setup={{
+                          id: item.id,
+                          type: "POST_ITEM",
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 

@@ -11,7 +11,7 @@ import {
 import { API } from "aws-amplify";
 import Loader from "../loader";
 import { useRouter } from "next/router";
-import {searchApi} from "../../apis/search";
+import { searchApi } from "../../apis/search";
 
 const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
@@ -23,8 +23,8 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const debouncedSearchResult = useDebounce(inputValue, 300);
 
   const searchQuery = async () => {
-    const resp = await searchApi({ API, searchQuery: inputValue, limit: 2 });
-    setSearchResult(resp)
+    const resp = await searchApi({ API, searchQuery: inputValue, limit: 6 });
+    setSearchResult(resp);
   };
 
   useEffect(() => {
@@ -62,44 +62,52 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
             <div className={`text-15px text-caak-darkBlue pl-[6px]`}>
               Сүүлд хийгдсэн хайлтууд
             </div>
-            <div className={"pb-[12px]"}>
-              <SearchedGroupItem
-                setIsSearchBarOpen={setIsSearchBarOpen}
-                name={"Кино сонирхогчид"}
-                clear
-              />
-              <SearchedGroupItem
-                setIsSearchBarOpen={setIsSearchBarOpen}
-                name={"UX/UI сонирхогчид"}
-                clear
-              />
-            </div>
+            {/*<div className={"pb-[12px]"}>*/}
+            {/*  <SearchedGroupItem*/}
+            {/*    setIsSearchBarOpen={setIsSearchBarOpen}*/}
+            {/*    name={"Кино сонирхогчид"}*/}
+            {/*    clear*/}
+            {/*  />*/}
+            {/*  <SearchedGroupItem*/}
+            {/*    setIsSearchBarOpen={setIsSearchBarOpen}*/}
+            {/*    name={"UX/UI сонирхогчид"}*/}
+            {/*    clear*/}
+            {/*  />*/}
+            {/*</div>*/}
           </div>
         )}
 
         {!isSearching ? (
           <div>
-            {sortSearchResultByKeyword(searchResult, inputValue)?.map((item, index) => {
-              if (item.nickname) {
-                return (
-                  <SearchedGroupItem
-                    key={index}
-                    setIsSearchBarOpen={setIsSearchBarOpen}
-                    name={item.nickname}
-                    image={generateFileUrl(item.pic)}
-                  />
-                );
-              } else {
-                return (
-                  <SearchedGroupItem
-                    key={index}
-                    setIsSearchBarOpen={setIsSearchBarOpen}
-                    name={item.name ? item.name : item.title}
-                    image={generateFileUrl(item.profile)}
-                  />
-                );
+            {sortSearchResultByKeyword(searchResult, inputValue)?.map(
+              (item, index) => {
+                if (item.type === "USER") {
+                  return (
+                    <SearchedGroupItem
+                      type={item.type}
+                      id={item.id}
+                      key={index}
+                      setIsSearchBarOpen={setIsSearchBarOpen}
+                      name={item.nickname}
+                      image={generateFileUrl(item.pic)}
+                      item={item}
+                    />
+                  );
+                } else {
+                  return (
+                    <SearchedGroupItem
+                      type={item.type}
+                      id={item.id}
+                      key={index}
+                      setIsSearchBarOpen={setIsSearchBarOpen}
+                      name={item.name ? item.name : item.title}
+                      image={generateFileUrl(item.profile)}
+                      item={item}
+                    />
+                  );
+                }
               }
-            })}
+            )}
             <div
               className={
                 "flex flex-row items-center px-[6px] pt-[14px] border-t border-caak-liquidnitrogen"

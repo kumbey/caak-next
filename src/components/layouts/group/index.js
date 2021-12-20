@@ -31,8 +31,6 @@ import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
 import { useRouter } from "next/router";
 import Loader from "../../loader";
-import TopMembers from "../../Sidebar/TopMembers";
-import GroupTopMembersCard from "../../card/GroupTopMembersCard";
 
 const GroupLayout = ({
   children,
@@ -422,8 +420,8 @@ const GroupLayout = ({
                 />
               )}
             </div>
-            <GroupRules />
-            <GroupBadge />
+            <GroupRules groupId={groupData.id}/>
+            {/*<GroupBadge />*/}
             <FooterSidebar
               containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}
             />

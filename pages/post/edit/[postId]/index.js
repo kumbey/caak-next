@@ -12,7 +12,6 @@ import UploadedMediaEdit from "../../../../src/components/input/UploadedMediaEdi
 import DropZoneWithCaption from "../../../../src/components/input/DropZoneWithCaption";
 import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
-import { getUser } from "../../../../src/graphql-custom/user/queries";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });

@@ -17,6 +17,7 @@ import useAddPostLayout from "../../../src/hooks/useAddPostLayout";
 import Button from "../../../src/components/button";
 import WithAuth from "../../../src/middleware/auth/WithAuth";
 import Head from "next/head";
+import Consts from "../../../src/utility/Consts";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -159,13 +160,13 @@ const AddPost = () => {
       setLoading(false);
 
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 1,
-            },
+        {
+          pathname: `/user/${user.id}/dashboard`,
+          query: {
+            activeIndex: 1,
           },
-          `/user/${user.id}/dashboard`
+        },
+        `/user/${user.id}/dashboard`
       );
     } catch (ex) {
       setLoading(false);
@@ -176,7 +177,7 @@ const AddPost = () => {
   return !permissionDenied ? (
     <>
       <Head>
-        <title>Шинэ пост нэмэх</title>
+        <title>Шинэ пост нэмэх - {Consts.siteMainTitle}</title>
       </Head>
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>

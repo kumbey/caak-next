@@ -14,6 +14,8 @@ import {
   useClickOutSide,
 } from "../../utility/Util";
 import PostMoreMenu from "../card/PostMoreMenu";
+import Consts from "../../utility/Consts";
+import Video from "../video";
 
 const postShareMenu = [
   {
@@ -45,7 +47,7 @@ const postShareMenu = [
   },
 ];
 
-const List = ({ video, post, imageSrc }) => {
+const List = ({ post, imageSrc }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
 
@@ -67,30 +69,43 @@ const List = ({ video, post, imageSrc }) => {
       <div className="flex m-[15px] w-full justify-between">
         <div className={"flex"}>
           <div className=" mr-[12px]">
-            <Link
-              href={{
-                pathname: `/post/view/${post.id}`,
-              }}
-            >
-              <a>
-                <div className={"w-[102px] h-[76px] relative"}>
-                  <Image
-                    className=" bg-white rounded-[4px]"
-                    objectFit={"cover"}
-                    src={
-                      !imageSrc
-                        ? getGenderImage("default")
-                        : getFileUrl(imageSrc)
-                    }
-                    width={102}
-                    height={76}
-                    layout="responsive"
-                    //   objectFit={"cover"}
-                    alt="#"
-                  />
-                </div>
-              </a>
-            </Link>
+            {Consts.regexImage.test(imageSrc.type) ? (
+              <Link
+                href={{
+                  pathname: `/post/view/${post.id}`,
+                }}
+              >
+                <a>
+                  <div className={"w-[102px] h-[76px] relative"}>
+                    <Image
+                      className=" bg-white rounded-[4px]"
+                      objectFit={"cover"}
+                      src={
+                        !imageSrc
+                          ? getGenderImage("default")
+                          : getFileUrl(imageSrc)
+                      }
+                      width={102}
+                      height={76}
+                      layout="responsive"
+                      //   objectFit={"cover"}
+                      alt="#"
+                    />
+                  </div>
+                </a>
+              </Link>
+            ) : (
+              <div className={"w-[102px] h-[76px] relative"}>
+                <Video
+                  containerClassname={"rounded-[4px]"}
+                  videoClassname={"rounded-[4px] object-contain"}
+                  hideControls
+                  thumbnailIcon
+                  postId={post.id}
+                  src={getFileUrl(imageSrc)}
+                />
+              </div>
+            )}
           </div>
           <div className="flex flex-col justify-between">
             <Link

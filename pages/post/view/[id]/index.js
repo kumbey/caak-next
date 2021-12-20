@@ -17,6 +17,7 @@ import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
 import Link from "next/link";
 import Head from "next/head";
+import Consts from "../../../../src/utility/Consts";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -102,7 +103,9 @@ const Post = ({ ssrData }) => {
             property="og:image"
             content={getFileUrl(post.items.items[0].file)}
           />
-          <title>{post.title}</title>
+          <title>
+            {post.title} - {Consts.siteMainTitle}
+          </title>
         </Head>
         {post.status === "CONFIRMED" && (
           <div

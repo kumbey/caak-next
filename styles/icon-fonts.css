@@ -100,11 +100,11 @@
 .icon-fi-rs-edit-f:before {
     content: "\e997";
 }
-.icon-fi-rs-facebook .path1:before {
+.icon-fi-rs-facebook.path1:before {
     content: "\e998";
     color: rgb(255, 255, 255);
 }
-.icon-fi-rs-facebook .path2:before {
+.icon-fi-rs-facebook.path2:before {
     content: "\e999";
     margin-left: -1em;
     color: rgb(33, 41, 60);

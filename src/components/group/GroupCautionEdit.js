@@ -30,9 +30,7 @@ const GroupCautionEdit = ({
   const handleChange = (e) => {
     setCaution({ ...caution, [e.target.name]: e.target.value });
   };
-  useEffect(() => {
-    console.log(type);
-  }, []);
+
   return (
     <div className="popup_modal ">
       <div className="popup_modal-content rounded-xl">

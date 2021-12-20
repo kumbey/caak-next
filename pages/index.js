@@ -3,7 +3,7 @@ import Card from "../src/components/card/FeedCard";
 import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { checkUser, getReturnData } from "../src/utility/Util";
+import { getReturnData } from "../src/utility/Util";
 import {
   getPostByStatus,
   listPostOrderByReactions,
@@ -21,6 +21,7 @@ import { listGroups } from "../src/graphql/queries";
 import { useWrapper } from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
+import Consts from "../src/utility/Consts";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -94,6 +95,7 @@ const Feed = ({ ssrData }) => {
       status: "CONFIRMED",
       limit: 6,
     },
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.posts.nextToken,
   });
 
@@ -103,6 +105,7 @@ const Feed = ({ ssrData }) => {
       status: "POSTING",
       limit: 6,
     },
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: trendingPosts.nextToken,
   });
 
@@ -155,7 +158,7 @@ const Feed = ({ ssrData }) => {
   const subscrip = () => {
     let authMode = "AWS_IAM";
 
-    if (checkUser(user)) {
+    if (isLogged) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
 
@@ -198,6 +201,7 @@ const Feed = ({ ssrData }) => {
           status: "POSTING",
           limit: 6,
         },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
       setTrendingPosts(resp);
@@ -251,7 +255,7 @@ const Feed = ({ ssrData }) => {
   return (
     <>
       <Head>
-        <title>Нүүр</title>
+        <title>Нүүр - {Consts.siteMainTitle}</title>
       </Head>
       <div id={"feed"} className={"site-container"}>
         <div className={`px-0 w-full relative`}>

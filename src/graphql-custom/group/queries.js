@@ -6,6 +6,7 @@ import group0005 from "./fields/group0005";
 import group0006 from "./fields/group0006";
 import group0007 from "./fields/group0007";
 import group0009 from "./fields/group0009";
+import file0001 from "../file/fields/file0001";
 
 export const listGroupsForAddPost = /* GraphQL */ `
     query listGroups($filter: ModelGroupFilterInput, $limit: Int, $nextToken: String) {
@@ -30,6 +31,15 @@ export const getGroupRules = /* GraphQL */ `
   }
 `;
 
+export const getGroupAttentions = /* GraphQL */ `
+  query getGroup($id: ID!) {
+    getGroup(id: $id) {
+      id
+      g_attentions
+    }
+  }
+`;
+
 export const getGroupCard = /* GraphQL */ `
     query getGroup($id: ID!) {
         getGroup(id: $id) ${group0006}
@@ -48,8 +58,8 @@ export const getGroupUsersByGroup = /* GraphQL */ `
         $filter: ModelGroupUsersFilterInput,
         $limit: Int,
         $nextToken: String
-        ) {
-        getGroupUsersByGroup(    
+    ) {
+        getGroupUsersByGroup(
             group_id: $group_id,
             filter: $filter,
             limit: $limit,
@@ -65,7 +75,7 @@ export const listGroupUsersByGroup = /* GraphQL */ `
         $filter: ModelGroupUsersFilterInput,
         $limit: Int,
         $nextToken: String
-        ) {
+    ) {
         listGroupUsersByGroup(
             group_id: $group_id,
             role: $role,
@@ -80,7 +90,7 @@ export const listGroupUsersByGroup = /* GraphQL */ `
 export const listGroupsSearch = /* GraphQL */ `
     query listGroups($filter: ModelGroupFilterInput, $limit: Int, $nextToken: String) {
         listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
-            items ${group0005}
+            items ${group0005} nextToken
         }
     }
 `;
@@ -88,5 +98,15 @@ export const listGroupsSearch = /* GraphQL */ `
 export const getGroupTotal = /* GraphQL */ `
     query GetGroupTotal($group_id: ID!) {
         getGroupTotal(group_id: $group_id) ${group0007}
+    }
+`;
+
+export const getGroupSearchView = /* GraphQL */ `
+    query getGroup($id: ID!) {
+        getGroup(id: $id) {
+            id
+            name
+            profile ${file0001}
+        }
     }
 `;

@@ -47,7 +47,7 @@ const GroupRule = ({ groupData, ...props }) => {
   };
 
   const handleSubmit = async () => {
-    if (groupData.g_rules !== "") {
+    if (groupData.g_rules) {
       let parsed = JSON.parse(groupData?.g_rules);
 
       if (type === "edit") {
@@ -117,7 +117,7 @@ const GroupRule = ({ groupData, ...props }) => {
               Нэмэх
             </Button>
           </div>
-          {groupData?.g_rules !== "" &&
+          {groupData?.g_rules &&
             JSON.parse(groupData?.g_rules).map((rule, index) => {
               return (
                 <GroupRuleItem

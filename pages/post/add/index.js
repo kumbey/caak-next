@@ -166,7 +166,8 @@ const AddPost = () => {
             activeIndex: 1,
           },
         },
-        `/user/${user.id}/dashboard`
+        `/user/${user.id}/dashboard`,
+          {shallow: true}
       );
     } catch (ex) {
       setLoading(false);

@@ -115,7 +115,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
         />
       </div>
       <div className={"flex flex-row px-[18px] absolute top-[24px] items-end"}>
-        <Link href={`/group/${group.id}`}>
+        <Link shallow href={`/group/${group.id}`}>
           <a>
             <div
               className={
@@ -134,7 +134,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           </a>
         </Link>
         <div className={"ml-[11px] flex items-center pb-[10px]"}>
-          <Link href={`/group/${group.id}`}>
+          <Link shallow href={`/group/${group.id}`}>
             <a>
               <p
                 className={

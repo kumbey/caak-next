@@ -30,6 +30,7 @@ const MobileSideMenu = ({ setOpen }) => {
         {isLogged && (
           <div className={"relative flex flex-row items-center"}>
             <Link
+              shallow
               href={
                 isLogged ? `/user/${user.id}/profile` : "/login"
                 // state: { background: location },
@@ -54,6 +55,7 @@ const MobileSideMenu = ({ setOpen }) => {
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
                   <Link
+                    shallow
                     href={{
                       pathname: `/user/${user.id}/profile`,
                     }}
@@ -87,9 +89,7 @@ const MobileSideMenu = ({ setOpen }) => {
             round
             className={" h-12 w-full"}
             skin={"secondary"}
-            onClick={() =>
-              logout()
-            }
+            onClick={() => logout()}
           >
             Гарах
           </Button>
@@ -102,18 +102,18 @@ const MobileSideMenu = ({ setOpen }) => {
             className={"mb-2 h-12"}
             skin={"secondary"}
             onClick={() =>
-                router.push(
-                    {
-                        pathname: router.pathname,
-                        query: {
-                            ...router.query,
-                            signInUp: "signIn",
-                            isModal: true,
-                        },
-                    },
-                    `/signInUp/signIn`,
-                    { shallow: true }
-                )
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    signInUp: "signIn",
+                    isModal: true,
+                  },
+                },
+                `/signInUp/signIn`,
+                { shallow: true }
+              )
             }
           >
             Нэвтрэх
@@ -123,18 +123,18 @@ const MobileSideMenu = ({ setOpen }) => {
             className={"h-12"}
             skin={"primary"}
             onClick={() =>
-                router.push(
-                    {
-                        pathname: router.pathname,
-                        query: {
-                            ...router.query,
-                            signInUp: "signUp",
-                            isModal: true,
-                        },
-                    },
-                    `/signInUp/signUp`,
-                    { shallow: true }
-                )
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    signInUp: "signUp",
+                    isModal: true,
+                  },
+                },
+                `/signInUp/signUp`,
+                { shallow: true }
+              )
             }
           >
             Бүртгүүлэх

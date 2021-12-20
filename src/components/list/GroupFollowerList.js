@@ -66,6 +66,7 @@ const GroupFollowerList = ({
               content={<ProfileHoverCard userId={followedUser.user_id} />}
             >
               <Link
+                shallow
                 href={{
                   pathname: `/user/${followedUser.user_id}/profile`,
                 }}

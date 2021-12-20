@@ -7,7 +7,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
   const firstItem = item.items.items[0];
   return (
     <div className={"flex flex-row mb-[21px]"}>
-      <Link href={`/post/view/${item.id}`}>
+      <Link shallow href={`/post/view/${item.id}`}>
         <a>
           <div
             className={
@@ -39,7 +39,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
       </Link>
 
       <div className={"flex flex-col ml-[10px] justify-between"}>
-        <Link href={`/post/view/${item.id}`}>
+        <Link shallow href={`/post/view/${item.id}`}>
           <a>
             <p
               className={

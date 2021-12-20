@@ -52,7 +52,7 @@ const CardHeader = ({
           <div className="flex flex-col justify-between ml-[8px] h-full">
             <div className={"flex flex-row items-center"}>
               <span className="mr-1 font-semibold cursor-pointer text-generalblack text-14px leading-[16px] tracking-[0.21px]">
-                <Link href={`/group/${post.group.id}`}>
+                <Link shallow href={`/group/${post.group.id}`}>
                   <a>{post.group.name}</a>
                 </Link>
               </span>
@@ -79,6 +79,7 @@ const CardHeader = ({
               >
                 <div className={"flex flex-row items-center"}>
                   <Link
+                    shallow
                     href={{
                       pathname: `/user/${post.user.id}/profile`,
                     }}
@@ -168,7 +169,7 @@ const CardHeader = ({
               : "text-15px leading-[18px] tracking-[0.23px]"
           }`}
         >
-          <Link href={`/post/view/${post.id}`}>
+          <Link shallow href={`/post/view/${post.id}`}>
             <a>{post.title}</a>
           </Link>
         </div>

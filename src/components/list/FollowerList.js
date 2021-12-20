@@ -75,6 +75,7 @@ const FollowerList = ({
               }
             >
               <Link
+                shallow
                 href={{
                   pathname: `/user/${followedUser.followed_user_id}/profile`,
                 }}

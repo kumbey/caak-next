@@ -29,10 +29,12 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
 
   useEffect(() => {
     if (debouncedSearchResult) {
-      setIsSearching(true);
-      searchQuery().then(() => {
-        setIsSearching(false);
-      });
+      if (!inputValue.startsWith(" ")) {
+        setIsSearching(true);
+        searchQuery().then(() => {
+          setIsSearching(false);
+        });
+      }
     } else {
       setSearchResult([]);
       setIsSearching(false);
@@ -57,55 +59,38 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
           !isSearchBarOpen ? "hidden" : null
         } w-full bg-white overflow-y-auto max-h-[400px] pt-[60px] absolute top-0 rounded-square shadow-searchInput p-[14px] min-h-[100px]`}
       >
-        {!inputValue && (
-          <div>
-            <div className={`text-15px text-caak-darkBlue pl-[6px]`}>
-              Сүүлд хийгдсэн хайлтууд
-            </div>
-            {/*<div className={"pb-[12px]"}>*/}
-            {/*  <SearchedGroupItem*/}
-            {/*    setIsSearchBarOpen={setIsSearchBarOpen}*/}
-            {/*    name={"Кино сонирхогчид"}*/}
-            {/*    clear*/}
-            {/*  />*/}
-            {/*  <SearchedGroupItem*/}
-            {/*    setIsSearchBarOpen={setIsSearchBarOpen}*/}
-            {/*    name={"UX/UI сонирхогчид"}*/}
-            {/*    clear*/}
-            {/*  />*/}
-            {/*</div>*/}
-          </div>
-        )}
+        {/*{!inputValue && (*/}
+        {/*  <div>*/}
+        {/*    <div className={`text-15px text-caak-darkBlue pl-[6px]`}>*/}
+        {/*      Сүүлд хийгдсэн хайлтууд*/}
+        {/*    </div>*/}
+        {/*    <div className={"pb-[12px]"}>*/}
+        {/*      <SearchedGroupItem*/}
+        {/*        setIsSearchBarOpen={setIsSearchBarOpen}*/}
+        {/*        name={"Кино сонирхогчид"}*/}
+        {/*        clear*/}
+        {/*      />*/}
+        {/*      <SearchedGroupItem*/}
+        {/*        setIsSearchBarOpen={setIsSearchBarOpen}*/}
+        {/*        name={"UX/UI сонирхогчид"}*/}
+        {/*        clear*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*)}*/}
 
         {!isSearching ? (
           <div>
             {sortSearchResultByKeyword(searchResult, inputValue)?.map(
               (item, index) => {
-                if (item.type === "USER") {
-                  return (
-                    <SearchedGroupItem
-                      type={item.type}
-                      id={item.id}
-                      key={index}
-                      setIsSearchBarOpen={setIsSearchBarOpen}
-                      name={item.nickname}
-                      image={generateFileUrl(item.pic)}
-                      item={item}
-                    />
-                  );
-                } else {
-                  return (
-                    <SearchedGroupItem
-                      type={item.type}
-                      id={item.id}
-                      key={index}
-                      setIsSearchBarOpen={setIsSearchBarOpen}
-                      name={item.name ? item.name : item.title}
-                      image={generateFileUrl(item.profile)}
-                      item={item}
-                    />
-                  );
-                }
+                return (
+                  <SearchedGroupItem
+                    type={item.type}
+                    id={item.id}
+                    key={index}
+                    setIsSearchBarOpen={setIsSearchBarOpen}
+                  />
+                );
               }
             )}
             <div
@@ -121,6 +106,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
                 <span className={"icon-fi-rs-search text-white"} />
               </div>
               <Link
+                shallow
                 href={{
                   pathname: "/search",
                   query: { q: `${inputValue}` },

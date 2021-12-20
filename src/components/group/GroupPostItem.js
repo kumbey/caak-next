@@ -7,6 +7,7 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import {
   extractDate,
+  generateFileUrl,
   generateTimeAgo,
   getDate,
   getFileUrl,
@@ -47,6 +48,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
     return () => {
       document.removeEventListener("keydown", handler);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -120,7 +122,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                     <Image
                       alt={""}
                       layout={"fill"}
-                      src={getFileUrl(post.user.pic)}
+                      src={post.user.pic ? generateFileUrl(post.user.pic) : getGenderImage(post.user.gender).src}
                       objectFit={"cover"}
                       className={"rounded-full"}
                     />
@@ -195,7 +197,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
               {video ? (
                 <Video
                   videoClassname={"object-contain rounded-[4px]"}
-                  src={getFileUrl(video)}
+                  src={generateFileUrl(video)}
                   thumbnailIcon
                   hideControls
                 />
@@ -203,7 +205,9 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                 <Image
                   className=" bg-white rounded-md"
                   src={
-                    !imageSrc ? getGenderImage("default") : getFileUrl(imageSrc)
+                    !imageSrc
+                      ? getGenderImage("default")
+                      : generateFileUrl(imageSrc)
                   }
                   width={64}
                   height={64}
@@ -246,6 +250,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                   content={<ProfileHoverCard userId={post.user.id} />}
                 >
                   <Link
+                    shallow
                     href={{
                       pathname: `/user/${post.user_id}/profile`,
                     }}
@@ -261,6 +266,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
             ) : type === "user" ? (
               <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
                 <Link
+                  shallow
                   href={{
                     pathname: `/group/${post.group.id}`,
                   }}
@@ -288,7 +294,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
           {post.status === "ARCHIVED" ||
           (post.status === "PENDING" && type === "user") ? (
             <div className=" flex w-[102px] ">
-              <Link href={`/post/edit/${post.id}`}>
+              <Link shallow href={`/post/edit/${post.id}`}>
                 <a>
                   <Button
                     round

@@ -135,7 +135,7 @@ const Post = ({ ssrData }) => {
                 />
               </div>
               <div className={"flex flex-col ml-[10px] justify-between"}>
-                <Link href={`/group/${post.group.id}`}>
+                <Link shallow href={`/group/${post.group.id}`}>
                   <a>
                     <p
                       className={

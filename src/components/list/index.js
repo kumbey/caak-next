@@ -47,6 +47,7 @@ const List = ({ post, imageSrc }) => {
           <div className=" mr-[12px]">
             {Consts.regexImage.test(imageSrc.type) ? (
               <Link
+                shallow
                 href={{
                   pathname: `/post/view/${post.id}`,
                 }}
@@ -85,6 +86,7 @@ const List = ({ post, imageSrc }) => {
           </div>
           <div className="flex flex-col justify-between">
             <Link
+              shallow
               href={{
                 pathname: `/post/view/${post.id}`,
               }}
@@ -108,6 +110,7 @@ const List = ({ post, imageSrc }) => {
                   }
                 >
                   <Link
+                    shallow
                     href={{
                       pathname: `/user/${post.user_id}/profile`,
                     }}

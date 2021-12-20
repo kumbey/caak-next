@@ -46,7 +46,7 @@ const Search = ({ ssrData }) => {
     <>
       <Head>
         <title>
-          {router.query.q} Хайлтын илэрц - {Consts.siteMainTitle}
+          {`"${router.query.q}"`} Хайлтын илэрц - {Consts.siteMainTitle}
         </title>
       </Head>
       <div>

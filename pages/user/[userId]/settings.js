@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Dummy from "dummyjs";
 import { getUserById } from "../../../src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
-import { getFileUrl } from "/src/utility/Util";
+import {getFileUrl, getGenderImage} from "/src/utility/Util";
 import Informations from "../../../src/components/userProfile/Informations";
 import SocialLink from "../../../src/components/userProfile/SocialLink";
 import SiteConfiguration from "../../../src/components/userProfile/SiteConfiguration";
@@ -55,7 +55,7 @@ export default function Settings() {
               marginRight: "8px",
             }}
             data-dummy="200x200"
-            src={user.pic ? getFileUrl(user.pic) : Dummy.img("200x200")}
+            src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
           />
           <div className="flex-row flex items-center">
             <p

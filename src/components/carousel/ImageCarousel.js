@@ -14,6 +14,7 @@ const ImageCarousel = ({
   changeActiveIndex,
   viewPostItem,
   index,
+  duration,
 }) => {
   const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
   const [touchPosition, setTouchPosition] = useState(null);
@@ -137,6 +138,7 @@ const ImageCarousel = ({
                 >
                   {item.file.type.startsWith("video") ? (
                     <Video
+                      durationIndicator={duration}
                       postId={postId}
                       route
                       videoClassname={"object-contain rounded-none"}
@@ -149,7 +151,7 @@ const ImageCarousel = ({
                       }
                     >
                       {route ? (
-                        <Link href={`/post/view/${postId}`}>
+                        <Link shallow href={`/post/view/${postId}`}>
                           <a>
                             <div
                               style={{

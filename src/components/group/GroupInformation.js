@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateGroup } from "../../graphql-custom/group/mutation";
@@ -9,7 +9,6 @@ import Divider from "../divider";
 export default function GroupInformation({
   categoryList,
   groupData,
-  ...props
 }) {
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -211,71 +210,71 @@ export default function GroupInformation({
       </div>
       <Divider className="mx-[30px] my-[15px]" />
 
-      <div
-        className={`${
-          currentIndex === 3 && col ? "flex-col" : ""
-        } mx-c3 flex  justify-between`}
-      >
-        <p className="font-semibold font-inter text-15px text-caak-generalblack">
-          Төрөл
-        </p>
-        {currentIndex === 3 && showInput ? (
-          <form
-            className="flex w-full items-center justify-between mt-[10px]"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            {/* <Input
-              name={"category.name"}
-              defaultValue={groupData.category.name}
-              autoFocus
-              type="text"
-              // value={groupData.title}
-              onChange={handleChange}
-              className={
-                "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-              }
-            /> */}
-            <select
-              className="min-w-[150px] h-[36px] p-[0px] border-none rounded-lg text-15px font-inter font-normal text-caak-generalblack"
-              // onChange={handleChange}
-              name={"category"}
-            >
-              {categoryList.map((cat, index) => {
-                return (
-                  <option key={index} value={cat.name}>
-                    {cat.name}
-                  </option>
-                );
-              })}
-            </select>
+      {/*<div*/}
+      {/*  className={`${*/}
+      {/*    currentIndex === 3 && col ? "flex-col" : ""*/}
+      {/*  } mx-c3 flex  justify-between`}*/}
+      {/*>*/}
+      {/*  <p className="font-semibold font-inter text-15px text-caak-generalblack">*/}
+      {/*    Төрөл*/}
+      {/*  </p>*/}
+      {/*  {currentIndex === 3 && showInput ? (*/}
+      {/*    <form*/}
+      {/*      className="flex w-full items-center justify-between mt-[10px]"*/}
+      {/*      onSubmit={(e) => e.preventDefault()}*/}
+      {/*    >*/}
+      {/*      /!* <Input*/}
+      {/*        name={"category.name"}*/}
+      {/*        defaultValue={groupData.category.name}*/}
+      {/*        autoFocus*/}
+      {/*        type="text"*/}
+      {/*        // value={groupData.title}*/}
+      {/*        onChange={handleChange}*/}
+      {/*        className={*/}
+      {/*          "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"*/}
+      {/*        }*/}
+      {/*      /> *!/*/}
+      {/*      <select*/}
+      {/*        className="min-w-[150px] h-[36px] p-[0px] border-none rounded-lg text-15px font-inter font-normal text-caak-generalblack"*/}
+      {/*        // onChange={handleChange}*/}
+      {/*        name={"category"}*/}
+      {/*      >*/}
+      {/*        {categoryList.map((cat, index) => {*/}
+      {/*          return (*/}
+      {/*            <option key={index} value={cat.name}>*/}
+      {/*              {cat.name}*/}
+      {/*            </option>*/}
+      {/*          );*/}
+      {/*        })}*/}
+      {/*      </select>*/}
 
-            <div className="justify-end mt-[10px] flex items-center pb-3">
-              <Button
-                loading={loading}
-                onClick={() => handleCancel()}
-                className="bg-white text-15px border border-caak-unicornsilver rounded-lg text-caak-generalblack mr-[10px]  px-[24px] "
-              >
-                Болих
-              </Button>
-              <Button
-                loading={loading}
-                onClick={handleSubmit}
-                className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
-              >
-                Хадгалах
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <div className="flex ">
-            <span
-              onClick={() => handleClick(3)}
-              className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
-            />
-          </div>
-        )}
-      </div>
-      <Divider className="mx-[30px] mt-[15px] mb-[70px]" />
+      {/*      <div className="justify-end mt-[10px] flex items-center pb-3">*/}
+      {/*        <Button*/}
+      {/*          loading={loading}*/}
+      {/*          onClick={() => handleCancel()}*/}
+      {/*          className="bg-white text-15px border border-caak-unicornsilver rounded-lg text-caak-generalblack mr-[10px]  px-[24px] "*/}
+      {/*        >*/}
+      {/*          Болих*/}
+      {/*        </Button>*/}
+      {/*        <Button*/}
+      {/*          loading={loading}*/}
+      {/*          onClick={handleSubmit}*/}
+      {/*          className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"*/}
+      {/*        >*/}
+      {/*          Хадгалах*/}
+      {/*        </Button>*/}
+      {/*      </div>*/}
+      {/*    </form>*/}
+      {/*  ) : (*/}
+      {/*    <div className="flex ">*/}
+      {/*      <span*/}
+      {/*        onClick={() => handleClick(3)}*/}
+      {/*        className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"*/}
+      {/*      />*/}
+      {/*    </div>*/}
+      {/*  )}*/}
+      {/*</div>*/}
+      {/*<Divider className="mx-[30px] mt-[15px] mb-[70px]" />*/}
     </div>
   );
 }

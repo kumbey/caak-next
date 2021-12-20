@@ -1,5 +1,9 @@
 import Image from "next/image";
-import { getFileUrl, getGenderImage, getReturnData } from "../../utility/Util";
+import {
+  generateFileUrl,
+  getGenderImage,
+  getReturnData,
+} from "../../utility/Util";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { API } from "aws-amplify";
@@ -8,48 +12,52 @@ import { useUser } from "../../context/userContext";
 import { getGroupSearchView } from "../../graphql-custom/group/queries";
 import { getUserSearchView } from "../../graphql-custom/user/queries";
 
-const SearchedGroupItem = ({
-  image,
-  name,
-  setIsSearchBarOpen,
-  clear,
-  item,
-  type,
-  id,
-}) => {
-  const [userData, setUserData] = useState({});
-  const [postData, setPostData] = useState({});
-  const [groupData, setGroupData] = useState({});
+const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
+  const [userData, setUserData] = useState();
+  const [postData, setPostData] = useState();
+  const [groupData, setGroupData] = useState();
 
   const { isLogged } = useUser();
   const getPostSearchInfo = async () => {
-    let resp = await API.graphql({
-      query: getPostSearchItem,
-      variables: { id: id },
-      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    });
-    resp = getReturnData(resp);
-    setPostData(resp);
+    try {
+      let resp = await API.graphql({
+        query: getPostSearchItem,
+        variables: { id: id },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      setPostData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   const getGroupSearchInfo = async () => {
-    let resp = await API.graphql({
-      query: getGroupSearchView,
-      variables: { id: id },
-      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    });
-    resp = getReturnData(resp);
-    setGroupData(resp);
+    try {
+      let resp = await API.graphql({
+        query: getGroupSearchView,
+        variables: { id: id },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      setGroupData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   const getUserSearchInfo = async () => {
-    let resp = await API.graphql({
-      query: getUserSearchView,
-      variables: { id: id },
-      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    });
-    resp = getReturnData(resp);
-    setUserData(resp);
+    try {
+      let resp = await API.graphql({
+        query: getUserSearchView,
+        variables: { id: id },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      setUserData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   useEffect(() => {
@@ -60,41 +68,43 @@ const SearchedGroupItem = ({
     } else {
       getUserSearchInfo();
     }
-  }, [id]);
+  }, []);
 
   const linkHandler = () => {
-    if (item.type === "POST") {
-      return `/post/view/${item.id}`;
-    } else if (item.type === "GROUP") {
-      return `/group/${item.id}`;
+    if (type === "POST") {
+      return `/post/view/${postData.id}`;
+    } else if (type === "GROUP") {
+      return `/group/${groupData.id}`;
     } else {
-      return `/user/${item.id}/profile`;
+      return `/user/${userData.id}/profile`;
     }
   };
   const postImageHandler = () => {
-    if (item) {
-      if (item.type === "POST") {
-        return getFileUrl(item.items.items[0].file);
-      } else if (item.type === "GROUP") {
-        if (item.profile) {
-          return getFileUrl(item.profile.file);
-        } else {
-          return getGenderImage("default").src;
-        }
-      } else {
-        if (item.pic) {
-          return getFileUrl(item.pic.file);
+    if (type === "POST") {
+      if (postData) {
+        return generateFileUrl(postData.items.items[0].file);
+      }
+    } else if (type === "GROUP") {
+      if (groupData) {
+        if (groupData.profile) {
+          return generateFileUrl(groupData.profile);
         } else {
           return getGenderImage("default").src;
         }
       }
     } else {
-      return getGenderImage("default").src;
+      if (userData) {
+        if (userData.pic) {
+          return generateFileUrl(userData.pic);
+        } else {
+          return getGenderImage("default").src;
+        }
+      }
     }
   };
 
-  return (
-    <Link href={linkHandler()}>
+  return userData || postData || groupData ? (
+    <Link shallow href={linkHandler()}>
       <a>
         <div
           onClick={() => setIsSearchBarOpen(false)}
@@ -109,7 +119,7 @@ const SearchedGroupItem = ({
           >
             <Image
               className={"rounded-square object-cover"}
-              src={`${image ? image : postImageHandler()}`}
+              src={postImageHandler()}
               alt=""
               width={34}
               height={34}
@@ -120,7 +130,9 @@ const SearchedGroupItem = ({
               "whitespace-nowrap overflow-hidden overflow-ellipsis text-15px font-medium text-caak-generalblack ml-[10px]"
             }
           >
-            {name}
+            {type === "POST" && postData.title}
+            {type === "GROUP" && groupData.name}
+            {type === "USER" && userData.nickname}
           </div>
           {clear && (
             <div
@@ -137,7 +149,7 @@ const SearchedGroupItem = ({
         </div>
       </a>
     </Link>
-  );
+  ) : null;
 };
 
 export default SearchedGroupItem;

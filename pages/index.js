@@ -120,10 +120,11 @@ const Feed = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPosts) => [...nextPosts, ...resp]);
+        if (posts.nextToken) {
+          const resp = await nextPosts();
+          if (resp) {
+            setPosts((nextPosts) => [...nextPosts, ...resp]);
+          }
         }
 
         setLoading(false);

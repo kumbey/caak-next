@@ -27,9 +27,7 @@ export default function GroupMemberConfig({ adminModeratorList, memberList }) {
   const handleChange = (e) => {
     setText(e.target.value);
   };
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
+
   return (
     <div className="mx-[30px]">
       <p className="font-semibold font-inter text-22px text-caak-aleutian mt-[32px] mb-[20px]">

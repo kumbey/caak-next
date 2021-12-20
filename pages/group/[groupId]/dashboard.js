@@ -166,7 +166,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 2,
       icon: "icon-fi-rs-comment-f",
-      number: totalPost,
+      number: groupTotals?.confirmed,
       text: "Пост",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
@@ -178,7 +178,7 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
-      length: totalPost,
+      length: groupTotals?.confirmed,
     },
     {
       id: 1,
@@ -190,7 +190,7 @@ const Dashboard = ({ ssrData }) => {
       id: 2,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
-      length: totalPending,
+      length: groupTotals?.pending,
     },
   ];
   const [nextPosts] = useListPager({
@@ -372,11 +372,13 @@ const Dashboard = ({ ssrData }) => {
         if (postIndex <= -1) {
           setPosts([subscriptionPosts, ...posts]);
           pendingPosts.splice(pendingIndex, 1);
+          groupTotals.pending = groupTotals.pending - 1
           setRender(render + 1);
         }
       } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
+          groupTotals.confirmed = groupData.confirmed - 1
           setRender(render + 1);
         }
       }
@@ -384,16 +386,20 @@ const Dashboard = ({ ssrData }) => {
       if (subscriptionPosts.status === "PENDING") {
         if (pendingIndex === -1) {
           setPendingPosts([subscriptionPosts, ...pendingPosts]);
+          groupTotals.pending = groupTotals.pending + 1
+          setRender(render + 1);
         }
         //
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
+          groupTotals.pending = groupTotals.pending - 1
           setRender(render + 1);
         }
       }
       if (subscriptionPosts.status === "ARCHIVED") {
         if (pendingIndex > -1) {
           pendingPosts.splice(pendingIndex, 1);
+          groupTotals.pending = groupTotals.pending - 1
           setRender(render + 1);
         }
       }
@@ -440,6 +446,7 @@ const Dashboard = ({ ssrData }) => {
               }
               width={52}
               height={52}
+              layout="fixed"
               objectFit={"cover"}
               alt="#"
             />
@@ -447,7 +454,7 @@ const Dashboard = ({ ssrData }) => {
           <div className="text-[18px] md:text-[22px] font-semibold text-caak-generalblack mr-1">
             @{groupData.name}
           </div>
-          <span className="icon-fi-rs-verified" />
+          {groupData.verified && <span className="icon-fi-rs-verified" />}
         </div>
         <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
           Дашбоард

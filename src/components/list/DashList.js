@@ -37,6 +37,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
       <div className="relative flex items-center ">
         <div className="flex flex-shrink-0 w-[240px] mr-[18px] items-center">
           <Link
+            shallow
             href={{
               pathname: `/post/view/${post.id}`,
             }}
@@ -67,6 +68,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           <div className="flex flex-col  font-inter mr-[26px]">
             <div className="truncate-2 text-15px font-medium text-caak-generalblack">
               <Link
+                shallow
                 href={{
                   pathname: `/post/view/${post.id}`,
                 }}
@@ -104,6 +106,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 </div>
 
                 <Link
+                  shallow
                   href={{
                     pathname: `/user/${post.user_id}/profile`,
                   }}
@@ -119,6 +122,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : type === "user" ? (
             <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
               <Link
+                shallow
                 href={{
                   pathname: `/group/${post.group.id}`,
                 }}

@@ -289,6 +289,7 @@ const PostItem = ({ ssrData }) => {
                           }
                         >
                           <Link
+                            shallow
                             href={{
                               pathname: `/group/${post.group.id}`,
                             }}
@@ -298,6 +299,7 @@ const PostItem = ({ ssrData }) => {
                         </span>
                         <div className={"flex flex-row items-center"}>
                           <Link
+                            shallow
                             href={{
                               pathname: `/user/${post.user.id}/profile`,
                             }}

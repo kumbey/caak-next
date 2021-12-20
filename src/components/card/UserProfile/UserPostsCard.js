@@ -87,7 +87,7 @@ const UserPostsCard = ({ post }) => {
           isMobile ? "opacity-100" : "opacity-0"
         } group-hover:opacity-100 transition-all duration-300`}
       >
-        <Link href={`/post/view/${post.id}`}>
+        <Link shallow href={`/post/view/${post.id}`}>
           <a>
             <p
               className={

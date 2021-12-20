@@ -48,7 +48,7 @@ const GroupCaution = ({ groupData, ...props }) => {
   };
 
   const handleSubmit = async () => {
-    if (groupData.g_attentions !== "") {
+    if (groupData.g_attentions) {
       let parsed = JSON.parse(groupData?.g_attentions);
 
       if (type === "edit") {
@@ -100,7 +100,7 @@ const GroupCaution = ({ groupData, ...props }) => {
   }, []);
   return (
     <div className="flex ">
-      {groupData?.g_attentions !== "" ? (
+      {groupData?.g_attentions ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">
             <p className="font-semibold text-caak-aleutian font-intertext-20px text-22px">
@@ -118,7 +118,7 @@ const GroupCaution = ({ groupData, ...props }) => {
               Нэмэх
             </Button>
           </div>
-          {groupData?.g_attentions !== "" &&
+          {groupData?.g_attentions &&
             JSON.parse(groupData?.g_attentions).map((att, index) => {
               return (
                 <GroupCautionItem

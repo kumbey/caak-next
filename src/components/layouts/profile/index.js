@@ -205,6 +205,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           )}
 
           <Image
+            quality={100}
             layout={"fill"}
             objectFit={"cover"}
             alt={user?.cover_pic?.name}
@@ -340,7 +341,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   src={
                     user?.pic
                       ? getFileUrl(user?.pic)
-                      : getGenderImage("default")
+                      : getGenderImage(user.gender).src
                   }
                 />
                 {isLogged && user.id === user.id && !uploadingProfile && (
@@ -454,7 +455,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               >
                 {signedUser?.id === userId ? (
                   <>
-                    <Link href={`/user/${userId}/settings`}>
+                    <Link shallow href={`/user/${userId}/settings`}>
                       <a className={"w-full"}>
                         <Button
                           className={
@@ -480,7 +481,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         </Button>
                       </a>
                     </Link>
-                    <Link href={`/user/${userId}/dashboard`}>
+                    <Link shallow href={`/user/${userId}/dashboard`}>
                       <a className={"w-full"}>
                         <Button
                           className={

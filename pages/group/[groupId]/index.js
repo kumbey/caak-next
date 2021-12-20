@@ -84,8 +84,6 @@ const Group = ({ ssrData }) => {
   const [groupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
 
-
-
   const totalMember =
     groupData.totals.member +
     groupData.totals.admin +
@@ -106,10 +104,11 @@ const Group = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPosts) => [...nextPosts, ...resp]);
+        if (posts.nextToken) {
+          const resp = await nextPosts();
+          if (resp) {
+            setPosts((nextPosts) => [...nextPosts, ...resp]);
+          }
         }
 
         setLoading(false);

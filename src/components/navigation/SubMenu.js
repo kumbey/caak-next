@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
-import {getFileUrl, getGenderImage, useClickOutSide} from "../../utility/Util";
+import {
+  getFileUrl,
+  getGenderImage,
+  useClickOutSide,
+} from "../../utility/Util";
 import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
 import { useRouter } from "next/router";
@@ -55,7 +59,7 @@ const SubMenu = ({ params }) => {
             }
             onClick={() =>
               isLogged
-                ? router.push("/post/add")
+                ? router.push("/post/add", undefined, { shallow: true })
                 : router.push(
                     {
                       pathname: router.pathname,
@@ -93,11 +97,11 @@ const SubMenu = ({ params }) => {
             isNotificationMenu ? "bg-caak-liquidnitrogen" : ""
           } relative flex items-center justify-center w-[50px] h-[36px] mr-0 md:mr-[10px] cursor-pointer rounded-square  hover:bg-caak-liquidnitrogen transition duration-100`}
         >
-            <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
-                 <span
-                     className={`icon-fi-rs-notification text-22px text-caak-generalblack text-[22px]`}
-                 />
-            </div>
+          <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
+            <span
+              className={`icon-fi-rs-notification text-22px text-caak-generalblack text-[22px]`}
+            />
+          </div>
 
           {parseInt(params.userTotal.unseen) > 0 ? (
             <div
@@ -141,7 +145,7 @@ const SubMenu = ({ params }) => {
           }
         >
           <DropDown
-              arrow={"topRight"}
+            arrow={"topRight"}
             open={params.isMenuOpen}
             onToggle={toggleMenu}
             content={<NavBarMenu />}
@@ -152,7 +156,11 @@ const SubMenu = ({ params }) => {
               ref={menuRef}
               onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
               alt={user.nickname}
-              src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
+              src={
+                user.pic
+                  ? getFileUrl(user.pic)
+                  : getGenderImage(user.gender).src
+              }
               className={
                 "block mr-0 w-[36px] h-[36px] object-cover rounded-full"
               }

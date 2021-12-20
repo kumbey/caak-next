@@ -1,7 +1,7 @@
 import { useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { updateUser } from "/src/graphql-custom/user/mutation";
+import { updateUser } from "../../../src/graphql-custom/user/mutation";
 import Input from "/src/components/input";
 import Divider from "../divider";
 import Button from "../button";
@@ -25,9 +25,9 @@ export default function Informations({ currentUser }) {
     {
       id: 1,
       text: "Хэрэглэгчийн ID",
-      name: "user_id",
+      name: "nickname",
       type: "text",
-      value: currentUser.id,
+      value: currentUser.nickname,
       isReadOnly: true,
     },
     {
@@ -57,7 +57,6 @@ export default function Informations({ currentUser }) {
     //   isReadOnly: false,
     // },
   ];
-
   const handleSubmit = async (e) => {
     if (text !== e.target.value) {
       await API.graphql(

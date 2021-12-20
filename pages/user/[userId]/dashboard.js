@@ -144,35 +144,36 @@ const Dashboard = ({ ssrData }) => {
   const stats = [
     {
       id: 0,
-      icon: "icon-fi-rs-aura",
+      icon: "icon-fi-rs-aura-f",
       number: user?.aura,
       text: "Аура",
       bgcolor: "",
-      color: "",
+      gradient: "auraBgGradient",
+      color: "auraGradient",
     },
     {
       id: 1,
+      icon: "icon-fi-rs-post-f",
+      number: totalPost,
+      text: "Нийт пост",
+      bgcolor: "bg-caak-errigalwhite",
+      color: "text-caak-darkBlue",
+    },
+    {
+      id: 2,
       icon: "icon-fi-rs-rock-f",
       number: totalReaction,
       text: "Саак",
       bgcolor: "bg-caak-sweetfrosting",
-      color: "text-caak-cookiedough",
+      color: "text-caak-uclagold",
     },
     {
-      id: 2,
+      id: 3,
       icon: "icon-fi-rs-comment-f",
       number: totalComment,
       text: "Сэтгэгдэл",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
-    },
-    {
-      id: 3,
-      icon: "icon-fi-rs-view",
-      number: userTotals?.post_views,
-      text: "Пост үзсэн",
-      bgcolor: "bg-caak-errigalwhite",
-      color: "text-caak-darkBlue",
     },
   ];
 
@@ -530,17 +531,7 @@ const Dashboard = ({ ssrData }) => {
       </div>
       <div className="flex">
         {stats.map((stat, index) => {
-          return (
-            <StatsItem
-              key={index}
-              id={index}
-              icon={stat.icon}
-              number={stat.number}
-              text={stat.text}
-              color={stat.color}
-              bgcolor={stat.bgcolor}
-            />
-          );
+          return <StatsItem key={index} id={index} stat={stat} />;
         })}
       </div>
       <div className="flex flex-col xl:flex-row mt-[25px] ">

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -9,8 +10,28 @@ import Button from "../../components/button";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
 import Video from "../video";
+import { updatePost } from "../../graphql-custom/post/mutation";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 
 const DashList = ({ imageSrc, post, type, video }) => {
+  const [loading, setLoading] = useState(false);
+
+  const postHandler = async (id, status) => {
+    setLoading(true);
+    try {
+      await API.graphql(
+        graphqlOperation(updatePost, {
+          input: { id, status, expectedVersion: post.version },
+        })
+      );
+      setLoading(false);
+    } catch (ex) {
+      setLoading(false);
+
+      console.log(ex);
+    }
+  };
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <div className="relative flex items-center ">
@@ -132,18 +153,13 @@ const DashList = ({ imageSrc, post, type, video }) => {
           </div>
         </div>
         <div className="flex ml-[10px] ">
-          <Link href={`/post/edit/${post.id}`}>
-            <a>
-              <Button
-                round
-                className={
-                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-15px bg-white relative"
-                }
-              >
-                <p className="">Засах</p>
-              </Button>
-            </a>
-          </Link>
+          <Button
+            loading={loading}
+            onClick={() => postHandler(post.id, "ARCHIVED")}
+            className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
+          >
+            Татгалзах
+          </Button>
         </div>
       </div>
     </div>

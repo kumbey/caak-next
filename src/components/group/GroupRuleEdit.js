@@ -30,9 +30,7 @@ const GroupRuleEdit = ({
   const handleChange = (e) => {
     setText({ ...text, [e.target.name]: e.target.value });
   };
-  useEffect(() => {
-    console.log(type);
-  }, []);
+
   return (
     <div className="popup_modal ">
       <div className="popup_modal-content rounded-xl">
@@ -65,7 +63,7 @@ const GroupRuleEdit = ({
                         maxLength={maxLengths.title}
                         style={{ resize: "none" }}
                         defaultValue={
-                          groupData?.g_rules
+                          type === "edit"
                             ? JSON.parse(groupData?.g_rules)[activeIndex]?.title
                             : ""
                         }
@@ -101,7 +99,7 @@ const GroupRuleEdit = ({
                         onInput={auto_grow}
                         style={{ resize: "none" }}
                         defaultValue={
-                          groupData?.g_rules
+                          type === "edit"
                             ? JSON.parse(groupData.g_rules)[activeIndex]
                                 ?.description
                             : ""

@@ -522,6 +522,18 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
 
+  .auraBgGradient {
+    background: transparent
+      linear-gradient(
+        180deg,
+        #f4ad57 0%,
+        #f75831 31%,
+        #6c41e4 50%,
+        #5079f1 65%,
+        #2debd9 81%,
+        #f4ad57 100%
+      );
+  }
   .popup_modal-content-pending {
     max-width: 800px;
     width: 100%;
@@ -530,9 +542,26 @@
     min-width: 320px;
     position: relative;
   }
-
   .cContentGradient {
     background: linear-gradient(117deg, #0682b2 0%, #7e36fc 100%);
+  }
+  .auraGradient {
+    background: transparent
+      conic-gradient(
+        from -74deg at 47% 68%,
+        #f4ad57 0%,
+        #f75831 27.56%,
+        #6c41e4 50.31%,
+        #5079f1 65.02%,
+        #2debd9 78.49%,
+        #f4ad57 100%
+      )
+      0% 0% no-repeat padding-box;
+
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }
 

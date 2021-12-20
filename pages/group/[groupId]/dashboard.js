@@ -148,11 +148,12 @@ const Dashboard = ({ ssrData }) => {
   const stats = [
     {
       id: 0,
-      icon: "icon-fi-rs-aura",
+      icon: "icon-fi-rs-aura-f",
       number: groupData?.aura ? groupData.aura : 2300,
       text: "Аура",
       bgcolor: "",
-      color: "",
+      gradient: "auraBgGradient",
+      color: "auraGradient",
     },
     {
       id: 1,
@@ -160,7 +161,7 @@ const Dashboard = ({ ssrData }) => {
       number: totalMember,
       text: "Гишүүд",
       bgcolor: "bg-caak-sweetfrosting",
-      color: "text-caak-cookiedough",
+      color: "text-caak-uclagold",
     },
     {
       id: 2,
@@ -439,8 +440,7 @@ const Dashboard = ({ ssrData }) => {
               }
               width={52}
               height={52}
-              layout="fixed"
-              //   objectFit={"cover"}
+              objectFit={"cover"}
               alt="#"
             />
           </div>
@@ -454,17 +454,7 @@ const Dashboard = ({ ssrData }) => {
         </div>
         <div className="flex w-full md:flex-row">
           {stats.map((stat, index) => {
-            return (
-              <StatsItem
-                key={index}
-                id={index}
-                icon={stat.icon}
-                number={stat.number}
-                text={stat.text}
-                color={stat.color}
-                bgcolor={stat.bgcolor}
-              />
-            );
+            return <StatsItem key={index} id={index} stat={stat} />;
           })}
         </div>
         <div className="flex flex-col xl:flex-row mt-[25px] ">

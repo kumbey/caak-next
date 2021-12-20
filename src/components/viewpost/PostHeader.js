@@ -24,110 +24,114 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
         >
           {item.title}
         </div>
-        <div
-          className={
-            "flex flex row justify-between text-caak-generalblack my-[12px]"
-          }
-        >
-          <div className={"flex flex-row "}>
-            <div
-              className={
-                "flex flex-row items-center mr-[22px] cursor-pointer group"
-              }
-            >
-              <AnimatedCaakButton
-                reactionType={"POST_ITEM"}
-                itemId={item.id}
-                totals={item.totals}
-                reacted={item.reacted}
-                setReacted={(changedReacted) => {
-                  post.items.items[activeIndex].reacted = changedReacted;
-                }}
-                textClassname={
-                  "ml-[6px] text-caak-nocturnal font-medium text-[15px] tracking-[0.23px] leading-[18px]"
-                }
-                iconContainerClassname={"w-[24px] h-[24px]"}
-                iconClassname={"text-[23px]"}
-                iconColor={"text-caak-scriptink"}
-              />
-            </div>
-            <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
+        {post.status === "CONFIRMED" && (
+          <div
+            className={
+              "flex flex row justify-between text-caak-generalblack my-[12px]"
+            }
+          >
+            <div className={"flex flex-row "}>
               <div
-                className={"w-[24px] h-[24px] flex items-center justify-center"}
+                className={
+                  "flex flex-row items-center mr-[22px] cursor-pointer group"
+                }
               >
-                <span
-                  className={
-                    "icon-fi-rs-comment-o text-[21px] text-caak-scriptink"
+                <AnimatedCaakButton
+                  reactionType={"POST_ITEM"}
+                  itemId={item.id}
+                  totals={item.totals}
+                  reacted={item.reacted}
+                  setReacted={(changedReacted) => {
+                    post.items.items[activeIndex].reacted = changedReacted;
+                  }}
+                  textClassname={
+                    "ml-[6px] text-caak-nocturnal font-medium text-[15px] tracking-[0.23px] leading-[18px]"
                   }
+                  iconContainerClassname={"w-[24px] h-[24px]"}
+                  iconClassname={"text-[23px]"}
+                  iconColor={"text-caak-scriptink"}
                 />
               </div>
-              <span
-                onClick={() =>
-                  post.status === "CONFIRMED" && addCommentRef.current.focus()
-                }
-                className={
-                  "ml-[6px] text-caak-nocturnal font-medium text-[15px] tracking-[0.23px] leading-[18px]"
-                }
-              >
-                {item.totals?.comments}
-              </span>
-            </div>
-          </div>
-          <div className={"flex flex-row items-center"}>
-            <span
-              className={
-                "text-14px text-caak-darkBlue tracking-[0.21px] leading-[16px]"
-              }
-            >
-              Хуваалцах
-            </span>
-            <div
-              className={"flex flex-row items-center justify-center ml-[7px]"}
-            >
-              <FacebookShareButton
-                url={`${pathName}/post/view/${post.id}/${item.id}`}
-              >
+              <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
                 <div
                   className={
-                    "flex items-center justify-center w-[22px] h-[22px] rounded-full cursor-pointer"
+                    "w-[24px] h-[24px] flex items-center justify-center"
                   }
                 >
                   <span
                     className={
-                      "icon-fi-rs-facebook path2 text-caak-facebook text-[22px]"
+                      "icon-fi-rs-comment-o text-[21px] text-caak-scriptink"
                     }
                   />
                 </div>
-              </FacebookShareButton>
-              <TwitterShareButton
-                url={`${pathName}/post/view/${post.id}/${item.id}`}
-              >
-                <div
+                <span
+                  onClick={() =>
+                    post.status === "CONFIRMED" && addCommentRef.current.focus()
+                  }
                   className={
-                    "flex items-center ml-[7px] bg-caak-twitter rounded-full justify-center w-[22px] h-[22px] cursor-pointer"
+                    "ml-[6px] text-caak-nocturnal font-medium text-[15px] tracking-[0.23px] leading-[18px]"
                   }
                 >
-                  <span
-                    className={"icon-fi-rs-twitter text-white text-[13px]"}
-                  />
-                </div>
-              </TwitterShareButton>
-              <div
-                onClick={() => {
-                  if (typeof navigator !== "undefined")
-                    navigator.clipboard.writeText(
-                      `${pathName}/post/view/${post.id}/${item.id}`
-                    );
-                }}
+                  {item.totals?.comments}
+                </span>
+              </div>
+            </div>
+            <div className={"flex flex-row items-center"}>
+              <span
                 className={
-                  "flex items-center ml-[7px] justify-center w-[22px] h-[22px] rounded-full bg-caak-red cursor-pointer"
+                  "text-14px text-caak-darkBlue tracking-[0.21px] leading-[16px]"
                 }
               >
-                <span className={"icon-fi-rs-link text-white text-[13px]"} />
+                Хуваалцах
+              </span>
+              <div
+                className={"flex flex-row items-center justify-center ml-[7px]"}
+              >
+                <FacebookShareButton
+                  url={`${pathName}/post/view/${post.id}/${item.id}`}
+                >
+                  <div
+                    className={
+                      "flex items-center bg-caak-facebook justify-center w-[22px] h-[22px] rounded-full cursor-pointer"
+                    }
+                  >
+                    <span
+                      className={
+                        "icon-fi-rs-facebook path1 text-caak-facebook text-[22px]"
+                      }
+                    />
+                  </div>
+                </FacebookShareButton>
+                <TwitterShareButton
+                  url={`${pathName}/post/view/${post.id}/${item.id}`}
+                >
+                  <div
+                    className={
+                      "flex items-center ml-[7px] bg-caak-twitter rounded-full justify-center w-[22px] h-[22px] cursor-pointer"
+                    }
+                  >
+                    <span
+                      className={"icon-fi-rs-twitter text-white text-[13px]"}
+                    />
+                  </div>
+                </TwitterShareButton>
+                <div
+                  onClick={() => {
+                    if (typeof navigator !== "undefined")
+                      navigator.clipboard.writeText(
+                        `${pathName}/post/view/${post.id}/${item.id}`
+                      );
+                  }}
+                  className={
+                    "flex items-center ml-[7px] justify-center w-[22px] h-[22px] rounded-full bg-caak-red cursor-pointer"
+                  }
+                >
+                  <span className={"icon-fi-rs-link text-white text-[13px]"} />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

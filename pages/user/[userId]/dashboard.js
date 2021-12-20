@@ -136,13 +136,11 @@ const Dashboard = ({ ssrData }) => {
     userTotals?.comment_reactions +
     userTotals?.post_reactions +
     userTotals?.post_items_reactions;
-
   const totalPost = userTotals?.confirmed;
   const totalMember = userTotals?.followers;
   const totalComment = userTotals?.comments;
   const totalArchived = userTotals?.archived;
   const totalPending = userTotals?.pending;
-
   const stats = [
     {
       id: 0,
@@ -266,13 +264,14 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPosts) => ({
-            ...nextPosts,
-            items: [...nextPosts.items, ...resp],
-          }));
+        if (posts.nextToken) {
+          const resp = await nextPosts();
+          if (resp) {
+            setPosts((nextPosts) => ({
+              ...nextPosts,
+              items: [...nextPosts.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -288,12 +287,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextPending();
-        if (resp) {
-          setPendingPosts((nextPending) => ({
-            ...nextPending,
-            items: [...nextPending.items, ...resp],
-          }));
+        if (pendingPosts.nextToken) {
+          const resp = await nextPending();
+          if (resp) {
+            setPendingPosts((nextPending) => ({
+              ...nextPending,
+              items: [...nextPending.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -308,12 +309,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextArchived();
-        if (resp) {
-          setArchivedPosts((nextArchived) => ({
-            ...nextArchived,
-            items: [...nextArchived.items, ...resp],
-          }));
+        if (archivedPosts.nextToken) {
+          const resp = await nextArchived();
+          if (resp) {
+            setArchivedPosts((nextArchived) => ({
+              ...nextArchived,
+              items: [...nextArchived.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -328,12 +331,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextComments();
-        if (resp) {
-          setUserComments((nextComments) => ({
-            ...nextComments,
-            items: [...nextComments.items, ...resp],
-          }));
+        if (userComments.nextToken) {
+          const resp = await nextComments();
+          if (resp) {
+            setUserComments((nextComments) => ({
+              ...nextComments,
+              items: [...nextComments.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -348,12 +353,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextFollowers();
-        if (resp) {
-          setFollowedUsers((nextFollowers) => ({
-            ...nextFollowers,
-            items: [...nextFollowers.items, ...resp],
-          }));
+        if (followedUsers.nextToken) {
+          const resp = await nextFollowers();
+          if (resp) {
+            setFollowedUsers((nextFollowers) => ({
+              ...nextFollowers,
+              items: [...nextFollowers.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -450,6 +457,7 @@ const Dashboard = ({ ssrData }) => {
         }
       }
       if (subscripedPost.post.status === "PENDING") {
+        console.log(pendingIndex);
         if (pendingIndex === -1) {
           setPendingPosts({
             ...pendingPosts,
@@ -493,7 +501,6 @@ const Dashboard = ({ ssrData }) => {
 
     // eslint-disable-next-line
   }, []);
-
   return isLogged && loaded ? (
     <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
       <div className="flex items-center mb-[40px]">
@@ -517,7 +524,7 @@ const Dashboard = ({ ssrData }) => {
         <div className="text-2xl font-semibold text-caak-generalblack mr-1">
           @{user?.nickname}
         </div>
-        <span className="icon-fi-rs-verified" />
+        {user.verified && <span className="icon-fi-rs-verified" />}
       </div>
       <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
         Дашбоард

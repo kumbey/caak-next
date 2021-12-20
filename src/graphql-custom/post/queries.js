@@ -1,5 +1,6 @@
 import post0002 from "./fields/post0002";
 import post0004 from "./fields/post0004";
+import file0001 from "../file/fields/file0001";
 
 export const getPost = /* GraphQL */ `
     query GetPost($id: ID!) {
@@ -102,4 +103,18 @@ export const listPostOrderByReactions = /* GraphQL */ `
       nextToken
     }
   }
+`;
+
+export const getPostSearchItem = /* GraphQL */ `
+    query GetPost($id: ID!) {
+        getPost(id: $id) {
+            id
+            title
+            items {
+                items {
+                    file ${file0001}
+                }
+            }
+        }
+    }
 `;

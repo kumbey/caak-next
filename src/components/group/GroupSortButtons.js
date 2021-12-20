@@ -13,20 +13,24 @@ const GroupSortButtons = ({
   activeView,
   setActiveIndex,
   setActiveView,
+  setSortType,
 }) => {
   return (
     !hide && (
-      <div className="flex justify-between">
+      <div className="flex justify-between max-w-[616px] mx-auto">
         <div
           className={`flex mb-[19px] ${
             direction === "column" ? "flex-col" : "flex-row"
           } ${containerClassname ? containerClassname : ""}`}
         >
-          {items.map(({ icon, type, id }) => {
+          {items.map(({ icon, type,title, id }) => {
             return (
               <Button
                 key={id}
-                onClick={() => setActiveIndex(id)}
+                onClick={() => {
+                  setSortType(type);
+                  setActiveIndex(id);
+                }}
                 className={`mx-[2px] ${
                   direction === "column" ? "w-full h-12" : "w-auto h-9"
                 } min-w-max ${
@@ -54,7 +58,7 @@ const GroupSortButtons = ({
                     textClassname ? textClassname : ""
                   } text-16px ph:text-15px font-bold`}
                 >
-                  {type}
+                  {title}
                 </p>
               </Button>
             );
@@ -68,9 +72,12 @@ const GroupSortButtons = ({
           >
             {items2.map(({ icon, id }) => {
               return (
-                <div className={`flex items-center justify-center w-[32px] h-[28px] rounded-[5px] ${
+                <div
+                  className={`flex items-center justify-center w-[32px] h-[28px] rounded-[5px] ${
                     id === activeView ? "bg-caak-titaniumwhite" : ""
-                }`} key={id}>
+                  }`}
+                  key={id}
+                >
                   <div
                     className={`w-[20px] h-[20px] flex items-center justify-center cursor-pointer`}
                     onClick={() => setActiveView(id)}

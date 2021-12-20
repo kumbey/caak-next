@@ -5,7 +5,6 @@ import {
   getGenderImage,
   useClickOutSide,
 } from "../../../utility/Util";
-import Dummy from "dummyjs";
 import Tooltip from "../../tooltip/Tooltip";
 import DropDown from "../../navigation/DropDown";
 import PostMoreMenu from "../PostMoreMenu";
@@ -15,7 +14,6 @@ import Image from "next/image";
 
 const CardHeader = ({
   post,
-  verifiedUser,
   hideTitle,
   containerClassname,
   titleClassname,
@@ -115,24 +113,51 @@ const CardHeader = ({
             </div>
           </div>
         </div>
-        <div
-          ref={menuRef}
-          onClick={toggleMenu}
-          className={`flex justify-center flex-shrink-0 w-[35px] h-[35px] transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
-        >
-          <span className="icon-fi-rs-dots text-22px" />
-          <DropDown
-            open={isMenuOpen}
-            onToggle={toggleMenu}
-            content={
-              <PostMoreMenu
-                groupId={post.group.id}
-                postId={post.id}
-                postUser={post.user}
-              />
-            }
-            className={"top-6 -right-3"}
-          />
+        <div className={"flex flex-row items-center"}>
+          {post.owned === "CAAK" && (
+            <div
+              className={
+                "flex flex-row items-center h-[24px] px-[10px] py-[4px] rounded-[6px] cContentGradient mr-[4px]"
+              }
+            >
+              <div
+                className={
+                  "flex items-center justify-center w-[16px] h-[16px] "
+                }
+              >
+                <span className={"icon-fi-rs-caak-f text-white"} />
+              </div>
+              <div className={"ml-[6px]"}>
+                <p
+                  className={
+                    "text-[12px] text-white font-rubik uppercase tracking-[0.08em]"
+                  }
+                >
+                  КОНТЕНТ
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div
+            ref={menuRef}
+            onClick={toggleMenu}
+            className={`flex justify-center flex-shrink-0 w-[35px] h-[35px] transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
+          >
+            <span className="icon-fi-rs-dots text-22px" />
+            <DropDown
+              open={isMenuOpen}
+              onToggle={toggleMenu}
+              content={
+                <PostMoreMenu
+                  groupId={post.group.id}
+                  postId={post.id}
+                  postUser={post.user}
+                />
+              }
+              className={"top-6 -right-3"}
+            />
+          </div>
         </div>
       </div>
       {!hideTitle && (

@@ -280,6 +280,11 @@ export function generateTimeAgo(date) {
   }
 }
 
+export function getDate(date){
+  const postDate = DateTime.fromISO(date)
+  return postDate.toLocaleString();
+}
+
 export function checkUser(user) {
   if (!user) {
     return false;

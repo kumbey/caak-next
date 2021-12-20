@@ -23,7 +23,7 @@ export const Accordion = ({
         className="box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between text-left"
         onClick={toggleAccordion}
       >
-        <p className={`${titleClassname ? titleClassname : ""}`}>{title}</p>
+        <p className={`max-w-[260px] ${titleClassname ? titleClassname : ""}`}>{title}</p>
         <div className={"w-[14px] h-[14px] flex justify-center items-center"}>
           <span
             className={`icon-fi-rs-next text-[12px] ${
@@ -39,7 +39,7 @@ export const Accordion = ({
         style={{ maxHeight: `${height}` }}
         className="overflow-auto overflow-y-hidden transition-max-height duration-300 ease-in-out"
       >
-        <div className={`${contentClassname ? contentClassname : ""}`}>
+        <div className={`max-w-[260px] ${contentClassname ? contentClassname : ""}`}>
           {content}
         </div>
       </div>

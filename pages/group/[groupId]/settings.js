@@ -18,6 +18,8 @@ import GroupPrivacy from "../../../src/components/group/GroupPrivacy";
 import GroupMemberConfig from "../../../src/components/group/GroupMemberConfig";
 import GroupRule from "../../../src/components/group/GroupRule";
 import GroupCaution from "../../../src/components/group/GroupCaution";
+import Consts from "../../../src/utility/Consts";
+import Head from "next/head";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -182,36 +184,42 @@ export default function Settings({ ssrData, ...props }) {
   }, [user, signedUser.id]);
 
   return user ? (
-    <div
-      style={{ marginTop: "36px" }}
-      className="flex justify-center  items-center w-full px-4 md:px-6 max-w-4xl mx-auto"
-    >
-      <div className="flex flex-col w-full settingsPanel">
-        <div className="flex items-center bg-transparent">
+      <>
+        <Head>
+          <title>
+            {groupData.name} / тохиргоо - {Consts.siteMainTitle}
+          </title>
+        </Head>
+        <div
+            style={{ marginTop: "36px" }}
+            className="flex justify-center  items-center w-full px-4 md:px-6 max-w-4xl mx-auto"
+        >
+          <div className="flex flex-col w-full settingsPanel">
+            <div className="flex items-center bg-transparent">
           <span
-            onClick={() => router.back()}
-            className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5 text-18px"
-            style={{ height: "48px", width: "48px" }}
+              onClick={() => router.back()}
+              className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5 text-18px"
+              style={{ height: "48px", width: "48px" }}
           />
-          <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-            <Image
-              className=" bg-white rounded-[10px]"
-              src={
-                groupData?.cover
-                  ? getFileUrl(groupData?.cover)
-                  : getGenderImage(groupData?.gender).src
-              }
-              width={52}
-              height={52}
-              objectFit={"cover"}
-              alt="#"
-            />
-          </div>
+              <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
+                <Image
+                    className=" bg-white rounded-[10px]"
+                    src={
+                      groupData?.cover
+                          ? getFileUrl(groupData?.cover)
+                          : getGenderImage(groupData?.gender).src
+                    }
+                    width={52}
+                    height={52}
+                    objectFit={"cover"}
+                    alt="#"
+                />
+              </div>
 
-          <p className="text-22px font-inter font-semibold to-caak-generalblack">
-            {groupData.name}
-          </p>
-          {/* {groupData.verified && (
+              <p className="text-22px font-inter font-semibold to-caak-generalblack">
+                {groupData.name}
+              </p>
+              {/* {groupData.verified && (
             <div
               className={
                 "w-[18px] h-[18px] flex items-center justify-center ml-[5px]"
@@ -220,53 +228,55 @@ export default function Settings({ ssrData, ...props }) {
               <span className={"icon-fi-rs-verified text-[16px]"} />
             </div>
           )} */}
-        </div>
-        <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
-          <div
-            style={{ marginTop: "24px" }}
-            className="settingsMenuPanel px-c3 bg-white rounded-lg py-[30px]"
-          >
-            {data.map(({ icon, title, id }) => (
+            </div>
+            <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
               <div
-                key={id}
-                onClick={() => setActiveIndex(id)}
-                style={{ marginBottom: "20px" }}
-                className={`flex items-center cursor-pointer 
-                                    ${
-                                      id === activeIndex
-                                        ? "text-caak-primary"
-                                        : "text-caak-generalblack"
-                                    }`}
+                  style={{ marginTop: "24px" }}
+                  className="settingsMenuPanel px-c3 bg-white rounded-lg py-[30px]"
               >
-                {icon}
-                <p className="text-17px ml-px-10 font-medium">{title}</p>
+                {data.map(({ icon, title, id }) => (
+                    <div
+                        key={id}
+                        onClick={() => setActiveIndex(id)}
+                        style={{ marginBottom: "20px" }}
+                        className={`flex items-center cursor-pointer 
+                                    ${
+                            id === activeIndex
+                                ? "text-caak-primary"
+                                : "text-caak-generalblack"
+                        }`}
+                    >
+                      {icon}
+                      <p className="text-17px ml-px-10 font-medium">{title}</p>
+                    </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div
-            style={{ marginTop: "24px" }}
-            className="md:ml-c11 sm:ml-0 mb-c11 bg-white rounded-lg settingsDiv"
-          >
-            {activeIndex === 0 ? (
-              <GroupInformation
-                categoryList={categoryList}
-                groupData={groupData}
-              />
-            ) : activeIndex === 1 ? (
-              <GroupRule groupData={groupData} />
-            ) : activeIndex === 2 ? (
-              <GroupCaution groupData={groupData} />
-            ) : activeIndex === 3 ? (
-              <GroupMemberConfig
-                adminModeratorList={adminModeratorList}
-                memberList={memberList}
-              />
-            ) : activeIndex === 4 ? (
-              <GroupPrivacy groupData={groupData} />
-            ) : null}
+              <div
+                  style={{ marginTop: "24px" }}
+                  className="md:ml-c11 sm:ml-0 mb-c11 bg-white rounded-lg settingsDiv"
+              >
+                {activeIndex === 0 ? (
+                    <GroupInformation
+                        categoryList={categoryList}
+                        groupData={groupData}
+                    />
+                ) : activeIndex === 1 ? (
+                    <GroupRule groupData={groupData} />
+                ) : activeIndex === 2 ? (
+                    <GroupCaution groupData={groupData} />
+                ) : activeIndex === 3 ? (
+                    <GroupMemberConfig
+                        adminModeratorList={adminModeratorList}
+                        memberList={memberList}
+                    />
+                ) : activeIndex === 4 ? (
+                    <GroupPrivacy groupData={groupData} />
+                ) : null}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </>
+
   ) : null;
 }

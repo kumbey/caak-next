@@ -440,8 +440,7 @@ const Dashboard = ({ ssrData }) => {
               }
               width={52}
               height={52}
-              layout="fixed"
-              //   objectFit={"cover"}
+              objectFit={"cover"}
               alt="#"
             />
           </div>
@@ -455,17 +454,7 @@ const Dashboard = ({ ssrData }) => {
         </div>
         <div className="flex w-full md:flex-row">
           {stats.map((stat, index) => {
-            return (
-              <StatsItem
-                key={index}
-                id={index}
-                icon={stat.icon}
-                number={stat.number}
-                text={stat.text}
-                color={stat.color}
-                bgcolor={stat.bgcolor}
-              />
-            );
+            return <StatsItem key={index} id={index} stat={stat} />;
           })}
         </div>
         <div className="flex flex-col xl:flex-row mt-[25px] ">

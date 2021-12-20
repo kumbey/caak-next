@@ -151,15 +151,30 @@ const DashList = ({ imageSrc, post, type, video }) => {
               {post.totals.views}
             </p>
           </div>
-        </div>
+        </div>{" "}
         <div className="flex ml-[10px] ">
-          <Button
-            loading={loading}
-            onClick={() => postHandler(post.id, "ARCHIVED")}
-            className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
-          >
-            Татгалзах
-          </Button>
+          {type === "group" ? (
+            <Button
+              loading={loading}
+              onClick={() => postHandler(post.id, "ARCHIVED")}
+              className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
+            >
+              Татгалзах
+            </Button>
+          ) : type === "user" ? (
+            <Link href={`/post/edit/${post.id}`}>
+              <a>
+                <Button
+                  round
+                  className={
+                    "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                  }
+                >
+                  <p className="">Засах</p>
+                </Button>
+              </a>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>

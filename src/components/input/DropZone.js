@@ -26,7 +26,7 @@ const DropZone = ({
   const [dropZoneFiles, setDropZoneFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: setDropZoneFiles,
-    accept: "image/*, video/*",
+    accept: "image/jpeg, image/png, image/gif, video/*",
     noKeyboard: true,
     noClick: false,
     multiple: true,

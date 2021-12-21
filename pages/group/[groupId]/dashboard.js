@@ -671,6 +671,7 @@ const Dashboard = ({ ssrData }) => {
                           <>
                             <GroupPostItem
                               type={"group"}
+                              status={"PENDING"}
                               key={index}
                               index={index}
                               imageSrc={pendingPost?.items?.items[0]?.file}

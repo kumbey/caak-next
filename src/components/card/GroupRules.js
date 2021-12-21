@@ -27,6 +27,7 @@ const GroupRules = ({ groupId }) => {
 
   useEffect(() => {
     getGroupRule();
+    // eslint-disable-next-line
   }, [groupId]);
 
   return groupRules ? (

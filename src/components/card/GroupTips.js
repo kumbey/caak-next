@@ -25,6 +25,7 @@ const GroupTips = ({ groupId }) => {
 
   useEffect(() => {
     getGroupAttention();
+    // eslint-disable-next-line
   }, [groupId]);
   return groupTips ? (
     <div className={"flex flex-col bg-white rounded-square pb-[20px]"}>

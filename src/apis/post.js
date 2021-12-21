@@ -17,7 +17,7 @@ export const crtPost = async (newPost, userId) => {
     post = _objectWithoutKeys(post, ["id"]);
     post.status = "POSTING";
     post.updated_user_id = userId;
-    post.commentType = true;
+    // post.commentType = true;
     post.user_id = userId;
 
     const savedPost = getReturnData(

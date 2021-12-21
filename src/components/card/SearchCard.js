@@ -1,9 +1,15 @@
 import CardHeader from "./FeedCard/CardHeader";
 import Divider from "../divider";
 import Image from "next/image";
-import { generateFileUrl, getGenderImage } from "../../utility/Util";
+import {
+  generateFileUrl,
+  getFileUrl,
+  getGenderImage,
+} from "../../utility/Util";
 import Link from "next/link";
 import AnimatedCaakButton from "../button/animatedCaakButton";
+import Video from "../video";
+import React from "react";
 
 const SearchCard = ({ type, result }) => {
   return result ? (
@@ -15,7 +21,7 @@ const SearchCard = ({ type, result }) => {
       >
         <div className={"flex flex-row"}>
           <div className={"relative w-[60px] h-[60px] rounded-full"}>
-            {result.profile && (
+            {type === "GROUP" && (
               <Image
                 className={"rounded-square"}
                 width={60}
@@ -29,7 +35,7 @@ const SearchCard = ({ type, result }) => {
                 }
               />
             )}
-            {result.pic && (
+            {type === "USER" && (
               <Image
                 className={"rounded-full"}
                 width={60}
@@ -56,7 +62,7 @@ const SearchCard = ({ type, result }) => {
                 </Link>
               )}
               {type === "USER" && (
-                <Link shallow href={`/post/view/${result.id}`}>
+                <Link shallow href={`/user/${result.id}/profile`}>
                   <a>{result.nickname}</a>
                 </Link>
               )}
@@ -134,14 +140,23 @@ const SearchCard = ({ type, result }) => {
                     "relative ml-[20px] w-[100px] h-[100px] relative rounded-square flex-shrink-0"
                   }
                 >
-                  <Image
-                    className={"rounded-square"}
-                    width={100}
-                    height={100}
-                    objectFit={"cover"}
-                    alt={"sda"}
-                    src={generateFileUrl(result.items.items[0].file)}
-                  />
+                  {result.items.items[0].file.type.startsWith("video") ? (
+                    <Video
+                      hideControls
+                      thumbnailIcon
+                      videoClassname={"object-contain rounded-[4px]"}
+                      src={generateFileUrl(result.items.items[0].file)}
+                    />
+                  ) : (
+                    <Image
+                      className={"rounded-square"}
+                      width={100}
+                      height={100}
+                      objectFit={"cover"}
+                      alt={""}
+                      src={generateFileUrl(result.items.items[0].file)}
+                    />
+                  )}
                 </div>
               </a>
             </Link>

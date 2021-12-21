@@ -268,7 +268,7 @@ const Post = ({ ssrData }) => {
               }
             })}
           </div>
-          {post.status === "CONFIRMED" && (
+          {post.commentType && post.status === "CONFIRMED" && (
             <CommentSection
               jumpToCommentId={jumpToComment}
               commentRef={commentRef}

@@ -376,7 +376,7 @@ const PostItem = ({ ssrData }) => {
                     post={post}
                   />
                 </div>
-                {post.status === "CONFIRMED" && (
+                {post.commentType && post.status === "CONFIRMED" && (
                   <div
                     className={"flex-1 w-full bg-caak-liquidnitrogen px-[24px]"}
                   >
@@ -403,7 +403,7 @@ const PostItem = ({ ssrData }) => {
               </div>
             </div>
 
-            {post.status === "CONFIRMED" && (
+            {post.commentType && post.status === "CONFIRMED" && (
               <AddComment
                 commentInputValue={commentInputValue}
                 setCommentInputValue={setCommentInputValue}

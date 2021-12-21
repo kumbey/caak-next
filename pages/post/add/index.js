@@ -49,6 +49,45 @@ const AddPost = () => {
     items: [],
   });
 
+  const getGroup = async (id) => {
+    try {
+      let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
+      resp = getReturnData(resp);
+      setGroupData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const getGroups = async () => {
+    try {
+      const grData = {
+        adminModerator: [],
+        member: [],
+      };
+
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+
+      resp = getReturnData(resp).items;
+
+      for (let i = 0; i < resp.length; i++) {
+        const item = resp[i];
+        if (item.role_on_group === "MEMBER") {
+          grData.member.push(item);
+        } else if (
+          item.role_on_group === "ADMIN" ||
+          item.role_on_group === "MODERATOR"
+        ) {
+          grData.adminModerator.push(item);
+        }
+      }
+
+      setGroupData(grData);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
   useEffect(() => {
     if (postId) {
       getGroups();
@@ -99,45 +138,6 @@ const AddPost = () => {
     // eslint-disable-next-line
   }, [groupData, selectedGroupId]);
 
-  const getGroup = async (id) => {
-    try {
-      let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
-      resp = getReturnData(resp);
-      setGroupData(resp);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
-  const getGroups = async () => {
-    try {
-      const grData = {
-        adminModerator: [],
-        member: [],
-      };
-
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-
-      resp = getReturnData(resp).items;
-
-      for (let i = 0; i < resp.length; i++) {
-        const item = resp[i];
-        if (item.role_on_group === "MEMBER") {
-          grData.member.push(item);
-        } else if (
-          item.role_on_group === "ADMIN" ||
-          item.role_on_group === "MODERATOR"
-        ) {
-          grData.adminModerator.push(item);
-        }
-      }
-
-      setGroupData(grData);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
   const loadPost = async (id) => {
     try {
       const resp = await API.graphql(graphqlOperation(getPost, { id: id }));
@@ -167,7 +167,7 @@ const AddPost = () => {
           },
         },
         `/user/${user.id}/dashboard`,
-          {shallow: true}
+        { shallow: true }
       );
     } catch (ex) {
       setLoading(false);

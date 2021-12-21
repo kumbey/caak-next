@@ -28,8 +28,7 @@ const GroupRule = ({ groupData, ...props }) => {
   };
 
   const handleDelete = async (index) => {
-    let parsed =
-      groupData?.g_rules !== "" ? JSON.parse(groupData?.g_rules) : "";
+    let parsed = groupData?.g_rules ? JSON.parse(groupData?.g_rules) : "";
     parsed.splice(index, 1);
     groupData.g_rules = JSON.stringify([...parsed]);
     if (parsed.length === 0) {
@@ -99,7 +98,7 @@ const GroupRule = ({ groupData, ...props }) => {
   }, []);
   return (
     <div className="flex ">
-      {groupData?.g_rules !== "" ? (
+      {groupData?.g_rules ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">
             <p className="font-semibold text-caak-aleutian font-intertext-20px text-22px">

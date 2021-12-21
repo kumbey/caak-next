@@ -140,6 +140,7 @@ const GroupRule = ({ groupData, ...props }) => {
             <div className="flex mb-[20px]">
               <div className="mr-[10px] h-[28px] w-[23px]">
                 <Image
+                  alt={""}
                   src={clipboardImg}
                   height={28}
                   width={23}

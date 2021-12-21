@@ -68,6 +68,7 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
     } else {
       getUserSearchInfo();
     }
+    // eslint-disable-next-line
   }, []);
 
   const linkHandler = () => {

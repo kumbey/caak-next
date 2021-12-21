@@ -23,8 +23,6 @@ import { API, graphqlOperation } from "aws-amplify";
 import { deleteFile } from "../../../graphql-custom/file/mutation";
 import Loader from "../../loader";
 import { useRouter } from "next/router";
-import Head from "next/head";
-import Consts from "../../../utility/Consts";
 
 const DefaultUserProfileLayout = ({ user, children }) => {
   const router = useRouter();
@@ -537,6 +535,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               <div className={"flex flex-col w-full"}>
                 {JSON.parse(user?.meta)?.facebook && (
                   <a
+                    rel={"noreferrer"}
                     href={`https://www.facebook.com/${
                       JSON.parse(user?.meta).facebook
                     }`}
@@ -570,6 +569,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 )}
                 {JSON.parse(user?.meta)?.twitter && (
                   <a
+                    rel={"noreferrer"}
                     href={`https://www.twitter.com/${
                       JSON.parse(user?.meta).twitter
                     }`}
@@ -599,6 +599,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 )}
                 {JSON.parse(user?.meta)?.instagram && (
                   <a
+                    rel={"noreferrer"}
                     href={`https://www.instagram.com/${
                       JSON.parse(user?.meta).instagram
                     }`}
@@ -628,6 +629,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 )}
                 {JSON.parse(user?.meta)?.tiktok && (
                   <a
+                    rel={"noreferrer"}
                     href={`https://www.tiktok.com/@${
                       JSON.parse(user?.meta).tiktok
                     }`}

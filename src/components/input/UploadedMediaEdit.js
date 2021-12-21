@@ -219,9 +219,10 @@ const UploadedMediaEdit = ({
   useEffect(() => {
     setPost({
       ...post,
-      commentType: allowComment ? true : false,
+      commentType: !!allowComment,
       ...(caakContent ? { owned: "CAAK" } : {}),
     });
+    // eslint-disable-next-line
   }, [allowComment, caakContent]);
 
   useEffect(() => {

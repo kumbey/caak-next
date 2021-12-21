@@ -227,10 +227,7 @@ const Group = ({ ssrData }) => {
         totalMember={totalMember}
         columns={2}
       >
-        {(isTablet && groupData.role_on_group === "ADMIN") ||
-        groupData.role_on_group === "MODERATOR" ? (
-          <GroupAdminPanel groupData={groupData} />
-        ) : null}
+        {isTablet && <GroupAdminPanel groupData={groupData} />}
         <GroupSortButtons
           activeIndex={activeIndex}
           activeView={activeView}

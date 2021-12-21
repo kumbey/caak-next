@@ -17,11 +17,13 @@ import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
 import Video from "../video";
 import ImageCarousel from "../carousel/ImageCarousel";
+import { useRouter } from "next/router";
 
-const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
+const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
   const postHandler = async (id, status) => {
     setLoading(true);
     try {
@@ -122,7 +124,11 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                     <Image
                       alt={""}
                       layout={"fill"}
-                      src={post.user.pic ? generateFileUrl(post.user.pic) : getGenderImage(post.user.gender).src}
+                      src={
+                        post.user.pic
+                          ? generateFileUrl(post.user.pic)
+                          : getGenderImage(post.user.gender).src
+                      }
                       objectFit={"cover"}
                       className={"rounded-full"}
                     />
@@ -189,8 +195,14 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
           <div className="cursor-pointer flex w-[180px] md:w-[280px] lg:w-[306px] flex-shrink-0 items-center mr-[10px] md:mr-[36px]">
             <div
               onClick={() => {
-                setActiveIndex(index);
-                setIsModalOpen(true);
+                if (type === "group" && status === "PENDING") {
+                  setActiveIndex(index);
+                  setIsModalOpen(true);
+                } else {
+                  router.push(`/post/view/${post.id}`, undefined, {
+                    shallow: true,
+                  });
+                }
               }}
               className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}
             >
@@ -220,12 +232,19 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
 
             <div
               onClick={() => {
-                setActiveIndex(index);
-                setIsModalOpen(true);
+                if (type === "group" && status === "PENDING") {
+                  setActiveIndex(index);
+                  setIsModalOpen(true);
+                }
               }}
               className="cursor-pointer text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium"
             >
-              {post.title}
+              {type === "user" && (
+                <Link href={`/post/view/${post.id}`}>
+                  <a>{post.title}</a>
+                </Link>
+              )}
+              {status === "PENDING" && post.title}
             </div>
           </div>
           <div className="flex flex-shrink-0 items-center w-[141px] mr-[10px] md:mr-[69px]">

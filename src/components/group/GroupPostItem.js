@@ -18,19 +18,11 @@ import { useRouter } from "next/router";
 import PostDenyModal from "../modals/postDenyModal";
 import PendingPostApproveModal from "../modals/pendingPostApproveModal";
 
-const GroupPostItem = ({
-  imageSrc,
-  post,
-  video,
-  type,
-  index,
-  status,
-}) => {
+const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
-  console.log(status)
   const router = useRouter();
   const postHandler = async ({ id, status, message }) => {
     setLoading(true);

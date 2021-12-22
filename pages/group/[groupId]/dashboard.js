@@ -684,19 +684,17 @@ const Dashboard = ({ ssrData }) => {
                     {pendingPosts.length > 0 &&
                       pendingPosts.map((pendingPost, index) => {
                         return (
-                          <>
-                            <GroupPostItem
-                              type={"group"}
-                              key={index}
-                              index={index}
-                              imageSrc={pendingPost?.items?.items[0]?.file}
-                              video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                                "video"
-                              )}
-                              post={pendingPost}
-                              className="ph:mb-4 sm:mb-4"
-                            />
-                          </>
+                          <GroupPostItem
+                            type={"group"}
+                            key={index}
+                            index={index}
+                            imageSrc={pendingPost?.items?.items[0]?.file}
+                            video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={pendingPost}
+                            className="ph:mb-4 sm:mb-4"
+                          />
                         );
                       })}
                   </InfiniteScroll>

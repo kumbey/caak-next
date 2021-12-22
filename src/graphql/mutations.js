@@ -2585,6 +2585,7 @@ export const createPostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -2599,6 +2600,7 @@ export const updatePostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -2613,6 +2615,7 @@ export const deletePostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }

@@ -4904,6 +4904,7 @@ export const onCreatePostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -4915,6 +4916,7 @@ export const onUpdatePostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -4926,6 +4928,7 @@ export const onDeletePostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }

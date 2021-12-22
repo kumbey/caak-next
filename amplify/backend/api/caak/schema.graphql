@@ -253,6 +253,7 @@ type PostHistory @model
   id: ID!
   post_id: ID!
   post: String!
+  description: String
 }
 
 type PostViews @model

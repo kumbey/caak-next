@@ -95,7 +95,7 @@ const SignInUp = ({ ...props }) => {
           <p className="">Google</p>
         </Button>
 
-        <Button
+        {/* <Button
           onClick={() => null}
           round
           className={
@@ -126,7 +126,7 @@ const SignInUp = ({ ...props }) => {
             />
             <p className="">Apple</p>
           </div>
-        </Button>
+        </Button> */}
       </div>
     </ModalLayout>
   );

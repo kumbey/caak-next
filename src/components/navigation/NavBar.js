@@ -76,6 +76,7 @@ export default function NavBar() {
       },
     }).subscribe({
       next: (data) => {
+        console.log(data)
         const onData = getReturnData(data, true);
         setSubscripTotal(JSON.parse(onData.totals));
       },

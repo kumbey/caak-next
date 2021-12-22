@@ -2668,6 +2668,7 @@ export const getPostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -2684,6 +2685,7 @@ export const listPostHistorys = /* GraphQL */ `
         id
         post_id
         post
+        description
         createdAt
         updatedAt
       }

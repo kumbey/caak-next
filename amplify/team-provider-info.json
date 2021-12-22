@@ -31,7 +31,7 @@
         },
         "totalsTrigger": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/totalsTrigger-44516535577956436c36-build.zip"
+          "s3Key": "amplify-builds/totalsTrigger-4e757270642f4d51466a-build.zip"
         },
         "triggerNotification": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",

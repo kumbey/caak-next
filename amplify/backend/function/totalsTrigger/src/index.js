@@ -5,13 +5,6 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-/* Amplify Params - DO NOT EDIT
-	API_CAAK_GRAPHQLAPIENDPOINTOUTPUT
-	API_CAAK_GRAPHQLAPIIDOUTPUT
-	ENV
-	REGION
-Amplify Params - DO NOT EDIT */
-
 const { getValuesFromRecord } = require("/opt/util/Util")
 const GraphqlAPI = require("./api/GraphqlAPI");
 const { changedTotals } = require("./queries/mutations");
@@ -57,6 +50,7 @@ exports.handler = async (event) => {
 
     return Promise.resolve('Successfully processed DynamoDB record');
   }catch(ex){
+    console.log(ex)
     return Promise.resolve('Error processed DynamoDB record %j', ex);
   }
 };

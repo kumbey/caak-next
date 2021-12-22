@@ -16,6 +16,8 @@ async function insert(newImg){
             status: newImg.status,
             search_id: newImg.id,
             group_id: newImg.group_id,
+            category_id: newImg.category_id,
+            groupAndStatus: `${newImg.group_id}#${newImg.status}`,
             search_key: "P",
             reactions: 0,
             total_reactions: 0,
@@ -70,9 +72,21 @@ async function get(id){
     }
 }
 
+async function update(data, pass, idField){
+    try{
+
+        let resp = await DBClient.update(data, pass, idField)
+        
+        return resp
+    }catch(ex){
+        return ex
+    }
+}
+
 module.exports = {
     insert: insert,
     modify: modify,
     remove: remove,
-    get: get
+    get: get,
+    update: update
 }

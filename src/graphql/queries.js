@@ -1192,6 +1192,16 @@ export const getPost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status_history {
+        items {
+          id
+          post_id
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       items {
         items {
           id
@@ -1213,12 +1223,14 @@ export const getPost = /* GraphQL */ `
         status
         search_id
         group_id
+        category_id
         search_key
         reactions
         total_reactions
         comments
         views
         shares
+        groupAndStatus
         createdAt
         updatedAt
         post {
@@ -1267,6 +1279,8 @@ export const getPost = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -1424,6 +1438,9 @@ export const listPosts = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -1432,12 +1449,14 @@ export const listPosts = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -1454,6 +1473,8 @@ export const listPosts = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -1544,6 +1565,9 @@ export const getPostByStatus = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -1552,12 +1576,14 @@ export const getPostByStatus = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -1574,6 +1600,8 @@ export const getPostByStatus = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -1664,6 +1692,9 @@ export const getPostByGroup = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -1672,12 +1703,14 @@ export const getPostByGroup = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -1694,6 +1727,8 @@ export const getPostByGroup = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -1784,6 +1819,9 @@ export const getPostByUser = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -1792,12 +1830,14 @@ export const getPostByUser = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -1814,6 +1854,8 @@ export const getPostByUser = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -1904,6 +1946,9 @@ export const listPostByOwned = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -1912,12 +1957,14 @@ export const listPostByOwned = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -1934,9 +1981,72 @@ export const listPostByOwned = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
+      }
+      nextToken
+    }
+  }
+`;
+export const getPostStatusHistory = /* GraphQL */ `
+  query GetPostStatusHistory($id: ID!) {
+    getPostStatusHistory(id: $id) {
+      id
+      post_id
+      description
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listPostStatusHistorys = /* GraphQL */ `
+  query ListPostStatusHistorys(
+    $filter: ModelPostStatusHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostStatusHistorys(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        post_id
+        description
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listPostStatusHistoryByPost = /* GraphQL */ `
+  query ListPostStatusHistoryByPost(
+    $post_id: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostStatusHistoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostStatusHistoryByPost(
+      post_id: $post_id
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        post_id
+        description
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -2036,6 +2146,9 @@ export const getPostItems = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -2044,12 +2157,14 @@ export const getPostItems = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -2066,6 +2181,8 @@ export const getPostItems = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -2173,12 +2290,14 @@ export const getPostTotal = /* GraphQL */ `
       status
       search_id
       group_id
+      category_id
       search_key
       reactions
       total_reactions
       comments
       views
       shares
+      groupAndStatus
       createdAt
       updatedAt
       post {
@@ -2246,6 +2365,9 @@ export const getPostTotal = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -2254,12 +2376,14 @@ export const getPostTotal = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -2276,6 +2400,8 @@ export const getPostTotal = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -2303,12 +2429,176 @@ export const listPostTotals = /* GraphQL */ `
         status
         search_id
         group_id
+        category_id
         search_key
         reactions
         total_reactions
         comments
         views
         shares
+        groupAndStatus
+        createdAt
+        updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          updatedAt
+          owned
+          createdAt
+          version
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listPostOrderByReactions = /* GraphQL */ `
+  query ListPostOrderByReactions(
+    $status: String
+    $total_reactions: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostTotalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostOrderByReactions(
+      status: $status
+      total_reactions: $total_reactions
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        post_id
+        status
+        search_id
+        group_id
+        category_id
+        search_key
+        reactions
+        total_reactions
+        comments
+        views
+        shares
+        groupAndStatus
+        createdAt
+        updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          updatedAt
+          owned
+          createdAt
+          version
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listPostByGroupOrderByReactions = /* GraphQL */ `
+  query ListPostByGroupOrderByReactions(
+    $groupAndStatus: String
+    $total_reactions: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostTotalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostByGroupOrderByReactions(
+      groupAndStatus: $groupAndStatus
+      total_reactions: $total_reactions
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        post_id
+        status
+        search_id
+        group_id
+        category_id
+        search_key
+        reactions
+        total_reactions
+        comments
+        views
+        shares
+        groupAndStatus
+        createdAt
+        updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          updatedAt
+          owned
+          createdAt
+          version
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listPostByCategoryOrderByReactions = /* GraphQL */ `
+  query ListPostByCategoryOrderByReactions(
+    $category_id: ID
+    $total_reactions: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostTotalFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostByCategoryOrderByReactions(
+      category_id: $category_id
+      total_reactions: $total_reactions
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        post_id
+        status
+        search_id
+        group_id
+        category_id
+        search_key
+        reactions
+        total_reactions
+        comments
+        views
+        shares
+        groupAndStatus
         createdAt
         updatedAt
         post {
@@ -2706,6 +2996,9 @@ export const getComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -2714,12 +3007,14 @@ export const getComment = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -2736,6 +3031,8 @@ export const getComment = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -3853,6 +4150,9 @@ export const getReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -3861,12 +4161,14 @@ export const getReportedPost = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -3883,6 +4185,8 @@ export const getReportedPost = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4092,6 +4396,8 @@ export const getGroupUsers = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -4222,6 +4528,8 @@ export const listGroupUserss = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4285,6 +4593,8 @@ export const listGroupByUserAndRole = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4346,6 +4656,8 @@ export const getGroupUsersByGroup = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4409,6 +4721,8 @@ export const listGroupUsersByGroup = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4429,6 +4743,8 @@ export const getGroup = /* GraphQL */ `
       followed
       role_on_group
       featured
+      g_rules
+      g_attentions
       createdAt
       updatedAt
       profile {
@@ -4586,6 +4902,8 @@ export const getGroup = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4610,6 +4928,8 @@ export const listGroups = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -4723,6 +5043,8 @@ export const listGroupByFeatured = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -4826,6 +5148,8 @@ export const getGroupUsername = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -4933,6 +5257,8 @@ export const listGroupUsernames = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4971,6 +5297,8 @@ export const groupByIdName = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }

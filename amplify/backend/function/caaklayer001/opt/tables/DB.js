@@ -104,7 +104,7 @@ const db = (table , client) => {
             }
 
             if(!idField){
-                idField: "id"
+                idField = "id"
             }
             
             const now = new Date().toISOString()
@@ -130,6 +130,7 @@ const db = (table , client) => {
             }
             return result.Attributes
         } catch (err) {
+            console.log(err)
             throw err;
         }
     }

@@ -10,12 +10,12 @@ function genUpdateAttributes(data, pass){
     let keys = Object.keys(data)
     keys.map((key, index) => {
         if(!pass.includes(key)){
-            expression += ` #${index} = :${key}`
+            expression += ` #${index} = :${index}`
             if(index !== (keys.length - 1)){
                 expression += `,`
             }
             names[`#${index}`] = key
-            values[`:${key}`] = data[key]
+            values[`:${index}`] = data[key]
         }
     })
 

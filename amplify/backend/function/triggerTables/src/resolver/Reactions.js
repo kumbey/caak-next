@@ -66,7 +66,11 @@ async function changeReactions(newImg, increase){
 
             const post = await PostDB.get(newImg.item_id)
 
-            await PostTotal.modify(post.id , items)
+            await PostTotal.modify(post.id , [...items, {
+                field: "total_reactions",
+                increase: increase,
+                count: 1
+            }])
             items[0].field = "post_reactions"
             await UserTotal.modify(post.user_id, items)
             
@@ -81,13 +85,14 @@ async function changeReactions(newImg, increase){
             const post = await PostDB.get(postItem.post_id)
 
             await PostItemsTotal.modify(postItem.id, items)
-            await PostTotal.modify(post.id , {
+            items[0].field = "post_items_reactions"
+            await UserTotal.modify(post.user_id, items)
+
+            await PostTotal.modify(post.id , [{
                 field: "total_reactions",
                 increase: increase,
                 count: 1
-            })
-            items[0].field = "post_items_reactions"
-            await UserTotal.modify(post.user_id, items)
+            }])
 
             react.item_id = postItem.id
             react.action = `REACTION_${newImg.on_to}`

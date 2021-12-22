@@ -158,6 +158,7 @@ type Post @model @versioned
   f_text: String
   commentType: Boolean!
   status: String!
+  status_history: [PostStatusHistory] @connection(keyName:"byPost" fields:["id"])
   user_id: ID!
   user: User @connection(fields:["user_id"])
   updated_user_id: ID!
@@ -172,6 +173,18 @@ type Post @model @versioned
   comments: [Comment] @connection(keyName:"byPostQ", fields:["id"])
   updatedAt: AWSDateTime!
   owned: String
+}
+
+type PostStatusHistory @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byPost", fields:["post_id","createdAt"] , queryField:"listPostStatusHistoryByPost"){
+  id: ID!
+  post_id: ID!
+  description: String
+  createdAt: AWSDateTime
 }
 
 type PostItems @model
@@ -201,18 +214,22 @@ type PostTotal @model(mutations: null)
     { allow: public, provider: iam, operations: [read]}
   ])
   @key(fields:["post_id"])
-  @key(name:"orderByReactions", fields:["status","total_reactions"] queryField:"listPostOrderByReactions"){
+  @key(name:"orderByReactions", fields:["status","total_reactions"] queryField:"listPostOrderByReactions")
+  @key(name:"byGroupOrderByReactions", fields:["groupAndStatus","total_reactions"] queryField:"listPostByGroupOrderByReactions")
+  @key(name:"byCategoryOrderByReactions", fields:["category_id","total_reactions"] queryField:"listPostByCategoryOrderByReactions"){
   post_id: ID!
   post: Post @connection(fields:["post_id"])
   status: String
   search_id: ID!
   group_id: ID
+  category_id: ID!
   search_key: String
   reactions: Int!
   total_reactions: Int!
   comments: Int!
   views: Int!
   shares: Int!
+  groupAndStatus: String
 }
 
 type PostItemsTotal @model(mutations: null)
@@ -379,6 +396,8 @@ type Group @model
   role_on_group: String @function(name:"userRoleOnGroup-${env}")
   username: GroupUsername! @connection(fields:["id"])
   featured: String
+  g_rules: String
+  g_attentions: String
 }
 
 type GroupUsername @model(mutations: null)

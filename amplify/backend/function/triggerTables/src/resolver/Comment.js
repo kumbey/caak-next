@@ -2,7 +2,7 @@ const { getValuesFromRecord } = require("/opt/util/Util")
 const CommentTotal = require("../db/CommentTotal")
 const PostItemsTotal = require("../db/PostItemsTotal")
 const PostTotal = require("../db/PostTotal")
-const UserTotal = require("../db/PostItemsTotal")
+const UserTotal = require("../db/UserTotal")
 const NotificationDB = require("../db/Notification")
 
 async function insert(record){

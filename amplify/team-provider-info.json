@@ -15,7 +15,7 @@
       "function": {
         "caaklayer001": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion26fba011-build.zip"
+          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion668f5ce1-build.zip"
         },
         "notification": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
@@ -39,7 +39,7 @@
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/triggerTables-3447746f6a5052325934-build.zip"
+          "s3Key": "amplify-builds/triggerTables-5374612f67375831696a-build.zip"
         },
         "userRoleOnGroup": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
@@ -47,7 +47,7 @@
         },
         "aura": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/aura-6865396d4269552f4d2b-build.zip"
+          "s3Key": "amplify-builds/aura-2f67473931586b41642b-build.zip"
         }
       },
       "auth": {
@@ -62,7 +62,9 @@
           "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
           "authRoleName": "Cognito_caakidpAuth_Role",
           "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
-          "unauthRoleName": "Cognito_caakidpUnauth_Role"
+          "unauthRoleName": "Cognito_caakidpUnauth_Role",
+          "googleClientId": "208027053621-2h2q0u111jurnufk6onhmpf22h4q20dv.apps.googleusercontent.com",
+          "facebookAppId": "1831776936994333"
         }
       }
     }

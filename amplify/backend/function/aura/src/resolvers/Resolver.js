@@ -18,10 +18,11 @@ async function calcAura(ctx){
 
         point += resp.confirmed * 20
         point += resp.followers * 15
-        point += resp.followers * 15
         point += resp.post_reactions * 15
         point += resp.post_items_reactions * 10
         point += resp.comment_reactions * 5
+
+        // report += 30 HERE1
 
         return point
 

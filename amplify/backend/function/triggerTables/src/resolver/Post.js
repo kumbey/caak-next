@@ -40,21 +40,20 @@ async function insert(record){
 
 async function modify(record){
     try{
-
         const { NewImage, OldImage } = record
         const newImg = getValuesFromRecord(NewImage)
         const oldImg = getValuesFromRecord(OldImage)
         
-        if(newImg.group_id !== oldImg.group_id){
-            await PostTotal.update({
-                post_id: newImg.id,
-                group_id: newImg.group_id,
-                status: newImg.status,
-                "group_id#status": `${newImg.group_id}#${newImg.status}`
-            },["post_id"], "post_id")
-        }
+        await PostTotal.update({
+            post_id: newImg.id,
+            group_id: newImg.group_id,
+            status: newImg.status,
+            category_id: newImg.category_id,
+            groupAndStatus: `${newImg.group_id}#${newImg.status}`
+        },["post_id"], "post_id")
 
-        if(newImg.status !== oldImg.status && newImg.status !== "POSTING"){
+
+        if(newImg.status !== oldImg.status){
              
             //UPDATE USER TOTAL
             await UserTotal.modify(newImg.user_id, [

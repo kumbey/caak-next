@@ -50,6 +50,7 @@ const DefaultAddPostLayout = ({ children, selectedGroup }) => {
                 <GroupTips />
               </>
             )}
+                <GroupTips/>
 
             <FooterSidebar
               containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}

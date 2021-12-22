@@ -129,9 +129,9 @@ const ImageCarousel = ({
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 key={index}
-                className={
-                  "w-full h-full flex-shrink-0 transition duration-300"
-                }
+                className={`w-full h-full flex items-center flex-shrink-0 transition duration-300 ${
+                  card ? "min-h-[432px] max-h-[770px]" : ""
+                } `}
                 style={{
                   transform: `translateX(-${activeIndex * 100}%)`,
                 }}
@@ -139,13 +139,13 @@ const ImageCarousel = ({
                 <div
                   className={`${
                     mediaContainerClassname ? mediaContainerClassname : ""
-                  } relative flex justify-center items-center  bg-black`}
+                  } relative flex justify-center items-center `}
                 >
                   {item.file.type.startsWith("video") ? (
                     <Video
                       durationIndicator={duration}
                       postId={postId}
-                      route
+                      route={route}
                       videoClassname={"object-contain rounded-none"}
                       src={getFileUrl(item.file)}
                     />
@@ -158,28 +158,29 @@ const ImageCarousel = ({
                       {route ? (
                         <Link shallow href={`/post/view/${postId}`}>
                           <a>
-                            <div
-                              style={{
-                                width: "10%",
-                                height: "10%",
-                                filter: "blur(2px)",
-                                position: "absolute",
-                                transform: "scale(12)",
-                                left: "50%",
-                                top: "50%",
-                                opacity: "0.3",
-                                // zIndex: -1
-                              }}
-                            >
-                              <div className={"relative w-full h-full"}>
-                                <Image
-                                  objectFit={"cover"}
-                                  layout={"fill"}
-                                  alt={item.file.type}
-                                  src={getFileUrl(item.file)}
-                                />
-                              </div>
-                            </div>
+                            {/*<div*/}
+                            {/*  style={{*/}
+                            {/*    width: "10%",*/}
+                            {/*    height: "10%",*/}
+                            {/*    filter: "blur(2px)",*/}
+                            {/*    position: "absolute",*/}
+                            {/*    transform: "scale(12)",*/}
+                            {/*    left: "50%",*/}
+                            {/*    top: "50%",*/}
+                            {/*    opacity: "0.3",*/}
+                            {/*    // zIndex: -1*/}
+                            {/*  }}*/}
+                            {/*>*/}
+                            {/*  <div className={"relative w-full h-full"}>*/}
+                            {/*    <Image*/}
+                            {/*      objectFit={"cover"}*/}
+                            {/*      layout={"fill"}*/}
+                            {/*      alt={item.file.type}*/}
+                            {/*      src={getFileUrl(item.file)}*/}
+                            {/*    />*/}
+                            {/*  </div>*/}
+                            {/*</div>*/}
+
                             <CardImageContainer
                               route
                               postId={postId}
@@ -203,7 +204,7 @@ const ImageCarousel = ({
                               // zIndex: -1
                             }}
                           >
-                            <div className={"relative w-full h-full"}>
+                            <div className={"relative w-full h-auto"}>
                               <Image
                                 objectFit={"cover"}
                                 layout={"fill"}

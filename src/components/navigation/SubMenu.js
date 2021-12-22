@@ -11,11 +11,15 @@ import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
 import { useRouter } from "next/router";
 import NotificationDropDown from "./NotificationDropDown";
+import useMediaQuery from "./useMeduaQuery";
+import SearchInput from "../input/SearchInput";
 
 const SubMenu = ({ params }) => {
+  const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
   const router = useRouter();
+
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
@@ -26,6 +30,7 @@ const SubMenu = ({ params }) => {
   const toggleMenu = () => {
     params.setIsMenuOpen(!params.isMenuOpen);
   };
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -41,10 +46,32 @@ const SubMenu = ({ params }) => {
           "flex flex-row items-center w-full justify-around md:w-auto md:justify-center"
         }
       >
-        <div className={"flex items-center mr-0 block md:hidden"}>
+        <div
+          className={`${
+            isSearchInputOpen ? "" : "hidden"
+          } mobileSearch w-full fixed top-0 left-0 bg-transparent`}
+        >
+          <div className="w-full h-[52px] border-t-[1px] border-caak-liquidnitrogen shadow-card bg-white p-[8px]">
+            <SearchInput
+              containerStyle={"h-[36px] w-full"}
+              hideLabel
+              placeholder={"Групп болон пост хайх"}
+            />
+          </div>
+        </div>
+
+        <div
+          onClick={() => {
+            router.push("/");
+          }}
+          className={"flex items-center mr-0 block md:hidden"}
+        >
           <span className="icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
         </div>
-        <div className={"flex items-center mr-0 block md:hidden"}>
+        <div
+          onClick={() => isSetSearchInputOpen(!isSearchInputOpen)}
+          className={"flex items-center mr-0 block md:hidden"}
+        >
           <span className="p-2 rounded-lg icon-fi-rs-search text-caak-generalblack text-24px py-px-8" />
         </div>
         <div className={"mr-0 md:mr-[10px]"}>
@@ -154,7 +181,13 @@ const SubMenu = ({ params }) => {
           {isLogged && user ? (
             <img
               ref={menuRef}
-              onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
+              onClick={() => {
+                if (isTablet) {
+                  router.push(`/user/${user.id}/profile`);
+                } else {
+                  params.setIsMenuOpen(!params.isMenuOpen);
+                }
+              }}
               alt={user.nickname}
               src={
                 user.pic

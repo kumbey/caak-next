@@ -1,6 +1,6 @@
 import Button from "../button";
 import { useUser } from "../../context/userContext";
-import { getFileUrl } from "../../utility/Util";
+import {getFileUrl, getGenderImage} from "../../utility/Util";
 import React, { useEffect } from "react";
 import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
@@ -55,7 +55,7 @@ const MobileSideMenu = ({ setOpen }) => {
                   {isLogged ? (
                     <img
                       alt={user.nickname}
-                      src={user.pic ? getFileUrl(user.pic) : Dummy.img("50x50")}
+                      src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
                       className={"block w-c13 h-c13 object-cover rounded-full"}
                     />
                   ) : (

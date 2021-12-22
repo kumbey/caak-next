@@ -22,6 +22,7 @@ import { useWrapper } from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
+import {useRouter} from "next/router";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -88,6 +89,7 @@ const Feed = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [trendingPosts, setTrendingPosts] = useState({});
   const { feedSortType, setFeedSortType } = useWrapper();
+  const router = useRouter()
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -253,13 +255,16 @@ const Feed = ({ ssrData }) => {
     }
     // eslint-disable-next-line
   }, [feedSortType]);
-
   return (
     <>
       <Head>
         <title>Нүүр - {Consts.siteMainTitle}</title>
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
       </Head>
-      <div id={"feed"} className={"site-container"}>
+      {/*<FeedBack/>*/}
         <div className={`px-0 w-full relative`}>
           <div
             className={`h-full flex ${
@@ -355,7 +360,6 @@ const Feed = ({ ssrData }) => {
             </FeedLayout>
           </div>
         </div>
-      </div>
     </>
   );
 };

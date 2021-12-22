@@ -114,15 +114,16 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           className={"rounded-t-square"}
         />
       </div>
-      <div className={"flex flex-row px-[18px] absolute top-[24px] items-end"}>
+      <div className={"flex flex-row px-[18px] items-end"}>
         <Link shallow href={`/group/${group.id}`}>
           <a>
             <div
               className={
-                "flex items-center w-[48px] h-[48px] relative flex-shrink-0 border border-caak-titaniumwhite rounded-[6px]"
+                "flex relative top-[-12px] items-center w-[48px] h-[48px] relative flex-shrink-0 border border-caak-titaniumwhite rounded-[6px]"
               }
             >
               <Image
+                  quality={100}
                 alt={"profile picture"}
                 src={generateFileUrl(group.profile)}
                 objectFit={"cover"}
@@ -133,12 +134,12 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             </div>
           </a>
         </Link>
-        <div className={"ml-[11px] flex items-center pb-[10px]"}>
+        <div className={"ml-[11px] flex items-center pb-[10px] self-start mt-[11px]"}>
           <Link shallow href={`/group/${group.id}`}>
             <a>
               <p
                 className={
-                  "text-[15px] font-semibold text-caak-generalblack tracking-[0.23px] leading-[18px] truncate-1"
+                  "text-[15px] font-semibold text-caak-generalblack tracking-[0.23px] leading-[18px]"
                 }
               >
                 {group.name}
@@ -151,11 +152,11 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           )}
         </div>
       </div>
-      <div className={"p-[18px] mt-[38px]"}>
+      <div className={"p-[18px] pt-0"}>
         <div className={"mb-[24px]"}>
           <p
             className={
-              "text-15px text-caak-generalblack tracking-[0.23px] leading-[18px] truncate-2"
+              "text-15px text-caak-generalblack tracking-[0.23px] leading-[18px]"
             }
           >
             {group.about}

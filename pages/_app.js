@@ -6,9 +6,9 @@ import Storage from "@aws-amplify/storage";
 import awsExports from "../src/aws-exports";
 import NavBar from "../src/components/navigation/NavBar";
 import Modals from "../src/components/modals";
-import NProgress from 'nprogress'; //nprogress module
+import NProgress from "nprogress"; //nprogress module
 import "nprogress/nprogress.css"; //styles of nprogress
-import Router from 'next/router';
+import Router from "next/router";
 
 Amplify.configure({ ...awsExports, ssr: true });
 Storage.configure({ level: "public" });
@@ -21,9 +21,9 @@ function MyApp({ Component, pageProps }) {
     <WrapperProvider>
       <UserProvider>
         <NavBar />
-        {/*<div className={"site-container"}>*/}
-        <Component {...pageProps} />
-        {/*</div>*/}
+        <div className={"overflow-y-auto"}>
+          <Component {...pageProps} />
+        </div>
         <Modals />
       </UserProvider>
     </WrapperProvider>

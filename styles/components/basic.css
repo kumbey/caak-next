@@ -18,6 +18,12 @@
     width: var(--navBarSearchWidth);
   }
 
+  .mobileSearch {
+    margin-top: var(--topBarSize);
+    margin-bottom: var(--bottomTabSize);
+    max-height: calc(100vh - (var(--bottomTabSize) + var(--topBarSize)));
+  }
+
   .truncate-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -66,6 +72,7 @@
   }
 
   .mobileSideMenu {
+    max-height: calc(100vh - var(--bottomTabSize));
     width: 295px;
   }
 
@@ -147,7 +154,7 @@
     }
 
     .notificationMobile {
-      padding-top: var(--topBarSize);
+      /*padding-top: var(--topBarSize);*/
       height: calc(100vh - var(--bottomTabSize));
       min-height: 470px;
       border-radius: unset !important;
@@ -583,6 +590,13 @@
   }
   .unset-img > span {
     position: unset !important;
+  }
+
+  .feedBack {
+    background: transparent linear-gradient(180deg, #3f70fe 0%, #9a99fe 100%) 0
+      0 no-repeat padding-box;
+    box-shadow: 0 3px 20px #00000029;
+    border-radius: 8px;
   }
 }
 

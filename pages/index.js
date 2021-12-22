@@ -22,6 +22,7 @@ import { useWrapper } from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
+import FeedBack from "../src/components/feedback";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -259,7 +260,8 @@ const Feed = ({ ssrData }) => {
       <Head>
         <title>Нүүр - {Consts.siteMainTitle}</title>
       </Head>
-      <div id={"feed"} className={"site-container"}>
+      <FeedBack/>
+      <div className={"site-container"}>
         <div className={`px-0 w-full relative`}>
           <div
             className={`h-full flex ${

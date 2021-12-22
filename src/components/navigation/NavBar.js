@@ -143,14 +143,12 @@ export default function NavBar() {
           </nav>
         )}
 
-        <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-5 fixed w-full bg-white border-t shadow-sm">
-          <div className="flex items-center h-full px-[40px] py-1">
+        <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t shadow-sm">
+          <div className="flex items-center h-full md:px-[40px] py-1">
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="md:flex flex flex-row items-center hidden ">
                 <Logo
-                  onClick={() =>
-                    router.push("/", undefined, { shallow: true })
-                  }
+                  onClick={() => router.push("/", undefined, { shallow: true })}
                 />
               </div>
 

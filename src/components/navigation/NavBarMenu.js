@@ -58,21 +58,6 @@ export default function NavBarMenu({ type }) {
           </Link>
         </Fragment>
       )}
-      <Link shallow href={`/user/profile`}>
-        <a>
-          <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-            <div className={"flex justify-center items-center"}>
-              <span
-                className={
-                  "icon-fi-rs-moon text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
-                }
-              />
-            </div>
-
-            <p className="text-14px text-caak-extraBlack">Шөнийн горим</p>
-          </div>
-        </a>
-      </Link>
       {isLogged && <Divider className={"my-2"} />}
       <Link shallow href={`/about/aura`}>
         <a>
@@ -86,19 +71,6 @@ export default function NavBarMenu({ type }) {
           </div>
         </a>
       </Link>
-      <Link shallow href={`/newcaak`}>
-        <a>
-          <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-            <span
-              className={
-                "icon-fi-rs-refresh text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
-              }
-            />
-            <p className="text-14px text-caak-extraBlack">Шинэ өөрчлөлтүүд</p>
-          </div>
-        </a>
-      </Link>
-
       <Link shallow href={`/user/profile`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">

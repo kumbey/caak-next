@@ -21,12 +21,18 @@ import useInfiniteScroll from "../../hooks/useFetch";
 import { useRouter } from "next/router";
 import { isLogged } from "../../utility/Authenty";
 import { getPost } from "../../graphql-custom/post/queries";
+import useMediaQuery from "./useMeduaQuery";
+import useScrollBlock from "../../hooks/useScrollBlock";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [notifications, setNotifications] = useState([]);
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState();
+  const [blockScroll, allowScroll] = useScrollBlock();
+
   const subscriptions = {};
   const history = useRouter();
   // const location = useLocation();
@@ -227,13 +233,21 @@ const NotificationDropDown = ({ isOpen }) => {
     // eslint-disable-next-line
   }, [subscripNotifcation]);
 
+  useUpdateEffect(() => {
+    if (isOpen && isTablet) {
+      blockScroll();
+    } else {
+      allowScroll();
+    }
+  }, [isOpen, isTablet]);
+
   return (
     <div
       id={"notificationDropdown"}
       // onClick={(e) => e.stopPropagation()}
       className={`${
         !isOpen && "hidden"
-      } notificationMobile dropdown right-0 md:-right-10 fixed md:absolute z-2 mt-0 md:z-50 top-0 w-full md:w-px360 md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:w-[360px] md:my-2 flex flex-col bg-white cursor-auto  `}
+      } notificationMobile dropdown right-0 md:-right-10 fixed md:absolute z-2 mt-[54px] md:z-50 top-0 w-full md:w-px360 md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:w-[360px] md:my-2 flex flex-col bg-white cursor-auto  `}
     >
       <div
         className={
@@ -247,13 +261,22 @@ const NotificationDropDown = ({ isOpen }) => {
         >
           Мэдэгдэл
         </span>
-        <div className={"w-[24px] h-[24px] cursor-pointer"}>
-          <span
-            onClick={() => handleAllNotifications()}
+        <div className={"flex items-center justify-center"}>
+          <div className={"w-[24px] h-[24px] cursor-pointer"}>
+            <span
+              onClick={() => handleAllNotifications()}
+              className={
+                "icon-fi-rs-checkall text-caak-darkBlue  text-22px font-medium"
+              }
+            />
+          </div>
+          <div
             className={
-              "icon-fi-rs-checkall text-caak-darkBlue  text-22px font-medium"
+              "flex md:hidden ml-[10px] w-[24px] h-[24px] items-center justify-center bg-caak-titaniumwhite rounded-full"
             }
-          />
+          >
+            <span className={"icon-fi-rs-close text-[12px]"} />
+          </div>
         </div>
       </div>
       <div

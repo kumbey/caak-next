@@ -82,7 +82,7 @@ const Search = ({ ssrData }) => {
               setSortType={setSortType}
               sortType={sortType}
             />
-            <div className={"pt-[20px] w-full"}>
+            <div className={"pt-[20px] pb-[40px] w-full"}>
               <div className={"flex flex-row flex-wrap w-full"}>
                 {!loading ? (
                   sortSearchResultByKeyword(searchResult, router.query.q).map(

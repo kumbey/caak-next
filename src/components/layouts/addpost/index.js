@@ -20,7 +20,7 @@ const DefaultAddPostLayout = ({ children, selectedGroup }) => {
             "self-start text-caak-extraBlack text-[20px] font-semibold tracking-[0.3px] leading-[24px] mb-[12px]"
           }
         >
-          Пост оруулах
+            Таны өнөөдрийн саак мэдрэмж юу вэ?
         </p>
         <div
           className={`flex ${

@@ -28,8 +28,8 @@ const Notification = ({ item, ...props }) => {
         text.short = `таны пост`;
         text.long = `шалгалдаж байна`;
       } else {
-        text.short = `таны пост`;
-        text.long = `архивлагдлаа`;
+        text.short = `админ таны постыг`;
+        text.long = `татгалзлаа`;
       }
 
       return (

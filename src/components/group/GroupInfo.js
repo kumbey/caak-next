@@ -60,8 +60,9 @@ const GroupInfo = ({ groupData, totalMember }) => {
               </p>
             </a>
           </Link>
-
-          <span className={"icon-fi-rs-verified text-[16px] ml-[3px]"} />
+          {groupData.verified && (
+            <span className={"icon-fi-rs-verified text-[16px] ml-[3px]"} />
+          )}
         </div>
       </div>
 

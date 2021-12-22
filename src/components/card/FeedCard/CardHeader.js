@@ -11,6 +11,7 @@ import PostMoreMenu from "../PostMoreMenu";
 import Link from "next/link";
 import ProfileHoverCard from "../ProfileHoverCard";
 import Image from "next/image";
+import {useWrapper} from "../../../context/wrapperContext";
 
 const CardHeader = ({
   post,
@@ -18,6 +19,9 @@ const CardHeader = ({
   containerClassname,
   titleClassname,
 }) => {
+
+  const {setFeedSortType} = useWrapper()
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -114,7 +118,7 @@ const CardHeader = ({
             </div>
           </div>
         </div>
-        <div className={"flex flex-row items-center"}>
+        <div onClick={()=> setFeedSortType("CAAK")} className={"cursor-pointer flex flex-row items-center"}>
           {post.owned === "CAAK" && (
             <div
               className={

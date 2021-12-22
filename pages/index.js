@@ -199,7 +199,8 @@ const Feed = ({ ssrData }) => {
       let resp = await API.graphql({
         query: listPostOrderByReactions,
         variables: {
-          status: "POSTING",
+          status: "CONFIRMED",
+          sortDirection: "DESC",
           limit: 6,
         },
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",

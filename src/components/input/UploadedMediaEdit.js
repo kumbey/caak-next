@@ -21,6 +21,8 @@ import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import { generateFileUrl, getGenderImage } from "../../utility/Util";
 import Video from "../video";
+import {useRouter} from "next/router";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const thumbnailImageHandler = (item) => {
   if (item.file) {
@@ -150,6 +152,9 @@ const UploadedMediaEdit = ({
   const [viewDescription, setViewDescription] = useState(!add);
 
   const [loaded, setLoaded] = useState(false);
+
+  const router = useRouter()
+
   const maxLengths = {
     title: 200,
     imageDescription: 500,
@@ -212,6 +217,12 @@ const UploadedMediaEdit = ({
     element.target.style.height = element.target.scrollHeight + "px";
   }
 
+  const browserTabCloseHandler = (e) => {
+    e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    e.returnValue = "";
+  };
+
+
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -228,6 +239,25 @@ const UploadedMediaEdit = ({
   useEffect(() => {
     setSortItems([...post.items]);
   }, [post]);
+
+  useUpdateEffect(() => {
+    if (window) {
+      router.beforePopState(() => {
+        return window.confirm("Та гарахдаа итгэлтэй байна уу?");
+      });
+      window.onbeforeunload = browserTabCloseHandler;
+    }
+
+    return () => {
+      if (window) {
+        window.onbeforeunload = null;
+      }
+      router.beforePopState(() => {
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, [post, selectedGroup]);
 
   return (
     <div>

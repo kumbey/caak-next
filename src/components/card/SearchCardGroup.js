@@ -16,7 +16,6 @@ import { useRouter } from "next/router";
 const SearchCardGroup = ({ result, sortType }) => {
   const { user, isLogged } = useUser();
   const router = useRouter();
-  console.log(result)
   const followGroup = async () => {
     try {
       if (isLogged) {

@@ -4,6 +4,7 @@ import { getFileUrl } from "../../utility/Util";
 import Image from "next/image";
 import Video from "../video";
 import Link from "next/link";
+import useWindowSize from "../../hooks/useWindowSize";
 
 const ImageCarousel = ({
   items,
@@ -18,6 +19,8 @@ const ImageCarousel = ({
 }) => {
   const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
   const [touchPosition, setTouchPosition] = useState(null);
+  const size = useWindowSize();
+
   //Swipe left, right on mobile screen
   const handleTouchStart = (e) => {
     const touchDown = e.touches[0].clientX;
@@ -69,9 +72,11 @@ const ImageCarousel = ({
       document.removeEventListener("keydown", handler);
     };
   });
-
   return (
-    <div className={"relative h-full w-full overflow-hidden"}>
+    <div
+      style={!card ? { height: size.height } : {}}
+      className={`${card ? "h-full" : ""} relative w-full overflow-hidden`}
+    >
       {card && items.length > 1 && (
         <div
           className={

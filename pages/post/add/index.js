@@ -49,6 +49,43 @@ const AddPost = () => {
     items: [],
   });
 
+  const getGroup = async (id) => {
+    try {
+      let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
+      resp = getReturnData(resp);
+      setGroupData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const getGroups = async () => {
+    try {
+      const grData = {
+        adminModerator: [],
+        member: [],
+        unMember: [],
+      };
+
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+
+      resp = getReturnData(resp).items;
+
+      for (let i = 0; i < resp.length; i++) {
+        const item = resp[i];
+        if (item.role_on_group === "NOT_MEMBER") {
+          grData.unMember.push(item);
+        } else {
+          grData.adminModerator.push(item);
+        }
+      }
+
+      setGroupData(grData);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
   useEffect(() => {
     if (postId) {
       getGroups();
@@ -86,7 +123,7 @@ const AddPost = () => {
 
   useEffect(() => {
     if (groupData !== undefined && selectedGroupId) {
-      if (groupData.member) {
+      if (groupData.adminModerator) {
         const grData = [];
         for (const key in groupData) {
           grData.push(...groupData[key]);
@@ -98,45 +135,6 @@ const AddPost = () => {
     }
     // eslint-disable-next-line
   }, [groupData, selectedGroupId]);
-
-  const getGroup = async (id) => {
-    try {
-      let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
-      resp = getReturnData(resp);
-      setGroupData(resp);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
-  const getGroups = async () => {
-    try {
-      const grData = {
-        adminModerator: [],
-        member: [],
-      };
-
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-
-      resp = getReturnData(resp).items;
-
-      for (let i = 0; i < resp.length; i++) {
-        const item = resp[i];
-        if (item.role_on_group === "MEMBER") {
-          grData.member.push(item);
-        } else if (
-          item.role_on_group === "ADMIN" ||
-          item.role_on_group === "MODERATOR"
-        ) {
-          grData.adminModerator.push(item);
-        }
-      }
-
-      setGroupData(grData);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
 
   const loadPost = async (id) => {
     try {
@@ -167,14 +165,13 @@ const AddPost = () => {
           },
         },
         `/user/${user.id}/dashboard`,
-          {shallow: true}
+        { shallow: true }
       );
     } catch (ex) {
       setLoading(false);
       console.log(ex);
     }
   };
-
   return !permissionDenied ? (
     <>
       <Head>
@@ -210,7 +207,6 @@ const AddPost = () => {
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />
               )}
-
               <div className={"flex flex-row pb-4 px-4 justify-end"}>
                 <Button
                   onClick={() => router.back()}

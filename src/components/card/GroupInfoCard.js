@@ -146,7 +146,9 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             </a>
           </Link>
 
-          <span className={"icon-fi-rs-verified text-[16px] ml-[3px]"} />
+          {group.verified && (
+            <span className={"icon-fi-rs-verified text-[16px] ml-[3px]"} />
+          )}
         </div>
       </div>
       <div className={"p-[18px] mt-[38px]"}>
@@ -237,14 +239,14 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           className={"h-[1px] mb-[21px]"}
           color={"border-caak-titaniumwhite"}
         />
-        <div>
+        <div className={"relative"}>
           <button
             disabled={loading}
             onClick={followGroup}
             className={`button white ${
               group.followed
                 ? "text-caak-extraBlack"
-                : "bg-caak-primary text-white"
+                : "bg-caak-primary text-white animate-pulse"
             }  w-full justify-center h-[44px] text-[16px] font-medium tracking-[0.24px] leading-[19px] rounded-[6px] shadow-none border-[2px] border-caak-titaniumwhite`}
           >
             {group.followed ? `Нэгдсэн` : `Нэгдэх`}

@@ -403,9 +403,6 @@ const Dashboard = ({ ssrData }) => {
           groupTotals.pending = groupTotals.pending - 1;
           setRender(render + 1);
         }
-        // if (postIndex > -1) {
-        //   groupTotals.confirmed = groupTotals.confirmed - 1;
-        // }
       }
     }
     // eslint-disable-next-line
@@ -675,6 +672,7 @@ const Dashboard = ({ ssrData }) => {
                           <>
                             <GroupPostItem
                               type={"group"}
+                              status={"PENDING"}
                               key={index}
                               index={index}
                               imageSrc={pendingPost?.items?.items[0]?.file}

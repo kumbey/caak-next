@@ -32,12 +32,6 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
       path: "settings",
       length: "",
     },
-    // {
-    //   id: 3,
-    //   name: "Дүрэм",
-    //   icon: "icon-fi-rs-desc",
-    //   path: "rule",
-    // },
   ];
   const getGroupTotals = async () => {
     const resp = await API.graphql({
@@ -52,8 +46,8 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
   useEffect(() => {
     getGroupTotals();
     // eslint-disable-next-line
-  }, [groupTotals]);
-  return (
+  }, []);
+  return (groupData.role_on_group === "ADMIN" || groupData.role_on_group === "MODERATOR") && (
     <div className="max-w-[616px] mx-auto flex flex-col relative rounded-lg bg-white mb-[16px]">
       <div className={"p-[18px] "}>
         <div className={""}>

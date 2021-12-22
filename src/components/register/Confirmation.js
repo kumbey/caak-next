@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "../button";
 import OtpInput from "../input/OtpInput";
@@ -80,7 +80,6 @@ const Confirmation = ({ usr }) => {
       setLoading(false);
     } catch (ex) {
       setLoading(false);
-      console.log(JSON.stringify(ex));
       if (ex.code === "CodeMismatchException") {
         setErrors({
           ...errors,

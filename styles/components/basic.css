@@ -51,9 +51,9 @@
     padding-top: var(--topBarSize);
   }
 
-  .viewPost {
-    padding-top: var(--topBarSize);
-  }
+  /*.viewPost {*/
+  /*  padding-top: var(--topBarSize);*/
+  /*}*/
 
   .viewPostCarousel {
     flex-basis: 448px;
@@ -139,7 +139,7 @@
     }
 
     .viewPost {
-      padding-bottom: var(--bottomTabSize);
+      /*padding-bottom: var(--bottomTabSize);*/
     }
 
     .viewPostCarousel {
@@ -522,6 +522,12 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
 
+  .popup_modal-deny {
+    min-width: 240px;
+    max-width: 280px;
+    margin: 100px auto;
+  }
+
   .auraBgGradient {
     background: transparent
       linear-gradient(
@@ -537,7 +543,7 @@
   .popup_modal-content-pending {
     max-width: 800px;
     width: 100%;
-    max-height: 627px;
+    /*max-height: 627px;*/
     margin: 70px auto;
     min-width: 320px;
     position: relative;
@@ -556,12 +562,27 @@
         #2debd9 78.49%,
         #f4ad57 100%
       )
-      0% 0% no-repeat padding-box;
+      0 0 no-repeat padding-box;
 
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+  .custom-img {
+    object-fit: cover;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+  }
+
+  .unset-img {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  .unset-img > span {
+    position: unset !important;
   }
 }
 

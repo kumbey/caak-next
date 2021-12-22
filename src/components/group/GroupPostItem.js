@@ -30,7 +30,6 @@ const GroupPostItem = ({
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
-  console.log(status)
   const router = useRouter();
   const postHandler = async ({ id, status, message }) => {
     setLoading(true);

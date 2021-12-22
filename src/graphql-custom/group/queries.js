@@ -8,6 +8,8 @@ import group0007 from "./fields/group0007";
 import group0009 from "./fields/group0009";
 import file0001 from "../file/fields/file0001";
 import post0004 from "../post/fields/post0004";
+import group0010 from "./fields/group0010";
+import group0011 from "./fields/group0011";
 
 export const listGroupsForAddPost = /* GraphQL */ `
     query listGroups($filter: ModelGroupFilterInput, $limit: Int, $nextToken: String) {
@@ -135,5 +137,45 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
             }
             nextToken
         }
+    }
+`;
+
+export const listGroupAdminMods = /* GraphQL */ `
+    query ListGroupUsersByGroup(
+        $group_id: ID,
+        $role: ModelStringKeyConditionInput,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelGroupUsersFilterInput,
+        $limit: Int,
+        $nextToken: String
+    ) {
+        listGroupUsersByGroup(
+            group_id: $group_id,
+            role: $role,
+            sortDirection: $sortDirection,
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken
+        ) ${group0010}
+    }
+`;
+
+export const listGroupByFeatured = /* GraphQL */ `
+    query ListGroupByFeatured(
+        $featured: String,
+        $name: ModelStringKeyConditionInput,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelGroupFilterInput,
+        $limit: Int,
+        $nextToken: String
+    ) {
+        listGroupByFeatured(
+            featured: $featured,
+            name: $name,
+            sortDirection: $sortDirection,
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken
+        ) ${group0011}
     }
 `;

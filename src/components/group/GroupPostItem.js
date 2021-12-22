@@ -122,7 +122,11 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                     <Image
                       alt={""}
                       layout={"fill"}
-                      src={post.user.pic ? generateFileUrl(post.user.pic) : getGenderImage(post.user.gender).src}
+                      src={
+                        post.user.pic
+                          ? generateFileUrl(post.user.pic)
+                          : getGenderImage(post.user.gender).src
+                      }
                       objectFit={"cover"}
                       className={"rounded-full"}
                     />
@@ -291,8 +295,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
               }.${extractDate(post.createdAt).day}`}
             </p>
           </div>
-          {post.status === "ARCHIVED" ||
-          (post.status === "PENDING" && type === "user") ? (
+          {post.status === "ARCHIVED" ? (
             <div className=" flex w-[102px] ">
               <Link shallow href={`/post/edit/${post.id}`}>
                 <a>
@@ -307,6 +310,8 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                 </a>
               </Link>
             </div>
+          ) : post.status === "PENDING" && type === "user" ? (
+            <div className=" flex w-[100px] "></div>
           ) : (
             <div className=" flex w-[224px] ">
               <Button

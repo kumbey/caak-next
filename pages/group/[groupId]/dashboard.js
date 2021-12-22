@@ -372,13 +372,14 @@ const Dashboard = ({ ssrData }) => {
         if (postIndex <= -1) {
           setPosts([subscriptionPosts, ...posts]);
           pendingPosts.splice(pendingIndex, 1);
-          groupTotals.pending = groupTotals.pending - 1
+          groupTotals.confirmed = groupTotals.confirmed + 1;
+          groupTotals.pending = groupTotals.pending - 1;
           setRender(render + 1);
         }
       } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          groupTotals.confirmed = groupData.confirmed - 1
+          groupTotals.confirmed = groupTotals.confirmed - 1;
           setRender(render + 1);
         }
       }
@@ -386,22 +387,25 @@ const Dashboard = ({ ssrData }) => {
       if (subscriptionPosts.status === "PENDING") {
         if (pendingIndex === -1) {
           setPendingPosts([subscriptionPosts, ...pendingPosts]);
-          groupTotals.pending = groupTotals.pending + 1
+          groupTotals.pending = groupTotals.pending + 1;
           setRender(render + 1);
         }
         //
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          groupTotals.pending = groupTotals.pending - 1
+          groupTotals.confirmed = groupTotals.confirmed - 1;
           setRender(render + 1);
         }
       }
       if (subscriptionPosts.status === "ARCHIVED") {
         if (pendingIndex > -1) {
           pendingPosts.splice(pendingIndex, 1);
-          groupTotals.pending = groupTotals.pending - 1
+          groupTotals.pending = groupTotals.pending - 1;
           setRender(render + 1);
         }
+        // if (postIndex > -1) {
+        //   groupTotals.confirmed = groupTotals.confirmed - 1;
+        // }
       }
     }
     // eslint-disable-next-line
@@ -553,13 +557,13 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 0 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[250px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[182px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[200px]">
                       Гишүүн
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[158px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[180px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">

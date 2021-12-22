@@ -52,7 +52,7 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
   useEffect(() => {
     getGroupTotals();
     // eslint-disable-next-line
-  }, []);
+  }, [groupTotals]);
   return (
     <div className="max-w-[616px] mx-auto flex flex-col relative rounded-lg bg-white mb-[16px]">
       <div className={"p-[18px] "}>

@@ -212,7 +212,6 @@ const NotificationDropDown = ({ isOpen }) => {
   }, []);
 
   useEffect(() => {
-    console.log("HERE LOGGED CHANGE")
     if (isLogged) {
       subscrip();
     }

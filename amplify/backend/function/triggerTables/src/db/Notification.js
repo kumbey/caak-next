@@ -6,7 +6,7 @@ const DBClient = DB(process.env.API_CAAK_NOTIFICATIONTABLE_NAME, docClient)
 async function insert(data){
     try{
 
-        if(data.from !== data.to){
+        if(data.from !== data.to || data.type === "POST"){
             const now = new Date().toISOString()
 
             data["__typename"] = "Notification"

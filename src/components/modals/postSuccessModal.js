@@ -1,16 +1,6 @@
 import Button from "../button";
-import { useState } from "react";
 
-const PostSuccessModal = ({
-  postHandler,
-  postTitle,
-  postId,
-  isOpen,
-  setIsOpen,
-  finish,
-}) => {
-  const [denyReason, setDenyReason] = useState("");
-
+const PostSuccessModal = ({ messageTitle, isOpen, setIsOpen, finish }) => {
   return isOpen ? (
     <div className="popup_modal">
       <div className="popup_modal-success rounded-xl">
@@ -31,7 +21,7 @@ const PostSuccessModal = ({
             <span className="icon-fi-rs-thick-check text-white text-26px" />
           </div>
           <p className="font-inter font-semibold text-18px text-caak-generalblack mb-[14px]">
-            Таны пост группт амжилттай илгээгдлээ.
+            {messageTitle}
           </p>
           <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
             Группын админ постыг баталгаажуулах хүртэл түр хүлээнэ үү.

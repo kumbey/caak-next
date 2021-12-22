@@ -12,7 +12,7 @@ const Card = ({ post }) => {
             duration
             route
             card
-            mediaContainerClassname={"w-full h-full max-h-[800px]"}
+            mediaContainerClassname={"w-full h-full  max-h-[800px]"}
             postId={post.id}
             items={post.items.items}
           />

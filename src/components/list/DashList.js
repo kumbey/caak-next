@@ -13,11 +13,14 @@ import Video from "../video";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
+import PostDenyModal from "../modals/postDenyModal";
 
 const DashList = ({ imageSrc, post, type, video }) => {
   const [loading, setLoading] = useState(false);
+  const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
 
-  const postHandler = async (id, status) => {
+  const postHandler = async ({ id, status, message }) => {
+    console.log(message);
     setLoading(true);
     try {
       await API.graphql(
@@ -34,6 +37,13 @@ const DashList = ({ imageSrc, post, type, video }) => {
   };
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
+      <PostDenyModal
+        isOpen={isDenyModalOpen}
+        setIsOpen={setIsDenyModalOpen}
+        postHandler={postHandler}
+        postTitle={post.title}
+        postId={post.id}
+      />
       <div className="relative flex items-center ">
         <div className="flex flex-shrink-0 w-[240px] mr-[18px] items-center">
           <Link
@@ -155,15 +165,30 @@ const DashList = ({ imageSrc, post, type, video }) => {
               {post.totals.views}
             </p>
           </div>
-        </div>
+        </div>{" "}
         <div className="flex ml-[10px] ">
-          <Button
-            loading={loading}
-            onClick={() => postHandler(post.id, "ARCHIVED")}
-            className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
-          >
-            Татгалзах
-          </Button>
+          {type === "group" ? (
+            <Button
+              loading={loading}
+              onClick={() => setIsDenyModalOpen(true)}
+              className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
+            >
+              Татгалзах
+            </Button>
+          ) : type === "user" ? (
+            <Link href={`/post/edit/${post.id}`}>
+              <a>
+                <Button
+                  round
+                  className={
+                    "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                  }
+                >
+                  <p className="">Засах</p>
+                </Button>
+              </a>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>

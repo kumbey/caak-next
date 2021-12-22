@@ -51,9 +51,9 @@
     padding-top: var(--topBarSize);
   }
 
-  .viewPost {
-    padding-top: var(--topBarSize);
-  }
+  /*.viewPost {*/
+  /*  padding-top: var(--topBarSize);*/
+  /*}*/
 
   .viewPostCarousel {
     flex-basis: 448px;
@@ -139,7 +139,7 @@
     }
 
     .viewPost {
-      padding-bottom: var(--bottomTabSize);
+      /*padding-bottom: var(--bottomTabSize);*/
     }
 
     .viewPostCarousel {
@@ -522,6 +522,12 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
 
+  .popup_modal-deny {
+    min-width: 240px;
+    max-width: 280px;
+    margin: 100px auto;
+  }
+
   .auraBgGradient {
     background: transparent
       linear-gradient(
@@ -537,7 +543,7 @@
   .popup_modal-content-pending {
     max-width: 800px;
     width: 100%;
-    max-height: 627px;
+    /*max-height: 627px;*/
     margin: 70px auto;
     min-width: 320px;
     position: relative;
@@ -564,7 +570,7 @@
     color: transparent;
   }
   .custom-img {
-    object-fit: contain;
+    object-fit: cover;
     width: 100% !important;
     position: relative !important;
     height: unset !important;

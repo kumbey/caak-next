@@ -448,12 +448,15 @@ const Dashboard = ({ ssrData }) => {
               items: [subscripedPost.post, ...posts.items],
             });
             pendingPosts.items.splice(pendingIndex, 1);
-            archivedPosts.items.splice(archivedIndex, 1);
+            userTotals.confirmed = userTotals.confirmed + 1;
+            userTotals.pending = userTotals.pending - 1;
             setRender(render + 1);
+            // archivedPosts.items.splice(archivedIndex, 1);
           }
         } else {
           if (postIndex > -1) {
             posts.splice(postIndex, 1);
+            userTotals.confirmed = userTotals.confirmed - 1;
             setRender(render + 1);
           }
         }
@@ -464,12 +467,17 @@ const Dashboard = ({ ssrData }) => {
             ...pendingPosts,
             items: [subscripedPost.post, ...pendingPosts.items],
           });
+          userTotals.pending = userTotals.pending + 1;
+          setRender(render + 1);
         }
         if (archivedIndex > -1) {
           archivedPosts.items.splice(archivedIndex, 1);
+          userTotals.archived = userTotals.archived - 1;
+          setRender(render + 1);
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
+          userTotals.confirmed = userTotals.confirmed - 1;
           setRender(render + 1);
         }
       }
@@ -479,9 +487,17 @@ const Dashboard = ({ ssrData }) => {
             ...archivedPosts,
             items: [subscripedPost.post, ...archivedPosts.items],
           });
+          userTotals.archived = userTotals.archived + 1;
+          setRender(render + 1);
+        }
+        if (postIndex > -1) {
+          posts.items.splice(postIndex, 1);
+          userTotals.confirmed = userTotals.confirmed - 1;
+          setRender(render + 1);
         }
         if (pendingIndex > -1) {
           pendingPosts.items.splice(pendingIndex, 1);
+          userTotals.pending = userTotals.pending - 1;
           setRender(render + 1);
         }
       }
@@ -506,7 +522,7 @@ const Dashboard = ({ ssrData }) => {
     <>
       <Head>
         <title>
-          {user.nickname} / дашбоард - {Consts.siteMainTitle}
+          {user?.nickname} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
       <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
@@ -631,13 +647,13 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 0 ? (
                 <div className="flex flex-col">
                   <div className="mb-[13px] hidden md:flex ">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[250px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[220px]">
                       Групп
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[161px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[170px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">

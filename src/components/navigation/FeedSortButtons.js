@@ -1,5 +1,6 @@
 import Button from "../button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useWrapper } from "../../context/wrapperContext";
 
 const FeedSortButtons = ({
   direction,
@@ -12,6 +13,14 @@ const FeedSortButtons = ({
   setSortType,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { feedSortType } = useWrapper();
+  useEffect(() => {
+    if (feedSortType === "CAAK") {
+      setActiveIndex(2);
+      setSortType(feedSortType);
+    }
+    // eslint-disable-next-line
+  }, [feedSortType]);
   return (
     !hide && (
       <div

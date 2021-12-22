@@ -27,6 +27,8 @@ import ProfileHoverCard from "../../../../../src/components/card/ProfileHoverCar
 import Tooltip from "../../../../../src/components/tooltip/Tooltip";
 import Head from "next/head";
 import Consts from "../../../../../src/utility/Consts";
+import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
+import useWindowSize from "../../../../../src/hooks/useWindowSize";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -69,12 +71,14 @@ const PostItem = ({ ssrData }) => {
     findMatchIndex(post.items.items, "id", router.query.itemId)
   );
 
+
+  const size = useWindowSize();
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
   const [loading, setLoading] = useState(true);
   const [render, setRender] = useState(0);
   const { user, isLogged } = useUser();
-
+  const [blockScroll, allowScroll] = useScrollBlock();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -131,8 +135,13 @@ const PostItem = ({ ssrData }) => {
   };
 
   useEffect(() => {
+    blockScroll();
     setLoading(false);
-    return () => setReply(null);
+    return () => {
+      setReply(null);
+      allowScroll();
+    };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -177,7 +186,6 @@ const PostItem = ({ ssrData }) => {
       document.removeEventListener("keydown", handler);
     };
   });
-
   return (
     <>
       <Head>
@@ -197,13 +205,12 @@ const PostItem = ({ ssrData }) => {
       </Head>
       {!loading ? (
         <div
-          className={
-            "viewPost z-4 fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
-          }
+          className={`z-[5] h-full fixed top-0 w-full  flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row overflow-y-scroll`}
         >
           <div
-            className={
-              "relative backBlur w-full flex justify-center items-center flex-1"
+              style={{ height: size.height}}
+              className={
+              "relative backBlur w-full flex justify-center items-center"
             }
           >
             <div
@@ -229,7 +236,7 @@ const PostItem = ({ ssrData }) => {
           {/*</div>*/}
           <div
             className={
-              "viewPostCarousel relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll h-full"
+              "viewPostCarousel flex-shrink-0 relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll"
             }
           >
             <div className={"flex-1"}>
@@ -402,7 +409,6 @@ const PostItem = ({ ssrData }) => {
                 )}
               </div>
             </div>
-
             {post.commentType && post.status === "CONFIRMED" && (
               <AddComment
                 commentInputValue={commentInputValue}

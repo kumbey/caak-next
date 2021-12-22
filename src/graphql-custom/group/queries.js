@@ -7,6 +7,7 @@ import group0006 from "./fields/group0006";
 import group0007 from "./fields/group0007";
 import group0009 from "./fields/group0009";
 import file0001 from "../file/fields/file0001";
+import post0004 from "../post/fields/post0004";
 
 export const listGroupsForAddPost = /* GraphQL */ `
     query listGroups($filter: ModelGroupFilterInput, $limit: Int, $nextToken: String) {
@@ -107,6 +108,32 @@ export const getGroupSearchView = /* GraphQL */ `
             id
             name
             profile ${file0001}
+        }
+    }
+`;
+
+export const listPostByGroupOrderByReactions = /* GraphQL */ `
+    query ListPostByGroupOrderByReactions(
+        $groupAndStatus: String,
+        #    $total_reactions: ModelIntKeyConditionInput
+        $sortDirection: ModelSortDirection
+        $filter: ModelPostTotalFilterInput
+        $limit: Int
+        $nextToken: String
+    ) {
+        listPostByGroupOrderByReactions(
+            groupAndStatus: $groupAndStatus
+            sortDirection: $sortDirection
+            filter: $filter
+            limit: $limit
+            nextToken: $nextToken
+        ) {
+            items {
+                post
+                ${post0004}
+
+            }
+            nextToken
         }
     }
 `;

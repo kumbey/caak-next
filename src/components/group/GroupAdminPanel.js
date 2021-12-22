@@ -5,7 +5,7 @@ import { API } from "aws-amplify";
 import { useRouter } from "next/router";
 import { getGroupTotal } from "../../graphql-custom/group/queries";
 
-const GroupAdminPanel = ({ groupData }) => {
+const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
   const router = useRouter();
   const [groupTotals, setGroupTotals] = useState();
   const totalPending = groupTotals?.pending;

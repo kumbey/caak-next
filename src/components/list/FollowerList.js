@@ -50,7 +50,7 @@ const FollowerList = ({
   };
 
   return (
-    <div className="flex rounded-lg border border-caak-titaniumwhite w-full mb-[18px] ">
+    <div className="flex rounded-lg border border-caak-titaniumwhite mb-[18px] w-full max-w-[430px]">
       <div className="flex flex-col sm:flex-row w-full mx-[20px] my-[20px] items-start justify-between">
         <div className="flex items-center">
           <div className={"w-[68px] h-[68px] mr-[12px] relative"}>
@@ -95,7 +95,7 @@ const FollowerList = ({
             </div>
           </div>
         </div>
-        <div className="flex self-end md:self-center mr-[6px]">
+        <div className="flex self-end md:self-center mr-[6px] ml-[6px]">
           <Button
             className="h-c13 w-28 text-14px font-inter font-medium text-caak-generalblack"
             icon={

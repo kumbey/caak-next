@@ -18,7 +18,7 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 
 import Card from "../../../src/components/card/FeedCard";
 import { useUser } from "../../../src/context/userContext";
-import { getGroupView } from "../../../src/graphql-custom/group/queries";
+import {getGroupView, listPostByGroupOrderByReactions} from "../../../src/graphql-custom/group/queries";
 import List from "../../../src/components/list";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
@@ -122,10 +122,11 @@ const Group = ({ ssrData }) => {
   const fetchTrendPosts = async () => {
     try {
       let resp = await API.graphql({
-        query: listPostOrderByReactions,
+        query: listPostByGroupOrderByReactions,
         variables: {
-          status: "POSTING",
+          groupAndStatus: `${groupData.id}#CONFIRMED`,
           limit: 6,
+          sortDirection: "DESC",
         },
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });

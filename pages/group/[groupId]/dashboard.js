@@ -124,7 +124,7 @@ const Dashboard = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
-  const [groupTotals] = useState(ssrData.groupTotals);
+  const [groupTotals, setGroupTotals] = useState(ssrData.groupTotals);
   const [followedUsers, setFollowedUsers] = useState(
     ssrData.userFollower.items
   );
@@ -139,11 +139,9 @@ const Dashboard = ({ ssrData }) => {
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
   const { isLogged } = useUser();
-  const totalMember =
-    groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
-
-  const totalPost = groupTotals?.confirmed;
-  const totalPending = groupTotals?.pending;
+  const [totalMember] = useState(
+    groupTotals?.member + groupTotals?.moderator + groupTotals?.admin
+  );
 
   const stats = [
     {
@@ -372,16 +370,20 @@ const Dashboard = ({ ssrData }) => {
         if (postIndex <= -1) {
           setPosts([subscriptionPosts, ...posts]);
           pendingPosts.splice(pendingIndex, 1);
-          groupTotals.confirmed = groupTotals.confirmed + 1;
-          if (groupTotals.pending !== 0)
-            groupTotals.pending = groupTotals.pending - 1;
+          setGroupTotals({
+            ...groupTotals,
+            confirmed: groupTotals.confirmed + 1,
+          });
           setRender(render + 1);
         }
       } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          if (groupTotals.confirmed !== 0)
-            groupTotals.confirmed = groupTotals.confirmed - 1;
+          setGroupTotals({
+            ...groupTotals,
+            confirmed: groupTotals.confirmed !== 0 && groupTotals.confirmed - 1,
+          });
+
           setRender(render + 1);
         }
       }
@@ -389,22 +391,31 @@ const Dashboard = ({ ssrData }) => {
       if (subscriptionPosts.status === "PENDING") {
         if (pendingIndex === -1) {
           setPendingPosts([subscriptionPosts, ...pendingPosts]);
-          groupTotals.pending = groupTotals.pending + 1;
+          setGroupTotals({
+            ...groupTotals,
+            pending: groupTotals.pending + 1,
+          });
           setRender(render + 1);
         }
         //
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          if (groupTotals.confirmed !== 0)
-            groupTotals.confirmed = groupTotals.confirmed - 1;
+          setGroupTotals({
+            ...groupTotals,
+            confirmed: groupTotals.confirmed !== 0 && groupTotals.confirmed - 1,
+          });
           setRender(render + 1);
         }
       }
       if (subscriptionPosts.status === "ARCHIVED") {
         if (pendingIndex > -1) {
           pendingPosts.splice(pendingIndex, 1);
-          if (groupTotals.pending !== 0)
-            groupTotals.pending = groupTotals.pending - 1;
+          if (groupTotals.pending !== 0) {
+            setGroupTotals({
+              ...groupTotals,
+              pending: groupTotals.pending - 1,
+            });
+          }
           setRender(render + 1);
         }
       }
@@ -497,19 +508,7 @@ const Dashboard = ({ ssrData }) => {
                           : "text-caak-generalblack"
                       }`}
                     >
-                      {menu.id === 2 ? (
-                        <div className="flex items-center">
-                          <p>{menu.name}</p>
-
-                          <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg mt-1">
-                            <p className="text-caak-bleudefrance text-opacity-100 ">
-                              {dashMenu[2].length}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        menu.name
-                      )}
+                      {menu.name}
                     </p>
                   </div>
                 );
@@ -524,7 +523,7 @@ const Dashboard = ({ ssrData }) => {
                 >
                   {dashMenu[activeIndex].name}
                 </p>
-                <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg mt-1">
+                <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
                   <p className="text-caak-bleudefrance text-opacity-100 ">
                     {dashMenu[activeIndex].length}
                   </p>
@@ -570,13 +569,13 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 0 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[250px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[200px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[182px]">
                       Гишүүн
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[180px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[158px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">
@@ -688,7 +687,6 @@ const Dashboard = ({ ssrData }) => {
                           <>
                             <GroupPostItem
                               type={"group"}
-                              status={"PENDING"}
                               key={index}
                               index={index}
                               imageSrc={pendingPost?.items?.items[0]?.file}

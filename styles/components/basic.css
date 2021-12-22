@@ -514,9 +514,9 @@
 
   .popup_modal-content {
     min-width: 320px;
-    width: clamp(320px, 100%, 450px);
+    width: clamp(320px, 100%, 400px);
     background: #fff;
-    max-width: 450px;
+    max-width: 400px;
     margin: 70px auto;
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);

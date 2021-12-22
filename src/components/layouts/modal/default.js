@@ -68,7 +68,7 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
               "text-center text-caak-generalblack mb-c2 font-bold text-24px pt-c5 relative"
             }
           >
-            {`Шинэ Саак-т ${type === "signUp" ? "бүртгүүлэх!" : "нэвтрэх!"}`}
+            {`${type === "signUp" ? "Бүртгүүлэх" : "Нэвтрэх"}`}
           </div>
           {children}
           {/*Footer*/}
@@ -98,7 +98,7 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
                 </span>
               </div>
             )}
-            <span className="icon-fi-rs-help text-18px" />
+            {/* <span className="icon-fi-rs-help text-18px" /> */}
           </div>
         </div>
       </div>

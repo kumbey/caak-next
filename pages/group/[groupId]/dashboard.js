@@ -373,13 +373,15 @@ const Dashboard = ({ ssrData }) => {
           setPosts([subscriptionPosts, ...posts]);
           pendingPosts.splice(pendingIndex, 1);
           groupTotals.confirmed = groupTotals.confirmed + 1;
-          groupTotals.pending = groupTotals.pending - 1;
+          if (groupTotals.pending !== 0)
+            groupTotals.pending = groupTotals.pending - 1;
           setRender(render + 1);
         }
       } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          groupTotals.confirmed = groupTotals.confirmed - 1;
+          if (groupTotals.confirmed !== 0)
+            groupTotals.confirmed = groupTotals.confirmed - 1;
           setRender(render + 1);
         }
       }
@@ -393,14 +395,16 @@ const Dashboard = ({ ssrData }) => {
         //
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          groupTotals.confirmed = groupTotals.confirmed - 1;
+          if (groupTotals.confirmed !== 0)
+            groupTotals.confirmed = groupTotals.confirmed - 1;
           setRender(render + 1);
         }
       }
       if (subscriptionPosts.status === "ARCHIVED") {
         if (pendingIndex > -1) {
           pendingPosts.splice(pendingIndex, 1);
-          groupTotals.pending = groupTotals.pending - 1;
+          if (groupTotals.pending !== 0)
+            groupTotals.pending = groupTotals.pending - 1;
           setRender(render + 1);
         }
       }

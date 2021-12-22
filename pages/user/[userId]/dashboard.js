@@ -449,14 +449,16 @@ const Dashboard = ({ ssrData }) => {
             });
             pendingPosts.items.splice(pendingIndex, 1);
             userTotals.confirmed = userTotals.confirmed + 1;
-            userTotals.pending = userTotals.pending - 1;
+            if (userTotals.pending !== 0)
+              userTotals.pending = userTotals.pending - 1;
             setRender(render + 1);
             // archivedPosts.items.splice(archivedIndex, 1);
           }
         } else {
           if (postIndex > -1) {
             posts.splice(postIndex, 1);
-            userTotals.confirmed = userTotals.confirmed - 1;
+            if (userTotals.confirmed !== 0)
+              userTotals.confirmed = userTotals.confirmed - 1;
             setRender(render + 1);
           }
         }
@@ -472,12 +474,14 @@ const Dashboard = ({ ssrData }) => {
         }
         if (archivedIndex > -1) {
           archivedPosts.items.splice(archivedIndex, 1);
-          userTotals.archived = userTotals.archived - 1;
+          if (userTotals.archived !== 0)
+            userTotals.archived = userTotals.archived - 1;
           setRender(render + 1);
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
-          userTotals.confirmed = userTotals.confirmed - 1;
+          if (userTotals.confirmed !== 0)
+            userTotals.confirmed = userTotals.confirmed - 1;
           setRender(render + 1);
         }
       }
@@ -492,12 +496,14 @@ const Dashboard = ({ ssrData }) => {
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
-          userTotals.confirmed = userTotals.confirmed - 1;
+          if (userTotals.confirmed !== 0)
+            userTotals.confirmed = userTotals.confirmed - 1;
           setRender(render + 1);
         }
         if (pendingIndex > -1) {
           pendingPosts.items.splice(pendingIndex, 1);
-          userTotals.pending = userTotals.pending - 1;
+          if (userTotals.pending !== 0)
+            userTotals.pending = userTotals.pending - 1;
           setRender(render + 1);
         }
       }

@@ -89,7 +89,7 @@ async function modify(record){
                 type: "POST",
                 item_id: newImg.id,
                 action: `POST_${newImg.status}`,
-                from: newImg.user_id,
+                from: "SYSTEM",
                 to: newImg.user_id,
                 seen: "FALSE",
                 version: 1

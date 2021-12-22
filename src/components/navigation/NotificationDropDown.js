@@ -206,6 +206,7 @@ const NotificationDropDown = ({ isOpen }) => {
   }, []);
 
   useEffect(() => {
+    console.log("HERE LOGGED CHANGE")
     if (isLogged) {
       subscrip();
     }
@@ -217,7 +218,7 @@ const NotificationDropDown = ({ isOpen }) => {
       });
     };
     // eslint-disable-next-line
-  }, [user]);
+  }, [isLogged]);
 
   useEffect(() => {
     if (subscripNotifcation) {

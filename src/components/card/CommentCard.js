@@ -19,6 +19,7 @@ const CommentCard = ({ comment, children }) => {
         content={<ProfileHoverCard userId={comment.user.id} />}
       >
         <Link
+          shallow
           href={`/user/${comment.user.id}/profile`}
           className={"m-34px w-10 h-10"}
         >
@@ -49,7 +50,7 @@ const CommentCard = ({ comment, children }) => {
             className={"-left-16"}
             content={<ProfileHoverCard userId={comment.user.id} />}
           >
-            <Link href={`/user/${comment.user.id}/profile`}>
+            <Link shallow href={`/user/${comment.user.id}/profile`}>
               <a>
                 <span className={"text-16px font-bold text-caak-generalblack"}>
                   {comment.user.nickname}

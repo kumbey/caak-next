@@ -1,18 +1,32 @@
 import Button from "../button";
 import { useUser } from "../../context/userContext";
 import { getFileUrl } from "../../utility/Util";
-import React from "react";
+import React, { useEffect } from "react";
 import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import SideBarGroups from "../card/SideBarGroups";
+import useScrollBlock from "../../hooks/useScrollBlock";
+import { useWrapper } from "../../context/wrapperContext";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const MobileSideMenu = ({ setOpen }) => {
   const { user, isLogged, logout } = useUser();
+  const { isMobileMenuOpen } = useWrapper();
   const router = useRouter();
+  const [blockScroll, allowScroll] = useScrollBlock();
+
+  useUpdateEffect(() => {
+    if (isMobileMenuOpen) {
+      blockScroll();
+    } else {
+      allowScroll();
+    }
+  }, [isMobileMenuOpen]);
 
   return (
-    <div className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white">
+    <div className="mobileSideMenu flex flex-col h-screen px-2 pb-3 bg-white overflow-y-scroll">
       <div
         className={
           "relative text-20px text-caak-generalblack font-medium py-2.5 px-5 border-t border-b border-gray-100"
@@ -30,6 +44,7 @@ const MobileSideMenu = ({ setOpen }) => {
         {isLogged && (
           <div className={"relative flex flex-row items-center"}>
             <Link
+              shallow
               href={
                 isLogged ? `/user/${user.id}/profile` : "/login"
                 // state: { background: location },
@@ -54,6 +69,7 @@ const MobileSideMenu = ({ setOpen }) => {
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
                   <Link
+                    shallow
                     href={{
                       pathname: `/user/${user.id}/profile`,
                     }}
@@ -87,13 +103,25 @@ const MobileSideMenu = ({ setOpen }) => {
             round
             className={" h-12 w-full"}
             skin={"secondary"}
-            onClick={() =>
-              logout()
-            }
+            onClick={() => logout()}
           >
             Гарах
           </Button>
         )}
+        <div className={"pb-[140px]"}>
+          <SideBarGroups
+            role={["ADMIN", "MODERATOR"]}
+            // maxColumns={3}
+            addGroup
+            title={"Миний группүүд"}
+          />
+          <SideBarGroups
+            role={["MEMBER"]}
+            // maxColumns={0}
+            title={"Дагасан группүүд"}
+          />
+          <SideBarGroups role={["NOT_MEMBER"]} title={"Бүх групп"} />
+        </div>
       </div>
       {!isLogged && (
         <div className={"flex flex-col"}>
@@ -102,18 +130,18 @@ const MobileSideMenu = ({ setOpen }) => {
             className={"mb-2 h-12"}
             skin={"secondary"}
             onClick={() =>
-                router.push(
-                    {
-                        pathname: router.pathname,
-                        query: {
-                            ...router.query,
-                            signInUp: "signIn",
-                            isModal: true,
-                        },
-                    },
-                    `/signInUp/signIn`,
-                    { shallow: true }
-                )
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    signInUp: "signIn",
+                    isModal: true,
+                  },
+                },
+                `/signInUp/signIn`,
+                { shallow: true }
+              )
             }
           >
             Нэвтрэх
@@ -123,18 +151,18 @@ const MobileSideMenu = ({ setOpen }) => {
             className={"h-12"}
             skin={"primary"}
             onClick={() =>
-                router.push(
-                    {
-                        pathname: router.pathname,
-                        query: {
-                            ...router.query,
-                            signInUp: "signUp",
-                            isModal: true,
-                        },
-                    },
-                    `/signInUp/signUp`,
-                    { shallow: true }
-                )
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    signInUp: "signUp",
+                    isModal: true,
+                  },
+                },
+                `/signInUp/signUp`,
+                { shallow: true }
+              )
             }
           >
             Бүртгүүлэх

@@ -160,6 +160,7 @@ module.exports = {
       fontFamily: {
         inter: ["Inter"],
         roboto: ["Roboto"],
+        rubik: ["Rubik"],
       },
       spacing: {
         "px-2": "2px",

@@ -124,6 +124,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
         >
           {!singleItem ? (
             <Link
+              shallow
               href={{
                 pathname: `${router.pathname}/[itemId]`,
                 query: {

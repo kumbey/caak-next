@@ -1,17 +1,15 @@
-import { Auth } from "aws-amplify"
-import { useEffect } from "react"
-import { useUser } from "../../src/context/userContext"
+import { useEffect } from "react";
+import { useUser } from "../../src/context/userContext";
 
 const SignOut = () => {
+  const { logout } = useUser();
 
-    const { logout } = useUser()
+  useEffect(() => {
+    logout();
+    // eslint-disable-next-line
+  }, []);
 
-    useEffect(() => {
-        logout()
-    },[])
+  return null;
+};
 
-    return null
-
-}
-
-export default SignOut
+export default SignOut;

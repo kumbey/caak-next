@@ -3,6 +3,7 @@ import user0006 from "./fields/user0006";
 import user0004 from "./fields/user0004";
 import user0005 from "./fields/user0005";
 import user0007 from "./fields/user0007";
+import file0001 from "../file/fields/file0001";
 
 export const getUser = /* GraphQL */ `
     query GetUser($id: ID!) {
@@ -37,20 +38,20 @@ export const listUsers = /* GraphQL */ `
 `;
 export const listUsersbyFollowing = /* GraphQL */ `
     query ListUsersbyFollowing(
-            $followed_user_id: ID,
-            $sortDirection: ModelSortDirection,
-            $filter: ModelFollowedUsersFilterInput,
-            $limit: Int,
-            $nextToken: String
-        ) {
-            listUsersbyFollowing
-            (
-                followed_user_id: $followed_user_id,
-		        sortDirection: $sortDirection,
-		        filter: $filter,
-		        limit: $limit,
-		        nextToken: $nextToken
-            )
+        $followed_user_id: ID,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelFollowedUsersFilterInput,
+        $limit: Int,
+        $nextToken: String
+    ) {
+        listUsersbyFollowing
+        (
+            followed_user_id: $followed_user_id,
+            sortDirection: $sortDirection,
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken
+        )
         {
             items ${user0005}
             nextToken
@@ -60,23 +61,32 @@ export const listUsersbyFollowing = /* GraphQL */ `
 
 export const listUsersbyFollowed = /* GraphQL */ `
     query ListUsersbyFollowed(
-            $user_id: ID,
-            $sortDirection: ModelSortDirection,
-            $filter: ModelFollowedUsersFilterInput,
-            $limit: Int,
-            $nextToken: String
-        ) {
-            listUsersbyFollowed
-            (
-                user_id: $user_id,
-		        sortDirection: $sortDirection,
-		        filter: $filter,
-		        limit: $limit,
-		        nextToken: $nextToken
-            )
+        $user_id: ID,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelFollowedUsersFilterInput,
+        $limit: Int,
+        $nextToken: String
+    ) {
+        listUsersbyFollowed
+        (
+            user_id: $user_id,
+            sortDirection: $sortDirection,
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken
+        )
         {
             items ${user0007}
             nextToken
+        }
+    }
+`;
+export const getUserSearchView = /* GraphQL */ `
+    query GetUser($id: ID!) {
+        getUser(id: $id) {
+            id
+            nickname
+            pic ${file0001}
         }
     }
 `;

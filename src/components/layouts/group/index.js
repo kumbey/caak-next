@@ -31,8 +31,6 @@ import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
 import { useRouter } from "next/router";
 import Loader from "../../loader";
-import TopMembers from "../../Sidebar/TopMembers";
-import GroupTopMembersCard from "../../card/GroupTopMembersCard";
 
 const GroupLayout = ({
   children,
@@ -212,6 +210,7 @@ const GroupLayout = ({
       <div className={"flex flex-col"}>
         <div className={"relative w-full h-[240px]"}>
           <Image
+            quality={100}
             layout={"fill"}
             objectFit={"cover"}
             alt={groupData?.cover?.name}
@@ -343,7 +342,9 @@ const GroupLayout = ({
               >
                 <div className={"flex flex-col mb-[10px] md:mb-0"}>
                   <div>
-                    <h1 className="text-[18px] md:text-24px font-bold">{groupData.name}</h1>
+                    <h1 className="text-[18px] md:text-24px font-bold">
+                      {groupData.name}
+                    </h1>
                   </div>
                   <div className="flex md:flex-row flex-col">
                     <div className="flex mr-[22px] items-center">
@@ -422,8 +423,8 @@ const GroupLayout = ({
                 />
               )}
             </div>
-            <GroupRules />
-            <GroupBadge />
+            <GroupRules groupId={groupData.id} />
+            {/*<GroupBadge />*/}
             <FooterSidebar
               containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}
             />

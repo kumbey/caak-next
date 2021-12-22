@@ -7,7 +7,10 @@ import {
 import useGroupLayout from "../../../src/hooks/useGroupLayout";
 import { API, withSSRContext } from "aws-amplify";
 
-import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
+import {
+  getPostByGroup,
+  listPostOrderByReactions,
+} from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
 import Loader from "../../../src/components/loader";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
@@ -15,10 +18,15 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 
 import Card from "../../../src/components/card/FeedCard";
 import { useUser } from "../../../src/context/userContext";
-import { getGroupView } from "../../../src/graphql-custom/group/queries";
+import {getGroupView, listPostByGroupOrderByReactions} from "../../../src/graphql-custom/group/queries";
 import List from "../../../src/components/list";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
+import Head from "next/head";
+import Consts from "../../../src/utility/Consts";
+import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
+import useDeviceDetect from "../../../src/hooks/useDeviceDetect";
+import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -70,9 +78,11 @@ const Group = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeView, setActiveView] = useState(0);
   const [render, setRender] = useState(0);
-
+  const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
+  const [trendingPosts, setTrendingPosts] = useState([]);
   const [groupData] = useState(ssrData.groupData);
+  const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
 
   const totalMember =
     groupData.totals.member +
@@ -94,16 +104,35 @@ const Group = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPosts) => [...nextPosts, ...resp]);
+        if (posts.nextToken) {
+          const resp = await nextPosts();
+          if (resp) {
+            setPosts((nextPosts) => [...nextPosts, ...resp]);
+          }
         }
 
         setLoading(false);
       }
     } catch (ex) {
       setLoading(false);
+      console.log(ex);
+    }
+  };
+
+  const fetchTrendPosts = async () => {
+    try {
+      let resp = await API.graphql({
+        query: listPostByGroupOrderByReactions,
+        variables: {
+          groupAndStatus: `${groupData.id}#CONFIRMED`,
+          limit: 6,
+          sortDirection: "DESC",
+        },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      setTrendingPosts(resp);
+    } catch (ex) {
       console.log(ex);
     }
   };
@@ -148,12 +177,20 @@ const Group = ({ ssrData }) => {
   };
 
   useEffect(() => {
+    if (sortType === "TREND") {
+      if (typeof trendingPosts.items === "undefined") {
+        fetchTrendPosts();
+      }
+    }
+    // eslint-disable-next-line
+  }, [sortType]);
+
+  useEffect(() => {
     if (subscriptionPosts) {
       const postIndex = posts.findIndex(
         (post) => post.id === subscriptionPosts.id
       );
       if (subscriptionPosts.status === "CONFIRMED") {
-        console.log("CONFIRMED");
         if (postIndex <= -1) {
           setPosts([subscriptionPosts, ...posts]);
         }
@@ -179,60 +216,123 @@ const Group = ({ ssrData }) => {
   }, []);
 
   return loaded ? (
-    <GroupLayout
-      hideSuggestedGroups
-      groupData={groupData}
-      totalMember={totalMember}
-      columns={2}
-    >
-      <GroupSortButtons
-        activeIndex={activeIndex}
-        activeView={activeView}
-        setActiveIndex={setActiveIndex}
-        setActiveView={setActiveView}
-        iconSize={"text-[16px]"}
-        containerClassname={"flex-wrap justify-start"}
-        items={GroupType}
-        items2={GroupViewType}
-        direction={"row"}
-        textClassname={"font-medium text-15px"}
-      />
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={fetchPosts}
-        refreshFunction={fetchPosts}
-        pullDownToRefresh={true}
-        hasMore={true}
-        loader={
-          <Loader
-            containerClassName={"self-center w-full"}
-            className={`bg-caak-primary ${
-              loading ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        }
-        endMessage={<h4>Nothing more to show</h4>}
+    <>
+      <Head>
+        <title>
+          {groupData.name} - {Consts.siteMainTitle}
+        </title>
+      </Head>
+      <GroupLayout
+        hideSuggestedGroups
+        groupData={groupData}
+        totalMember={totalMember}
+        columns={2}
       >
-        {posts.map((data, index) => {
-          return activeView === 0 ? (
-            <Card
-              key={index}
-              video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-              post={data}
-              className="ph:mb-4 sm:mb-4"
+        {isTablet && <GroupAdminPanel groupData={groupData} />}
+        <GroupSortButtons
+          activeIndex={activeIndex}
+          activeView={activeView}
+          setActiveIndex={setActiveIndex}
+          setActiveView={setActiveView}
+          iconSize={"text-[16px]"}
+          containerClassname={"flex-wrap justify-start"}
+          items={GroupType}
+          items2={GroupViewType}
+          direction={"row"}
+          textClassname={"font-medium text-15px"}
+          setSortType={setSortType}
+        />
+
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={fetchPosts}
+          className={"pb-[20px]"}
+          // pullDownToRefresh={true}
+          hasMore={true}
+          loader={
+            <Loader
+              containerClassName={"self-center w-full"}
+              className={`bg-caak-primary ${loading ? "" : "hidden"}`}
             />
-          ) : activeView === 1 ? (
-            <List
-              key={index}
-              imageSrc={data?.items?.items[0]?.file}
-              video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-              post={data}
-              className="ph:mb-4 sm:mb-4"
-            />
-          ) : null;
-        })}
-      </InfiniteScroll>
-    </GroupLayout>
+          }
+          endMessage={<h4>Nothing more to show</h4>}
+        >
+          {posts.map((data, index) => {
+            if (sortType === "CAAK" && data.owned === "CAAK") {
+              return activeView === 0 ? (
+                <Card
+                  key={index}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : activeView === 1 ? (
+                <List
+                  key={index}
+                  imageSrc={data?.items?.items[0]?.file}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : null;
+            } else if (sortType === "DEFAULT") {
+              return activeView === 0 ? (
+                <Card
+                  key={index}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : activeView === 1 ? (
+                <List
+                  key={index}
+                  imageSrc={data?.items?.items[0]?.file}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : null;
+            }
+          })}
+        </InfiniteScroll>
+        {sortType === "TREND" && trendingPosts.items?.length > 0 ? (
+          <InfiniteScroll
+            className={"pb-[20px]"}
+            dataLength={trendingPosts.items?.length}
+            next={fetchTrendPosts}
+            hasMore={true}
+            loader={
+              <Loader
+                containerClassName={"self-center w-full"}
+                className={`bg-caak-primary ${loading ? "" : "hidden"}`}
+              />
+            }
+            endMessage={<h4>Nothing more to show</h4>}
+          >
+            {trendingPosts.items.map((data, index) => {
+              return activeView === 0 ? (
+                <Card
+                  key={index}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data.post}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : activeView === 1 ? (
+                <List
+                  key={index}
+                  imageSrc={data.post?.items?.items[0]?.file}
+                  video={data.post?.items?.items[0]?.file?.type?.startsWith(
+                    "video"
+                  )}
+                  post={data.post}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : null;
+            })}
+          </InfiniteScroll>
+        ) : null}
+      </GroupLayout>
+    </>
   ) : null;
 };
 

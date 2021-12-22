@@ -5,26 +5,29 @@ import { API } from "aws-amplify";
 import { getGroupRules } from "../../graphql-custom/group/queries";
 import { getReturnData } from "../../utility/Util";
 import { useEffect, useState } from "react";
+import { useUser } from "../../context/userContext";
 
 const GroupRules = ({ groupId }) => {
-  const [groupRules, setGroupRules] = useState();
+  const [groupRules, setGroupRules] = useState([]);
+  const { isLogged } = useUser();
 
   const getGroupRule = async () => {
     let resp = await API.graphql({
       query: getGroupRules,
       variables: { id: groupId },
+      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
     resp = getReturnData(resp);
-    if (resp.g_rules.length < 0) {
+    if (resp.g_rules?.length > 0) {
       setGroupRules(JSON.parse(resp.g_rules));
-    }
-    else {
-      setGroupRules(null)
+    } else {
+      setGroupRules(null);
     }
   };
 
   useEffect(() => {
     getGroupRule();
+    // eslint-disable-next-line
   }, [groupId]);
 
   return groupRules ? (
@@ -54,70 +57,25 @@ const GroupRules = ({ groupId }) => {
             "text-caak-extraBlack text-[14px] tracking-[0.21px] leading-[16px] tracking-[0.21px] leading-[16px] px-[18px]"
           }
         >
-          <li
-            className={
-              "py-[12px] border-b border-caak-titaniumwhite orderedAccordion flex flex-row"
-            }
-          >
-            <Accordion
-              contentClassname={
-                "text-caak-extrablack text-[14px] tracking-[0.21px] leading-[16px] pt-[8px] break-wrods"
-              }
-              titleClassname={"text-caak-extrablack text-[15px]"}
-              content={
-                "Хэрэв хамтарч ажиллах санал хүсэлт байгаа бол админуудтай холбогдох."
-              }
-              title={"Аялалтай хамааралтай пост оруулах"}
-            />
-          </li>
-          <li
-            className={
-              "py-[12px] border-b border-caak-titaniumwhite orderedAccordion flex flex-row"
-            }
-          >
-            <Accordion
-              contentClassname={
-                "text-caak-extrablack text-[14px] tracking-[0.21px] leading-[16px] pt-[8px]"
-              }
-              titleClassname={"text-caak-extrablack text-[15px]"}
-              content={
-                "Хэрэв хамтарч ажиллах санал хүсэлт байгаа бол админуудтай холбогдох."
-              }
-              title={"Зар оруулахгүй байх"}
-            />
-          </li>
-          <li
-            className={
-              "py-[12px] border-b border-caak-titaniumwhite py-[12px] orderedAccordion flex flex-row"
-            }
-          >
-            <Accordion
-              contentClassname={
-                "text-caak-extrablack text-[14px] tracking-[0.21px] leading-[16px] pt-[8px]"
-              }
-              titleClassname={"text-caak-extrablack text-[15px]"}
-              content={
-                "Хэрэв хамтарч ажиллах санал хүсэлт байгаа бол админуудтай холбогдох."
-              }
-              title={"Эерэг бай, Бусдыг хүндэл"}
-            />
-          </li>
-          <li
-            className={
-              "py-[12px] border-b border-caak-titaniumwhite py-[12px] orderedAccordion flex flex-row"
-            }
-          >
-            <Accordion
-              contentClassname={
-                "text-caak-extrablack text-[14px] tracking-[0.21px] leading-[16px] pt-[8px]"
-              }
-              titleClassname={"text-caak-extrablack text-[15px]"}
-              content={
-                "Хэрэв хамтарч ажиллах санал хүсэлт байгаа бол админуудтай холбогдох."
-              }
-              title={"Эхлээд хай"}
-            />
-          </li>
+          {groupRules.map((rule, index) => {
+            return (
+              <li
+                key={index}
+                className={
+                  "py-[12px] border-b border-caak-titaniumwhite orderedAccordion flex flex-row"
+                }
+              >
+                <Accordion
+                  contentClassname={
+                    "text-caak-extrablack text-[14px] tracking-[0.21px] leading-[16px] pt-[8px] break-words"
+                  }
+                  titleClassname={"text-caak-extrablack text-[15px] break-all"}
+                  content={rule.description}
+                  title={rule.title}
+                />
+              </li>
+            );
+          })}
         </ol>
       </div>
     </div>

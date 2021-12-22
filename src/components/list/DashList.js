@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -9,13 +10,44 @@ import Button from "../../components/button";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
 import Video from "../video";
+import { updatePost } from "../../graphql-custom/post/mutation";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import PostDenyModal from "../modals/postDenyModal";
 
 const DashList = ({ imageSrc, post, type, video }) => {
+  const [loading, setLoading] = useState(false);
+  const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
+
+  const postHandler = async ({ id, status, message }) => {
+    console.log(message);
+    setLoading(true);
+    try {
+      await API.graphql(
+        graphqlOperation(updatePost, {
+          input: { id, status, expectedVersion: post.version },
+        })
+      );
+      setLoading(false);
+    } catch (ex) {
+      setLoading(false);
+
+      console.log(ex);
+    }
+  };
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
+      <PostDenyModal
+        isOpen={isDenyModalOpen}
+        setIsOpen={setIsDenyModalOpen}
+        postHandler={postHandler}
+        postTitle={post.title}
+        postId={post.id}
+      />
       <div className="relative flex items-center ">
         <div className="flex flex-shrink-0 w-[240px] mr-[18px] items-center">
           <Link
+            shallow
             href={{
               pathname: `/post/view/${post.id}`,
             }}
@@ -46,6 +78,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           <div className="flex flex-col  font-inter mr-[26px]">
             <div className="truncate-2 text-15px font-medium text-caak-generalblack">
               <Link
+                shallow
                 href={{
                   pathname: `/post/view/${post.id}`,
                 }}
@@ -83,6 +116,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 </div>
 
                 <Link
+                  shallow
                   href={{
                     pathname: `/user/${post.user_id}/profile`,
                   }}
@@ -98,6 +132,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : type === "user" ? (
             <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
               <Link
+                shallow
                 href={{
                   pathname: `/group/${post.group.id}`,
                 }}
@@ -130,20 +165,30 @@ const DashList = ({ imageSrc, post, type, video }) => {
               {post.totals.views}
             </p>
           </div>
-        </div>
+        </div>{" "}
         <div className="flex ml-[10px] ">
-          <Link href={`/post/edit/${post.id}`}>
-            <a>
-              <Button
-                round
-                className={
-                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-15px bg-white relative"
-                }
-              >
-                <p className="">Засах</p>
-              </Button>
-            </a>
-          </Link>
+          {type === "group" ? (
+            <Button
+              loading={loading}
+              onClick={() => setIsDenyModalOpen(true)}
+              className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
+            >
+              Татгалзах
+            </Button>
+          ) : type === "user" ? (
+            <Link href={`/post/edit/${post.id}`}>
+              <a>
+                <Button
+                  round
+                  className={
+                    "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                  }
+                >
+                  <p className="">Засах</p>
+                </Button>
+              </a>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>

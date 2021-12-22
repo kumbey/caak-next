@@ -26,15 +26,15 @@ const DropZone = ({
   const [dropZoneFiles, setDropZoneFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: setDropZoneFiles,
-    accept: "image/*, video/*",
+    accept: "image/jpeg, image/png, image/gif, video/*",
     noKeyboard: true,
     noClick: false,
     multiple: true,
   });
 
   const fileChoosed = async () => {
-    if (post.items.length + dropZoneFiles.length > 60) {
-      alert("Зөвшөөрөгдсөн зурагны нийт тоо 60");
+    if (post.items.length + dropZoneFiles.length > 30) {
+      alert("Зөвшөөрөгдөх зурагны нийт тоо 30");
     } else {
       const localPost = { ...post };
       const postItemLength = post.items.length;
@@ -93,7 +93,7 @@ const DropZone = ({
       const curIndex = findMatchIndex(post.items, "id", curItem.id);
       const postItems = post.items;
       postItems[curIndex].file = curItem.file;
-      delete postItems[curIndex].loading
+      delete postItems[curIndex].loading;
       setPost((prev) => ({ ...prev, items: [...postItems] }));
     }
   };
@@ -115,7 +115,12 @@ const DropZone = ({
       {icon && icon}
       {!hideThumbnailImage && (
         <div className={"relative w-[116px] h-[93px]"}>
-          <Image priority={true} alt={""} layout={"fill"} src={AddPostThumbnailImage} />
+          <Image
+            priority={true}
+            alt={""}
+            layout={"fill"}
+            src={AddPostThumbnailImage}
+          />
         </div>
       )}
 

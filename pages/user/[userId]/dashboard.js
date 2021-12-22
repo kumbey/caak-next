@@ -6,7 +6,7 @@ import Image from "next/image";
 import { withSSRContext } from "aws-amplify";
 import {
   checkUser,
-  getFileUrl,
+  generateFileUrl,
   getGenderImage,
   getReturnData,
 } from "../../../src/utility/Util";
@@ -24,11 +24,13 @@ import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
 import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
-import {onPostByUser} from "../../../src/graphql-custom/post/subscription";
+import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Divider from "../../../src/components/divider";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
+import Consts from "../../../src/utility/Consts";
+import Head from "next/head";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -136,45 +138,44 @@ const Dashboard = ({ ssrData }) => {
     userTotals?.comment_reactions +
     userTotals?.post_reactions +
     userTotals?.post_items_reactions;
-
   const totalPost = userTotals?.confirmed;
   const totalMember = userTotals?.followers;
   const totalComment = userTotals?.comments;
   const totalArchived = userTotals?.archived;
   const totalPending = userTotals?.pending;
-
   const stats = [
     {
       id: 0,
-      icon: "icon-fi-rs-aura",
+      icon: "icon-fi-rs-aura-f",
       number: user?.aura,
       text: "Аура",
       bgcolor: "",
-      color: "",
+      gradient: "auraBgGradient",
+      color: "auraGradient",
     },
     {
       id: 1,
+      icon: "icon-fi-rs-post-f",
+      number: totalPost,
+      text: "Нийт пост",
+      bgcolor: "bg-caak-errigalwhite",
+      color: "text-caak-darkBlue",
+    },
+    {
+      id: 2,
       icon: "icon-fi-rs-rock-f",
       number: totalReaction,
       text: "Саак",
       bgcolor: "bg-caak-sweetfrosting",
-      color: "text-caak-cookiedough",
+      color: "text-caak-uclagold",
     },
     {
-      id: 2,
+      id: 3,
       icon: "icon-fi-rs-comment-f",
       number: totalComment,
       text: "Сэтгэгдэл",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
-    },
-    {
-      id: 3,
-      icon: "icon-fi-rs-view",
-      number: userTotals?.post_views,
-      text: "Пост үзсэн",
-      bgcolor: "bg-caak-errigalwhite",
-      color: "text-caak-darkBlue",
     },
   ];
 
@@ -265,13 +266,14 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPosts) => ({
-            ...nextPosts,
-            items: [...nextPosts.items, ...resp],
-          }));
+        if (posts.nextToken) {
+          const resp = await nextPosts();
+          if (resp) {
+            setPosts((nextPosts) => ({
+              ...nextPosts,
+              items: [...nextPosts.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -287,12 +289,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextPending();
-        if (resp) {
-          setPendingPosts((nextPending) => ({
-            ...nextPending,
-            items: [...nextPending.items, ...resp],
-          }));
+        if (pendingPosts.nextToken) {
+          const resp = await nextPending();
+          if (resp) {
+            setPendingPosts((nextPending) => ({
+              ...nextPending,
+              items: [...nextPending.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -307,12 +311,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextArchived();
-        if (resp) {
-          setArchivedPosts((nextArchived) => ({
-            ...nextArchived,
-            items: [...nextArchived.items, ...resp],
-          }));
+        if (archivedPosts.nextToken) {
+          const resp = await nextArchived();
+          if (resp) {
+            setArchivedPosts((nextArchived) => ({
+              ...nextArchived,
+              items: [...nextArchived.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -327,12 +333,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextComments();
-        if (resp) {
-          setUserComments((nextComments) => ({
-            ...nextComments,
-            items: [...nextComments.items, ...resp],
-          }));
+        if (userComments.nextToken) {
+          const resp = await nextComments();
+          if (resp) {
+            setUserComments((nextComments) => ({
+              ...nextComments,
+              items: [...nextComments.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -347,12 +355,14 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        const resp = await nextFollowers();
-        if (resp) {
-          setFollowedUsers((nextFollowers) => ({
-            ...nextFollowers,
-            items: [...nextFollowers.items, ...resp],
-          }));
+        if (followedUsers.nextToken) {
+          const resp = await nextFollowers();
+          if (resp) {
+            setFollowedUsers((nextFollowers) => ({
+              ...nextFollowers,
+              items: [...nextFollowers.items, ...resp],
+            }));
+          }
         }
 
         setLoading(false);
@@ -438,12 +448,15 @@ const Dashboard = ({ ssrData }) => {
               items: [subscripedPost.post, ...posts.items],
             });
             pendingPosts.items.splice(pendingIndex, 1);
-            archivedPosts.items.splice(archivedIndex, 1);
+            userTotals.confirmed = userTotals.confirmed + 1;
+            userTotals.pending = userTotals.pending - 1;
             setRender(render + 1);
+            // archivedPosts.items.splice(archivedIndex, 1);
           }
         } else {
           if (postIndex > -1) {
             posts.splice(postIndex, 1);
+            userTotals.confirmed = userTotals.confirmed - 1;
             setRender(render + 1);
           }
         }
@@ -454,12 +467,17 @@ const Dashboard = ({ ssrData }) => {
             ...pendingPosts,
             items: [subscripedPost.post, ...pendingPosts.items],
           });
+          userTotals.pending = userTotals.pending + 1;
+          setRender(render + 1);
         }
         if (archivedIndex > -1) {
           archivedPosts.items.splice(archivedIndex, 1);
+          userTotals.archived = userTotals.archived - 1;
+          setRender(render + 1);
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
+          userTotals.confirmed = userTotals.confirmed - 1;
           setRender(render + 1);
         }
       }
@@ -469,9 +487,17 @@ const Dashboard = ({ ssrData }) => {
             ...archivedPosts,
             items: [subscripedPost.post, ...archivedPosts.items],
           });
+          userTotals.archived = userTotals.archived + 1;
+          setRender(render + 1);
+        }
+        if (postIndex > -1) {
+          posts.items.splice(postIndex, 1);
+          userTotals.confirmed = userTotals.confirmed - 1;
+          setRender(render + 1);
         }
         if (pendingIndex > -1) {
           pendingPosts.items.splice(pendingIndex, 1);
+          userTotals.pending = userTotals.pending - 1;
           setRender(render + 1);
         }
       }
@@ -492,369 +518,373 @@ const Dashboard = ({ ssrData }) => {
 
     // eslint-disable-next-line
   }, []);
-
   return isLogged && loaded ? (
-    <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
-      <div className="flex items-center mb-[40px]">
-        <span
-          onClick={() => router.back()}
-          className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5"
-          style={{ height: "48px", width: "48px" }}
-        />
-        <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-          <Image
-            className=" bg-white rounded-full"
-            src={
-              user?.pic ? getFileUrl(user?.pic) : getGenderImage(user?.gender)
-            }
-            width={52}
-            height={52}
-            objectFit={"cover"}
-            alt="#"
+    <>
+      <Head>
+        <title>
+          {user?.nickname} / дашбоард - {Consts.siteMainTitle}
+        </title>
+      </Head>
+      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
+        <div className="flex items-center mb-[40px]">
+          <span
+            onClick={() => router.back()}
+            className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5"
+            style={{ height: "48px", width: "48px" }}
           />
-        </div>
-        <div className="text-2xl font-semibold text-caak-generalblack mr-1">
-          @{user?.nickname}
-        </div>
-        <span className="icon-fi-rs-verified" />
-      </div>
-      <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
-        Дашбоард
-      </div>
-      <div className="flex">
-        {stats.map((stat, index) => {
-          return (
-            <StatsItem
-              key={index}
-              id={index}
-              icon={stat.icon}
-              number={stat.number}
-              text={stat.text}
-              color={stat.color}
-              bgcolor={stat.bgcolor}
+          <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
+            <Image
+              className=" bg-white rounded-full"
+              src={
+                user?.pic
+                  ? generateFileUrl(user?.pic)
+                  : getGenderImage(user?.gender)
+              }
+              width={52}
+              height={52}
+              objectFit={"cover"}
+              alt="#"
             />
-          );
-        })}
-      </div>
-      <div className="flex flex-col xl:flex-row mt-[25px] ">
-        <div
-          className={
-            "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mr-0 lg:mr-[20px] "
-          }
-        >
-          <div className="flex flex-col mt-[28px] ml-[32px]">
-            {dashMenu.map((menu, index) => {
-              return (
-                <div
-                  onClick={() => setActiveIndex(index)}
-                  className={`flex items-center mb-[28px] cursor-pointer`}
-                  key={index}
-                >
-                  <span
-                    className={` ${menu.icon} ${
-                      activeIndex === index
-                        ? "text-caak-primary"
-                        : "text-caak-generalblack"
-                    } text-xl `}
-                  />
-                  <p
-                    className={`ml-3 text-base font-inter font-medium text-caak-generalblack ${
-                      activeIndex === index
-                        ? "text-caak-primary"
-                        : "text-caak-generalblack"
-                    }`}
-                  >
-                    {menu.name}
-                  </p>
-                </div>
-              );
-            })}
           </div>
+          <div className="text-2xl font-semibold text-caak-generalblack mr-1">
+            @{user?.nickname}
+          </div>
+          {user.verified && <span className="icon-fi-rs-verified" />}
         </div>
-        <div className="flex flex-col w-full">
-          <div className="flex flex-wrap justify-between mt-[10px]">
-            <div className="flex items-center my-[10px] md:my-0">
-              <p
-                className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
-              >
-                {dashMenu[activeIndex].name}
-              </p>
-              <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
-                <p className="text-caak-bleudefrance text-opacity-100 ">
-                  {dashMenu[activeIndex].length}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between flex-wrap md:mb-0 mb-[10px]">
-              <div className={"flex flex-row items-center"}>
-                <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                  Хандалт
-                </p>
-
-                <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                  <div className="flex items-center  mx-[12px] my-[10px]">
-                    <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                      Бүгд
-                    </p>
-                    <span className="icon-fi-rs-triangle text-14px" />
-                  </div>
-                </div>
-              </div>
-              <div className={"flex flex-row items-center"}>
-                <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                  Огноо
-                </p>
-
-                <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                  <div className="flex items-center  mx-[12px] my-[10px]">
-                    <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                      Сүүлд нэмэгдсэн
-                    </p>
-                    <span className="icon-fi-rs-triangle text-14px" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
+          Дашбоард
+        </div>
+        <div className="flex">
+          {stats.map((stat, index) => {
+            return <StatsItem key={index} id={index} stat={stat} />;
+          })}
+        </div>
+        <div className="flex flex-col xl:flex-row mt-[25px] ">
           <div
             className={
-              "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px]"
+              "flex  rounded-lg border border-caak-titaniumwhite bg-caak-emptiness  min-w-[290px] h-full mr-0 lg:mr-[20px] "
             }
           >
-            {activeIndex === 0 ? (
-              <div className="flex flex-col">
-                <div className="mb-[13px] hidden md:flex ">
-                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
-                    Пост
+            <div className="flex flex-col mt-[28px] ml-[32px]">
+              {dashMenu.map((menu, index) => {
+                return (
+                  <div
+                    onClick={() => setActiveIndex(index)}
+                    className={`flex items-center mb-[28px] cursor-pointer`}
+                    key={index}
+                  >
+                    <span
+                      className={` ${menu.icon} ${
+                        activeIndex === index
+                          ? "text-caak-primary"
+                          : "text-caak-generalblack"
+                      } text-xl `}
+                    />
+                    <p
+                      className={`ml-3 text-base font-inter font-medium text-caak-generalblack ${
+                        activeIndex === index
+                          ? "text-caak-primary"
+                          : "text-caak-generalblack"
+                      }`}
+                    >
+                      {menu.name}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col w-full">
+            <div className="flex flex-wrap justify-between mt-[10px]">
+              <div className="flex items-center my-[10px] md:my-0">
+                <p
+                  className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
+                >
+                  {dashMenu[activeIndex].name}
+                </p>
+                <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                  <p className="text-caak-bleudefrance text-opacity-100 ">
+                    {dashMenu[activeIndex].length}
                   </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
-                    Групп
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[161px]">
+                </div>
+              </div>
+              <div className="flex items-center justify-between flex-wrap md:mb-0 mb-[10px]">
+                <div className={"flex flex-row items-center"}>
+                  <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
                     Хандалт
                   </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack">
-                    Үйлдэл
-                  </p>
-                </div>
-                <Divider className={"mb-[20px] bg-caak-titaniumwhite hidden md:flex"} />
-                <InfiniteScroll
-                  dataLength={posts.items.length}
-                  next={fetchPosts}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={`self-center w-full ${
-                        loading ? "" : "hidden"
-                      }`}
-                      className={`bg-caak-primary`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {posts.items.map((post, index) => {
-                    return (
-                      <DashList
-                        key={index}
-                        type={"user"}
-                        imageSrc={post?.items?.items[0]?.file}
-                        video={post?.items?.items[0]?.file?.type?.startsWith(
-                          "video"
-                        )}
-                        post={post}
-                        className="ph:mb-4 sm:mb-4"
-                      />
-                    );
-                  })}
-                </InfiniteScroll>
-              </div>
-            ) : null}
 
-            {activeIndex === 1 ? (
-              <div className="flex flex-col">
-                <div className="hidden md:flex mb-[13px]">
-                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
-                    Пост
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
-                    Гишүүн
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
-                    Огноо
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack">
-                    Үйлдэл
-                  </p>
-                </div>
-                <Divider className={"hidden md:flex mb-[20px]"} />
-                <InfiniteScroll
-                  dataLength={pendingPosts.items.length}
-                  next={fetchPending}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={`self-center w-full ${
-                        loading ? "" : "hidden"
-                      }`}
-                      className={`bg-caak-primary`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {pendingPosts.items.length > 0 &&
-                    pendingPosts.items.map((pendingPost, index) => {
-                      return (
-                        <GroupPostItem
-                          type={"user"}
-                          key={index}
-                          imageSrc={pendingPost?.items?.items[0]?.file}
-                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={pendingPost}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    })}
-                </InfiniteScroll>
-              </div>
-            ) : null}
-            {activeIndex === 2 ? (
-              <div className="flex flex-col">
-                <div className="hidden md:flex mb-[13px]">
-                  <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
-                    Пост
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
-                    Гишүүн
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
-                    Огноо
-                  </p>
-                  <p className="font-inter font-normal text-14px text-caak-generalblack">
-                    Үйлдэл
-                  </p>
-                </div>
-                <Divider className={"hidden md:flex mb-[20px]"} />
-                <InfiniteScroll
-                  dataLength={archivedPosts.items.length}
-                  next={fetchArchived}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={`self-center w-full ${
-                        loading ? "" : "hidden"
-                      }`}
-                      className={`bg-caak-primary`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {archivedPosts.items.length > 0 &&
-                    archivedPosts.items.map((archivedPost, index) => {
-                      return (
-                        <GroupPostItem
-                          type={"user"}
-                          key={index}
-                          imageSrc={archivedPost?.items?.items[0]?.file}
-                          video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={archivedPost}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    })}
-                </InfiniteScroll>
-              </div>
-            ) : null}
-            {activeIndex === 3 ? (
-              <InfiniteScroll
-                dataLength={followedUsers.items.length}
-                next={fetchFollowers}
-                hasMore={true}
-                loader={
-                  <Loader
-                    containerClassName={`self-center w-full ${
-                      loading ? "" : "hidden"
-                    }`}
-                    className={`bg-caak-primary`}
-                  />
-                }
-                endMessage={<h4>Nothing more to show</h4>}
-              >
-                <div className="mt-[14px] flex flex-row flex-wrap justify-between">
-                  {followedUsers.items.map((data, index) => {
-                    return (
-                      <FollowerList
-                        key={index}
-                        imageSrc={data?.cover_pic}
-                        followedUser={data}
-                        followedUsers={followedUsers}
-                        setFollowedUsers={setFollowedUsers}
-                      />
-                    );
-                  })}
-                </div>
-              </InfiniteScroll>
-            ) : null}
-
-            {activeIndex === 4
-              ? userComments.items.length > 0 && (
-                  <div className="flex flex-col">
-                    <div className="hidden md:flex mb-[13px] ">
-                      <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
-                        Пост
+                  <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                    <div className="flex items-center  mx-[12px] my-[10px]">
+                      <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                        Бүгд
                       </p>
-                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[240px]">
-                        Сэтгэгдэл
-                      </p>
-                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[80px]">
-                        Огноо
-                      </p>
-                      <p className="font-inter font-normal text-14px text-caak-generalblack">
-                        Үйлдэл
-                      </p>
+                      <span className="icon-fi-rs-triangle text-14px" />
                     </div>
-                    <Divider className={"hidden md:flex mb-[20px] bg-caak-titaniumwhite"} />
-                    <InfiniteScroll
-                      dataLength={userComments.items.length}
-                      next={fetchComments}
-                      hasMore={true}
-                      loader={
-                        <Loader
-                          containerClassName={`self-center w-full ${
-                            loading ? "" : "hidden"
-                          }`}
-                          className={`bg-caak-primary`}
+                  </div>
+                </div>
+                <div className={"flex flex-row items-center"}>
+                  <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
+                    Огноо
+                  </p>
+
+                  <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
+                    <div className="flex items-center  mx-[12px] my-[10px]">
+                      <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
+                        Сүүлд нэмэгдсэн
+                      </p>
+                      <span className="icon-fi-rs-triangle text-14px" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px]"
+              }
+            >
+              {activeIndex === 0 ? (
+                <div className="flex flex-col">
+                  <div className="mb-[13px] hidden md:flex ">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[250px]">
+                      Пост
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[220px]">
+                      Групп
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[170px]">
+                      Хандалт
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack">
+                      Үйлдэл
+                    </p>
+                  </div>
+                  <Divider
+                    className={"mb-[20px] bg-caak-titaniumwhite hidden md:flex"}
+                  />
+                  <InfiniteScroll
+                    dataLength={posts.items.length}
+                    next={fetchPosts}
+                    hasMore={true}
+                    loader={
+                      <Loader
+                        containerClassName={`self-center w-full ${
+                          loading ? "" : "hidden"
+                        }`}
+                        className={`bg-caak-primary`}
+                      />
+                    }
+                    endMessage={<h4>Nothing more to show</h4>}
+                  >
+                    {posts.items.map((post, index) => {
+                      return (
+                        <DashList
+                          key={index}
+                          type={"user"}
+                          imageSrc={post?.items?.items[0]?.file}
+                          video={post?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={post}
+                          className="ph:mb-4 sm:mb-4"
                         />
-                      }
-                      endMessage={<h4>Nothing more to show</h4>}
-                    >
-                      {userComments.items.map((comment, index) => {
+                      );
+                    })}
+                  </InfiniteScroll>
+                </div>
+              ) : null}
+
+              {activeIndex === 1 ? (
+                <div className="flex flex-col">
+                  <div className="hidden md:flex mb-[13px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
+                      Пост
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
+                      Гишүүн
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
+                      Огноо
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack">
+                      Үйлдэл
+                    </p>
+                  </div>
+                  <Divider className={"hidden md:flex mb-[20px]"} />
+                  <InfiniteScroll
+                    dataLength={pendingPosts.items.length}
+                    next={fetchPending}
+                    hasMore={true}
+                    loader={
+                      <Loader
+                        containerClassName={`self-center w-full ${
+                          loading ? "" : "hidden"
+                        }`}
+                        className={`bg-caak-primary`}
+                      />
+                    }
+                    endMessage={<h4>Nothing more to show</h4>}
+                  >
+                    {pendingPosts.items.length > 0 &&
+                      pendingPosts.items.map((pendingPost, index) => {
                         return (
-                          <CommentList
+                          <GroupPostItem
+                            type={"user"}
                             key={index}
-                            index={index}
-                            imageSrc={comment?.post?.items?.items[0]?.file}
-                            video={comment?.post?.items.items[0]?.file?.type?.startsWith(
+                            imageSrc={pendingPost?.items?.items[0]?.file}
+                            video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
                               "video"
                             )}
-                            comment={comment}
-                            userComments={userComments.items}
-                            setUserComments={setUserComments}
+                            post={pendingPost}
                             className="ph:mb-4 sm:mb-4"
                           />
                         );
                       })}
-                    </InfiniteScroll>
+                  </InfiniteScroll>
+                </div>
+              ) : null}
+              {activeIndex === 2 ? (
+                <div className="flex flex-col">
+                  <div className="hidden md:flex mb-[13px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
+                      Пост
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
+                      Гишүүн
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
+                      Огноо
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack">
+                      Үйлдэл
+                    </p>
                   </div>
-                )
-              : null}
+                  <Divider className={"hidden md:flex mb-[20px]"} />
+                  <InfiniteScroll
+                    dataLength={archivedPosts.items.length}
+                    next={fetchArchived}
+                    hasMore={true}
+                    loader={
+                      <Loader
+                        containerClassName={`self-center w-full ${
+                          loading ? "" : "hidden"
+                        }`}
+                        className={`bg-caak-primary`}
+                      />
+                    }
+                    endMessage={<h4>Nothing more to show</h4>}
+                  >
+                    {archivedPosts.items.length > 0 &&
+                      archivedPosts.items.map((archivedPost, index) => {
+                        return (
+                          <GroupPostItem
+                            type={"user"}
+                            key={index}
+                            imageSrc={archivedPost?.items?.items[0]?.file}
+                            video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={archivedPost}
+                            className="ph:mb-4 sm:mb-4"
+                          />
+                        );
+                      })}
+                  </InfiniteScroll>
+                </div>
+              ) : null}
+              {activeIndex === 3 ? (
+                <InfiniteScroll
+                  dataLength={followedUsers.items.length}
+                  next={fetchFollowers}
+                  hasMore={true}
+                  loader={
+                    <Loader
+                      containerClassName={`self-center w-full ${
+                        loading ? "" : "hidden"
+                      }`}
+                      className={`bg-caak-primary`}
+                    />
+                  }
+                  endMessage={<h4>Nothing more to show</h4>}
+                >
+                  <div className="mt-[14px] flex flex-row flex-wrap justify-between">
+                    {followedUsers.items.map((data, index) => {
+                      return (
+                        <FollowerList
+                          key={index}
+                          imageSrc={data?.cover_pic}
+                          followedUser={data}
+                          followedUsers={followedUsers}
+                          setFollowedUsers={setFollowedUsers}
+                        />
+                      );
+                    })}
+                  </div>
+                </InfiniteScroll>
+              ) : null}
+
+              {activeIndex === 4
+                ? userComments.items.length > 0 && (
+                    <div className="flex flex-col">
+                      <div className="hidden md:flex mb-[13px] ">
+                        <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
+                          Пост
+                        </p>
+                        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[240px]">
+                          Сэтгэгдэл
+                        </p>
+                        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[80px]">
+                          Огноо
+                        </p>
+                        <p className="font-inter font-normal text-14px text-caak-generalblack">
+                          Үйлдэл
+                        </p>
+                      </div>
+                      <Divider
+                        className={
+                          "hidden md:flex mb-[20px] bg-caak-titaniumwhite"
+                        }
+                      />
+                      <InfiniteScroll
+                        dataLength={userComments.items.length}
+                        next={fetchComments}
+                        hasMore={true}
+                        loader={
+                          <Loader
+                            containerClassName={`self-center w-full ${
+                              loading ? "" : "hidden"
+                            }`}
+                            className={`bg-caak-primary`}
+                          />
+                        }
+                        endMessage={<h4>Nothing more to show</h4>}
+                      >
+                        {userComments.items.map((comment, index) => {
+                          return (
+                            <CommentList
+                              key={index}
+                              index={index}
+                              imageSrc={comment?.post?.items?.items[0]?.file}
+                              video={comment?.post?.items.items[0]?.file?.type?.startsWith(
+                                "video"
+                              )}
+                              comment={comment}
+                              userComments={userComments.items}
+                              setUserComments={setUserComments}
+                              className="ph:mb-4 sm:mb-4"
+                            />
+                          );
+                        })}
+                      </InfiniteScroll>
+                    </div>
+                  )
+                : null}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   ) : null;
 };
 

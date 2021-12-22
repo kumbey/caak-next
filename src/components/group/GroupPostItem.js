@@ -1,19 +1,38 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Button from "../button";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
+import {
+  extractDate,
+  generateFileUrl,
+  getFileUrl,
+  getGenderImage,
+} from "../../utility/Util";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
 import Video from "../video";
+import { useRouter } from "next/router";
+import PostDenyModal from "../modals/postDenyModal";
+import PendingPostApproveModal from "../modals/pendingPostApproveModal";
 
-const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
+const GroupPostItem = ({
+  imageSrc,
+  post,
+  video,
+  type,
+  index,
+  status,
+}) => {
   const [loading, setLoading] = useState(false);
-
-  const postHandler = async (id, status) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
+  console.log(status)
+  const router = useRouter();
+  const postHandler = async ({ id, status, message }) => {
     setLoading(true);
     try {
       await API.graphql(
@@ -28,58 +47,98 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
       console.log(ex);
     }
   };
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.keyCode === 27) {
+        setIsModalOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
-      <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
+      <PostDenyModal
+        isOpen={isDenyModalOpen}
+        setIsOpen={setIsDenyModalOpen}
+        postHandler={postHandler}
+        postTitle={post.title}
+        postId={post.id}
+      />
+      <PendingPostApproveModal
+        post={post}
+        postHandler={postHandler}
+        activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+      />
+
+      <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px]">
         <div
           className={`relative flex items-center ${
             type === "user" ? "justify-between" : ""
           }`}
         >
-          <div className="flex w-[180px] md:w-[280px] lg:w-[306px] flex-shrink-0 items-center mr-[10px] md:mr-[36px]">
-            <Link
-              href={{
-                pathname: `/post/view/${post?.id}`,
+          <div className="cursor-pointer flex w-[180px] md:w-[280px] lg:w-[306px] flex-shrink-0 items-center mr-[10px] md:mr-[36px]">
+            <div
+              onClick={() => {
+                if (type === "group" && status === "PENDING") {
+                  setActiveIndex(index);
+                  setIsModalOpen(true);
+                } else {
+                  router.push(`/post/view/${post.id}`, undefined, {
+                    shallow: true,
+                  });
+                }
               }}
+              className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}
             >
-              <a>
-                <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
-                  {video ? (
-                    <Video
-                      videoClassname={"object-contain rounded-[4px]"}
-                      src={getFileUrl(video)}
-                      thumbnailIcon
-                      hideControls
-                    />
-                  ) : (
-                    <Image
-                      className=" bg-white rounded-md"
-                      src={
-                        !imageSrc
-                          ? getGenderImage("default")
-                          : getFileUrl(imageSrc)
-                      }
-                      width={64}
-                      height={64}
-                      layout="responsive"
-                      objectFit={"cover"}
-                      alt="#"
-                    />
-                  )}
-                </div>
-              </a>
-            </Link>
-            <Link
-              href={{
-                pathname: `/post/view/${post?.id}`,
+              {video ? (
+                <Video
+                  videoClassname={"object-contain rounded-[4px]"}
+                  src={generateFileUrl(video)}
+                  thumbnailIcon
+                  hideControls
+                />
+              ) : (
+                <Image
+                  className=" bg-white rounded-md"
+                  src={
+                    !imageSrc
+                      ? getGenderImage("default")
+                      : generateFileUrl(imageSrc)
+                  }
+                  width={64}
+                  height={64}
+                  layout="responsive"
+                  objectFit={"cover"}
+                  alt="#"
+                />
+              )}
+            </div>
+
+            <div
+              onClick={() => {
+                if (type === "group" && status === "PENDING") {
+                  setActiveIndex(index);
+                  setIsModalOpen(true);
+                }
               }}
+              className="cursor-pointer text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium"
             >
-              <a>
-                <div className="text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium">
-                  {post.title}
-                </div>
-              </a>
-            </Link>
+              {type === "user" && (
+                <Link href={`/post/view/${post.id}`}>
+                  <a>{post.title}</a>
+                </Link>
+              )}
+              {status === "PENDING" && post.title}
+            </div>
           </div>
           <div className="flex flex-shrink-0 items-center w-[141px] mr-[10px] md:mr-[69px]">
             {type === "group" ? (
@@ -103,6 +162,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
                   content={<ProfileHoverCard userId={post.user.id} />}
                 >
                   <Link
+                    shallow
                     href={{
                       pathname: `/user/${post.user_id}/profile`,
                     }}
@@ -118,6 +178,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
             ) : type === "user" ? (
               <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
                 <Link
+                  shallow
                   href={{
                     pathname: `/group/${post.group.id}`,
                   }}
@@ -137,15 +198,14 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
                 "text-[12px] font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
               }
             >
-              {`${extractDate(post.createdAt).year}.${
-                extractDate(post.createdAt).month
-              }.${extractDate(post.createdAt).day}`}
+              {`${extractDate(post.updatedAt).year}.${
+                extractDate(post.updatedAt).month
+              }.${extractDate(post.updatedAt).day}`}
             </p>
           </div>
-          {post.status === "ARCHIVED" ||
-          (post.status === "PENDING" && type === "user") ? (
+          {post.status === "ARCHIVED" ? (
             <div className=" flex w-[102px] ">
-              <Link href={`/post/edit/${post.id}`}>
+              <Link shallow href={`/post/edit/${post.id}`}>
                 <a>
                   <Button
                     round
@@ -158,11 +218,15 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
                 </a>
               </Link>
             </div>
+          ) : post.status === "PENDING" && type === "user" ? (
+            <div className=" flex w-[100px] "></div>
           ) : (
             <div className=" flex w-[224px] ">
               <Button
                 loading={loading}
-                onClick={() => postHandler(post.id, "CONFIRMED")}
+                onClick={() =>
+                  postHandler({ id: post.id, status: "CONFIRMED" })
+                }
                 className="bg-caak-cardinal w-[112px] text-14px font-inter font-medium  mr-[10px] text-white"
               >
                 Зөвшөөрөх
@@ -170,7 +234,9 @@ const GroupPostItem = ({ imageSrc, post, video, type, ...props }) => {
 
               <Button
                 loading={loading}
-                onClick={() => postHandler(post.id, "ARCHIVED")}
+                onClick={() => {
+                  setIsDenyModalOpen(true);
+                }}
                 className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
               >
                 Татгалзах

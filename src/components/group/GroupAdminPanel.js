@@ -3,7 +3,7 @@ import Divider from "../divider";
 import { getReturnData } from "../../utility/Util";
 import { API } from "aws-amplify";
 import { useRouter } from "next/router";
-import { getGroupTotal } from "../../../src/graphql-custom/group/queries";
+import { getGroupTotal } from "../../graphql-custom/group/queries";
 
 const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
   const router = useRouter();
@@ -32,12 +32,6 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
       path: "settings",
       length: "",
     },
-    // {
-    //   id: 3,
-    //   name: "Дүрэм",
-    //   icon: "icon-fi-rs-desc",
-    //   path: "rule",
-    // },
   ];
   const getGroupTotals = async () => {
     const resp = await API.graphql({
@@ -53,8 +47,8 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
     getGroupTotals();
     // eslint-disable-next-line
   }, []);
-  return (
-    <div className=" flex flex-col relative rounded-lg bg-white mb-[16px]">
+  return (groupData.role_on_group === "ADMIN" || groupData.role_on_group === "MODERATOR") && (
+    <div className="max-w-[616px] mx-auto flex flex-col relative rounded-lg bg-white mb-[16px]">
       <div className={"p-[18px] "}>
         <div className={""}>
           <p

@@ -122,7 +122,11 @@ export default function NavBar() {
             <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
               <div className="relative flex items-center justify-between w-full h-full">
                 <div className={"flex  items-center justify-center"}>
-                  <Logo onClick={() => router.replace("/")} />
+                  <Logo
+                    onClick={() =>
+                      router.push("/", undefined, { shallow: true })
+                    }
+                  />
                 </div>
                 {/* Mobile menu button */}
                 <div className="flex">
@@ -143,7 +147,11 @@ export default function NavBar() {
           <div className="flex items-center h-full px-[40px] py-1">
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="md:flex flex flex-row items-center hidden ">
-                <Logo onClick={() => router.replace("/")} />
+                <Logo
+                  onClick={() =>
+                    router.push("/", undefined, { shallow: true })
+                  }
+                />
               </div>
 
               <div className="navbarSearch hidden md:block p-[8px] mx-4">

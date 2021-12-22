@@ -5,21 +5,23 @@ import {
   getGenderImage,
   useClickOutSide,
 } from "../../../utility/Util";
-import Dummy from "dummyjs";
 import Tooltip from "../../tooltip/Tooltip";
 import DropDown from "../../navigation/DropDown";
 import PostMoreMenu from "../PostMoreMenu";
 import Link from "next/link";
 import ProfileHoverCard from "../ProfileHoverCard";
 import Image from "next/image";
+import {useWrapper} from "../../../context/wrapperContext";
 
 const CardHeader = ({
   post,
-  verifiedUser,
   hideTitle,
   containerClassname,
   titleClassname,
 }) => {
+
+  const {setFeedSortType} = useWrapper()
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -54,7 +56,7 @@ const CardHeader = ({
           <div className="flex flex-col justify-between ml-[8px] h-full">
             <div className={"flex flex-row items-center"}>
               <span className="mr-1 font-semibold cursor-pointer text-generalblack text-14px leading-[16px] tracking-[0.21px]">
-                <Link href={`/group/${post.group.id}`}>
+                <Link shallow href={`/group/${post.group.id}`}>
                   <a>{post.group.name}</a>
                 </Link>
               </span>
@@ -81,6 +83,7 @@ const CardHeader = ({
               >
                 <div className={"flex flex-row items-center"}>
                   <Link
+                    shallow
                     href={{
                       pathname: `/user/${post.user.id}/profile`,
                     }}
@@ -115,24 +118,51 @@ const CardHeader = ({
             </div>
           </div>
         </div>
-        <div
-          ref={menuRef}
-          onClick={toggleMenu}
-          className={`flex justify-center flex-shrink-0 w-[35px] h-[35px] transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
-        >
-          <span className="icon-fi-rs-dots text-22px" />
-          <DropDown
-            open={isMenuOpen}
-            onToggle={toggleMenu}
-            content={
-              <PostMoreMenu
-                groupId={post.group.id}
-                postId={post.id}
-                postUser={post.user}
-              />
-            }
-            className={"top-6 -right-3"}
-          />
+        <div onClick={()=> setFeedSortType("CAAK")} className={"cursor-pointer flex flex-row items-center"}>
+          {post.owned === "CAAK" && (
+            <div
+              className={
+                "flex flex-row items-center h-[24px] px-[10px] py-[4px] rounded-[6px] cContentGradient mr-[4px]"
+              }
+            >
+              <div
+                className={
+                  "flex items-center justify-center w-[16px] h-[16px] "
+                }
+              >
+                <span className={"icon-fi-rs-caak-f text-white"} />
+              </div>
+              <div className={"ml-[6px]"}>
+                <p
+                  className={
+                    "text-[12px] text-white font-rubik uppercase tracking-[0.08em]"
+                  }
+                >
+                  КОНТЕНТ
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div
+            ref={menuRef}
+            onClick={toggleMenu}
+            className={`flex justify-center flex-shrink-0 w-[35px] h-[35px] transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
+          >
+            <span className="icon-fi-rs-dots text-22px" />
+            <DropDown
+              open={isMenuOpen}
+              onToggle={toggleMenu}
+              content={
+                <PostMoreMenu
+                  groupId={post.group.id}
+                  postId={post.id}
+                  postUser={post.user}
+                />
+              }
+              className={"top-6 -right-3"}
+            />
+          </div>
         </div>
       </div>
       {!hideTitle && (
@@ -143,7 +173,7 @@ const CardHeader = ({
               : "text-15px leading-[18px] tracking-[0.23px]"
           }`}
         >
-          <Link href={`/post/view/${post.id}`}>
+          <Link shallow href={`/post/view/${post.id}`}>
             <a>{post.title}</a>
           </Link>
         </div>

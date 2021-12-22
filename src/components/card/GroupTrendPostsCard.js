@@ -2,46 +2,49 @@ import GroupTrendPostsCardItem from "./GroupTrendPostsCardItem";
 import { API } from "aws-amplify";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
 import { getReturnData } from "../../utility/Util";
-import Loader from "../loader";
+import { listPostByGroupOrderByReactions } from "../../graphql-custom/group/queries";
 
-const GroupTrendPostsCard = ({ groupId }) => {
-  // const [group, setGroup] = useState([]);
+const GroupTrendPostsCard = ({ groupId, maxItems }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { isLogged } = useUser();
 
-  const getPostsByStatus = async () => {
+  const fetchTrendPosts = async (nextToken) => {
     try {
       let resp = await API.graphql({
-        query: getPostByStatus,
-        sortDirection: "DESC",
+        query: listPostByGroupOrderByReactions,
         variables: {
-          status: "CONFIRMED",
-          limit: 5
+          groupAndStatus: `${groupId}#CONFIRMED`,
+          sortDirection: "DESC",
+          limit: maxItems,
         },
+        nextToken: nextToken,
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
-      setPosts(resp);
+      // setPosts(resp);
+      return resp;
     } catch (ex) {
       console.log(ex);
     }
   };
-  // const getGroupById = async () => {
-  //   let resp = await API.graphql({
-  //     query: getGroupView,
-  //     variables: { id: groupId },
-  //     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  //   });
-  //   resp = getReturnData(resp);
-  //   setGroup(resp);
-  // };
-
+  //TODO FIX RECURS
   useEffect(() => {
-    getPostsByStatus().then(() => setLoading(false));
-    // getGroupById();
+    fetchTrendPosts().then((data) => {
+      if (data.items) {
+        if (data.items.length < maxItems) {
+          if (data.nextToken) {
+            fetchTrendPosts(data.nextToken).then(() => {
+              setLoading(false);
+            });
+          } else {
+            setPosts(data);
+            setLoading(false);
+          }
+        }
+      }
+    });
     // eslint-disable-next-line
   }, [groupId]);
 
@@ -51,12 +54,11 @@ const GroupTrendPostsCard = ({ groupId }) => {
         Тренд постууд
       </p>
       {posts.items.map((item, index) => {
-        return <GroupTrendPostsCardItem item={item} key={index} />;
+        if (index < maxItems)
+          return <GroupTrendPostsCardItem item={item.post} key={index} />;
       })}
     </div>
-  ) : (
-    <Loader className={"bg-caak-primary"} />
-  );
+  ) : null;
 };
 
 export default GroupTrendPostsCard;

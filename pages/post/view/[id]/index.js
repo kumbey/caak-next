@@ -17,6 +17,7 @@ import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
 import Link from "next/link";
 import Head from "next/head";
+import Consts from "../../../../src/utility/Consts";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -33,6 +34,14 @@ export async function getServerSideProps({ req, query }) {
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       variables: { id: postId },
     });
+    if (
+      getReturnData(resp).status === "ARCHIVED" ||
+      getReturnData(resp).status === "PENDING"
+    ) {
+      if (user.attributes.sub !== getReturnData(resp).user.id) {
+        return { notFound: true };
+      }
+    }
     return {
       props: {
         ssrData: {
@@ -73,15 +82,15 @@ const Post = ({ ssrData }) => {
       <div
         onClick={() => setIsReactionActive(!isReactionActive)}
         className={
-          "flex animate-pulse md:hidden items-center justify-center w-[52px] h-[52px] bg-caak-primary rounded-full absolute p-[4px] z-[5] bottom-[74px] right-[14px]"
+          "flex animate-pulse md:hidden items-center justify-center w-[52px] h-[52px] bg-caak-primary rounded-full fixed p-[4px] z-[5] bottom-[74px] right-[14px]"
         }
       >
-        <span className={"icon-fi-rs-rock-f text-white"} />
+        <span className={"icon-fi-rs-rock-f text-white text-[30px]"} />
       </div>
       {isReactionActive && (
         <div
           className={
-            "flex items-center bg-black rounded-[100px] p-[4px] bg-opacity-30 justify-center absolute z-[5] bottom-[130px] right-[14px]"
+            "flex items-center bg-black rounded-[100px] p-[4px] bg-opacity-30 justify-center fixed z-[5] bottom-[130px] right-[14px]"
           }
         >
           <ViewPostLeftReaction commentRef={commentRef} post={post} />
@@ -91,7 +100,7 @@ const Post = ({ ssrData }) => {
       <ViewPostModal
         post={post}
         containerClassname={
-          "w-full flex flex-row max-w-[1200px] mx-auto my-[20px] mb-[270px] md:my-[78px] rounded-b-square z-[0] pt-[54px]"
+          "w-full flex flex-row max-w-[1200px] mx-auto py-[20px] pb-[270px] py-[78px] rounded-b-square z-[0]"
         }
       >
         <Head>
@@ -102,7 +111,9 @@ const Post = ({ ssrData }) => {
             property="og:image"
             content={getFileUrl(post.items.items[0].file)}
           />
-          <title>{post.title}</title>
+          <title>
+            {post.title} - {Consts.siteMainTitle}
+          </title>
         </Head>
         {post.status === "CONFIRMED" && (
           <div
@@ -132,7 +143,7 @@ const Post = ({ ssrData }) => {
                 />
               </div>
               <div className={"flex flex-col ml-[10px] justify-between"}>
-                <Link href={`/group/${post.group.id}`}>
+                <Link shallow href={`/group/${post.group.id}`}>
                   <a>
                     <p
                       className={
@@ -205,7 +216,7 @@ const Post = ({ ssrData }) => {
                     style={{
                       width: "100%",
                       height: "100%",
-                      filter: "blur(12px)",
+                      filter: "blur(4px)",
                       position: "absolute",
                       opacity: "0.3",
                     }}
@@ -265,7 +276,7 @@ const Post = ({ ssrData }) => {
               }
             })}
           </div>
-          {post.status === "CONFIRMED" && (
+          {post.commentType && post.status === "CONFIRMED" && (
             <CommentSection
               jumpToCommentId={jumpToComment}
               commentRef={commentRef}

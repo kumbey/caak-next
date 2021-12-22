@@ -28,8 +28,7 @@ const GroupRule = ({ groupData, ...props }) => {
   };
 
   const handleDelete = async (index) => {
-    let parsed =
-      groupData?.g_rules !== "" ? JSON.parse(groupData?.g_rules) : "";
+    let parsed = groupData?.g_rules ? JSON.parse(groupData?.g_rules) : "";
     parsed.splice(index, 1);
     groupData.g_rules = JSON.stringify([...parsed]);
     if (parsed.length === 0) {
@@ -47,7 +46,7 @@ const GroupRule = ({ groupData, ...props }) => {
   };
 
   const handleSubmit = async () => {
-    if (groupData.g_rules !== "") {
+    if (groupData.g_rules) {
       let parsed = JSON.parse(groupData?.g_rules);
 
       if (type === "edit") {
@@ -55,7 +54,6 @@ const GroupRule = ({ groupData, ...props }) => {
         parsed[activeIndex].description = text?.description;
         groupData.g_rules = JSON.stringify([...parsed]);
       } else if (type === "new") {
-        setText({});
         parsed = [...parsed, text];
         groupData.g_rules = JSON.stringify([...parsed]);
       }
@@ -100,10 +98,10 @@ const GroupRule = ({ groupData, ...props }) => {
   }, []);
   return (
     <div className="flex ">
-      {groupData?.g_rules !== "" ? (
+      {groupData?.g_rules ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">
-            <p className="font-inter font-semibold text-20px text-caak-generalblack">
+            <p className="font-semibold text-caak-aleutian font-intertext-20px text-22px">
               Дүрэм
             </p>
             <Button
@@ -118,7 +116,7 @@ const GroupRule = ({ groupData, ...props }) => {
               Нэмэх
             </Button>
           </div>
-          {groupData?.g_rules !== "" &&
+          {groupData?.g_rules &&
             JSON.parse(groupData?.g_rules).map((rule, index) => {
               return (
                 <GroupRuleItem
@@ -141,6 +139,7 @@ const GroupRule = ({ groupData, ...props }) => {
             <div className="flex mb-[20px]">
               <div className="mr-[10px] h-[28px] w-[23px]">
                 <Image
+                  alt={""}
                   src={clipboardImg}
                   height={28}
                   width={23}

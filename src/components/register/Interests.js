@@ -101,9 +101,9 @@ export default function Interests() {
               {selected.find((item) => item === data.id) ? (
                 <span className="icon-fi-rs-check text-12px mr-1.5" />
               ) : (
-                <span className={`mr-1.5 text-18px ${data.icon}`} />
+                <span className={`mr-1.5 text-18px`}>{data.icon}</span>
               )}
-              <p className="text-15px font-medium">s{data.name}</p>
+              <p className="text-15px font-medium">{data.name}</p>
             </div>
           );
         })}

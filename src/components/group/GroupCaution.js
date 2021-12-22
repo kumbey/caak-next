@@ -16,7 +16,7 @@ const GroupCaution = ({ groupData, ...props }) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [caution, setCaution] = useState();
+  const [text, setText] = useState();
   const [type, setType] = useState();
 
   const close = () => {
@@ -24,6 +24,7 @@ const GroupCaution = ({ groupData, ...props }) => {
   };
   const handleClick = () => {
     setType("new");
+    setText("");
     setIsModalOpen(!isModalOpen);
   };
 
@@ -47,15 +48,15 @@ const GroupCaution = ({ groupData, ...props }) => {
   };
 
   const handleSubmit = async () => {
-    if (groupData.g_attentions !== "") {
+    if (groupData.g_attentions) {
       let parsed = JSON.parse(groupData?.g_attentions);
 
       if (type === "edit") {
-        parsed[activeIndex] = caution;
+        parsed[activeIndex] = text;
 
         groupData.g_attentions = JSON.stringify([...parsed]);
       } else if (type === "new") {
-        parsed = [...parsed, caution];
+        parsed = [...parsed, text];
         groupData.g_attentions = JSON.stringify([...parsed]);
       }
       await API.graphql(
@@ -72,11 +73,11 @@ const GroupCaution = ({ groupData, ...props }) => {
           graphqlOperation(updateGroup, {
             input: {
               id: router.query.groupId,
-              g_attentions: JSON.stringify([caution]),
+              g_attentions: JSON.stringify([text]),
             },
           })
         );
-        groupData.g_attentions = JSON.stringify([caution]);
+        groupData.g_attentions = JSON.stringify([text]);
       } catch (ex) {
         console.log(ex);
       }
@@ -99,10 +100,10 @@ const GroupCaution = ({ groupData, ...props }) => {
   }, []);
   return (
     <div className="flex ">
-      {groupData?.g_attentions !== "" ? (
+      {groupData?.g_attentions ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">
-            <p className="font-inter font-semibold text-20px text-caak-generalblack">
+            <p className="font-semibold text-caak-aleutian font-intertext-20px text-22px">
               Дүрэм
             </p>
             <Button
@@ -117,7 +118,7 @@ const GroupCaution = ({ groupData, ...props }) => {
               Нэмэх
             </Button>
           </div>
-          {groupData?.g_attentions !== "" &&
+          {groupData?.g_attentions &&
             JSON.parse(groupData?.g_attentions).map((att, index) => {
               return (
                 <GroupCautionItem
@@ -129,6 +130,7 @@ const GroupCaution = ({ groupData, ...props }) => {
                   handleSubmit={handleSubmit}
                   handleDelete={handleDelete}
                   setIsModalOpen={setIsModalOpen}
+                  setText={setText}
                 />
               );
             })}
@@ -138,7 +140,7 @@ const GroupCaution = ({ groupData, ...props }) => {
           <div className="flex flex-col items-center ">
             <div className="flex mb-[20px]">
               <div className="mr-[10px] h-[28px] w-[28px]">
-                <Image src={tipsSvg} height={28} width={28} objectFit="cover" />
+                <Image alt={""} src={tipsSvg} height={28} width={28} objectFit="cover" />
               </div>
               <p className="font-inter font-semibold text-20px text-caak-generalblack">
                 Анхаарах зүйлс
@@ -173,8 +175,8 @@ const GroupCaution = ({ groupData, ...props }) => {
           groupData={groupData}
           type={type}
           handleSubmit={handleSubmit}
-          caution={caution}
-          setCaution={setCaution}
+          text={text}
+          setText={setText}
           close={close}
         />
       )}

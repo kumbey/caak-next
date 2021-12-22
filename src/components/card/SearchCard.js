@@ -1,7 +1,15 @@
 import CardHeader from "./FeedCard/CardHeader";
 import Divider from "../divider";
 import Image from "next/image";
-import {generateFileUrl, getGenderImage} from "../../utility/Util";
+import {
+  generateFileUrl,
+  getFileUrl,
+  getGenderImage,
+} from "../../utility/Util";
+import Link from "next/link";
+import AnimatedCaakButton from "../button/animatedCaakButton";
+import Video from "../video";
+import React from "react";
 
 const SearchCard = ({ type, result }) => {
   return result ? (
@@ -13,24 +21,32 @@ const SearchCard = ({ type, result }) => {
       >
         <div className={"flex flex-row"}>
           <div className={"relative w-[60px] h-[60px] rounded-full"}>
-            {result.profile && (
+            {type === "GROUP" && (
               <Image
                 className={"rounded-square"}
                 width={60}
                 height={60}
                 objectFit={"cover"}
                 alt={"Group"}
-                src={result.profile ? generateFileUrl(result.profile) : getGenderImage(result.gender).src}
+                src={
+                  result.profile
+                    ? generateFileUrl(result.profile)
+                    : getGenderImage(result.gender).src
+                }
               />
             )}
-            {result.pic && (
+            {type === "USER" && (
               <Image
                 className={"rounded-full"}
                 width={60}
                 height={60}
                 objectFit={"cover"}
                 alt={"User"}
-                src={result.pic ? generateFileUrl(result.pic) : getGenderImage(result.gender).src}
+                src={
+                  result.pic
+                    ? generateFileUrl(result.pic)
+                    : getGenderImage(result.gender).src
+                }
               />
             )}
           </div>
@@ -40,7 +56,16 @@ const SearchCard = ({ type, result }) => {
                 "text-caak-generalblack text-[17px] tracking-[0.26px] leading-[19px] font-medium"
               }
             >
-              {result?.nickname ? result.nickname : result.name}
+              {type === "GROUP" && (
+                <Link shallow href={`/group/${result.id}`}>
+                  <a>{type === "GROUP" && result.name}</a>
+                </Link>
+              )}
+              {type === "USER" && (
+                <Link shallow href={`/user/${result.id}/profile`}>
+                  <a>{result.nickname}</a>
+                </Link>
+              )}
             </p>
             <div
               className={
@@ -74,7 +99,7 @@ const SearchCard = ({ type, result }) => {
           >
             <span
               className={`${
-                type === "group"
+                type === "GROUP"
                   ? "icon-fi-rs-add-group-f"
                   : "icon-fi-rs-thick-add-friend"
               }  text-caak-generalblack-f text-[16px]`}
@@ -104,36 +129,54 @@ const SearchCard = ({ type, result }) => {
                 "self-start text-[16px] tracking-[0.24px] leading-[21px] text-caak-generalblack break-all"
               }
             >
-              {result.title}
+              <Link shallow href={`/post/view/${result.id}`}>
+                <a>{result.title}</a>
+              </Link>
             </div>
-            <div
-              className={
-                "relative ml-[20px] w-[100px] h-[100px] relative rounded-square flex-shrink-0"
-              }
-            >
-              <Image
-                className={"rounded-square"}
-                width={100}
-                height={100}
-                objectFit={"cover"}
-                alt={"sda"}
-                src={generateFileUrl(result.items.items[0].file)}
-              />
-            </div>
+            <Link shallow href={`/post/view/${result.id}`}>
+              <a>
+                <div
+                  className={
+                    "relative ml-[20px] w-[100px] h-[100px] relative rounded-square flex-shrink-0"
+                  }
+                >
+                  {result.items.items[0].file.type.startsWith("video") ? (
+                    <Video
+                      hideControls
+                      thumbnailIcon
+                      videoClassname={"object-contain rounded-[4px]"}
+                      src={generateFileUrl(result.items.items[0].file)}
+                    />
+                  ) : (
+                    <Image
+                      className={"rounded-square"}
+                      width={100}
+                      height={100}
+                      objectFit={"cover"}
+                      alt={""}
+                      src={generateFileUrl(result.items.items[0].file)}
+                    />
+                  )}
+                </div>
+              </a>
+            </Link>
           </div>
           <div
             className={
               "flex flex-row justify-between items-center mt-[16px] text-[15px] text-caak-darkBlue tracking-[0.23px] leading-[18px]"
             }
           >
-            <div className={"flex flex-row items-center w-[20px] h-[20px]"}>
-              <span
-                className={"icon-fi-rs-rock-i text-[20px] cursor-pointer"}
-              />
-              <p>{result.items.items[0].totals.reactions}</p>
-            </div>
+            <AnimatedCaakButton
+              iconClassname={"text-[20px]"}
+              reactionType={"POST"}
+              disableOnClick
+              hideCaakText
+              totals={result.totals}
+              itemId={result.id}
+              reacted={result.reacted}
+            />
             <div>
-              <p>{result.items.items[0].totals.comments} сэтгэгдэлтэй</p>
+              <p>{result.totals.comments} сэтгэгдэлтэй</p>
             </div>
           </div>
         </div>

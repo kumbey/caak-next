@@ -62,7 +62,7 @@ export default function PendingPostItem({ post, className }) {
       }`}
     >
       <div className="sm:w-1/3">
-        <Link href={`/pending/view/${post.id}`}>
+        <Link shallow href={`/pending/view/${post.id}`}>
           <div
             style={{ textOverflow: "ellipsis", wordBreak: "break-all" }}
             className="flex items-center cursor-pointer pl-6 mr-5"

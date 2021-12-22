@@ -14,6 +14,8 @@ import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
 import { useUser } from "../../../src/context/userContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
+import Head from "next/head";
+import Consts from "../../../src/utility/Consts";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -203,48 +205,55 @@ const Profile = ({ ssrData }) => {
 
   const ProfileLayout = useModalLayout({ layoutName: "userProfile" });
   return (
-    <ProfileLayout user={fetchedUser}>
-      <div className={"pt-0 md:pt-[42px]"}>
-        <FeedSortButtons
-          iconSize={"text-[17px]"}
-          iconContainerSize={"w-[20px] h-[20px]"}
-          textClassname={"text-[15px] font-medium"}
-          containerClassname={"mb-[20px] flex-wrap"}
-          items={userProfileType}
-          setSortType={setSortType}
-          sortType={sortType}
-          direction={"col"}
-        />
+    <>
+      <Head>
+        <title>
+          @{fetchedUser.nickname} - {Consts.siteMainTitle}
+        </title>
+      </Head>
+      <ProfileLayout user={fetchedUser}>
+        <div className={"pt-0 md:pt-[42px]"}>
+          <FeedSortButtons
+            iconSize={"text-[17px]"}
+            iconContainerSize={"w-[20px] h-[20px]"}
+            textClassname={"text-[15px] font-medium"}
+            containerClassname={"mb-[20px] flex-wrap"}
+            items={userProfileType}
+            setSortType={setSortType}
+            sortType={sortType}
+            direction={"col"}
+          />
 
-        <InfiniteScroll
-          dataLength={posts.items.length}
-          next={fetchPosts}
-          hasMore={true}
-          loader={
-            <Loader
-              containerClassName={"self-center w-full"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          }
-          endMessage={<h4>Nothing more to show</h4>}
-        >
-          <div className={"userPostsContainer"}>
-            {posts.items.map((items, index) => {
-              if (
-                items.items.items[0].file.type.startsWith("video") &&
-                sortType === "VIDEO"
-              ) {
-                return <UserPostsCard key={index} post={items} />;
-              } else if (sortType === "POST") {
-                return <UserPostsCard key={index} post={items} />;
-              }
-            })}
-          </div>
-        </InfiniteScroll>
-      </div>
-    </ProfileLayout>
+          <InfiniteScroll
+            dataLength={posts.items.length}
+            next={fetchPosts}
+            hasMore={true}
+            loader={
+              <Loader
+                containerClassName={"self-center w-full"}
+                className={`bg-caak-primary ${
+                  loading ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            }
+            endMessage={<h4>Nothing more to show</h4>}
+          >
+            <div className={"userPostsContainer"}>
+              {posts.items.map((items, index) => {
+                if (
+                  items.items.items[0].file.type.startsWith("video") &&
+                  sortType === "VIDEO"
+                ) {
+                  return <UserPostsCard key={index} post={items} />;
+                } else if (sortType === "POST") {
+                  return <UserPostsCard key={index} post={items} />;
+                }
+              })}
+            </div>
+          </InfiniteScroll>
+        </div>
+      </ProfileLayout>
+    </>
   );
 };
 

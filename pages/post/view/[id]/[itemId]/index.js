@@ -26,6 +26,9 @@ import { useUser } from "../../../../../src/context/userContext";
 import ProfileHoverCard from "../../../../../src/components/card/ProfileHoverCard";
 import Tooltip from "../../../../../src/components/tooltip/Tooltip";
 import Head from "next/head";
+import Consts from "../../../../../src/utility/Consts";
+import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
+import useWindowSize from "../../../../../src/hooks/useWindowSize";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -68,12 +71,14 @@ const PostItem = ({ ssrData }) => {
     findMatchIndex(post.items.items, "id", router.query.itemId)
   );
 
+
+  const size = useWindowSize();
   const [commentInputValue, setCommentInputValue] = useState("");
   const [reply, setReply] = useState({});
   const [loading, setLoading] = useState(true);
   const [render, setRender] = useState(0);
   const { user, isLogged } = useUser();
-
+  const [blockScroll, allowScroll] = useScrollBlock();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -130,8 +135,13 @@ const PostItem = ({ ssrData }) => {
   };
 
   useEffect(() => {
+    blockScroll();
     setLoading(false);
-    return () => setReply(null);
+    return () => {
+      setReply(null);
+      allowScroll();
+    };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -176,11 +186,12 @@ const PostItem = ({ ssrData }) => {
       document.removeEventListener("keydown", handler);
     };
   });
-
   return (
     <>
       <Head>
-        <title>{item.title}</title>
+        <title>
+          {item.title} - {Consts.siteMainTitle}
+        </title>
         <meta name="description" content={post.description} />
 
         <meta
@@ -191,29 +202,15 @@ const PostItem = ({ ssrData }) => {
         <meta property="og:title" content={item.title} />
         <meta property="og:description" content={post.description} />
         <meta property="og:image" content={getFileUrl(item.file)} />
-
-        {/*<meta name="twitter:card" content="summary_large_image" />*/}
-        {/*<meta*/}
-        {/*  property="twitter:domain"*/}
-        {/*  content="occupied-programming-fbi-bacteria.trycloudflare.com"*/}
-        {/*/>*/}
-        {/*<meta*/}
-        {/*  property="twitter:url"*/}
-        {/*  content={}*/}
-        {/*/>*/}
-        {/*<meta name="twitter:title" content="123" />*/}
-        {/*<meta name="twitter:description" content="adsadadsa" />*/}
-        {/*<meta name="twitter:image" content="" />*/}
       </Head>
       {!loading ? (
         <div
-          className={
-            "viewPost z-4 fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
-          }
+          className={`z-[5] h-full fixed top-0 w-full  flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row overflow-y-scroll`}
         >
           <div
-            className={
-              "relative backBlur w-full flex justify-center items-center flex-1"
+              style={{ height: size.height}}
+              className={
+              "relative backBlur w-full flex justify-center items-center"
             }
           >
             <div
@@ -239,7 +236,7 @@ const PostItem = ({ ssrData }) => {
           {/*</div>*/}
           <div
             className={
-              "viewPostCarousel relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll h-full"
+              "viewPostCarousel flex-shrink-0 relative flex flex-col w-full justify-between bg-white h-full pt-[12px] overflow-y-scroll"
             }
           >
             <div className={"flex-1"}>
@@ -299,6 +296,7 @@ const PostItem = ({ ssrData }) => {
                           }
                         >
                           <Link
+                            shallow
                             href={{
                               pathname: `/group/${post.group.id}`,
                             }}
@@ -308,6 +306,7 @@ const PostItem = ({ ssrData }) => {
                         </span>
                         <div className={"flex flex-row items-center"}>
                           <Link
+                            shallow
                             href={{
                               pathname: `/user/${post.user.id}/profile`,
                             }}
@@ -384,32 +383,33 @@ const PostItem = ({ ssrData }) => {
                     post={post}
                   />
                 </div>
-                <div
-                  className={"flex-1 w-full bg-caak-liquidnitrogen px-[24px]"}
-                >
+                {post.commentType && post.status === "CONFIRMED" && (
                   <div
-                    className={
-                      "relative flex flex-col justify-between bg-caak-whitesmoke"
-                    }
+                    className={"flex-1 w-full bg-caak-liquidnitrogen px-[24px]"}
                   >
-                    <CommentCardNew
-                      addCommentRef={addCommentRef}
-                      commentInputValue={commentInputValue}
-                      setCommentInputValue={setCommentInputValue}
-                      initialComments={post.items.items[activeIndex].comments}
-                      reply={reply}
-                      setReply={setReply}
-                      setup={{
-                        id: item.id,
-                        type: "POST_ITEM",
-                      }}
-                    />
+                    <div
+                      className={
+                        "relative flex flex-col justify-between bg-caak-whitesmoke"
+                      }
+                    >
+                      <CommentCardNew
+                        addCommentRef={addCommentRef}
+                        commentInputValue={commentInputValue}
+                        setCommentInputValue={setCommentInputValue}
+                        initialComments={post.items.items[activeIndex].comments}
+                        reply={reply}
+                        setReply={setReply}
+                        setup={{
+                          id: item.id,
+                          type: "POST_ITEM",
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
-
-            {post.status === "CONFIRMED" && (
+            {post.commentType && post.status === "CONFIRMED" && (
               <AddComment
                 commentInputValue={commentInputValue}
                 setCommentInputValue={setCommentInputValue}

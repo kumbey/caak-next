@@ -11,7 +11,7 @@ import {
 import { API } from "aws-amplify";
 import Loader from "../loader";
 import { useRouter } from "next/router";
-import {searchApi} from "../../apis/search";
+import { searchApi } from "../../apis/search";
 
 const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
@@ -23,16 +23,18 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const debouncedSearchResult = useDebounce(inputValue, 300);
 
   const searchQuery = async () => {
-    const resp = await searchApi({ API, searchQuery: inputValue, limit: 2 });
-    setSearchResult(resp)
+    const resp = await searchApi({ API, searchQuery: inputValue, limit: 6 });
+    setSearchResult(resp);
   };
 
   useEffect(() => {
     if (debouncedSearchResult) {
-      setIsSearching(true);
-      searchQuery().then(() => {
-        setIsSearching(false);
-      });
+      if (!inputValue.startsWith(" ")) {
+        setIsSearching(true);
+        searchQuery().then(() => {
+          setIsSearching(false);
+        });
+      }
     } else {
       setSearchResult([]);
       setIsSearching(false);
@@ -57,49 +59,40 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
           !isSearchBarOpen ? "hidden" : null
         } w-full bg-white overflow-y-auto max-h-[400px] pt-[60px] absolute top-0 rounded-square shadow-searchInput p-[14px] min-h-[100px]`}
       >
-        {!inputValue && (
-          <div>
-            <div className={`text-15px text-caak-darkBlue pl-[6px]`}>
-              Сүүлд хийгдсэн хайлтууд
-            </div>
-            <div className={"pb-[12px]"}>
-              <SearchedGroupItem
-                setIsSearchBarOpen={setIsSearchBarOpen}
-                name={"Кино сонирхогчид"}
-                clear
-              />
-              <SearchedGroupItem
-                setIsSearchBarOpen={setIsSearchBarOpen}
-                name={"UX/UI сонирхогчид"}
-                clear
-              />
-            </div>
-          </div>
-        )}
+        {/*{!inputValue && (*/}
+        {/*  <div>*/}
+        {/*    <div className={`text-15px text-caak-darkBlue pl-[6px]`}>*/}
+        {/*      Сүүлд хийгдсэн хайлтууд*/}
+        {/*    </div>*/}
+        {/*    <div className={"pb-[12px]"}>*/}
+        {/*      <SearchedGroupItem*/}
+        {/*        setIsSearchBarOpen={setIsSearchBarOpen}*/}
+        {/*        name={"Кино сонирхогчид"}*/}
+        {/*        clear*/}
+        {/*      />*/}
+        {/*      <SearchedGroupItem*/}
+        {/*        setIsSearchBarOpen={setIsSearchBarOpen}*/}
+        {/*        name={"UX/UI сонирхогчид"}*/}
+        {/*        clear*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*)}*/}
 
         {!isSearching ? (
           <div>
-            {sortSearchResultByKeyword(searchResult, inputValue)?.map((item, index) => {
-              if (item.nickname) {
+            {sortSearchResultByKeyword(searchResult, inputValue)?.map(
+              (item, index) => {
                 return (
                   <SearchedGroupItem
+                    type={item.type}
+                    id={item.id}
                     key={index}
                     setIsSearchBarOpen={setIsSearchBarOpen}
-                    name={item.nickname}
-                    image={generateFileUrl(item.pic)}
-                  />
-                );
-              } else {
-                return (
-                  <SearchedGroupItem
-                    key={index}
-                    setIsSearchBarOpen={setIsSearchBarOpen}
-                    name={item.name ? item.name : item.title}
-                    image={generateFileUrl(item.profile)}
                   />
                 );
               }
-            })}
+            )}
             <div
               className={
                 "flex flex-row items-center px-[6px] pt-[14px] border-t border-caak-liquidnitrogen"
@@ -113,6 +106,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
                 <span className={"icon-fi-rs-search text-white"} />
               </div>
               <Link
+                shallow
                 href={{
                   pathname: "/search",
                   query: { q: `${inputValue}` },

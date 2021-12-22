@@ -10,7 +10,8 @@ const GroupCautionEdit = ({
   activeIndex,
   type,
   handleSubmit,
-  setCaution,
+  setText,
+  text,
   caution,
   close,
 }) => {
@@ -28,11 +29,9 @@ const GroupCautionEdit = ({
   }
 
   const handleChange = (e) => {
-    setCaution({ ...caution, [e.target.name]: e.target.value });
+    setText({ ...caution, [e.target.name]: e.target.value });
   };
-  useEffect(() => {
-    console.log(type);
-  }, []);
+
   return (
     <div className="popup_modal ">
       <div className="popup_modal-content rounded-xl">
@@ -65,8 +64,9 @@ const GroupCautionEdit = ({
                         maxLength={maxLengths.title}
                         style={{ resize: "none" }}
                         defaultValue={
-                          groupData?.g_rules
-                            ? JSON.parse(groupData?.g_rules)[activeIndex]?.title
+                          type === "edit"
+                            ? JSON.parse(groupData?.g_attentions)[activeIndex]
+                                ?.title
                             : ""
                         }
                         name={"title"}

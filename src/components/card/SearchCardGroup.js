@@ -5,12 +5,72 @@ import {
   getFileUrl,
   getGenderImage,
 } from "../../utility/Util";
+import { API, graphqlOperation } from "aws-amplify";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../graphql-custom/GroupUsers/mutation";
+import { useUser } from "../../context/userContext";
+import { useRouter } from "next/router";
 
 const SearchCardGroup = ({ result, sortType }) => {
+  const { user, isLogged } = useUser();
+  const router = useRouter();
+  const followGroup = async () => {
+    try {
+      if (isLogged) {
+        // setLoading(true);
+        if (result.followed) {
+          await API.graphql(
+            graphqlOperation(deleteGroupUsers, {
+              input: {
+                id: `${result.id}#${user.id}`,
+              },
+            })
+          );
+          result.followed = false;
+          result.totals.member -= 1;
+          // setForceRender(forceRender + 1);
+        } else {
+          await API.graphql(
+            graphqlOperation(createGroupUsers, {
+              input: {
+                id: `${result.id}#${user.id}`,
+                group_id: result.id,
+                user_id: user.id,
+                role: "MEMBER",
+              },
+            })
+          );
+          result.followed = true;
+          result.totals.member += 1;
+          // setForceRender(forceRender + 1);
+        }
+        // setLoading(false);
+      } else {
+        router.push(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              signInUp: "signIn",
+              isModal: true,
+            },
+          },
+          `/signInUp/signIn`,
+          { shallow: true }
+        );
+      }
+    } catch (ex) {
+      // setLoading(false);
+      console.log(ex);
+    }
+  };
+
   return sortType !== "DEFAULT" ? (
     <div
       className={
-        "last:ml-[16px] bg-white flex flex-col justify-start w-[300px] h-full min-h-[201px] rounded-square relative mb-[24px]"
+        "bg-white mr-[8px] flex flex-col justify-start w-[300px] h-full min-h-[201px] rounded-square relative mb-[8px]"
       }
     >
       <div className={"w-full h-[58px]"}>
@@ -31,6 +91,7 @@ const SearchCardGroup = ({ result, sortType }) => {
             />
           </div>
           <Button
+            onClick={followGroup}
             iconPosition={"left"}
             icon={
               <div
@@ -38,15 +99,23 @@ const SearchCardGroup = ({ result, sortType }) => {
                   "w-[20px] h-[20px] flex items-center justify-center "
                 }
               >
-                <span className={"icon-fi-rs-add-l text-[14px] text-white"} />
+                <span
+                  className={`${
+                    result.followed
+                      ? "icon-fi-rs-check text-caak-extraBlack"
+                      : "icon-fi-rs-add-l text-white"
+                  } text-[14px] `}
+                />
               </div>
             }
             skin={"primary"}
-            className={
-              "h-[28px] rounded-[6px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px] py-[4px] pr-[12px] pl-[6px]"
-            }
+            className={`${
+              result.followed
+                ? "text-caak-extraBlack bg-caak-titaniumwhite"
+                : "bg-caak-primary text-white"
+            } h-[28px] rounded-[6px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px] py-[4px] pr-[12px] pl-[6px]`}
           >
-            Нэгдэх
+            {result.followed ? `Нэгдсэн` : `Нэгдэх`}
           </Button>
         </div>
         <div className={"relative w-full h-full"}>
@@ -54,8 +123,8 @@ const SearchCardGroup = ({ result, sortType }) => {
             className={"rounded-t-square object-cover w-[300px] h-[58px]"}
             alt={""}
             src={
-              result.cover_pic
-                ? getFileUrl(result.cover_pic)
+              result.cover
+                ? generateFileUrl(result.cover)
                 : getGenderImage("default").src
             }
             width={300}
@@ -93,7 +162,9 @@ const SearchCardGroup = ({ result, sortType }) => {
               }
             >
               {result.name}
-              <span className={"icon-fi-rs-verified text-[14px]"} />
+              {result.verified && (
+                <span className={"icon-fi-rs-verified text-[14px]"} />
+              )}
             </p>
           </div>
           <div className={"flex flex-row mt-[12px]"}>

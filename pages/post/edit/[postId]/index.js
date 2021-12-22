@@ -12,7 +12,6 @@ import UploadedMediaEdit from "../../../../src/components/input/UploadedMediaEdi
 import DropZoneWithCaption from "../../../../src/components/input/DropZoneWithCaption";
 import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
-import { getUser } from "../../../../src/graphql-custom/user/queries";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -26,7 +25,7 @@ export async function getServerSideProps({ req, res, query }) {
     try {
       const grData = {
         adminModerator: [],
-        member: [],
+        unMember: [],
       };
 
       let resp = await API.graphql({
@@ -37,12 +36,9 @@ export async function getServerSideProps({ req, res, query }) {
 
       for (let i = 0; i < resp.length; i++) {
         const item = resp[i];
-        if (item.role_on_group === "MEMBER") {
-          grData.member.push(item);
-        } else if (
-          item.role_on_group === "ADMIN" ||
-          item.role_on_group === "MODERATOR"
-        ) {
+        if (item.role_on_group === "NOT_MEMBER") {
+          grData.unMember.push(item);
+        } else {
           grData.adminModerator.push(item);
         }
       }
@@ -123,7 +119,7 @@ const EditPost = ({ ssrData }) => {
 
   useEffect(() => {
     if (groupData !== undefined && selectedGroupId) {
-      if (groupData.member) {
+      if (groupData.unMember) {
         const grData = [];
         for (const key in groupData) {
           grData.push(...groupData[key]);

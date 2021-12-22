@@ -1,7 +1,7 @@
-// import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
 import { generateFileUrl } from "../../utility/Util";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const DropDownSelect = ({
   groupData,
@@ -13,7 +13,7 @@ const DropDownSelect = ({
 }) => {
   const [filteredData, setFilteredData] = useState({
     adminModerator: [],
-    member: [],
+    unMember: [],
   });
   const [inputValue, setInputValue] = useState("");
 
@@ -21,25 +21,15 @@ const DropDownSelect = ({
     setFilteredData(groupData);
   }, [groupData]);
 
-  const useUpdateEffect = (effect, deps) => {
-    const isFirstMount = useRef(true);
-
-    useEffect(() => {
-      if (!isFirstMount.current) effect();
-      else isFirstMount.current = false;
-      // eslint-disable-next-line
-    }, deps);
-  };
-
   //Only runs when inputValue changes, ignoring first render.
   useUpdateEffect(() => {
     const adminModerator = groupData.adminModerator.filter((item) =>
       item.name.toLowerCase().includes(inputValue)
     );
-    const member = groupData.member.filter((item) =>
+    const unMember = groupData.unMember.filter((item) =>
       item.name.toLowerCase().includes(inputValue)
     );
-    setFilteredData({ member, adminModerator });
+    setFilteredData({ unMember, adminModerator });
 
     // eslint-disable-next-line
   }, [inputValue]);
@@ -95,13 +85,13 @@ const DropDownSelect = ({
           </div>
           <span />
         </div>
-        <div className={"z-50"}>
+        <div className={"z-50 max-h-[400px] overflow-y-scroll "}>
           <div className={"flex flex-row justify-between px-3.5 pt-2"}>
             <span className={"text-15px text-caak-darkBlue"}>
               Миний группүүд
             </span>
             <span className={"text-15px font-medium text-caak-primary"}>
-              Шинэ бүлэг үүсгэх
+              Групп үүсгэх
             </span>
           </div>
           <div className={"px-2"}>
@@ -139,11 +129,11 @@ const DropDownSelect = ({
             }
           >
             <span className={"text-15px text-caak-darkBlue pt-2"}>
-              Нэгдсэн группүүд
+              Бүх группүүд
             </span>
           </div>
           <div className={"px-2"}>
-            {filteredData.member.map((item, index) => {
+            {filteredData.unMember.map((item, index) => {
               return (
                 <div
                   key={index}

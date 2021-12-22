@@ -131,7 +131,9 @@ const AnimatedCaakButton = ({
         className={`caak-button ${shake ? `shake` : null} ${
           iconContainerClassname ? iconContainerClassname : ""
         } ${
-          isReacted ? activeBackgroundColor : `bg-white`
+          isReacted
+            ? activeBackgroundColor
+            : `bg-white hover:bg-caak-titaniumwhite`
         } cursor-pointer flex items-center justify-center`}
       >
         {filledIcon ? (

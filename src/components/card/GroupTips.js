@@ -7,9 +7,10 @@ import {
   getGroupRules,
 } from "../../graphql-custom/group/queries";
 import { getReturnData } from "../../utility/Util";
+import tips from "../group/tips";
 
 const GroupTips = ({ groupId }) => {
-  const [groupTips, setGroupTips] = useState([]);
+  const [groupTips, setGroupTips] = useState(tips);
   const getGroupAttention = async () => {
     let resp = await API.graphql({
       query: getGroupAttentions,
@@ -24,7 +25,7 @@ const GroupTips = ({ groupId }) => {
   };
 
   useEffect(() => {
-    getGroupAttention();
+    // getGroupAttention();
     // eslint-disable-next-line
   }, [groupId]);
   return groupTips ? (

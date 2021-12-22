@@ -20,7 +20,7 @@ const DefaultAddPostLayout = ({ children, selectedGroup }) => {
             "self-start text-caak-extraBlack text-[20px] font-semibold tracking-[0.3px] leading-[24px] mb-[12px]"
           }
         >
-            Таны өнөөдрийн саак мэдрэмж юу вэ?
+          Таны өнөөдрийн саак мэдрэмж юу вэ?
         </p>
         <div
           className={`flex ${
@@ -46,10 +46,11 @@ const DefaultAddPostLayout = ({ children, selectedGroup }) => {
                   containerClassname={"mb-[16px]"}
                   groupId={selectedGroup.id}
                 />
-                <GroupRules groupId={selectedGroup.id}/>
-                <GroupTips groupId={selectedGroup.id}/>
+                <GroupRules groupId={selectedGroup.id} />
+                <GroupTips />
               </>
             )}
+                <GroupTips/>
 
             <FooterSidebar
               containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}

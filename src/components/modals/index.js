@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import SignInUp from "../../../pages/signInUp/[signInUp]";
 import In from "/pages/signInUp/in";
-import Up from "/pages/signInUp/up";
+import Up from "../../../pages/signInUp/up";
 import Complete from "../../../pages/signInUp/complete";
 import Confirm from "../../../pages/signInUp/confirm";
 import { _modalisOpen } from "../../utility/Util";
 import ViewPostBlogItem from "../card/ViewPostBlogItem";
 import Information from "../../../pages/signInUp/information";
 import Intrst from "../../../pages/signInUp/intrst";
+import ForgotPassword from "../../../pages/signInUp/forgotpassword";
 
 const modals = [
   {
@@ -51,6 +52,16 @@ const modals = [
       {
         key: "signInUp",
         value: "complete",
+      },
+    ],
+  },
+  {
+    name: "signInUp",
+    comp: ForgotPassword,
+    conditions: [
+      {
+        key: "signInUp",
+        value: "forgotpassword",
       },
     ],
   },

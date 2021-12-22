@@ -3,9 +3,7 @@ import Image from "next/image";
 import SuggestedGroupsCard from "../../card/SuggestedGroupsCard/";
 import { useUser } from "../../../context/userContext";
 import useMediaQuery from "../../navigation/useMeduaQuery";
-import GroupInfo from "../../group/GroupInfo";
 import GroupRules from "../../card/GroupRules";
-import GroupBadge from "../../group/GroupBadge";
 import Dropzone from "react-dropzone";
 import Button from "../../button";
 import {
@@ -31,6 +29,7 @@ import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
 import { useRouter } from "next/router";
 import Loader from "../../loader";
+import GroupAdminsCard from "../../group/GroupAdminsCard";
 
 const GroupLayout = ({
   children,
@@ -425,6 +424,7 @@ const GroupLayout = ({
             </div>
             <GroupRules groupId={groupData.id} />
             {/*<GroupBadge />*/}
+            <GroupAdminsCard groupId={groupData.id} />
             <FooterSidebar
               containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}
             />

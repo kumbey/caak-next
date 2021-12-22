@@ -124,7 +124,7 @@ const Dashboard = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
-  const [groupTotals] = useState(ssrData.groupTotals);
+  const [groupTotals, setGroupTotals] = useState(ssrData.groupTotals);
   const [followedUsers, setFollowedUsers] = useState(
     ssrData.userFollower.items
   );
@@ -139,11 +139,9 @@ const Dashboard = ({ ssrData }) => {
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
   const { isLogged } = useUser();
-  const totalMember =
-    groupTotals?.member + groupTotals?.moderator + groupTotals?.admin;
-
-  const totalPost = groupTotals?.confirmed;
-  const totalPending = groupTotals?.pending;
+  const [totalMember] = useState(
+    groupTotals?.member + groupTotals?.moderator + groupTotals?.admin
+  );
 
   const stats = [
     {
@@ -372,14 +370,20 @@ const Dashboard = ({ ssrData }) => {
         if (postIndex <= -1) {
           setPosts([subscriptionPosts, ...posts]);
           pendingPosts.splice(pendingIndex, 1);
-          groupTotals.confirmed = groupTotals.confirmed + 1;
-          groupTotals.pending = groupTotals.pending - 1;
+          setGroupTotals({
+            ...groupTotals,
+            confirmed: groupTotals.confirmed + 1,
+          });
           setRender(render + 1);
         }
       } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          groupTotals.confirmed = groupTotals.confirmed - 1;
+          setGroupTotals({
+            ...groupTotals,
+            confirmed: groupTotals.confirmed !== 0 && groupTotals.confirmed - 1,
+          });
+
           setRender(render + 1);
         }
       }
@@ -387,20 +391,31 @@ const Dashboard = ({ ssrData }) => {
       if (subscriptionPosts.status === "PENDING") {
         if (pendingIndex === -1) {
           setPendingPosts([subscriptionPosts, ...pendingPosts]);
-          groupTotals.pending = groupTotals.pending + 1;
+          setGroupTotals({
+            ...groupTotals,
+            pending: groupTotals.pending + 1,
+          });
           setRender(render + 1);
         }
         //
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
-          groupTotals.confirmed = groupTotals.confirmed - 1;
+          setGroupTotals({
+            ...groupTotals,
+            confirmed: groupTotals.confirmed !== 0 && groupTotals.confirmed - 1,
+          });
           setRender(render + 1);
         }
       }
       if (subscriptionPosts.status === "ARCHIVED") {
         if (pendingIndex > -1) {
           pendingPosts.splice(pendingIndex, 1);
-          groupTotals.pending = groupTotals.pending - 1;
+          if (groupTotals.pending !== 0) {
+            setGroupTotals({
+              ...groupTotals,
+              pending: groupTotals.pending - 1,
+            });
+          }
           setRender(render + 1);
         }
       }
@@ -554,13 +569,13 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 0 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[250px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[200px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[182px]">
                       Гишүүн
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[180px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[158px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">
@@ -669,20 +684,17 @@ const Dashboard = ({ ssrData }) => {
                     {pendingPosts.length > 0 &&
                       pendingPosts.map((pendingPost, index) => {
                         return (
-                          <>
-                            <GroupPostItem
-                              type={"group"}
-                              status={"PENDING"}
-                              key={index}
-                              index={index}
-                              imageSrc={pendingPost?.items?.items[0]?.file}
-                              video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                                "video"
-                              )}
-                              post={pendingPost}
-                              className="ph:mb-4 sm:mb-4"
-                            />
-                          </>
+                          <GroupPostItem
+                            type={"group"}
+                            key={index}
+                            index={index}
+                            imageSrc={pendingPost?.items?.items[0]?.file}
+                            video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={pendingPost}
+                            className="ph:mb-4 sm:mb-4"
+                          />
                         );
                       })}
                   </InfiniteScroll>

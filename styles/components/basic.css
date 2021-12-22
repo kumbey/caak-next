@@ -20,8 +20,8 @@
 
   .mobileSearch {
     margin-top: var(--topBarSize);
-    margin-bottom: var(--bottomTabSize);
-    max-height: calc(100vh - (var(--bottomTabSize) + var(--topBarSize)));
+    /*margin-bottom: var(--bottomTabSize);*/
+    /*max-height: calc(100vh - (var(--bottomTabSize) + var(--topBarSize)));*/
   }
 
   .truncate-3 {
@@ -53,9 +53,9 @@
     height: calc(100vh - (var(--containerPaddingTop) + var(--topBarSize)));
   }
 
-  #__next {
-    padding-top: var(--topBarSize);
-  }
+  /*#__next {*/
+  /*  padding-top: var(--topBarSize);*/
+  /*}*/
 
   /*.viewPost {*/
   /*  padding-top: var(--topBarSize);*/
@@ -384,7 +384,7 @@
     position: sticky;
     height: calc(100vh - (var(--topBarSize))) !important;
     flex-grow: 1;
-    top: calc(var(--topBarSize) + var(--containerPaddingTop));
+    /*top: calc(var(--topBarSize) + var(--containerPaddingTop));*/
     overflow-y: auto;
     overflow-x: hidden;
     max-width: 248px;
@@ -521,9 +521,9 @@
 
   .popup_modal-content {
     min-width: 320px;
-    width: clamp(320px, 100%, 450px);
+    width: clamp(320px, 100%, 400px);
     background: #fff;
-    max-width: 450px;
+    max-width: 400px;
     margin: 70px auto;
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
@@ -532,6 +532,12 @@
   .popup_modal-deny {
     min-width: 240px;
     max-width: 280px;
+    margin: 100px auto;
+  }
+
+  .popup_modal-success {
+    min-width: 280px;
+    max-width: 500px;
     margin: 100px auto;
   }
 
@@ -598,13 +604,44 @@
     box-shadow: 0 3px 20px #00000029;
     border-radius: 8px;
   }
+
+  /*.videoWrapper {*/
+  /*  position: relative;*/
+  /*  padding-top: 56.25%; !* Player ratio: 100 / (1280 / 720) *!*/
+  /*}*/
+
+  /*.videoPlayer {*/
+  /*  position: absolute;*/
+  /*  top: 0;*/
+  /*  left: 0;*/
+  /*  width: 100%;*/
+  /*  height: 100%;*/
+  /*}*/
+
+  .custom-img {
+    object-fit: cover;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+  }
+
+  .unset-img {
+    width: 100%;
+  }
+  .unset-img > span {
+    position: unset !important;
+  }
+
 }
 
 .react-player {
-  position: absolute;
+  /*position: absolute;*/
   top: 0;
   left: 0;
-  background-color: black;
+  /*background-color: black;*/
+}
+.react-player video {
+  max-height: 770px;
 }
 
 .react-player__play-icon {

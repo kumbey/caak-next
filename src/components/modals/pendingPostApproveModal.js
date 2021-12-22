@@ -63,6 +63,7 @@ const PendingPostApproveModal = ({
           <div className={"w-full h-[565px] relative"}>
             <ImageCarousel
               card
+              route={false}
               index={activeIndex}
               changeActiveIndex={setActiveIndex}
               mediaContainerClassname={"w-full h-full"}

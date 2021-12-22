@@ -64,49 +64,65 @@ const Login = ({ nextStep }) => {
     <>
       <div
         className={
-          "flex text-caak-generalblack justify-center text-center align-center  pb-c2  font-bold text-24px"
+          "flex text-caak-generalblack justify-center text-center align-center mb-[16px]  font-bold text-24px"
         }
       >
         Нэвтрэх
       </div>
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="px-c8">
-          <p className="error">{error}</p>
+          <p className="error ">{error}</p>
           <Input
-            label={"Хэрэглэгчийн нэр"}
+            label={"Имэйл хаяг/Утасны дугаар"}
+            labelStyle={"text-16px font-inter font-medium"}
             name={"username"}
             type={"text"}
             errorMessage={errors.username}
             onChange={handleChange}
-            placeholder={"Имэйл хаяг эсвэл Утасны дугаар"}
+            placeholder={"Имэйл хаяг/Утасны дугаар"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-2"
             }
           />
           <Input
             label={"Нууц үг"}
+            labelStyle={"text-16px font-inter font-medium"}
             name={"password"}
             type={"password"}
             errorMessage={errors.password}
             onChange={handleChange}
             placeholder={"Нууц үг"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-2"
             }
           />
         </div>
-        <div className="px-c8 ph:px-c2 text-white text-14px flex items-center justify-between mt-5">
+        <div className="px-c8 ph:px-c2 text-white text-14px flex flex-col items-center justify-between mt-5">
           <Button
             loading={loading}
             onClick={() => handleSubmit(doSignIn)}
             className={
-              "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-primary"
+              "rounded-md w-full h-c9 text-16px font-medium font-inter mb-[16px] bg-caak-primary"
             }
           >
             Нэвтрэх
           </Button>
-          <div className="text-caak-blue text-15px">
-            <span className="ml- cursor-pointer">Нууц үгээ мартсан уу?</span>
+          <div
+            className="text-caak-bleudefrance text-14px"
+            onClick={() =>
+              router.push(
+                {
+                  pathname: `/signInUp/forgotpassword`,
+                  query: { isModal: true },
+                },
+                `/signInUp/forgotpassword`,
+                { shallow: true, scroll: false }
+              )
+            }
+          >
+            <span className="ml- cursor-pointer border-b border-caak-bleudefrance border-dashed">
+              Нууц үгээ мартсан уу?
+            </span>
           </div>
         </div>
       </form>

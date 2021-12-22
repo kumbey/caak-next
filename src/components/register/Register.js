@@ -148,8 +148,8 @@ const Register = () => {
                                     }
                                     `}
         >
-          <span className="icon-fi-rs-phone text-20px " />
-          <p className={`text-17px ml-px-10 font-medium `}>Утасны дугаар</p>
+          <span className="icon-fi-rs-phone-1 text-24px " />
+          <p className={`text-15pxpx ml-px-10 font-medium `}>Утасны дугаар</p>
         </Button>
 
         <Button
@@ -163,8 +163,8 @@ const Register = () => {
                                     }
                                     `}
         >
-          <span className="icon-fi-rs-mail text-20px mr-px-6" />
-          <p className="text-17px ml-px-10 font-medium">Имэйл хаяг</p>
+          <span className="icon-fi-rs-mail-1 text-24px px mr-px-6" />
+          <p className="text-15px ml-px-10 font-medium">Имэйл хаяг</p>
         </Button>
       </div>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -179,7 +179,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder={`${condition ? "Утасны дугаар" : "Имэйл хаяг"}`}
             className={
-              "border border-caak-titaniumwhite bg-caak-liquidnitrogen"
+              "border border-caak-titaniumwhite h-[44px] mt-[8px] bg-caak-liquidnitrogen"
             }
           />
           <Input
@@ -191,7 +191,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder={"Нууц үг"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-[8px]"
             }
           />
           <Input
@@ -203,7 +203,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder={"Нууц үг давтах"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-[8px]"
             }
           />
         </div>

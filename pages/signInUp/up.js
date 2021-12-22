@@ -7,12 +7,11 @@ import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 import { _objectWithoutKeys } from "../../src/utility/Util";
 
 const Up = ({ ...props }) => {
-  
-  const router = useRouter()
-  const query = router.query
+  const router = useRouter();
+  const query = router.query;
 
   const ModalLayout = useModalLayout({ layoutName: "step" });
-  
+
   const back = () => {
       router.replace({
         query: {

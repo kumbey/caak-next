@@ -97,7 +97,7 @@ const Video = ({
       }}
       className={`${
         containerClassname ? containerClassname : ""
-      } relative w-full h-full group`}
+      } relative w-full h-full group bg-black`}
     >
       <ReactPlayer
         light={thumbnailIcon}

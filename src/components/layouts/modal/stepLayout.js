@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 import { _modalisOpen, _objectWithoutKeys } from "../../../utility/Util";
 import Stepper from "../../stepper";
-import Link from "next/link";
 
 const StepModalLayout = ({
   children,
@@ -24,19 +23,33 @@ const StepModalLayout = ({
   }, [allowScroll, blockScroll]);
 
   const close = () => {
-    if (router.query.isModal) {
+    if (router.query.prevPath && router.query.prevPath !== router.asPath) {
       router.replace(
-        {
-          pathname: router.pathname,
-          query: _objectWithoutKeys(router.query, [...onCloseKeys, "isModal"]),
-        },
+        router.query.prevPath,
         undefined,
         { shallow: true, scroll: false }
       );
     } else {
-      router.replace("/", undefined, { shallow: true, scroll: false });
+      router.replace("/");
     }
   };
+
+  const switchType = () => {
+    if (router.query.prevPath && router.query.prevPath !== router.asPath) {
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            signInUp: type === "up" ? "signIn" : "signUp"
+          }
+        },
+        `/signInUp/${type === "up" ? "signIn" : "signUp"}`,
+        { shallow: true, scroll: false }
+      );
+    } else {
+      router.replace(`/signInUp/${router.asPath === "/signInUp/up" ? "signIn" : "signUp"}`);
+    }
+  }
 
   return (
     // <div className={`backdrop ${props.className}`}>
@@ -45,7 +58,7 @@ const StepModalLayout = ({
           <>
             <div className="h-[60px] px-[16px] py-[20px] flex items-center relative justify-between ">
               {configure.back && (
-                <div className={`w-[18px] h-[15px]`} onClick={onBack}>
+                <div className={`w-[18px] h-[15px]`} onClick={onBack ? onBack : close}>
                   <span className="cursor-pointer icon-fi-rs-back-2 text-18px text-caak-extraBlack pr-1" />
                 </div>
               )}
@@ -80,7 +93,7 @@ const StepModalLayout = ({
             >
               <div className="text-caak-blue text-15px">
                 <span>
-                  {type === "signup" ? "Бүртгэлтэй " : "Шинэ "} хэрэглэгч бол
+                  {type === "up" ? "Бүртгэлтэй " : "Шинэ "} хэрэглэгч бол
                 </span>
 
                 {/* <Link
@@ -88,18 +101,10 @@ const StepModalLayout = ({
                 passHref
               > */}
                 <span
-                  onClick={() =>
-                    router.replace(
-                      `?signInUp=${
-                        type === "stepUp" ? "signIn" : "signUp"
-                      }&isModal=true`,
-                      `/signInUp/${type === "stepUp" ? "signIn" : "signUp"}`,
-                      { shallow: true, scroll: false }
-                    )
-                  }
+                  onClick={() => switchType()}
                   className="text-caak-primary text-15px font-bold cursor-pointer"
                 >
-                  {type === "stepUp" ? " Нэвтрэх" : " Бүртгүүлэх"}
+                  {router.asPath === "/signInUp/up" ? " Нэвтрэх" : " Бүртгүүлэх"}
                 </span>
                 {/* </Link> */}
               </div>

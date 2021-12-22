@@ -177,11 +177,11 @@ export default function NavBar() {
                       skin={"secondary"}
                       className={"mr-2"}
                       onClick={() =>
-                        router.push(
+                        router.replace(
                           {
-                            pathname: router.pathname,
                             query: {
                               ...router.query,
+                              prevPath: router.asPath,
                               signInUp: "signIn",
                               isModal: true,
                             },
@@ -198,11 +198,12 @@ export default function NavBar() {
                       skin={"primary"}
                       className={"mr-2"}
                       onClick={() =>
-                        router.push(
+                        router.replace(
                           {
                             pathname: router.pathname,
                             query: {
                               ...router.query,
+                              prevPath: router.asPath,
                               signInUp: "signUp",
                               isModal: true,
                             },

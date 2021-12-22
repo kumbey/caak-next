@@ -135,9 +135,9 @@ function UserProvider(props) {
         resp = getReturnData(resp)
         if(!resp){
           router.push({
-            pathname: router.pathname,
             query: {
               ...router.query,
+              prevPath: router.asPath,
               signInUp: "information",
               isModal: true
             }
@@ -146,9 +146,9 @@ function UserProvider(props) {
         }else{
           if(resp.category && resp.category.items.length <= 0){
             router.push({
-              pathname: router.pathname,
               query: {
                 ...router.query,
+                prevPath: router.asPath,
                 signInUp: "intrst",
                 isModal: true
               }
@@ -182,7 +182,7 @@ function UserProvider(props) {
   // const value = useMemo(() => ({ user, setUser }), [user]);
   return (
     <UserContext.Provider
-      value={{ user, cognitoUser, isLogged, logout }}
+      value={{ user, cognitoUser, isLogged, logout, isLoginValid}}
       {...props}
     />
   );

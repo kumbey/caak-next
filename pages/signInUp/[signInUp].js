@@ -19,12 +19,13 @@ const SignInUp = ({ ...props }) => {
 
   const host = "/signInUp/federated/";
   const windowName = "_blank";
-  const { user, setUser } = useUser();
+  const { isLoginValid } = useUser();
 
   const openWindow = (type) => {
     const opened = window.open(host + type, windowName);
     const timer = setInterval(function () {
       if (opened.closed) {
+        isLoginValid()
         clearInterval(timer);
       }
     }, 100);
@@ -33,7 +34,6 @@ const SignInUp = ({ ...props }) => {
   const goNext = () => {
     if(router.query.isModal){
       router.replace({
-        pathname: router.pathname,
         query: {
           ...router.query,
           signInUp: (type === "signIn") ? "in" : "up"

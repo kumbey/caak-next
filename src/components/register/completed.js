@@ -9,27 +9,27 @@ const Completed = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const hide = () => {
-    setLoading(true);
-    if (router.query.isModal) {
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: _objectWithoutKeys(router.query, ["signInUp"]),
-        },
-        undefined,
-        { shallow: true, scroll: false }
-      );
-      setLoading(false);
-    } else {
-      setLoading(false);
+  // const hide = () => {
+  //   setLoading(true);
+  //   if (router.query.isModal) {
+  //     router.replace(
+  //       {
+  //         pathname: router.pathname,
+  //         query: _objectWithoutKeys(router.query, ["signInUp"]),
+  //       },
+  //       undefined,
+  //       { shallow: true, scroll: false }
+  //     );
+  //     setLoading(false);
+  //   } else {
+  //     setLoading(false);
 
-      router.replace("/", undefined, {
-        shallow: true,
-        scroll: false,
-      });
-    }
-  };
+  //     router.replace("/", undefined, {
+  //       shallow: true,
+  //       scroll: false,
+  //     });
+  //   }
+  // };
 
   return (
     <div className={`backdrop flex justify-center items-center`}>
@@ -50,7 +50,7 @@ const Completed = () => {
         <div className="my-[40px] px-[40px] ph:px-c2 text-white text-14px flex items-center justify-between ">
           <Button
             loading={loading}
-            onClick={hide}
+            onClick={router.back}
             className={
               "disabled: rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
             }

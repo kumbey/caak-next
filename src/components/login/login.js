@@ -40,14 +40,15 @@ const Login = ({ nextStep }) => {
     try {
       setLoading(true);
       await Auth.signIn(checkUsername(username), password);
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: _objectWithoutKeys(...router.query, ["signInUp"]),
-        },
-        undefined,
-        { shallow: true, scroll: false }
-      );
+      if (router.query.prevPath && router.query.prevPath !== router.asPath) {
+        router.replace(
+          router.query.prevPath,
+          undefined,
+          { shallow: false, scroll: false }
+        );
+      } else {
+        router.replace("/");
+      }
       setLoading(false);
     } catch (ex) {
       setLoading(false);

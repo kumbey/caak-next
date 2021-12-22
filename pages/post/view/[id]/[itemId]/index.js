@@ -148,8 +148,11 @@ const PostItem = ({ ssrData }) => {
     setItem(post.items.items[activeIndex]);
     router.push(
       {
-        pathname: `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
-        // query: { itemIndex: activeIndex },
+        // pathname: `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
+        query: { 
+          id: post.id,
+          itemId: post.items.items[activeIndex].id
+        },
       },
       `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
       {

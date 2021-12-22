@@ -10,7 +10,7 @@ import { getReturnData } from "../../utility/Util";
 
 export default function Interests() {
   const router = useRouter();
-  const { cognitoUser } = useUser();
+  const { cognitoUser, isLoginValid } = useUser();
   const userId = cognitoUser ? cognitoUser.attributes.sub : null;
 
   const [loading, setLoading] = useState(false);
@@ -30,6 +30,7 @@ export default function Interests() {
   const submitHandler = async () => {
     try {
       setLoading(true);
+      isLoginValid()
       for (var i = 0; i < selected.length; i++) {
         await API.graphql(
           graphqlOperation(createUserCategory, {

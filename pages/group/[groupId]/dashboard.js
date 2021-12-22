@@ -493,7 +493,19 @@ const Dashboard = ({ ssrData }) => {
                           : "text-caak-generalblack"
                       }`}
                     >
-                      {menu.name}
+                      {menu.id === 2 ? (
+                        <div className="flex items-center">
+                          <p>{menu.name}</p>
+
+                          <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg mt-1">
+                            <p className="text-caak-bleudefrance text-opacity-100 ">
+                              {dashMenu[2].length}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        menu.name
+                      )}
                     </p>
                   </div>
                 );
@@ -508,7 +520,7 @@ const Dashboard = ({ ssrData }) => {
                 >
                   {dashMenu[activeIndex].name}
                 </p>
-                <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
+                <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg mt-1">
                   <p className="text-caak-bleudefrance text-opacity-100 ">
                     {dashMenu[activeIndex].length}
                   </p>

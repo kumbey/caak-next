@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import {generateFileUrl, generateTimeAgo, getGenderImage} from "../../utility/Util";
+import {
+  generateFileUrl,
+  generateTimeAgo,
+  getGenderImage,
+} from "../../utility/Util";
 
 const Notification = ({ item, ...props }) => {
   const [text] = useState({
@@ -65,7 +69,10 @@ const Notification = ({ item, ...props }) => {
           />
         </div>
       );
-    } else if (item.action === "POST_ITEM_COMMENT_WRITED" || item.action === "POST_COMMENT_WRITED") {
+    } else if (
+      item.action === "POST_ITEM_COMMENT_WRITED" ||
+      item.action === "POST_COMMENT_WRITED"
+    ) {
       text.short = `таны пост`;
       text.long = `сэтгэгдэл үлдээлээ`;
 
@@ -110,7 +117,7 @@ const Notification = ({ item, ...props }) => {
               className={"rounded-full w-full h-full object-cover"}
               src={
                 item.from_user?.pic
-                  ? generateFileUrl(item.from_user.pic)
+                  ? generateFileUrl(item.from_user?.pic)
                   : getGenderImage(item.from_user?.gender).src
               }
               alt={""}
@@ -144,10 +151,16 @@ const Notification = ({ item, ...props }) => {
                 "text-[14px] text-caak-generalblack tracking-[0.21px] leading-[16px]"
               }
             >
-             {text.long}
+              {text.long}
             </span>
           </div>
-          <p className={"ml-3 text-[13px] text-caak-darkBlue tracking-[0.2px] leading-[19px]"}>{generateTimeAgo(item.createdAt)}</p>
+          <p
+            className={
+              "ml-3 text-[13px] text-caak-darkBlue tracking-[0.2px] leading-[19px]"
+            }
+          >
+            {generateTimeAgo(item.createdAt)}
+          </p>
         </div>
       </div>
       {/*Post Image*/}

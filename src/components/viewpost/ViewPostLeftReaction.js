@@ -67,7 +67,7 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
       >
         <div
           className={
-            "flex items-center cursor-pointer justify-center w-[44px] h-[44px] rounded-full bg-white"
+            "flex items-center cursor-pointer justify-center w-[44px] h-[44px] rounded-full bg-white hover:bg-caak-titaniumwhite"
           }
         >
           <span
@@ -84,106 +84,116 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
           </p>
         </div>
       </div>
-      <div
-        ref={shareRef}
-        onClick={toggleShare}
-        className={
-          "flex flex-row items-center cursor-pointer relative  justify-center w-[44px] h-[44px] rounded-full bg-white mb-[22px]"
-        }
-      >
-        <span
+      <div className="flex flex-col  items-center mb-[20px]">
+        <div
+          ref={shareRef}
+          onClick={toggleShare}
           className={
-            "icon-fi-rs-share-o text-caak-scriptink transition duration-150 text-[22px]"
+            "flex flex-row items-center cursor-pointer relative  justify-center w-[44px] h-[44px] rounded-full bg-white hover:bg-caak-titaniumwhite mb-[6px]"
           }
-        />
+        >
+          <span
+            className={
+              "icon-fi-rs-share-f text-caak-extraBlack  transition duration-150 text-[22px]"
+            }
+          />
 
-        <DropDown
-          arrow={"bottomLeft"}
-          className="absolute -left-1 bottom-14"
-          open={isShareOpen}
-          onToggle={toggleShare}
-          content={
-            <div className={"flex flex-row items-center"}>
-              <div className={"flex flex-col  justify-start  z-1    "}>
-                <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
-                  <FacebookShareButton url={`${pathName}/post/view/${post.id}`}>
+          <DropDown
+            arrow={"bottomLeft"}
+            className="absolute -left-1 bottom-14"
+            open={isShareOpen}
+            onToggle={toggleShare}
+            content={
+              <div className={"flex flex-row items-center"}>
+                <div className={"flex flex-col  justify-start  z-1    "}>
+                  <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                    <FacebookShareButton
+                      url={`${pathName}/post/view/${post.id}`}
+                    >
+                      <div
+                        className={
+                          "flex items-center rounded-full cursor-pointer h-[36px] "
+                        }
+                      >
+                        <Image
+                          width={22}
+                          height={22}
+                          alt={"facebook icon"}
+                          src={FacebookIcon}
+                        />
+                        <p className="text-14px text-caak-extraBlack ml-px-12">
+                          Facebook
+                        </p>
+                      </div>
+                    </FacebookShareButton>
+                  </div>
+                  <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                    <TwitterShareButton
+                      url={`${pathName}/post/view/${post.id}`}
+                    >
+                      <div
+                        className={
+                          "flex items-center rounded-full cursor-pointer h-[36px]"
+                        }
+                      >
+                        <Image
+                          width={22}
+                          height={22}
+                          alt={"twitter icon"}
+                          src={TwitterIcon}
+                        />
+                        <p className="text-14px text-caak-extraBlack ml-px-12">
+                          Twitter
+                        </p>
+                      </div>
+                    </TwitterShareButton>
+                  </div>
+                  <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                     <div
+                      onClick={() => {
+                        if (typeof navigator !== "undefined")
+                          navigator.clipboard.writeText(
+                            `${pathName}/post/view/${post.id}`
+                          );
+                      }}
                       className={
-                        "flex items-center rounded-full cursor-pointer h-[36px] "
+                        "flex items-center  rounded-full cursor-pointer h-[36px]"
                       }
                     >
-                      <Image
-                        width={22}
-                        height={22}
-                        alt={"facebook icon"}
-                        src={FacebookIcon}
-                      />
+                      <div
+                        className={
+                          "flex justify-center items-center p-[5px] w-[22px] h-[22px] rounded-full bg-caak-red"
+                        }
+                      >
+                        <span
+                          className={"icon-fi-rs-link text-white text-[11px]"}
+                        />
+                      </div>
                       <p className="text-14px text-caak-extraBlack ml-px-12">
-                        Facebook
+                        Линк хуулах
                       </p>
                     </div>
-                  </FacebookShareButton>
-                </div>
-                <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
-                  <TwitterShareButton url={`${pathName}/post/view/${post.id}`}>
-                    <div
-                      className={
-                        "flex items-center rounded-full cursor-pointer h-[36px]"
-                      }
-                    >
-                      <Image
-                        width={22}
-                        height={22}
-                        alt={"twitter icon"}
-                        src={TwitterIcon}
-                      />
-                      <p className="text-14px text-caak-extraBlack ml-px-12">
-                        Twitter
-                      </p>
-                    </div>
-                  </TwitterShareButton>
-                </div>
-                <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
-                  <div
-                    onClick={() => {
-                      if (typeof navigator !== "undefined")
-                        navigator.clipboard.writeText(
-                          `${pathName}/post/view/${post.id}`
-                        );
-                    }}
-                    className={
-                      "flex items-center  rounded-full cursor-pointer h-[36px]"
-                    }
-                  >
-                    <div
-                      className={
-                        "flex justify-center items-center p-[5px] w-[22px] h-[22px] rounded-full bg-caak-red"
-                      }
-                    >
-                      <span
-                        className={"icon-fi-rs-link text-white text-[11px]"}
-                      />
-                    </div>
-                    <p className="text-14px text-caak-extraBlack ml-px-12">
-                      Линк хуулах
-                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-          }
-        />
+            }
+          />
+        </div>
+        <p className="font-inter font-medium text-12px text-opacity-80 text-white tracking-[0.18px] leading-[15px]">
+          Хуваалцах
+        </p>
       </div>
+
       <div
         ref={menuRef}
         onClick={toggleMenu}
         className={
-          "flex flex-col items-center mb-[22px] cursor-pointer relative"
+          "flex flex-col items-center mb-[22px] cursor-pointer relative "
         }
       >
         <div
           className={
-            "flex items-center justify-center w-[44px] h-[44px] rounded-full bg-white"
+            "flex items-center justify-center w-[44px] h-[44px] rounded-full bg-white hover:bg-caak-titaniumwhite"
           }
         >
           <DropDown
@@ -200,7 +210,7 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
         <div className={"mt-[6px]"}>
           <p
             className={
-              "text-white text-[12px] tracking-[0.18px] leading-[15px]"
+              "text-white font-inter font-medium text-opacity-80 text-[12px] tracking-[0.18px] leading-[15px]"
             }
           >
             Бусад

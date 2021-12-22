@@ -31,25 +31,33 @@ const SignInUp = ({ ...props }) => {
   };
 
   const goNext = () => {
-    if(router.query.isModal){
-      router.replace({
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          signInUp: (type === "signIn") ? "in" : "up"
-        }
-      }, (type === "signIn") ? "/signInUp/in" : "/signInUp/up", {shallow: true});
-    }else{
-      router.replace((type === "signIn") ? "/signInUp/in" : "/signInUp/up", undefined, {shallow: true, scroll: false});
+    if (router.query.isModal) {
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: type === "signIn" ? "in" : "up",
+          },
+        },
+        type === "signIn" ? "/signInUp/in" : "/signInUp/up",
+        { shallow: true }
+      );
+    } else {
+      router.replace(
+        type === "signIn" ? "/signInUp/in" : "/signInUp/up",
+        undefined,
+        { shallow: true, scroll: false }
+      );
     }
-  }
+  };
 
   return (
-    <ModalLayout 
-      type={type} 
+    <ModalLayout
+      type={type}
       onCloseKeys={["signInUp"]}
       className={"flex justify-center items-center"}
-      >
+    >
       {/*Social Buttons*/}
       <div className={"flex flex-col items-center px-c13 "}>
         <Button
@@ -59,75 +67,94 @@ const SignInUp = ({ ...props }) => {
             "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-bold rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
           }
         >
-          <FontAwesomeIcon
-            size={"lg"}
-            className={"text-caak-generalblack absolute left-c1"}
-            icon={faEnvelope}
-          />
-          Имэйл хаяг / Утасны дугаар
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-generalblack absolute right-4 top-0 "}
+              icon={faEnvelope}
+            />
+          </div>
+          Имэйл хаяг/Утасны дугаар
         </Button>
         <Button
           onClick={() => openWindow("facebook")}
           round
           className={
-            "hover:bg-gray-100 border border-gray-200 w-80 h-11   font-bold mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11   font-bold mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative g"
           }
         >
-          <FontAwesomeIcon
-            size={"lg"}
-            className={"text-caak-facebook absolute left-c1"}
-            icon={faFacebook}
-          />
-          Facebook
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-facebook absolute right-4 top-0"}
+              icon={faFacebook}
+            />
+          </div>
+          <p>Facebook</p>
+          <p className="w-[40px]"></p>
         </Button>
         <Button
           onClick={() => openWindow("google")}
           round
           className={
-            "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
           }
         >
-          <FontAwesomeIcon
-            size={"lg"}
-            className={"text-caak-primary absolute left-c1"}
-            icon={faGoogle}
-          />
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-primary absolute right-4 top-0"}
+              icon={faGoogle}
+            />
+          </div>
           <p className="">Google</p>
+          <p className="w-[40px]"></p>
         </Button>
 
         {/* <Button
           onClick={() => null}
           round
           className={
-            "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
           }
         >
-          <div className="px-16">
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
             <FontAwesomeIcon
               size={"lg"}
-              className={"text-caak-twitter absolute left-c1"}
+              className={"text-caak-twitter absolute right-4 top-0"}
               icon={faTwitter}
             />
-            <p className="">Twitter</p>
           </div>
+          <p className="">Twitter</p>
+          <p className="w-[40px]"></p>
         </Button>
         <Button
           onClick={() => null}
           round
           className={
-            "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
           }
         >
-          <div className="px-16">
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
             <FontAwesomeIcon
               size={"lg"}
-              className={"text-caak-generalblack absolute left-c1"}
+              className={"text-caak-generalblack absolute right-4 top-0"}
               icon={faApple}
             />
-            <p className="">Apple</p>
           </div>
-        </Button> */}
+          <p className="">Apple</p>
+          <p className="w-[40px]"></p>
+        </Button>
       </div>
+      {type === "signUp" && (
+        <p className="mx-[25px] text-center mt-[34px]  font-inter font-normal text-13px text-caak-aleutian">
+          Та энэ алхамын үргэлжлүүлснээр, сайтын{" "}
+          <span className="text-caak-generalblack">Үйлчилгээний нөхцөл</span>{" "}
+          болон{" "}
+          <span className="text-caak-generalblack">Нууцлалын бодлогыг</span>{" "}
+          зөвшөөрцөнд тооцно.
+        </p>
+      )}
     </ModalLayout>
   );
 };

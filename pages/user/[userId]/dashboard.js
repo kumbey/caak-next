@@ -122,7 +122,7 @@ const Dashboard = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
-  const [userTotals] = useState(ssrData.userTotals);
+  const [userTotals, setUserTotals] = useState(ssrData.userTotals);
   const [followedUsers, setFollowedUsers] = useState(ssrData.followedUsers);
   const [userComments, setUserComments] = useState(ssrData.userComments);
   const [posts, setPosts] = useState(ssrData.posts);
@@ -134,15 +134,12 @@ const Dashboard = ({ ssrData }) => {
   const [archivedPosts, setArchivedPosts] = useState(ssrData.archivedPosts);
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
-  const totalReaction =
+  const [totalReaction] = useState(
     userTotals?.comment_reactions +
-    userTotals?.post_reactions +
-    userTotals?.post_items_reactions;
-  const totalPost = userTotals?.confirmed;
-  const totalMember = userTotals?.followers;
-  const totalComment = userTotals?.comments;
-  const totalArchived = userTotals?.archived;
-  const totalPending = userTotals?.pending;
+      userTotals?.post_reactions +
+      userTotals?.post_items_reactions
+  );
+
   const stats = [
     {
       id: 0,
@@ -156,7 +153,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 1,
       icon: "icon-fi-rs-post-f",
-      number: totalPost,
+      number: userTotals?.confirmed,
       text: "Нийт пост",
       bgcolor: "bg-caak-errigalwhite",
       color: "text-caak-darkBlue",
@@ -172,7 +169,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 3,
       icon: "icon-fi-rs-comment-f",
-      number: totalComment,
+      number: userTotals.comments,
       text: "Сэтгэгдэл",
       bgcolor: "bg-caak-placeboblue",
       color: "text-caak-buttonblue",
@@ -184,31 +181,31 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
-      length: totalPost,
+      length: userTotals.confirmed,
     },
     {
       id: 1,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending",
-      length: totalPending,
+      length: userTotals.pending,
     },
     {
       id: 2,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-archive",
-      length: totalArchived,
+      length: userTotals.archived,
     },
     {
       id: 3,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
-      length: totalMember,
+      length: userTotals.followers,
     },
     {
       id: 4,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
-      length: totalComment,
+      length: userTotals.comments,
     },
   ];
 
@@ -429,6 +426,10 @@ const Dashboard = ({ ssrData }) => {
     });
   };
 
+  useEffect(() => {
+    console.log(userTotals);
+  }, [userTotals]);
+
   useUpdateEffect(() => {
     if (subscripedPost) {
       const pendingIndex = pendingPosts.items.findIndex(
@@ -441,23 +442,39 @@ const Dashboard = ({ ssrData }) => {
         (post) => post.id === subscripedPost.post.id
       );
       if (subscripedPost.post.status === "CONFIRMED") {
-        if (subscripedPost.type === "add") {
-          if (postIndex <= -1) {
-            setPosts({
-              ...posts,
-              items: [subscripedPost.post, ...posts.items],
+        if (postIndex === -1) {
+          setPosts({
+            ...posts,
+            items: [subscripedPost.post, ...posts.items],
+          });
+          // pendingPosts.items.splice(pendingIndex, 1);
+          // archivedPosts.items.splice(archivedIndex, 1);
+          setUserTotals({
+            ...userTotals,
+            confirmed: userTotals.confirmed + 1,
+            // pending: userTotals.pending !== 0 && userTotals.pending - 1,
+            // archived: userTotals.archived !== 0 && userTotals.archived - 1,
+          });
+          setRender(render + 1);
+        }
+        if (pendingIndex > -1) {
+          pendingPosts.splice(pendingIndex, 1);
+          setRender(render + 1);
+          if (userTotals.pending !== 0) {
+            setUserTotals({
+              ...userTotals,
+              pending: userTotals.pending - 1,
             });
-            pendingPosts.items.splice(pendingIndex, 1);
-            userTotals.confirmed = userTotals.confirmed + 1;
-            userTotals.pending = userTotals.pending - 1;
-            setRender(render + 1);
-            // archivedPosts.items.splice(archivedIndex, 1);
           }
-        } else {
-          if (postIndex > -1) {
-            posts.splice(postIndex, 1);
-            userTotals.confirmed = userTotals.confirmed - 1;
-            setRender(render + 1);
+        }
+        if (archivedIndex > -1) {
+          archivedPosts.splice(archivedIndex, 1);
+          setRender(render + 1);
+          if (userTotals.archived !== 0) {
+            setUserTotals({
+              ...userTotals,
+              archived: userTotals.archived - 1,
+            });
           }
         }
       }
@@ -467,18 +484,35 @@ const Dashboard = ({ ssrData }) => {
             ...pendingPosts,
             items: [subscripedPost.post, ...pendingPosts.items],
           });
-          userTotals.pending = userTotals.pending + 1;
+          // userTotals.pending + 1;
           setRender(render + 1);
+
+          setUserTotals({
+            ...userTotals,
+            pending: userTotals.pending + 1,
+          });
         }
         if (archivedIndex > -1) {
           archivedPosts.items.splice(archivedIndex, 1);
-          userTotals.archived = userTotals.archived - 1;
+          // userTotals.archived - 1;
           setRender(render + 1);
+          if (userTotals.archived !== 0) {
+            setUserTotals({
+              ...userTotals,
+              archived: userTotals.archived - 1,
+            });
+          }
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
-          userTotals.confirmed = userTotals.confirmed - 1;
+          // userTotals.confirmed - 1;
           setRender(render + 1);
+          if (userTotals.confirmed !== 0) {
+            setUserTotals({
+              ...userTotals,
+              confirmed: userTotals.confirmed - 1,
+            });
+          }
         }
       }
       if (subscripedPost.post.status === "ARCHIVED") {
@@ -487,17 +521,33 @@ const Dashboard = ({ ssrData }) => {
             ...archivedPosts,
             items: [subscripedPost.post, ...archivedPosts.items],
           });
-          userTotals.archived = userTotals.archived + 1;
+          // userTotals.archived + 1;
+          setUserTotals({
+            ...userTotals,
+            archived: userTotals.archived + 1,
+          });
           setRender(render + 1);
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
-          userTotals.confirmed = userTotals.confirmed - 1;
+          // userTotals.pending - 1;
+          if (userTotals.confirmed !== 0) {
+            setUserTotals({
+              ...userTotals,
+              confirmed: userTotals.confirmed - 1,
+            });
+          }
           setRender(render + 1);
         }
         if (pendingIndex > -1) {
           pendingPosts.items.splice(pendingIndex, 1);
-          userTotals.pending = userTotals.pending - 1;
+          // userTotals.pending - 1;
+          if (userTotals.pending !== 0) {
+            setUserTotals({
+              ...userTotals,
+              pending: userTotals.pending - 1,
+            });
+          }
           setRender(render + 1);
         }
       }
@@ -522,7 +572,7 @@ const Dashboard = ({ ssrData }) => {
     <>
       <Head>
         <title>
-          {user?.nickname} / дашбоард - {Consts.siteMainTitle}
+          {user.nickname} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
       <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
@@ -647,13 +697,13 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 0 ? (
                 <div className="flex flex-col">
                   <div className="mb-[13px] hidden md:flex ">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[250px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[220px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
                       Групп
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[170px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[161px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">

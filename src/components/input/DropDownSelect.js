@@ -86,42 +86,53 @@ const DropDownSelect = ({
           <span />
         </div>
         <div className={"z-50 max-h-[400px] overflow-y-scroll "}>
-          <div className={"flex flex-row justify-between px-3.5 pt-2"}>
-            <span className={"text-15px text-caak-darkBlue"}>
-              Миний группүүд
-            </span>
-            <span className={"text-15px font-medium text-caak-primary"}>
-              Групп үүсгэх
-            </span>
-          </div>
-          <div className={"px-2"}>
-            {filteredData.adminModerator.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  onClick={() => selectGroup(item)}
-                  className={"flex flex-col"}
-                >
-                  <div
-                    className={
-                      "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                    }
-                  >
-                    <img
-                      src={generateFileUrl(item.profile)}
-                      className={"w-8 h-8 rounded-md object-cover mr-2"}
-                      alt={""}
-                    />
-                    <span
-                      className={"text-caak-generalblack font-medium text-16px"}
-                    >
-                      {item.name}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {filteredData.adminModerator.length > 0 ? (
+            <>
+              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+                <span className={"text-15px text-caak-darkBlue"}>
+                  Миний группүүд
+                </span>
+                <span className={"text-15px font-medium text-caak-primary"}>
+                  Групп үүсгэх
+                </span>
+
+              </div>
+              <div className={"px-2"}>
+                {filteredData.adminModerator.map((item, index) => {
+                  return (
+                      <div
+                          key={index}
+                          onClick={() => selectGroup(item)}
+                          className={"flex flex-col"}
+                      >
+                        <div
+                            className={
+                              "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                            }
+                        >
+                          <img
+                              src={generateFileUrl(item.profile)}
+                              className={"w-8 h-8 rounded-md object-cover mr-2"}
+                              alt={""}
+                          />
+                          <span
+                              className={
+                                "text-caak-generalblack font-medium text-16px"
+                              }
+                          >
+                            {item.name}
+                          </span>
+                        </div>
+                      </div>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div>
+              <p>Пост оруулахын тулд группд нэгдээрэй</p>
+            </div>
+          )}
 
           <div
             className={

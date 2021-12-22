@@ -12,77 +12,85 @@
 @import "./Tooltip.css";
 
 @layer base {
-  html {
-    @apply font-inter;
-  }
+    html {
+        @apply font-inter;
+    }
 
-  body {
-    @apply bg-caak-doctor bg-caak-liquidnitrogen;
-  }
+    body {
+        @apply bg-caak-doctor bg-caak-liquidnitrogen;
+        overflow: hidden;
+    }
 
-  ::-webkit-scrollbar {
-    width: 0.6em;
-  }
+    .caak-main-wrapper {
+        overflow: scroll;
+        padding-top: calc(var(--topBarSize) + 20px);
+        max-height: 100vh;
+        padding-bottom: env(safe-area-inset-bottom, 100px);
+    }
 
-  ::-webkit-scrollbar,
-  ::-webkit-scrollbar-thumb {
-    overflow: visible;
-    border-radius: 4px;
-  }
+    ::-webkit-scrollbar {
+        width: 0.6em;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-  }
+    ::-webkit-scrollbar,
+    ::-webkit-scrollbar-thumb {
+        overflow: visible;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+    }
 }
 /*Custom sizing class*/
 @layer utilities {
-  .h-22px {
-    height: 22px;
-  }
+    .h-22px {
+        height: 22px;
+    }
 
-  .h-34px {
-    height: 34px;
-  }
+    .h-34px {
+        height: 34px;
+    }
 
-  .w-22px {
-    width: 22px;
-  }
+    .w-22px {
+        width: 22px;
+    }
 
-  .w-34px {
-    width: 34px;
-  }
+    .w-34px {
+        width: 34px;
+    }
 
-  .w-15px {
-    width: 15px;
-  }
+    .w-15px {
+        width: 15px;
+    }
 
-  .h-15px {
-    height: 15px;
-  }
+    .h-15px {
+        height: 15px;
+    }
 
-  .w-36px {
-    width: 36px;
-  }
+    .w-36px {
+        width: 36px;
+    }
 
-  .h-36px {
-    height: 36px;
-  }
+    .h-36px {
+        height: 36px;
+    }
 
-  .w-18px {
-    width: 18px;
-  }
+    .w-18px {
+        width: 18px;
+    }
 
-  .h-18px {
-    height: 18px;
-  }
+    .h-18px {
+        height: 18px;
+    }
 
-  .w-45px {
-    width: 45px;
-  }
+    .w-45px {
+        width: 45px;
+    }
 
-  .h-45px {
-    height: 45px;
-  }
+    .h-45px {
+        height: 45px;
+    }
 
     .h-20px {
         height: 20px;

@@ -20,10 +20,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <WrapperProvider>
       <UserProvider>
-        <NavBar />
-        <div className={"overflow-y-auto"}>
-          <Component {...pageProps} />
+        <div className={"caak-main-wrapper"}>
+          <NavBar />
+          <div>
+            <Component {...pageProps} />
+          </div>
         </div>
+
         <Modals />
       </UserProvider>
     </WrapperProvider>

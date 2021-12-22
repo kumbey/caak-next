@@ -10,21 +10,21 @@ import { getReturnData } from "../../utility/Util";
 
 const GroupTips = ({ groupId }) => {
   const [groupTips, setGroupTips] = useState([]);
-  const getGroupAttention = async () => {
-    let resp = await API.graphql({
-      query: getGroupAttentions,
-      variables: { id: groupId },
-    });
-    resp = getReturnData(resp);
-    if (resp.g_attentions?.length > 0) {
-      setGroupTips(JSON.parse(resp.g_attentions));
-    } else {
-      setGroupTips(null);
-    }
-  };
+  // const getGroupAttention = async () => {
+  //   let resp = await API.graphql({
+  //     query: getGroupAttentions,
+  //     variables: { id: groupId },
+  //   });
+  //   resp = getReturnData(resp);
+  //   if (resp.g_attentions?.length > 0) {
+  //     setGroupTips(JSON.parse(resp.g_attentions));
+  //   } else {
+  //     setGroupTips(null);
+  //   }
+  // };
 
   useEffect(() => {
-    getGroupAttention();
+    // getGroupAttention();
     // eslint-disable-next-line
   }, [groupId]);
   return groupTips ? (

@@ -109,9 +109,9 @@ const Notification = ({ item, ...props }) => {
             <img
               className={"rounded-full w-full h-full object-cover"}
               src={
-                item.from_user.pic
+                item.from_user?.pic
                   ? generateFileUrl(item.from_user.pic)
-                  : getGenderImage(item.from_user.gender).src
+                  : getGenderImage(item.from_user?.gender).src
               }
               alt={""}
             />

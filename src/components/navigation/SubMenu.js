@@ -49,7 +49,7 @@ const SubMenu = ({ params }) => {
         <div
           className={`${
             isSearchInputOpen ? "" : "hidden"
-          } mobileSearch h-full w-full fixed top-0 left-0 bg-transparent`}
+          } mobileSearch w-full fixed top-0 left-0 bg-transparent`}
         >
           <div className="w-full h-[52px] border-t-[1px] border-caak-liquidnitrogen shadow-card bg-white p-[8px]">
             <SearchInput

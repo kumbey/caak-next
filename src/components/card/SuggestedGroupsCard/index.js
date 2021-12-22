@@ -1,18 +1,14 @@
 import SuggestedGroupsCardItem from "./SuggestedGroupsCardItem";
 import ViewMoreText from "../SideBarGroups/ViewMoreText";
 import { useUser } from "../../../context/userContext";
+import {useState} from "react";
 
 const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
-  const groups = [1, 2, 3, 4, 5, 6];
-  const { isLogged } = useUser();
-
-  return isLogged ? (
+  const groups = [1, 2, 3, 4, 5, 6, 7];
+  const [groupData, setGroupData] = useState({})
+  return (
     <div
-      className={`suggestedGroupsCard ${
-        isLogged
-          ? "bg-white shadow-card py-[18px]"
-          : "py-[18px] bg-transparent shadow-none"
-      } ${
+      className={`suggestedGroupsCard bg-white shadow-card py-[18px]  ${
         className ? className : ""
       } flex flex-col bg-white w-ci rounded-square `}
     >
@@ -58,7 +54,7 @@ const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
         </div>
       ) : null}
     </div>
-  ) : null;
+  );
 };
 
 export default SuggestedGroupsCard;

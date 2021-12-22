@@ -7,10 +7,7 @@ import {
 import useGroupLayout from "../../../src/hooks/useGroupLayout";
 import { API, withSSRContext } from "aws-amplify";
 
-import {
-  getPostByGroup,
-  listPostOrderByReactions,
-} from "../../../src/graphql-custom/post/queries";
+import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
 import Loader from "../../../src/components/loader";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
@@ -18,14 +15,16 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 
 import Card from "../../../src/components/card/FeedCard";
 import { useUser } from "../../../src/context/userContext";
-import {getGroupView, listPostByGroupOrderByReactions} from "../../../src/graphql-custom/group/queries";
+import {
+  getGroupView,
+  listPostByGroupOrderByReactions,
+} from "../../../src/graphql-custom/group/queries";
 import List from "../../../src/components/list";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
-import useDeviceDetect from "../../../src/hooks/useDeviceDetect";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 
 export async function getServerSideProps({ req, query }) {

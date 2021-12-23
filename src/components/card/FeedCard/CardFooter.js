@@ -25,8 +25,6 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleShare = () => {};
-
   const subscrip = () => {
     subscriptions.onChangedTotalsBy = API.graphql({
       query: onChangedTotalsBy,
@@ -185,7 +183,7 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
                             navigator.clipboard.writeText(
                               `${pathName}/post/view/${postId}`
                             );
-                          handleToast();
+                          handleToast({ param: "copy" });
                         }}
                         className={
                           "flex items-center  rounded-full cursor-pointer h-[36px]"

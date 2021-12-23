@@ -529,6 +529,15 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
 
+  .popup_modal-viewPost {
+    background: #fff;
+    width: 100%;
+    min-height: 100vh;
+    /*margin: 70px auto;*/
+    position: relative;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  }
+
   .popup_modal-deny {
     min-width: 240px;
     max-width: 280px;

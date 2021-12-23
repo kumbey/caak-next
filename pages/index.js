@@ -272,7 +272,7 @@ const Feed = ({ ssrData }) => {
         />
       </Head>
       {/*<FeedBack/>*/}
-      <div id={"feed"} className={"site-container "}>
+      <div id={"feed"} className={"site-container relative"}>
         <Toaster
           toastOptions={{
             className: "toastOptions",

@@ -259,8 +259,10 @@ const Feed = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [feedSortType]);
 
-  const notify = () => {
-    toast.success("Амжилттай хуулагдлаа.");
+  const handleToast = ({ param }) => {
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
   };
   return (
     <>
@@ -328,7 +330,7 @@ const Feed = ({ ssrData }) => {
                           )}
                           post={data}
                           className="ph:mb-4 sm:mb-4"
-                          handleToast={notify}
+                          handleToast={handleToast}
                         />
                       );
                     } else if (feedSortType === "DEFAULT") {
@@ -340,7 +342,7 @@ const Feed = ({ ssrData }) => {
                           )}
                           post={data}
                           className="ph:mb-4 sm:mb-4"
-                          handleToast={notify}
+                          handleToast={handleToast}
                         />
                       );
                     }

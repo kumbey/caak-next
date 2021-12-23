@@ -17,6 +17,7 @@ import useAddPostLayout from "../../../src/hooks/useAddPostLayout";
 import Button from "../../../src/components/button";
 import WithAuth from "../../../src/middleware/auth/WithAuth";
 import Head from "next/head";
+import toast, { Toaster } from "react-hot-toast";
 import Consts from "../../../src/utility/Consts";
 import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
 
@@ -36,6 +37,8 @@ const AddPost = () => {
   });
   const [permissionDenied, setPermissionDenied] = useState(true);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const [isPostCreated, setIsPostCreated] = useState(false);
 
   const [post, setPost] = useState({
     id: postId,
@@ -105,7 +108,13 @@ const AddPost = () => {
 
   const handleSubmit = async () => {
     await uploadPost();
-    if (!loading) setIsSuccessModalOpen(true);
+  };
+
+  const handleToast = ({ param }) => {
+    if (param === "isPost") toast.success("Пост хоосон байна.");
+    if (param === "isTitle") toast.success("Гарчиг бичнэ үү.");
+    if (param === "isFollow") toast.success("Та уг группт нэгдээгүй байна.");
+    if (param === "isGroup") toast.success("Группээ сонгоно уу.");
   };
 
   useEffect(() => {
@@ -174,17 +183,19 @@ const AddPost = () => {
 
   const uploadPost = async () => {
     if (post.items.length === 0) {
-      alert("Пост хоосон байна");
+      handleToast({ param: "isPost" });
       return;
     }
     if (!post.title) {
-      alert("Гарчиг бичнэ үү");
+      handleToast({ param: "isTitle" });
+
       return;
     }
     if (selectedGroup) {
       const resp = await getGroup({ id: selectedGroup.id });
       if (resp.role_on_group === "NOT_MEMBER") {
-        alert("Та уг группт нэгдээгүй байна");
+        handleToast({ param: "isFollow" });
+
         return;
       }
       try {
@@ -192,29 +203,19 @@ const AddPost = () => {
         await crtPost(post, user.id);
 
         setLoading(false);
-
-        router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 1,
-            },
-          },
-          `/user/${user.id}/dashboard`,
-          { shallow: true }
-        );
+        setIsSuccessModalOpen(true);
       } catch (ex) {
         ex.errors.map((error) => {
           if (error.message.includes("IndexKey: group_id")) {
-            alert("Группээ сонгоно уу");
+            handleToast({ param: "isGroup" });
           }
         });
-
         setLoading(false);
+
         console.log(ex);
       }
     } else {
-      alert("Группээ сонгоно уу");
+      handleToast({ param: "isGroup" });
     }
   };
   return !permissionDenied ? (
@@ -222,6 +223,11 @@ const AddPost = () => {
       <Head>
         <title>Шинэ пост нэмэх - {Consts.siteMainTitle}</title>
       </Head>
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+        }}
+      />
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
           <PostSuccessModal
@@ -268,7 +274,7 @@ const AddPost = () => {
                   Болих
                 </Button>
                 <Button
-                  onClick={() => uploadPost()}
+                  onClick={() => handleSubmit()}
                   loading={loading}
                   skin={"white"}
                   className={

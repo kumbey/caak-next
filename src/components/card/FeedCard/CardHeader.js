@@ -151,6 +151,7 @@ const CardHeader = ({
           >
             <span className="icon-fi-rs-dots text-22px" />
             <DropDown
+                arrow={"topRight"}
               open={isMenuOpen}
               onToggle={toggleMenu}
               content={

@@ -16,6 +16,7 @@ const ImageCarousel = ({
   viewPostItem,
   index,
   duration,
+  cover,
 }) => {
   const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
   const [touchPosition, setTouchPosition] = useState(null);
@@ -99,25 +100,29 @@ const ImageCarousel = ({
               activeIndex + 1
             }/${items.length}`}</p>
           </div>
-          <div
-            onClick={() => prevItem()}
-            className={
-              "cursor-pointer flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
-            }
-          >
-            <span
+          <div className={"hidden md:flex"}>
+            <div
+              onClick={() => prevItem()}
               className={
-                "icon-fi-rs-next text-white text-16px rotate-180 pl-[2px]"
+                "cursor-pointer flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
               }
-            />
-          </div>
-          <div
-            onClick={() => nextItem()}
-            className={
-              "cursor-pointer ml-[8px] flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
-            }
-          >
-            <span className={"icon-fi-rs-next text-white text-16px pl-[2px]"} />
+            >
+              <span
+                className={
+                  "icon-fi-rs-next text-white text-16px rotate-180 pl-[2px]"
+                }
+              />
+            </div>
+            <div
+              onClick={() => nextItem()}
+              className={
+                "cursor-pointer ml-[8px] flex justify-center p-1 items-center w-[40px] h-[40px] z-2 text-white bg-caak-carbon hover:bg-caak-carbon-hover rounded-full p-1"
+              }
+            >
+              <span
+                className={"icon-fi-rs-next text-white text-16px pl-[2px]"}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -153,36 +158,37 @@ const ImageCarousel = ({
                   ) : (
                     <div
                       className={
-                        "w-full h-full relative overflow-hidden bg-black"
+                        "w-full h-full relative overflow-hidden"
                       }
                     >
                       {route ? (
                         <Link shallow href={`/post/view/${postId}`}>
                           <a>
-                            <div
-                              style={{
-                                width: "10%",
-                                height: "10%",
-                                filter: "blur(2px)",
-                                position: "absolute",
-                                transform: "scale(12)",
-                                left: "50%",
-                                top: "50%",
-                                opacity: "0.3",
-                                // zIndex: -1
-                              }}
-                            >
-                              <div className={"relative w-full h-full"}>
-                                <Image
-                                  objectFit={"cover"}
-                                  layout={"fill"}
-                                  alt={item.file.type}
-                                  src={getFileUrl(item.file)}
-                                />
-                              </div>
-                            </div>
+                            {/*<div*/}
+                            {/*  style={{*/}
+                            {/*    width: "10%",*/}
+                            {/*    height: "10%",*/}
+                            {/*    filter: "blur(2px)",*/}
+                            {/*    position: "absolute",*/}
+                            {/*    transform: "scale(12)",*/}
+                            {/*    left: "50%",*/}
+                            {/*    top: "50%",*/}
+                            {/*    opacity: "0.3",*/}
+                            {/*    // zIndex: -1*/}
+                            {/*  }}*/}
+                            {/*>*/}
+                            {/*  <div className={"relative w-full h-full"}>*/}
+                            {/*    <Image*/}
+                            {/*      objectFit={"cover"}*/}
+                            {/*      layout={"fill"}*/}
+                            {/*      alt={item.file.type}*/}
+                            {/*      src={getFileUrl(item.file)}*/}
+                            {/*    />*/}
+                            {/*  </div>*/}
+                            {/*</div>*/}
 
                             <CardImageContainer
+                              cover={cover}
                               card={card}
                               route
                               postId={postId}
@@ -192,30 +198,31 @@ const ImageCarousel = ({
                         </Link>
                       ) : (
                         <>
-                          <div
-                            className={""}
-                            style={{
-                              width: "10%",
-                              height: "10%",
-                              filter: "blur(2px)",
-                              position: "absolute",
-                              transform: "scale(12)",
-                              left: "50%",
-                              top: "50%",
-                              opacity: "0.3",
-                              // zIndex: -1
-                            }}
-                          >
-                            <div className={"relative w-full h-auto"}>
-                              <Image
-                                objectFit={"cover"}
-                                layout={"fill"}
-                                alt={item.file.type}
-                                src={getFileUrl(item.file)}
-                              />
-                            </div>
-                          </div>
+                          {/*<div*/}
+                          {/*  className={""}*/}
+                          {/*  style={{*/}
+                          {/*    width: "10%",*/}
+                          {/*    height: "10%",*/}
+                          {/*    filter: "blur(2px)",*/}
+                          {/*    position: "absolute",*/}
+                          {/*    transform: "scale(12)",*/}
+                          {/*    left: "50%",*/}
+                          {/*    top: "50%",*/}
+                          {/*    opacity: "0.3",*/}
+                          {/*    // zIndex: -1*/}
+                          {/*  }}*/}
+                          {/*>*/}
+                          {/*  <div className={"relative w-full h-auto"}>*/}
+                          {/*    <Image*/}
+                          {/*      objectFit={"cover"}*/}
+                          {/*      layout={"fill"}*/}
+                          {/*      alt={item.file.type}*/}
+                          {/*      src={getFileUrl(item.file)}*/}
+                          {/*    />*/}
+                          {/*  </div>*/}
+                          {/*</div>*/}
                           <CardImageContainer
+                            cover={cover}
                             route
                             postId={postId}
                             file={item.file}

@@ -22,7 +22,8 @@ import { useWrapper } from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
+import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -89,7 +90,8 @@ const Feed = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [trendingPosts, setTrendingPosts] = useState({});
   const { feedSortType, setFeedSortType } = useWrapper();
-  const router = useRouter()
+  const [addPostCardIsOpen, setAddPostCardIsOpen] = useState(true);
+  const router = useRouter();
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -260,106 +262,110 @@ const Feed = ({ ssrData }) => {
       <Head>
         <title>Нүүр - {Consts.siteMainTitle}</title>
         <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
       {/*<FeedBack/>*/}
-        <div className={`px-0 w-full relative`}>
-          <div
-            className={`h-full flex ${
-              isLogged ? "flex-row items-start" : "flex-col items-center"
-            } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
+      <div className={`px-0 w-full relative`}>
+        <div
+          className={`h-full flex ${
+            isLogged ? "flex-row items-start" : "flex-col items-center"
+          } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
+        >
+          <FeedLayout
+            adminModeratorGroups={ssrData.adminModerator}
+            myGroups={ssrData.myGroups}
+            allGroups={ssrData.allGroups}
+            buttonType={feedType}
+            {...(isLogged ? { columns: 3 } : { columns: 2 })}
           >
-            <FeedLayout
-              adminModeratorGroups={ssrData.adminModerator}
-              myGroups={ssrData.myGroups}
-              allGroups={ssrData.allGroups}
-              buttonType={feedType}
-              {...(isLogged ? { columns: 3 } : { columns: 2 })}
-            >
-              <FeedSortButtons
-                setSortType={setFeedSortType}
-                sortType={feedSortType}
-                items={feedType}
-                hide={isLogged && !isTablet}
-                containerClassname={"mb-[19px] justify-center"}
-                direction={"row"}
-              />
-              {(feedSortType === "DEFAULT" || feedSortType === "CAAK") && (
-                <InfiniteScroll
-                  dataLength={posts.length}
-                  next={fetchPosts}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={"self-center w-full"}
-                      className={`bg-caak-primary ${
-                        loading ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {posts.map((data, index) => {
-                    if (feedSortType === "CAAK" && data.owned === "CAAK") {
-                      return (
-                        <Card
-                          key={index}
-                          video={data?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={data}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    } else if (feedSortType === "DEFAULT") {
-                      return (
-                        <Card
-                          key={index}
-                          video={data?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={data}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    }
-                  })}
-                </InfiniteScroll>
-              )}
-              {feedSortType === "TREND" && trendingPosts.items?.length > 0 ? (
-                <InfiniteScroll
-                  dataLength={trendingPosts.items?.length}
-                  next={fetchTrendingPosts}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={"self-center w-full"}
-                      className={`bg-caak-primary ${
-                        loading ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {trendingPosts.items.map((data, index) => {
+            <FeedSortButtons
+              setSortType={setFeedSortType}
+              sortType={feedSortType}
+              items={feedType}
+              hide={isLogged && !isTablet}
+              containerClassname={"mb-[19px] justify-center"}
+              direction={"row"}
+            />
+            <AddPostCaakCard
+              isOpen={addPostCardIsOpen}
+              setIsOpen={setAddPostCardIsOpen}
+            />
+            {(feedSortType === "DEFAULT" || feedSortType === "CAAK") && (
+              <InfiniteScroll
+                dataLength={posts.length}
+                next={fetchPosts}
+                hasMore={true}
+                loader={
+                  <Loader
+                    containerClassName={"self-center w-full"}
+                    className={`bg-caak-primary ${
+                      loading ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                }
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                {posts.map((data, index) => {
+                  if (feedSortType === "CAAK" && data.owned === "CAAK") {
                     return (
                       <Card
                         key={index}
-                        video={data.post?.items?.items[0]?.file?.type?.startsWith(
+                        video={data?.items?.items[0]?.file?.type?.startsWith(
                           "video"
                         )}
-                        post={data.post}
+                        post={data}
                         className="ph:mb-4 sm:mb-4"
                       />
                     );
-                  })}
-                </InfiniteScroll>
-              ) : null}
-            </FeedLayout>
-          </div>
+                  } else if (feedSortType === "DEFAULT") {
+                    return (
+                      <Card
+                        key={index}
+                        video={data?.items?.items[0]?.file?.type?.startsWith(
+                          "video"
+                        )}
+                        post={data}
+                        className="ph:mb-4 sm:mb-4"
+                      />
+                    );
+                  }
+                })}
+              </InfiniteScroll>
+            )}
+            {feedSortType === "TREND" && trendingPosts.items?.length > 0 ? (
+              <InfiniteScroll
+                dataLength={trendingPosts.items?.length}
+                next={fetchTrendingPosts}
+                hasMore={true}
+                loader={
+                  <Loader
+                    containerClassName={"self-center w-full"}
+                    className={`bg-caak-primary ${
+                      loading ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                }
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                {trendingPosts.items.map((data, index) => {
+                  return (
+                    <Card
+                      key={index}
+                      video={data.post?.items?.items[0]?.file?.type?.startsWith(
+                        "video"
+                      )}
+                      post={data.post}
+                      className="ph:mb-4 sm:mb-4"
+                    />
+                  );
+                })}
+              </InfiniteScroll>
+            ) : null}
+          </FeedLayout>
         </div>
+      </div>
     </>
   );
 };

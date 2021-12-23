@@ -596,6 +596,7 @@
   }
   .unset-img > span {
     position: unset !important;
+    width: 100% !important;
   }
 
   .feedBack {
@@ -631,7 +632,9 @@
   .unset-img > span {
     position: unset !important;
   }
-
+.gradientAdd {
+  background: transparent linear-gradient(180deg, #FF8000 0%, #FF4500 100%) 0 0 no-repeat padding-box;
+}
 }
 
 .react-player {

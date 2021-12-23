@@ -23,7 +23,6 @@ import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
   const router = useRouter();
-  // const { state } = useLocation();
   const { postId, groupId } = router.query;
   const { user } = useUser();
 
@@ -33,7 +32,6 @@ const AddPost = () => {
   const [loading, setLoading] = useState(false);
   const [groupData, setGroupData] = useState({
     adminModerator: [],
-    member: [],
     unMember: [],
   });
   const [permissionDenied, setPermissionDenied] = useState(true);
@@ -51,11 +49,16 @@ const AddPost = () => {
     items: [],
   });
 
-  const getGroup = async (id) => {
+  const getGroup = async ({ id, setGroupData }) => {
     try {
       let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
       resp = getReturnData(resp);
-      setGroupData(resp);
+      if (setGroupData) {
+        setGroupData(resp);
+      } else {
+        return resp;
+      }
+      return resp;
     } catch (ex) {
       console.log(ex);
     }
@@ -65,7 +68,6 @@ const AddPost = () => {
     try {
       const grData = {
         adminModerator: [],
-        member: [],
         unMember: [],
       };
 
@@ -111,11 +113,11 @@ const AddPost = () => {
       getGroups();
       loadPost(postId);
     } else if (groupId) {
-      getGroup(groupId);
+      getGroup({ id: groupId, setGroupData });
       setSelectedGroupId(groupId);
       setPermissionDenied(false);
     } else {
-      getGroups();
+      getGroups({ id: groupId, setGroupData });
       setSelectedGroupId(groupId);
       setPermissionDenied(false);
     }
@@ -171,14 +173,48 @@ const AddPost = () => {
   };
 
   const uploadPost = async () => {
-    try {
-      setLoading(true);
-      await crtPost(post, user.id);
+    if (post.items.length === 0) {
+      alert("Пост хоосон байна");
+      return;
+    }
+    if (!post.title) {
+      alert("Гарчиг бичнэ үү");
+      return;
+    }
+    if (selectedGroup) {
+      const resp = await getGroup({ id: selectedGroup.id });
+      if (resp.role_on_group === "NOT_MEMBER") {
+        alert("Та уг группт нэгдээгүй байна");
+        return;
+      }
+      try {
+        setLoading(true);
+        await crtPost(post, user.id);
 
-      setLoading(false);
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
+        setLoading(false);
+
+        router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 1,
+            },
+          },
+          `/user/${user.id}/dashboard`,
+          { shallow: true }
+        );
+      } catch (ex) {
+        ex.errors.map((error) => {
+          if (error.message.includes("IndexKey: group_id")) {
+            alert("Группээ сонгоно уу");
+          }
+        });
+
+        setLoading(false);
+        console.log(ex);
+      }
+    } else {
+      alert("Группээ сонгоно уу");
     }
   };
   return !permissionDenied ? (
@@ -232,10 +268,11 @@ const AddPost = () => {
                   Болих
                 </Button>
                 <Button
-                  onClick={() => handleSubmit()}
-                  // disabled
+                  onClick={() => uploadPost()}
+                  loading={loading}
+                  skin={"white"}
                   className={
-                    "mr-2 mt-4 text-17px border border-caak-titaniumwhite w-[190px] h-[44px]"
+                    "mr-2 mt-4 shadow-sm text-black text-[17px] font-medium border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
                   }
                 >
                   Нийтлэх

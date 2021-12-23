@@ -16,6 +16,7 @@ import DropZoneWithCaption from "../../../../src/components/input/DropZoneWithCa
 import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
 import API from "@aws-amplify/api";
+import toast, { Toaster } from "react-hot-toast";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostSuccessModal from "../../../../src/components/modals/postSuccessModal";
 
@@ -97,6 +98,7 @@ const EditPost = ({ ssrData }) => {
     items: ssrData.post.items.items,
   });
 
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const getGroup = async ({ id }) => {
     try {
@@ -104,20 +106,9 @@ const EditPost = ({ ssrData }) => {
       resp = getReturnData(resp);
       return resp;
     } catch (ex) {
-
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-
-  const uploadPost = async () => {
-    try {
-      setLoading(true);
-      await pdtPost(post, user.id);
-      setLoading(false);
-    } catch (ex) {
-      setLoading(false);
       console.log(ex);
     }
   };
-
   const finish = () => {
     router.push(
       {
@@ -132,7 +123,13 @@ const EditPost = ({ ssrData }) => {
 
   const handleSubmit = async () => {
     await uploadPost();
-    if (!loading) setIsSuccessModalOpen(true);
+  };
+
+  const handleToast = ({ param }) => {
+    if (param === "isPost") toast.success("Пост хоосон байна.");
+    if (param === "isTitle") toast.success("Гарчиг бичнэ үү.");
+    if (param === "isFollow") toast.success("Та уг группт нэгдээгүй байна.");
+    if (param === "isGroup") toast.success("Группээ сонгоно уу.");
   };
 
   useEffect(() => {
@@ -176,45 +173,48 @@ const EditPost = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [groupData, selectedGroupId]);
 
-
   const uploadPost = async () => {
     if (post.items.length === 0) {
-      alert("Пост хоосон байна");
+      handleToast({ param: "isPost" });
       return;
     }
     if (!post.title) {
-      alert("Гарчиг бичнэ үү");
+      handleToast({ param: "isTitle" });
       return;
     }
     if (selectedGroup) {
       const resp = await getGroup({ id: selectedGroup.id });
       if (resp.role_on_group === "NOT_MEMBER") {
-        alert("Та уг группт нэгдээгүй байна");
+        handleToast({ param: "isFollow" });
         return;
       }
       try {
         setLoading(true);
         await pdtPost(post, user.id);
         setLoading(false);
-
-        router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 1,
-            },
-          },
-          `/user/${user.id}/dashboard`
-        );
+        setIsSuccessModalOpen(true);
       } catch (ex) {
+        ex.errors.map((error) => {
+          if (error.message.includes("IndexKey: group_id")) {
+            handleToast({ param: "isGroup" });
+          }
+        });
         setLoading(false);
+
         console.log(ex);
       }
+    } else {
+      handleToast({ param: "isGroup" });
     }
   };
 
   return (
     <div className={"addPostPadding"}>
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+        }}
+      />
       <AddPostLayout selectedGroup={selectedGroup}>
         <PostSuccessModal
           isOpen={isSuccessModalOpen}

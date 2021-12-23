@@ -174,7 +174,6 @@ const ImageCarousel = ({
                           <div 
                             onClick={() => router.push({
                                 query: {
-                                  ...router.query,
                                   viewPost: "post",
                                   id: postId,
                                   prevPath: router.asPath,

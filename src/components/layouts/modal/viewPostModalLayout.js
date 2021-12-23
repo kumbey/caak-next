@@ -28,7 +28,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   }, []);
 
   return (
-    <div id={"backdrop"} className={`h-full bg-black bg-opacity-80`}>
+    <div id={"backdrop"} className={`h-full bg-black bg-opacity-80`} style={{position: "fixed", top: 0, overflow: "scroll"}}>
       <div
         className={`rounded-lg relative ${
           containerClassname ? containerClassname : ""

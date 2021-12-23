@@ -14,12 +14,9 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
   }, [allowScroll, blockScroll]);
 
   const close = () => {
-    if (router.query.isModal) {
+    if (router.query.prevPath && router.query.prevPath !== router.asPath) {
       router.replace(
-        {
-          pathname: router.pathname,
-          query: _objectWithoutKeys(router.query, [...onCloseKeys, "isModal"]),
-        },
+        router.query.prevPath,
         undefined,
         { shallow: true, scroll: false }
       );
@@ -29,27 +26,19 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
   };
 
   const switchType = () => {
-    if (router.query.isModal) {
+    if (router.query.prevPath && router.query.prevPath !== router.asPath) {
       router.replace(
         {
-          pathname: router.pathname,
           query: {
             ...router.query,
-            signInUp: type === "signIn" ? "signUp" : "signIn",
-          },
+            signInUp: type === "signUp" ? "signIn" : "signUp"
+          }
         },
-        type === "signIn" ? "/signInUp/signUp" : "/signInUp/signIn",
+        `/signInUp/${type === "signUp" ? "signIn" : "signUp"}`,
         { shallow: true, scroll: false }
       );
     } else {
-      router.replace(
-        type === "signIn" ? "/signInUp/signUp" : "/signInUp/signIn",
-        undefined,
-        {
-          shallow: true,
-          scroll: false,
-        }
-      );
+      router.replace(`/signInUp/${type === "signUp" ? "signIn" : "signUp"}`);
     }
   };
 
@@ -68,7 +57,7 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
               "text-center text-caak-generalblack mb-c2 font-bold text-24px pt-c5 relative"
             }
           >
-            {`Шинэ Саак-т ${type === "signUp" ? "бүртгүүлэх!" : "нэвтрэх!"}`}
+            {`${type === "signUp" ? "Бүртгүүлэх" : "Нэвтрэх"}`}
           </div>
           {children}
           {/*Footer*/}
@@ -98,7 +87,7 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
                 </span>
               </div>
             )}
-            <span className="icon-fi-rs-help text-18px" />
+            {/* <span className="icon-fi-rs-help text-18px" /> */}
           </div>
         </div>
       </div>

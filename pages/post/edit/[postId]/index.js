@@ -17,6 +17,7 @@ import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
+import PostSuccessModal from "../../../../src/components/modals/postSuccessModal";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -96,14 +97,42 @@ const EditPost = ({ ssrData }) => {
     items: ssrData.post.items.items,
   });
 
+
   const getGroup = async ({ id }) => {
     try {
       let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
       resp = getReturnData(resp);
       return resp;
     } catch (ex) {
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const uploadPost = async () => {
+    try {
+      setLoading(true);
+      await pdtPost(post, user.id);
+      setLoading(false);
+    } catch (ex) {
+      setLoading(false);
       console.log(ex);
     }
+  };
+
+  const finish = () => {
+    router.push(
+      {
+        pathname: `/user/${user.id}/dashboard`,
+        query: {
+          activeIndex: 1,
+        },
+      },
+      `/user/${user.id}/dashboard`
+    );
+  };
+
+  const handleSubmit = async () => {
+    await uploadPost();
+    if (!loading) setIsSuccessModalOpen(true);
   };
 
   useEffect(() => {
@@ -147,6 +176,7 @@ const EditPost = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [groupData, selectedGroupId]);
 
+
   const uploadPost = async () => {
     if (post.items.length === 0) {
       alert("Пост хоосон байна");
@@ -186,6 +216,12 @@ const EditPost = ({ ssrData }) => {
   return (
     <div className={"addPostPadding"}>
       <AddPostLayout selectedGroup={selectedGroup}>
+        <PostSuccessModal
+          isOpen={isSuccessModalOpen}
+          setIsOpen={setIsSuccessModalOpen}
+          finish={finish}
+          messageTitle={"Таны пост группт амжилттай заслаа."}
+        />
         <div className={`flex flex-col justify-center items-center pb-[38px]`}>
           <div
             className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
@@ -221,7 +257,7 @@ const EditPost = ({ ssrData }) => {
                 Болих
               </Button>
               <Button
-                onClick={() => uploadPost()}
+                onClick={() => handleSubmit()}
                 // disabled
                 className={
                   "mr-2 mt-4 text-17px border border-caak-titaniumwhite w-[190px] h-[44px]"

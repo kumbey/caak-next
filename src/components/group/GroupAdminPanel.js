@@ -8,7 +8,7 @@ import { getGroupTotal } from "../../graphql-custom/group/queries";
 const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
   const router = useRouter();
   const [groupTotals, setGroupTotals] = useState();
-  const totalPending = groupTotals?.pending;
+  const [totalPending, setTotalPending] = useState();
 
   const adminMenu = [
     {
@@ -32,6 +32,12 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
       path: "settings",
       length: "",
     },
+    // {
+    //   id: 3,
+    //   name: "Дүрэм",
+    //   icon: "icon-fi-rs-desc",
+    //   path: "rule",
+    // },
   ];
   const getGroupTotals = async () => {
     const resp = await API.graphql({
@@ -44,10 +50,15 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
   };
 
   useEffect(() => {
+    setTotalPending(groupTotals?.pending);
+    // eslint-disable-next-line
+  }, [groupTotals]);
+
+  useEffect(() => {
     getGroupTotals();
     // eslint-disable-next-line
   }, []);
-  return (groupData.role_on_group === "ADMIN" || groupData.role_on_group === "MODERATOR") && (
+  return (
     <div className="max-w-[616px] mx-auto flex flex-col relative rounded-lg bg-white mb-[16px]">
       <div className={"p-[18px] "}>
         <div className={""}>

@@ -1,0 +1,21 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "caaklayer001",
+      "env": "dev",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ],
+  "permissions": {
+    "api": {
+      "caak": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}

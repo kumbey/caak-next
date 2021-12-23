@@ -76,6 +76,7 @@ export default function NavBar() {
       },
     }).subscribe({
       next: (data) => {
+        console.log(data)
         const onData = getReturnData(data, true);
         setSubscripTotal(JSON.parse(onData.totals));
       },
@@ -176,11 +177,11 @@ export default function NavBar() {
                       skin={"secondary"}
                       className={"mr-2"}
                       onClick={() =>
-                        router.push(
+                        router.replace(
                           {
-                            pathname: router.pathname,
                             query: {
                               ...router.query,
+                              prevPath: router.asPath,
                               signInUp: "signIn",
                               isModal: true,
                             },
@@ -197,11 +198,12 @@ export default function NavBar() {
                       skin={"primary"}
                       className={"mr-2"}
                       onClick={() =>
-                        router.push(
+                        router.replace(
                           {
                             pathname: router.pathname,
                             query: {
                               ...router.query,
+                              prevPath: router.asPath,
                               signInUp: "signUp",
                               isModal: true,
                             },

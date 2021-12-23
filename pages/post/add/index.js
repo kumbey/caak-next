@@ -18,6 +18,7 @@ import Button from "../../../src/components/button";
 import WithAuth from "../../../src/middleware/auth/WithAuth";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
+import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -34,6 +35,7 @@ const AddPost = () => {
     unMember: [],
   });
   const [permissionDenied, setPermissionDenied] = useState(true);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const [post, setPost] = useState({
     id: postId,
@@ -86,6 +88,24 @@ const AddPost = () => {
     } catch (ex) {
       console.log(ex);
     }
+  };
+
+  const finish = () => {
+    router.push(
+      {
+        pathname: `/user/${user.id}/dashboard`,
+        query: {
+          activeIndex: 1,
+        },
+      },
+      `/user/${user.id}/dashboard`,
+      { shallow: true }
+    );
+  };
+
+  const handleSubmit = async () => {
+    await uploadPost();
+    if (!loading) setIsSuccessModalOpen(true);
   };
 
   useEffect(() => {
@@ -204,6 +224,12 @@ const AddPost = () => {
       </Head>
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
+          <PostSuccessModal
+            isOpen={isSuccessModalOpen}
+            setIsOpen={setIsSuccessModalOpen}
+            finish={finish}
+            messageTitle={"Таны пост группт амжилттай илгээгдлээ."}
+          />
           <div
             className={`flex flex-col justify-center items-center pb-[38px]`}
           >

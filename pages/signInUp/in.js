@@ -12,17 +12,12 @@ const In = ({ ...props }) => {
   const ModalLayout = useModalLayout({ layoutName: "step" });
 
   const back = () => {
-    if(query.isModal){
       router.replace({
-        pathname: router.pathname,
         query: {
           ...query,
           signInUp: "signIn"
         }
       }, "/signInUp/signIn", {shallow : true, scroll: false})
-    }else{
-      router.replace("/signInUp/signIn", undefined, {shallow : true, scroll: false})
-    }
   }
 
   return (

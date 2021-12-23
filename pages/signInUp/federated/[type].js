@@ -8,10 +8,9 @@ function FederatedLogin(){
 
     const federated = async () => {
         if(query.type === "facebook"){
-            const resp = await Auth.federatedSignIn({provider: "Facebook"})
-            console.log(resp)
+            await Auth.federatedSignIn({provider: "Facebook"})
         }else if(query.type === "google"){
-            Auth.federatedSignIn({provider: "Google"})
+            await Auth.federatedSignIn({provider: "Google"})
         }else{
            console.log("HERE")
         }

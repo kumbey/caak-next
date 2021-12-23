@@ -1135,6 +1135,16 @@ export const createPost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status_history {
+        items {
+          id
+          post_id
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       items {
         items {
           id
@@ -1156,12 +1166,14 @@ export const createPost = /* GraphQL */ `
         status
         search_id
         group_id
+        category_id
         search_key
         reactions
         total_reactions
         comments
         views
         shares
+        groupAndStatus
         createdAt
         updatedAt
         post {
@@ -1210,6 +1222,8 @@ export const createPost = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -1483,6 +1497,16 @@ export const updatePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status_history {
+        items {
+          id
+          post_id
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       items {
         items {
           id
@@ -1504,12 +1528,14 @@ export const updatePost = /* GraphQL */ `
         status
         search_id
         group_id
+        category_id
         search_key
         reactions
         total_reactions
         comments
         views
         shares
+        groupAndStatus
         createdAt
         updatedAt
         post {
@@ -1558,6 +1584,8 @@ export const updatePost = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -1831,6 +1859,16 @@ export const deletePost = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      status_history {
+        items {
+          id
+          post_id
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       items {
         items {
           id
@@ -1852,12 +1890,14 @@ export const deletePost = /* GraphQL */ `
         status
         search_id
         group_id
+        category_id
         search_key
         reactions
         total_reactions
         comments
         views
         shares
+        groupAndStatus
         createdAt
         updatedAt
         post {
@@ -1906,6 +1946,8 @@ export const deletePost = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -1988,6 +2030,48 @@ export const deletePost = /* GraphQL */ `
           updatedAt
         }
       }
+    }
+  }
+`;
+export const createPostStatusHistory = /* GraphQL */ `
+  mutation CreatePostStatusHistory(
+    $input: CreatePostStatusHistoryInput!
+    $condition: ModelPostStatusHistoryConditionInput
+  ) {
+    createPostStatusHistory(input: $input, condition: $condition) {
+      id
+      post_id
+      description
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updatePostStatusHistory = /* GraphQL */ `
+  mutation UpdatePostStatusHistory(
+    $input: UpdatePostStatusHistoryInput!
+    $condition: ModelPostStatusHistoryConditionInput
+  ) {
+    updatePostStatusHistory(input: $input, condition: $condition) {
+      id
+      post_id
+      description
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deletePostStatusHistory = /* GraphQL */ `
+  mutation DeletePostStatusHistory(
+    $input: DeletePostStatusHistoryInput!
+    $condition: ModelPostStatusHistoryConditionInput
+  ) {
+    deletePostStatusHistory(input: $input, condition: $condition) {
+      id
+      post_id
+      description
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -2088,6 +2172,9 @@ export const createPostItems = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -2096,12 +2183,14 @@ export const createPostItems = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -2118,6 +2207,8 @@ export const createPostItems = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -2248,6 +2339,9 @@ export const updatePostItems = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -2256,12 +2350,14 @@ export const updatePostItems = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -2278,6 +2374,8 @@ export const updatePostItems = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -2408,6 +2506,9 @@ export const deletePostItems = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -2416,12 +2517,14 @@ export const deletePostItems = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -2438,6 +2541,8 @@ export const deletePostItems = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -2480,6 +2585,7 @@ export const createPostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -2494,6 +2600,7 @@ export const updatePostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -2508,6 +2615,7 @@ export const deletePostHistory = /* GraphQL */ `
       id
       post_id
       post
+      description
       createdAt
       updatedAt
     }
@@ -2850,6 +2958,9 @@ export const createComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -2858,12 +2969,14 @@ export const createComment = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -2880,6 +2993,8 @@ export const createComment = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -3211,6 +3326,9 @@ export const updateComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -3219,12 +3337,14 @@ export const updateComment = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -3241,6 +3361,8 @@ export const updateComment = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -3572,6 +3694,9 @@ export const deleteComment = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -3580,12 +3705,14 @@ export const deleteComment = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -3602,6 +3729,8 @@ export const deleteComment = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -3932,6 +4061,9 @@ export const createReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -3940,12 +4072,14 @@ export const createReportedPost = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -3962,6 +4096,8 @@ export const createReportedPost = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4133,6 +4269,9 @@ export const updateReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -4141,12 +4280,14 @@ export const updateReportedPost = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -4163,6 +4304,8 @@ export const updateReportedPost = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4334,6 +4477,9 @@ export const deleteReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
+        status_history {
+          nextToken
+        }
         items {
           nextToken
         }
@@ -4342,12 +4488,14 @@ export const deleteReportedPost = /* GraphQL */ `
           status
           search_id
           group_id
+          category_id
           search_key
           reactions
           total_reactions
           comments
           views
           shares
+          groupAndStatus
           createdAt
           updatedAt
         }
@@ -4364,6 +4512,8 @@ export const deleteReportedPost = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -4526,6 +4676,8 @@ export const createGroupUsers = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -4713,6 +4865,8 @@ export const updateGroupUsers = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -4900,6 +5054,8 @@ export const deleteGroupUsers = /* GraphQL */ `
         followed
         role_on_group
         featured
+        g_rules
+        g_attentions
         createdAt
         updatedAt
         profile {
@@ -5000,6 +5156,8 @@ export const createGroup = /* GraphQL */ `
       followed
       role_on_group
       featured
+      g_rules
+      g_attentions
       createdAt
       updatedAt
       profile {
@@ -5157,6 +5315,8 @@ export const createGroup = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -5179,6 +5339,8 @@ export const updateGroup = /* GraphQL */ `
       followed
       role_on_group
       featured
+      g_rules
+      g_attentions
       createdAt
       updatedAt
       profile {
@@ -5336,6 +5498,8 @@ export const updateGroup = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }
@@ -5358,6 +5522,8 @@ export const deleteGroup = /* GraphQL */ `
       followed
       role_on_group
       featured
+      g_rules
+      g_attentions
       createdAt
       updatedAt
       profile {
@@ -5515,6 +5681,8 @@ export const deleteGroup = /* GraphQL */ `
           followed
           role_on_group
           featured
+          g_rules
+          g_attentions
           createdAt
           updatedAt
         }

@@ -1,0 +1,29 @@
+{
+  "authSelections": "identityPoolAndUserPool",
+  "resourceName": "caak011228e1",
+  "serviceType": "imported",
+  "region": "ap-southeast-1",
+  "aliasAttributes": [
+    "email",
+    "phone_number",
+    "preferred_username"
+  ],
+  "authProvidersUserPool": [
+    "Facebook",
+    "Google"
+  ],
+  "requiredAttributes": [
+    "profile"
+  ],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [],
+  "mfaConfiguration": "OPTIONAL",
+  "autoVerifiedAttributes": [
+    "email",
+    "phone_number"
+  ],
+  "mfaTypes": [
+    "SMS Text Message",
+    "TOTP"
+  ]
+}

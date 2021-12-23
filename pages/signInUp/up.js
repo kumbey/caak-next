@@ -7,24 +7,18 @@ import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 import { _objectWithoutKeys } from "../../src/utility/Util";
 
 const Up = ({ ...props }) => {
-  
-  const router = useRouter()
-  const query = router.query
+  const router = useRouter();
+  const query = router.query;
 
   const ModalLayout = useModalLayout({ layoutName: "step" });
-  
+
   const back = () => {
-    if(query.isModal){
       router.replace({
-        pathname: router.pathname,
         query: {
           ...query,
           signInUp: "signUp"
         }
       }, "/signInUp/signUp", {shallow : true, scroll: false})
-    }else{
-      router.replace("/signInUp/signUp", undefined, {shallow : true})
-    }
   }
 
   return (

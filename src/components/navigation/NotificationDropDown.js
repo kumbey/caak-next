@@ -223,7 +223,7 @@ const NotificationDropDown = ({ isOpen }) => {
       });
     };
     // eslint-disable-next-line
-  }, [user]);
+  }, [isLogged]);
 
   useEffect(() => {
     if (subscripNotifcation) {

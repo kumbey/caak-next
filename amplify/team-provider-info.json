@@ -10,6 +10,63 @@
       "StackName": "amplify-caak-dev-123611",
       "StackId": "arn:aws:cloudformation:ap-southeast-1:395091497679:stack/amplify-caak-dev-123611/3b2fe890-4da9-11ec-b9b0-02a58faeed02",
       "AmplifyAppId": "d36nkdl3p18em1"
+    },
+    "categories": {
+      "function": {
+        "caaklayer001": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion668f5ce1-build.zip"
+        },
+        "notification": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/notification-655362574c32334c7974-build.zip"
+        },
+        "resolverBoolean": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/resolverBoolean-48664d7a337736414174-build.zip"
+        },
+        "totals": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/totals-682b773342515a796532-build.zip"
+        },
+        "totalsTrigger": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/totalsTrigger-4e757270642f4d51466a-build.zip"
+        },
+        "triggerNotification": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/triggerNotification-69597759657573483368-build.zip"
+        },
+        "triggerTables": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/triggerTables-43747941336c61623147-build.zip"
+        },
+        "userRoleOnGroup": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/userRoleOnGroup-684b68486a79734e4944-build.zip"
+        },
+        "aura": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/aura-2f67473931586b41642b-build.zip"
+        }
+      },
+      "auth": {
+        "caak011228e1": {
+          "userPoolId": "ap-southeast-1_rIO08tyP8",
+          "userPoolName": "caak-auth",
+          "webClientId": "3ucknqne71hmd7bqhmbiatic7u",
+          "nativeClientId": "3kkpqu5hd46hd29k7gfubjvoqe",
+          "identityPoolId": "ap-southeast-1:da79ac62-2f04-4e38-b4d8-d3b9b918b315",
+          "identityPoolName": "caak-idp",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
+          "authRoleName": "Cognito_caakidpAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
+          "unauthRoleName": "Cognito_caakidpUnauth_Role",
+          "googleClientId": "208027053621-2h2q0u111jurnufk6onhmpf22h4q20dv.apps.googleusercontent.com",
+          "facebookAppId": "1831776936994333"
+        }
+      }
     }
   }
 }

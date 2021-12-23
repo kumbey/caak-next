@@ -660,3 +660,13 @@
   object-fit: inherit;
   border-radius: inherit;
 }
+
+.toastOptions {
+  border: 1px solid #b7eb8f;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 14px;
+  z-index: 6;
+}

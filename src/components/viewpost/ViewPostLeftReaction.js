@@ -7,6 +7,7 @@ import { FacebookShareButton, TwitterShareButton } from "next-share";
 import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
 import AnimatedCaakButton from "../button/animatedCaakButton";
+import toast, { Toaster } from "react-hot-toast";
 
 const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +36,12 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
 
   return (
     <div className={`${containerClassname} flex flex-col items-center`}>
+      <Toaster
+        containerStyle={{ top: "64px" }}
+        toastOptions={{
+          className: "toastOptions",
+        }}
+      />
       <div className={"flex flex-col items-center mb-[22px]"}>
         <AnimatedCaakButton
           reactionType={"POST"}
@@ -155,6 +162,7 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
                           navigator.clipboard.writeText(
                             `${pathName}/post/view/${post.id}`
                           );
+                        toast.success("Амжилттай хуулагдлаа.");
                       }}
                       className={
                         "flex items-center  rounded-full cursor-pointer h-[36px]"

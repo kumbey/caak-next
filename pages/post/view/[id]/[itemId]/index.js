@@ -29,6 +29,7 @@ import Head from "next/head";
 import Consts from "../../../../../src/utility/Consts";
 import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import useWindowSize from "../../../../../src/hooks/useWindowSize";
+import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../../../src/components/navigation/useMeduaQuery";
 
 export async function getServerSideProps({ req, query }) {
@@ -88,6 +89,13 @@ const PostItem = ({ ssrData }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const addCommentRef = useRef();
   const [item, setItem] = useState(post.items.items[activeIndex]);
+
+  const handleToast = ({ param }) => {
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+  };
+
   const followGroup = async () => {
     try {
       if (isLogged) {
@@ -149,9 +157,9 @@ const PostItem = ({ ssrData }) => {
     router.push(
       {
         // pathname: `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
-        query: { 
+        query: {
           id: post.id,
-          itemId: post.items.items[activeIndex].id
+          itemId: post.items.items[activeIndex].id,
         },
       },
       `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
@@ -263,6 +271,7 @@ const PostItem = ({ ssrData }) => {
                         groupId={post.group.id}
                         postId={router.query.itemId}
                         postUser={post.user}
+                        handleToast={handleToast}
                       />
                     }
                     className={"top-10 right-1"}

@@ -113,10 +113,8 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
             content={
               <div className={"flex flex-row items-center"}>
                 <div className={"flex flex-col  justify-start  z-1    "}>
-                  <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
-                    <FacebookShareButton
-                      url={`${pathName}/post/view/${post.id}`}
-                    >
+                  <FacebookShareButton url={`${pathName}/post/view/${post.id}`}>
+                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                       <div
                         className={
                           "flex items-center rounded-full cursor-pointer h-[36px] "
@@ -132,12 +130,10 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
                           Facebook
                         </p>
                       </div>
-                    </FacebookShareButton>
-                  </div>
-                  <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
-                    <TwitterShareButton
-                      url={`${pathName}/post/view/${post.id}`}
-                    >
+                    </div>
+                  </FacebookShareButton>
+                  <TwitterShareButton url={`${pathName}/post/view/${post.id}`}>
+                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                       <div
                         className={
                           "flex items-center rounded-full cursor-pointer h-[36px]"
@@ -153,17 +149,19 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
                           Twitter
                         </p>
                       </div>
-                    </TwitterShareButton>
-                  </div>
-                  <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                    </div>
+                  </TwitterShareButton>
+                  <div
+                    onClick={() => {
+                      if (typeof navigator !== "undefined")
+                        navigator.clipboard.writeText(
+                          `${pathName}/post/view/${post.id}`
+                        );
+                      toast.success("Амжилттай хуулагдлаа.");
+                    }}
+                    className="hover:bg-caak-liquidnitrogen w-full px-c6"
+                  >
                     <div
-                      onClick={() => {
-                        if (typeof navigator !== "undefined")
-                          navigator.clipboard.writeText(
-                            `${pathName}/post/view/${post.id}`
-                          );
-                        toast.success("Амжилттай хуулагдлаа.");
-                      }}
                       className={
                         "flex items-center  rounded-full cursor-pointer h-[36px]"
                       }

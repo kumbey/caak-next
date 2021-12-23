@@ -124,14 +124,25 @@ const EditPost = ({ ssrData }) => {
   const handleSubmit = async () => {
     await uploadPost();
   };
-
-  const handleToast = ({ param }) => {
-    if (param === "isPost") toast.success("Пост хоосон байна.");
-    if (param === "isTitle") toast.success("Гарчиг бичнэ үү.");
-    if (param === "isFollow") toast.success("Та уг группт нэгдээгүй байна.");
-    if (param === "isGroup") toast.success("Группээ сонгоно уу.");
+  const toastIcon = {
+    icon: (
+      <div className="flex items-center">
+        <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
+          <span className="icon-fi-rs-warning-1 text-white" />
+        </div>
+      </div>
+    ),
   };
+  const handleToast = ({ param }) => {
+    if (param === "isPost") toast.success("Пост хоосон байна.", toastIcon);
+    if (param === "isTitle") {
+      toast.success("Гарчиг бичнэ үү.", toastIcon);
+    }
 
+    if (param === "isFollow")
+      toast.success("Та уг группт нэгдээгүй байна.", toastIcon);
+    if (param === "isGroup") toast.success("Группээ сонгоно уу.", toastIcon);
+  };
   useEffect(() => {
     setSelectedGroupId(post.group_id);
     const handler = (e) => {
@@ -212,9 +223,10 @@ const EditPost = ({ ssrData }) => {
     <div className={"addPostPadding"}>
       <Toaster
         toastOptions={{
-          className: "toastOptions",
+          duration: 5000,
         }}
       />
+
       <AddPostLayout selectedGroup={selectedGroup}>
         <PostSuccessModal
           isOpen={isSuccessModalOpen}

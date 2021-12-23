@@ -111,27 +111,27 @@ const modals = [
       },
     ],
   },
-  {
-    name: "viewPost",
-    comp: Post,
-    ssr: ssrDataViewPost,
-    conditions: [
-      {
-        key: "viewPost",
-        value: "post",
-      },
-    ],
-  },
-  {
-    name: "viewPostItem",
-    comp: PostItem,
-    conditions: [
-      {
-        key: "viewPost",
-        value: "item",
-      },
-    ],
-  },
+  // {
+  //   name: "viewPost",
+  //   comp: Post,
+  //   ssr: ssrDataViewPost,
+  //   conditions: [
+  //     {
+  //       key: "viewPost",
+  //       value: "post",
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: "viewPostItem",
+  //   comp: PostItem,
+  //   conditions: [
+  //     {
+  //       key: "viewPost",
+  //       value: "item",
+  //     },
+  //   ],
+  // },
 ];
 
 const Modals = () => {

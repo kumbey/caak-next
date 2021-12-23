@@ -11,7 +11,12 @@ import { getGroupFollowed } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
 import { useRouter } from "next/router";
 
-export default function PostMoreMenu({ postUser, postId, groupId }) {
+export default function PostMoreMenu({
+  postUser,
+  postId,
+  groupId,
+  handleToast,
+}) {
   const { user, isLogged } = useUser();
   const router = useRouter();
   const [groupFollowed, setGroupFollowed] = useState(null);
@@ -47,6 +52,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
       })
     );
     setGroupFollowed(true);
+    handleToast({ param: "follow" });
   };
 
   const leaveGroup = async () => {
@@ -56,6 +62,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
       })
     );
     setGroupFollowed(false);
+    handleToast({ param: "unfollow" });
   };
 
   return !loading ? (

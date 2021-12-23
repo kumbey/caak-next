@@ -10,7 +10,7 @@ import AnimatedCaakButton from "../../button/animatedCaakButton";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { useRouter } from "next/router";
 
-const CardFooter = ({ totals, postId, reacted }) => {
+const CardFooter = ({ totals, postId, reacted, handleToast }) => {
   const [subscripTotal, setSubscripTotal] = useState();
   const router = useRouter();
   const [render, setRender] = useState(0);
@@ -73,7 +73,7 @@ const CardFooter = ({ totals, postId, reacted }) => {
   return (
     <>
       <div className="relative flex flex-col justify-center h-[50px] py-[12px] px-[20px]">
-        <div className={"flex flex row justify-between"}>
+        <div className={"flex row justify-between"}>
           <div className={"flex flex-row"}>
             <div
               className={
@@ -185,6 +185,7 @@ const CardFooter = ({ totals, postId, reacted }) => {
                             navigator.clipboard.writeText(
                               `${pathName}/post/view/${postId}`
                             );
+                          handleToast();
                         }}
                         className={
                           "flex items-center  rounded-full cursor-pointer h-[36px]"

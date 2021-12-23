@@ -25,6 +25,8 @@ import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
+import useDeviceDetect from "../../../src/hooks/useDeviceDetect";
+import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 
 export async function getServerSideProps({ req, query }) {
@@ -214,6 +216,11 @@ const Group = ({ ssrData }) => {
     // eslint-disable-next-line
   }, []);
 
+  const handleToast = ({ param }) => {
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+  };
+
   return loaded ? (
     <>
       <Head>
@@ -221,6 +228,11 @@ const Group = ({ ssrData }) => {
           {groupData.name} - {Consts.siteMainTitle}
         </title>
       </Head>
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+        }}
+      />
       <GroupLayout
         hideSuggestedGroups
         groupData={groupData}
@@ -264,6 +276,7 @@ const Group = ({ ssrData }) => {
                   video={data?.items?.items[0]?.file?.type?.startsWith("video")}
                   post={data}
                   className="ph:mb-4 sm:mb-4"
+                  handleToast={handleToast}
                 />
               ) : activeView === 1 ? (
                 <List
@@ -281,6 +294,7 @@ const Group = ({ ssrData }) => {
                   video={data?.items?.items[0]?.file?.type?.startsWith("video")}
                   post={data}
                   className="ph:mb-4 sm:mb-4"
+                  handleToast={handleToast}
                 />
               ) : activeView === 1 ? (
                 <List

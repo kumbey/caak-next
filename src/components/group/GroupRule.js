@@ -8,6 +8,7 @@ import GroupRuleEdit from "./GroupRuleEdit";
 import API from "@aws-amplify/api";
 import { updateGroup } from "../../graphql-custom/group/mutation";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
+import toast, { Toaster } from "react-hot-toast";
 
 import GroupRuleItem from "./GroupRuleItem";
 
@@ -18,6 +19,21 @@ const GroupRule = ({ groupData, ...props }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [text, setText] = useState();
   const [type, setType] = useState();
+
+  const notifyAdd = () => toast.success("Амжилттай нэмлээ.");
+  const notifyDel = () =>
+    toast.success("Амжилттай устгалаа.", {
+      icon: (
+        <span className="icon-fi-rs-delete text-18px text-caak-hotembers" />
+      ),
+      style: {
+        border: "1px solid #f3baa9",
+      },
+    });
+  const notifyEdit = () =>
+    toast("Амжилттай заслаа.", {
+      icon: <span className="icon-fi-rs-edit text-18px text-caak-algalfuel" />,
+    });
 
   const close = () => {
     setIsModalOpen(false);
@@ -43,6 +59,7 @@ const GroupRule = ({ groupData, ...props }) => {
         },
       })
     );
+    notifyDel();
   };
 
   const handleSubmit = async () => {
@@ -53,9 +70,11 @@ const GroupRule = ({ groupData, ...props }) => {
         parsed[activeIndex].title = text?.title;
         parsed[activeIndex].description = text?.description;
         groupData.g_rules = JSON.stringify([...parsed]);
+        notifyEdit();
       } else if (type === "new") {
         parsed = [...parsed, text];
         groupData.g_rules = JSON.stringify([...parsed]);
+        notifyAdd();
       }
       await API.graphql(
         graphqlOperation(updateGroup, {
@@ -98,6 +117,11 @@ const GroupRule = ({ groupData, ...props }) => {
   }, []);
   return (
     <div className="flex ">
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+        }}
+      />
       {groupData?.g_rules ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">

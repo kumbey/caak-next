@@ -18,6 +18,7 @@ const CardHeader = ({
   hideTitle,
   containerClassname,
   titleClassname,
+  handleToast,
 }) => {
   const { setFeedSortType } = useWrapper();
 
@@ -158,6 +159,7 @@ const CardHeader = ({
                   groupId={post.group.id}
                   postId={post.id}
                   postUser={post.user}
+                  handleToast={handleToast}
                 />
               }
               className={"top-6 -right-3"}

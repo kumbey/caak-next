@@ -112,8 +112,10 @@ const Login = ({ nextStep }) => {
             onClick={() =>
               router.push(
                 {
-                  pathname: `/signInUp/forgotpassword`,
-                  query: { isModal: true },
+                  query: {
+                    ...router.query,
+                    signInUp: "forgotpassword"
+                  },
                 },
                 `/signInUp/forgotpassword`,
                 { shallow: true, scroll: false }

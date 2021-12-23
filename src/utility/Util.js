@@ -362,10 +362,9 @@ export function _objectWithoutKeys(obj, keys) {
 export function _modalisOpen(params) {
   const { conditions, query } = params;
   let isOpen = false;
-
   for (let i = 0; i, conditions.length > i; i++) {
     const condition = conditions[i];
-
+    
     if (condition.value === "DYNAMIC" && query[condition.key]) {
       isOpen = true;
     } else {

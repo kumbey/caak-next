@@ -1,10 +1,11 @@
 import CardImageContainer from "../card/FeedCard/CardImageContainer";
 import { useEffect, useState } from "react";
-import { getFileUrl } from "../../utility/Util";
+import { getFileUrl, findMatchIndex } from "../../utility/Util";
 import Image from "next/image";
 import Video from "../video";
 import Link from "next/link";
 import useWindowSize from "../../hooks/useWindowSize";
+import { useRouter } from "next/router";
 
 const ImageCarousel = ({
   items,
@@ -20,6 +21,7 @@ const ImageCarousel = ({
   const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
   const [touchPosition, setTouchPosition] = useState(null);
   const size = useWindowSize();
+  const router = useRouter()
 
   //Swipe left, right on mobile screen
   const handleTouchStart = (e) => {
@@ -58,6 +60,12 @@ const ImageCarousel = ({
       changeActiveIndex && changeActiveIndex(activeIndex - 1);
     }
   };
+
+  useEffect(() => {
+    setActiveIndex(findMatchIndex(items, "id", router.query.itemId));
+
+    // eslint-disable-next-line
+  }, [router.query]);
 
   useEffect(() => {
     const handler = (e) => {
@@ -156,8 +164,19 @@ const ImageCarousel = ({
                       }
                     >
                       {route ? (
-                        <Link shallow href={`/post/view/${postId}`}>
-                          <a>
+                        // <Link shallow href={`/post/view/${postId}`}>
+                          <div 
+                            onClick={() => router.push({
+                                query: {
+                                  ...router.query,
+                                  viewPost: "post",
+                                  id: postId,
+                                  prevPath: router.asPath,
+                                  isModal: true
+                                }
+                              }, `/post/view/${postId}`, { shallow: true, scroll: false}
+                            )}
+                          >
                             {/*<div*/}
                             {/*  style={{*/}
                             {/*    width: "10%",*/}
@@ -186,8 +205,8 @@ const ImageCarousel = ({
                               postId={postId}
                               file={item.file}
                             />
-                          </a>
-                        </Link>
+                          </div>
+                        // </Link>
                       ) : (
                         <>
                           <div

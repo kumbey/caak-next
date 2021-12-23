@@ -29,10 +29,17 @@ const ForgotPass = ({ nextStep }) => {
       setLoading(true);
       await Auth.forgotPassword(username);
       setLoading(false);
+
       router.replace(
-        `?signInUp=stepIn&isModal=true&username=${username}`,
-        `signInUp/stepIn`
+        {
+          query: {
+            ...router.query,
+            signInUp: "resetPassword",
+            username: username
+          }
+        }, "/signInUp/resetPassword", {shallow: true, scroll: false}
       );
+
     } catch (ex) {
       setLoading(false);
       if (ex.code === "UserNotFoundException") {

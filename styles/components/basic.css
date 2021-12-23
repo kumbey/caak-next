@@ -583,7 +583,7 @@
     color: transparent;
   }
   .custom-img {
-    object-fit: cover;
+    /*object-fit: cover;*/
     width: 100% !important;
     position: relative !important;
     height: unset !important;
@@ -596,6 +596,7 @@
   }
   .unset-img > span {
     position: unset !important;
+    width: 100% !important;
   }
 
   .feedBack {
@@ -631,7 +632,9 @@
   .unset-img > span {
     position: unset !important;
   }
-
+.gradientAdd {
+  background: transparent linear-gradient(180deg, #FF8000 0%, #FF4500 100%) 0 0 no-repeat padding-box;
+}
 }
 
 .react-player {
@@ -656,4 +659,14 @@
 .react-player video {
   object-fit: inherit;
   border-radius: inherit;
+}
+
+.toastOptions {
+  border: 1px solid #b7eb8f;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 14px;
+  z-index: 6;
 }

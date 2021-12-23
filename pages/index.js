@@ -22,7 +22,9 @@ import { useWrapper } from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
+import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
+import toast, { Toaster } from "react-hot-toast";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -89,7 +91,8 @@ const Feed = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [trendingPosts, setTrendingPosts] = useState({});
   const { feedSortType, setFeedSortType } = useWrapper();
-  const router = useRouter()
+  const [addPostCardIsOpen, setAddPostCardIsOpen] = useState(true);
+  const router = useRouter();
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -255,16 +258,26 @@ const Feed = ({ ssrData }) => {
     }
     // eslint-disable-next-line
   }, [feedSortType]);
+
+  const notify = () => {
+    toast.success("Амжилттай хуулагдлаа.");
+  };
   return (
     <>
       <Head>
         <title>Нүүр - {Consts.siteMainTitle}</title>
         <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
       {/*<FeedBack/>*/}
+      <div id={"feed"} className={"site-container "}>
+        <Toaster
+          toastOptions={{
+            className: "toastOptions",
+          }}
+        />
         <div className={`px-0 w-full relative`}>
           <div
             className={`h-full flex ${
@@ -285,6 +298,10 @@ const Feed = ({ ssrData }) => {
                 hide={isLogged && !isTablet}
                 containerClassname={"mb-[19px] justify-center"}
                 direction={"row"}
+              />
+              <AddPostCaakCard
+                isOpen={addPostCardIsOpen}
+                setIsOpen={setAddPostCardIsOpen}
               />
               {(feedSortType === "DEFAULT" || feedSortType === "CAAK") && (
                 <InfiniteScroll
@@ -311,6 +328,7 @@ const Feed = ({ ssrData }) => {
                           )}
                           post={data}
                           className="ph:mb-4 sm:mb-4"
+                          handleToast={notify}
                         />
                       );
                     } else if (feedSortType === "DEFAULT") {
@@ -322,6 +340,7 @@ const Feed = ({ ssrData }) => {
                           )}
                           post={data}
                           className="ph:mb-4 sm:mb-4"
+                          handleToast={notify}
                         />
                       );
                     }
@@ -360,6 +379,7 @@ const Feed = ({ ssrData }) => {
             </FeedLayout>
           </div>
         </div>
+      </div>
     </>
   );
 };

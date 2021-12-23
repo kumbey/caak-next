@@ -24,7 +24,7 @@ const Button = (
       className={`button ${className ? className : ""} ${small ? "small" : ""} ${skin ? skin : ""} ${
         round ? "round" : ""
       } ${
-        disabled && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"
+        (disabled || loading) && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"
       } ${circular ? "circular" : ""} ${
         roundedSquare ? "rounded-square" : ""
       } ${props.className}`}
@@ -32,7 +32,7 @@ const Button = (
     >
       {iconPosition === "left" ? icon : ""}
       {circular || roundedSquare ? icon : ""}
-      {loading ? <Loader className={"bg-white"} /> : props.children}
+      {loading ? <Loader className={`${skin === "white" ? "bg-caak-primary" : "bg-white"}`} /> : props.children}
       {iconPosition === "right" ? icon : ""}
     </button>
   );

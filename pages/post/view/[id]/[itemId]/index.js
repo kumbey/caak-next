@@ -29,6 +29,7 @@ import Head from "next/head";
 import Consts from "../../../../../src/utility/Consts";
 import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import useWindowSize from "../../../../../src/hooks/useWindowSize";
+import useMediaQuery from "../../../../../src/components/navigation/useMeduaQuery";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -70,7 +71,6 @@ const PostItem = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(
     findMatchIndex(post.items.items, "id", router.query.itemId)
   );
-
 
   const size = useWindowSize();
   const [commentInputValue, setCommentInputValue] = useState("");
@@ -218,8 +218,8 @@ const PostItem = ({ ssrData }) => {
           className={`z-[5] h-full fixed top-0 w-full  flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row overflow-y-scroll`}
         >
           <div
-              style={{ height: size.height}}
-              className={
+            style={{ height: size.height }}
+            className={
               "relative backBlur w-full flex justify-center items-center"
             }
           >

@@ -23,27 +23,15 @@ const GroupTrendPostsCard = ({ groupId, maxItems }) => {
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
-      // setPosts(resp);
-      return resp;
+      setPosts(resp);
     } catch (ex) {
       console.log(ex);
     }
   };
   //TODO FIX RECURS
   useEffect(() => {
-    fetchTrendPosts().then((data) => {
-      if (data.items) {
-        if (data.items.length < maxItems) {
-          if (data.nextToken) {
-            fetchTrendPosts(data.nextToken).then(() => {
-              setLoading(false);
-            });
-          } else {
-            setPosts(data);
-            setLoading(false);
-          }
-        }
-      }
+    fetchTrendPosts().then(() => {
+      setLoading(false)
     });
     // eslint-disable-next-line
   }, [groupId]);

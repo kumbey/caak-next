@@ -21,7 +21,7 @@ import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import { generateFileUrl, getGenderImage } from "../../utility/Util";
 import Video from "../video";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const thumbnailImageHandler = (item) => {
@@ -153,10 +153,11 @@ const UploadedMediaEdit = ({
 
   const [loaded, setLoaded] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const maxLengths = {
     title: 200,
+    description: 400,
     imageDescription: 500,
   };
   const popItem = (index_arg) => {
@@ -221,7 +222,6 @@ const UploadedMediaEdit = ({
     e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
     e.returnValue = "";
   };
-
 
   useEffect(() => {
     setLoaded(true);
@@ -301,13 +301,14 @@ const UploadedMediaEdit = ({
           </span>
         </div>
         <div
-          className={`w-full block mt-[12px] ${
+          className={`w-full relative block mt-[12px] ${
             !viewDescription ? "hidden" : ""
           }`}
         >
           <textarea
             onFocus={auto_grow}
             onInput={auto_grow}
+            maxLength={maxLengths.description}
             placeholder={"Оршил"}
             style={{ resize: "none" }}
             value={post.description}
@@ -319,6 +320,13 @@ const UploadedMediaEdit = ({
             }
             rows={2}
           />
+          <span
+              className={
+                "absolute top-1/2 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
+              }
+          >
+            {post.description?.length || 0}/{maxLengths.description}
+          </span>
         </div>
         <div
           onClick={() => setViewDescription(!viewDescription)}

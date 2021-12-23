@@ -146,6 +146,7 @@ const ImageCarousel = ({
                       durationIndicator={duration}
                       postId={postId}
                       route={route}
+                      containerClassname={"rounded-[8px]"}
                       videoClassname={"object-contain rounded-none"}
                       src={getFileUrl(item.file)}
                     />
@@ -158,30 +159,31 @@ const ImageCarousel = ({
                       {route ? (
                         <Link shallow href={`/post/view/${postId}`}>
                           <a>
-                            {/*<div*/}
-                            {/*  style={{*/}
-                            {/*    width: "10%",*/}
-                            {/*    height: "10%",*/}
-                            {/*    filter: "blur(2px)",*/}
-                            {/*    position: "absolute",*/}
-                            {/*    transform: "scale(12)",*/}
-                            {/*    left: "50%",*/}
-                            {/*    top: "50%",*/}
-                            {/*    opacity: "0.3",*/}
-                            {/*    // zIndex: -1*/}
-                            {/*  }}*/}
-                            {/*>*/}
-                            {/*  <div className={"relative w-full h-full"}>*/}
-                            {/*    <Image*/}
-                            {/*      objectFit={"cover"}*/}
-                            {/*      layout={"fill"}*/}
-                            {/*      alt={item.file.type}*/}
-                            {/*      src={getFileUrl(item.file)}*/}
-                            {/*    />*/}
-                            {/*  </div>*/}
-                            {/*</div>*/}
+                            <div
+                              style={{
+                                width: "10%",
+                                height: "10%",
+                                filter: "blur(2px)",
+                                position: "absolute",
+                                transform: "scale(12)",
+                                left: "50%",
+                                top: "50%",
+                                opacity: "0.3",
+                                // zIndex: -1
+                              }}
+                            >
+                              <div className={"relative w-full h-full"}>
+                                <Image
+                                  objectFit={"cover"}
+                                  layout={"fill"}
+                                  alt={item.file.type}
+                                  src={getFileUrl(item.file)}
+                                />
+                              </div>
+                            </div>
 
                             <CardImageContainer
+                              card={card}
                               route
                               postId={postId}
                               file={item.file}

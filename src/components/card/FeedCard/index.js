@@ -11,7 +11,7 @@ const Card = ({ post }) => {
           <ImageCarousel
             duration
             route
-            card
+            card={true}
             mediaContainerClassname={"w-full h-full"}
             postId={post.id}
             items={post.items.items}

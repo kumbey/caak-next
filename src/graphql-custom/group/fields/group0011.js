@@ -1,13 +1,15 @@
 import file0001 from "../../file/fields/file0001";
 
 const group0011 = /* GraphQL */ `{
-    id
-    name
-    verified
-    profile ${file0001}
-    totals{
-        members
+    items {
+        id
+        name
+        profile ${file0001}
+        totals{
+            member
+        }
     }
+
 }`;
 
 export default group0011;

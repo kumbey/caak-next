@@ -63,7 +63,7 @@ const SelectGroup = ({
           </div>
 
           <span />
-          {groupData.member && (
+          {groupData.unMember && (
             <DropDownSelect
               setPost={setPost}
               onSelect={setSelectedGroup}

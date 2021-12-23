@@ -4,7 +4,10 @@ import { useUser } from "../../../../src/context/userContext";
 import { useEffect, useState } from "react";
 import { getReturnData } from "../../../../src/utility/Util";
 import { withSSRContext } from "aws-amplify";
-import { listGroupsForAddPost } from "../../../../src/graphql-custom/group/queries";
+import {
+  getGroupView,
+  listGroupsForAddPost,
+} from "../../../../src/graphql-custom/group/queries";
 import { getPost } from "../../../../src/graphql-custom/post/queries";
 import { pdtPost } from "../../../../src/apis/post";
 import SelectGroup from "../../../../src/components/addpost/SelectGroup";
@@ -12,6 +15,8 @@ import UploadedMediaEdit from "../../../../src/components/input/UploadedMediaEdi
 import DropZoneWithCaption from "../../../../src/components/input/DropZoneWithCaption";
 import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -91,6 +96,16 @@ const EditPost = ({ ssrData }) => {
     items: ssrData.post.items.items,
   });
 
+  const getGroup = async ({ id }) => {
+    try {
+      let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
+      resp = getReturnData(resp);
+      return resp;
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
   useEffect(() => {
     setSelectedGroupId(post.group_id);
     const handler = (e) => {
@@ -133,23 +148,38 @@ const EditPost = ({ ssrData }) => {
   }, [groupData, selectedGroupId]);
 
   const uploadPost = async () => {
-    try {
-      setLoading(true);
-      await pdtPost(post, user.id);
-      setLoading(false);
+    if (post.items.length === 0) {
+      alert("Пост хоосон байна");
+      return;
+    }
+    if (!post.title) {
+      alert("Гарчиг бичнэ үү");
+      return;
+    }
+    if (selectedGroup) {
+      const resp = await getGroup({ id: selectedGroup.id });
+      if (resp.role_on_group === "NOT_MEMBER") {
+        alert("Та уг группт нэгдээгүй байна");
+        return;
+      }
+      try {
+        setLoading(true);
+        await pdtPost(post, user.id);
+        setLoading(false);
 
-      router.push(
-        {
-          pathname: `/user/${user.id}/dashboard`,
-          query: {
-            activeIndex: 1,
+        router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 1,
+            },
           },
-        },
-        `/user/${user.id}/dashboard`
-      );
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
+          `/user/${user.id}/dashboard`
+        );
+      } catch (ex) {
+        setLoading(false);
+        console.log(ex);
+      }
     }
   };
 

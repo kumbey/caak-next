@@ -8,7 +8,8 @@ import { useUser } from "../../../context/userContext";
 import useMediaQuery from "../../navigation/useMeduaQuery";
 import { useEffect, useState } from "react";
 import { feedType } from "../../navigation/sortButtonTypes";
-import {useWrapper} from "../../../context/wrapperContext";
+import { useWrapper } from "../../../context/wrapperContext";
+import useWindowSize from "../../../hooks/useWindowSize";
 
 const DefaultFeedLayout = ({
   children,
@@ -24,8 +25,8 @@ const DefaultFeedLayout = ({
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
-  const {sortFeedType, setFeedSortType} = useWrapper();
-
+  const { sortFeedType, setFeedSortType } = useWrapper();
+  const size = useWindowSize();
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -36,7 +37,10 @@ const DefaultFeedLayout = ({
   }
   return (
     loaded && (
-      <div className={"feedLayoutContainer"}>
+      <div
+        className={"feedLayoutContainer"}
+        // style={{ paddingBottom: size.height / 3 }}
+      >
         {columns === 3 && (
           <div
             className={`leftSideBar pr-[10px] overflow-hidden hover:overflow-y-scroll ${
@@ -50,7 +54,7 @@ const DefaultFeedLayout = ({
               setSortType={setFeedSortType}
             />
             <SideBarGroups
-              role={["ADMIN","MODERATOR"]}
+              role={["ADMIN", "MODERATOR"]}
               // maxColumns={3}
               addGroup
               initialData={adminModeratorGroups}

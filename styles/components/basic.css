@@ -128,6 +128,7 @@
     @apply shadow-dropdown;
     height: auto;
     min-height: 470px;
+    max-height: 604px;
   }
 
   @media (max-width: 767px) {

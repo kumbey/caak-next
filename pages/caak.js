@@ -7,9 +7,7 @@ import {
 import { getReturnData } from "../src/utility/Util";
 import { useEffect, useState } from "react";
 import { useUser } from "../src/context/userContext";
-import Loader from "../src/components/loader";
 import Card from "../src/components/card/FeedCard";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useListPager } from "../src/utility/ApiHelper";
 import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
 import { feedType } from "../src/components/navigation/sortButtonTypes";
@@ -17,6 +15,7 @@ import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
 import Head from "next/head";
 import { useWrapper } from "../src/context/wrapperContext";
+import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -113,19 +112,9 @@ const Trending = ({ ssrData }) => {
           containerClassname={"mb-[19px] justify-center"}
           direction={"row"}
         />
-        <InfiniteScroll
-          dataLength={caakPosts.items?.length}
-          next={fetchCaakPosts}
-          hasMore={true}
-          loader={
-            <Loader
-              containerClassName={"self-center w-full"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          }
-          endMessage={<h4>Nothing more to show</h4>}
+        <InfinitScroller
+          onNext={fetchCaakPosts}
+          loading={loading}
         >
           {caakPosts.items.map((data, index) => {
             return (
@@ -137,7 +126,7 @@ const Trending = ({ ssrData }) => {
               />
             );
           })}
-        </InfiniteScroll>
+        </InfinitScroller>
       </CaakLayout>
     </>
   );

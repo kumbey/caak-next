@@ -91,17 +91,29 @@ const AddPost = () => {
     }
   };
 
-  const finish = () => {
-    router.push(
-      {
-        pathname: `/user/${user.id}/dashboard`,
-        query: {
-          activeIndex: 1,
-        },
-      },
-      `/user/${user.id}/dashboard`,
-      { shallow: true }
-    );
+  const finish = (role) => {
+    if(role === "MEMBER") {
+      router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 1,
+            },
+          },
+          `/user/${user.id}/dashboard`
+      );
+    }
+    else {
+      router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 0,
+            },
+          },
+          `/user/${user.id}/dashboard`
+      );
+    }
   };
 
   const handleSubmit = async () => {
@@ -207,7 +219,7 @@ const AddPost = () => {
       }
       try {
         setLoading(true);
-        await crtPost(post, user.id);
+        await crtPost(post, user.id, resp.role_on_group);
 
         setLoading(false);
         setIsSuccessModalOpen(true);
@@ -238,12 +250,14 @@ const AddPost = () => {
       />
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
-          <PostSuccessModal
-            isOpen={isSuccessModalOpen}
-            setIsOpen={setIsSuccessModalOpen}
-            finish={finish}
-            messageTitle={"Таны пост группт амжилттай илгээгдлээ."}
-          />
+          {selectedGroup && <PostSuccessModal
+              isOpen={isSuccessModalOpen}
+              setIsOpen={setIsSuccessModalOpen}
+              role={selectedGroup.role_on_group}
+              finish={finish}
+              messageTitle={"Таны пост группт амжилттай илгээгдлээ."}
+          />}
+
           <div
             className={`flex flex-col justify-center items-center pb-[38px]`}
           >

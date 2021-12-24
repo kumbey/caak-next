@@ -96,7 +96,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           {/*</Link>*/}
 
           <div className="flex flex-col  font-inter mr-[26px]">
-            <div className="truncate-2 text-15px font-medium text-caak-generalblack">
+            <div className="cursor-pointer truncate-2 text-15px font-medium text-caak-generalblack">
               {/*<Link*/}
               {/*  shallow*/}
               {/*  href={{*/}

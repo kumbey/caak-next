@@ -41,6 +41,7 @@ const GroupAdminsCard = ({ groupId }) => {
 
   useEffect(() => {
     fetchMods();
+    // eslint-disable-next-line
   }, [groupId]);
 
   return !loading ? (

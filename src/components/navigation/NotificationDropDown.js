@@ -24,6 +24,7 @@ import { getPost } from "../../graphql-custom/post/queries";
 import useMediaQuery from "./useMeduaQuery";
 import useScrollBlock from "../../hooks/useScrollBlock";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
+import emptyNotificationImage from "../../../public/assets/images/Empty-Notification.svg";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [notifications, setNotifications] = useState([]);
@@ -239,14 +240,13 @@ const NotificationDropDown = ({ isOpen }) => {
       allowScroll();
     }
   }, [isOpen, isTablet]);
-
   return (
     <div
       id={"notificationDropdown"}
       // onClick={(e) => e.stopPropagation()}
       className={`${
         !isOpen && "hidden"
-      } notificationMobile dropdown right-0 md:-right-10 fixed md:absolute z-2 mt-[54px] md:z-50 top-0 w-full md:w-px360 md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:w-[360px] md:my-2 flex flex-col bg-white cursor-auto  `}
+      } notificationMobile dropdown right-0 md:-right-10 fixed md:absolute z-2 mt-[54px] md:z-50 top-0 w-full md:w-[384px] md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:my-2 flex flex-col bg-white cursor-auto  `}
     >
       <div
         className={
@@ -280,23 +280,51 @@ const NotificationDropDown = ({ isOpen }) => {
       </div>
       <div
         className={
-          "notification_body rounded-b-square overflow-y-scroll flex flex-col bg-caak-washme p-0"
+          "notification_body rounded-b-square h-full overflow-y-scroll flex flex-col bg-caak-washme p-0"
         }
       >
-        <span
-          className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
-        >
-          Шинэ
-        </span>
-        {notifications.map((item, index) => {
-          return (
-            <Notification
-              onClick={() => handleNotificationClick(index)}
-              key={index}
-              item={item}
-            />
-          );
-        })}
+        {notifications.length === 0 ? (
+          <div
+            className={
+              "flex flex-col h-full w-full items-center justify-center"
+            }
+          >
+            <div className={"w-[120.39px] h-[124px]"}>
+              <img
+                alt={""}
+                src={emptyNotificationImage.src}
+                className={"w-full h-full"}
+              />
+            </div>
+            <div className={"flex flex-col items-center mt-[14px]"}>
+              <p className={"text-caak-generalblack text-[17px]"}>
+                Таньд мэдэгдэл ирээгүй байна.
+              </p>
+              <p className={"text-caak-darkBlue text-[15px] mt-[8px]"}>
+                Өдрийг сайхан өнгөрүүлээрэй!
+              </p>
+            </div>
+          </div>
+        ) : (
+          notifications.map((item, index) => {
+            return (
+              <Notification
+                onClick={() => handleNotificationClick(index)}
+                key={index}
+                item={item}
+              />
+            );
+          })
+        )}
+        {/*{notifications.map((item, index) => {*/}
+        {/*  return (*/}
+        {/*    <Notification*/}
+        {/*      onClick={() => handleNotificationClick(index)}*/}
+        {/*      key={index}*/}
+        {/*      item={item}*/}
+        {/*    />*/}
+        {/*  );*/}
+        {/*})}*/}
         {/* <span
             className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
           >

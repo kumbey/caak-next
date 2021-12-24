@@ -16,6 +16,7 @@ const InfinitScroller = ({ children, onNext, ...props }) => {
 
     return () => {
       if (ref.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         observer.unobserve(ref.current);
       }
     };
@@ -25,6 +26,7 @@ const InfinitScroller = ({ children, onNext, ...props }) => {
     if (isIntersecting) {
       onNext();
     }
+    // eslint-disable-next-line
   }, [isIntersecting]);
 
   return (

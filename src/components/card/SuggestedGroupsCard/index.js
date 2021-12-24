@@ -30,6 +30,7 @@ const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
   };
   useEffect(() => {
     fetchSuggestedGroups();
+    // eslint-disable-next-line
   }, []);
 
   return !loading ? (

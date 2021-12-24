@@ -22,15 +22,14 @@ import {
 import FollowerList from "../../../src/components/list/FollowerList";
 import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
-import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
 import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
-import InfiniteScroll from "react-infinite-scroll-component";
 import Divider from "../../../src/components/divider";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
+import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -713,20 +712,7 @@ const Dashboard = ({ ssrData }) => {
                   <Divider
                     className={"mb-[20px] bg-caak-titaniumwhite hidden md:flex"}
                   />
-                  <InfiniteScroll
-                    dataLength={posts.items.length}
-                    next={fetchPosts}
-                    hasMore={true}
-                    loader={
-                      <Loader
-                        containerClassName={`self-center w-full ${
-                          loading ? "" : "hidden"
-                        }`}
-                        className={`bg-caak-primary`}
-                      />
-                    }
-                    endMessage={<h4>Nothing more to show</h4>}
-                  >
+                  <InfinitScroller onNext={fetchPosts} loading={loading}>
                     {posts.items.map((post, index) => {
                       return (
                         <DashList
@@ -741,7 +727,7 @@ const Dashboard = ({ ssrData }) => {
                         />
                       );
                     })}
-                  </InfiniteScroll>
+                  </InfinitScroller>
                 </div>
               ) : null}
 
@@ -762,19 +748,9 @@ const Dashboard = ({ ssrData }) => {
                     </p>
                   </div>
                   <Divider className={"hidden md:flex mb-[20px]"} />
-                  <InfiniteScroll
-                    dataLength={pendingPosts.items.length}
-                    next={fetchPending}
-                    hasMore={true}
-                    loader={
-                      <Loader
-                        containerClassName={`self-center w-full ${
-                          loading ? "" : "hidden"
-                        }`}
-                        className={`bg-caak-primary`}
-                      />
-                    }
-                    endMessage={<h4>Nothing more to show</h4>}
+                  <InfinitScroller
+                    onNext={fetchPending}
+                    loading={loading}
                   >
                     {pendingPosts.items.length > 0 &&
                       pendingPosts.items.map((pendingPost, index) => {
@@ -791,7 +767,7 @@ const Dashboard = ({ ssrData }) => {
                           />
                         );
                       })}
-                  </InfiniteScroll>
+                  </InfinitScroller>
                 </div>
               ) : null}
               {activeIndex === 2 ? (
@@ -811,19 +787,9 @@ const Dashboard = ({ ssrData }) => {
                     </p>
                   </div>
                   <Divider className={"hidden md:flex mb-[20px]"} />
-                  <InfiniteScroll
-                    dataLength={archivedPosts.items.length}
-                    next={fetchArchived}
-                    hasMore={true}
-                    loader={
-                      <Loader
-                        containerClassName={`self-center w-full ${
-                          loading ? "" : "hidden"
-                        }`}
-                        className={`bg-caak-primary`}
-                      />
-                    }
-                    endMessage={<h4>Nothing more to show</h4>}
+                  <InfinitScroller
+                    onNext={fetchArchived}
+                    loading={loading}
                   >
                     {archivedPosts.items.length > 0 &&
                       archivedPosts.items.map((archivedPost, index) => {
@@ -840,23 +806,13 @@ const Dashboard = ({ ssrData }) => {
                           />
                         );
                       })}
-                  </InfiniteScroll>
+                  </InfinitScroller>
                 </div>
               ) : null}
               {activeIndex === 3 ? (
-                <InfiniteScroll
-                  dataLength={followedUsers.items.length}
-                  next={fetchFollowers}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={`self-center w-full ${
-                        loading ? "" : "hidden"
-                      }`}
-                      className={`bg-caak-primary`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
+                <InfinitScroller
+                  onNext={fetchFollowers}
+                  loading={loading}
                 >
                   <div className="mt-[14px] flex flex-row flex-wrap justify-between">
                     {followedUsers.items.map((data, index) => {
@@ -871,7 +827,7 @@ const Dashboard = ({ ssrData }) => {
                       );
                     })}
                   </div>
-                </InfiniteScroll>
+                </InfinitScroller>
               ) : null}
 
               {activeIndex === 4
@@ -896,19 +852,9 @@ const Dashboard = ({ ssrData }) => {
                           "hidden md:flex mb-[20px] bg-caak-titaniumwhite"
                         }
                       />
-                      <InfiniteScroll
-                        dataLength={userComments.items.length}
-                        next={fetchComments}
-                        hasMore={true}
-                        loader={
-                          <Loader
-                            containerClassName={`self-center w-full ${
-                              loading ? "" : "hidden"
-                            }`}
-                            className={`bg-caak-primary`}
-                          />
-                        }
-                        endMessage={<h4>Nothing more to show</h4>}
+                      <InfinitScroller
+                        onNext={fetchComments}
+                        loading={loading}
                       >
                         {userComments.items.map((comment, index) => {
                           return (
@@ -926,7 +872,7 @@ const Dashboard = ({ ssrData }) => {
                             />
                           );
                         })}
-                      </InfiniteScroll>
+                      </InfinitScroller>
                     </div>
                   )
                 : null}

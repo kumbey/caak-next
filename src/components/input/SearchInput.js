@@ -106,7 +106,6 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
                 <span className={"icon-fi-rs-search text-white"} />
               </div>
               <Link
-                shallow
                 href={{
                   pathname: "/search",
                   query: { q: `${inputValue}` },

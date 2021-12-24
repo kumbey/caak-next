@@ -22,13 +22,10 @@
     }
 
     .caak-main-wrapper {
-        min-height: -webkit-fill-available;
-        overflow: scroll;
-        padding-top: var(--topBarSize);
-        max-height: 100vh;
-        padding-bottom: env(safe-area-inset-bottom);
-        margin-bottom: 500px;
-        /*padding-bottom: env(safe-area-inset-bottom, 100px);*/
+        overflow: auto;
+        /*padding-top: var(--topBarSize);*/
+        height: 100vh;
+        min-height: 100vh;
     }
 
     ::-webkit-scrollbar {

@@ -96,8 +96,15 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
               onClick={() =>
                 router.push(
                   {
-                    pathname: `/post/view/${postId}`,
-                    query: { jumpToComment: true },
+                    // pathname: `/post/view/${postId}`,
+                    query: {
+                      jumpToComment: true,
+                      ...router.query,
+                      viewPost: "post",
+                      id: postId,
+                      prevPath: router.asPath,
+                      isModal: true,
+                    },
                   },
                   `/post/view/${postId}`
                 )

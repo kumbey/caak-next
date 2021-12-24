@@ -26,7 +26,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
         />
       </div>
       <div className={"flex flex-row px-[18px] absolute top-[24px] items-end"}>
-        <Link shallow href={`/group/view/${groupData.id}`}>
+        <Link href={`/group/view/${groupData.id}`}>
           <a>
             <div
               className={
@@ -49,7 +49,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
           </a>
         </Link>
         <div className={"ml-[11px] flex items-center pb-[10px]"}>
-          <Link shallow href={`/group/view/${groupData.id}`}>
+          <Link href={`/group/view/${groupData.id}`}>
             <a>
               <p
                 className={

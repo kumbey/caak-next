@@ -9,6 +9,7 @@ const Card = ({ post, handleToast }) => {
         <div className={"flex flex-col"}>
           <CardHeader post={post} handleToast={handleToast} />
           <ImageCarousel
+            singleItem={post.items.items.length === 1}
             cover={false}
             duration
             route

@@ -453,7 +453,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               >
                 {signedUser?.id === userId ? (
                   <>
-                    <Link shallow href={`/user/${userId}/settings`}>
+                    <Link href={`/user/${userId}/settings`}>
                       <a className={"w-full"}>
                         <Button
                           className={
@@ -479,7 +479,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         </Button>
                       </a>
                     </Link>
-                    <Link shallow href={`/user/${userId}/dashboard`}>
+                    <Link href={`/user/${userId}/dashboard`}>
                       <a className={"w-full"}>
                         <Button
                           className={

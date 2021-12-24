@@ -19,30 +19,32 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
             />
           </div>
         ) : !singleItem ? (
-          <Link
-            href={{
-              pathname: `/post/view/${postId}/[itemId]`,
-              query: {
-                id: postId,
-                itemId: postItem.id,
-                isModal: true,
-                itemIndex: index,
-              },
-            }}
-            as={`/post/view/${postId}/${postItem.id}`}
-            shallow={true}
-            scroll={false}
+          <div
+            onClick={() =>
+              router.push(
+                {
+                  query: {
+                      ...router.query,
+                    id: postId,
+                    viewItemPost: "postItem",
+                    itemId: postItem.id,
+                    prevPath: router.asPath,
+                    isModal: true,
+                    itemIndex: index,
+                  },
+                },
+                `/post/view/${postId}/${postItem.id}`,
+                { shallow: true, scroll: false }
+              )
+            }
+            className={"relative max-h-[800px] cursor-pointer"}
           >
-            <a>
-              <div className={"relative max-h-[800px]"}>
-                <img
-                  className={"rounded-[6px] object-cover w-full max-h-[800px]"}
-                  src={getFileUrl(postItem.file)}
-                  alt={postItem.file.name}
-                />
-              </div>
-            </a>
-          </Link>
+            <img
+              className={"rounded-[6px] object-cover w-full max-h-[800px]"}
+              src={getFileUrl(postItem.file)}
+              alt={postItem.file.name}
+            />
+          </div>
         ) : (
           <div className={"relative h-[438px] w-full"}>
             <Image
@@ -79,19 +81,22 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               iconClassname={"text-[18px]"}
             />
             <div
-              onClick={() => {
+              onClick={() =>
                 router.push(
                   {
-                    pathname: `/post/view/${postId}/[itemId]`,
                     query: {
+                      viewItemPost: "postItem",
                       id: postId,
                       itemId: postItem.id,
+                      prevPath: router.asPath,
                       isModal: true,
+                      itemIndex: index,
                     },
                   },
-                  `${router.asPath}/${postItem.id}`
-                );
-              }}
+                  `/post/view/${postId}/${postItem.id}`,
+                  { shallow: true, scroll: false }
+                )
+              }
               className={"flex flex-row items-center ml-[10px]"}
             >
               <div
@@ -123,21 +128,41 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
           }
         >
           {!singleItem ? (
-            <Link
-              shallow
-              href={{
-                pathname: `/post/view/${postId}/[itemId]`,
-                query: {
-                  id: postId,
-                  itemId: postItem.id,
-                  isModal: true,
-                },
-              }}
-              as={`${router.asPath}/${postItem.id}`}
+            // <Link
+            //   shallow
+            //   href={{
+            //     pathname: `/post/view/${postId}/[itemId]`,
+            //     query: {
+            //       id: postId,
+            //       itemId: postItem.id,
+            //       isModal: true,
+            //     },
+            //   }}
+            //   as={`${router.asPath}/${postItem.id}`}
+            // >
+            <div
+              onClick={() =>
+                router.push(
+                  {
+                    query: {
+                      viewItemPost: "postItem",
+                      id: postId,
+                      itemId: postItem.id,
+                      prevPath: router.asPath,
+                      isModal: true,
+                      itemIndex: index,
+                    },
+                  },
+                  `/post/view/${postId}/${postItem.id}`,
+                  { shallow: true, scroll: false }
+                )
+              }
+              className={"relative"}
             >
-              <a className={"relative"}>{postItem.title}</a>
-            </Link>
+              {postItem.title}
+            </div>
           ) : (
+            // </Link>
             postItem.title
           )}
         </p>

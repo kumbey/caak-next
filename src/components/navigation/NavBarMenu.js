@@ -11,7 +11,7 @@ export default function NavBarMenu({ type }) {
       {isLogged && (
         <Fragment>
           {type !== "mobile" && (
-            <Link href={`/user/${user.id}/profile`} shallow={true}>
+            <Link href={`/user/${user.id}/profile`}>
               <a>
                 <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span
@@ -27,7 +27,7 @@ export default function NavBarMenu({ type }) {
             </Link>
           )}
 
-          <Link shallow href={`/user/profile`}>
+          <Link href={`/user/profile`}>
             <a>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                 <span
@@ -42,7 +42,7 @@ export default function NavBarMenu({ type }) {
             </a>
           </Link>
 
-          <Link shallow href={`/user/${user.id}/settings`}>
+          <Link href={`/user/${user.id}/settings`}>
             <a>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                 <div className={"flex justify-center items-center"}>
@@ -59,7 +59,7 @@ export default function NavBarMenu({ type }) {
         </Fragment>
       )}
       {isLogged && <Divider className={"my-2"} />}
-      <Link shallow href={`/about/aura`}>
+      <Link href={`/about/aura`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span
@@ -71,7 +71,7 @@ export default function NavBarMenu({ type }) {
           </div>
         </a>
       </Link>
-      <Link shallow href={`/user/profile`}>
+      <Link href={`/user/profile`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span

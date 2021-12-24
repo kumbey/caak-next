@@ -154,7 +154,6 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
                   content={<ProfileHoverCard userId={post.user.id} />}
                 >
                   <Link
-                    shallow
                     href={{
                       pathname: `/user/${post.user_id}/profile`,
                     }}
@@ -170,7 +169,6 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
             ) : type === "user" ? (
               <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
                 <Link
-                  shallow
                   href={{
                     pathname: `/group/${post.group.id}`,
                   }}
@@ -197,7 +195,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
           </div>
           {post.status === "ARCHIVED" ? (
             <div className=" flex w-[102px] ">
-              <Link shallow href={`/post/edit/${post.id}`}>
+              <Link href={`/post/edit/${post.id}`}>
                 <a>
                   <Button
                     round

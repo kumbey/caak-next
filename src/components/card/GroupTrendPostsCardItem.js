@@ -15,6 +15,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
       <div 
            onClick={() => router.push({
             query: {
+              ...router.query,
               viewPost: "post",
               id: item.id,
               prevPath: router.asPath,
@@ -26,7 +27,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
           <a>
             <div
               className={
-                "w-[80px] h-[80px] rounded-square relative flex-shrink-0"
+                "w-[80px] h-[80px] rounded-square relative flex-shrink-0 cursor-pointer"
               }
             >
               {firstItem.file.type.startsWith("video") ? (
@@ -58,6 +59,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
         <div 
            onClick={() => router.push({
             query: {
+              ...router.query,
               viewPost: "post",
               id: item.id,
               prevPath: router.asPath,
@@ -69,7 +71,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
           <a>
             <p
               className={
-                "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] truncate-3"
+                "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] truncate-3 cursor-pointer"
               }
             >
               {item.title}

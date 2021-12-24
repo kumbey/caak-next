@@ -37,10 +37,10 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
                 { shallow: true, scroll: false }
               )
             }
-            className={"relative max-h-[800px] cursor-pointer"}
+            className={"relative  cursor-pointer"}
           >
             <img
-              className={"rounded-[6px] object-cover w-full max-h-[800px]"}
+              className={"rounded-[6px] object-cover w-full"}
               src={getFileUrl(postItem.file)}
               alt={postItem.file.name}
             />

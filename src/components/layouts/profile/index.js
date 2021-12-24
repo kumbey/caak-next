@@ -553,7 +553,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       >
                         <span
                           className={
-                            "icon-fi-rs-facebook  text-caak-generalblack text-[22px]"
+                            "icon-fi-rs-facebook path1 bg-caak-generalblack rounded-full text-[22px]"
                           }
                         />
                       </div>

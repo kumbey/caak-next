@@ -171,6 +171,7 @@ const Modals = () => {
 
   useEffect(() => {
     showModal()
+    // eslint-disable-next-line
   },[router.query])
 
   return (

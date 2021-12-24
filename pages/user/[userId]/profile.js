@@ -83,6 +83,7 @@ const Profile = ({ ssrData }) => {
     },
     nextToken: ssrData.posts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr:true
   });
   const fetchPosts = async () => {
     try {

@@ -200,6 +200,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: ssrData.posts.nextToken,
+    ssr:true
   });
   const [nextFollowers] = useListPager({
     query: getGroupUsersByGroup,
@@ -208,6 +209,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: ssrData.userFollower.nextToken,
+    ssr:true
   });
   const [nextPending] = useListPager({
     query: getPostByGroup,
@@ -218,6 +220,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: ssrData.pendingPosts.nextToken,
+    ssr:true
   });
   // const [nextArchived] = useListPager({
   //   query: getPostByGroup,
@@ -234,13 +237,10 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-        if (posts.nextToken) {
           const resp = await nextPosts();
           if (resp) {
             setPosts((nextPosts) => [...nextPosts, ...resp]);
           }
-        }
-
         setLoading(false);
       }
     } catch (ex) {
@@ -253,12 +253,10 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        if (followedUsers.nextToken) {
           const resp = await nextFollowers();
           if (resp) {
             setFollowedUsers((nextFollowers) => [...nextFollowers, ...resp]);
           }
-        }
 
         setLoading(false);
       }
@@ -271,12 +269,10 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-        if (pendingPosts.nextToken) {
           const resp = await nextPending();
           if (resp) {
             setPendingPosts((nextPending) => [...nextPending, ...resp]);
           }
-        }
 
         setLoading(false);
       }

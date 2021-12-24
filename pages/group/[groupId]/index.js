@@ -83,7 +83,9 @@ const Group = ({ ssrData }) => {
   const [render, setRender] = useState(0);
   const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [trendingPosts, setTrendingPosts] = useState([]);
+  const [trendingPosts, setTrendingPosts] = useState({
+    items: []
+  });
   const [groupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
 
@@ -102,17 +104,28 @@ const Group = ({ ssrData }) => {
     },
     nextToken: ssrData.posts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr: true
   });
+
+
+  const [nextTrendPosts] = useListPager({
+    query: listPostByGroupOrderByReactions,
+    variables: {
+      groupAndStatus: `${groupData.id}#CONFIRMED`,
+      limit: 6,
+      sortDirection: "DESC",
+    },
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+
   const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
-        if (posts.nextToken) {
           const resp = await nextPosts();
           if (resp) {
             setPosts((nextPosts) => [...nextPosts, ...resp]);
           }
-        }
 
         setLoading(false);
       }
@@ -124,18 +137,18 @@ const Group = ({ ssrData }) => {
 
   const fetchTrendPosts = async () => {
     try {
-      let resp = await API.graphql({
-        query: listPostByGroupOrderByReactions,
-        variables: {
-          groupAndStatus: `${groupData.id}#CONFIRMED`,
-          limit: 6,
-          sortDirection: "DESC",
-        },
-        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-      });
-      resp = getReturnData(resp);
-      setTrendingPosts(resp);
+      if (!loading) {
+        setLoading(true);
+        const resp = await nextTrendPosts();
+        console.log(resp)
+        if (resp) {
+          setTrendingPosts((prev) => ({...prev, items: [...prev.items, ...resp]}));
+        }
+
+        setLoading(false);
+      }
     } catch (ex) {
+      setLoading(false);
       console.log(ex);
     }
   };
@@ -181,7 +194,7 @@ const Group = ({ ssrData }) => {
 
   useEffect(() => {
     if (sortType === "TREND") {
-      if (typeof trendingPosts.items === "undefined") {
+      if (trendingPosts.items.length >= 0) {
         fetchTrendPosts();
       }
     }

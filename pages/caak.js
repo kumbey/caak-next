@@ -57,19 +57,22 @@ export async function getServerSideProps({ req }) {
 const Trending = ({ ssrData }) => {
   const CaakLayout = useFeedLayout("default");
   const [caakPosts, setCaakPosts] = useState(ssrData.caakPosts);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { isLogged } = useUser();
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const { setFeedSortType } = useWrapper();
 
   const [nextCaakPosts] = useListPager({
-    query: listPostOrderByReactions,
+    query: getPostByStatus,
     variables: {
+      filter: { owned: { eq: "CAAK" } },
       status: "CONFIRMED",
-      limit: 6,
+      sortDirection: "DESC",
+      // limit: 6,
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    nextToken: caakPosts.nextToken,
+    nextToken: ssrData.caakPosts.nextToken,
+    ssr: true
   });
 
   const fetchCaakPosts = async () => {
@@ -79,9 +82,9 @@ const Trending = ({ ssrData }) => {
 
         const resp = await nextCaakPosts();
         if (resp) {
-          setCaakPosts((nextCaakPosts) => ({
-            ...nextCaakPosts,
-            items: [...nextCaakPosts.items, ...resp],
+          setCaakPosts((prev) => ({
+            ...prev,
+            items: [...prev.items, ...resp],
           }));
         }
 

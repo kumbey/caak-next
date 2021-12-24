@@ -217,6 +217,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: posts.nextToken,
+    ssr: true
   });
   const [nextPending] = useListPager({
     query: getPostByUser,
@@ -227,6 +228,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: pendingPosts.nextToken,
+    ssr:true
   });
   const [nextArchived] = useListPager({
     query: getPostByUser,
@@ -237,6 +239,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: archivedPosts.nextToken,
+    ssr:true
   });
   const [nextComments] = useListPager({
     query: listCommentByUser,
@@ -248,6 +251,7 @@ const Dashboard = ({ ssrData }) => {
     nextToken: userComments.nextToken,
 
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr:true
   });
   const [nextFollowers] = useListPager({
     query: listUsersbyFollowed,
@@ -257,6 +261,7 @@ const Dashboard = ({ ssrData }) => {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: followedUsers.nextToken,
+    ssr:true
   });
   const fetchPosts = async () => {
     try {

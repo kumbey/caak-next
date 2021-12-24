@@ -48,11 +48,15 @@ export const useListPager = (params) => {
   const { user } = useUser();
   let lastToken = null;
 
+  let isFinished = false;
+
   if (data.nextToken) {
     lastToken = data.nextToken;
+  }else{
+    if(data.ssr){
+      isFinished = true
+    }
   }
-
-  let isFinished = false;
 
   async function list(qry, limit, items) {
     try {

@@ -4,18 +4,21 @@ export const feedType = [
     title: "Шинэ",
     type: "DEFAULT",
     icon: "icon-fi-rs-new",
+    route: "/"
   },
   {
     id: 1,
     title: "Тренд",
     type: "TREND",
     icon: "icon-fi-rs-trend",
+    route: "/trending"
   },
   {
     id: 2,
     title: "Саак",
     type: "CAAK",
     icon: "icon-fi-rs-caak",
+    route: "/caak"
   },
 ];
 

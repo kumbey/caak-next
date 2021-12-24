@@ -57,12 +57,12 @@ const SearchCard = ({ type, result }) => {
               }
             >
               {type === "GROUP" && (
-                <Link shallow href={`/group/${result.id}`}>
+                <Link href={`/group/${result.id}`}>
                   <a>{type === "GROUP" && result.name}</a>
                 </Link>
               )}
               {type === "USER" && (
-                <Link shallow href={`/user/${result.id}/profile`}>
+                <Link href={`/user/${result.id}/profile`}>
                   <a>{result.nickname}</a>
                 </Link>
               )}
@@ -129,11 +129,11 @@ const SearchCard = ({ type, result }) => {
                 "self-start text-[16px] tracking-[0.24px] leading-[21px] text-caak-generalblack break-all"
               }
             >
-              <Link shallow href={`/post/view/${result.id}`}>
+              <Link href={`/post/view/${result.id}`}>
                 <a>{result.title}</a>
               </Link>
             </div>
-            <Link shallow href={`/post/view/${result.id}`}>
+            <Link href={`/post/view/${result.id}`}>
               <a>
                 <div
                   className={

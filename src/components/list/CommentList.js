@@ -71,7 +71,6 @@ const CommentList = ({
       <div className="relative flex items-center ">
         <div className="flex w-[200px] md:w-[300px] items-center">
           <Link
-            shallow
             href={{
               pathname: `/post/view/${comment?.post?.id}`,
             }}
@@ -105,7 +104,6 @@ const CommentList = ({
           </Link>
           <div className="flex flex-col mt-1 w-[300px] font-inter mr-[26px]">
             <Link
-              shallow
               href={{
                 pathname: `/post/view/${comment?.post?.id}`,
               }}

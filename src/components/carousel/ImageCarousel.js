@@ -1,6 +1,10 @@
 import CardImageContainer from "../card/FeedCard/CardImageContainer";
 import { useEffect, useState } from "react";
-import { getFileUrl, findMatchIndex } from "../../utility/Util";
+import {
+  getFileUrl,
+  findMatchIndex,
+  generateFileUrl,
+} from "../../utility/Util";
 import Image from "next/image";
 import Video from "../video";
 import Link from "next/link";
@@ -18,11 +22,12 @@ const ImageCarousel = ({
   index,
   duration,
   cover,
+  singleItem,
 }) => {
   const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
   const [touchPosition, setTouchPosition] = useState(null);
   const size = useWindowSize();
-  const router = useRouter()
+  const router = useRouter();
 
   //Swipe left, right on mobile screen
   const handleTouchStart = (e) => {
@@ -63,8 +68,12 @@ const ImageCarousel = ({
   };
 
   useEffect(() => {
-    setActiveIndex(findMatchIndex(items, "id", router.query.itemId));
-
+    const findActiveIndex = findMatchIndex(items, "id", router.query.itemId);
+    if (findActiveIndex <= -1) {
+      setActiveIndex(0);
+    } else {
+      setActiveIndex(findActiveIndex);
+    }
     // eslint-disable-next-line
   }, [router.query]);
 
@@ -143,7 +152,11 @@ const ImageCarousel = ({
                 onTouchMove={handleTouchMove}
                 key={index}
                 className={`w-full h-full flex items-center flex-shrink-0 transition duration-300 ${
-                  card ? "min-h-[432px] max-h-[770px]" : ""
+                  card
+                    ? `${
+                        !singleItem ? "h-[650px]" : ""
+                      } min-h-[432px] max-h-[770px]`
+                    : ""
                 } `}
                 style={{
                   transform: `translateX(-${activeIndex * 100}%)`,
@@ -152,7 +165,7 @@ const ImageCarousel = ({
                 <div
                   className={`${
                     mediaContainerClassname ? mediaContainerClassname : ""
-                  } relative flex justify-center items-center `}
+                  } relative flex justify-center items-center`}
                 >
                   {item.file.type.startsWith("video") ? (
                     <Video
@@ -166,45 +179,67 @@ const ImageCarousel = ({
                   ) : (
                     <div
                       className={
-                        "w-full h-full relative overflow-hidden"
+                        "w-full h-full relative overflow-hidden bg-black"
                       }
                     >
                       {route ? (
-                        // <Link shallow href={`/post/view/${postId}`}>
-                          <div 
-                            onClick={() => router.push({
+                        <div
+                          className={
+                            "w-full h-full min-h-[432px] max-h-[770px] relative"
+                          }
+                          onClick={() =>
+                            router.push(
+                              {
                                 query: {
+                                  ...router.query,
                                   viewPost: "post",
                                   id: postId,
                                   prevPath: router.asPath,
-                                  isModal: true
-                                }
-                              }, `/post/view/${postId}`, { shallow: true, scroll: false}
-                            )}
+                                  isModal: true,
+                                },
+                              },
+                              `/post/view/${postId}`,
+                              { shallow: true, scroll: false }
+                            )
+                          }
+                        >
+                          <div
+                            className={
+                              "left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 scale-[10.1]"
+                            }
+                            style={{
+                              width: "10%",
+                              height: "10%",
+                              filter: "blur(2px)",
+                              position: "fixed",
+                              // transform: "scale(12)",
+                              opacity: "0.3",
+                              zIndex: 1
+                            }}
                           >
-                            {/*<div*/}
-                            {/*  style={{*/}
-                            {/*    width: "10%",*/}
-                            {/*    height: "10%",*/}
-                            {/*    filter: "blur(2px)",*/}
-                            {/*    position: "absolute",*/}
-                            {/*    transform: "scale(12)",*/}
-                            {/*    left: "50%",*/}
-                            {/*    top: "50%",*/}
-                            {/*    opacity: "0.3",*/}
-                            {/*    // zIndex: -1*/}
-                            {/*  }}*/}
-                            {/*>*/}
-                            {/*  <div className={"relative w-full h-full"}>*/}
-                            {/*    <Image*/}
-                            {/*      objectFit={"cover"}*/}
-                            {/*      layout={"fill"}*/}
-                            {/*      alt={item.file.type}*/}
-                            {/*      src={getFileUrl(item.file)}*/}
-                            {/*    />*/}
-                            {/*  </div>*/}
-                            {/*</div>*/}
+                            <div className={"relative w-full h-full"}>
+                              <Image
+                                objectFit={"cover"}
+                                layout={"fill"}
+                                alt={item.file.type}
+                                src={getFileUrl(item.file)}
+                              />
+                            </div>
+                          </div>
 
+                          {card && singleItem ? (
+                            <div
+                              className={"flex items-center justify-center opacity-100"}
+                            >
+                              <img
+                                alt={""}
+                                src={generateFileUrl(item.file)}
+                                className={
+                                  "object-contain w-full h-full min-h-[432px] max-h-[770px] z-2"
+                                }
+                              />
+                            </div>
+                          ) : (
                             <CardImageContainer
                               cover={cover}
                               card={card}
@@ -212,39 +247,53 @@ const ImageCarousel = ({
                               postId={postId}
                               file={item.file}
                             />
-                          </div>
-                        // </Link>
+                          )}
+                        </div>
                       ) : (
                         <>
-                          {/*<div*/}
-                          {/*  className={""}*/}
-                          {/*  style={{*/}
-                          {/*    width: "10%",*/}
-                          {/*    height: "10%",*/}
-                          {/*    filter: "blur(2px)",*/}
-                          {/*    position: "absolute",*/}
-                          {/*    transform: "scale(12)",*/}
-                          {/*    left: "50%",*/}
-                          {/*    top: "50%",*/}
-                          {/*    opacity: "0.3",*/}
-                          {/*    // zIndex: -1*/}
-                          {/*  }}*/}
-                          {/*>*/}
-                          {/*  <div className={"relative w-full h-auto"}>*/}
-                          {/*    <Image*/}
-                          {/*      objectFit={"cover"}*/}
-                          {/*      layout={"fill"}*/}
-                          {/*      alt={item.file.type}*/}
-                          {/*      src={getFileUrl(item.file)}*/}
-                          {/*    />*/}
-                          {/*  </div>*/}
-                          {/*</div>*/}
-                          <CardImageContainer
-                            cover={cover}
-                            route
-                            postId={postId}
-                            file={item.file}
-                          />
+                          <div
+                            className={""}
+                            style={{
+                              width: "10%",
+                              height: "10%",
+                              filter: "blur(2px)",
+                              position: "absolute",
+                              transform: "scale(12)",
+                              left: "50%",
+                              top: "50%",
+                              opacity: "0.3",
+                              // zIndex: -1
+                            }}
+                          >
+                            <div className={"relative w-full h-auto"}>
+                              <Image
+                                objectFit={"cover"}
+                                layout={"fill"}
+                                alt={item.file.type}
+                                src={getFileUrl(item.file)}
+                              />
+                            </div>
+                          </div>
+                          {card && singleItem ? (
+                              <div
+                                  className={"flex items-center justify-center opacity-100"}
+                              >
+                                <img
+                                    alt={""}
+                                    src={generateFileUrl(item.file)}
+                                    className={
+                                      "object-contain w-full h-full min-h-[432px] max-h-[770px] z-2"
+                                    }
+                                />
+                              </div>
+                          ) : (
+                              <CardImageContainer
+                                  cover={cover}
+                                  card={card}
+                                  postId={postId}
+                                  file={item.file}
+                              />
+                          )}
                         </>
                       )}
                     </div>

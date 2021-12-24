@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const SideBarGroupItem = ({ name, notification, image, groupId }) => {
   return (
-    <Link shallow href={`/group/${groupId}`}>
+    <Link href={`/group/${groupId}`}>
       <a>
         <div
           className={

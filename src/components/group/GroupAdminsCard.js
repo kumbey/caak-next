@@ -74,7 +74,6 @@ const GroupAdminsCard = ({ groupId }) => {
               <div className={"flex flex-col ml-[12px] justify-center"}>
                 <div className={"flex flex-row"}>
                   <Link
-                    shallow
                     href={{
                       pathname: `/user/${mod.user.id}/profile`,
                     }}

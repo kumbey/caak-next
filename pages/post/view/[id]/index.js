@@ -22,7 +22,7 @@ import { ssrDataViewPost } from "../../../../src/apis/ssrDatas";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
-  return await ssrDataViewPost({API, Auth, query})
+  return await ssrDataViewPost({ API, Auth, query });
 }
 
 const Post = ({ ssrData }) => {
@@ -43,6 +43,14 @@ const Post = ({ ssrData }) => {
       }
     }
   }, [jumpToComment]);
+
+  const back = () => {
+    if (router.query && router.query.prevPath) {
+      router.back();
+    } else {
+      router.replace(`/`);
+    }
+  };
 
   const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   return post ? (
@@ -98,7 +106,6 @@ const Post = ({ ssrData }) => {
             className={`absolute flex flex-row justify-between w-full top-[-54px] ${
               post.status === "CONFIRMED" ? "md:pl-[69px]" : ""
             } right-0 `}
-            onClick={() => router.push("/")}
           >
             <div className={"flex flex-row "}>
               <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
@@ -111,7 +118,7 @@ const Post = ({ ssrData }) => {
                 />
               </div>
               <div className={"flex flex-col ml-[10px] justify-between"}>
-                <Link shallow href={`/group/${post.group.id}`}>
+                <Link href={`/group/${post.group.id}`}>
                   <a>
                     <p
                       className={
@@ -146,6 +153,7 @@ const Post = ({ ssrData }) => {
             </div>
 
             <div
+              onClick={back}
               className={
                 "flex items-center bg-caak-bluerhapsody cursor-pointer justify-center w-[40px] h-[40px] rounded-full"
               }

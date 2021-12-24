@@ -49,7 +49,7 @@
     max-width: 1264px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: var(--containerPaddingTop);
+    /*padding-top: var(--containerPaddingTop);*/
     height: calc(100vh - (var(--containerPaddingTop) + var(--topBarSize)));
   }
 
@@ -377,14 +377,19 @@
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
+    padding-top: calc(var(--topBarSize) + var(--containerPaddingTop));
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .leftSideBar {
     scrollbar-gutter: stable;
     position: sticky;
-    height: calc(100vh - (var(--topBarSize))) !important;
+    /*min-height: 100vh;*/
+    height: calc(100vh - (var(--topBarSize) + var(--containerPaddingTop))) !important;
     flex-grow: 1;
-    /*top: calc(var(--topBarSize) + var(--containerPaddingTop));*/
+    top: var(--topBarSize);
     overflow-y: auto;
     overflow-x: hidden;
     max-width: 248px;

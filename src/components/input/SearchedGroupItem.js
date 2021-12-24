@@ -105,7 +105,7 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
   };
 
   return userData || postData || groupData ? (
-    <Link shallow href={linkHandler()}>
+    <Link href={linkHandler()}>
       <a>
         <div
           onClick={() => setIsSearchBarOpen(false)}

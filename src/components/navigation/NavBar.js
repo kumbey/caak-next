@@ -125,7 +125,7 @@ export default function NavBar() {
                 <div className={"flex  items-center justify-center"}>
                   <Logo
                     onClick={() =>
-                      router.push("/", undefined, { shallow: true })
+                      router.push("/", undefined)
                     }
                   />
                 </div>
@@ -149,7 +149,7 @@ export default function NavBar() {
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="md:flex flex flex-row items-center hidden ">
                 <Logo
-                  onClick={() => router.push("/", undefined, { shallow: true })}
+                  onClick={() => router.push("/", undefined)}
                 />
               </div>
 

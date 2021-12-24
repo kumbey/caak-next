@@ -44,7 +44,6 @@ const MobileSideMenu = ({ setOpen }) => {
         {isLogged && (
           <div className={"relative flex flex-row items-center"}>
             <Link
-              shallow
               href={
                 isLogged ? `/user/${user.id}/profile` : "/login"
                 // state: { background: location },
@@ -69,7 +68,6 @@ const MobileSideMenu = ({ setOpen }) => {
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
                   <Link
-                    shallow
                     href={{
                       pathname: `/user/${user.id}/profile`,
                     }}

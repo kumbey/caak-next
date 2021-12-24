@@ -4,10 +4,7 @@ import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getReturnData } from "../src/utility/Util";
-import {
-  getPostByStatus,
-  listPostOrderByReactions,
-} from "../src/graphql-custom/post/queries";
+import { getPostByStatus } from "../src/graphql-custom/post/queries";
 import Loader from "../src/components/loader";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
@@ -89,10 +86,16 @@ const Feed = ({ ssrData }) => {
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [trendingPosts, setTrendingPosts] = useState({});
-  const { feedSortType, setFeedSortType } = useWrapper();
   const [addPostCardIsOpen, setAddPostCardIsOpen] = useState(true);
-  const router = useRouter();
+  const { setFeedSortType } = useWrapper();
+  const [loading, setLoading] = useState(false);
+  const [subscripedPost, setSubscripedPost] = useState(0);
+  const subscriptions = {};
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
+  //FORCE RENDER STATE
+  const [render, setRender] = useState(0);
+
+
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -104,23 +107,6 @@ const Feed = ({ ssrData }) => {
     nextToken: ssrData.posts.nextToken,
   });
 
-  const [nextTrendingPosts] = useListPager({
-    query: listPostOrderByReactions,
-    variables: {
-      status: "POSTING",
-      limit: 6,
-    },
-    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    nextToken: trendingPosts.nextToken,
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [subscripedPost, setSubscripedPost] = useState(0);
-  const subscriptions = {};
-  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-  //FORCE RENDER STATE
-  const [render, setRender] = useState(0);
-
   const fetchPosts = async () => {
     try {
       if (!loading) {
@@ -130,27 +116,6 @@ const Feed = ({ ssrData }) => {
           if (resp) {
             setPosts((nextPosts) => [...nextPosts, ...resp]);
           }
-        }
-
-        setLoading(false);
-      }
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
-  };
-
-  const fetchTrendingPosts = async () => {
-    try {
-      if (!loading) {
-        setLoading(true);
-
-        const resp = await nextTrendingPosts();
-        if (resp) {
-          setTrendingPosts((nextTrendingPosts) => ({
-            ...nextTrendingPosts,
-            items: [...nextTrendingPosts.items, ...resp],
-          }));
         }
 
         setLoading(false);
@@ -199,24 +164,6 @@ const Feed = ({ ssrData }) => {
     });
   };
 
-  const fetchTrendPosts = async () => {
-    try {
-      let resp = await API.graphql({
-        query: listPostOrderByReactions,
-        variables: {
-          status: "CONFIRMED",
-          sortDirection: "DESC",
-          limit: 6,
-        },
-        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-      });
-      resp = getReturnData(resp);
-      setTrendingPosts(resp);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
   useEffect(() => {
     if (subscripedPost) {
       const postIndex = posts.findIndex(
@@ -251,13 +198,8 @@ const Feed = ({ ssrData }) => {
   }, [user]);
 
   useEffect(() => {
-    if (feedSortType === "TREND") {
-      if (typeof trendingPosts.items === "undefined") {
-        fetchTrendPosts();
-      }
-    }
-    // eslint-disable-next-line
-  }, [feedSortType]);
+    setFeedSortType("DEFAULT");
+  }, [setFeedSortType]);
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
@@ -274,7 +216,7 @@ const Feed = ({ ssrData }) => {
         />
       </Head>
       {/*<FeedBack/>*/}
-      <div id={"feed"} className={"site-container relative"}>
+      <div className={"relative"}>
         <Toaster
           toastOptions={{
             className: "toastOptions",
@@ -294,9 +236,8 @@ const Feed = ({ ssrData }) => {
               {...(isLogged ? { columns: 3 } : { columns: 2 })}
             >
               <FeedSortButtons
-                setSortType={setFeedSortType}
-                sortType={feedSortType}
                 items={feedType}
+                initialSort={"DEFAULT"}
                 hide={isLogged && !isTablet}
                 containerClassname={"mb-[19px] justify-center"}
                 direction={"row"}
@@ -305,79 +246,34 @@ const Feed = ({ ssrData }) => {
                 isOpen={addPostCardIsOpen}
                 setIsOpen={setAddPostCardIsOpen}
               />
-              {(feedSortType === "DEFAULT" || feedSortType === "CAAK") && (
-                <InfiniteScroll
-                  dataLength={posts.length}
-                  next={fetchPosts}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={"self-center w-full"}
-                      className={`bg-caak-primary ${
-                        loading ? "opacity-100" : "opacity-0"
-                      }`}
+              <InfiniteScroll
+                dataLength={posts.length}
+                next={fetchPosts}
+                hasMore={true}
+                loader={
+                  <Loader
+                    containerClassName={"self-center w-full"}
+                    className={`bg-caak-primary ${
+                      loading ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                }
+                endMessage={<h4>Nothing more to show</h4>}
+              >
+                {posts.map((data, index) => {
+                  return (
+                    <Card
+                      key={index}
+                      video={data?.items?.items[0]?.file?.type?.startsWith(
+                        "video"
+                      )}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4"
+                      handleToast={handleToast}
                     />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {posts.map((data, index) => {
-                    if (feedSortType === "CAAK" && data.owned === "CAAK") {
-                      return (
-                        <Card
-                          key={index}
-                          video={data?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={data}
-                          className="ph:mb-4 sm:mb-4"
-                          handleToast={handleToast}
-                        />
-                      );
-                    } else if (feedSortType === "DEFAULT") {
-                      return (
-                        <Card
-                          key={index}
-                          video={data?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={data}
-                          className="ph:mb-4 sm:mb-4"
-                          handleToast={handleToast}
-                        />
-                      );
-                    }
-                  })}
-                </InfiniteScroll>
-              )}
-              {feedSortType === "TREND" && trendingPosts.items?.length > 0 ? (
-                <InfiniteScroll
-                  dataLength={trendingPosts.items?.length}
-                  next={fetchTrendingPosts}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={"self-center w-full"}
-                      className={`bg-caak-primary ${
-                        loading ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
-                >
-                  {trendingPosts.items.map((data, index) => {
-                    return (
-                      <Card
-                        key={index}
-                        video={data.post?.items?.items[0]?.file?.type?.startsWith(
-                          "video"
-                        )}
-                        post={data.post}
-                        className="ph:mb-4 sm:mb-4"
-                      />
-                    );
-                  })}
-                </InfiniteScroll>
-              ) : null}
+                  );
+                })}
+              </InfiniteScroll>
             </FeedLayout>
           </div>
         </div>

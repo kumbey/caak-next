@@ -17,7 +17,7 @@ const GroupSortButtons = ({
 }) => {
   return (
     !hide && (
-      <div className="flex justify-between max-w-[616px] mx-auto">
+      <div className="justify-center flex md:justify-between max-w-[616px] mx-auto">
         <div
           className={`flex mb-[19px] ${
             direction === "column" ? "flex-col" : "flex-row"
@@ -64,7 +64,7 @@ const GroupSortButtons = ({
             );
           })}
         </div>
-        <div className="flex w-[80px] h-[36px] px-[5px] py-[4px] mb-[19px]  items-center justify-center bg-white rounded-lg">
+        <div className="hidden md:flex w-[80px] h-[36px] px-[5px] py-[4px] mb-[19px]  items-center justify-center bg-white rounded-lg">
           <div
             className={`flex flex-nowrap items-center w-full justify-between ${
               direction === "column" ? "flex-col" : "flex-row"

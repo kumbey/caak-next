@@ -7,7 +7,6 @@ import {
 } from "../../utility/Util";
 import Image from "next/image";
 import Video from "../video";
-import Link from "next/link";
 import useWindowSize from "../../hooks/useWindowSize";
 import { useRouter } from "next/router";
 
@@ -205,24 +204,23 @@ const ImageCarousel = ({
                         >
                           <div
                             className={
-                              "left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 scale-[10.1]"
+                              ""
                             }
                             style={{
-                              width: "10%",
-                              height: "10%",
-                              filter: "blur(2px)",
-                              position: "fixed",
+                              width: "100%",
+                              height: "100%",
+                              filter: "blur(12px)",
+                              position: "absolute",
                               // transform: "scale(12)",
                               opacity: "0.3",
                               zIndex: 1
                             }}
                           >
                             <div className={"relative w-full h-full"}>
-                              <Image
-                                objectFit={"cover"}
-                                layout={"fill"}
+                              <img
                                 alt={item.file.type}
                                 src={getFileUrl(item.file)}
+                                className={"object-cover h-full w-full"}
                               />
                             </div>
                           </div>

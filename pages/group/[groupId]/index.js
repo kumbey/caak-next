@@ -28,6 +28,7 @@ import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
 import useDeviceDetect from "../../../src/hooks/useDeviceDetect";
 import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
+import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -254,19 +255,10 @@ const Group = ({ ssrData }) => {
           setSortType={setSortType}
         />
 
-        <InfiniteScroll
-          dataLength={posts.length}
-          next={fetchPosts}
+        <InfinitScroller
+          onNext={fetchPosts}
           className={"pb-[20px]"}
-          // pullDownToRefresh={true}
-          hasMore={true}
-          loader={
-            <Loader
-              containerClassName={"self-center w-full"}
-              className={`bg-caak-primary ${loading ? "" : "hidden"}`}
-            />
-          }
-          endMessage={<h4>Nothing more to show</h4>}
+          loading={loading}
         >
           {posts.map((data, index) => {
             if (sortType === "CAAK" && data.owned === "CAAK") {
@@ -307,21 +299,9 @@ const Group = ({ ssrData }) => {
               ) : null;
             }
           })}
-        </InfiniteScroll>
+        </InfinitScroller>
         {sortType === "TREND" && trendingPosts.items?.length > 0 ? (
-          <InfiniteScroll
-            className={"pb-[20px]"}
-            dataLength={trendingPosts.items?.length}
-            next={fetchTrendPosts}
-            hasMore={true}
-            loader={
-              <Loader
-                containerClassName={"self-center w-full"}
-                className={`bg-caak-primary ${loading ? "" : "hidden"}`}
-              />
-            }
-            endMessage={<h4>Nothing more to show</h4>}
-          >
+          <InfinitScroller className={"pb-[20px]"} onNext={fetchTrendPosts}>
             {trendingPosts.items.map((data, index) => {
               return activeView === 0 ? (
                 <Card
@@ -342,7 +322,7 @@ const Group = ({ ssrData }) => {
                 />
               ) : null;
             })}
-          </InfiniteScroll>
+          </InfinitScroller>
         ) : null}
       </GroupLayout>
     </>

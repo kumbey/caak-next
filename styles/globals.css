@@ -23,7 +23,7 @@
 
     .caak-main-wrapper {
         overflow: auto;
-        /*padding-top: var(--topBarSize);*/
+        padding-top: var(--topBarSize);
         height: 100vh;
         min-height: 100vh;
     }

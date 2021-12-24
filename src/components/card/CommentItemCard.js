@@ -81,7 +81,14 @@ const CommentItemCard = ({
                 <div
                   onClick={() => {
                     setCommentInputValue(
-                      (prev) => `@${comment.user.nickname} ${prev}`
+                      (prev) => {
+                       if(!prev?.startsWith(`@${comment.user.nickname}`)){
+                        return `@${comment.user.nickname} ${prev}`
+                       }
+                       else {
+                         return prev
+                       }
+                      }
                     );
                     setReply({
                       isReplying: true,
@@ -89,7 +96,9 @@ const CommentItemCard = ({
                       user_nickname: `@${comment.user.nickname} `,
                       comment_id: subComment ? subComment : comment.id,
                     });
-                    if (addCommentRef?.current) addCommentRef.current.focus();
+                    if (addCommentRef?.current){
+                      addCommentRef.current.focus()
+                    }
                   }}
                   className={"flex flex-row item-center ml-[16px]"}
                 >

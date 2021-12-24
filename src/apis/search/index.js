@@ -1,9 +1,12 @@
 import { listGroupsSearch } from "../../graphql-custom/group/queries";
 import { getReturnData } from "../../utility/Util";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
+import {
+  getPostByStatus,
+  searchPosts,
+} from "../../graphql-custom/post/queries";
 import { listUsers } from "../../graphql-custom/user/queries";
 
-export const searchApi = async ({ API, searchQuery, limit, Auth }) => {
+export const searchApi = async ({ API, searchQuery, Auth, postLimit }) => {
   let user = null;
   try {
     user = await Auth.currentAuthenticatedUser();
@@ -35,7 +38,6 @@ export const searchApi = async ({ API, searchQuery, limit, Auth }) => {
       params: {
         query: listGroupsSearch,
         variables: {
-          limit: limit,
           filter: { name: { contains: searchQuery } },
         },
         authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
@@ -52,37 +54,39 @@ export const searchApi = async ({ API, searchQuery, limit, Auth }) => {
         },
       },
     });
-
-    const posts = await fetchItemsNextToken({
-      params: {
-        query: getPostByStatus,
+    const getPosts = async () => {
+      let post = await API.graphql({
+        query: searchPosts,
         variables: {
-          status: "CONFIRMED",
           filter: {
-            title: { contains: searchQuery },
+            title: { wildcard: `*${searchQuery}*` }
           },
-          limit: limit,
+          limit: postLimit ? postLimit : 10
         },
-        authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-      },
-    });
+      });
+      post = getReturnData(post);
+      return post;
+    };
+    const posts = await getPosts()
+
     const groupsType = groups.map((obj) => ({
       ...obj,
       type: "GROUP",
       keyword: obj.name,
     }));
-    const postsType = posts.map((obj) => ({
-      ...obj,
-      type: "POST",
-      keyword: obj.title,
-    }));
+
     const usersType = users.map((obj) => ({
       ...obj,
       type: "USER",
       keyword: obj.nickname,
     }));
-    const concated = groupsType.concat(postsType, usersType);
-    return concated;
+
+    // const concated = groupsType.concat(usersType);
+    return {
+      groups: groupsType,
+      users: usersType,
+      posts: posts,
+    };
   } catch (ex) {
     console.log(ex);
   }

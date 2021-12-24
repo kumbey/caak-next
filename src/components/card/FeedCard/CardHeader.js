@@ -124,7 +124,7 @@ const CardHeader = ({
         <div className={"cursor-pointer flex flex-row items-center"}>
           {post.owned === "CAAK" && (
             <div
-              onClick={() => setFeedSortType("CAAK")}
+              onClick={() => router.push("/caak")}
               className={
                 "flex flex-row items-center h-[24px] px-[10px] py-[4px] rounded-[6px] cContentGradient mr-[4px]"
               }
@@ -172,30 +172,31 @@ const CardHeader = ({
         </div>
       </div>
       {!hideTitle && (
-        <div
-          onClick={() =>
-            router.push(
-              {
-                query: {
-                  ...router.query,
-                  viewPost: "post",
-                  id: post.id,
-                  prevPath: router.asPath,
-                  isModal: true,
-                },
-              },
-              `/post/view/${post.id}`,
-              { shallow: true, scroll: false }
-            )
-          }
-          className={`cursor-pointer text-caak-generalblack break-words pt-[12px]  ${
-            titleClassname
-              ? titleClassname
-              : "text-15px leading-[18px] tracking-[0.23px]"
-          }`}
+        <Link
+          as={`/post/view/${post.id}`}
+          shallow
+          href={{
+            query: {
+              ...router.query,
+              viewPost: "post",
+              id: post.id,
+              prevPath: router.asPath,
+              isModal: true,
+            },
+          }}
         >
-          {post.title}
-        </div>
+          <a>
+            <p
+              className={`text-caak-generalblack break-words pt-[12px]  ${
+                titleClassname
+                  ? titleClassname
+                  : "text-15px leading-[18px] tracking-[0.23px]"
+              }`}
+            >
+              {post.title}
+            </p>
+          </a>
+        </Link>
       )}
     </div>
   ) : null;

@@ -9,6 +9,7 @@ import Image from "next/image";
 import Video from "../video";
 import useWindowSize from "../../hooks/useWindowSize";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const ImageCarousel = ({
   items,
@@ -182,71 +183,72 @@ const ImageCarousel = ({
                       }
                     >
                       {route ? (
-                        <div
-                          className={
-                            "w-full h-full min-h-[432px] max-h-[770px] relative"
-                          }
-                          onClick={() =>
-                            router.push(
-                              {
-                                query: {
-                                  ...router.query,
-                                  viewPost: "post",
-                                  id: postId,
-                                  prevPath: router.asPath,
-                                  isModal: true,
-                                },
-                              },
-                              `/post/view/${postId}`,
-                              { shallow: true, scroll: false }
-                            )
-                          }
+                        <Link
+                          as={`/post/view/${postId}`}
+                          shallow
+                          href={{
+                            query: {
+                              ...router.query,
+                              viewPost: "post",
+                              id: postId,
+                              prevPath: router.asPath,
+                              isModal: true,
+                            },
+                          }}
                         >
-                          <div
-                            className={
-                              ""
-                            }
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              filter: "blur(12px)",
-                              position: "absolute",
-                              // transform: "scale(12)",
-                              opacity: "0.3",
-                              zIndex: 1
-                            }}
-                          >
-                            <div className={"relative w-full h-full"}>
-                              <img
-                                alt={item.file.type}
-                                src={getFileUrl(item.file)}
-                                className={"object-cover h-full w-full"}
-                              />
-                            </div>
-                          </div>
-
-                          {card && singleItem ? (
+                          <a>
                             <div
-                              className={"flex items-center justify-center opacity-100"}
+                              className={
+                                "w-full h-full min-h-[432px] max-h-[770px] relative"
+                              }
                             >
-                              <img
-                                alt={""}
-                                src={generateFileUrl(item.file)}
-                                className={
-                                  "object-contain w-full h-full min-h-[432px] max-h-[770px] z-2"
-                                }
-                              />
+                              <div
+                                className={""}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  filter: "blur(12px)",
+                                  position: "absolute",
+                                  // transform: "scale(12)",
+                                  opacity: "0.3",
+                                  zIndex: 1,
+                                }}
+                              >
+                                <div className={"relative w-full h-full"}>
+                                  <img
+                                    alt={item.file.type}
+                                    src={getFileUrl(item.file)}
+                                    className={"object-cover h-full w-full"}
+                                  />
+                                </div>
+                              </div>
+
+                              {card && singleItem ? (
+                                <div
+                                  className={
+                                    "flex items-center justify-center opacity-100"
+                                  }
+                                >
+                                  <img
+                                    alt={""}
+                                    src={generateFileUrl(item.file)}
+                                    className={
+                                      "object-contain w-full h-full min-h-[432px] max-h-[770px] z-2"
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <CardImageContainer
+                                  cover={cover}
+                                  card={card}
+                                  route
+                                  postId={postId}
+                                  file={item.file}
+                                />
+                              )}
                             </div>
-                          ) : (
-                            <CardImageContainer
-                              cover={cover}
-                              card={card}
-                              route
-                              postId={postId}
-                              file={item.file}
-                            />
-                          )}
-                        </div>
+                          </a>
+                        </Link>
                       ) : (
                         <>
                           <div
@@ -273,24 +275,26 @@ const ImageCarousel = ({
                             </div>
                           </div>
                           {card && singleItem ? (
-                              <div
-                                  className={"flex items-center justify-center opacity-100"}
-                              >
-                                <img
-                                    alt={""}
-                                    src={generateFileUrl(item.file)}
-                                    className={
-                                      "object-contain w-full h-full min-h-[432px] max-h-[770px] z-2"
-                                    }
-                                />
-                              </div>
-                          ) : (
-                              <CardImageContainer
-                                  cover={cover}
-                                  card={card}
-                                  postId={postId}
-                                  file={item.file}
+                            <div
+                              className={
+                                "flex items-center justify-center opacity-100"
+                              }
+                            >
+                              <img
+                                alt={""}
+                                src={generateFileUrl(item.file)}
+                                className={
+                                  "object-contain w-full h-full min-h-[432px] max-h-[770px] z-2"
+                                }
                               />
+                            </div>
+                          ) : (
+                            <CardImageContainer
+                              cover={cover}
+                              card={card}
+                              postId={postId}
+                              file={item.file}
+                            />
                           )}
                         </>
                       )}

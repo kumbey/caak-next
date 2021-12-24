@@ -104,6 +104,7 @@ const Trending = ({ ssrData }) => {
       </Head>
       <TrendingLayout {...(isLogged ? { columns: 3 } : { columns: 2 })}>
         <FeedSortButtons
+          feed
           items={feedType}
           initialSort={"TREND"}
           hide={isLogged && !isTablet}

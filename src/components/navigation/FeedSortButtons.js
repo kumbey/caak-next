@@ -12,6 +12,8 @@ const FeedSortButtons = ({
   iconContainerSize,
   textClassname,
   initialSort,
+  setSortType,
+  feed,
 }) => {
   const [activeIndex, setActiveIndex] = useState(
     items.findIndex((item) => item.type === initialSort)
@@ -32,8 +34,9 @@ const FeedSortButtons = ({
               key={id}
               onClick={() => {
                 setFeedSortType(type);
+                setSortType(type);
                 setActiveIndex(id);
-                router.replace(route);
+                feed && router.replace(route);
               }}
               className={`mx-[2px] ${
                 direction === "column" ? "w-full h-12" : "w-auto h-9"

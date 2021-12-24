@@ -141,7 +141,7 @@ const CommentCardNew = ({
 
   return comments.items ? (
     comments.items.length !== 0 ? (
-      <div className={"border-t border-caak-titaniumwhite py-[25px] w-full"}>
+      <div className={"border-t border-caak-titaniumwhite py-[25px] last:pb-0 w-full"}>
         {comments.items.map((comment, index) => {
           return comment.type === "PARENT" ? (
             <CommentItemCard

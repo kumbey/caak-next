@@ -111,16 +111,30 @@ const EditPost = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const finish = () => {
-    router.push(
-      {
-        pathname: `/user/${user.id}/dashboard`,
-        query: {
-          activeIndex: 1,
-        },
-      },
-      `/user/${user.id}/dashboard`
-    );
+  const finish = (role) => {
+    if(role === "MEMBER") {
+      router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 1,
+            },
+          },
+          `/user/${user.id}/dashboard`
+      );
+    }
+    else {
+      router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 0,
+            },
+          },
+          `/user/${user.id}/dashboard`
+      );
+    }
+
   };
 
   const handleSubmit = async () => {
@@ -203,7 +217,7 @@ const EditPost = ({ ssrData }) => {
       }
       try {
         setLoading(true);
-        await pdtPost(post, user.id);
+        await pdtPost(post, user.id, resp.role_on_group);
         setLoading(false);
         setIsSuccessModalOpen(true);
       } catch (ex) {
@@ -236,12 +250,14 @@ const EditPost = ({ ssrData }) => {
           />
 
           <AddPostLayout selectedGroup={selectedGroup}>
-            <PostSuccessModal
+            {selectedGroup && <PostSuccessModal
                 isOpen={isSuccessModalOpen}
                 setIsOpen={setIsSuccessModalOpen}
                 finish={finish}
-                messageTitle={"Таны пост группт амжилттай заслаа."}
-            />
+                role={selectedGroup.role_on_group}
+                messageTitle={"Таны засвар амжилттай хадгалагдлаа."}
+            />}
+
             <div className={`flex flex-col justify-center items-center pb-[38px]`}>
               <div
                   className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}

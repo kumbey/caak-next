@@ -211,7 +211,19 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
               </Link>
             </div>
           ) : post.status === "PENDING" && type === "user" ? (
-            <div className=" flex w-[100px] "></div>
+            <div className=" flex w-[120px] ">
+              <Button
+                loading={loading}
+                onClick={() => {
+                  router.push(`/post/view/${post.id}`, undefined, {
+                    shallow: true,
+                  });
+                }}
+                className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
+              >
+                Үзэх
+              </Button>
+            </div>
           ) : (
             <div className=" flex w-[224px] ">
               <Button

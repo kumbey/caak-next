@@ -125,8 +125,8 @@ type UserCategory @model
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byUser", fields:["user_id"])
-  @key(name: "byCategory", fields:["category_id"]){
+  @key(name: "byUser", fields:["user_id"], queryField:"listUserCategoryByUser")
+  @key(name: "byCategory", fields:["category_id"], queryField:"listUserCategoryByCategory"){
   id: ID!
   user_id: ID!
   category_id: ID!
@@ -151,8 +151,7 @@ type Post @model @versioned
   @key(name: "byStatus", fields:["status","updatedAt"] , queryField:"getPostByStatus")
   @key(name: "byGroup", fields:["group_id","updatedAt"] , queryField:"getPostByGroup")
   @key(name: "byUser", fields:["user_id","updatedAt"] , queryField:"getPostByUser")
-  @key(name: "byOwner", fields:["owned","updatedAt"] , queryField:"listPostByOwned")
-  @key(name: "byTitle", fields:["title","updatedAt"] , queryField:"listPostByTitle"){
+  @key(name: "byOwner", fields:["owned","updatedAt"] , queryField:"listPostByOwned"){
   id: ID!
   title: String!
   description: String

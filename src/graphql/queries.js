@@ -978,6 +978,72 @@ export const listUserCategorys = /* GraphQL */ `
     }
   }
 `;
+export const listUserCategoryByUser = /* GraphQL */ `
+  query ListUserCategoryByUser(
+    $user_id: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserCategoryByUser(
+      user_id: $user_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user_id
+        category_id
+        createdAt
+        updatedAt
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listUserCategoryByCategory = /* GraphQL */ `
+  query ListUserCategoryByCategory(
+    $category_id: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserCategoryByCategory(
+      category_id: $category_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user_id
+        category_id
+        createdAt
+        updatedAt
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
 export const getCategory = /* GraphQL */ `
   query GetCategory($id: ID!) {
     getCategory(id: $id) {
@@ -1881,134 +1947,6 @@ export const listPostByOwned = /* GraphQL */ `
   ) {
     listPostByOwned(
       owned: $owned
-      updatedAt: $updatedAt
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        title
-        description
-        f_text
-        commentType
-        status
-        user_id
-        updated_user_id
-        group_id
-        category_id
-        reacted
-        updatedAt
-        owned
-        ignoreNotification
-        createdAt
-        version
-        user {
-          id
-          firstname
-          lastname
-          nickname
-          birthdate
-          age
-          gender
-          pic_id
-          cover_pic_id
-          about
-          aura
-          is_public
-          status
-          followed
-          verified
-          employed
-          meta
-          createdAt
-          updatedAt
-        }
-        updated_user {
-          id
-          firstname
-          lastname
-          nickname
-          birthdate
-          age
-          gender
-          pic_id
-          cover_pic_id
-          about
-          aura
-          is_public
-          status
-          followed
-          verified
-          employed
-          meta
-          createdAt
-          updatedAt
-        }
-        category {
-          id
-          name
-          icon
-          createdAt
-          updatedAt
-        }
-        status_history {
-          nextToken
-        }
-        items {
-          nextToken
-        }
-        totals {
-          post_id
-          status
-          search_id
-          group_id
-          category_id
-          search_key
-          reactions
-          total_reactions
-          comments
-          views
-          shares
-          groupAndStatus
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        group {
-          id
-          name
-          category_id
-          about
-          founder_id
-          rating
-          followed
-          role_on_group
-          featured
-          g_rules
-          g_attentions
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-    }
-  }
-`;
-export const listPostByTitle = /* GraphQL */ `
-  query ListPostByTitle(
-    $title: String
-    $updatedAt: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelPostFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPostByTitle(
-      title: $title
       updatedAt: $updatedAt
       sortDirection: $sortDirection
       filter: $filter

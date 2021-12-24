@@ -733,6 +733,118 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
+          "name" : "listUserCategoryByUser",
+          "description" : null,
+          "args" : [ {
+            "name" : "user_id",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "ID",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "sortDirection",
+            "description" : null,
+            "type" : {
+              "kind" : "ENUM",
+              "name" : "ModelSortDirection",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "filter",
+            "description" : null,
+            "type" : {
+              "kind" : "INPUT_OBJECT",
+              "name" : "ModelUserCategoryFilterInput",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "limit",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "Int",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "nextToken",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          } ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "ModelUserCategoryConnection",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "listUserCategoryByCategory",
+          "description" : null,
+          "args" : [ {
+            "name" : "category_id",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "ID",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "sortDirection",
+            "description" : null,
+            "type" : {
+              "kind" : "ENUM",
+              "name" : "ModelSortDirection",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "filter",
+            "description" : null,
+            "type" : {
+              "kind" : "INPUT_OBJECT",
+              "name" : "ModelUserCategoryFilterInput",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "limit",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "Int",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "nextToken",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          } ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "ModelUserCategoryConnection",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
           "name" : "getCategory",
           "description" : null,
           "args" : [ {
@@ -1056,71 +1168,6 @@
           "description" : null,
           "args" : [ {
             "name" : "owned",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "updatedAt",
-            "description" : null,
-            "type" : {
-              "kind" : "INPUT_OBJECT",
-              "name" : "ModelStringKeyConditionInput",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "sortDirection",
-            "description" : null,
-            "type" : {
-              "kind" : "ENUM",
-              "name" : "ModelSortDirection",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "filter",
-            "description" : null,
-            "type" : {
-              "kind" : "INPUT_OBJECT",
-              "name" : "ModelPostFilterInput",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "limit",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "Int",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          }, {
-            "name" : "nextToken",
-            "description" : null,
-            "type" : {
-              "kind" : "SCALAR",
-              "name" : "String",
-              "ofType" : null
-            },
-            "defaultValue" : null
-          } ],
-          "type" : {
-            "kind" : "OBJECT",
-            "name" : "ModelPostConnection",
-            "ofType" : null
-          },
-          "isDeprecated" : false,
-          "deprecationReason" : null
-        }, {
-          "name" : "listPostByTitle",
-          "description" : null,
-          "args" : [ {
-            "name" : "title",
             "description" : null,
             "type" : {
               "kind" : "SCALAR",
@@ -3537,13 +3584,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "File",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "File",
+                "ofType" : null
               }
             }
           },
@@ -4764,13 +4807,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "UserCategory",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "UserCategory",
+                "ofType" : null
               }
             }
           },
@@ -5080,13 +5119,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "User",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "User",
+                "ofType" : null
               }
             }
           },
@@ -5459,13 +5494,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "UserTotal",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "UserTotal",
+                "ofType" : null
               }
             }
           },
@@ -5825,13 +5856,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "GroupTotal",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "GroupTotal",
+                "ofType" : null
               }
             }
           },
@@ -5984,13 +6011,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Username",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Username",
+                "ofType" : null
               }
             }
           },
@@ -6158,13 +6181,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Aura",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Aura",
+                "ofType" : null
               }
             }
           },
@@ -6369,13 +6388,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "FollowedUsers",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "FollowedUsers",
+                "ofType" : null
               }
             }
           },
@@ -6483,13 +6498,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Category",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Category",
+                "ofType" : null
               }
             }
           },
@@ -7049,13 +7060,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "PostStatusHistory",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "PostStatusHistory",
+                "ofType" : null
               }
             }
           },
@@ -7324,13 +7331,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "PostItems",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "PostItems",
+                "ofType" : null
               }
             }
           },
@@ -7713,13 +7716,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Comment",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Comment",
+                "ofType" : null
               }
             }
           },
@@ -8980,13 +8979,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "GroupUsers",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "GroupUsers",
+                "ofType" : null
               }
             }
           },
@@ -9308,13 +9303,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Post",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Post",
+                "ofType" : null
               }
             }
           },
@@ -9521,13 +9512,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "PostTotal",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "PostTotal",
+                "ofType" : null
               }
             }
           },
@@ -9716,13 +9703,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "PostItemsTotal",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "PostItemsTotal",
+                "ofType" : null
               }
             }
           },
@@ -9934,13 +9917,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "PostHistory",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "PostHistory",
+                "ofType" : null
               }
             }
           },
@@ -10141,13 +10120,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "PostViews",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "PostViews",
+                "ofType" : null
               }
             }
           },
@@ -10372,13 +10347,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "PostShares",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "PostShares",
+                "ofType" : null
               }
             }
           },
@@ -10719,13 +10690,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "CommentTotal",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "CommentTotal",
+                "ofType" : null
               }
             }
           },
@@ -10938,13 +10905,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Reactions",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Reactions",
+                "ofType" : null
               }
             }
           },
@@ -11278,13 +11241,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "ReportedPost",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "ReportedPost",
+                "ofType" : null
               }
             }
           },
@@ -11392,13 +11351,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "ReportType",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "ReportType",
+                "ofType" : null
               }
             }
           },
@@ -11515,13 +11470,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Group",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Group",
+                "ofType" : null
               }
             }
           },
@@ -11795,13 +11746,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "GroupUsername",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "GroupUsername",
+                "ofType" : null
               }
             }
           },
@@ -12073,13 +12020,9 @@
               "kind" : "LIST",
               "name" : null,
               "ofType" : {
-                "kind" : "NON_NULL",
-                "name" : null,
-                "ofType" : {
-                  "kind" : "OBJECT",
-                  "name" : "Notification",
-                  "ofType" : null
-                }
+                "kind" : "OBJECT",
+                "name" : "Notification",
+                "ofType" : null
               }
             }
           },
@@ -21441,23 +21384,6 @@
         "onFragment" : false,
         "onField" : false
       }, {
-        "name" : "deprecated",
-        "description" : null,
-        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
-        "args" : [ {
-          "name" : "reason",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : "\"No longer supported\""
-        } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
         "name" : "aws_subscribe",
         "description" : "Tells the service which mutation triggers this subscription.",
         "locations" : [ "FIELD_DEFINITION" ],
@@ -21504,6 +21430,23 @@
         "description" : "Tells the service this field/object has access authorized by an API key.",
         "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
         "args" : [ ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "deprecated",
+        "description" : null,
+        "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
+        "args" : [ {
+          "name" : "reason",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "defaultValue" : "\"No longer supported\""
+        } ],
         "onOperation" : false,
         "onFragment" : false,
         "onField" : false

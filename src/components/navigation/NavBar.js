@@ -76,7 +76,7 @@ export default function NavBar() {
       },
     }).subscribe({
       next: (data) => {
-        console.log(data)
+        console.log(data);
         const onData = getReturnData(data, true);
         setSubscripTotal(JSON.parse(onData.totals));
       },
@@ -123,11 +123,7 @@ export default function NavBar() {
             <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
               <div className="relative flex items-center justify-between w-full h-full">
                 <div className={"flex  items-center justify-center"}>
-                  <Logo
-                    onClick={() =>
-                      router.push("/", undefined)
-                    }
-                  />
+                  <Logo onClick={() => router.push("/", undefined)} />
                 </div>
                 {/* Mobile menu button */}
                 <div className="flex">
@@ -148,9 +144,7 @@ export default function NavBar() {
           <div className="flex items-center h-full md:px-[40px] py-1">
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="md:flex flex flex-row items-center hidden ">
-                <Logo
-                  onClick={() => router.push("/", undefined)}
-                />
+                <Logo onClick={() => router.push("/", undefined)} />
               </div>
 
               <div className="navbarSearch hidden md:block p-[8px] mx-4">

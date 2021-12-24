@@ -123,7 +123,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
               }
             >
               <Image
-                  quality={100}
+                quality={100}
                 alt={"profile picture"}
                 src={generateFileUrl(group.profile)}
                 objectFit={"cover"}
@@ -134,7 +134,11 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             </div>
           </a>
         </Link>
-        <div className={"ml-[11px] flex items-center pb-[10px] self-start mt-[11px]"}>
+        <div
+          className={
+            "ml-[11px] flex items-center pb-[10px] self-start mt-[11px]"
+          }
+        >
           <Link href={`/group/${group.id}`}>
             <a>
               <p

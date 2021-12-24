@@ -232,6 +232,7 @@ const Group = ({ ssrData }) => {
       <Toaster
         toastOptions={{
           className: "toastOptions",
+          duration: 5000,
         }}
       />
       <GroupLayout

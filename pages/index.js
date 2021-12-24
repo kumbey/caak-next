@@ -1,24 +1,24 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Card from "../src/components/card/FeedCard";
-import {useUser} from "../src/context/userContext";
+import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {generateFileUrl, getReturnData} from "../src/utility/Util";
-import {getPostByStatus} from "../src/graphql-custom/post/queries";
-import {useListPager} from "../src/utility/ApiHelper";
-import {onPostUpdateByStatus} from "../src/graphql-custom/post/subscription";
-import {withSSRContext} from "aws-amplify";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { generateFileUrl, getReturnData } from "../src/utility/Util";
+import { getPostByStatus } from "../src/graphql-custom/post/queries";
+import { useListPager } from "../src/utility/ApiHelper";
+import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
+import { withSSRContext } from "aws-amplify";
 import useFeedLayout from "../src/hooks/useFeedLayout";
-import {listGroupByUserAndRole} from "../src/graphql-custom/GroupUsers/queries";
+import { listGroupByUserAndRole } from "../src/graphql-custom/GroupUsers/queries";
 import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
-import {feedType} from "../src/components/navigation/sortButtonTypes";
-import {listGroups} from "../src/graphql/queries";
-import {useWrapper} from "../src/context/wrapperContext";
+import { feedType } from "../src/components/navigation/sortButtonTypes";
+import { listGroups } from "../src/graphql/queries";
+import { useWrapper } from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
 import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
-import toast, {Toaster} from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req }) {
@@ -214,6 +214,7 @@ const Feed = ({ ssrData }) => {
         <Toaster
           toastOptions={{
             className: "toastOptions",
+            duration: 5000,
           }}
         />
         <div className={`px-0 w-full relative`}>

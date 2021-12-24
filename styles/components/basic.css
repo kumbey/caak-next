@@ -377,7 +377,7 @@
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: calc(var(--topBarSize) + var(--containerPaddingTop));
+    padding-top: calc(var(--containerPaddingTop));
     max-width: 1264px;
     margin-left: auto;
     margin-right: auto;
@@ -386,10 +386,9 @@
   .leftSideBar {
     scrollbar-gutter: stable;
     position: sticky;
-    /*min-height: 100vh;*/
     height: calc(100vh - (var(--topBarSize) + var(--containerPaddingTop))) !important;
     flex-grow: 1;
-    top: var(--topBarSize);
+    top: calc(var(--containerPaddingTop));
     overflow-y: auto;
     overflow-x: hidden;
     max-width: 248px;

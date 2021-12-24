@@ -1,27 +1,25 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Card from "../src/components/card/FeedCard";
-import { useUser } from "../src/context/userContext";
+import {useUser} from "../src/context/userContext";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { getReturnData } from "../src/utility/Util";
-import { getPostByStatus } from "../src/graphql-custom/post/queries";
-import Loader from "../src/components/loader";
-import { useListPager } from "../src/utility/ApiHelper";
-import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
-import { withSSRContext } from "aws-amplify";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {generateFileUrl, getReturnData} from "../src/utility/Util";
+import {getPostByStatus} from "../src/graphql-custom/post/queries";
+import {useListPager} from "../src/utility/ApiHelper";
+import {onPostUpdateByStatus} from "../src/graphql-custom/post/subscription";
+import {withSSRContext} from "aws-amplify";
 import useFeedLayout from "../src/hooks/useFeedLayout";
-import { listGroupByUserAndRole } from "../src/graphql-custom/GroupUsers/queries";
+import {listGroupByUserAndRole} from "../src/graphql-custom/GroupUsers/queries";
 import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
-import { feedType } from "../src/components/navigation/sortButtonTypes";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { listGroups } from "../src/graphql/queries";
-import { useWrapper } from "../src/context/wrapperContext";
+import {feedType} from "../src/components/navigation/sortButtonTypes";
+import {listGroups} from "../src/graphql/queries";
+import {useWrapper} from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
-import { useRouter } from "next/router";
 import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
-import toast, { Toaster } from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
+import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -95,7 +93,6 @@ const Feed = ({ ssrData }) => {
   //FORCE RENDER STATE
   const [render, setRender] = useState(0);
 
-
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -111,15 +108,12 @@ const Feed = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-        if (posts.nextToken) {
-          const resp = await nextPosts();
-          if (resp) {
-            setPosts((nextPosts) => [...nextPosts, ...resp]);
-          }
+        const resp = await nextPosts();
+        if (resp) {
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
         }
-
-        setLoading(false);
       }
+      setLoading(false);
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -225,8 +219,8 @@ const Feed = ({ ssrData }) => {
         <div className={`px-0 w-full relative`}>
           <div
             className={`h-full flex ${
-              isLogged ? "flex-row items-start" : "flex-col items-center"
-            } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
+              !isLogged ? "flex-col items-center" : "flex-row items-start"
+            }`}
           >
             <FeedLayout
               adminModeratorGroups={ssrData.adminModerator}
@@ -246,20 +240,7 @@ const Feed = ({ ssrData }) => {
                 isOpen={addPostCardIsOpen}
                 setIsOpen={setAddPostCardIsOpen}
               />
-              <InfiniteScroll
-                dataLength={posts.length}
-                next={fetchPosts}
-                hasMore={true}
-                loader={
-                  <Loader
-                    containerClassName={"self-center w-full"}
-                    className={`bg-caak-primary ${
-                      loading ? "opacity-100" : "opacity-0"
-                    }`}
-                  />
-                }
-                endMessage={<h4>Nothing more to show</h4>}
-              >
+              <InfinitScroller onNext={fetchPosts} loading={loading}>
                 {posts.map((data, index) => {
                   return (
                     <Card
@@ -273,7 +254,7 @@ const Feed = ({ ssrData }) => {
                     />
                   );
                 })}
-              </InfiniteScroll>
+              </InfinitScroller>
             </FeedLayout>
           </div>
         </div>

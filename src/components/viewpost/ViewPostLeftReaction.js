@@ -9,7 +9,12 @@ import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 import toast, { Toaster } from "react-hot-toast";
 
-const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
+const ViewPostLeftReaction = ({
+  post,
+  commentRef,
+  containerClassname,
+  mobile,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [pathName, setPathName] = useState("");
@@ -187,7 +192,7 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
           />
         </div>
         <p className="font-inter font-medium text-12px text-opacity-80 text-white tracking-[0.18px] leading-[15px]">
-          Хуваалцах
+          {!mobile && "Хуваалцах"}
         </p>
       </div>
 

@@ -48,6 +48,7 @@ const DefaultFeedLayout = ({
             }`}
           >
             <FeedSortButtons
+              feed
               items={feedType}
               initialSort={feedSortType}
               direction={"column"}

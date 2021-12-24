@@ -106,16 +106,14 @@ const Trending = ({ ssrData }) => {
       </Head>
       <CaakLayout {...(isLogged ? { columns: 3 } : { columns: 2 })}>
         <FeedSortButtons
+          feed
           items={feedType}
           initialSort={"CAAK"}
           hide={isLogged && !isTablet}
           containerClassname={"mb-[19px] justify-center"}
           direction={"row"}
         />
-        <InfinitScroller
-          onNext={fetchCaakPosts}
-          loading={loading}
-        >
+        <InfinitScroller onNext={fetchCaakPosts} loading={loading}>
           {caakPosts.items.map((data, index) => {
             return (
               <Card

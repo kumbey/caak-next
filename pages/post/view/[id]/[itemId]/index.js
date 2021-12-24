@@ -153,20 +153,27 @@ const PostItem = ({ ssrData }) => {
   }, []);
 
   useEffect(() => {
-    setItem(post.items.items[activeIndex]);
-    router.push(
-      {
-        // pathname: `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
-        query: {
-          id: post.id,
-          itemId: post.items.items[activeIndex].id,
+
+    const curPost = post.items.items[activeIndex]
+
+    setItem(curPost);
+
+    if(curPost.id !== router.query.itemId){
+      router.replace(
+        {
+          query: { 
+            id: post.id,
+            itemId: post.items.items[activeIndex].id
+          },
         },
-      },
-      `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
-      {
-        shallow: true,
-      }
-    );
+        `/post/view/${post.id}/${post.items.items[activeIndex].id}`,
+        {
+          shallow: true,
+          scroll: false
+        }
+      );
+    }
+
     // eslint-disable-next-line
   }, [activeIndex]);
 

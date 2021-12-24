@@ -9,6 +9,7 @@ import Modals from "../src/components/modals";
 import NProgress from "nprogress"; //nprogress module
 import "nprogress/nprogress.css"; //styles of nprogress
 import Router from "next/router";
+import ViewPostModal from "../src/components/modals/ViewPostModal";
 
 Amplify.configure({ ...awsExports, ssr: true });
 Storage.configure({ level: "public" });
@@ -26,7 +27,7 @@ function MyApp({ Component, pageProps }) {
             <Component {...pageProps} />
           </div>
         </div>
-
+        <ViewPostModal />
         <Modals />
       </UserProvider>
     </WrapperProvider>

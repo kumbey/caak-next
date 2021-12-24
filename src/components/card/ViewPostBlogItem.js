@@ -21,7 +21,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
         ) : !singleItem ? (
           <Link
             href={{
-              pathname: `${router.pathname}/[itemId]`,
+              pathname: `/post/view/${postId}/[itemId]`,
               query: {
                 id: postId,
                 itemId: postItem.id,
@@ -29,7 +29,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
                 itemIndex: index,
               },
             }}
-            as={`${router.asPath}/${postItem.id}`}
+            as={`/post/view/${postId}/${postItem.id}`}
             shallow={true}
             scroll={false}
           >
@@ -82,7 +82,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               onClick={() => {
                 router.push(
                   {
-                    pathname: `${router.pathname}/[itemId]`,
+                    pathname: `/post/view/${postId}/[itemId]`,
                     query: {
                       id: postId,
                       itemId: postItem.id,
@@ -126,7 +126,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
             <Link
               shallow
               href={{
-                pathname: `${router.pathname}/[itemId]`,
+                pathname: `/post/view/${postId}/[itemId]`,
                 query: {
                   id: postId,
                   itemId: postItem.id,

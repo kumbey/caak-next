@@ -9,7 +9,7 @@ import Modals from "../src/components/modals";
 import NProgress from "nprogress"; //nprogress module
 import "nprogress/nprogress.css"; //styles of nprogress
 import Router from "next/router";
-import ViewPostModal from "../src/components/modals/ViewPostModal";
+import ViewPostModal from "../src/components/modals/viewPostModal";
 import ViewPostItemModal from "../src/components/modals/viewPostItemModal";
 import Configure from "../src/configure";
 

@@ -151,7 +151,8 @@ type Post @model @versioned
   @key(name: "byStatus", fields:["status","updatedAt"] , queryField:"getPostByStatus")
   @key(name: "byGroup", fields:["group_id","updatedAt"] , queryField:"getPostByGroup")
   @key(name: "byUser", fields:["user_id","updatedAt"] , queryField:"getPostByUser")
-  @key(name: "byOwner", fields:["owned","updatedAt"] , queryField:"listPostByOwned"){
+  @key(name: "byOwner", fields:["owned","updatedAt"] , queryField:"listPostByOwned")
+  @key(name: "byTitle", fields:["title","updatedAt"] , queryField:"listPostByTitle"){
   id: ID!
   title: String!
   description: String
@@ -173,6 +174,7 @@ type Post @model @versioned
   comments: [Comment] @connection(keyName:"byPostQ", fields:["id"])
   updatedAt: AWSDateTime!
   owned: String
+  ignoreNotification: String
 }
 
 type PostStatusHistory @model

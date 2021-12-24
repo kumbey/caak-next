@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-redirectUrls.js
 
 # testing
 /coverage
@@ -54,3 +53,4 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+src/redirectUrls.js

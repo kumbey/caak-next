@@ -210,6 +210,7 @@ export const onCommentByPostItem = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -344,6 +345,7 @@ export const onCommentByPostItem = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -577,6 +579,7 @@ export const onCommentByPost = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -711,6 +714,7 @@ export const onCommentByPost = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -944,6 +948,7 @@ export const onCommentByParent = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -1078,6 +1083,7 @@ export const onCommentByParent = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -1137,6 +1143,7 @@ export const onPostByGroup = /* GraphQL */ `
       updatedAt
       owned
       ignoreNotification
+      oldCaakId
       createdAt
       version
       user {
@@ -1362,6 +1369,7 @@ export const onPostByGroup = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -1498,6 +1506,7 @@ export const onPostByUser = /* GraphQL */ `
       updatedAt
       owned
       ignoreNotification
+      oldCaakId
       createdAt
       version
       user {
@@ -1723,6 +1732,7 @@ export const onPostByUser = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -1971,6 +1981,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
       updatedAt
       owned
       ignoreNotification
+      oldCaakId
       createdAt
       version
       user {
@@ -2196,6 +2207,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -3325,6 +3337,7 @@ export const onCreatePost = /* GraphQL */ `
       updatedAt
       owned
       ignoreNotification
+      oldCaakId
       createdAt
       version
       user {
@@ -3550,6 +3563,7 @@ export const onCreatePost = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -3686,6 +3700,7 @@ export const onUpdatePost = /* GraphQL */ `
       updatedAt
       owned
       ignoreNotification
+      oldCaakId
       createdAt
       version
       user {
@@ -3911,6 +3926,7 @@ export const onUpdatePost = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -4047,6 +4063,7 @@ export const onDeletePost = /* GraphQL */ `
       updatedAt
       owned
       ignoreNotification
+      oldCaakId
       createdAt
       version
       user {
@@ -4272,6 +4289,7 @@ export const onDeletePost = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -4468,6 +4486,7 @@ export const onCreatePostItems = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -4633,6 +4652,7 @@ export const onUpdatePostItems = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -4798,6 +4818,7 @@ export const onDeletePostItems = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -5221,6 +5242,7 @@ export const onCreateComment = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -5355,6 +5377,7 @@ export const onCreateComment = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -5588,6 +5611,7 @@ export const onUpdateComment = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -5722,6 +5746,7 @@ export const onUpdateComment = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -5955,6 +5980,7 @@ export const onDeleteComment = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -6089,6 +6115,7 @@ export const onDeleteComment = /* GraphQL */ `
           updatedAt
           owned
           ignoreNotification
+          oldCaakId
           createdAt
           version
         }
@@ -6303,6 +6330,7 @@ export const onCreateReportedPost = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -6509,6 +6537,7 @@ export const onUpdateReportedPost = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {
@@ -6715,6 +6744,7 @@ export const onDeleteReportedPost = /* GraphQL */ `
         updatedAt
         owned
         ignoreNotification
+        oldCaakId
         createdAt
         version
         user {

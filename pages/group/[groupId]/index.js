@@ -37,33 +37,37 @@ export async function getServerSideProps({ req, query }) {
     user = null;
   }
 
-  const resp = await API.graphql({
-    query: getPostByGroup,
-    variables: {
-      group_id: query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const groupView = await API.graphql({
-    query: getGroupView,
-    variables: {
-      id: query.groupId,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  return {
-    props: {
-      ssrData: {
-        posts: getReturnData(resp),
-        groupData: getReturnData(groupView),
+  try{
+    const resp = await API.graphql({
+      query: getPostByGroup,
+      variables: {
+        group_id: query.groupId,
+        sortDirection: "DESC",
+        filter: { status: { eq: "CONFIRMED" } },
+        limit: 6,
       },
-    },
-  };
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+  
+    const groupView = await API.graphql({
+      query: getGroupView,
+      variables: {
+        id: query.groupId,
+      },
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+
+    return {
+      props: {
+        ssrData: {
+          posts: getReturnData(resp),
+          groupData: getReturnData(groupView),
+        },
+      },
+    };
+  }catch(ex){
+      console.log(ex)
+  }
 }
 
 const Group = ({ ssrData }) => {
@@ -217,6 +221,7 @@ const Group = ({ ssrData }) => {
   const handleToast = ({ param }) => {
     if (param === "follow") toast.success("Группт амжилттай элслээ.");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
   };
 
   return loaded ? (

@@ -25,7 +25,12 @@ import { useUser } from "../../src/context/userContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
-  const data = await searchApi({ API, searchQuery: query.q, Auth, postLimit: 5 });
+  const data = await searchApi({
+    API,
+    searchQuery: query.q,
+    Auth,
+    postLimit: 5,
+  });
 
   return {
     props: {
@@ -123,6 +128,7 @@ const Search = ({ ssrData }) => {
               items={searchResultType}
               direction={"row"}
               textClassname={"font-medium text-15px"}
+              initialSort={"DEFAULT"}
               setSortType={setSortType}
             />
             <div className={"pt-[20px] pb-[40px] w-full"}>
@@ -135,6 +141,10 @@ const Search = ({ ssrData }) => {
                         type={"GROUP"}
                         result={group}
                       />
+                    );
+                  } else if ((group.type === "GROUP" && sortType === "DEFAULT")) {
+                    return (
+                      <SearchCard type={"GROUP"} key={index} result={group} />
                     );
                   }
                   // else {

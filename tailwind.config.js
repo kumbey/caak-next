@@ -115,6 +115,7 @@ module.exports = {
           errigalwhite: "#F0F1F4",
           unicornsilver: "#E8E8E8",
           scriptink: "#5D636B",
+          retroblue: "#256BEE",
           carbon: {
             DEFAULT: "#333333",
             hover: "#4D4D4D",

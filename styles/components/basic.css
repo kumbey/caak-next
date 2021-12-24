@@ -641,9 +641,10 @@
   .unset-img > span {
     position: unset !important;
   }
-.gradientAdd {
-  background: transparent linear-gradient(180deg, #FF8000 0%, #FF4500 100%) 0 0 no-repeat padding-box;
-}
+  .gradientAdd {
+    background: transparent linear-gradient(180deg, #ff8000 0%, #ff4500 100%) 0
+      0 no-repeat padding-box;
+  }
 }
 
 .react-player {
@@ -670,12 +671,15 @@
   border-radius: inherit;
 }
 
-.toastOptions {
-  border: 1px solid #b7eb8f;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-left: 16px;
-  padding-right: 16px;
-  font-size: 14px;
+.customToastOptions {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 1px 2px #0000001a !important;
+  min-width: 450px !important;
+  height: 56px !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
   z-index: 6;
 }

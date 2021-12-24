@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { getFileUrl } from "../../utility/Util";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Video from "../video";
 import AnimatedCaakButton from "../button/animatedCaakButton";
@@ -24,7 +23,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               router.push(
                 {
                   query: {
-                      ...router.query,
+                    ...router.query,
                     id: postId,
                     viewItemPost: "postItem",
                     itemId: postItem.id,
@@ -122,50 +121,43 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
         )}
       </div>
       <div className={"pt-[13px]"}>
-        <p
-          className={
-            "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-          }
-        >
-          {!singleItem ? (
-            // <Link
-            //   shallow
-            //   href={{
-            //     pathname: `/post/view/${postId}/[itemId]`,
-            //     query: {
-            //       id: postId,
-            //       itemId: postItem.id,
-            //       isModal: true,
-            //     },
-            //   }}
-            //   as={`${router.asPath}/${postItem.id}`}
-            // >
-            <div
-              onClick={() =>
-                router.push(
-                  {
-                    query: {
-                      viewItemPost: "postItem",
-                      id: postId,
-                      itemId: postItem.id,
-                      prevPath: router.asPath,
-                      isModal: true,
-                      itemIndex: index,
-                    },
+        {!singleItem ? (
+          <div
+            onClick={() =>
+              router.push(
+                {
+                  query: {
+                    viewItemPost: "postItem",
+                    id: postId,
+                    itemId: postItem.id,
+                    prevPath: router.asPath,
+                    isModal: true,
+                    itemIndex: index,
                   },
-                  `/post/view/${postId}/${postItem.id}`,
-                  { shallow: true, scroll: false }
-                )
+                },
+                `/post/view/${postId}/${postItem.id}`,
+                { shallow: true, scroll: false }
+              )
+            }
+            className={"relative"}
+          >
+            <p
+              className={
+                "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
               }
-              className={"relative"}
             >
               {postItem.title}
-            </div>
-          ) : (
-            // </Link>
-            postItem.title
-          )}
-        </p>
+            </p>
+          </div>
+        ) : (
+          <p
+            className={
+              "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+            }
+          >
+            {postItem.title}
+          </p>
+        )}
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ const FeedSortButtons = ({
               key={id}
               onClick={() => {
                 setFeedSortType(type);
-                setSortType(type);
+                setSortType && setSortType(type);
                 setActiveIndex(id);
                 feed && router.replace(route);
               }}

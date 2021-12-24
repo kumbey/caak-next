@@ -27,7 +27,7 @@ const Consts = {
   signUp: "signUp",
   loggedUserAuth: "AMAZON_COGNITO_USER_POOLS",
   publicUserAuth: "AWS_IAM",
-  siteMainTitle: "саак.мн"
+  siteMainTitle: "Саак.мн",
 };
 
 export default Consts;

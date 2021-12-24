@@ -233,6 +233,7 @@ const AddPost = () => {
       <Toaster
         toastOptions={{
           className: "toastOptions",
+          duration: 5000,
         }}
       />
       <div className={"addPostPadding"}>

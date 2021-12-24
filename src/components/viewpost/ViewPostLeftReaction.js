@@ -40,6 +40,7 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
         containerStyle={{ top: "64px" }}
         toastOptions={{
           className: "toastOptions",
+          duration: 5000,
         }}
       />
       <div className={"flex flex-col items-center mb-[22px]"}>

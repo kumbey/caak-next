@@ -2,7 +2,7 @@ import useAddPostLayout from "../../../../src/hooks/useAddPostLayout";
 import { useRouter } from "next/router";
 import { useUser } from "../../../../src/context/userContext";
 import { useEffect, useState } from "react";
-import { getReturnData } from "../../../../src/utility/Util";
+import {getFileUrl, getReturnData} from "../../../../src/utility/Util";
 import { withSSRContext } from "aws-amplify";
 import {
   getGroupView,
@@ -19,6 +19,8 @@ import API from "@aws-amplify/api";
 import toast, { Toaster } from "react-hot-toast";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostSuccessModal from "../../../../src/components/modals/postSuccessModal";
+import Consts from "../../../../src/utility/Consts";
+import Head from "next/head";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -109,16 +111,30 @@ const EditPost = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  const finish = () => {
-    router.push(
-      {
-        pathname: `/user/${user.id}/dashboard`,
-        query: {
-          activeIndex: 1,
-        },
-      },
-      `/user/${user.id}/dashboard`
-    );
+  const finish = (role) => {
+    if(role === "MEMBER") {
+      router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 1,
+            },
+          },
+          `/user/${user.id}/dashboard`
+      );
+    }
+    else {
+      router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 0,
+            },
+          },
+          `/user/${user.id}/dashboard`
+      );
+    }
+
   };
 
   const handleSubmit = async () => {
@@ -201,7 +217,7 @@ const EditPost = ({ ssrData }) => {
       }
       try {
         setLoading(true);
-        await pdtPost(post, user.id);
+        await pdtPost(post, user.id, resp.role_on_group);
         setLoading(false);
         setIsSuccessModalOpen(true);
       } catch (ex) {
@@ -220,69 +236,78 @@ const EditPost = ({ ssrData }) => {
   };
 
   return (
-    <div className={"addPostPadding"}>
-      <Toaster
-        toastOptions={{
-          duration: 5000,
-        }}
-      />
+      <>
+        <Head>
+          <title>
+            Пост засах - {post.title} - {Consts.siteMainTitle}
+          </title>
+        </Head>
+        <div className={"addPostPadding"}>
+          <Toaster
+              toastOptions={{
+                duration: 5000,
+              }}
+          />
 
-      <AddPostLayout selectedGroup={selectedGroup}>
-        <PostSuccessModal
-          isOpen={isSuccessModalOpen}
-          setIsOpen={setIsSuccessModalOpen}
-          finish={finish}
-          messageTitle={"Таны пост группт амжилттай заслаа."}
-        />
-        <div className={`flex flex-col justify-center items-center pb-[38px]`}>
-          <div
-            className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
-          >
-            <SelectGroup
-              containerClassName={"mt-[28px]"}
-              groupData={groupData}
-              isGroupVisible={isGroupVisible}
-              setIsGroupVisible={setIsGroupVisible}
-              selectedGroup={selectedGroup}
-              setSelectedGroup={setSelectedGroup}
-              setPost={setPost}
-              post={post}
-            />
-            {post.items.length !== 0 ? (
-              <UploadedMediaEdit
-                selectedGroup={selectedGroup}
-                setPost={setPost}
-                post={post}
-                loading={loading}
-                uploadPost={uploadPost}
-              />
-            ) : (
-              <DropZoneWithCaption post={post} setPost={setPost} />
-            )}
+          <AddPostLayout selectedGroup={selectedGroup}>
+            {selectedGroup && <PostSuccessModal
+                isOpen={isSuccessModalOpen}
+                setIsOpen={setIsSuccessModalOpen}
+                finish={finish}
+                role={selectedGroup.role_on_group}
+                messageTitle={"Таны засвар амжилттай хадгалагдлаа."}
+            />}
 
-            <div className={"flex flex-row pb-4 px-4 justify-end"}>
-              <Button
-                className={
-                  "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
-                }
+            <div className={`flex flex-col justify-center items-center pb-[38px]`}>
+              <div
+                  className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
               >
-                Болих
-              </Button>
-              <Button
-                onClick={() => handleSubmit()}
-                // disabled
-                className={
-                  "mr-2 mt-4 text-17px border border-caak-titaniumwhite w-[190px] h-[44px]"
-                }
-              >
-                Хадгалах
-              </Button>
+                <SelectGroup
+                    containerClassName={"mt-[28px]"}
+                    groupData={groupData}
+                    isGroupVisible={isGroupVisible}
+                    setIsGroupVisible={setIsGroupVisible}
+                    selectedGroup={selectedGroup}
+                    setSelectedGroup={setSelectedGroup}
+                    setPost={setPost}
+                    post={post}
+                />
+                {post.items.length !== 0 ? (
+                    <UploadedMediaEdit
+                        selectedGroup={selectedGroup}
+                        setPost={setPost}
+                        post={post}
+                        loading={loading}
+                        uploadPost={uploadPost}
+                    />
+                ) : (
+                    <DropZoneWithCaption post={post} setPost={setPost} />
+                )}
+
+                <div className={"flex flex-row pb-4 px-4 justify-end"}>
+                  <Button
+                      className={
+                        "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
+                      }
+                  >
+                    Болих
+                  </Button>
+                  <Button
+                      onClick={() => handleSubmit()}
+                      // disabled
+                      className={
+                        "mr-2 mt-4 text-17px border border-caak-titaniumwhite w-[190px] h-[44px]"
+                      }
+                  >
+                    Хадгалах
+                  </Button>
+                </div>
+              </div>
             </div>
-          </div>
+            {/*</Backdrop>*/}
+          </AddPostLayout>
         </div>
-        {/*</Backdrop>*/}
-      </AddPostLayout>
-    </div>
+      </>
   );
 };
 export default WithAuth(EditPost);

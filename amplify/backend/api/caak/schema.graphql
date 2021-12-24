@@ -125,8 +125,8 @@ type UserCategory @model
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byUser", fields:["user_id"])
-  @key(name: "byCategory", fields:["category_id"]){
+  @key(name: "byUser", fields:["user_id"], queryField:"listUserCategoryByUser")
+  @key(name: "byCategory", fields:["category_id"], queryField:"listUserCategoryByCategory"){
   id: ID!
   user_id: ID!
   category_id: ID!
@@ -173,6 +173,7 @@ type Post @model @versioned
   comments: [Comment] @connection(keyName:"byPostQ", fields:["id"])
   updatedAt: AWSDateTime!
   owned: String
+  ignoreNotification: String
 }
 
 type PostStatusHistory @model

@@ -33,6 +33,7 @@ const ViewPostItemModal = () => {
 
   useEffect(() => {
     showModal();
+    // eslint-disable-next-line
   }, [router.query]);
 
   return (

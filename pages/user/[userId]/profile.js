@@ -8,14 +8,13 @@ import { userProfileType } from "../../../src/components/navigation/sortButtonTy
 import UserPostsCard from "../../../src/components/card/UserProfile/UserPostsCard";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import Loader from "../../../src/components/loader";
 import API from "@aws-amplify/api";
 import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
 import { useUser } from "../../../src/context/userContext";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
+import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -224,19 +223,9 @@ const Profile = ({ ssrData }) => {
             direction={"col"}
           />
 
-          <InfiniteScroll
-            dataLength={posts.items.length}
-            next={fetchPosts}
-            hasMore={true}
-            loader={
-              <Loader
-                containerClassName={"self-center w-full"}
-                className={`bg-caak-primary ${
-                  loading ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            }
-            endMessage={<h4>Nothing more to show</h4>}
+          <InfinitScroller
+            onNext={fetchPosts}
+            loading={loading}
           >
             <div className={"userPostsContainer"}>
               {posts.items.map((items, index) => {
@@ -250,7 +239,7 @@ const Profile = ({ ssrData }) => {
                 }
               })}
             </div>
-          </InfiniteScroll>
+          </InfinitScroller>
         </div>
       </ProfileLayout>
     </>

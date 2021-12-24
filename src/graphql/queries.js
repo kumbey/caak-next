@@ -978,6 +978,72 @@ export const listUserCategorys = /* GraphQL */ `
     }
   }
 `;
+export const listUserCategoryByUser = /* GraphQL */ `
+  query ListUserCategoryByUser(
+    $user_id: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserCategoryByUser(
+      user_id: $user_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user_id
+        category_id
+        createdAt
+        updatedAt
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listUserCategoryByCategory = /* GraphQL */ `
+  query ListUserCategoryByCategory(
+    $category_id: ID
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserCategoryByCategory(
+      category_id: $category_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user_id
+        category_id
+        createdAt
+        updatedAt
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
 export const getCategory = /* GraphQL */ `
   query GetCategory($id: ID!) {
     getCategory(id: $id) {
@@ -1023,6 +1089,7 @@ export const getPost = /* GraphQL */ `
       reacted
       updatedAt
       owned
+      ignoreNotification
       createdAt
       version
       user {
@@ -1247,6 +1314,7 @@ export const getPost = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -1387,6 +1455,7 @@ export const listPosts = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -1514,6 +1583,7 @@ export const getPostByStatus = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -1641,6 +1711,7 @@ export const getPostByGroup = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -1768,6 +1839,7 @@ export const getPostByUser = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -1895,6 +1967,7 @@ export const listPostByOwned = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -2095,6 +2168,7 @@ export const getPostItems = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -2264,6 +2338,7 @@ export const listPostItemss = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -2314,6 +2389,7 @@ export const getPostTotal = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -2453,6 +2529,7 @@ export const listPostTotals = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -2507,6 +2584,7 @@ export const listPostOrderByReactions = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -2561,6 +2639,7 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -2615,6 +2694,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -2947,6 +3027,7 @@ export const getComment = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -3080,6 +3161,7 @@ export const getComment = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -3199,6 +3281,7 @@ export const listComments = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -3316,6 +3399,7 @@ export const listCommentByPostItem = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -3433,6 +3517,7 @@ export const getCommentsByPost = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -3550,6 +3635,7 @@ export const listCommentsByDateAndType = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -3667,6 +3753,7 @@ export const listCommentsByDateAndTypeForItem = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -3784,6 +3871,7 @@ export const listCommentByParent = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -3901,6 +3989,7 @@ export const listCommentByUser = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }
@@ -4101,6 +4190,7 @@ export const getReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         owned
+        ignoreNotification
         createdAt
         version
         user {
@@ -4252,6 +4342,7 @@ export const listReportedPosts = /* GraphQL */ `
           reacted
           updatedAt
           owned
+          ignoreNotification
           createdAt
           version
         }

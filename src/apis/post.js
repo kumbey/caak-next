@@ -11,7 +11,7 @@ import {
 import { ApiFileUpload } from "../utility/ApiHelper";
 import { _objectWithoutKeys, getReturnData } from "../utility/Util";
 
-export const crtPost = async (newPost, userId) => {
+export const crtPost = async (newPost, userId, role) => {
   try {
     let { items, ...post } = { ...newPost };
     post = _objectWithoutKeys(post, ["id"]);
@@ -40,7 +40,7 @@ export const crtPost = async (newPost, userId) => {
         input: {
           id: savedPost.id,
           expectedVersion: savedPost.version,
-          status: "PENDING",
+          status: (role === "ADMIN" || role === "MODERATOR") ? "CONFIRMED" : "PENDING",
         },
       })
     );
@@ -51,7 +51,7 @@ export const crtPost = async (newPost, userId) => {
   }
 };
 
-export const pdtPost = async (oldPost, userId) => {
+export const pdtPost = async (oldPost, userId, role) => {
   try {
     let { items, ...post } = { ...oldPost };
 
@@ -129,7 +129,7 @@ export const pdtPost = async (oldPost, userId) => {
             input: {
               id: post.id,
               expectedVersion: post.version,
-              status: "PENDING",
+              status: (role === "ADMIN" || role === "MODERATOR") ? "CONFIRMED" : "PENDING",
             },
           })
         )

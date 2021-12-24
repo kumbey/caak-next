@@ -231,6 +231,7 @@ const Feed = ({ ssrData }) => {
               {...(isLogged ? { columns: 3 } : { columns: 2 })}
             >
               <FeedSortButtons
+                feed
                 items={feedType}
                 initialSort={"DEFAULT"}
                 hide={isLogged && !isTablet}

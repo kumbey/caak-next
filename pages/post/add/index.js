@@ -31,6 +31,7 @@ const AddPost = () => {
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
+  const [newPostId, setNewPostId] = useState();
   const [groupData, setGroupData] = useState({
     adminModerator: [],
     unMember: [],
@@ -92,26 +93,23 @@ const AddPost = () => {
   };
 
   const finish = (role) => {
-    if(role === "MEMBER") {
+    if (role === "MEMBER") {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 1,
-            },
+        {
+          pathname: `/user/${user.id}/dashboard`,
+          query: {
+            activeIndex: 1,
           },
-          `/user/${user.id}/dashboard`
+        },
+        `/user/${user.id}/dashboard`
       );
-    }
-    else {
+    } else {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 0,
-            },
-          },
-          `/user/${user.id}/dashboard`
+        {
+          pathname: `/post/view/${newPostId}`,
+        },
+        `/post/view/${newPostId}`,
+        { shallow: true, scroll: false }
       );
     }
   };
@@ -219,12 +217,13 @@ const AddPost = () => {
       }
       try {
         setLoading(true);
-        await crtPost(post, user.id, resp.role_on_group);
-
+        await crtPost(post, user.id, resp.role_on_group).then((resp) => {
+          setNewPostId(getReturnData(resp).id);
+        });
         setLoading(false);
         setIsSuccessModalOpen(true);
       } catch (ex) {
-        ex.errors.map((error) => {
+        ex?.errors?.map((error) => {
           if (error.message.includes("IndexKey: group_id")) {
             handleToast({ param: "isGroup" });
           }
@@ -237,6 +236,7 @@ const AddPost = () => {
       handleToast({ param: "isGroup" });
     }
   };
+
   return !permissionDenied ? (
     <>
       <Head>
@@ -250,13 +250,15 @@ const AddPost = () => {
       />
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
-          {selectedGroup && <PostSuccessModal
+          {selectedGroup && (
+            <PostSuccessModal
               isOpen={isSuccessModalOpen}
               setIsOpen={setIsSuccessModalOpen}
               role={selectedGroup.role_on_group}
               finish={finish}
               messageTitle={"Таны пост группт амжилттай илгээгдлээ."}
-          />}
+            />
+          )}
 
           <div
             className={`flex flex-col justify-center items-center pb-[38px]`}

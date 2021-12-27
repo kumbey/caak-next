@@ -71,7 +71,9 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 { shallow: true, scroll: false }
               )
             }
-            className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}
+            className={
+              "flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative cursor-pointer"
+            }
           >
             {video ? (
               <Video
@@ -82,7 +84,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
               />
             ) : (
               <Image
-                  quality={100}
+                quality={100}
                 className=" bg-white rounded-md"
                 src={getFileUrl(imageSrc)}
                 width={64}

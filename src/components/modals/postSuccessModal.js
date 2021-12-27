@@ -1,6 +1,12 @@
 import Button from "../button";
 
-const PostSuccessModal = ({ messageTitle, isOpen, setIsOpen, finish, role }) => {
+const PostSuccessModal = ({
+  messageTitle,
+  isOpen,
+  setIsOpen,
+  finish,
+  role,
+}) => {
   return isOpen ? (
     <div className="popup_modal">
       <div className="popup_modal-success rounded-xl">
@@ -23,10 +29,15 @@ const PostSuccessModal = ({ messageTitle, isOpen, setIsOpen, finish, role }) => 
           <p className="font-inter font-semibold text-18px text-caak-generalblack mb-[14px]">
             {messageTitle}
           </p>
-          {role === "MEMBER" ? <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
-            Группын админ постыг баталгаажуулах хүртэл түр хүлээнэ үү.
-          </p> : null}
-
+          {role === "MEMBER" ? (
+            <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
+              Группын админ постыг баталгаажуулах хүртэл түр хүлээнэ үү.
+            </p>
+          ) : role === "ADMIN" || role === "MODERATOR" ? (
+            <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
+              Таны пост амжилттай орлоо.
+            </p>
+          ) : null}
 
           <Button
             onClick={() => finish(role)}

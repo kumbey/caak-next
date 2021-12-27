@@ -695,7 +695,7 @@ const Dashboard = ({ ssrData }) => {
             </div>
             <div
               className={
-                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px]"
+                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-scroll"
               }
             >
               {activeIndex === 0 ? (

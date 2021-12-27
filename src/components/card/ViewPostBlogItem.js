@@ -73,9 +73,9 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               textClassname={
                 "text-[14px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal ml-[4px]"
               }
-              iconContainerClassname={"w-[18px] h-[18px] mb-[2px]"}
+              iconContainerClassname={"w-[18px] h-[18px] mb-[2px] hover:bg-transparent"}
               iconColor={"text-caak-nocturnal"}
-              iconClassname={"text-[18px]"}
+              iconClassname={"text-[17.25px]"}
             />
             <Link
               shallow
@@ -100,7 +100,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
                 >
                   <span
                     className={
-                      "icon-fi-rs-comment text-caak-buttonblue text-[16.5px]"
+                      "icon-fi-rs-comment-o text-caak-scriptink text-[15.75px]"
                     }
                   />
                 </div>

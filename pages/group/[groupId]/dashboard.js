@@ -18,7 +18,6 @@ import {
   getGroupUsersByGroup,
   getGroupView,
 } from "../../../src/graphql-custom/group/queries";
-import Loader from "../../../src/components/loader";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
@@ -559,7 +558,7 @@ const Dashboard = ({ ssrData }) => {
             </div>
             <div
               className={
-                "flex flex-col rounded-lg bg-caak-emptiness mt-[15px] px-[8px] lg:px-[30px] pt-[16px] mb-[50px]"
+                "flex flex-col rounded-lg bg-caak-emptiness mt-[15px] px-[8px] lg:px-[30px] pt-[16px] mb-[50px] overflow-x-scroll"
               }
             >
               {activeIndex === 0 ? (

@@ -387,7 +387,9 @@
   .leftSideBar {
     scrollbar-gutter: stable;
     position: sticky;
-    height: calc(100vh - (var(--topBarSize) + var(--containerPaddingTop))) !important;
+    height: calc(
+      100vh - (var(--topBarSize) + var(--containerPaddingTop))
+    ) !important;
     flex-grow: 1;
     top: calc(var(--containerPaddingTop));
     overflow-y: auto;
@@ -550,6 +552,11 @@
   }
 
   .popup_modal-success {
+    min-width: 280px;
+    max-width: 500px;
+    margin: 100px auto;
+  }
+  .popup_modal-report {
     min-width: 280px;
     max-width: 500px;
     margin: 100px auto;

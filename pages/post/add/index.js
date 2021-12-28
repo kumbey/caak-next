@@ -20,6 +20,7 @@ import Head from "next/head";
 import toast, { Toaster } from "react-hot-toast";
 import Consts from "../../../src/utility/Consts";
 import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
+import AuraModal from "../../../src/components/modals/auraModal";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -27,6 +28,7 @@ const AddPost = () => {
   const { postId, groupId } = router.query;
   const { user } = useUser();
 
+  const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
@@ -248,6 +250,7 @@ const AddPost = () => {
           duration: 5000,
         }}
       />
+      <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
           {selectedGroup && (
@@ -275,6 +278,8 @@ const AddPost = () => {
                 setSelectedGroup={setSelectedGroup}
                 setPost={setPost}
                 post={post}
+                setIsAuraModalOpen={setIsAuraModalOpen}
+                userAura={user.aura}
               />
               {post.items.length !== 0 ? (
                 <UploadedMediaEdit

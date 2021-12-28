@@ -10,6 +10,8 @@ const SelectGroup = ({
   groupData,
   containerClassName,
   setPost,
+  setIsAuraModalOpen,
+  userAura,
 }) => {
   const dropDownClickOutsideRef = useClickOutSide(() => {
     setIsGroupVisible(false);
@@ -70,6 +72,8 @@ const SelectGroup = ({
               open={isGroupVisible}
               onToggle={() => setIsGroupVisible(!isGroupVisible)}
               groupData={groupData}
+              setIsAuraModalOpen={setIsAuraModalOpen}
+              userAura={userAura}
               className={"-top-3 left-0 right-0 bg-white rounded-[3px] w-full"}
             />
           )}

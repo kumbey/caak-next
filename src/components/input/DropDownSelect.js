@@ -10,6 +10,8 @@ const DropDownSelect = ({
   className,
   onSelect,
   setPost,
+  setIsAuraModalOpen,
+  userAura,
 }) => {
   const [filteredData, setFilteredData] = useState({
     adminModerator: [],
@@ -92,38 +94,40 @@ const DropDownSelect = ({
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний группүүд
                 </span>
-                <span className={"text-15px font-medium text-caak-primary"}>
+                <span
+                  onClick={() => userAura && setIsAuraModalOpen(true)}
+                  className={"text-15px font-medium text-caak-primary"}
+                >
                   Групп үүсгэх
                 </span>
-
               </div>
               <div className={"px-2"}>
                 {filteredData.adminModerator.map((item, index) => {
                   return (
+                    <div
+                      key={index}
+                      onClick={() => selectGroup(item)}
+                      className={"flex flex-col"}
+                    >
                       <div
-                          key={index}
-                          onClick={() => selectGroup(item)}
-                          className={"flex flex-col"}
+                        className={
+                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                        }
                       >
-                        <div
-                            className={
-                              "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                            }
+                        <img
+                          src={generateFileUrl(item.profile)}
+                          className={"w-8 h-8 rounded-md object-cover mr-2"}
+                          alt={""}
+                        />
+                        <span
+                          className={
+                            "text-caak-generalblack font-medium text-16px"
+                          }
                         >
-                          <img
-                              src={generateFileUrl(item.profile)}
-                              className={"w-8 h-8 rounded-md object-cover mr-2"}
-                              alt={""}
-                          />
-                          <span
-                              className={
-                                "text-caak-generalblack font-medium text-16px"
-                              }
-                          >
-                            {item.name}
-                          </span>
-                        </div>
+                          {item.name}
+                        </span>
                       </div>
+                    </div>
                   );
                 })}
               </div>

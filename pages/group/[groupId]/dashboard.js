@@ -440,7 +440,7 @@ const Dashboard = ({ ssrData }) => {
           {groupData.name} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div className="max-w-[1240px] mx-auto flex flex-col justify-center px-[10px] lg:px-0 mt-[50px]">
+      <div className="max-w-[1240px] mx-auto flex flex-col justify-center px-[10px] lg:px-0 mt-[50px] pb-[250px]">
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}
@@ -558,7 +558,7 @@ const Dashboard = ({ ssrData }) => {
             </div>
             <div
               className={
-                "flex flex-col rounded-lg bg-caak-emptiness mt-[15px] px-[8px] lg:px-[30px] pt-[16px] mb-[50px] overflow-x-scroll"
+                "flex flex-col rounded-lg bg-caak-emptiness mt-[15px] px-[8px] lg:px-[30px] pt-[16px] overflow-x-scroll"
               }
             >
               {activeIndex === 0 ? (

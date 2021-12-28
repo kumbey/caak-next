@@ -579,7 +579,7 @@ const Dashboard = ({ ssrData }) => {
           {user.nickname} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
+      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px]">
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}

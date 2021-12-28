@@ -47,10 +47,9 @@ const DefaultAddPostLayout = ({ children, selectedGroup }) => {
                   groupId={selectedGroup.id}
                 />
                 <GroupRules groupId={selectedGroup.id} />
-                <GroupTips />
               </>
             )}
-                <GroupTips/>
+            <GroupTips />
 
             <FooterSidebar
               containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}

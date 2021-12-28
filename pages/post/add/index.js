@@ -92,26 +92,25 @@ const AddPost = () => {
   };
 
   const finish = (role) => {
-    if(role === "MEMBER") {
+    if (role === "MEMBER") {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 1,
-            },
+        {
+          pathname: `/user/${user.id}/dashboard`,
+          query: {
+            activeIndex: 1,
           },
-          `/user/${user.id}/dashboard`
+        },
+        `/user/${user.id}/dashboard`
       );
-    }
-    else {
+    } else {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 0,
-            },
+        {
+          pathname: `/user/${user.id}/dashboard`,
+          query: {
+            activeIndex: 0,
           },
-          `/user/${user.id}/dashboard`
+        },
+        `/user/${user.id}/dashboard`
       );
     }
   };
@@ -250,13 +249,20 @@ const AddPost = () => {
       />
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
-          {selectedGroup && <PostSuccessModal
+          {selectedGroup && (
+            <PostSuccessModal
               isOpen={isSuccessModalOpen}
               setIsOpen={setIsSuccessModalOpen}
               role={selectedGroup.role_on_group}
               finish={finish}
-              messageTitle={"Таны пост группт амжилттай илгээгдлээ."}
-          />}
+              messageTitle={`${
+                selectedGroup.role_on_group === "ADMIN" ||
+                selectedGroup.role_on_group === "ADMIN"
+                  ? "Таны пост группт амжилттай нийтлэгдлээ."
+                  : "Таны пост группт амжилттай илгээгдлээ."
+              }`}
+            />
+          )}
 
           <div
             className={`flex flex-col justify-center items-center pb-[38px]`}

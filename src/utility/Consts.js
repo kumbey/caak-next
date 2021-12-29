@@ -25,6 +25,7 @@ const Consts = {
   signInUp: "signInUp",
   signIn: "signIn",
   signUp: "signUp",
+  addPostKey: "firstTime",
   loggedUserAuth: "AMAZON_COGNITO_USER_POOLS",
   publicUserAuth: "AWS_IAM",
   siteMainTitle: "Саак.мн",

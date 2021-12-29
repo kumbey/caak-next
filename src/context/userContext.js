@@ -84,6 +84,17 @@ function UserProvider(props) {
   }, [cognitoUser]);
 
   useEffect(() => {
+    if (cognitoUser) {
+      if(!lsGet(Consts.addPostKey)){
+        lsSet(Consts.addPostKey, {addPost: true})
+      }
+    } else {
+      lsRemove(Consts.addPostKey);
+    }
+    // eslint-disable-next-line
+  }, [cognitoUser]);
+
+  useEffect(() => {
     if (cognitoUser && user) {
       setIsLogged(true);
     } else {

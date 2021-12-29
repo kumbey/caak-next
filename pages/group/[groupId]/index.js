@@ -25,6 +25,7 @@ import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
 import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
+import AddPostHandler from "../../../src/components/addposthandler";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req, query }) {
@@ -244,6 +245,7 @@ const Group = ({ ssrData }) => {
         columns={2}
       >
         {isTablet && <GroupAdminPanel groupData={groupData} />}
+        <AddPostHandler groupData={groupData}/>
         <GroupSortButtons
           activeIndex={activeIndex}
           activeView={activeView}

@@ -14,14 +14,14 @@ export default function AddPostHandler({groupData}) {
                 isLogged
                 ?
                 <Image
-                src={getFileUrl(user.pic)}
-                width={36}
-                height={36}
-                objectFit="cover"
-                className="rounded-full"
-            />
-            :
-            <div className="w-[36px] h-[36px] rounded-full bg-[#6C7392]"/>
+                    src={getFileUrl(user.pic)}
+                    width={36}
+                    height={36}
+                    objectFit="cover"
+                    className="rounded-full bg-[#6C7392]"
+                />
+                :
+                <div className="w-[36px] h-[36px] rounded-full bg-[#6C7392]"/>
             }
             <div 
                 onClick={() =>

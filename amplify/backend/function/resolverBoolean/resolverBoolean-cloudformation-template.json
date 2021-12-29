@@ -165,6 +165,32 @@
                   }
                 ]
               ]
+            },
+            "API_CAAK_SAVEDPOSTTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
+              }
+            },
+            "API_CAAK_SAVEDPOSTTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
+                    }
+                  }
+                ]
+              ]
             }
           }
         },
@@ -387,6 +413,68 @@
                       {
                         "Fn::ImportValue": {
                           "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
                         }
                       },
                       "/index/*"

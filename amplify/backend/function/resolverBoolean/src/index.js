@@ -7,15 +7,18 @@
 	API_CAAK_GROUPUSERSTABLE_NAME
 	API_CAAK_REACTIONSTABLE_ARN
 	API_CAAK_REACTIONSTABLE_NAME
+	API_CAAK_SAVEDPOSTTABLE_ARN
+	API_CAAK_SAVEDPOSTTABLE_NAME
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const { isReacted, isFollowed, isFollowedGroup } = require('./resolvers/Resolver')
+const { isReacted, isFollowed, isFollowedGroup, isPostSaved } = require('./resolvers/Resolver')
 
 const Resolver = {
     Post: {
         reacted: isReacted,
+        isSaved: isPostSaved
     },
     PostItems: {
         reacted: isReacted,

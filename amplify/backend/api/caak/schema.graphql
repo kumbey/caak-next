@@ -171,6 +171,7 @@ type Post @model @versioned @searchable
   items: [PostItems] @connection(keyName:"byPost", fields:["id"])
   totals: PostTotal @connection(fields:["id"])
   reacted: Boolean @function(name:"resolverBoolean-${env}")
+  isSaved: Boolean @function(name:"resolverBoolean-${env}")
   comments: [Comment] @connection(keyName:"byPostQ", fields:["id"])
   updatedAt: AWSDateTime!
   owned: String

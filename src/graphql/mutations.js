@@ -964,6 +964,7 @@ export const createPost = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -1190,6 +1191,7 @@ export const createPost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -1330,6 +1332,7 @@ export const updatePost = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -1556,6 +1559,7 @@ export const updatePost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -1696,6 +1700,7 @@ export const deletePost = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -1922,6 +1927,7 @@ export const deletePost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -2045,6 +2051,375 @@ export const deletePost = /* GraphQL */ `
     }
   }
 `;
+export const createSavedPost = /* GraphQL */ `
+  mutation CreateSavedPost(
+    $input: CreateSavedPostInput!
+    $condition: ModelSavedPostConditionInput
+  ) {
+    createSavedPost(input: $input, condition: $condition) {
+      id
+      user_id
+      post_id
+      createdAt
+      updatedAt
+      post {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        owned
+        ignoreNotification
+        oldCaakId
+        createdAt
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+export const updateSavedPost = /* GraphQL */ `
+  mutation UpdateSavedPost(
+    $input: UpdateSavedPostInput!
+    $condition: ModelSavedPostConditionInput
+  ) {
+    updateSavedPost(input: $input, condition: $condition) {
+      id
+      user_id
+      post_id
+      createdAt
+      updatedAt
+      post {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        owned
+        ignoreNotification
+        oldCaakId
+        createdAt
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+export const deleteSavedPost = /* GraphQL */ `
+  mutation DeleteSavedPost(
+    $input: DeleteSavedPostInput!
+    $condition: ModelSavedPostConditionInput
+  ) {
+    deleteSavedPost(input: $input, condition: $condition) {
+      id
+      user_id
+      post_id
+      createdAt
+      updatedAt
+      post {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        owned
+        ignoreNotification
+        oldCaakId
+        createdAt
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
 export const createPostStatusHistory = /* GraphQL */ `
   mutation CreatePostStatusHistory(
     $input: CreatePostStatusHistoryInput!
@@ -2131,6 +2506,7 @@ export const createPostItems = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2300,6 +2676,7 @@ export const updatePostItems = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2469,6 +2846,7 @@ export const deletePostItems = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2923,6 +3301,7 @@ export const createComment = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -3058,6 +3437,7 @@ export const createComment = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3295,6 +3675,7 @@ export const updateComment = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -3430,6 +3811,7 @@ export const updateComment = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3667,6 +4049,7 @@ export const deleteComment = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -3802,6 +4185,7 @@ export const deleteComment = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -4040,6 +4424,7 @@ export const createReportedPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -4244,6 +4629,7 @@ export const updateReportedPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -4448,6 +4834,7 @@ export const deleteReportedPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification

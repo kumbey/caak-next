@@ -109,7 +109,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
                     "text-[14px] text-caak-darkBlue font-medium tracking-[0.21px] leading-[16px] ml-[4px]"
                   }
                 >
-                  {postItem.totals.comments}
+                  {postItem.totals ? postItem.totals.comments : -20}
                 </p>
               </a>
             </Link>

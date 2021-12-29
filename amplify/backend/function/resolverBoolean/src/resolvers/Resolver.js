@@ -4,6 +4,7 @@ const DB = require("/opt/tables/DB")
 const Reactions = DB(process.env.API_CAAK_REACTIONSTABLE_NAME, docClient)
 const FollowedUsers = DB(process.env.API_CAAK_FOLLOWEDUSERSTABLE_NAME, docClient)
 const GroupUsers = DB(process.env.API_CAAK_GROUPUSERSTABLE_NAME, docClient)
+const SavedPost = DB(process.env.API_CAAK_SAVEDPOSTTABLE_NAME, docClient)
 
 async function isReacted(ctx){
     try{
@@ -85,9 +86,37 @@ async function isFollowedGroup(ctx){
     }
 }
 
+async function isPostSaved(ctx){
+    try{
+
+        const { identity, source } = ctx
+
+        let user_id = "unlogged"
+        if(identity.claims){
+            user_id = identity.claims.sub
+        }
+
+        const ids = {
+            id: `${source.id}#${user_id}`
+        }
+
+        let resp = await SavedPost.get(ids)
+
+        if(resp && Object.keys(resp).length > 0){
+            return true
+        }else{
+            return false
+        }
+
+    }catch(ex){
+        return false
+    }
+}
+
 
 module.exports = {
     isReacted: isReacted,
     isFollowed: isFollowed,
-    isFollowedGroup: isFollowedGroup
+    isFollowedGroup: isFollowedGroup,
+    isPostSaved: isPostSaved
 }

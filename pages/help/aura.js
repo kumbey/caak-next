@@ -20,7 +20,7 @@ export default function Aura() {
                     <div className='flex flex-row items-center justify-between'>
                         <p className='text-[22px] font-bold'>{`АУРА гэж юу вэ?`}</p>
                         <div>
-                            <a href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
+                            <a rel={"noreferrer"} href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
                             <a><span className='icon-fi-rs-tw ml-[8px] text-[16px]'/></a>
                             <a><span className='icon-fi-rs-ig ml-[8px] text-[16px]'/></a>
                         </div>

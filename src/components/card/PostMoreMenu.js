@@ -118,7 +118,22 @@ export default function PostMoreMenu({
         <p className="text-14px text-caak-extraBlack">Хадгалах</p>
       </div>
       <div
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          isLogged
+            ? setIsOpen(true)
+            : router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    signInUp: "signIn",
+                    isModal: true,
+                  },
+                },
+                `/signInUp/signIn`,
+                { shallow: true }
+              );
+        }}
         className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
       >
         <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />

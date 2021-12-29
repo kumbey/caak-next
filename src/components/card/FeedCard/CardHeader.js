@@ -23,7 +23,7 @@ const CardHeader = ({
   titleClassname,
   handleToast,
 }) => {
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
   const { setFeedSortType } = useWrapper();
 
   const toggleMenu = () => {
@@ -42,12 +42,15 @@ const CardHeader = ({
         containerClassname ? containerClassname : "p-[16px]"
       } `}
     >
-      <ReportModal
-        setIsOpen={setIsReportModalOpen}
-        isOpen={isReportModalOpen}
-        postId={post.id}
-        userId={user.id}
-      />
+      {isLogged && (
+        <ReportModal
+          setIsOpen={setIsReportModalOpen}
+          isOpen={isReportModalOpen}
+          postId={post.id}
+          userId={user.id}
+        />
+      )}
+
       <div className={"flex justify-between items-center h-[34px]"}>
         <div className="flex justify-between items-center h-full">
           <div

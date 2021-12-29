@@ -96,7 +96,7 @@ const DropDownSelect = ({
                   Миний группүүд
                 </span>
                 <span
-                  onClick={() => userAura && setIsAuraModalOpen(true)}
+                  onClick={() => userAura > 5000 && setIsAuraModalOpen(true)}
                   className={"text-15px font-medium text-caak-primary"}
                 >
                   Групп үүсгэх

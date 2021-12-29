@@ -413,15 +413,15 @@ const GroupLayout = ({
               <GroupAdminPanel groupData={groupData} />
             ) : null}
             {/*<GroupTopMembersCard groupId={groupData.id}/>*/}
-            <div className="mt-[16px]">
-              {!hideSuggestedGroups && (
+            {!hideSuggestedGroups && (
+              <div className="mt-[16px]">
                 <SuggestedGroupsCard
                   maxColumns={5}
                   title={"Санал болгох группүүд"}
                   className={"mb-[24px]"}
                 />
-              )}
-            </div>
+              </div>
+            )}
             <GroupRules groupId={groupData.id} />
             {/*<GroupBadge />*/}
             <GroupAdminsCard groupId={groupData.id} />

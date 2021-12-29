@@ -32,7 +32,7 @@ const PostSuccessModal = ({
           <div className="h-[48px] w-[48px] mb-[10px] rounded-full bg-caak-algalfuel flex items-center justify-center">
             <span className="icon-fi-rs-thick-check text-white text-26px" />
           </div>
-          <p className="font-inter font-semibold text-18px text-caak-generalblack mb-[14px]">
+          <p className="font-inter font-semibold text-18px text-caak-generalblack mb-[14px] text-center">
             {messageTitle}
           </p>
           {role === "MEMBER" ? (

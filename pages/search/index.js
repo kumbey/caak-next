@@ -7,16 +7,10 @@ import { API, withSSRContext } from "aws-amplify";
 import useUpdateEffect from "../../src/hooks/useUpdateEffect";
 import { searchApi } from "../../src/apis/search";
 import SearchCard from "../../src/components/card/SearchCard";
-import Loader from "../../src/components/loader";
 import SearchCardGroup from "../../src/components/card/SearchCardGroup";
-import {
-  getReturnData,
-  sortSearchResultByKeyword,
-} from "../../src/utility/Util";
 import Head from "next/head";
 import Consts from "../../src/utility/Consts";
 import {
-  getPostByUser,
   searchPosts,
 } from "../../src/graphql-custom/post/queries";
 import InfinitScroller from "../../src/components/layouts/extra/InfinitScroller";

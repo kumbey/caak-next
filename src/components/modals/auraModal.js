@@ -11,55 +11,10 @@ import helloImg from "../../../public/assets/images/Hello.svg";
 import auraImg from "../../../public/assets/images/AuraSM.svg";
 import { useRouter } from "next/router";
 
-const AuraModal = ({ isOpen, setIsOpen, postId, userId }) => {
+const AuraModal = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [reports, setReports] = useState([]);
-  const [checked, setChecked] = useState();
   const [isNext, setIsNext] = useState(false);
-
-  const initData = {
-    reason: "",
-    post_id: "",
-    status: "",
-    user_id: "",
-  };
-
-  const handleChange = (e) => {
-    setChecked(e.target.value);
-  };
-
-  const finish = () => {
-    setIsOpen(false);
-    setIsNext(false);
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      initData.reason = checked;
-      initData.post_id = postId;
-      initData.user_id = userId;
-      initData.status = "UNCHECKED";
-
-      await API.graphql(
-        graphqlOperation(createReportedPost, { input: initData })
-      );
-
-      setLoading(false);
-      setIsNext(true);
-    } catch (ex) {
-      setLoading(false);
-
-      console.log(ex);
-    }
-  };
-
-  useEffect(() => {
-    API.graphql(graphqlOperation(listReportTypes)).then((report) => {
-      setReports(report.data.listReportTypes.items);
-    });
-  }, []);
 
   return isOpen ? (
     <div className="popup_modal">
@@ -73,6 +28,7 @@ const AuraModal = ({ isOpen, setIsOpen, postId, userId }) => {
             >
               <div className="flex justify-center h-[180px] w-full ">
                 <Image
+                  priority={true}
                   className=" bg-white rounded-[10px] bg-transparent"
                   src={helloImg}
                   height={180}

@@ -14,13 +14,12 @@ import { onCommentByParent } from "../../graphql-custom/comment/subscriptions";
 import Loader from "../loader";
 import ProfileHoverCard from "./ProfileHoverCard";
 import Tooltip from "../tooltip/Tooltip";
+import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const CommentSubItemCard = ({
-  setReply,
-  setCommentInputValue,
   parentId,
   maxComment,
-  addCommentRef,
   jumpToCommentId,
 }) => {
   const { isLogged } = useUser();
@@ -28,7 +27,12 @@ const CommentSubItemCard = ({
   const [subscriptionComment, setSubscriptionComment] = useState(null);
   const [reRender, setReRender] = useState(0);
   const [isFetchingComment, setIsFetchingComment] = useState(false);
-
+  const [isReplyInputActive, setIsReplyInputActive] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0)
+  // const [replyInputValue, setReplyInputValue] = useState("");
+  const [reply, setReply] = useState({
+    isReplying: true
+  });
   const [subComments, setSubComments] = useState({
     items: [],
     nextToken: null,
@@ -142,7 +146,7 @@ const CommentSubItemCard = ({
                   jumpToCommentId === subComment.id ? "commentFade" : ""
                 }`}
               >
-                <div className={"mb-[4px]"}>
+                <div className={"mb-[4px] w-max"}>
                   <Tooltip
                     className={"-left-6"}
                     content={<ProfileHoverCard userId={subComment.user.id} />}
@@ -178,24 +182,14 @@ const CommentSubItemCard = ({
                       </div>
                       <div
                         onClick={() => {
-                          setCommentInputValue(
-                              (prev) => {
-                                if(!prev?.startsWith(`@${subComment.user.nickname}`)){
-                                  return `@${subComment.user.nickname} ${prev}`
-                                }
-                                else {
-                                  return prev
-                                }
-                              }
-                          );
+                          setIsReplyInputActive(true)
+                          setActiveIndex(index)
                           setReply({
                             isReplying: true,
                             user_id: subComment.user.id,
                             user_nickname: `@${subComment.user.nickname} `,
                             comment_id: parentId,
                           });
-                          if (addCommentRef?.current)
-                            addCommentRef.current.focus();
                         }}
                         className={"flex flex-row item-center ml-[16px]"}
                       >
@@ -237,6 +231,14 @@ const CommentSubItemCard = ({
                     />
                   </div>
                 </div>
+                {isReplyInputActive && (activeIndex === index) && (
+                  <ViewPostBlogAddComment
+                    commentId={parentId}
+                    setIsActive={setIsReplyInputActive}
+                    containerClassname={"h-[94px]"}
+                    reply={reply}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -246,13 +248,18 @@ const CommentSubItemCard = ({
         <div
           onClick={() => listSubCommentByParentId()}
           className={
-            "text-caak-generalblack font-medium text-[12px] pl-[40px] mb-[10px] cursor-pointer"
+            "pl-[40px] mb-[10px] cursor-pointer"
           }
         >
           {isFetchingComment ? (
             <Loader className={`bg-caak-primary self-center`} />
           ) : (
-            "Илүү ихийг үзэх"
+            <div className={'flex flex-row items-center'}>
+              <div className={'flex items-center justify-center w-[14px] h-[14px]'}>
+                <span className={"fi-rs-reply text-[11.67px]"}/>
+              </div>
+              <p className={"ml-[3px] text-caak-nocturnal font-semibold text-[13px]"}>Илүү ихийг үзэх</p>
+            </div>
           )}
         </div>
       )}

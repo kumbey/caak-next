@@ -14,6 +14,7 @@ const post0004 = /* GraphQL */ `
     updatedAt
     createdAt
     version
+    isSaved
     comments {
       items {
         comment

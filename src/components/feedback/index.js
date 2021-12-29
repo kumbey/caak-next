@@ -23,7 +23,7 @@ const FeedBack = () => {
   return (
     <div
       className={
-        "hidden feedBack flex flex-col z-[1] fixed bottom-[24px] right-[24px] w-[321px] p-[25px]"
+        "feedBack flex flex-col z-[1] fixed bottom-[24px] right-[24px] w-[321px] p-[25px]"
       }
     >
       <div
@@ -69,6 +69,7 @@ const FeedBack = () => {
           />
           <div className={"w-full mt-[10px]"}>
             <textarea
+              maxLength={500}
               defaultValue={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder={"Сэтгэгдэл"}

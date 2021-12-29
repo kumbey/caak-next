@@ -3,7 +3,7 @@ import Card from "../src/components/card/FeedCard";
 import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { generateFileUrl, getReturnData } from "../src/utility/Util";
+import { getReturnData } from "../src/utility/Util";
 import { getPostByStatus } from "../src/graphql-custom/post/queries";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
@@ -102,7 +102,7 @@ const Feed = ({ ssrData }) => {
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.posts.nextToken,
-    ssr: true
+    ssr: true,
   });
 
   const fetchPosts = async () => {

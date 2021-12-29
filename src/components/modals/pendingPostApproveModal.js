@@ -1,9 +1,8 @@
 import ImageCarousel from "../carousel/ImageCarousel";
 import Image from "next/image";
 import {
-  generateFileUrl,
   generateTimeAgo,
-  getDate,
+  getDate, getFileUrl,
   getGenderImage,
 } from "../../utility/Util";
 import Button from "../button";
@@ -94,7 +93,7 @@ const PendingPostApproveModal = ({
                   layout={"fill"}
                   src={
                     post.user.pic
-                      ? generateFileUrl(post.user.pic)
+                      ? getFileUrl(post.user.pic)
                       : getGenderImage(post.user.gender).src
                   }
                   objectFit={"cover"}

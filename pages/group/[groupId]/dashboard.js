@@ -18,7 +18,6 @@ import {
   getGroupUsersByGroup,
   getGroupView,
 } from "../../../src/graphql-custom/group/queries";
-import Loader from "../../../src/components/loader";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
@@ -200,6 +199,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: ssrData.posts.nextToken,
+    ssr:true
   });
   const [nextFollowers] = useListPager({
     query: getGroupUsersByGroup,
@@ -208,6 +208,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: ssrData.userFollower.nextToken,
+    ssr:true
   });
   const [nextPending] = useListPager({
     query: getPostByGroup,
@@ -218,6 +219,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: ssrData.pendingPosts.nextToken,
+    ssr:true
   });
   // const [nextArchived] = useListPager({
   //   query: getPostByGroup,
@@ -234,13 +236,10 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-        if (posts.nextToken) {
           const resp = await nextPosts();
           if (resp) {
             setPosts((nextPosts) => [...nextPosts, ...resp]);
           }
-        }
-
         setLoading(false);
       }
     } catch (ex) {
@@ -253,12 +252,10 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        if (followedUsers.nextToken) {
           const resp = await nextFollowers();
           if (resp) {
             setFollowedUsers((nextFollowers) => [...nextFollowers, ...resp]);
           }
-        }
 
         setLoading(false);
       }
@@ -271,12 +268,10 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-        if (pendingPosts.nextToken) {
           const resp = await nextPending();
           if (resp) {
             setPendingPosts((nextPending) => [...nextPending, ...resp]);
           }
-        }
 
         setLoading(false);
       }
@@ -445,7 +440,7 @@ const Dashboard = ({ ssrData }) => {
           {groupData.name} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div className="max-w-[1240px] mx-auto flex flex-col justify-center px-[10px] lg:px-0 mt-[50px]">
+      <div className="max-w-[1240px] mx-auto flex flex-col justify-center px-[10px] lg:px-0 mt-[50px] pb-[250px]">
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}
@@ -563,7 +558,7 @@ const Dashboard = ({ ssrData }) => {
             </div>
             <div
               className={
-                "flex flex-col rounded-lg bg-caak-emptiness mt-[15px] px-[8px] lg:px-[30px] pt-[16px] mb-[50px]"
+                "flex flex-col rounded-lg bg-caak-emptiness mt-[15px] px-[8px] lg:px-[30px] pt-[16px] overflow-x-scroll"
               }
             >
               {activeIndex === 0 ? (

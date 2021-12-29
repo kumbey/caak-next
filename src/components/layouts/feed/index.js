@@ -38,7 +38,7 @@ const DefaultFeedLayout = ({
   return (
     loaded && (
       <div
-        className={"feedLayoutContainer"}
+        className={"feedLayoutContainer pb-[200px] md:pb-0"}
         // style={{ paddingBottom: size.height / 3 }}
       >
         {columns === 3 && (

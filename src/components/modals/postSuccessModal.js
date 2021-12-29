@@ -1,6 +1,15 @@
 import Button from "../button";
+import { useRouter } from "next/router";
 
-const PostSuccessModal = ({ messageTitle, isOpen, setIsOpen, finish, role }) => {
+const PostSuccessModal = ({
+  messageTitle,
+  isOpen,
+  setIsOpen,
+  finish,
+  role,
+}) => {
+  const router = useRouter();
+
   return isOpen ? (
     <div className="popup_modal">
       <div className="popup_modal-success rounded-xl">
@@ -10,7 +19,10 @@ const PostSuccessModal = ({ messageTitle, isOpen, setIsOpen, finish, role }) => 
           }
         >
           <div
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false);
+              router.push("/");
+            }}
             className={
               "flex items-center justify-center w-[30px] h-[30px] rounded-full bg-caak-titaniumwhite absolute right-[16px] top-[16px] cursor-pointer"
             }
@@ -23,10 +35,11 @@ const PostSuccessModal = ({ messageTitle, isOpen, setIsOpen, finish, role }) => 
           <p className="font-inter font-semibold text-18px text-caak-generalblack mb-[14px]">
             {messageTitle}
           </p>
-          {role === "MEMBER" ? <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
-            Группын админ постыг баталгаажуулах хүртэл түр хүлээнэ үү.
-          </p> : null}
-
+          {role === "MEMBER" ? (
+            <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
+              Группын админ постыг баталгаажуулах хүртэл түр хүлээнэ үү.
+            </p>
+          ) : null}
 
           <Button
             onClick={() => finish(role)}

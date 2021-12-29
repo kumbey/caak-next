@@ -28,7 +28,7 @@ const PendingPostApproveModal = ({
         <div
           onClick={() => setIsOpen(false)}
           className={
-            "w-[40px] h-[40px] absolute flex items-center justify-center rounded-full bg-[#FFFFFF33] right-[-50px] cursor-pointer"
+            "w-[40px] h-[40px] absolute flex items-center justify-center rounded-full bg-[#FFFFFF33] top-[-50px] right-0 md:right-[-50px] cursor-pointer"
           }
         >
           <span className={"icon-fi-rs-close text-white"} />

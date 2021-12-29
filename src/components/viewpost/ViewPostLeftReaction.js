@@ -22,7 +22,6 @@ const ViewPostLeftReaction = ({
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [pathName, setPathName] = useState("");
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-  console.log(post)
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -214,7 +213,12 @@ const ViewPostLeftReaction = ({
             open={isMenuOpen}
             onToggle={toggleMenu}
             content={
-              <PostMoreMenu post={post} postUser={post.user} groupId={post.group_id} />
+              <PostMoreMenu
+                setIsOpen={setIsReportModalOpen}
+                post={post}
+                postUser={post.user}
+                groupId={post.group_id}
+              />
             }
             className={
               "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[500] rounded-[4px]"

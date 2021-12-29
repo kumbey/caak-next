@@ -132,7 +132,10 @@ const AddPost = () => {
     if (param === "isPost") toast.success("Пост хоосон байна.", toastIcon);
     if (param === "isTitle") toast.success("Гарчиг бичнэ үү.", toastIcon);
     if (param === "isFollow")
-      toast.success("Та уг группт нэгдээгүй байна.", toastIcon);
+      toast.success(
+        `Та "${selectedGroup.name}" группт нэгдээгүй байна.`,
+        toastIcon
+      );
     if (param === "isGroup") toast.success("Группээ сонгоно уу.", toastIcon);
   };
 
@@ -258,8 +261,8 @@ const AddPost = () => {
               messageTitle={`${
                 selectedGroup.role_on_group === "ADMIN" ||
                 selectedGroup.role_on_group === "ADMIN"
-                  ? "Таны пост группт амжилттай нийтлэгдлээ."
-                  : "Таны пост группт амжилттай илгээгдлээ."
+                  ? `Таны пост "${selectedGroup.name}" группт амжилттай нийтлэгдлээ.`
+                  : `Таны пост "${selectedGroup.name}" группт амжилттай илгээгдлээ.`
               }`}
             />
           )}

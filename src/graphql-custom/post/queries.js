@@ -135,3 +135,29 @@ export const searchPosts = /* GraphQL */ `
         }
     }
 `;
+
+export const listSavedPostByUser = /* GraphQL */ `
+    query ListSavedPostByUser(
+        $user_id: ID,
+		$sortDirection: ModelSortDirection,
+		$limit: Int,
+		$nextToken: String
+    ) {
+        listSavedPostByUser(
+            user_id: $user_id,
+            sortDirection: $sortDirection,
+            limit: $limit,
+            nextToken: $nextToken
+        ){
+            items {
+                createdAt
+                id
+                post_id
+                updatedAt
+                user_id
+                post ${post0004}
+            }
+            nextToken
+        }     
+    }
+`;

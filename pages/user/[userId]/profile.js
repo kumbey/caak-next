@@ -6,7 +6,10 @@ import useModalLayout from "../../../src/hooks/useModalLayout";
 import FeedSortButtons from "../../../src/components/navigation/FeedSortButtons";
 import { userProfileType } from "../../../src/components/navigation/sortButtonTypes";
 import UserPostsCard from "../../../src/components/card/UserProfile/UserPostsCard";
-import { getPostByUser } from "../../../src/graphql-custom/post/queries";
+import {
+  getPostByUser,
+  listSavedPostByUser,
+} from "../../../src/graphql-custom/post/queries";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import API from "@aws-amplify/api";
 import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
@@ -40,6 +43,21 @@ export async function getServerSideProps({ req, query }) {
     });
     return getReturnData(resp);
   };
+
+  const getSavedPostByUserId = async () => {
+    const resp = await API.graphql({
+      query: listSavedPostByUser,
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      variables: {
+        user_id: userId,
+        sortDirection: "DESC",
+        filter: { status: { eq: "CONFIRMED" } },
+        limit: 20,
+      },
+    });
+    return getReturnData(resp);
+  };
+
   const getUserById = async () => {
     const resp = await API.graphql({
       query: getUser,
@@ -54,6 +72,7 @@ export async function getServerSideProps({ req, query }) {
         ssrData: {
           user: await getUserById(),
           posts: await getPostByUserId(),
+          savedPosts: await getSavedPostByUserId(),
         },
       },
     };
@@ -66,6 +85,7 @@ const Profile = ({ ssrData }) => {
   const [fetchedUser, setFetchedUser] = useState(ssrData.user);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(ssrData.posts);
+  const [savedPosts, setSavedPosts] = useState(ssrData.savedPosts);
   const [sortType, setSortType] = useState("POST");
   const [subscripedPost, setSubscripedPost] = useState(0);
   const { isLogged } = useUser();
@@ -73,6 +93,7 @@ const Profile = ({ ssrData }) => {
   const [render, setRender] = useState(0);
   const router = useRouter();
   const { userId } = router.query;
+
   const [nextPosts] = useListPager({
     query: getPostByUser,
     variables: {
@@ -85,18 +106,50 @@ const Profile = ({ ssrData }) => {
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     ssr: true,
   });
+
+  const [nextSavedPosts] = useListPager({
+    query: listSavedPostByUser,
+    variables: {
+      user_id: userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "CONFIRMED" } },
+      limit: 20,
+    },
+    nextToken: ssrData.savedPosts.nextToken,
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr: true,
+  });
+
   const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
-        if (posts.nextToken) {
-          const resp = await nextPosts();
-          if (resp) {
-            setPosts((nextPosts) => ({
-              ...nextPosts,
-              items: [...nextPosts.items, ...resp],
-            }));
-          }
+        const resp = await nextPosts();
+        if (resp) {
+          setPosts((nextPosts) => ({
+            ...nextPosts,
+            items: [...nextPosts.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+
+  const fetchSavedPosts = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+        const resp = await nextSavedPosts();
+        if (resp) {
+          setSavedPosts((nextSavedPosts) => ({
+            ...nextSavedPosts,
+            items: [...nextSavedPosts.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -203,6 +256,14 @@ const Profile = ({ ssrData }) => {
     setFetchedUser(ssrData.user);
   }, [ssrData.user]);
 
+  useEffect(() => {
+    setSavedPosts(ssrData.savedPosts);
+  }, [ssrData.savedPosts]);
+
+  useEffect(() => {
+    console.log(savedPosts);
+  }, []);
+
   const ProfileLayout = useModalLayout({ layoutName: "userProfile" });
   return (
     <>
@@ -225,20 +286,30 @@ const Profile = ({ ssrData }) => {
             direction={"col"}
           />
 
-          <InfinitScroller onNext={fetchPosts} loading={loading}>
-            <div className={"userPostsContainer"}>
-              {posts.items.map((items, index) => {
-                if (
-                  items.items.items[0].file.type.startsWith("video") &&
-                  sortType === "VIDEO"
-                ) {
-                  return <UserPostsCard key={index} post={items} />;
-                } else if (sortType === "POST") {
-                  return <UserPostsCard key={index} post={items} />;
-                }
-              })}
-            </div>
-          </InfinitScroller>
+          {sortType === "SAVED" ? (
+            <InfinitScroller onNext={fetchSavedPosts} loading={loading}>
+              <div className={"userPostsContainer"}>
+                {savedPosts.items.map((item, index) => {
+                  return <UserPostsCard key={index} post={item.post} />;
+                })}
+              </div>
+            </InfinitScroller>
+          ) : (
+            <InfinitScroller onNext={fetchPosts} loading={loading}>
+              <div className={"userPostsContainer"}>
+                {posts.items.map((items, index) => {
+                  if (
+                    items.items.items[0].file.type.startsWith("video") &&
+                    sortType === "VIDEO"
+                  ) {
+                    return <UserPostsCard key={index} post={items} />;
+                  } else if (sortType === "POST") {
+                    return <UserPostsCard key={index} post={items} />;
+                  }
+                })}
+              </div>
+            </InfinitScroller>
+          )}
         </div>
       </ProfileLayout>
     </>

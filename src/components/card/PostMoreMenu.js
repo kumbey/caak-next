@@ -10,10 +10,14 @@ import { useEffect, useState } from "react";
 import { getGroupFollowed } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
 import { useRouter } from "next/router";
+import {
+  createSavedPost,
+  deleteSavedPost,
+} from "../../graphql-custom/post/mutation";
 
 export default function PostMoreMenu({
   postUser,
-  postId,
+  post,
   groupId,
   handleToast,
   setIsOpen,
@@ -40,6 +44,32 @@ export default function PostMoreMenu({
     getGroupFollow();
     // eslint-disable-next-line
   }, []);
+
+  const savePost = async () => {
+    await API.graphql(
+      graphqlOperation(createSavedPost, {
+        input: {
+          post_id: post.id,
+          user_id: user.id,
+          id: `${post.id}#${user.id}`,
+        },
+      })
+    );
+    post.isSaved = true;
+    handleToast({ param: "saved" });
+  };
+
+  const unSavePost = async () => {
+    await API.graphql(
+      graphqlOperation(deleteSavedPost, {
+        input: {
+          id: `${post.id}#${user.id}`,
+        },
+      })
+    );
+    post.isSaved = false;
+    handleToast({ param: "unSaved" });
+  };
 
   const joinGroup = async () => {
     await API.graphql(
@@ -104,7 +134,7 @@ export default function PostMoreMenu({
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>
             router.push({
-              pathname: `/post/edit/${postId}`,
+              pathname: `/post/edit/${post.id}`,
             })
           }
         >
@@ -113,10 +143,27 @@ export default function PostMoreMenu({
         </div>
       )}
 
-      <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-        <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  w-c1 text-16px"} />
-        <p className="text-14px text-caak-extraBlack">Хадгалах</p>
-      </div>
+      {isLogged &&
+        postUser.id !== user.id &&
+        (post.isSaved ? (
+          <div
+            onClick={() => unSavePost()}
+            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          >
+            <span
+              className={"icon-fi-rs-bookmark-f mr-px-12 w-c1  text-16px"}
+            />
+            <p className="text-14px text-caak-extraBlack">Хадгалагдсан</p>
+          </div>
+        ) : (
+          <div
+            onClick={() => savePost()}
+            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          >
+            <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  text-16px"} />
+            <p className="text-14px text-caak-extraBlack">Хадгалах</p>
+          </div>
+        ))}
       <div
         onClick={() => {
           isLogged

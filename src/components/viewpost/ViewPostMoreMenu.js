@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-const ViewPostMoreMenu = () => {
+const ViewPostMoreMenu = ({ setIsReportModalOpen }) => {
   const router = useRouter();
   const postId = router.query.id;
   return (
@@ -11,7 +11,10 @@ const ViewPostMoreMenu = () => {
         </div>
         <p className="ml-[12px] text-14px text-caak-extraBlack">Хадгалах</p>
       </div>
-      <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+      <div
+        onClick={() => setIsReportModalOpen(true)}
+        className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+      >
         <div className={"w-[20px] h-[20px] flex items-center justify-center"}>
           <span className={"icon-fi-rs-flag text-[17px]"} />
         </div>

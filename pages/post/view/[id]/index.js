@@ -209,6 +209,12 @@ const Post = ({ ssrData }) => {
                 {post.status === "PENDING" ? " (Шалгагдаж буй пост)" : ""}
                 {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
               </p>
+              {post.status === "ARCHIVED" &&
+                post.status_history.items?.length > 0 && (
+                  <p className={"text-caak-scriptink"}>
+                    Шалтгаан: {post.status_history.items[0].description}
+                  </p>
+                )}
             </div>
 
             {post.items.items.length > 1 && (

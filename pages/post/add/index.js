@@ -140,10 +140,6 @@ const AddPost = () => {
     if (postId) {
       getGroups();
       loadPost(postId);
-    } else if (groupId) {
-      getGroup({ id: groupId, setGroupData });
-      setSelectedGroupId(groupId);
-      setPermissionDenied(false);
     } else {
       getGroups({ id: groupId, setGroupData });
       setSelectedGroupId(groupId);

@@ -15,9 +15,6 @@ import {
 import Loader from "../loader";
 
 const CommentCardNew = ({
-  setCommentInputValue,
-  reply,
-  setReply,
   setup,
   addCommentRef,
   jumpToCommentId,
@@ -141,27 +138,27 @@ const CommentCardNew = ({
 
   return comments.items ? (
     comments.items.length !== 0 ? (
-      <div className={"border-t border-caak-titaniumwhite py-[25px] last:pb-0 w-full"}>
+      <div
+        className={
+          "border-t border-caak-titaniumwhite py-[25px] last:pb-0 w-full"
+        }
+      >
         {comments.items.map((comment, index) => {
           return comment.type === "PARENT" ? (
             <CommentItemCard
               jumpToCommentId={jumpToCommentId}
               addCommentRef={addCommentRef}
-              reply={reply}
-              setReply={setReply}
-              setCommentInputValue={setCommentInputValue}
               comment={comment}
+              postId={setup.id}
               key={index}
             >
               <div className={"mt-[12px]"}>
                 <CommentSubItemCard
                   jumpToCommentId={jumpToCommentId}
                   addCommentRef={addCommentRef}
-                  reply={reply}
-                  setReply={setReply}
-                  setCommentInputValue={setCommentInputValue}
                   parentId={comment.id}
                   maxComment={2}
+                  commentUser={comment.user}
                 />
               </div>
             </CommentItemCard>

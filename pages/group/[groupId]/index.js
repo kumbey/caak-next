@@ -9,7 +9,6 @@ import { API, withSSRContext } from "aws-amplify";
 
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
-import Loader from "../../../src/components/loader";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
 import { useListPager } from "../../../src/utility/ApiHelper";
 
@@ -20,15 +19,14 @@ import {
   listPostByGroupOrderByReactions,
 } from "../../../src/graphql-custom/group/queries";
 import List from "../../../src/components/list";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
-import useDeviceDetect from "../../../src/hooks/useDeviceDetect";
 import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 import AddPostHandler from "../../../src/components/addposthandler";
+import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -40,33 +38,37 @@ export async function getServerSideProps({ req, query }) {
     user = null;
   }
 
-  const resp = await API.graphql({
-    query: getPostByGroup,
-    variables: {
-      group_id: query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const groupView = await API.graphql({
-    query: getGroupView,
-    variables: {
-      id: query.groupId,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  return {
-    props: {
-      ssrData: {
-        posts: getReturnData(resp),
-        groupData: getReturnData(groupView),
+  try{
+    const resp = await API.graphql({
+      query: getPostByGroup,
+      variables: {
+        group_id: query.groupId,
+        sortDirection: "DESC",
+        filter: { status: { eq: "CONFIRMED" } },
+        limit: 6,
       },
-    },
-  };
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+  
+    const groupView = await API.graphql({
+      query: getGroupView,
+      variables: {
+        id: query.groupId,
+      },
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+
+    return {
+      props: {
+        ssrData: {
+          posts: getReturnData(resp),
+          groupData: getReturnData(groupView),
+        },
+      },
+    };
+  }catch(ex){
+      console.log(ex)
+  }
 }
 
 const Group = ({ ssrData }) => {
@@ -220,6 +222,7 @@ const Group = ({ ssrData }) => {
   const handleToast = ({ param }) => {
     if (param === "follow") toast.success("Группт амжилттай элслээ.");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
   };
 
   return loaded ? (
@@ -232,6 +235,7 @@ const Group = ({ ssrData }) => {
       <Toaster
         toastOptions={{
           className: "toastOptions",
+          duration: 5000,
         }}
       />
       <GroupLayout
@@ -256,19 +260,10 @@ const Group = ({ ssrData }) => {
           setSortType={setSortType}
         />
 
-        <InfiniteScroll
-          dataLength={posts.length}
-          next={fetchPosts}
+        <InfinitScroller
+          onNext={fetchPosts}
           className={"pb-[20px]"}
-          // pullDownToRefresh={true}
-          hasMore={true}
-          loader={
-            <Loader
-              containerClassName={"self-center w-full"}
-              className={`bg-caak-primary ${loading ? "" : "hidden"}`}
-            />
-          }
-          endMessage={<h4>Nothing more to show</h4>}
+          loading={loading}
         >
           {posts.map((data, index) => {
             if (sortType === "CAAK" && data.owned === "CAAK") {
@@ -309,21 +304,9 @@ const Group = ({ ssrData }) => {
               ) : null;
             }
           })}
-        </InfiniteScroll>
+        </InfinitScroller>
         {sortType === "TREND" && trendingPosts.items?.length > 0 ? (
-          <InfiniteScroll
-            className={"pb-[20px]"}
-            dataLength={trendingPosts.items?.length}
-            next={fetchTrendPosts}
-            hasMore={true}
-            loader={
-              <Loader
-                containerClassName={"self-center w-full"}
-                className={`bg-caak-primary ${loading ? "" : "hidden"}`}
-              />
-            }
-            endMessage={<h4>Nothing more to show</h4>}
-          >
+          <InfinitScroller className={"pb-[20px]"} onNext={fetchTrendPosts}>
             {trendingPosts.items.map((data, index) => {
               return activeView === 0 ? (
                 <Card
@@ -344,7 +327,7 @@ const Group = ({ ssrData }) => {
                 />
               ) : null;
             })}
-          </InfiniteScroll>
+          </InfinitScroller>
         ) : null}
       </GroupLayout>
     </>

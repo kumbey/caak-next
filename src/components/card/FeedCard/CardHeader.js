@@ -12,6 +12,7 @@ import Link from "next/link";
 import ProfileHoverCard from "../ProfileHoverCard";
 import Image from "next/image";
 import { useWrapper } from "../../../context/wrapperContext";
+import { useRouter } from "next/router";
 
 const CardHeader = ({
   post,
@@ -29,6 +30,8 @@ const CardHeader = ({
     setIsMenuOpen(false);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
   return post.user ? (
     <div
       className={`flex flex-col relative ${
@@ -49,6 +52,7 @@ const CardHeader = ({
                   ? getFileUrl(post.group?.profile)
                   : getGenderImage("default")
               }
+              objectFit={"cover"}
               alt="Group profile"
             />
           </div>
@@ -56,7 +60,7 @@ const CardHeader = ({
           <div className="flex flex-col justify-between ml-[8px] h-full">
             <div className={"flex flex-row items-center"}>
               <span className="mr-1 font-semibold cursor-pointer text-generalblack text-14px leading-[16px] tracking-[0.21px]">
-                <Link shallow href={`/group/${post.group.id}`}>
+                <Link href={`/group/${post.group.id}`}>
                   <a>{post.group.name}</a>
                 </Link>
               </span>
@@ -83,7 +87,6 @@ const CardHeader = ({
               >
                 <div className={"flex flex-row items-center"}>
                   <Link
-                    shallow
                     href={{
                       pathname: `/user/${post.user.id}/profile`,
                     }}
@@ -121,7 +124,7 @@ const CardHeader = ({
         <div className={"cursor-pointer flex flex-row items-center"}>
           {post.owned === "CAAK" && (
             <div
-              onClick={() => setFeedSortType("CAAK")}
+              onClick={() => router.push("/caak")}
               className={
                 "flex flex-row items-center h-[24px] px-[10px] py-[4px] rounded-[6px] cContentGradient mr-[4px]"
               }
@@ -152,7 +155,7 @@ const CardHeader = ({
           >
             <span className="icon-fi-rs-dots text-22px" />
             <DropDown
-                arrow={"topRight"}
+              arrow={"topRight"}
               open={isMenuOpen}
               onToggle={toggleMenu}
               content={
@@ -169,17 +172,31 @@ const CardHeader = ({
         </div>
       </div>
       {!hideTitle && (
-        <div
-          className={` text-caak-generalblack break-words pt-[12px]  ${
-            titleClassname
-              ? titleClassname
-              : "text-15px leading-[18px] tracking-[0.23px]"
-          }`}
+        <Link
+          as={`/post/view/${post.id}`}
+          shallow
+          href={{
+            query: {
+              ...router.query,
+              viewPost: "post",
+              id: post.id,
+              prevPath: router.asPath,
+              isModal: true,
+            },
+          }}
         >
-          <Link shallow href={`/post/view/${post.id}`}>
-            <a>{post.title}</a>
-          </Link>
-        </div>
+          <a>
+            <p
+              className={`text-caak-generalblack break-words pt-[12px]  ${
+                titleClassname
+                  ? titleClassname
+                  : "text-15px leading-[18px] tracking-[0.23px]"
+              }`}
+            >
+              {post.title}
+            </p>
+          </a>
+        </Link>
       )}
     </div>
   ) : null;

@@ -1,6 +1,6 @@
 import Button from "../button";
 import { useUser } from "../../context/userContext";
-import {getFileUrl, getGenderImage} from "../../utility/Util";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
 import React, { useEffect } from "react";
 import Dummy from "dummyjs";
 import NavBarMenu from "./NavBarMenu";
@@ -44,7 +44,6 @@ const MobileSideMenu = ({ setOpen }) => {
         {isLogged && (
           <div className={"relative flex flex-row items-center"}>
             <Link
-              shallow
               href={
                 isLogged ? `/user/${user.id}/profile` : "/login"
                 // state: { background: location },
@@ -55,7 +54,11 @@ const MobileSideMenu = ({ setOpen }) => {
                   {isLogged ? (
                     <img
                       alt={user.nickname}
-                      src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
+                      src={
+                        user.pic
+                          ? getFileUrl(user.pic)
+                          : getGenderImage(user.gender).src
+                      }
                       className={"block w-c13 h-c13 object-cover rounded-full"}
                     />
                   ) : (
@@ -69,7 +72,6 @@ const MobileSideMenu = ({ setOpen }) => {
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
                   <Link
-                    shallow
                     href={{
                       pathname: `/user/${user.id}/profile`,
                     }}

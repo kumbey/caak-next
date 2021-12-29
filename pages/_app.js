@@ -9,15 +9,29 @@ import Modals from "../src/components/modals";
 import NProgress from "nprogress"; //nprogress module
 import "nprogress/nprogress.css"; //styles of nprogress
 import Router from "next/router";
-import ViewPostModal from "../src/components/modals/ViewPostModal";
+import ViewPostModal from "../src/components/modals/viewPostModal";
+import ViewPostItemModal from "../src/components/modals/viewPostItemModal";
+import RedirectUrls from "../src/redirectUrls"
 
-Amplify.configure({ ...awsExports, ssr: true });
-Storage.configure({ level: "public" });
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-function MyApp({ Component, pageProps }) {
+const updatedAwsConfig = {
+  ...awsExports,
+  oauth: {
+    ...awsExports.oauth,
+    redirectSignIn: RedirectUrls.redirectSignIn,
+    redirectSignOut: RedirectUrls.redirectSignOut,
+  },
+  ssr: true
+}
+
+Amplify.configure(updatedAwsConfig);
+Storage.configure({ level: "public" });
+
+const MyApp = ({ Component, pageProps}) => {
+
   return (
     <WrapperProvider>
       <UserProvider>
@@ -28,6 +42,7 @@ function MyApp({ Component, pageProps }) {
           </div>
         </div>
         <ViewPostModal />
+        <ViewPostItemModal />
         <Modals />
       </UserProvider>
     </WrapperProvider>

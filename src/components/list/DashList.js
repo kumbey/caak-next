@@ -14,6 +14,7 @@ import { updatePost } from "../../graphql-custom/post/mutation";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostDenyModal from "../modals/postDenyModal";
+import { useRouter } from "next/router";
 
 const DashList = ({ imageSrc, post, type, video }) => {
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
       console.log(ex);
     }
   };
+  const router = useRouter();
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <PostDenyModal
@@ -47,40 +49,49 @@ const DashList = ({ imageSrc, post, type, video }) => {
       <div className="relative flex items-center ">
         <div className="flex flex-shrink-0 w-[240px] mr-[18px] items-center">
           <Link
+            as={`/post/view/${post.id}`}
             shallow
             href={{
-              pathname: `/post/view/${post.id}`,
+              ...router.query,
+              viewPost: "post",
+              id: post.id,
+              prevPath: router.asPath,
+              isModal: true,
             }}
           >
-            <a>
-              <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
-                {video ? (
-                  <Video
-                    videoClassname={"object-contain rounded-[4px]"}
-                    src={getFileUrl(video)}
-                    thumbnailIcon
-                    hideControls
-                  />
-                ) : (
-                  <Image
-                    className=" bg-white rounded-md"
-                    src={getFileUrl(imageSrc)}
-                    width={64}
-                    height={64}
-                    objectFit={"cover"}
-                    alt="#"
-                  />
-                )}
-              </div>
+            <a className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}>
+              {video ? (
+                <Video
+                  videoClassname={"object-contain rounded-[4px]"}
+                  src={getFileUrl(video)}
+                  thumbnailIcon
+                  hideControls
+                />
+              ) : (
+                <Image
+                  quality={100}
+                  className=" bg-white rounded-md"
+                  src={getFileUrl(imageSrc)}
+                  width={64}
+                  height={64}
+                  objectFit={"cover"}
+                  alt="#"
+                />
+              )}
             </a>
           </Link>
 
           <div className="flex flex-col  font-inter mr-[26px]">
-            <div className="truncate-2 text-15px font-medium text-caak-generalblack">
+            <div className="cursor-pointer truncate-2 text-15px font-medium text-caak-generalblack">
               <Link
                 shallow
+                as={`/post/view/${post.id}`}
                 href={{
-                  pathname: `/post/view/${post.id}`,
+                  ...router.query,
+                  viewPost: "post",
+                  id: post.id,
+                  prevPath: router.asPath,
+                  isModal: true,
                 }}
               >
                 <a>{post.title}</a>
@@ -116,7 +127,6 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 </div>
 
                 <Link
-                  shallow
                   href={{
                     pathname: `/user/${post.user_id}/profile`,
                   }}
@@ -132,7 +142,6 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : type === "user" ? (
             <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
               <Link
-                shallow
                 href={{
                   pathname: `/group/${post.group.id}`,
                 }}

@@ -179,7 +179,14 @@ const CommentSubItemCard = ({
                       <div
                         onClick={() => {
                           setCommentInputValue(
-                            (prev) => `@${subComment.user.nickname} ${prev}`
+                              (prev) => {
+                                if(!prev?.startsWith(`@${subComment.user.nickname}`)){
+                                  return `@${subComment.user.nickname} ${prev}`
+                                }
+                                else {
+                                  return prev
+                                }
+                              }
                           );
                           setReply({
                             isReplying: true,

@@ -16,16 +16,21 @@ import { searchApi } from "../../apis/search";
 const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState({});
   const router = useRouter();
   const searchInputRef = useClickOutSide(() => setIsSearchBarOpen(false));
   const debouncedSearchResult = useDebounce(inputValue, 300);
 
   const searchQuery = async () => {
-    const resp = await searchApi({ API, searchQuery: inputValue, limit: 6 });
-    setSearchResult(resp);
+    const resp = await searchApi({ API, searchQuery: inputValue, postLimit: 10 });
+    setGroups(resp.groups);
+    setUsers(resp.users);
+    setPosts(resp.posts);
   };
+
 
   useEffect(() => {
     if (debouncedSearchResult) {
@@ -36,7 +41,6 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
         });
       }
     } else {
-      setSearchResult([]);
       setIsSearching(false);
     }
     // eslint-disable-next-line
@@ -81,18 +85,38 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
 
         {!isSearching ? (
           <div>
-            {sortSearchResultByKeyword(searchResult, inputValue)?.map(
-              (item, index) => {
+            {groups?.map((item, index) => {
+              if (index < 10)
                 return (
                   <SearchedGroupItem
-                    type={item.type}
+                    type={"GROUP"}
                     id={item.id}
                     key={index}
                     setIsSearchBarOpen={setIsSearchBarOpen}
                   />
                 );
-              }
-            )}
+            })}
+            {users?.map((item, index) => {
+              if (index < 10)
+                return (
+                  <SearchedGroupItem
+                    type={"USER"}
+                    id={item.id}
+                    key={index}
+                    setIsSearchBarOpen={setIsSearchBarOpen}
+                  />
+                );
+            })}
+            {posts.items?.map((item, index) => {
+              return (
+                <SearchedGroupItem
+                  type={"POST"}
+                  id={item.id}
+                  key={index}
+                  setIsSearchBarOpen={setIsSearchBarOpen}
+                />
+              );
+            })}
             <div
               className={
                 "flex flex-row items-center px-[6px] pt-[14px] border-t border-caak-liquidnitrogen"
@@ -106,7 +130,6 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
                 <span className={"icon-fi-rs-search text-white"} />
               </div>
               <Link
-                shallow
                 href={{
                   pathname: "/search",
                   query: { q: `${inputValue}` },

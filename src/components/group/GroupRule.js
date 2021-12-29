@@ -120,6 +120,7 @@ const GroupRule = ({ groupData, ...props }) => {
       <Toaster
         toastOptions={{
           className: "toastOptions",
+          duration: 5000,
         }}
       />
       {groupData?.g_rules ? (

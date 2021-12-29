@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { _modalisOpen } from "../../utility/Util";
 import Post from "../../../pages/post/view/[id]";
 import { Auth } from "aws-amplify";
 import { ssrDataViewPost } from "../../apis/ssrDatas";
@@ -32,6 +31,7 @@ const ViewPostModal = () => {
 
   useEffect(() => {
     showModal()
+    // eslint-disable-next-line
   },[router.query])
 
   return (

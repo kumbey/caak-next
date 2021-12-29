@@ -49,7 +49,7 @@
     max-width: 1264px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: var(--containerPaddingTop);
+    /*padding-top: var(--containerPaddingTop);*/
     height: calc(100vh - (var(--containerPaddingTop) + var(--topBarSize)));
   }
 
@@ -128,6 +128,7 @@
     @apply shadow-dropdown;
     height: auto;
     min-height: 470px;
+    max-height: 604px;
   }
 
   @media (max-width: 767px) {
@@ -377,14 +378,18 @@
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
+    padding-top: calc(var(--containerPaddingTop));
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .leftSideBar {
     scrollbar-gutter: stable;
     position: sticky;
-    height: calc(100vh - (var(--topBarSize))) !important;
+    height: calc(100vh - (var(--topBarSize) + var(--containerPaddingTop))) !important;
     flex-grow: 1;
-    /*top: calc(var(--topBarSize) + var(--containerPaddingTop));*/
+    top: calc(var(--containerPaddingTop));
     overflow-y: auto;
     overflow-x: hidden;
     max-width: 248px;
@@ -641,9 +646,10 @@
   .unset-img > span {
     position: unset !important;
   }
-.gradientAdd {
-  background: transparent linear-gradient(180deg, #FF8000 0%, #FF4500 100%) 0 0 no-repeat padding-box;
-}
+  .gradientAdd {
+    background: transparent linear-gradient(180deg, #ff8000 0%, #ff4500 100%) 0
+      0 no-repeat padding-box;
+  }
 }
 
 .react-player {
@@ -670,12 +676,15 @@
   border-radius: inherit;
 }
 
-.toastOptions {
-  border: 1px solid #b7eb8f;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-left: 16px;
-  padding-right: 16px;
-  font-size: 14px;
+.customToastOptions {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 1px 2px #0000001a !important;
+  min-width: 450px !important;
+  height: 56px !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
   z-index: 6;
 }

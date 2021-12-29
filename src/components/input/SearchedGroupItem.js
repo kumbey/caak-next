@@ -1,6 +1,6 @@
 import Image from "next/image";
 import {
-  generateFileUrl,
+  generateFileUrl, getFileUrl,
   getGenderImage,
   getReturnData,
 } from "../../utility/Util";
@@ -61,29 +61,33 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
   };
 
   useEffect(() => {
-    if (type === "POST") {
-      getPostSearchInfo();
+    if (type === "USER") {
+      getUserSearchInfo();
     } else if (type === "GROUP") {
       getGroupSearchInfo();
     } else {
-      getUserSearchInfo();
+      getPostSearchInfo();
     }
     // eslint-disable-next-line
   }, []);
-
+  // console.log(userData)
   const linkHandler = () => {
-    if (type === "POST") {
-      return `/post/view/${postData.id}`;
+    if (type === "USER") {
+      return `/user/${userData?.id}/profile`;
     } else if (type === "GROUP") {
-      return `/group/${groupData.id}`;
+      return `/group/${groupData?.id}`;
     } else {
-      return `/user/${userData.id}/profile`;
+      return `/post/view/${postData.id}`;
     }
   };
   const postImageHandler = () => {
-    if (type === "POST") {
-      if (postData) {
-        return generateFileUrl(postData.items.items[0].file);
+    if (type === "USER") {
+      if (userData) {
+        if (userData.pic) {
+          return generateFileUrl(userData.pic);
+        } else {
+          return getGenderImage("default").src;
+        }
       }
     } else if (type === "GROUP") {
       if (groupData) {
@@ -94,18 +98,15 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
         }
       }
     } else {
-      if (userData) {
-        if (userData.pic) {
-          return generateFileUrl(userData.pic);
-        } else {
-          return getGenderImage("default").src;
-        }
+      if (postData) {
+        return getFileUrl(postData.items.items[0].file);
       }
+
     }
   };
 
   return userData || postData || groupData ? (
-    <Link shallow href={linkHandler()}>
+    <Link href={linkHandler()}>
       <a>
         <div
           onClick={() => setIsSearchBarOpen(false)}

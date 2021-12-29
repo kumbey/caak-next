@@ -14,8 +14,8 @@ const GroupRuleEdit = ({
   text,
   close,
 }) => {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isValid, setIsValid] = useState(false);
 
   const maxLengths = {
     title: 200,
@@ -31,6 +31,20 @@ const GroupRuleEdit = ({
     setText({ ...text, [e.target.name]: e.target.value });
   };
 
+  const handleClick = () => {
+    handleSubmit();
+    setText({ title: "", description: "" });
+  };
+
+  useEffect(() => {
+    if (text?.title?.length > 0 && text?.description?.length > 0) {
+      setIsValid(true);
+      console.log("valid");
+    } else {
+      setIsValid(false);
+      console.log("not valid");
+    }
+  }, [text]);
   return (
     <div className="popup_modal ">
       <div className="popup_modal-content rounded-xl">
@@ -125,8 +139,13 @@ const GroupRuleEdit = ({
                   </Button>
                   <Button
                     loading={loading}
-                    onClick={handleSubmit}
-                    className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
+                    disabled={isValid ? false : true}
+                    onClick={handleClick}
+                    className={`border  rounded-lg text-15px ${
+                      isValid
+                        ? "text-white  bg-caak-bleudefrance"
+                        : "text-caak-shit bg-caak-titaniumwhite"
+                    }`}
                   >
                     {type === "new" ? "Нэмэх" : "Засах"}
                   </Button>

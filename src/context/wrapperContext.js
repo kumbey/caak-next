@@ -14,7 +14,7 @@ function useWrapper() {
 function WrapperProvider(props) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationMenu, setIsNotificationMenu] = useState(false);
-  const [feedSortType, setFeedSortType] = useState("DEFAULT");
+  const [feedSortType, setFeedSortType] = useState("");
 
   const value = useMemo(
     () => ({ isMobileMenuOpen, setIsMobileMenuOpen, isNotificationMenu, setIsNotificationMenu, feedSortType, setFeedSortType }),

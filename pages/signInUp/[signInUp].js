@@ -25,22 +25,30 @@ const SignInUp = ({ ...props }) => {
     const opened = window.open(host + type, windowName);
     const timer = setInterval(function () {
       if (opened.closed) {
-        isLoginValid()
+        isLoginValid();
         clearInterval(timer);
       }
     }, 100);
   };
 
   const goNext = () => {
-    if(router.query.isModal){
-      router.replace({
-        query: {
-          ...router.query,
-          signInUp: (type === "signIn") ? "in" : "up"
-        }
-      }, (type === "signIn") ? "/signInUp/in" : "/signInUp/up", {shallow: true});
-    }else{
-      router.replace((type === "signIn") ? "/signInUp/in" : "/signInUp/up", undefined, {shallow: true, scroll: false});
+    if (router.query.isModal) {
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            signInUp: type === "signIn" ? "in" : "up",
+          },
+        },
+        type === "signIn" ? "/signInUp/in" : "/signInUp/up",
+        { shallow: true }
+      );
+    } else {
+      router.replace(
+        type === "signIn" ? "/signInUp/in" : "/signInUp/up",
+        undefined,
+        { shallow: true, scroll: false }
+      );
     }
   };
 
@@ -144,7 +152,7 @@ const SignInUp = ({ ...props }) => {
           <span className="text-caak-generalblack">Үйлчилгээний нөхцөл</span>{" "}
           болон{" "}
           <span className="text-caak-generalblack">Нууцлалын бодлогыг</span>{" "}
-          зөвшөөрцөнд тооцно.
+          зөвшөөрсөнд тооцно.
         </p>
       )}
     </ModalLayout>

@@ -56,7 +56,7 @@ export default function UserPostItem({ post, className }) {
       }`}
     >
       <td className=" w-1/2 text-center md:ml-c32">
-        <Link shallow href={`/pending/view/${post.id}`}>
+        <Link href={`/pending/view/${post.id}`}>
           <>
             <div
               style={{ textOverflow: "ellipsis", wordBreak: "break-all" }}
@@ -92,7 +92,7 @@ export default function UserPostItem({ post, className }) {
         </Link>
       </td>
       <td className="flex text-center w-1/4">
-        <Link shallow href={`/group/${post.group?.id}`}>
+        <Link href={`/group/${post.group?.id}`}>
           <a className="flex">
             <img
               className="ph:w-c2 ph:h-c2 w-8 h-8 ph:ml-10 rounded-full object-cover"

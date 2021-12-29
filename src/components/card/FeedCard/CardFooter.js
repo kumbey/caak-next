@@ -96,8 +96,15 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
               onClick={() =>
                 router.push(
                   {
-                    pathname: `/post/view/${postId}`,
-                    query: { jumpToComment: true },
+                    // pathname: `/post/view/${postId}`,
+                    query: {
+                      jumpToComment: true,
+                      ...router.query,
+                      viewPost: "post",
+                      id: postId,
+                      prevPath: router.asPath,
+                      isModal: true,
+                    },
                   },
                   `/post/view/${postId}`
                 )
@@ -134,10 +141,10 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
               content={
                 <div className={"flex flex-row items-center"}>
                   <div className={"flex flex-col  justify-start  z-1    "}>
-                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
-                      <FacebookShareButton
-                        url={`${pathName}/post/view/${postId}`}
-                      >
+                    <FacebookShareButton
+                      url={`${pathName}/post/view/${postId}`}
+                    >
+                      <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                         <div
                           className={
                             "flex items-center rounded-full cursor-pointer h-[36px] "
@@ -153,12 +160,10 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
                             Facebook
                           </p>
                         </div>
-                      </FacebookShareButton>
-                    </div>
-                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
-                      <TwitterShareButton
-                        url={`${pathName}/post/view/${postId}`}
-                      >
+                      </div>
+                    </FacebookShareButton>
+                    <TwitterShareButton url={`${pathName}/post/view/${postId}`}>
+                      <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                         <div
                           className={
                             "flex items-center rounded-full cursor-pointer h-[36px]"
@@ -174,17 +179,19 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
                             Twitter
                           </p>
                         </div>
-                      </TwitterShareButton>
-                    </div>
-                    <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
+                      </div>
+                    </TwitterShareButton>
+                    <div
+                      onClick={() => {
+                        if (typeof navigator !== "undefined")
+                          navigator.clipboard.writeText(
+                            `${pathName}/post/view/${postId}`
+                          );
+                        handleToast({ param: "copy" });
+                      }}
+                      className="hover:bg-caak-liquidnitrogen w-full px-c6"
+                    >
                       <div
-                        onClick={() => {
-                          if (typeof navigator !== "undefined")
-                            navigator.clipboard.writeText(
-                              `${pathName}/post/view/${postId}`
-                            );
-                          handleToast({ param: "copy" });
-                        }}
                         className={
                           "flex items-center  rounded-full cursor-pointer h-[36px]"
                         }

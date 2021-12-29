@@ -453,7 +453,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               >
                 {signedUser?.id === userId ? (
                   <>
-                    <Link shallow href={`/user/${userId}/settings`}>
+                    <Link href={`/user/${userId}/settings`}>
                       <a className={"w-full"}>
                         <Button
                           className={
@@ -479,7 +479,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         </Button>
                       </a>
                     </Link>
-                    <Link shallow href={`/user/${userId}/dashboard`}>
+                    <Link href={`/user/${userId}/dashboard`}>
                       <a className={"w-full"}>
                         <Button
                           className={
@@ -553,7 +553,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       >
                         <span
                           className={
-                            "icon-fi-rs-facebook  text-caak-generalblack text-[22px]"
+                            "icon-fi-rs-facebook path1 bg-caak-generalblack rounded-full text-[22px]"
                           }
                         />
                       </div>

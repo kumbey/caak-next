@@ -17,7 +17,7 @@ const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
       let resp = await API.graphql({
         query: listGroupByFeatured,
         variables: {
-          featured: "false",
+          featured: "true",
         },
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
       });
@@ -30,6 +30,7 @@ const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
   };
   useEffect(() => {
     fetchSuggestedGroups();
+    // eslint-disable-next-line
   }, []);
 
   return !loading ? (

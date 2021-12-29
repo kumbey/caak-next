@@ -23,11 +23,11 @@ import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
-import InfiniteScroll from "react-infinite-scroll-component";
 import Divider from "../../../src/components/divider";
 import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
+import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -584,20 +584,7 @@ const Dashboard = ({ ssrData }) => {
                   </div>
                   <Divider className={"my-[16px]"} />
 
-                  <InfiniteScroll
-                    dataLength={posts.length}
-                    next={fetchPosts}
-                    hasMore={true}
-                    loader={
-                      <Loader
-                        containerClassName={`self-center w-full ${
-                          loading ? "" : "hidden"
-                        }`}
-                        className={`bg-caak-primary`}
-                      />
-                    }
-                    endMessage={<h4>Nothing more to show</h4>}
-                  >
+                  <InfinitScroller onNext={fetchPosts} loading={loading}>
                     {posts.length > 0 &&
                       posts.map((post, index) => {
                         return (
@@ -613,24 +600,14 @@ const Dashboard = ({ ssrData }) => {
                           />
                         );
                       })}
-                  </InfiniteScroll>
+                  </InfinitScroller>
                 </div>
               ) : null}
 
               {activeIndex === 1 ? (
-                <InfiniteScroll
-                  dataLength={followedUsers.length}
-                  next={fetchFollowers}
-                  hasMore={true}
-                  loader={
-                    <Loader
-                      containerClassName={`self-center w-full ${
-                        loading ? "" : "hidden"
-                      }`}
-                      className={`bg-caak-primary`}
-                    />
-                  }
-                  endMessage={<h4>Nothing more to show</h4>}
+                <InfinitScroller
+                  onNext={fetchFollowers}
+                  loading={loading}
                 >
                   <div className=" flex flex-row flex-wrap justify-between mt-[14px]">
                     {followedUsers.map((data, index) => {
@@ -646,7 +623,7 @@ const Dashboard = ({ ssrData }) => {
                       );
                     })}
                   </div>
-                </InfiniteScroll>
+                </InfinitScroller>
               ) : null}
 
               {activeIndex === 2 ? (
@@ -665,20 +642,7 @@ const Dashboard = ({ ssrData }) => {
                       Үйлдэл
                     </p>
                   </div>
-                  <InfiniteScroll
-                    dataLength={pendingPosts.length}
-                    next={fetchPending}
-                    hasMore={true}
-                    loader={
-                      <Loader
-                        containerClassName={`self-center w-full ${
-                          loading ? "" : "hidden"
-                        }`}
-                        className={`bg-caak-primary`}
-                      />
-                    }
-                    endMessage={<h4>Nothing more to show</h4>}
-                  >
+                  <InfinitScroller onNext={fetchPending} loading={loading}>
                     {/*<Divider className={"hidden md:flex mt-[16px]"} />*/}
 
                     {pendingPosts.length > 0 &&
@@ -697,7 +661,7 @@ const Dashboard = ({ ssrData }) => {
                           />
                         );
                       })}
-                  </InfiniteScroll>
+                  </InfinitScroller>
                 </div>
               ) : null}
             </div>

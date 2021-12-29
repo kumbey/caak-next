@@ -1,6 +1,7 @@
 import Button from "../button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useWrapper } from "../../context/wrapperContext";
+import { useRouter } from "next/router";
 
 const FeedSortButtons = ({
   direction,
@@ -10,17 +11,16 @@ const FeedSortButtons = ({
   iconSize,
   iconContainerSize,
   textClassname,
+  initialSort,
   setSortType,
+  feed,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const { feedSortType } = useWrapper();
-  useEffect(() => {
-    if (feedSortType === "CAAK") {
-      setActiveIndex(2);
-      setSortType(feedSortType);
-    }
-    // eslint-disable-next-line
-  }, [feedSortType]);
+  const [activeIndex, setActiveIndex] = useState(
+    items.findIndex((item) => item.type === initialSort)
+  );
+  const { setFeedSortType } = useWrapper();
+  const router = useRouter();
+
   return (
     !hide && (
       <div
@@ -28,13 +28,15 @@ const FeedSortButtons = ({
           containerClassname ? containerClassname : ""
         }`}
       >
-        {items.map(({ icon, type, id, title }) => {
+        {items.map(({ icon, type, id, title, route }) => {
           return (
             <Button
               key={id}
               onClick={() => {
-                setSortType(type);
+                setFeedSortType(type);
+                setSortType && setSortType(type);
                 setActiveIndex(id);
+                feed && router.replace(route);
               }}
               className={`mx-[2px] ${
                 direction === "column" ? "w-full h-12" : "w-auto h-9"

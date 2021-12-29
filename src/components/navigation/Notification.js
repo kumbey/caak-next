@@ -73,7 +73,7 @@ const Notification = ({ item, ...props }) => {
       item.action === "POST_ITEM_COMMENT_WRITED" ||
       item.action === "POST_COMMENT_WRITED"
     ) {
-      text.short = `таны пост`;
+      text.short = `таны пост дээр`;
       text.long = `сэтгэгдэл үлдээлээ`;
 
       return (

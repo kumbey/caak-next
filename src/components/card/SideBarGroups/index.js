@@ -63,7 +63,7 @@ const SideBarGroups = ({
   return groupData && groupData.length > 0 ? (
     <div
       className={
-        "flex flex-col px-[6px] py-[18px] border-t-[1px] border-caak-titaniumwhite"
+        "flex flex-col px-[6px] py-[18px] border-t-[1px] border-caak-titaniumwhite overflow-x-hidden"
       }
     >
       <div className={"flex flex-row justify-between items-center mb-[6px]"}>

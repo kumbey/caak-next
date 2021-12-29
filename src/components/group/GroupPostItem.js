@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import PostDenyModal from "../modals/postDenyModal";
 import PendingPostApproveModal from "../modals/pendingPostApproveModal";
 
-const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
+const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +29,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status, expectedVersion: post.version },
+        input: { id, status, expectedVersion: post.version },
         })
       );
       setLoading(false);
@@ -52,7 +52,6 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
     };
     // eslint-disable-next-line
   }, []);
-
   return (
     <>
       <PostDenyModal
@@ -117,7 +116,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
 
             <div
               onClick={() => {
-                if (type === "group" && status === "PENDING") {
+                if (type === "group" && post.status === "PENDING") {
                   setActiveIndex(index);
                   setIsModalOpen(true);
                 }
@@ -129,7 +128,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
                   <a>{post.title}</a>
                 </Link>
               )}
-              {status === "PENDING" && post.title}
+              {post.status === "PENDING" && type === "group" && post.title}
             </div>
           </div>
           <div className="flex flex-shrink-0 items-center w-[141px] mr-[10px] md:mr-[69px]">
@@ -154,7 +153,6 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
                   content={<ProfileHoverCard userId={post.user.id} />}
                 >
                   <Link
-                    shallow
                     href={{
                       pathname: `/user/${post.user_id}/profile`,
                     }}
@@ -168,9 +166,8 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
                 </Tooltip>
               </>
             ) : type === "user" ? (
-              <div className="truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
+              <div className="cursor-pointer truncate-2 h-full rounded-md bg-caak-extraLight font-inter flex items-center">
                 <Link
-                  shallow
                   href={{
                     pathname: `/group/${post.group.id}`,
                   }}
@@ -197,7 +194,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
           </div>
           {post.status === "ARCHIVED" ? (
             <div className=" flex w-[102px] ">
-              <Link shallow href={`/post/edit/${post.id}`}>
+              <Link href={`/post/edit/${post.id}`}>
                 <a>
                   <Button
                     round
@@ -211,7 +208,19 @@ const GroupPostItem = ({ imageSrc, post, video, type, index, status }) => {
               </Link>
             </div>
           ) : post.status === "PENDING" && type === "user" ? (
-            <div className=" flex w-[100px] "></div>
+            <div className=" flex w-[120px] ">
+              <Button
+                loading={loading}
+                onClick={() => {
+                  router.push(`/post/view/${post.id}`, undefined, {
+                    shallow: true,
+                  });
+                }}
+                className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
+              >
+                Үзэх
+              </Button>
+            </div>
           ) : (
             <div className=" flex w-[224px] ">
               <Button

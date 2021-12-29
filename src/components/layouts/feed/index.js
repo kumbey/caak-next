@@ -25,8 +25,8 @@ const DefaultFeedLayout = ({
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
-  const { sortFeedType, setFeedSortType } = useWrapper();
-  const size = useWindowSize();
+  const { feedSortType } = useWrapper();
+
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -48,10 +48,10 @@ const DefaultFeedLayout = ({
             }`}
           >
             <FeedSortButtons
+              feed
               items={feedType}
+              initialSort={feedSortType}
               direction={"column"}
-              sortType={sortFeedType}
-              setSortType={setFeedSortType}
             />
             <SideBarGroups
               role={["ADMIN", "MODERATOR"]}

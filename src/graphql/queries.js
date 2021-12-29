@@ -4372,6 +4372,8 @@ export const getReportedPost = /* GraphQL */ `
   query GetReportedPost($id: ID!) {
     getReportedPost(id: $id) {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -4564,14 +4566,6 @@ export const getReportedPost = /* GraphQL */ `
           updatedAt
         }
       }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
-      }
     }
   }
 `;
@@ -4584,6 +4578,8 @@ export const listReportedPosts = /* GraphQL */ `
     listReportedPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        post_id
+        user_id
         reason
         status
         createdAt
@@ -4627,14 +4623,6 @@ export const listReportedPosts = /* GraphQL */ `
           oldCaakId
           createdAt
           version
-        }
-        type {
-          id
-          name
-          status
-          description
-          createdAt
-          updatedAt
         }
       }
       nextToken

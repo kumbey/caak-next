@@ -3942,6 +3942,8 @@ export const createReportedPost = /* GraphQL */ `
   ) {
     createReportedPost(input: $input, condition: $condition) {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -4133,14 +4135,6 @@ export const createReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }
@@ -4152,6 +4146,8 @@ export const updateReportedPost = /* GraphQL */ `
   ) {
     updateReportedPost(input: $input, condition: $condition) {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -4343,14 +4339,6 @@ export const updateReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }
@@ -4362,6 +4350,8 @@ export const deleteReportedPost = /* GraphQL */ `
   ) {
     deleteReportedPost(input: $input, condition: $condition) {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -4553,14 +4543,6 @@ export const deleteReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }

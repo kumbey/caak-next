@@ -6231,6 +6231,8 @@ export const onCreateReportedPost = /* GraphQL */ `
   subscription OnCreateReportedPost {
     onCreateReportedPost {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -6422,14 +6424,6 @@ export const onCreateReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }
@@ -6438,6 +6432,8 @@ export const onUpdateReportedPost = /* GraphQL */ `
   subscription OnUpdateReportedPost {
     onUpdateReportedPost {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -6629,14 +6625,6 @@ export const onUpdateReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }
@@ -6645,6 +6633,8 @@ export const onDeleteReportedPost = /* GraphQL */ `
   subscription OnDeleteReportedPost {
     onDeleteReportedPost {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -6836,14 +6826,6 @@ export const onDeleteReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }

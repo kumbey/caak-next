@@ -178,6 +178,20 @@ type Post @model @versioned @searchable
   oldCaakId: String
 }
 
+type SavedPost @model 
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byUser", fields:["user_id","createdAt"] , queryField:"listSavedPostByUser"){
+  id: ID!
+  user_id: ID!
+  post_id: ID!
+  post: Post @connection(fields:["post_id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
 type PostStatusHistory @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
@@ -344,9 +358,10 @@ type ReportedPost @model
     { allow: public, provider: iam, operations: [read]}
   ]){
   id: ID!
-  post: Post @connection
-  user: User @connection
-  type: ReportType @connection
+  post_id: ID
+  user_id: ID
+  post: Post @connection(fields:["post_id"])
+  user: User @connection(fields:["user_id"])
   reason: String!
   status: String
 }

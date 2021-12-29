@@ -1,6 +1,6 @@
 {
   "auth": {
-    "caake26b8983": {
+    "caak38fbeb70": {
       "service": "Cognito",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",
@@ -205,6 +205,20 @@
           "resourceName": "caaklayer001",
           "attributes": [
             "Arn"
+          ]
+        }
+      ]
+    },
+    "restoreOldPosts": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "caak",
+          "attributes": [
+            "GraphQLAPIIdOutput"
           ]
         }
       ]

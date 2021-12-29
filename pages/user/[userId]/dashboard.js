@@ -217,6 +217,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: posts.nextToken,
+    ssr: true
   });
   const [nextPending] = useListPager({
     query: getPostByUser,
@@ -227,6 +228,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: pendingPosts.nextToken,
+    ssr:true
   });
   const [nextArchived] = useListPager({
     query: getPostByUser,
@@ -237,6 +239,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: archivedPosts.nextToken,
+    ssr:true
   });
   const [nextComments] = useListPager({
     query: listCommentByUser,
@@ -248,6 +251,7 @@ const Dashboard = ({ ssrData }) => {
     nextToken: userComments.nextToken,
 
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr:true
   });
   const [nextFollowers] = useListPager({
     query: listUsersbyFollowed,
@@ -257,6 +261,7 @@ const Dashboard = ({ ssrData }) => {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: followedUsers.nextToken,
+    ssr:true
   });
   const fetchPosts = async () => {
     try {
@@ -574,7 +579,7 @@ const Dashboard = ({ ssrData }) => {
           {user.nickname} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center   mt-[50px]">
+      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px]">
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}
@@ -690,7 +695,7 @@ const Dashboard = ({ ssrData }) => {
             </div>
             <div
               className={
-                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px]"
+                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-scroll"
               }
             >
               {activeIndex === 0 ? (

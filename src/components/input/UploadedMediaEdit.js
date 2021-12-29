@@ -36,7 +36,13 @@ const thumbnailImageHandler = (item) => {
   }
 };
 
-const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
+const SortableCard = ({
+  active,
+  item,
+  onClickClose,
+  setFeaturedPost,
+  index,
+}) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
   const styles = {
@@ -67,9 +73,9 @@ const SortableCard = ({ active, item, onClickClose, setFeaturedPost }) => {
       </div>
       <div
         onClick={setFeaturedPost}
-        className={
-          "transition-all duration-150 group-hover:flex hidden justify-center items-center rounded-full w-[24px] h-[24px] bg-caak-primary bg-opacity-90 absolute top-[4px] left-[4px] z-[1]"
-        }
+        className={`${
+          index === 0 ? "flex" : "group-hover:flex hidden"
+        } transition-all duration-150  justify-center items-center rounded-full w-[24px] h-[24px] bg-caak-primary bg-opacity-90 absolute top-[4px] left-[4px] z-[1]`}
       >
         <span className={"icon-fi-rs-star text-white text-[10px]"} />
       </div>
@@ -321,9 +327,9 @@ const UploadedMediaEdit = ({
             rows={2}
           />
           <span
-              className={
-                "absolute top-1/2 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
-              }
+            className={
+              "absolute top-1/2 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
+            }
           >
             {post.description?.length || 0}/{maxLengths.description}
           </span>
@@ -377,6 +383,7 @@ const UploadedMediaEdit = ({
                     setActiveIndex={setActiveIndex}
                     key={item.id}
                     item={item}
+                    index={index}
                   />
                 );
               })}

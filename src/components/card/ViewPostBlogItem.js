@@ -3,12 +3,13 @@ import { getFileUrl } from "../../utility/Util";
 import { useRouter } from "next/router";
 import Video from "../video";
 import AnimatedCaakButton from "../button/animatedCaakButton";
+import Link from "next/link";
 
 const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
   const router = useRouter();
 
   return (
-    <div className={"flex flex-col w-full mb-[40px] last:mb-0"}>
+    <div className={"flex flex-col w-full mb-[40px]"}>
       <div className={"relative pt-[4px]"}>
         {postItem.file.type.startsWith("video") ? (
           <div className={"w-full h-[438px]"}>
@@ -18,32 +19,29 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
             />
           </div>
         ) : !singleItem ? (
-          <div
-            onClick={() =>
-              router.push(
-                {
-                  query: {
-                    ...router.query,
-                    id: postId,
-                    viewItemPost: "postItem",
-                    itemId: postItem.id,
-                    prevPath: router.asPath,
-                    isModal: true,
-                    itemIndex: index,
-                  },
-                },
-                `/post/view/${postId}/${postItem.id}`,
-                { shallow: true, scroll: false }
-              )
-            }
-            className={"relative  cursor-pointer"}
+          <Link
+            shallow
+            as={`/post/view/${postId}/${postItem.id}`}
+            href={{
+              query: {
+                ...router.query,
+                id: postId,
+                viewItemPost: "postItem",
+                itemId: postItem.id,
+                prevPath: router.asPath,
+                isModal: true,
+                itemIndex: index,
+              },
+            }}
           >
-            <img
-              className={"rounded-[6px] object-cover w-full"}
-              src={getFileUrl(postItem.file)}
-              alt={postItem.file.name}
-            />
-          </div>
+            <a>
+              <img
+                className={"rounded-[6px] object-cover w-full"}
+                src={getFileUrl(postItem.file)}
+                alt={postItem.file.name}
+              />
+            </a>
+          </Link>
         ) : (
           <div className={"relative h-[438px] w-full"}>
             <Image
@@ -75,80 +73,76 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               textClassname={
                 "text-[14px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal ml-[4px]"
               }
-              iconContainerClassname={"w-[18px] h-[18px] mb-[2px]"}
+              iconContainerClassname={"w-[18px] h-[18px] mb-[2px] hover:bg-transparent"}
               iconColor={"text-caak-nocturnal"}
-              iconClassname={"text-[18px]"}
+              iconClassname={"text-[17.25px]"}
             />
-            <div
-              onClick={() =>
-                router.push(
-                  {
-                    query: {
-                      viewItemPost: "postItem",
-                      id: postId,
-                      itemId: postItem.id,
-                      prevPath: router.asPath,
-                      isModal: true,
-                      itemIndex: index,
-                    },
-                  },
-                  `/post/view/${postId}/${postItem.id}`,
-                  { shallow: true, scroll: false }
-                )
-              }
-              className={"flex flex-row items-center ml-[10px]"}
+            <Link
+              shallow
+              as={`/post/view/${postId}/${postItem.id}`}
+              href={{
+                query: {
+                  ...router.query,
+                  id: postId,
+                  viewItemPost: "postItem",
+                  itemId: postItem.id,
+                  prevPath: router.asPath,
+                  isModal: true,
+                  itemIndex: index,
+                },
+              }}
             >
-              <div
-                className={
-                  "group flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
-                }
-              >
-                <span
+              <a className={"flex flex-row items-center ml-[10px]"}>
+                <div
                   className={
-                    "icon-fi-rs-comment text-caak-buttonblue text-[16.5px]"
+                    "group flex items-center justify-center w-[18px] h-[18px] cursor-pointer"
                   }
-                />
-              </div>
-              <p
-                className={
-                  "text-[14px] text-caak-darkBlue font-medium tracking-[0.21px] leading-[16px] ml-[4px]"
-                }
-              >
-                {postItem.totals.comments}
-              </p>
-            </div>
+                >
+                  <span
+                    className={
+                      "icon-fi-rs-comment-o text-caak-scriptink text-[15.75px]"
+                    }
+                  />
+                </div>
+                <p
+                  className={
+                    "text-[14px] text-caak-darkBlue font-medium tracking-[0.21px] leading-[16px] ml-[4px]"
+                  }
+                >
+                  {postItem.totals.comments}
+                </p>
+              </a>
+            </Link>
           </div>
         )}
       </div>
       <div className={"pt-[13px]"}>
         {!singleItem ? (
-          <div
-            onClick={() =>
-              router.push(
-                {
-                  query: {
-                    viewItemPost: "postItem",
-                    id: postId,
-                    itemId: postItem.id,
-                    prevPath: router.asPath,
-                    isModal: true,
-                    itemIndex: index,
-                  },
-                },
-                `/post/view/${postId}/${postItem.id}`,
-                { shallow: true, scroll: false }
-              )
-            }
-            className={"relative"}
+          <Link
+            shallow
+            as={`/post/view/${postId}/${postItem.id}`}
+            href={{
+              query: {
+                ...router.query,
+                id: postId,
+                viewItemPost: "postItem",
+                itemId: postItem.id,
+                prevPath: router.asPath,
+                isModal: true,
+                itemIndex: index,
+              },
+            }}
           >
-            <p
-              className={
-                "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-              }
-            >
-              {postItem.title}
-            </p>
-          </div>
+            <a className={"relative"}>
+              <p
+                className={
+                  "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                }
+              >
+                {postItem.title}
+              </p>
+            </a>
+          </Link>
         ) : (
           <p
             className={

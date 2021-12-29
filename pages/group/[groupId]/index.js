@@ -25,6 +25,7 @@ import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
 import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
+import AddPostHandler from "../../../src/components/addposthandler";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 
 export async function getServerSideProps({ req, query }) {
@@ -37,33 +38,37 @@ export async function getServerSideProps({ req, query }) {
     user = null;
   }
 
-  const resp = await API.graphql({
-    query: getPostByGroup,
-    variables: {
-      group_id: query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "CONFIRMED" } },
-      limit: 6,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const groupView = await API.graphql({
-    query: getGroupView,
-    variables: {
-      id: query.groupId,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  return {
-    props: {
-      ssrData: {
-        posts: getReturnData(resp),
-        groupData: getReturnData(groupView),
+  try{
+    const resp = await API.graphql({
+      query: getPostByGroup,
+      variables: {
+        group_id: query.groupId,
+        sortDirection: "DESC",
+        filter: { status: { eq: "CONFIRMED" } },
+        limit: 6,
       },
-    },
-  };
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+  
+    const groupView = await API.graphql({
+      query: getGroupView,
+      variables: {
+        id: query.groupId,
+      },
+      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+
+    return {
+      props: {
+        ssrData: {
+          posts: getReturnData(resp),
+          groupData: getReturnData(groupView),
+        },
+      },
+    };
+  }catch(ex){
+      console.log(ex)
+  }
 }
 
 const Group = ({ ssrData }) => {
@@ -79,7 +84,9 @@ const Group = ({ ssrData }) => {
   const [render, setRender] = useState(0);
   const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [trendingPosts, setTrendingPosts] = useState([]);
+  const [trendingPosts, setTrendingPosts] = useState({
+    items: []
+  });
   const [groupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
 
@@ -98,17 +105,28 @@ const Group = ({ ssrData }) => {
     },
     nextToken: ssrData.posts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr: true
   });
+
+
+  const [nextTrendPosts] = useListPager({
+    query: listPostByGroupOrderByReactions,
+    variables: {
+      groupAndStatus: `${groupData.id}#CONFIRMED`,
+      limit: 6,
+      sortDirection: "DESC",
+    },
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+
   const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
-        if (posts.nextToken) {
           const resp = await nextPosts();
           if (resp) {
             setPosts((nextPosts) => [...nextPosts, ...resp]);
           }
-        }
 
         setLoading(false);
       }
@@ -120,18 +138,18 @@ const Group = ({ ssrData }) => {
 
   const fetchTrendPosts = async () => {
     try {
-      let resp = await API.graphql({
-        query: listPostByGroupOrderByReactions,
-        variables: {
-          groupAndStatus: `${groupData.id}#CONFIRMED`,
-          limit: 6,
-          sortDirection: "DESC",
-        },
-        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-      });
-      resp = getReturnData(resp);
-      setTrendingPosts(resp);
+      if (!loading) {
+        setLoading(true);
+        const resp = await nextTrendPosts();
+        console.log(resp)
+        if (resp) {
+          setTrendingPosts((prev) => ({...prev, items: [...prev.items, ...resp]}));
+        }
+
+        setLoading(false);
+      }
     } catch (ex) {
+      setLoading(false);
       console.log(ex);
     }
   };
@@ -177,7 +195,7 @@ const Group = ({ ssrData }) => {
 
   useEffect(() => {
     if (sortType === "TREND") {
-      if (typeof trendingPosts.items === "undefined") {
+      if (trendingPosts.items.length >= 0) {
         fetchTrendPosts();
       }
     }
@@ -240,6 +258,7 @@ const Group = ({ ssrData }) => {
         columns={2}
       >
         {isTablet && <GroupAdminPanel groupData={groupData} />}
+        <AddPostHandler groupData={groupData}/>
         <GroupSortButtons
           activeIndex={activeIndex}
           activeView={activeView}

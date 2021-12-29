@@ -5,7 +5,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { createComment } from "../../graphql-custom/comment/mutation";
 import { useUser } from "../../context/userContext";
 import { useRouter } from "next/router";
-import { getFileUrl, getReturnData } from "../../utility/Util";
+import {getFileUrl, getGenderImage, getReturnData} from "../../utility/Util";
 import Image from "next/image";
 
 const ViewPostBlogAddComment = ({
@@ -101,7 +101,7 @@ const ViewPostBlogAddComment = ({
               height={28}
               className={"rounded-full"}
               src={`${
-                user.pic ? getFileUrl(user.pic) : "https://picsum.photos/50"
+                user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src
               }`}
               alt={"profile picture"}
             />
@@ -138,17 +138,17 @@ const ViewPostBlogAddComment = ({
             "flex flex-row items-center justify-end w-full h-[38px] bg-caak-liquidnitrogen rounded-b-square px-[10px] py-[6px]"
           }
         >
-          <div
-            className={
-              "flex items-center justify-center w-[20px] h-[20px] cursor-pointer"
-            }
-          >
-            <span
-              className={
-                "icon-fi-rs-mention text-[18px] text-caak-generalblack"
-              }
-            />
-          </div>
+          {/*<div*/}
+          {/*  className={*/}
+          {/*    "flex items-center justify-center w-[20px] h-[20px] cursor-pointer"*/}
+          {/*  }*/}
+          {/*>*/}
+          {/*  <span*/}
+          {/*    className={*/}
+          {/*      "icon-fi-rs-mention text-[18px] text-caak-generalblack"*/}
+          {/*    }*/}
+          {/*  />*/}
+          {/*</div>*/}
           <div
             className={
               "flex items-center justify-center w-[20px] h-[20px] ml-[12px] cursor-pointer"

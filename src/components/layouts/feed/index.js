@@ -40,7 +40,7 @@ const DefaultFeedLayout = ({
   return (
     loaded && (
       <div
-        className={"feedLayoutContainer"}
+        className={"feedLayoutContainer pb-[200px] md:pb-0"}
         // style={{ paddingBottom: size.height / 3 }}
       >
         <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
@@ -52,6 +52,7 @@ const DefaultFeedLayout = ({
             }`}
           >
             <FeedSortButtons
+              feed
               items={feedType}
               initialSort={feedSortType}
               direction={"column"}

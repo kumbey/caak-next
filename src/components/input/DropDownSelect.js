@@ -2,6 +2,7 @@ import Input from "./index";
 import { generateFileUrl } from "../../utility/Util";
 import { useEffect, useState } from "react";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
+import AddPostNewGroupCard from "../card/AddPostNewGroupCard";
 
 const DropDownSelect = ({
   groupData,
@@ -18,6 +19,7 @@ const DropDownSelect = ({
     unMember: [],
   });
   const [inputValue, setInputValue] = useState("");
+  const [hasAnyGroup, setHasAnyGroup] = useState(!!filteredData.adminModerator);
 
   useEffect(() => {
     setFilteredData(groupData);
@@ -44,7 +46,6 @@ const DropDownSelect = ({
       category_id: item.category_id,
     }));
   };
-
   return (
     <div
       onClick={onToggle}
@@ -119,13 +120,15 @@ const DropDownSelect = ({
                           className={"w-8 h-8 rounded-md object-cover mr-2"}
                           alt={""}
                         />
-                        <span
-                          className={
-                            "text-caak-generalblack font-medium text-16px"
-                          }
-                        >
-                          {item.name}
-                        </span>
+                        <div className={"flex flex-col justify-between"}>
+                          <span
+                            className={
+                              "text-caak-generalblack font-medium text-16px"
+                            }
+                          >
+                            {item.name}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   );
@@ -133,11 +136,8 @@ const DropDownSelect = ({
               </div>
             </>
           ) : (
-            <div>
-              <p>Пост оруулахын тулд группд нэгдээрэй</p>
-            </div>
+            hasAnyGroup && <AddPostNewGroupCard setOpen={setHasAnyGroup} />
           )}
-
           <div
             className={
               "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
@@ -165,11 +165,25 @@ const DropDownSelect = ({
                       className={"w-8 h-8 rounded-md object-cover mr-2"}
                       alt={""}
                     />
-                    <span
-                      className={"text-caak-generalblack font-medium text-16px"}
-                    >
-                      {item.name}
-                    </span>
+                    <div className={"flex flex-col justify-between"}>
+                      <span
+                        className={
+                          "text-caak-generalblack font-medium text-16px"
+                        }
+                      >
+                        {item.name}
+                      </span>
+                      <p
+                        className={
+                          "text-caak-darkBlue text-[14px] font-roboto font-normal tracking-[0.21px] leading-[16px]"
+                        }
+                      >
+                        {item.totals.member +
+                          item.totals.moderator +
+                          item.totals.admin}{" "}
+                        дагагчидтай
+                      </p>
+                    </div>
                   </div>
                 </div>
               );

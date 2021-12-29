@@ -8,13 +8,21 @@ import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 import toast, { Toaster } from "react-hot-toast";
+import useMediaQuery from "../navigation/useMeduaQuery";
 
-const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
+const ViewPostLeftReaction = ({
+  post,
+  commentRef,
+  containerClassname,
+  mobile,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [pathName, setPathName] = useState("");
+    const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
 
-  const toggleMenu = () => {
+
+    const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -35,7 +43,7 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
   }, []);
 
   return (
-    <div className={`${containerClassname} flex flex-col items-center`}>
+    <div className={`${containerClassname} ${mobile ? "md:hidden" : "flex"} flex-col items-center`}>
       <Toaster
         containerStyle={{ top: "64px" }}
         toastOptions={{
@@ -107,8 +115,8 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
           />
 
           <DropDown
-            arrow={"bottomLeft"}
-            className="absolute -left-1 bottom-14"
+            arrow={`${isTablet ? "bottomRight" : "bottomLeft"}`}
+            className="absolute md:-left-1 -right-1 bottom-14"
             open={isShareOpen}
             onToggle={toggleShare}
             content={
@@ -187,7 +195,7 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
           />
         </div>
         <p className="font-inter font-medium text-12px text-opacity-80 text-white tracking-[0.18px] leading-[15px]">
-          Хуваалцах
+          {!mobile && "Хуваалцах"}
         </p>
       </div>
 
@@ -204,11 +212,11 @@ const ViewPostLeftReaction = ({ post, commentRef, containerClassname }) => {
           }
         >
           <DropDown
-            arrow={"centerTop"}
+            arrow={`${isTablet ? "topRight" : "centerTop"}`}
             open={isMenuOpen}
             onToggle={toggleMenu}
             content={<ViewPostMoreMenu />}
-            className={"top-10 left-1/2 -translate-x-1/2 z-[500] rounded-[4px]"}
+            className={"top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[500] rounded-[4px]"}
           />
           <span
             className={"icon-fi-rs-dots text-caak-extraBlack text-[24px]"}

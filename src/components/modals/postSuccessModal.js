@@ -1,4 +1,5 @@
 import Button from "../button";
+import { useRouter } from "next/router";
 
 const PostSuccessModal = ({
   messageTitle,
@@ -7,6 +8,8 @@ const PostSuccessModal = ({
   finish,
   role,
 }) => {
+  const router = useRouter();
+
   return isOpen ? (
     <div className="popup_modal">
       <div className="popup_modal-success rounded-xl">
@@ -16,7 +19,10 @@ const PostSuccessModal = ({
           }
         >
           <div
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false);
+              router.push("/");
+            }}
             className={
               "flex items-center justify-center w-[30px] h-[30px] rounded-full bg-caak-titaniumwhite absolute right-[16px] top-[16px] cursor-pointer"
             }
@@ -32,10 +38,6 @@ const PostSuccessModal = ({
           {role === "MEMBER" ? (
             <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
               Группын админ постыг баталгаажуулах хүртэл түр хүлээнэ үү.
-            </p>
-          ) : role === "ADMIN" || role === "MODERATOR" ? (
-            <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
-              Таны пост амжилттай орлоо.
             </p>
           ) : null}
 

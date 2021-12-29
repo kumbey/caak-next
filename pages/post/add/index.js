@@ -259,7 +259,12 @@ const AddPost = () => {
               setIsOpen={setIsSuccessModalOpen}
               role={selectedGroup.role_on_group}
               finish={finish}
-              messageTitle={"Таны пост группт амжилттай илгээгдлээ."}
+              messageTitle={`${
+                selectedGroup.role_on_group === "ADMIN" ||
+                selectedGroup.role_on_group === "ADMIN"
+                  ? "Таны пост группт амжилттай нийтлэгдлээ."
+                  : "Таны пост группт амжилттай илгээгдлээ."
+              }`}
             />
           )}
 

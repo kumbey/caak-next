@@ -37,6 +37,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
     }
   };
   const router = useRouter();
+
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <PostDenyModal
@@ -48,83 +49,58 @@ const DashList = ({ imageSrc, post, type, video }) => {
       />
       <div className="relative flex items-center ">
         <div className="flex flex-shrink-0 w-[240px] mr-[18px] items-center">
-          {/*<Link*/}
-          {/*  shallow*/}
-          {/*  href={{*/}
-          {/*    pathname: `/post/view/${post.id}`,*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  <a>*/}
-          <div
-            onClick={() =>
-              router.push(
-                {
-                  query: {
-                    ...router.query,
-                    viewPost: "post",
-                    id: post.id,
-                    prevPath: router.asPath,
-                    isModal: true,
-                  },
-                },
-                `/post/view/${post.id}`,
-                { shallow: true, scroll: false }
-              )
-            }
-            className={
-              "flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative cursor-pointer"
-            }
+          <Link
+            as={`/post/view/${post.id}`}
+            shallow
+            href={{
+              query: {
+                ...router.query,
+                viewPost: "post",
+                id: post.id,
+                prevPath: router.asPath,
+                isModal: true,
+              },
+            }}
           >
-            {video ? (
-              <Video
-                videoClassname={"object-contain rounded-[4px]"}
-                src={getFileUrl(video)}
-                thumbnailIcon
-                hideControls
-              />
-            ) : (
-              <Image
-                quality={100}
-                className=" bg-white rounded-md"
-                src={getFileUrl(imageSrc)}
-                width={64}
-                height={64}
-                objectFit={"cover"}
-                alt="#"
-              />
-            )}
-          </div>
-          {/*  </a>*/}
-          {/*</Link>*/}
+            <a className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}>
+              {video ? (
+                <Video
+                  videoClassname={"object-contain rounded-[4px]"}
+                  src={getFileUrl(video)}
+                  thumbnailIcon
+                  hideControls
+                />
+              ) : (
+                <Image
+                  quality={100}
+                  className=" bg-white rounded-md"
+                  src={getFileUrl(imageSrc)}
+                  width={64}
+                  height={64}
+                  objectFit={"cover"}
+                  alt="#"
+                />
+              )}
+            </a>
+          </Link>
 
           <div className="flex flex-col  font-inter mr-[26px]">
             <div className="cursor-pointer truncate-2 text-15px font-medium text-caak-generalblack">
-              {/*<Link*/}
-              {/*  shallow*/}
-              {/*  href={{*/}
-              {/*    pathname: `/post/view/${post.id}`,*/}
-              {/*  }}*/}
-              {/*>*/}
-              <div
-                onClick={() =>
-                  router.push(
-                    {
-                      query: {
-                        ...router.query,
-                        viewPost: "post",
-                        id: post.id,
-                        prevPath: router.asPath,
-                        isModal: true,
-                      },
-                    },
-                    `/post/view/${post.id}`,
-                    { shallow: true, scroll: false }
-                  )
-                }
+              <Link
+                shallow
+                as={`/post/view/${post.id}`}
+                href={{
+                  query: {
+                    ...router.query,
+                    id: post.id,
+                    prevPath: router.asPath,
+                    isModal: true,
+                    viewPost: "post",
+                  },
+                }}
               >
-                {post.title}
-              </div>
-              {/*</Link>*/}
+                <a>{post.title}</a>
+              </Link>
             </div>
             <div className="text-xs font-normal font-inter  text-caak-darkBlue">
               {generateTimeAgo(post.createdAt)}

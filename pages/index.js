@@ -102,6 +102,7 @@ const Feed = ({ ssrData }) => {
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.posts.nextToken,
+    ssr: true
   });
 
   const fetchPosts = async () => {
@@ -231,6 +232,7 @@ const Feed = ({ ssrData }) => {
               {...(isLogged ? { columns: 3 } : { columns: 2 })}
             >
               <FeedSortButtons
+                feed
                 items={feedType}
                 initialSort={"DEFAULT"}
                 hide={isLogged && !isTablet}

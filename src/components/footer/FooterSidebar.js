@@ -1,3 +1,4 @@
+import Link from "next/link";
 const FooterSidebar = ({ containerClassname }) => {
   return (
     <div
@@ -6,13 +7,33 @@ const FooterSidebar = ({ containerClassname }) => {
       }`}
     >
       <div className={"flex flex-wrap my-[4px]"}>
-        <div>Асуулт хариулт ·&nbsp;</div>
-        <div>Холбоо барих ·&nbsp;</div>
-        <div>Сурталчилгаа · &nbsp;</div>
-        <div>Үйлчилгээний нөхцөл ·&nbsp;</div>
-        <div>Нууцлал </div>
+        <Link href="/help/connectus" shallow>
+          <a>
+              <p>Холбоо барих</p>
+          </a>
+        </Link>
+        <Link href={"/help"} shallow>
+            <a className='sm:ml-[2px] md:ml-[5px]'>
+                <p>Сурталчилгаа</p>
+            </a>
+        </Link>
+        <Link href="/help/secure" shallow>
+            <a className='sm:ml-[2px] md:ml-[5px]'>
+                <p>Үйлчилгээний нөхцөл</p>
+            </a>
+        </Link>
+        <Link href="/help/secure" shallow>
+            <a className='sm:ml-[2px] md:ml-[5px]'>
+                <p>Нууцлал</p>
+            </a>
+        </Link>
+        <Link href="/help" shallow>
+            <a className='sm:ml-[2px] md:ml-[5px]'>
+                <p>Тусламж</p>
+            </a>
+        </Link>
       </div>
-      <div className={"my-[4px]"}>©2021 Caak Holding llc</div>
+      <div className={"my-[4px]"}>©2021 Саак Холдинг ХХК</div>
     </div>
   );
 };

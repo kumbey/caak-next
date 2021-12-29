@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import FeedSortButtons from "../../src/components/navigation/FeedSortButtons";
 import { searchResultType } from "../../src/components/navigation/sortButtonTypes";
@@ -9,13 +9,28 @@ import { searchApi } from "../../src/apis/search";
 import SearchCard from "../../src/components/card/SearchCard";
 import Loader from "../../src/components/loader";
 import SearchCardGroup from "../../src/components/card/SearchCardGroup";
-import { sortSearchResultByKeyword } from "../../src/utility/Util";
+import {
+  getReturnData,
+  sortSearchResultByKeyword,
+} from "../../src/utility/Util";
 import Head from "next/head";
-import Consts  from "../../src/utility/Consts";
+import Consts from "../../src/utility/Consts";
+import {
+  getPostByUser,
+  searchPosts,
+} from "../../src/graphql-custom/post/queries";
+import InfinitScroller from "../../src/components/layouts/extra/InfinitScroller";
+import { useListPager } from "../../src/utility/ApiHelper";
+import { useUser } from "../../src/context/userContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
-  const data = await searchApi({ API, searchQuery: query.q, limit: 4, Auth });
+  const data = await searchApi({
+    API,
+    searchQuery: query.q,
+    Auth,
+    postLimit: 5,
+  });
 
   return {
     props: {
@@ -27,21 +42,56 @@ export async function getServerSideProps({ req, query }) {
 const Search = ({ ssrData }) => {
   const router = useRouter();
   const SearchLayout = useFeedLayout();
-  const [searchResult, setSearchResult] = useState(ssrData);
+  const [groups, setGroups] = useState(ssrData.groups);
+  const [users, setUsers] = useState(ssrData.users);
+  const [posts, setPosts] = useState(ssrData.posts);
   const [loading, setLoading] = useState(false);
+  const { isLogged } = useUser();
   const [sortType, setSortType] = useState("DEFAULT");
-
   const doSearch = async () =>
-    await searchApi({ API, searchQuery: router.query.q, limit: 10 });
+    await searchApi({ API, searchQuery: router.query.q });
+  const [nextPosts] = useListPager({
+    query: searchPosts,
+    variables: {
+      filter: {
+        title: { wildcard: `*${router.query.q}*` },
+      },
+    },
+    nextToken: ssrData.posts.nextToken,
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr:true
+  });
+  const fetchPosts = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
 
+        const resp = await nextPosts();
+        if (resp) {
+          setPosts((nextPosts) => {
+            return {
+              ...nextPosts,
+              items: [...nextPosts.items, ...resp],
+            };
+          });
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
   useUpdateEffect(() => {
     setLoading(true);
     doSearch().then((item) => {
-      setSearchResult(item);
+      setGroups(item.groups);
+      setUsers(item.users);
+      setPosts(item.posts);
       setLoading(false);
     });
   }, [router.query]);
-
   return (
     <>
       <Head>
@@ -79,51 +129,45 @@ const Search = ({ ssrData }) => {
               items={searchResultType}
               direction={"row"}
               textClassname={"font-medium text-15px"}
+              initialSort={"DEFAULT"}
               setSortType={setSortType}
-              sortType={sortType}
             />
             <div className={"pt-[20px] pb-[40px] w-full"}>
               <div className={"flex flex-row flex-wrap w-full"}>
-                {!loading ? (
-                  sortSearchResultByKeyword(searchResult, router.query.q).map(
-                    (item, index) => {
-                      if (item.type === "GROUP" && sortType === "GROUP") {
-                        return (
-                          <SearchCardGroup
-                            key={index}
-                            type={sortType}
-                            result={item}
-                          />
-                        );
-                      } else if (sortType === "DEFAULT") {
-                        return (
-                          <SearchCard
-                            type={item.type}
-                            key={index}
-                            result={item}
-                          />
-                        );
-                      } else if (sortType === "POST" && item.type === "POST") {
-                        return (
-                          <SearchCard
-                            type={item.type}
-                            key={index}
-                            result={item}
-                          />
-                        );
-                      }
-                    }
-                  )
-                ) : (
-                  <div
-                    className={"flex justify-center items-center self-center"}
-                  >
-                    <Loader
-                      containerClassName={"self-center"}
-                      className={`bg-caak-primary`}
-                    />
-                  </div>
-                )}
+                {groups.map((group, index) => {
+                  if (sortType === "GROUP") {
+                    return (
+                      <SearchCardGroup
+                        key={index}
+                        type={"GROUP"}
+                        result={group}
+                      />
+                    );
+                  } else if ((group.type === "GROUP" && sortType === "DEFAULT")) {
+                    return (
+                      <SearchCard type={"GROUP"} key={index} result={group} />
+                    );
+                  }
+                  // else {
+                  //   return <SearchCard type={"POST"} key={index} result={group} />
+                  // }
+                })}
+
+                {users.map((user, index) => {
+                  if (sortType === "DEFAULT")
+                    return (
+                      <SearchCard type={"USER"} key={index} result={user} />
+                    );
+                })}
+
+                <InfinitScroller onNext={fetchPosts} loading={loading}>
+                  {posts.items.map((post, index) => {
+                    if (sortType === "DEFAULT" || sortType === "POST")
+                      return (
+                        <SearchCard type={"POST"} key={index} result={post} />
+                      );
+                  })}
+                </InfinitScroller>
               </div>
             </div>
           </SearchLayout>

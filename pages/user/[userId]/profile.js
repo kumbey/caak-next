@@ -260,10 +260,6 @@ const Profile = ({ ssrData }) => {
     setSavedPosts(ssrData.savedPosts);
   }, [ssrData.savedPosts]);
 
-  useEffect(() => {
-    console.log(savedPosts);
-  }, []);
-
   const ProfileLayout = useModalLayout({ layoutName: "userProfile" });
   return (
     <>

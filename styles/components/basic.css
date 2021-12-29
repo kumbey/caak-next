@@ -498,7 +498,7 @@
 
   .addPostPadding {
     padding-top: 38px;
-    padding-bottom: calc(var(--bottomTabSize) + 38px);
+    padding-bottom: calc(var(--bottomTabSize) + 160px);
   }
 
   @keyframes highlight {

@@ -51,7 +51,7 @@
         },
         "restoreOldPosts": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/restoreOldPosts-51526355446c65456a6f-build.zip"
+          "s3Key": "amplify-builds/restoreOldPosts-5947686d366339555a68-build.zip"
         }
       },
       "auth": {

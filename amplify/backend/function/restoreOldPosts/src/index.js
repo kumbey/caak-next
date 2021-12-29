@@ -29,8 +29,8 @@ exports.handler = async (event) => {
     try{
 
         let jsonFile = []
-        const maxLegth = 19
-        const startIndex = 1
+        const maxLegth = 20
+        const startIndex = 0
 
         const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
         const bar2 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
@@ -57,8 +57,8 @@ exports.handler = async (event) => {
 
             post.id = uuidv4()
             post.status = "CONFIRMED"
-            post.user_id = "59ac8093-7848-4f0d-89fd-2c30c9195034"
-            post.updated_user_id = "59ac8093-7848-4f0d-89fd-2c30c9195034"
+            post.user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
+            post.updated_user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
             post.group_id = "4def44e3-9961-4502-b60f-61b28743103f"
             post.category_id = "9717e8da-6b54-4d3b-8055-fa9000366b4e"
             post.owned = "CAAK"
@@ -77,7 +77,7 @@ exports.handler = async (event) => {
             await docClient.put(params).promise();
 
 
-            bar2.start(postItems.length, 0);
+            bar2.start(postItems.length - 1, 0);
 
             for(let itemIndex = 0; itemIndex < postItems.length; itemIndex++){
 

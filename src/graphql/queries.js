@@ -6155,3 +6155,36 @@ export const listNotificationByUserAndSeen = /* GraphQL */ `
     }
   }
 `;
+export const getFeedBack = /* GraphQL */ `
+  query GetFeedBack($id: ID!) {
+    getFeedBack(id: $id) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFeedBacks = /* GraphQL */ `
+  query ListFeedBacks(
+    $filter: ModelFeedBackFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFeedBacks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        star
+        title
+        description
+        status
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

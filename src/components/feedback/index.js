@@ -9,7 +9,7 @@ import Input from "../input";
 import Button from "../button";
 import { useState } from "react";
 
-const FeedBack = () => {
+const FeedBack = ({setIsOpen}) => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
 
@@ -27,6 +27,7 @@ const FeedBack = () => {
       }
     >
       <div
+        onClick={()=> setIsOpen(false)}
         className={
           "cursor-pointer w-[30px] h-[30px] bg-white flex items-center justify-center rounded-full absolute top-[12px] right-[12px]"
         }
@@ -67,7 +68,7 @@ const FeedBack = () => {
             }
             placeholder={"Гарчиг"}
           />
-          <div className={"w-full mt-[10px]"}>
+          <div className={"w-full mt-[10px] relative"}>
             <textarea
               maxLength={500}
               defaultValue={comment}
@@ -77,6 +78,13 @@ const FeedBack = () => {
                 "h-[102px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
               }
             />
+            <div
+              className={
+                "text-[12px] font-medium absolute bottom-[9px] right-[12px] text-darkblue"
+              }
+            >
+              {comment.length}/500
+            </div>
           </div>
           <div className={"mt-[24px]"}>
             <Button

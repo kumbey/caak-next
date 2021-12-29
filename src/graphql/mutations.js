@@ -6395,6 +6395,54 @@ export const deleteNotification = /* GraphQL */ `
     }
   }
 `;
+export const createFeedBack = /* GraphQL */ `
+  mutation CreateFeedBack(
+    $input: CreateFeedBackInput!
+    $condition: ModelFeedBackConditionInput
+  ) {
+    createFeedBack(input: $input, condition: $condition) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFeedBack = /* GraphQL */ `
+  mutation UpdateFeedBack(
+    $input: UpdateFeedBackInput!
+    $condition: ModelFeedBackConditionInput
+  ) {
+    updateFeedBack(input: $input, condition: $condition) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFeedBack = /* GraphQL */ `
+  mutation DeleteFeedBack(
+    $input: DeleteFeedBackInput!
+    $condition: ModelFeedBackConditionInput
+  ) {
+    deleteFeedBack(input: $input, condition: $condition) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!

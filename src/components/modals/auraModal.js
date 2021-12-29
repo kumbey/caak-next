@@ -1,14 +1,8 @@
-import { useState, useEffect } from "react";
-
-import { API } from "aws-amplify";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-
-import { listReportTypes } from "../../graphql-custom/reportType/queries";
-import { createReportedPost } from "../../graphql-custom/reportType/mutation";
+import { useState } from "react";
 import Button from "../button";
 import Image from "next/image";
 import helloImg from "../../../public/assets/images/Hello.svg";
-import auraImg from "../../../public/assets/images/AuraSM.svg";
+import auraImg from "../../../public/assets/images/AuraSM.png";
 import { useRouter } from "next/router";
 
 const AuraModal = ({ isOpen, setIsOpen }) => {
@@ -23,7 +17,7 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
           <div className="flex flex-col">
             <div
               className={
-                "  flex  justify-center items-center relative py-[20px] px-[20px] bg-caak-macarooncream rounded-t-xl"
+                "flex justify-center items-center relative py-[20px] px-[20px] bg-caak-macarooncream rounded-t-xl"
               }
             >
               <div className="flex justify-center h-[180px] w-full ">
@@ -40,7 +34,7 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
               <div
                 onClick={() => setIsOpen(false)}
                 className={
-                  "flex items-center justify-center w-[30px] h-[30px] rounded-full bg-caak-titaniumwhite absolute right-[0px] top-[0px] cursor-pointer"
+                  "flex items-center justify-center w-[30px] h-[30px] rounded-full bg-white absolute right-[16px] top-[16px] cursor-pointer"
                 }
               >
                 <span className={"icon-fi-rs-close text-[14px]"} />
@@ -50,27 +44,31 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
               <p className="font-inter font-semibold text-20px text-caak-generalblack text-center mb-[12px]">
                 Групп нээхэд таны <br /> Аура оноо хүрэлцэхгүй байна.
               </p>
-              <div className="flex items-center">
-                <p className=" font-inter font-normal text-15px text-caak-darkBlue  mb-[20px]">
-                  Аура оноо
-                </p>
-                <Image
-                  className="  bg-transparent auraGradient"
-                  src={auraImg}
-                  height={40}
-                  width={40}
-                  objectFit={"cover"}
-                  alt="#"
-                />
-                <p className="font-inter font-medium text-15px text-caak-primary">
-                  500＋
-                </p>
-                <p> цуглуулсан байх шаардлагатай.</p>
+
+              <div
+                className={
+                  "text-[15px] flex flex-row flex-wrap items-center justify-center text-caak-darkBlue text-center tracking-[0.23px] leading-[20px]"
+                }
+              >
+                Аура оноо
+                <div className={"flex flex-row  items-center flex-shrink-0"}>
+                  <div className={"w-[14px] h-[14px] relative"}>
+                    <Image
+                      quality={100}
+                      src={auraImg}
+                      alt={""}
+                      layout={"fill"}
+                    />
+                  </div>
+                  <p className={"text-caak-primary"}>500+</p> цуглуулсан
+                </div>
+                байх шаардлагатай.
               </div>
+
               <Button
                 loading={loading}
                 onClick={() => setIsNext(true)}
-                className="bg-caak-primary font-inter font-medium  text-14px text-white"
+                className="bg-caak-primary font-inter font-medium  text-14px text-white mt-[20px]"
               >
                 Аура гэж юу вэ?
               </Button>

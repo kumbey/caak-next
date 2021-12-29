@@ -8645,3 +8645,42 @@ export const onDeleteNotification = /* GraphQL */ `
     }
   }
 `;
+export const onCreateFeedBack = /* GraphQL */ `
+  subscription OnCreateFeedBack {
+    onCreateFeedBack {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFeedBack = /* GraphQL */ `
+  subscription OnUpdateFeedBack {
+    onUpdateFeedBack {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFeedBack = /* GraphQL */ `
+  subscription OnDeleteFeedBack {
+    onDeleteFeedBack {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;

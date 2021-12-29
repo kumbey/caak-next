@@ -1087,6 +1087,7 @@ export const getPost = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -1313,6 +1314,7 @@ export const getPost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -1455,6 +1457,7 @@ export const listPosts = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -1584,6 +1587,7 @@ export const getPostByStatus = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -1713,6 +1717,7 @@ export const getPostByGroup = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -1842,6 +1847,7 @@ export const getPostByUser = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -1971,6 +1977,7 @@ export const listPostByOwned = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2100,6 +2107,7 @@ export const listPostByTitle = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2227,6 +2235,7 @@ export const searchPosts = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2325,6 +2334,212 @@ export const searchPosts = /* GraphQL */ `
       }
       nextToken
       total
+    }
+  }
+`;
+export const getSavedPost = /* GraphQL */ `
+  query GetSavedPost($id: ID!) {
+    getSavedPost(id: $id) {
+      id
+      user_id
+      post_id
+      createdAt
+      updatedAt
+      post {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        owned
+        ignoreNotification
+        oldCaakId
+        createdAt
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+export const listSavedPosts = /* GraphQL */ `
+  query ListSavedPosts(
+    $filter: ModelSavedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSavedPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        user_id
+        post_id
+        createdAt
+        updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          isSaved
+          updatedAt
+          owned
+          ignoreNotification
+          oldCaakId
+          createdAt
+          version
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listSavedPostByUser = /* GraphQL */ `
+  query ListSavedPostByUser(
+    $user_id: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSavedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSavedPostByUser(
+      user_id: $user_id
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user_id
+        post_id
+        createdAt
+        updatedAt
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          isSaved
+          updatedAt
+          owned
+          ignoreNotification
+          oldCaakId
+          createdAt
+          version
+        }
+      }
+      nextToken
     }
   }
 `;
@@ -2430,6 +2645,7 @@ export const getPostItems = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2601,6 +2817,7 @@ export const listPostItemss = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -2653,6 +2870,7 @@ export const getPostTotal = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -2794,6 +3012,7 @@ export const listPostTotals = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -2850,6 +3069,7 @@ export const listPostOrderByReactions = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -2906,6 +3126,7 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -2962,6 +3183,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3296,6 +3518,7 @@ export const getComment = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -3431,6 +3654,7 @@ export const getComment = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3552,6 +3776,7 @@ export const listComments = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3671,6 +3896,7 @@ export const listCommentByPostItem = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3790,6 +4016,7 @@ export const getCommentsByPost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3909,6 +4136,7 @@ export const listCommentsByDateAndType = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -4028,6 +4256,7 @@ export const listCommentsByDateAndTypeForItem = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -4147,6 +4376,7 @@ export const listCommentByParent = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -4266,6 +4496,7 @@ export const listCommentByUser = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -4372,6 +4603,8 @@ export const getReportedPost = /* GraphQL */ `
   query GetReportedPost($id: ID!) {
     getReportedPost(id: $id) {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -4468,6 +4701,7 @@ export const getReportedPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -4564,14 +4798,6 @@ export const getReportedPost = /* GraphQL */ `
           updatedAt
         }
       }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
-      }
     }
   }
 `;
@@ -4584,6 +4810,8 @@ export const listReportedPosts = /* GraphQL */ `
     listReportedPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        post_id
+        user_id
         reason
         status
         createdAt
@@ -4621,20 +4849,13 @@ export const listReportedPosts = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
           oldCaakId
           createdAt
           version
-        }
-        type {
-          id
-          name
-          status
-          description
-          createdAt
-          updatedAt
         }
       }
       nextToken

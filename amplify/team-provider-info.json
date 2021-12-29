@@ -23,7 +23,7 @@
         },
         "resolverBoolean": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/resolverBoolean-48664d7a337736414174-build.zip"
+          "s3Key": "amplify-builds/resolverBoolean-6c435978727031797835-build.zip"
         },
         "totals": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",

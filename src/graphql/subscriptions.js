@@ -207,6 +207,7 @@ export const onCommentByPostItem = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -342,6 +343,7 @@ export const onCommentByPostItem = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -576,6 +578,7 @@ export const onCommentByPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -711,6 +714,7 @@ export const onCommentByPost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -945,6 +949,7 @@ export const onCommentByParent = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -1080,6 +1085,7 @@ export const onCommentByParent = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -1140,6 +1146,7 @@ export const onPostByGroup = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -1366,6 +1373,7 @@ export const onPostByGroup = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -1503,6 +1511,7 @@ export const onPostByUser = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -1729,6 +1738,7 @@ export const onPostByUser = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -1978,6 +1988,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -2204,6 +2215,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3334,6 +3346,7 @@ export const onCreatePost = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -3560,6 +3573,7 @@ export const onCreatePost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -3697,6 +3711,7 @@ export const onUpdatePost = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -3923,6 +3938,7 @@ export const onUpdatePost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -4060,6 +4076,7 @@ export const onDeletePost = /* GraphQL */ `
       group_id
       category_id
       reacted
+      isSaved
       updatedAt
       owned
       ignoreNotification
@@ -4286,6 +4303,7 @@ export const onDeletePost = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -4409,6 +4427,366 @@ export const onDeletePost = /* GraphQL */ `
     }
   }
 `;
+export const onCreateSavedPost = /* GraphQL */ `
+  subscription OnCreateSavedPost {
+    onCreateSavedPost {
+      id
+      user_id
+      post_id
+      createdAt
+      updatedAt
+      post {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        owned
+        ignoreNotification
+        oldCaakId
+        createdAt
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+export const onUpdateSavedPost = /* GraphQL */ `
+  subscription OnUpdateSavedPost {
+    onUpdateSavedPost {
+      id
+      user_id
+      post_id
+      createdAt
+      updatedAt
+      post {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        owned
+        ignoreNotification
+        oldCaakId
+        createdAt
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
+export const onDeleteSavedPost = /* GraphQL */ `
+  subscription OnDeleteSavedPost {
+    onDeleteSavedPost {
+      id
+      user_id
+      post_id
+      createdAt
+      updatedAt
+      post {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        owned
+        ignoreNotification
+        oldCaakId
+        createdAt
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
 export const onCreatePostStatusHistory = /* GraphQL */ `
   subscription OnCreatePostStatusHistory {
     onCreatePostStatusHistory {
@@ -4483,6 +4861,7 @@ export const onCreatePostItems = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -4649,6 +5028,7 @@ export const onUpdatePostItems = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -4815,6 +5195,7 @@ export const onDeletePostItems = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -5239,6 +5620,7 @@ export const onCreateComment = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -5374,6 +5756,7 @@ export const onCreateComment = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -5608,6 +5991,7 @@ export const onUpdateComment = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -5743,6 +6127,7 @@ export const onUpdateComment = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -5977,6 +6362,7 @@ export const onDeleteComment = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -6112,6 +6498,7 @@ export const onDeleteComment = /* GraphQL */ `
           group_id
           category_id
           reacted
+          isSaved
           updatedAt
           owned
           ignoreNotification
@@ -6231,6 +6618,8 @@ export const onCreateReportedPost = /* GraphQL */ `
   subscription OnCreateReportedPost {
     onCreateReportedPost {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -6327,6 +6716,7 @@ export const onCreateReportedPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -6422,14 +6812,6 @@ export const onCreateReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }
@@ -6438,6 +6820,8 @@ export const onUpdateReportedPost = /* GraphQL */ `
   subscription OnUpdateReportedPost {
     onUpdateReportedPost {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -6534,6 +6918,7 @@ export const onUpdateReportedPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -6629,14 +7014,6 @@ export const onUpdateReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }
@@ -6645,6 +7022,8 @@ export const onDeleteReportedPost = /* GraphQL */ `
   subscription OnDeleteReportedPost {
     onDeleteReportedPost {
       id
+      post_id
+      user_id
       reason
       status
       createdAt
@@ -6741,6 +7120,7 @@ export const onDeleteReportedPost = /* GraphQL */ `
         group_id
         category_id
         reacted
+        isSaved
         updatedAt
         owned
         ignoreNotification
@@ -6836,14 +7216,6 @@ export const onDeleteReportedPost = /* GraphQL */ `
           createdAt
           updatedAt
         }
-      }
-      type {
-        id
-        name
-        status
-        description
-        createdAt
-        updatedAt
       }
     }
   }

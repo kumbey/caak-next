@@ -321,7 +321,7 @@ export function getFileUrl(file) {
   if (file.url) {
     retUrl = file.url;
   } else if(file.isExternal === "TRUE"){
-    retUrl = `https://caak.mn/${file.external_url}`
+    retUrl = `https://media.caak.mn/${file.external_url}`
     console.log(retUrl)
   }
   else {

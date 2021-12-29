@@ -163,7 +163,7 @@ const AnimatedCaakButton = ({
         )}
       </div>
       <p className={`${textClassname ? textClassname : "text-caak-scriptink"}`}>
-        {totals.reactions + `${hideCaakText ? "" : " саак"}`}
+        {totals ? totals.reactions + `${hideCaakText ? "" : " саак"}`: -21}
       </p>
     </div>
   );

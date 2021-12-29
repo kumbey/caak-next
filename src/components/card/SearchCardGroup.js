@@ -124,7 +124,7 @@ const SearchCardGroup = ({ result, sortType }) => {
             alt={""}
             src={
               result.cover
-                ? generateFileUrl(result.cover)
+                ? getFileUrl(result.cover)
                 : getGenderImage("default").src
             }
             width={300}
@@ -212,7 +212,7 @@ const SearchCardGroup = ({ result, sortType }) => {
             height={60}
             objectFit={"cover"}
             alt={"sda"}
-            src={generateFileUrl(result.profile)}
+            src={getFileUrl(result.profile)}
           />
         </div>
         <div className={"flex flex-col justify-evenly ml-[10px]"}>

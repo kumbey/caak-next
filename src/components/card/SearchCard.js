@@ -2,7 +2,6 @@ import CardHeader from "./FeedCard/CardHeader";
 import Divider from "../divider";
 import Image from "next/image";
 import {
-  generateFileUrl,
   getFileUrl,
   getGenderImage,
 } from "../../utility/Util";
@@ -30,7 +29,7 @@ const SearchCard = ({ type, result }) => {
                 alt={"Group"}
                 src={
                   result.profile
-                    ? generateFileUrl(result.profile)
+                    ? getFileUrl(result.profile)
                     : getGenderImage(result.gender).src
                 }
               />
@@ -44,7 +43,7 @@ const SearchCard = ({ type, result }) => {
                 alt={"User"}
                 src={
                   result.pic
-                    ? generateFileUrl(result.pic)
+                    ? getFileUrl(result.pic)
                     : getGenderImage(result.gender).src
                 }
               />
@@ -145,7 +144,7 @@ const SearchCard = ({ type, result }) => {
                       hideControls
                       thumbnailIcon
                       videoClassname={"object-contain rounded-[4px]"}
-                      src={generateFileUrl(result.items.items[0].file)}
+                      src={getFileUrl(result.items.items[0].file)}
                     />
                   ) : (
                     <Image
@@ -154,7 +153,7 @@ const SearchCard = ({ type, result }) => {
                       height={100}
                       objectFit={"cover"}
                       alt={""}
-                      src={generateFileUrl(result.items.items[0].file)}
+                      src={getFileUrl(result.items.items[0].file)}
                     />
                   )}
                 </div>

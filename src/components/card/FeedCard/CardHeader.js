@@ -172,7 +172,7 @@ const CardHeader = ({
                 <PostMoreMenu
                   setIsOpen={setIsReportModalOpen}
                   groupId={post.group.id}
-                  postId={post.id}
+                  post={post}
                   postUser={post.user}
                   handleToast={handleToast}
                 />

@@ -258,7 +258,7 @@ const Group = ({ ssrData }) => {
         columns={2}
       >
         {isTablet && <GroupAdminPanel groupData={groupData} />}
-        <AddPostHandler groupData={groupData}/>
+        <AddPostHandler groupId={groupData.id}/>
         <GroupSortButtons
           activeIndex={activeIndex}
           activeView={activeView}

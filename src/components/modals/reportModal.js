@@ -20,6 +20,8 @@ const ReportModal = ({ isOpen, setIsOpen, postId, userId }) => {
     user_id: "",
   };
 
+  let pl;
+
   const handleChange = (e) => {
     setChecked(e.target.value);
   };
@@ -51,7 +53,11 @@ const ReportModal = ({ isOpen, setIsOpen, postId, userId }) => {
   };
 
   useEffect(() => {
-    API.graphql(graphqlOperation(listReportTypes)).then((report) => {
+    API.graphql(
+      graphqlOperation(listReportTypes, {
+        filter: { status: { eq: "ACTIVE" } },
+      })
+    ).then((report) => {
       setReports(report.data.listReportTypes.items);
     });
   }, []);
@@ -82,31 +88,30 @@ const ReportModal = ({ isOpen, setIsOpen, postId, userId }) => {
             <>
               <div className="flex  flex-wrap">
                 {reports.map((report, index) => {
-                  if (report.status === "ACTIVE")
-                    return (
-                      <div
-                        key={index}
-                        className={`${
-                          index % 2 === 1 ? "border-r " : ""
-                        } flex items-center border-b py-[15px]  w-[220px] cursor-pointer`}
+                  return (
+                    <div
+                      key={index}
+                      className={`${
+                        index % 2 === 0 ? "border-r " : (pl = "pl-[10px] ")
+                      } flex items-center border-b py-[15px]  w-[230px] cursor-pointer`}
+                    >
+                      <input
+                        id={report.id}
+                        type="radio"
+                        onChange={(e) => handleChange(e)}
+                        value={report.name}
+                        checked={checked === report.name}
+                        name="report"
+                        className={`mr-2 ${pl}`}
+                      />
+                      <label
+                        className="cursor-pointer font-inter font-normal text-15px"
+                        htmlFor={report.id}
                       >
-                        <input
-                          id={report.id}
-                          type="radio"
-                          onChange={(e) => handleChange(e)}
-                          value={report.name}
-                          checked={checked === report.name}
-                          name="report"
-                          className="mr-2"
-                        />
-                        <label
-                          className="cursor-pointer font-inter font-normal text-15px"
-                          for={report.id}
-                        >
-                          {report.name}
-                        </label>
-                      </div>
-                    );
+                        {report.name}
+                      </label>
+                    </div>
+                  );
                 })}
               </div>
               <div className="flex items-center justify-end mt-[30px]">

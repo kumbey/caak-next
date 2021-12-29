@@ -277,7 +277,8 @@ const Post = ({ ssrData }) => {
           </div>
           {(post.group.role_on_group === "ADMIN" ||
             post.group.role_on_group === "MODERATOR") &&
-            post.status === "PENDING" && (
+            post.status === "PENDING" &&
+            router.query.dashType === "group" && (
               <div
                 className={"flex flex-row justify-end mt-[10px] bg-transparent"}
               >

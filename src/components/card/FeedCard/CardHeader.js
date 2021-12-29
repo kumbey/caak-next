@@ -13,6 +13,8 @@ import ProfileHoverCard from "../ProfileHoverCard";
 import Image from "next/image";
 import { useWrapper } from "../../../context/wrapperContext";
 import { useRouter } from "next/router";
+import ReportModal from "../../modals/reportModal";
+import { useUser } from "../../../context/userContext";
 
 const CardHeader = ({
   post,
@@ -21,6 +23,7 @@ const CardHeader = ({
   titleClassname,
   handleToast,
 }) => {
+  const { user } = useUser();
   const { setFeedSortType } = useWrapper();
 
   const toggleMenu = () => {
@@ -30,6 +33,7 @@ const CardHeader = ({
     setIsMenuOpen(false);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const router = useRouter();
 
   return post.user ? (
@@ -38,6 +42,12 @@ const CardHeader = ({
         containerClassname ? containerClassname : "p-[16px]"
       } `}
     >
+      <ReportModal
+        setIsOpen={setIsReportModalOpen}
+        isOpen={isReportModalOpen}
+        postId={post.id}
+        userId={user.id}
+      />
       <div className={"flex justify-between items-center h-[34px]"}>
         <div className="flex justify-between items-center h-full">
           <div
@@ -160,6 +170,7 @@ const CardHeader = ({
               onToggle={toggleMenu}
               content={
                 <PostMoreMenu
+                  setIsOpen={setIsReportModalOpen}
                   groupId={post.group.id}
                   postId={post.id}
                   postUser={post.user}

@@ -11,6 +11,8 @@ const DropDownSelect = ({
   className,
   onSelect,
   setPost,
+  setIsAuraModalOpen,
+  userAura,
 }) => {
   const [filteredData, setFilteredData] = useState({
     adminModerator: [],
@@ -93,7 +95,10 @@ const DropDownSelect = ({
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний группүүд
                 </span>
-                <span className={"text-15px font-medium text-caak-primary"}>
+                <span
+                  onClick={() => userAura && setIsAuraModalOpen(true)}
+                  className={"text-15px font-medium text-caak-primary"}
+                >
                   Групп үүсгэх
                 </span>
               </div>
@@ -175,7 +180,7 @@ const DropDownSelect = ({
                       >
                         {item.totals.member +
                           item.totals.moderator +
-                          item.totals.admin} {" "}
+                          item.totals.admin}{" "}
                         дагагчидтай
                       </p>
                     </div>

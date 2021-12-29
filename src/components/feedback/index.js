@@ -67,7 +67,7 @@ const FeedBack = () => {
             }
             placeholder={"Гарчиг"}
           />
-          <div className={"w-full mt-[10px]"}>
+          <div className={"w-full mt-[10px] relative"}>
             <textarea
               maxLength={500}
               defaultValue={comment}
@@ -77,6 +77,13 @@ const FeedBack = () => {
                 "h-[102px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
               }
             />
+            <div
+              className={
+                "text-[12px] font-medium absolute bottom-[9px] right-[12px] text-darkblue"
+              }
+            >
+              {comment.length}/500
+            </div>
           </div>
           <div className={"mt-[24px]"}>
             <Button

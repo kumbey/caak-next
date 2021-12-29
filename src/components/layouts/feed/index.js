@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { feedType } from "../../navigation/sortButtonTypes";
 import { useWrapper } from "../../../context/wrapperContext";
 import useWindowSize from "../../../hooks/useWindowSize";
+import AuraModal from "../../modals/auraModal";
 
 const DefaultFeedLayout = ({
   children,
@@ -26,6 +27,7 @@ const DefaultFeedLayout = ({
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
   const { feedSortType } = useWrapper();
+  const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
@@ -38,9 +40,11 @@ const DefaultFeedLayout = ({
   return (
     loaded && (
       <div
-        className={"feedLayoutContainer"}
+        className={"feedLayoutContainer pb-[200px] md:pb-0"}
         // style={{ paddingBottom: size.height / 3 }}
       >
+        <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
+
         {columns === 3 && (
           <div
             className={`leftSideBar pr-[10px] overflow-hidden hover:overflow-y-scroll ${
@@ -59,6 +63,7 @@ const DefaultFeedLayout = ({
               addGroup
               initialData={adminModeratorGroups}
               title={"Миний группүүд"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
             />
             <SideBarGroups
               role={["MEMBER"]}

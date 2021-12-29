@@ -16,6 +16,7 @@ export default function PostMoreMenu({
   postId,
   groupId,
   handleToast,
+  setIsOpen,
 }) {
   const { user, isLogged } = useUser();
   const router = useRouter();
@@ -67,32 +68,37 @@ export default function PostMoreMenu({
 
   return !loading ? (
     <div className={"dropdown-item-wrapper"}>
-      <div
-        onClick={() =>
-          !isLogged
-            ? router.push(
-                {
-                  pathname: router.pathname,
-                  query: {
-                    ...router.query,
-                    signInUp: "signIn",
-                    isModal: true,
+      {!groupFollowed && (
+        <div
+          onClick={() =>
+            !isLogged
+              ? router.push(
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      signInUp: "signIn",
+                      isModal: true,
+                    },
                   },
-                },
-                `/signInUp/signIn`,
-                { shallow: true }
-              )
-            : groupFollowed
-            ? leaveGroup()
-            : joinGroup()
-        }
-        className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
-      >
-        <span className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack">
-          {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
-        </p>
-      </div>
+                  `/signInUp/signIn`,
+                  { shallow: true }
+                )
+              : groupFollowed
+              ? leaveGroup()
+              : joinGroup()
+          }
+          className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+        >
+          <span
+            className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"}
+          />
+          <p className="text-14px text-caak-extraBlack">
+            {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
+          </p>
+        </div>
+      )}
+
       {isLogged && postUser.id === user.id && (
         <div
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
@@ -111,7 +117,10 @@ export default function PostMoreMenu({
         <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  w-c1 text-16px"} />
         <p className="text-14px text-caak-extraBlack">Хадгалах</p>
       </div>
-      <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+      <div
+        onClick={() => setIsOpen(true)}
+        className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+      >
         <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />
         <p className="text-14px text-caak-extraBlack">Репорт</p>
       </div>

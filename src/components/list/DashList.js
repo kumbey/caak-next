@@ -37,6 +37,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
     }
   };
   const router = useRouter();
+
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
       <PostDenyModal
@@ -52,11 +53,13 @@ const DashList = ({ imageSrc, post, type, video }) => {
             as={`/post/view/${post.id}`}
             shallow
             href={{
-              ...router.query,
-              viewPost: "post",
-              id: post.id,
-              prevPath: router.asPath,
-              isModal: true,
+              query: {
+                ...router.query,
+                viewPost: "post",
+                id: post.id,
+                prevPath: router.asPath,
+                isModal: true,
+              },
             }}
           >
             <a className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}>
@@ -87,11 +90,13 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 shallow
                 as={`/post/view/${post.id}`}
                 href={{
-                  ...router.query,
-                  viewPost: "post",
-                  id: post.id,
-                  prevPath: router.asPath,
-                  isModal: true,
+                  query: {
+                    ...router.query,
+                    id: post.id,
+                    prevPath: router.asPath,
+                    isModal: true,
+                    viewPost: "post",
+                  },
                 }}
               >
                 <a>{post.title}</a>

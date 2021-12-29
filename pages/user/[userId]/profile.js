@@ -83,6 +83,7 @@ const Profile = ({ ssrData }) => {
     },
     nextToken: ssrData.posts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    ssr: true,
   });
   const fetchPosts = async () => {
     try {
@@ -213,6 +214,7 @@ const Profile = ({ ssrData }) => {
       <ProfileLayout user={fetchedUser}>
         <div className={"pt-0 md:pt-[42px]"}>
           <FeedSortButtons
+            initialSort={"POST"}
             iconSize={"text-[17px]"}
             iconContainerSize={"w-[20px] h-[20px]"}
             textClassname={"text-[15px] font-medium"}
@@ -223,10 +225,7 @@ const Profile = ({ ssrData }) => {
             direction={"col"}
           />
 
-          <InfinitScroller
-            onNext={fetchPosts}
-            loading={loading}
-          >
+          <InfinitScroller onNext={fetchPosts} loading={loading}>
             <div className={"userPostsContainer"}>
               {posts.items.map((items, index) => {
                 if (

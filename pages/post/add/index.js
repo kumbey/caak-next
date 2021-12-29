@@ -20,6 +20,7 @@ import Head from "next/head";
 import toast, { Toaster } from "react-hot-toast";
 import Consts from "../../../src/utility/Consts";
 import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
+import AuraModal from "../../../src/components/modals/auraModal";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -27,10 +28,12 @@ const AddPost = () => {
   const { postId, groupId } = router.query;
   const { user } = useUser();
 
+  const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
+  const [newPostId, setNewPostId] = useState();
   const [groupData, setGroupData] = useState({
     adminModerator: [],
     unMember: [],
@@ -92,26 +95,23 @@ const AddPost = () => {
   };
 
   const finish = (role) => {
-    if(role === "MEMBER") {
+    if (role === "MEMBER") {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 1,
-            },
+        {
+          pathname: `/user/${user.id}/dashboard`,
+          query: {
+            activeIndex: 1,
           },
-          `/user/${user.id}/dashboard`
+        },
+        `/user/${user.id}/dashboard`
       );
-    }
-    else {
+    } else {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 0,
-            },
-          },
-          `/user/${user.id}/dashboard`
+        {
+          pathname: `/post/view/${newPostId}`,
+        },
+        `/post/view/${newPostId}`,
+        { shallow: true, scroll: false }
       );
     }
   };
@@ -219,12 +219,13 @@ const AddPost = () => {
       }
       try {
         setLoading(true);
-        await crtPost(post, user.id, resp.role_on_group);
-
+        await crtPost(post, user.id, resp.role_on_group).then((resp) => {
+          setNewPostId(getReturnData(resp).id);
+        });
         setLoading(false);
         setIsSuccessModalOpen(true);
       } catch (ex) {
-        ex.errors.map((error) => {
+        ex?.errors?.map((error) => {
           if (error.message.includes("IndexKey: group_id")) {
             handleToast({ param: "isGroup" });
           }
@@ -237,6 +238,7 @@ const AddPost = () => {
       handleToast({ param: "isGroup" });
     }
   };
+
   return !permissionDenied ? (
     <>
       <Head>
@@ -248,15 +250,23 @@ const AddPost = () => {
           duration: 5000,
         }}
       />
+      <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
-          {selectedGroup && <PostSuccessModal
+          {selectedGroup && (
+            <PostSuccessModal
               isOpen={isSuccessModalOpen}
               setIsOpen={setIsSuccessModalOpen}
               role={selectedGroup.role_on_group}
               finish={finish}
-              messageTitle={"Таны пост группт амжилттай илгээгдлээ."}
-          />}
+              messageTitle={`${
+                selectedGroup.role_on_group === "ADMIN" ||
+                selectedGroup.role_on_group === "ADMIN"
+                  ? "Таны пост группт амжилттай нийтлэгдлээ."
+                  : "Таны пост группт амжилттай илгээгдлээ."
+              }`}
+            />
+          )}
 
           <div
             className={`flex flex-col justify-center items-center pb-[38px]`}
@@ -273,6 +283,8 @@ const AddPost = () => {
                 setSelectedGroup={setSelectedGroup}
                 setPost={setPost}
                 post={post}
+                setIsAuraModalOpen={setIsAuraModalOpen}
+                userAura={user.aura}
               />
               {post.items.length !== 0 ? (
                 <UploadedMediaEdit

@@ -57,7 +57,7 @@ const FeedSortButtons = ({
                       id === activeIndex ? `${icon}-f` : `${icon}-o`
                     } ${
                       iconSize ? iconSize : "text-[26px] text-[26px]"
-                    } ph:text-15px`}
+                    } ph:text-20px`}
                   />
                 </div>
               }

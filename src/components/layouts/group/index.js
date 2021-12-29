@@ -205,7 +205,7 @@ const GroupLayout = ({
     setLoaded(true);
   }, []);
   return loaded ? (
-    <div className={"flex flex-col relative"}>
+    <div className={"flex flex-col relative pb-[200px] md:pb-0"}>
       <div className={"flex flex-col"}>
         <div className={"relative w-full h-[240px]"}>
           <Image

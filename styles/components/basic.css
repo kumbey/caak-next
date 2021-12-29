@@ -387,7 +387,9 @@
   .leftSideBar {
     scrollbar-gutter: stable;
     position: sticky;
-    height: calc(100vh - (var(--topBarSize) + var(--containerPaddingTop))) !important;
+    height: calc(
+      100vh - (var(--topBarSize) + var(--containerPaddingTop))
+    ) !important;
     flex-grow: 1;
     top: calc(var(--containerPaddingTop));
     overflow-y: auto;
@@ -554,6 +556,11 @@
     max-width: 500px;
     margin: 100px auto;
   }
+  .popup_modal-report {
+    min-width: 280px;
+    max-width: 500px;
+    margin: 100px auto;
+  }
 
   .auraBgGradient {
     background: transparent
@@ -649,6 +656,10 @@
   .gradientAdd {
     background: transparent linear-gradient(180deg, #ff8000 0%, #ff4500 100%) 0
       0 no-repeat padding-box;
+  }
+  .addPostNewGroupCard {
+    background: transparent linear-gradient(180deg, #3F70FE 0%, #9A99FE 100%) 0 0 no-repeat padding-box;
+    box-shadow: 0 3px 20px #00000029;
   }
 }
 

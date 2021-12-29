@@ -2,6 +2,7 @@ import Input from "./index";
 import { generateFileUrl } from "../../utility/Util";
 import { useEffect, useState } from "react";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
+import AddPostNewGroupCard from "../card/AddPostNewGroupCard";
 
 const DropDownSelect = ({
   groupData,
@@ -10,12 +11,15 @@ const DropDownSelect = ({
   className,
   onSelect,
   setPost,
+  setIsAuraModalOpen,
+  userAura,
 }) => {
   const [filteredData, setFilteredData] = useState({
     adminModerator: [],
     unMember: [],
   });
   const [inputValue, setInputValue] = useState("");
+  const [hasAnyGroup, setHasAnyGroup] = useState(!!filteredData.adminModerator);
 
   useEffect(() => {
     setFilteredData(groupData);
@@ -42,7 +46,6 @@ const DropDownSelect = ({
       category_id: item.category_id,
     }));
   };
-
   return (
     <div
       onClick={onToggle}
@@ -92,48 +95,49 @@ const DropDownSelect = ({
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний группүүд
                 </span>
-                <span className={"text-15px font-medium text-caak-primary"}>
+                <span
+                  onClick={() => userAura && setIsAuraModalOpen(true)}
+                  className={"text-15px font-medium text-caak-primary"}
+                >
                   Групп үүсгэх
                 </span>
-
               </div>
               <div className={"px-2"}>
                 {filteredData.adminModerator.map((item, index) => {
                   return (
+                    <div
+                      key={index}
+                      onClick={() => selectGroup(item)}
+                      className={"flex flex-col"}
+                    >
                       <div
-                          key={index}
-                          onClick={() => selectGroup(item)}
-                          className={"flex flex-col"}
+                        className={
+                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                        }
                       >
-                        <div
-                            className={
-                              "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                            }
-                        >
-                          <img
-                              src={generateFileUrl(item.profile)}
-                              className={"w-8 h-8 rounded-md object-cover mr-2"}
-                              alt={""}
-                          />
+                        <img
+                          src={generateFileUrl(item.profile)}
+                          className={"w-8 h-8 rounded-md object-cover mr-2"}
+                          alt={""}
+                        />
+                        <div className={"flex flex-col justify-between"}>
                           <span
-                              className={
-                                "text-caak-generalblack font-medium text-16px"
-                              }
+                            className={
+                              "text-caak-generalblack font-medium text-16px"
+                            }
                           >
                             {item.name}
                           </span>
                         </div>
                       </div>
+                    </div>
                   );
                 })}
               </div>
             </>
           ) : (
-            <div>
-              <p>Пост оруулахын тулд группд нэгдээрэй</p>
-            </div>
+            hasAnyGroup && <AddPostNewGroupCard setOpen={setHasAnyGroup} />
           )}
-
           <div
             className={
               "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
@@ -161,11 +165,25 @@ const DropDownSelect = ({
                       className={"w-8 h-8 rounded-md object-cover mr-2"}
                       alt={""}
                     />
-                    <span
-                      className={"text-caak-generalblack font-medium text-16px"}
-                    >
-                      {item.name}
-                    </span>
+                    <div className={"flex flex-col justify-between"}>
+                      <span
+                        className={
+                          "text-caak-generalblack font-medium text-16px"
+                        }
+                      >
+                        {item.name}
+                      </span>
+                      <p
+                        className={
+                          "text-caak-darkBlue text-[14px] font-roboto font-normal tracking-[0.21px] leading-[16px]"
+                        }
+                      >
+                        {item.totals.member +
+                          item.totals.moderator +
+                          item.totals.admin}{" "}
+                        дагагчидтай
+                      </p>
+                    </div>
                   </div>
                 </div>
               );

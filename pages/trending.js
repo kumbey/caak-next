@@ -53,7 +53,7 @@ export async function getServerSideProps({ req }) {
 const Trending = ({ ssrData }) => {
   const TrendingLayout = useFeedLayout("default");
   const [trendingPosts, setTrendingPosts] = useState(ssrData.trendingPosts);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { isLogged } = useUser();
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const { setFeedSortType } = useWrapper();
@@ -61,11 +61,13 @@ const Trending = ({ ssrData }) => {
   const [nextTrendingPosts] = useListPager({
     query: listPostOrderByReactions,
     variables: {
-      status: "POSTING",
+      status: "CONFIRMED",
       limit: 6,
+      sortDirection: "DESC"
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    nextToken: trendingPosts.nextToken,
+    nextToken: ssrData.trendingPosts.nextToken,
+    ssr: true
   });
 
   const fetchTrendingPosts = async () => {

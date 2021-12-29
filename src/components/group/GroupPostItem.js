@@ -29,7 +29,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-        input: { id, status, expectedVersion: post.version },
+          input: { id, status, expectedVersion: post.version },
         })
       );
       setLoading(false);
@@ -79,13 +79,23 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
           <div className="cursor-pointer flex w-[180px] md:w-[280px] lg:w-[306px] flex-shrink-0 items-center mr-[10px] md:mr-[36px]">
             <div
               onClick={() => {
-                if (type === "group" && status === "PENDING") {
+                if (type === "group" && post.status === "PENDING") {
                   setActiveIndex(index);
                   setIsModalOpen(true);
                 } else {
-                  router.push(`/post/view/${post.id}`, undefined, {
-                    shallow: true,
-                  });
+                  router.push(
+                    {
+                      query: {
+                        ...router.query,
+                        viewPost: "post",
+                        id: post.id,
+                        prevPath: router.asPath,
+                        isModal: true,
+                      },
+                    },
+                    `/post/view/${post.id}`,
+                    { shallow: true, scroll: false }
+                  );
                 }
               }}
               className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}
@@ -119,16 +129,25 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                 if (type === "group" && post.status === "PENDING") {
                   setActiveIndex(index);
                   setIsModalOpen(true);
+                } else {
+                  router.push(
+                    {
+                      query: {
+                        ...router.query,
+                        viewPost: "post",
+                        id: post.id,
+                        prevPath: router.asPath,
+                        isModal: true,
+                      },
+                    },
+                    `/post/view/${post.id}`,
+                    { shallow: true, scroll: false }
+                  );
                 }
               }}
               className="cursor-pointer text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium"
             >
-              {type === "user" && (
-                <Link href={`/post/view/${post.id}`}>
-                  <a>{post.title}</a>
-                </Link>
-              )}
-              {post.status === "PENDING" && type === "group" && post.title}
+              {post.title}
             </div>
           </div>
           <div className="flex flex-shrink-0 items-center w-[141px] mr-[10px] md:mr-[69px]">
@@ -212,9 +231,19 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
               <Button
                 loading={loading}
                 onClick={() => {
-                  router.push(`/post/view/${post.id}`, undefined, {
-                    shallow: true,
-                  });
+                  router.push(
+                    {
+                      query: {
+                        ...router.query,
+                        viewPost: "post",
+                        id: post.id,
+                        prevPath: router.asPath,
+                        isModal: true,
+                      },
+                    },
+                    `/post/view/${post.id}`,
+                    { shallow: true, scroll: false }
+                  );
                 }}
                 className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
               >

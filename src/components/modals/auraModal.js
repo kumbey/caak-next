@@ -28,6 +28,7 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
             >
               <div className="flex justify-center h-[180px] w-full ">
                 <Image
+                  priority={true}
                   className=" bg-white rounded-[10px] bg-transparent"
                   src={helloImg}
                   height={180}

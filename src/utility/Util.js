@@ -316,15 +316,17 @@ export function checkUsername(username) {
 }
 
 export function getFileUrl(file) {
-  let retUrl = "";
+  let retUrl = `https://media.caak.mn/article_images/01_HKO2Zzb.jpg`;
 
-  if (file.url) {
-    retUrl = file.url;
-  } else if(file.isExternal === "TRUE"){
-    retUrl = `https://media.caak.mn/${file.external_url}`
-  }
-  else {
-    retUrl = generateFileUrl(file);
+  if(file){
+    if (file.url) {
+      retUrl = file.url;
+    } else if(file.isExternal === "TRUE"){
+      retUrl = `https://media.caak.mn/${file.external_url}`
+    }
+    else {
+      retUrl = generateFileUrl(file);
+    }
   }
 
   return retUrl;

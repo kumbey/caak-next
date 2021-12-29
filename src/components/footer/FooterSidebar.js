@@ -8,7 +8,7 @@ const FooterSidebar = ({ containerClassname }) => {
     >
       <div className={"flex flex-wrap my-[4px]"}>
         <Link href="/help/connectus" shallow>
-          <a>
+          <a className='sm:ml-[2px] md:ml-[5px]'>
               <p>Холбоо барих</p>
           </a>
         </Link>

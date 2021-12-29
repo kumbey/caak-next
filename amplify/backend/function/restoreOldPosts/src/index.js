@@ -12,6 +12,7 @@ Amplify Params - DO NOT EDIT */
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const { v4: uuidv4 } = require('uuid');
+const cliProgress = require('cli-progress');
 const Posts1 = require("../../../../../src/restoreData/posts1.json")
 
 
@@ -27,21 +28,30 @@ exports.handler = async (event) => {
     
     try{
 
-        jsonFile = null
+        let jsonFile = []
+        const maxLegth = 19
+        const startIndex = 1
+
+        const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+        const bar2 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
         switch (event.key) {
             case 'posts1':
                 jsonFile = Posts1
                 break
             default:
-                jsonFile = null
+                jsonFile = []
 
         }
 
         const nowDate = new Date().toISOString()
 
-        for(let i=0; i < 1; i++){
-            
+        bar1.start(startIndex + maxLegth, startIndex);
+
+        for(let i= startIndex; i < startIndex + maxLegth; i++){
+
+            bar1.update(i);
+
             const post = jsonFile[i]
             const postItems = post.items
 
@@ -65,62 +75,66 @@ exports.handler = async (event) => {
                 ReturnValues : "NONE"
             }
             await docClient.put(params).promise();
-            console.log(jsonFile.length)
 
+
+            bar2.start(postItems.length, 0);
 
             for(let itemIndex = 0; itemIndex < postItems.length; itemIndex++){
 
+                bar2.update(itemIndex);
+
                 const item = postItems[itemIndex]
-                const file = item.block_img.slice("/")
+                const file = item.block_img
                 delete item["block_img"]
 
-                let fileName = null
+                if(file){
 
-                if(file.length > 0){
-                    fileName = file[file.length - 1]
+                    const itemfile = {
+                        id: uuidv4(),
+                        key: file,
+                        name: getFileName(file),
+                        ext: getFileExt(file),
+                        type: getFileExt(file),
+                        isExternal: "TRUE",
+                        external_url: file,
+                        createdAt: nowDate,
+                        updatedAt: nowDate,
+                        __typename: "File"
+                    }
+    
+                    const fileParams = {
+                        TableName: process.env.API_CAAK_FILETABLE_NAME,
+                        Item: itemfile,
+                        ConditionExpression: `attribute_not_exists(id)`,
+                        ReturnValues : "NONE"
+                    }
+                    await docClient.put(fileParams).promise();
+    
+                    item.id = uuidv4()
+                    item.post_id = post.id
+                    item.user_id = post.user_id
+                    item.file_id = itemfile.id
+                    item.order = itemIndex
+                    item.createdAt = post.createdAt
+                    item.updatedAt = post.updatedAt
+                    item.__typename = "PostItems"
+    
+                    const itemParams = {
+                        TableName: process.env.API_CAAK_POSTITEMSTABLE_NAME,
+                        Item: item,
+                        ConditionExpression: `attribute_not_exists(id)`,
+                        ReturnValues : "NONE"
+                    }
+    
+                    await docClient.put(itemParams).promise();
                 }
-
-                const itemfile = {
-                    id: uuidv4(),
-                    key: fileName,
-                    name: getFileName(fileName),
-                    ext: getFileExt(fileName),
-                    type: getFileExt(fileName),
-                    isExternal: "TRUE",
-                    external_url: file,
-                    createdAt: nowDate,
-                    updatedAt: nowDate,
-                    __typename: "File"
-                }
-
-                const fileParams = {
-                    TableName: process.env.API_CAAK_FILETABLE_NAME,
-                    Item: itemfile,
-                    ConditionExpression: `attribute_not_exists(id)`,
-                    ReturnValues : "NONE"
-                }
-                await docClient.put(fileParams).promise();
-
-                item.id = uuidv4()
-                item.post_id = post.id
-                item.user_id = post.user_id
-                item.file_id = itemfile.id
-                item.order = itemIndex
-                item.createdAt = post.createdAt
-                item.updatedAt = post.updatedAt
-                item.__typename = "PostItems"
-
-                const itemParams = {
-                    TableName: process.env.API_CAAK_POSTITEMSTABLE_NAME,
-                    Item: item,
-                    ConditionExpression: `attribute_not_exists(id)`,
-                    ReturnValues : "NONE"
-                }
-
-                await docClient.put(itemParams).promise();
 
             }
+
+            bar2.stop()
         }
+
+        bar1.stop()
 
     }catch(err){
         console.log(err)

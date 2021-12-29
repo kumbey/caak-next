@@ -7,7 +7,7 @@ import { FacebookShareButton, TwitterShareButton } from "next-share";
 import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
 import AnimatedCaakButton from "../button/animatedCaakButton";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import useMediaQuery from "../navigation/useMeduaQuery";
 
 const ViewPostLeftReaction = ({
@@ -15,14 +15,14 @@ const ViewPostLeftReaction = ({
   commentRef,
   containerClassname,
   mobile,
+  setIsReportModalOpen,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [pathName, setPathName] = useState("");
-    const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
 
-
-    const toggleMenu = () => {
+  const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -43,14 +43,11 @@ const ViewPostLeftReaction = ({
   }, []);
 
   return (
-    <div className={`${containerClassname} ${mobile ? "md:hidden" : "flex"} flex-col items-center`}>
-      <Toaster
-        containerStyle={{ top: "64px" }}
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
+    <div
+      className={`${containerClassname} ${
+        mobile ? "md:hidden" : "flex"
+      } flex-col items-center`}
+    >
       <div className={"flex flex-col items-center mb-[22px]"}>
         <AnimatedCaakButton
           reactionType={"POST"}
@@ -215,8 +212,12 @@ const ViewPostLeftReaction = ({
             arrow={`${isTablet ? "topRight" : "centerTop"}`}
             open={isMenuOpen}
             onToggle={toggleMenu}
-            content={<ViewPostMoreMenu />}
-            className={"top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[500] rounded-[4px]"}
+            content={
+              <ViewPostMoreMenu setIsReportModalOpen={setIsReportModalOpen} />
+            }
+            className={
+              "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[500] rounded-[4px]"
+            }
           />
           <span
             className={"icon-fi-rs-dots text-caak-extraBlack text-[24px]"}

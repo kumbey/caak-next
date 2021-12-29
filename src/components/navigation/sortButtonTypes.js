@@ -4,21 +4,21 @@ export const feedType = [
     title: "Шинэ",
     type: "DEFAULT",
     icon: "icon-fi-rs-new",
-    route: "/"
+    route: "/",
   },
   {
     id: 1,
     title: "Тренд",
     type: "TREND",
     icon: "icon-fi-rs-trend",
-    route: "/trending"
+    route: "/trending",
   },
   {
     id: 2,
     title: "Саак",
     type: "CAAK",
     icon: "icon-fi-rs-caak",
-    route: "/caak"
+    route: "/caak",
   },
 ];
 
@@ -55,6 +55,12 @@ export const userProfileType = [
     title: "Видео",
     type: "VIDEO",
     icon: "icon-fi-rs-play",
+  },
+  {
+    id: 2,
+    title: "Хадгалсан пост",
+    type: "SAVED",
+    icon: "icon-fi-rs-save",
   },
 ];
 export const GroupType = [

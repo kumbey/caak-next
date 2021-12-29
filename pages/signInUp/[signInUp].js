@@ -12,7 +12,7 @@ import useModalLayout from "../../src/hooks/useModalLayout";
 import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 
-const SignInUp = ({ ...props }) => {
+const SignInUp = () => {
   const ModalLayout = useModalLayout();
   const router = useRouter();
   const type = router.query.signInUp;

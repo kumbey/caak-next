@@ -203,6 +203,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           )}
 
           <Image
+            priority={true}
             quality={100}
             layout={"fill"}
             objectFit={"cover"}

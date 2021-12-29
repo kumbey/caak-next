@@ -18,6 +18,9 @@ import Button from "../../../../src/components/button";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updatePost } from "../../../../src/graphql-custom/post/mutation";
+import ReportModal from "../../../../src/components/modals/reportModal";
+import { Toaster } from "react-hot-toast";
+import { useUser } from "../../../../src/context/userContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -26,11 +29,13 @@ export async function getServerSideProps({ req, query }) {
 
 const Post = ({ ssrData }) => {
   const router = useRouter();
+  const { user } = useUser();
   const [post, setPost] = useState(ssrData.post);
   const [loading, setLoading] = useState(false);
   const commentRef = useRef();
   const { jumpToComment } = router.query;
   const [isReactionActive, setIsReactionActive] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   useEffect(() => {
     setPost(ssrData.post);
@@ -106,13 +111,29 @@ const Post = ({ ssrData }) => {
             {post.title} - {Consts.siteMainTitle}
           </title>
         </Head>
+        <Toaster
+          toastOptions={{
+            className: "toastOptions",
+            duration: 5000,
+          }}
+        />
+        <ReportModal
+          setIsOpen={setIsReportModalOpen}
+          isOpen={isReportModalOpen}
+          postId={post.id}
+          userId={user.id}
+        />
         {post.status === "CONFIRMED" && (
           <div
             className={
               "viewPostLeftSideBar hidden md:flex mx-[4px] md:mr-[25px] z-1"
             }
           >
-            <ViewPostLeftReaction commentRef={commentRef} post={post} />
+            <ViewPostLeftReaction
+              commentRef={commentRef}
+              post={post}
+              setIsReportModalOpen={setIsReportModalOpen}
+            />
           </div>
         )}
         <div className={"flex flex-col w-full h-full bg-transparent"}>

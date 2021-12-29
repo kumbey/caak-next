@@ -3,7 +3,7 @@ import Card from "../src/components/card/FeedCard";
 import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { generateFileUrl, getReturnData } from "../src/utility/Util";
+import { getReturnData } from "../src/utility/Util";
 import { getPostByStatus } from "../src/graphql-custom/post/queries";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
@@ -20,6 +20,7 @@ import Consts from "../src/utility/Consts";
 import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
 import toast, { Toaster } from "react-hot-toast";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
+import FeedBack from "../src/components/feedback";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -102,7 +103,7 @@ const Feed = ({ ssrData }) => {
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.posts.nextToken,
-    ssr: true
+    ssr: true,
   });
 
   const fetchPosts = async () => {
@@ -200,6 +201,8 @@ const Feed = ({ ssrData }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
     if (param === "follow") toast.success("Группт амжилттай элслээ.");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
+    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
   };
   return (
     <>
@@ -210,7 +213,7 @@ const Feed = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      {/*<FeedBack/>*/}
+      <FeedBack/>
       <div className={"relative"}>
         <Toaster
           toastOptions={{

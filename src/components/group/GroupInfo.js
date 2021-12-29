@@ -1,11 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Divider from "../divider";
-import {
-  extractDate,
-  generateFileUrl,
-  getGenderImage,
-} from "../../utility/Util";
+import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
 import Button from "../button";
 
 const GroupInfo = ({ groupData, totalMember }) => {
@@ -17,7 +13,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
           alt={"group cover"}
           src={
             groupData.cover
-              ? generateFileUrl(groupData?.cover)
+              ? getFileUrl(groupData?.cover)
               : getGenderImage("default")
           }
           layout={"fill"}

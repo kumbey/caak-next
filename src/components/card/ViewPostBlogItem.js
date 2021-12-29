@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Video from "../video";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 import Link from "next/link";
+import {decode} from 'html-entities';
 
 const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
   const router = useRouter();
@@ -139,7 +140,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
                   "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                 }
               >
-                {postItem.title}
+                {decode(postItem.title)}
               </p>
             </a>
           </Link>
@@ -149,7 +150,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
             }
           >
-            {postItem.title}
+            {decode(postItem.title)}
           </p>
         )}
       </div>

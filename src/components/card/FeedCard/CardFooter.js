@@ -151,6 +151,7 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
                           }
                         >
                           <Image
+                            priority={true}
                             width={22}
                             height={22}
                             alt={"facebook icon"}
@@ -170,6 +171,7 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
                           }
                         >
                           <Image
+                            priority={true}
                             width={22}
                             height={22}
                             alt={"twitter icon"}

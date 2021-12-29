@@ -28,6 +28,7 @@ import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
 import useDeviceDetect from "../../../src/hooks/useDeviceDetect";
 import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
+import AddPostHandler from "../../../src/components/addposthandler";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -240,6 +241,7 @@ const Group = ({ ssrData }) => {
         columns={2}
       >
         {isTablet && <GroupAdminPanel groupData={groupData} />}
+        <AddPostHandler groupData={groupData}/>
         <GroupSortButtons
           activeIndex={activeIndex}
           activeView={activeView}

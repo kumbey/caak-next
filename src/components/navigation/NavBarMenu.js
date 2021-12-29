@@ -59,7 +59,7 @@ export default function NavBarMenu({ type }) {
         </Fragment>
       )}
       {isLogged && <Divider className={"my-2"} />}
-      <Link shallow href={`/about/aura`}>
+      <Link shallow href={`/help/aura`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span
@@ -71,7 +71,7 @@ export default function NavBarMenu({ type }) {
           </div>
         </a>
       </Link>
-      <Link shallow href={`/user/profile`}>
+      <Link shallow href={`/help`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span

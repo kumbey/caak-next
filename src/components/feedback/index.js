@@ -9,7 +9,7 @@ import Input from "../input";
 import Button from "../button";
 import { useState } from "react";
 
-const FeedBack = () => {
+const FeedBack = ({setIsOpen}) => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
 
@@ -27,6 +27,7 @@ const FeedBack = () => {
       }
     >
       <div
+        onClick={()=> setIsOpen(false)}
         className={
           "cursor-pointer w-[30px] h-[30px] bg-white flex items-center justify-center rounded-full absolute top-[12px] right-[12px]"
         }

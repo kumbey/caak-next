@@ -88,6 +88,7 @@ const Feed = ({ ssrData }) => {
   const [addPostCardIsOpen, setAddPostCardIsOpen] = useState(true);
   const { setFeedSortType } = useWrapper();
   const [loading, setLoading] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(true)
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
@@ -213,7 +214,8 @@ const Feed = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      <FeedBack/>
+      {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen}/>}
+
       <div className={"relative"}>
         <Toaster
           toastOptions={{

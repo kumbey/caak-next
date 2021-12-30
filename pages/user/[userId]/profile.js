@@ -4,7 +4,10 @@ import { getReturnData } from "../../../src/utility/Util";
 import { useEffect, useState } from "react";
 import useModalLayout from "../../../src/hooks/useModalLayout";
 import FeedSortButtons from "../../../src/components/navigation/FeedSortButtons";
-import { userProfileType } from "../../../src/components/navigation/sortButtonTypes";
+import {
+  userProfileType,
+  FeedViewType,
+} from "../../../src/components/navigation/sortButtonTypes";
 import UserPostsCard from "../../../src/components/card/UserProfile/UserPostsCard";
 import {
   getPostByUser,
@@ -18,6 +21,8 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
+import Card from "../../../src/components/card/FeedCard";
+import toast, { Toaster } from "react-hot-toast";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -86,6 +91,8 @@ const Profile = ({ ssrData }) => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(ssrData.posts);
   const [savedPosts, setSavedPosts] = useState(ssrData.savedPosts);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeView, setActiveView] = useState(0);
   const [sortType, setSortType] = useState("POST");
   const [subscripedPost, setSubscripedPost] = useState(0);
   const { isLogged } = useUser();
@@ -261,6 +268,15 @@ const Profile = ({ ssrData }) => {
   }, [ssrData.savedPosts]);
 
   const ProfileLayout = useModalLayout({ layoutName: "userProfile" });
+
+  const handleToast = ({ param }) => {
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
+    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
+  };
+
   return (
     <>
       <Head>
@@ -268,6 +284,12 @@ const Profile = ({ ssrData }) => {
           @{fetchedUser.nickname} - {Consts.siteMainTitle}
         </title>
       </Head>
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+          duration: 5000,
+        }}
+      />
       <ProfileLayout user={fetchedUser}>
         <div className={"pt-0 md:pt-[42px]"}>
           <FeedSortButtons
@@ -277,6 +299,11 @@ const Profile = ({ ssrData }) => {
             textClassname={"text-[15px] font-medium"}
             containerClassname={"mb-[20px] flex-wrap"}
             items={userProfileType}
+            items2={FeedViewType}
+            activeIndex={activeIndex}
+            activeView={activeView}
+            setActiveIndex={setActiveIndex}
+            setActiveView={setActiveView}
             setSortType={setSortType}
             sortType={sortType}
             direction={"col"}
@@ -284,23 +311,75 @@ const Profile = ({ ssrData }) => {
 
           {sortType === "SAVED" ? (
             <InfinitScroller onNext={fetchSavedPosts} loading={loading}>
-              <div className={"userPostsContainer"}>
+              <div
+                className={`${
+                  activeView === 0
+                    ? "userPostsContainer"
+                    : activeView === 1
+                    ? "profileCardView"
+                    : ""
+                } `}
+              >
                 {savedPosts.items.map((item, index) => {
-                  return <UserPostsCard key={index} post={item.post} />;
+                  return activeView === 0 ? (
+                    <UserPostsCard key={index} post={item.post} />
+                  ) : activeView === 1 ? (
+                    <Card
+                      key={index}
+                      video={item.post?.items?.items[0]?.file?.type?.startsWith(
+                        "video"
+                      )}
+                      post={item.post}
+                      className="ph:mb-4 sm:mb-4"
+                      handleToast={handleToast}
+                    />
+                  ) : null;
                 })}
               </div>
             </InfinitScroller>
           ) : (
             <InfinitScroller onNext={fetchPosts} loading={loading}>
-              <div className={"userPostsContainer"}>
-                {posts.items.map((items, index) => {
+              <div
+                className={`${
+                  activeView === 0
+                    ? "userPostsContainer"
+                    : activeView === 1
+                    ? "profileCardView"
+                    : ""
+                } `}
+              >
+                {posts.items.map((item, index) => {
                   if (
-                    items.items.items[0].file.type.startsWith("video") &&
+                    item.items.items[0].file.type.startsWith("video") &&
                     sortType === "VIDEO"
                   ) {
-                    return <UserPostsCard key={index} post={items} />;
+                    return activeView === 0 ? (
+                      <UserPostsCard key={index} post={item} />
+                    ) : activeView === 1 ? (
+                      <Card
+                        key={index}
+                        video={item.items?.items[0]?.file?.type?.startsWith(
+                          "video"
+                        )}
+                        post={item}
+                        className="ph:mb-4 sm:mb-4"
+                        handleToast={handleToast}
+                      />
+                    ) : null;
                   } else if (sortType === "POST") {
-                    return <UserPostsCard key={index} post={items} />;
+                    return activeView === 0 ? (
+                      <UserPostsCard key={index} post={item} />
+                    ) : activeView === 1 ? (
+                      <Card
+                        key={index}
+                        video={item.items?.items[0]?.file?.type?.startsWith(
+                          "video"
+                        )}
+                        post={item}
+                        className="ph:mb-4 sm:mb-4"
+                        handleToast={handleToast}
+                      />
+                    ) : null;
                   }
                 })}
               </div>

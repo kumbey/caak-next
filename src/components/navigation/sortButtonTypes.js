@@ -93,3 +93,14 @@ export const GroupViewType = [
     icon: " icon-fi-rs-list-grid",
   },
 ];
+
+export const FeedViewType = [
+  {
+    id: 0,
+    icon: "icon-fi-rs-grid",
+  },
+  {
+    id: 1,
+    icon: " icon-fi-rs-list-card",
+  },
+];

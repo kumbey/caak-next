@@ -44,8 +44,8 @@ const GroupAdminsCard = ({ groupId }) => {
     // eslint-disable-next-line
   }, [groupId]);
 
-  return !loading ? (
-    <div className={"flex flex-col w-[320px] bg-white rounded-[8px] p-[18px]"}>
+  return (!loading && groupMods.items.length > 0) ? (
+    <div className={"flex flex-col w-[320px] bg-white rounded-[8px] p-[18px] mb-[16px]"}>
       <div>
         <p className={"text-caak-extraBlack text-[15px] font-semibold"}>
           Группын удирдагчид

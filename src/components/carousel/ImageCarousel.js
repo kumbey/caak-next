@@ -172,7 +172,7 @@ const ImageCarousel = ({
                       durationIndicator={duration}
                       postId={postId}
                       route={route}
-                      containerClassname={"rounded-[8px]"}
+                      containerClassname={"bg-black"}
                       videoClassname={"object-contain rounded-none"}
                       src={getFileUrl(item.file)}
                     />

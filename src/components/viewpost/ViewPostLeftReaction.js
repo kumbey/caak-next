@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import DropDown from "../navigation/DropDown";
 import { useClickOutSide } from "../../utility/Util";
-import ViewPostMoreMenu from "./ViewPostMoreMenu";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";

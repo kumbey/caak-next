@@ -75,30 +75,29 @@ const Post = ({ ssrData }) => {
   const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   return post ? (
     <>
-      <div
-        onClick={() => setIsReactionActive(!isReactionActive)}
-        className={
-          "flex md:hidden items-center justify-center w-[52px] h-[52px] bg-caak-primary rounded-full fixed p-[4px] z-[6] bottom-[74px] right-[14px]"
-        }
-      >
-        <span className={"icon-fi-rs-rock-f text-white text-[30px]"} />
-      </div>
-      {isReactionActive && (
-        <div
-          className={
-            "flex items-center bg-black rounded-[100px] p-[4px] bg-opacity-30 justify-center fixed z-[6] bottom-[130px] right-[14px]"
-          }
-        >
-          <ViewPostLeftReaction mobile commentRef={commentRef} post={post} />
-        </div>
-      )}
-
       <ViewPostModal
         post={post}
         containerClassname={
           "w-full flex flex-row max-w-[1200px] mx-auto py-[20px] pb-[270px] py-[78px] rounded-b-square z-[0]"
         }
       >
+        <div
+          onClick={() => setIsReactionActive(!isReactionActive)}
+          className={
+            "flex md:hidden animate-pulse items-center justify-center w-[52px] h-[52px] bg-caak-primary rounded-full fixed p-[4px] z-[6] bottom-[74px] right-[14px]"
+          }
+        >
+          <span className={"icon-fi-rs-rock-f text-white text-[30px]"} />
+        </div>
+        {isReactionActive && (
+          <div
+            className={
+              "flex items-center bg-black rounded-[100px] p-[4px] bg-opacity-30 justify-center fixed z-[6] bottom-[130px] right-[14px]"
+            }
+          >
+            <ViewPostLeftReaction mobile commentRef={commentRef} post={post} />
+          </div>
+        )}
         <Head>
           <meta name="description" content={post.description} />
           <meta property="og:title" content={post.title} />
@@ -335,6 +334,19 @@ const Post = ({ ssrData }) => {
                 </Button>
               </div>
             )}
+          {post.status === "ARCHIVED" && (
+            <div
+              className={"flex flex-row justify-end mt-[10px] bg-transparent"}
+            >
+              <Button
+                loading={loading}
+                className={"h-[40px] font-medium bg-[#367CE6] text-white"}
+                onClick={() => router.push(`/post/edit/${post.id}`)}
+              >
+                Засах
+              </Button>
+            </div>
+          )}
         </div>
       </ViewPostModal>
     </>

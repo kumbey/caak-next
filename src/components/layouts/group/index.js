@@ -426,7 +426,7 @@ const GroupLayout = ({
             {/*<GroupBadge />*/}
             <GroupAdminsCard groupId={groupData.id} />
             <FooterSidebar
-              containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}
+              containerClassname={"bg-white rounded-square p-[20px]"}
             />
 
             {!isLogged && <FooterSidebar />}

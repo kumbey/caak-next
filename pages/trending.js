@@ -13,6 +13,7 @@ import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
 import Head from "next/head";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
+import TrendPostsByCategory from "../src/components/TrendPostsByCategory";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -113,6 +114,7 @@ const Trending = ({ ssrData }) => {
           containerClassname={"mb-[19px] justify-center"}
           direction={"row"}
         />
+        <TrendPostsByCategory/>
         <InfinitScroller onNext={fetchTrendingPosts} loading={loading}>
           {trendingPosts.items.map((data, index) => {
             return (

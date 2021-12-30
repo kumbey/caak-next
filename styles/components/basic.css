@@ -410,6 +410,14 @@
     margin-left: 40px;
     max-width: 616px;
   }
+  .profileCardView {
+    flex-grow: 1;
+    flex-basis: 616px;
+    width: 100%;
+    min-width: 320px;
+    margin-right: 40px;
+    max-width: 616px;
+  }
 
   @media (max-width: 1100px) {
     .feed {
@@ -663,7 +671,8 @@
       0 no-repeat padding-box;
   }
   .addPostNewGroupCard {
-    background: transparent linear-gradient(180deg, #3F70FE 0%, #9A99FE 100%) 0 0 no-repeat padding-box;
+    background: transparent linear-gradient(180deg, #3f70fe 0%, #9a99fe 100%) 0
+      0 no-repeat padding-box;
     box-shadow: 0 3px 20px #00000029;
   }
 }

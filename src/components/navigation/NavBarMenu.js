@@ -2,9 +2,11 @@ import { useUser } from "../../context/userContext";
 import { Fragment, useEffect } from "react";
 import Divider from "../divider";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function NavBarMenu({ type }) {
   const { user, isLogged } = useUser();
+  const router = useRouter();
 
   return (
     <div className={`dropdown-item-wrapper`}>
@@ -27,20 +29,26 @@ export default function NavBarMenu({ type }) {
             </Link>
           )}
 
-          <Link href={`/user/profile`}>
-            <a>
-              <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-                <span
-                  className={
-                    "icon-fi-rs-save-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
-                  }
-                />
-                <p className="text-14px text-caak-extraBlack">
-                  Хадгалсан постууд
-                </p>
-              </div>
-            </a>
-          </Link>
+          <div
+            onClick={() =>
+              router.push(
+                {
+                  pathname: `/user/${user.id}/profile`,
+                  query: { sortType: "SAVED" },
+                },
+                `/user/${user.id}/profile`,
+                { shallow: true }
+              )
+            }
+            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          >
+            <span
+              className={
+                "icon-fi-rs-save-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+              }
+            />
+            <p className="text-14px text-caak-extraBlack">Хадгалсан постууд</p>
+          </div>
 
           <Link href={`/user/${user.id}/settings`}>
             <a>

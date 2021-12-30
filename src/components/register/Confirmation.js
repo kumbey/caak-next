@@ -159,7 +159,7 @@ const Confirmation = ({ usr }) => {
             disabled={isValid ? false : true}
             loading={loading}
             onClick={() => handleSubmit(doSubmit)}
-            className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-primary  ${
+            className={`rounded-md w-full h-c9 text-17px font-bold  ${
               isValid
                 ? "bg-caak-primary text-white"
                 : "bg-caak-titaniumwhite text-caak-shit"

@@ -21,6 +21,7 @@ const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
 
   const {lsGet} = useLocalStorage("session")
+  
   const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPostGuide)
 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();

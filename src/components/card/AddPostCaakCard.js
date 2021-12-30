@@ -16,7 +16,7 @@ const AddPostCaakCard = ({ isOpen, setIsOpen }) => {
 
   useEffect(() => {
     setIsOpen(lsGet(Consts.addPostKey).addPost)
-  }, [])
+  }, [setIsOpen, lsGet])
 
   return isOpen ? (
     <div

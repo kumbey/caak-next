@@ -226,9 +226,9 @@ export default function Secure() {
                     <div className='flex flex-row items-center justify-between border-b pb-[10px]'>
                         <p className='text-[17px] font-semibold'>{`Саакт тавтай морил!`}</p>
                         <div>
-                            <a href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
-                            <a className='ml-[8px]' href='https://twitter.com/caaktwt' target="_blank"><span className='icon-fi-rs-tw text-[16px]'/></a>
-                            <a className='ml-[8px]' href='https://www.instagram.com/caak.mn/' target="_blank"><span className='icon-fi-rs-ig text-[16px]'/></a>
+                            <a rel="noreferrer" href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
+                            <a rel="noreferrer" className='ml-[8px]' href='https://twitter.com/caaktwt' target="_blank"><span className='icon-fi-rs-tw text-[16px]'/></a>
+                            <a rel="noreferrer" className='ml-[8px]' href='https://www.instagram.com/caak.mn/' target="_blank"><span className='icon-fi-rs-ig text-[16px]'/></a>
                         </div>
                     </div>
                     <p className='mt-[16px]'>{`Саак нь хүссэн мэдээлэлээ авах, хүргэх хүсэлтэй хүмүүсийг сонирхлоор нь хүрээлэл бий болгож, тэднийг холбож өгч буй цахим сошиал флатформ юм. `}</p>

@@ -9,7 +9,7 @@ const AddPostGuideCard = ({open , setOpen}) => {
     
     useEffect(() => {
         setOpen(lsGet(Consts.addPostKey).addPostGuide)
-    }, [])
+    }, [setOpen, lsGet])
 
     return open ? 
     (

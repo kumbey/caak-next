@@ -26,9 +26,10 @@ export default function Banner() {
     }, [])
     return (
         <div className="sticky top-[20px]">
-            <a href={data[number].link} target="_blank">
+            <a rel="noreferrer" href={data[number].link} target="_blank">
                 <div className='w-full h-auto'>
                     <Image
+                        alt=''
                         src={data[number].image}
                         className='rounded-[8px]'
                     />

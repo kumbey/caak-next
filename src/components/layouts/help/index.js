@@ -12,10 +12,10 @@ export default function DefaultHelpLayout({children}) {
         <div className='flex flex-col'>
             <div className='sm:h-[150px] items-center md:h-[250px] xl:h-[396px] relative flex justify-center'>
                 <div className='h-full w-full'>
-                <Image src={Cover}/>
+                <Image alt='' src={Cover}/>
                 </div>
                 <div className='w-[300px] sm:w-[400px] md:w-[700px] xl:w-[1247px] top-[10px] md:top-[60px] xl:top-[129px] absolute text-white flex flex-col'>
-                    <div className=' flex flex-row text-[16px]'>Сайн уу? {isLogged ? <div className='flex flex-row items-center ml-[5px]'><Image width={26} height={26} className='rounded-full border-[2px] border-[#FF6600]' objectFit='cover' src={getFileUrl(user.pic)}/><p className='ml-[5px]'>{user.nickname === null ? null: user.nickname}</p></div> : null}</div>
+                    <div className=' flex flex-row text-[16px]'>Сайн уу? {isLogged ? <div className='flex flex-row items-center ml-[5px]'><Image alt='' width={26} height={26} className='rounded-full border-[2px] border-[#FF6600]' objectFit='cover' src={getFileUrl(user.pic)}/><p className='ml-[5px]'>{user.nickname === null ? null: user.nickname}</p></div> : null}</div>
                     <p className='font-semibold text-[20px] sm:text-[30px] md:text-[38px]'>Танд хэрхэн туслах вэ?</p>
                     <input disabled className='w-[300px] hidden sm:block sm:w-[400px] xl:w-[616px] h-[44px] bg-white rounded-[4px] text-[#6C7392] px-[40px] ' placeholder='Тусламж хайх'/>
                 </div>
@@ -62,12 +62,11 @@ export default function DefaultHelpLayout({children}) {
                             </a>
                         </Link>
                     </div>
-                    <div className='flex flex-row justify-between items-center text-[15px] text-[#6C7392]'>
+                    <div className='flex items-center text-[15px] text-[#6C7392]'>
                         <div className={"flex flex-col sm:flex-row items-center mt-[10px] sm:mt-[25.5px]"}>
                             <Logo/>
                             <p className='ml-[16px]'>©2021 Саак Холдинг ХХК</p>
                         </div>
-                        <p>beta version</p>
                     </div>
                 </div>
             </div>

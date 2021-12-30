@@ -20,9 +20,9 @@ export default function Aura() {
                     <div className='flex flex-row items-center justify-between'>
                         <p className='text-[22px] font-bold'>{`АУРА гэж юу вэ?`}</p>
                         <div>
-                            <a href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
-                            <a className='ml-[8px]' href='https://twitter.com/caaktwt' target="_blank"><span className='icon-fi-rs-tw text-[16px]'/></a>
-                            <a className='ml-[8px]' href='https://www.instagram.com/caak.mn/' target="_blank"><span className='icon-fi-rs-ig text-[16px]'/></a>
+                            <a rel="noreferrer" href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
+                            <a rel="noreferrer" className='ml-[8px]' href='https://twitter.com/caaktwt' target="_blank"><span className='icon-fi-rs-tw text-[16px]'/></a>
+                            <a rel="noreferrer" className='ml-[8px]' href='https://www.instagram.com/caak.mn/' target="_blank"><span className='icon-fi-rs-ig text-[16px]'/></a>
                         </div>
                     </div>
                     <div className='border-t mt-[16px] py-[23px] text-[15px]'>

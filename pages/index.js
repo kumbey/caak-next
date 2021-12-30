@@ -21,6 +21,7 @@ import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
 import toast, { Toaster } from "react-hot-toast";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import FeedBack from "../src/components/feedback";
+import useLocalStorage from "../src/hooks/useLocalStorage";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -82,14 +83,18 @@ export async function getServerSideProps({ req }) {
 }
 
 const Feed = ({ ssrData }) => {
+
+  const {lsGet} = useLocalStorage("session")
+  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost)
+  
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [addPostCardIsOpen, setAddPostCardIsOpen] = useState(true);
   const { setFeedSortType } = useWrapper();
   const [loading, setLoading] = useState(false);
-  const [isFeedbackOpen, setIsFeedbackOpen] = useState(true)
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
   const [subscripedPost, setSubscripedPost] = useState(0);
+
   const subscriptions = {};
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   //FORCE RENDER STATE
@@ -244,10 +249,7 @@ const Feed = ({ ssrData }) => {
                 containerClassname={"mb-[19px] justify-center"}
                 direction={"row"}
               />
-              <AddPostCaakCard
-                isOpen={addPostCardIsOpen}
-                setIsOpen={setAddPostCardIsOpen}
-              />
+              <AddPostCaakCard setIsOpen={setOpen} isOpen={open}/>
               <InfinitScroller onNext={fetchPosts} loading={loading}>
                 {posts.map((data, index) => {
                   return (

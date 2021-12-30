@@ -1,6 +1,6 @@
 import auraImage from "../../../public/assets/images/Aura.svg";
 import registerImage from "../../../public/assets/images/Register.png";
-
+import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "../../context/userContext";
 import useHover from "../../hooks/useHover";
@@ -20,7 +20,6 @@ const AuraCard = () => {
       >
         Аура гэж юу вэ?
       </div>
-
       <Image
         src={auraImage}
         alt="What is Aura"
@@ -28,11 +27,16 @@ const AuraCard = () => {
         height={"146px"}
         objectFit="contain"
       />
-      <button
-        className={"button primary w-[220px] h-[36px] font-medium text-14px"}
-      >
-        Дэлгэрэнгүй
-      </button>
+      <Link shallow href={`/help/aura`}>
+        <a>
+          <button
+            // onClick={() => }
+            className={"button primary w-[220px] h-[36px] font-medium text-14px"}
+          >
+            Дэлгэрэнгүй
+          </button>
+        </a>
+      </Link>
     </div>
   ) : (
     <div

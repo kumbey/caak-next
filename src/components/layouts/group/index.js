@@ -30,6 +30,7 @@ import GroupAdminPanel from "../../group/GroupAdminPanel";
 import { useRouter } from "next/router";
 import Loader from "../../loader";
 import GroupAdminsCard from "../../group/GroupAdminsCard";
+import Banner from "../../banner";
 
 const GroupLayout = ({
   children,
@@ -425,8 +426,15 @@ const GroupLayout = ({
             <GroupRules groupId={groupData.id} />
             {/*<GroupBadge />*/}
             <GroupAdminsCard groupId={groupData.id} />
+            <Banner/>
             <FooterSidebar
+<<<<<<< HEAD
+            topItemHeight={"426px"}
+            banner
+              containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}
+=======
               containerClassname={"bg-white rounded-square p-[20px]"}
+>>>>>>> 9c9e3ac2d3520688dfd26cb0803d7ada1d8da46b
             />
 
             {!isLogged && <FooterSidebar />}

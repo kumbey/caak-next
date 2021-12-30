@@ -140,7 +140,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
                   "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                 }
               >
-                {decode(postItem.title)}
+                {postItem.title && decode(postItem.title)}
               </p>
             </a>
           </Link>
@@ -150,7 +150,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
             }
           >
-            {decode(postItem.title)}
+            {postItem.title && decode(postItem.title)}
           </p>
         )}
       </div>

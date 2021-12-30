@@ -1300,6 +1300,7 @@ export const getPost = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -1532,6 +1533,7 @@ export const listPosts = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -1662,6 +1664,7 @@ export const getPostByStatus = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -1792,6 +1795,7 @@ export const getPostByGroup = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -1922,6 +1926,7 @@ export const getPostByUser = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2052,6 +2057,7 @@ export const listPostByOwned = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2182,6 +2188,7 @@ export const listPostByTitle = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2310,6 +2317,7 @@ export const searchPosts = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2432,6 +2440,7 @@ export const getSavedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2720,6 +2729,7 @@ export const getPostItems = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2856,6 +2866,7 @@ export const getPostTotal = /* GraphQL */ `
       views
       shares
       groupAndStatus
+      categoryAndStatus
       createdAt
       updatedAt
       post {
@@ -2945,6 +2956,7 @@ export const getPostTotal = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2998,6 +3010,7 @@ export const listPostTotals = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -3055,6 +3068,7 @@ export const listPostOrderByReactions = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -3112,6 +3126,7 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -3141,7 +3156,7 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
 `;
 export const listPostByCategoryOrderByReactions = /* GraphQL */ `
   query ListPostByCategoryOrderByReactions(
-    $category_id: ID
+    $categoryAndStatus: String
     $total_reactions: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPostTotalFilterInput
@@ -3149,7 +3164,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
     $nextToken: String
   ) {
     listPostByCategoryOrderByReactions(
-      category_id: $category_id
+      categoryAndStatus: $categoryAndStatus
       total_reactions: $total_reactions
       sortDirection: $sortDirection
       filter: $filter
@@ -3169,6 +3184,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -3593,6 +3609,7 @@ export const getComment = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4776,6 +4793,7 @@ export const getReportedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -6150,6 +6168,39 @@ export const listNotificationByUserAndSeen = /* GraphQL */ `
           createdAt
           updatedAt
         }
+      }
+      nextToken
+    }
+  }
+`;
+export const getFeedBack = /* GraphQL */ `
+  query GetFeedBack($id: ID!) {
+    getFeedBack(id: $id) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFeedBacks = /* GraphQL */ `
+  query ListFeedBacks(
+    $filter: ModelFeedBackFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFeedBacks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        star
+        title
+        description
+        status
+        createdAt
+        updatedAt
       }
       nextToken
     }

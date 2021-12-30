@@ -1177,6 +1177,7 @@ export const createPost = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -1545,6 +1546,7 @@ export const updatePost = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -1913,6 +1915,7 @@ export const deletePost = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -2149,6 +2152,7 @@ export const createSavedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2272,6 +2276,7 @@ export const updateSavedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2395,6 +2400,7 @@ export const deleteSavedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2581,6 +2587,7 @@ export const createPostItems = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2751,6 +2758,7 @@ export const updatePostItems = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -2921,6 +2929,7 @@ export const deletePostItems = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -3376,6 +3385,7 @@ export const createComment = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -3750,6 +3760,7 @@ export const updateComment = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4124,6 +4135,7 @@ export const deleteComment = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4499,6 +4511,7 @@ export const createReportedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4704,6 +4717,7 @@ export const updateReportedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4909,6 +4923,7 @@ export const deleteReportedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -6392,6 +6407,54 @@ export const deleteNotification = /* GraphQL */ `
           nextToken
         }
       }
+    }
+  }
+`;
+export const createFeedBack = /* GraphQL */ `
+  mutation CreateFeedBack(
+    $input: CreateFeedBackInput!
+    $condition: ModelFeedBackConditionInput
+  ) {
+    createFeedBack(input: $input, condition: $condition) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFeedBack = /* GraphQL */ `
+  mutation UpdateFeedBack(
+    $input: UpdateFeedBackInput!
+    $condition: ModelFeedBackConditionInput
+  ) {
+    updateFeedBack(input: $input, condition: $condition) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFeedBack = /* GraphQL */ `
+  mutation DeleteFeedBack(
+    $input: DeleteFeedBackInput!
+    $condition: ModelFeedBackConditionInput
+  ) {
+    deleteFeedBack(input: $input, condition: $condition) {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
     }
   }
 `;

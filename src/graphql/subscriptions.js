@@ -282,6 +282,7 @@ export const onCommentByPostItem = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -653,6 +654,7 @@ export const onCommentByPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -1024,6 +1026,7 @@ export const onCommentByParent = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -1359,6 +1362,7 @@ export const onPostByGroup = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -1724,6 +1728,7 @@ export const onPostByUser = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -2201,6 +2206,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -3559,6 +3565,7 @@ export const onCreatePost = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -3924,6 +3931,7 @@ export const onUpdatePost = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -4289,6 +4297,7 @@ export const onDeletePost = /* GraphQL */ `
         views
         shares
         groupAndStatus
+        categoryAndStatus
         createdAt
         updatedAt
         post {
@@ -4522,6 +4531,7 @@ export const onCreateSavedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4642,6 +4652,7 @@ export const onUpdateSavedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4762,6 +4773,7 @@ export const onDeleteSavedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -4936,6 +4948,7 @@ export const onCreatePostItems = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -5103,6 +5116,7 @@ export const onUpdatePostItems = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -5270,6 +5284,7 @@ export const onDeletePostItems = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -5695,6 +5710,7 @@ export const onCreateComment = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -6066,6 +6082,7 @@ export const onUpdateComment = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -6437,6 +6454,7 @@ export const onDeleteComment = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -6791,6 +6809,7 @@ export const onCreateReportedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -6993,6 +7012,7 @@ export const onUpdateReportedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -7195,6 +7215,7 @@ export const onDeleteReportedPost = /* GraphQL */ `
           views
           shares
           groupAndStatus
+          categoryAndStatus
           createdAt
           updatedAt
         }
@@ -8642,6 +8663,45 @@ export const onDeleteNotification = /* GraphQL */ `
           nextToken
         }
       }
+    }
+  }
+`;
+export const onCreateFeedBack = /* GraphQL */ `
+  subscription OnCreateFeedBack {
+    onCreateFeedBack {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFeedBack = /* GraphQL */ `
+  subscription OnUpdateFeedBack {
+    onUpdateFeedBack {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFeedBack = /* GraphQL */ `
+  subscription OnDeleteFeedBack {
+    onDeleteFeedBack {
+      id
+      star
+      title
+      description
+      status
+      createdAt
+      updatedAt
     }
   }
 `;

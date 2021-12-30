@@ -8,10 +8,15 @@ import Image from "next/image";
 import Input from "../input";
 import Button from "../button";
 import { useState } from "react";
+import { API } from "aws-amplify";
+import { createFeedBack } from "../../graphql-custom/feedback/mutations";
+import { useUser } from "../../context/userContext";
 
-const FeedBack = ({setIsOpen}) => {
+const FeedBack = ({ setIsOpen }) => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
+  const [star, setStar] = useState(4);
+  const { isLogged } = useUser();
 
   const emojis = [
     { id: 0, emoji: dead },
@@ -20,14 +25,32 @@ const FeedBack = ({setIsOpen}) => {
     { id: 3, emoji: wink },
     { id: 4, emoji: smileHeart },
   ];
+
+  const sendFeedBack = async () => {
+    await API.graphql({
+      query: createFeedBack,
+      variables: {
+        input: {
+          description: comment,
+          title: title,
+          star: star,
+          status: "CHECKED",
+        },
+      },
+      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+    setComment("");
+    setTitle("");
+  };
+
   return (
     <div
       className={
-        "feedBack flex flex-col z-[1] fixed bottom-[24px] right-[24px] w-[321px] p-[25px]"
+        "feedBack flex flex-col z-[2] fixed bottom-[78px] md:bottom-[24px] right-[24px] w-[321px] p-[25px]"
       }
     >
       <div
-        onClick={()=> setIsOpen(false)}
+        onClick={() => setIsOpen(false)}
         className={
           "cursor-pointer w-[30px] h-[30px] bg-white flex items-center justify-center rounded-full absolute top-[12px] right-[12px]"
         }
@@ -47,10 +70,11 @@ const FeedBack = ({setIsOpen}) => {
           {emojis.map((emoji, index) => {
             return (
               <div
+                onClick={() => setStar(emoji.id)}
                 key={index}
-                className={
-                  "transition-all duration-300 hover:mix-blend-normal mix-blend-luminosity cursor-pointer relative mr-[14px] last:mr-0"
-                }
+                className={`${
+                  star === index ? "mix-blend-normal" : "mix-blend-luminosity"
+                } transition-all duration-300 hover:mix-blend-normal  cursor-pointer relative mr-[14px] last:mr-0`}
               >
                 <Image alt={""} src={emoji.emoji} height={38} width={38} />
               </div>
@@ -66,7 +90,7 @@ const FeedBack = ({setIsOpen}) => {
             className={
               "h-[40px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
             }
-            placeholder={"Гарчиг"}
+            placeholder={"Нэр"}
           />
           <div className={"w-full mt-[10px] relative"}>
             <textarea
@@ -88,6 +112,7 @@ const FeedBack = ({setIsOpen}) => {
           </div>
           <div className={"mt-[24px]"}>
             <Button
+              onClick={() => sendFeedBack()}
               className={
                 "w-[130px] h-[36px] self-center rounded-[8px] bg-white text-caak-generalblack font-medium text-[16px]"
               }

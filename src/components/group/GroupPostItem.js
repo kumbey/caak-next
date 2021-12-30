@@ -9,7 +9,7 @@ import {
   extractDate,
   generateFileUrl,
   getFileUrl,
-  getGenderImage,
+  getGenderImage, getReturnData,
 } from "../../utility/Util";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
@@ -17,6 +17,8 @@ import Video from "../video";
 import { useRouter } from "next/router";
 import PostDenyModal from "../modals/postDenyModal";
 import PendingPostApproveModal from "../modals/pendingPostApproveModal";
+import {createPostStatusHistory, updatePostStatusHistory} from "../../graphql-custom/postHistory/mutation";
+import { useUser } from "../../context/userContext";
 
 const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
   const [loading, setLoading] = useState(false);
@@ -24,14 +26,31 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
   const router = useRouter();
+  const { user } = useUser();
   const postHandler = async ({ id, status, message }) => {
     setLoading(true);
     try {
-      await API.graphql(
+      let resp = await API.graphql(
         graphqlOperation(updatePost, {
           input: { id, status, expectedVersion: post.version },
         })
       );
+      resp = getReturnData(resp)
+      if(resp.status_history.items?.length){
+        await API.graphql(
+          graphqlOperation(updatePostStatusHistory, {
+            input: { description: message, post_id: id, id: `${user.id}#${id}`},
+          })
+        );
+      }
+      else {
+        await API.graphql(
+          graphqlOperation(createPostStatusHistory, {
+            input: { description: message, post_id: id, id: `${user.id}#${id}`},
+          })
+        );
+      }
+
       setLoading(false);
     } catch (ex) {
       setLoading(false);

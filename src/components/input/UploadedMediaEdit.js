@@ -489,14 +489,14 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
-          <div className={"flex flex-row justify-between mt-[16px]"}>
-            <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>
-            <Switch toggle={setDraft} active={draft} />
-          </div>
-          <div className={"flex flex-row justify-between mt-[16px]"}>
-            <p className={"text-[15px] text-caak-generalblack"}>Онцлох</p>
-            <Switch toggle={setBoost} active={boost} />
-          </div>
+          {/*<div className={"flex flex-row justify-between mt-[16px]"}>*/}
+          {/*  <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>*/}
+          {/*  <Switch toggle={setDraft} active={draft} />*/}
+          {/*</div>*/}
+          {/*<div className={"flex flex-row justify-between mt-[16px]"}>*/}
+          {/*  <p className={"text-[15px] text-caak-generalblack"}>Онцлох</p>*/}
+          {/*  <Switch toggle={setBoost} active={boost} />*/}
+          {/*</div>*/}
         </div>
       </div>
     </div>

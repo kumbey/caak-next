@@ -161,3 +161,27 @@ export const listSavedPostByUser = /* GraphQL */ `
         }     
     }
 `;
+
+export const listPostByCategoryOrderByReactions = /* GraphQL */ `
+    query ListPostByCategoryOrderByReactions(
+        $category_id: ID!
+        $sortDirection: ModelSortDirection
+        $filter: ModelPostTotalFilterInput
+        $limit: Int
+        $nextToken: String
+    ) {
+        listPostByCategoryOrderByReactions(
+            category_id: $category_id
+            sortDirection: $sortDirection
+            filter: $filter
+            limit: $limit
+            nextToken: $nextToken
+        ) {
+            items {
+                post
+                ${post0004}
+            }
+            nextToken
+        }
+    }
+`;

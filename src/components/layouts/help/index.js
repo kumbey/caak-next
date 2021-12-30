@@ -20,7 +20,7 @@ export default function DefaultHelpLayout({children}) {
                     <input disabled className='w-[300px] hidden sm:block sm:w-[400px] xl:w-[616px] h-[44px] bg-white rounded-[4px] text-[#6C7392] px-[40px] ' placeholder='Тусламж хайх'/>
                 </div>
             </div>
-            <div className={"max-w-[1247px] mx-auto mt-[40px] flex items-start justify-start"}>
+            <div className={"max-w-[1247px] mx-auto flex items-start justify-start"}>
                 {children}
             </div>
             <div className='bg-white h-[200px] sm:h-[155px] flex justify-center mt-[65px]'>

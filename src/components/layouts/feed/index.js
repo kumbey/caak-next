@@ -91,7 +91,7 @@ const DefaultFeedLayout = ({
 
           {!hideSuggestedGroups && (
             <SuggestedGroupsCard
-              maxColumns={7}
+              maxColumns={10}
               title={"Санал болгох группүүд"}
               className={"mb-[24px]"}
             />

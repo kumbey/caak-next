@@ -87,19 +87,21 @@ export async function getServerSideProps({ req, query }) {
 }
 
 const Profile = ({ ssrData }) => {
+  const router = useRouter();
+  const { userId } = router.query;
   const [fetchedUser, setFetchedUser] = useState(ssrData.user);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(ssrData.posts);
   const [savedPosts, setSavedPosts] = useState(ssrData.savedPosts);
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeView, setActiveView] = useState(0);
-  const [sortType, setSortType] = useState("POST");
+  const [sortType, setSortType] = useState(
+    router.query.sortType ? router.query.sortType : "POST"
+  );
   const [subscripedPost, setSubscripedPost] = useState(0);
   const { isLogged } = useUser();
   const subscriptions = {};
   const [render, setRender] = useState(0);
-  const router = useRouter();
-  const { userId } = router.query;
 
   const [nextPosts] = useListPager({
     query: getPostByUser,
@@ -293,7 +295,7 @@ const Profile = ({ ssrData }) => {
       <ProfileLayout user={fetchedUser}>
         <div className={"pt-0 md:pt-[42px]"}>
           <FeedSortButtons
-            initialSort={"POST"}
+            initialSort={router.query.sortType ? router.query.sortType : "POST"}
             iconSize={"text-[17px]"}
             iconContainerSize={"w-[20px] h-[20px]"}
             textClassname={"text-[15px] font-medium"}

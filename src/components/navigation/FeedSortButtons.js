@@ -77,35 +77,39 @@ const FeedSortButtons = ({
             );
           })}
         </div>
-        <div className="hidden md:flex w-[80px] h-[36px] px-[5px] py-[4px] mb-[19px]  items-center justify-center bg-white rounded-lg">
-          <div
-            className={`flex flex-nowrap items-center w-full justify-between ${
-              direction === "column" ? "flex-col" : "flex-row"
-            }`}
-          >
-            {items2.map(({ icon, id }) => {
-              return (
-                <div
-                  className={`flex items-center justify-center w-[32px] h-[28px] rounded-[5px] ${
-                    id === activeView ? "bg-caak-titaniumwhite" : ""
-                  }`}
-                  key={id}
-                >
+        {items2 ? (
+          <div className="hidden md:flex w-[80px] h-[36px] px-[5px] py-[4px] mb-[19px]  items-center justify-center bg-white rounded-lg">
+            <div
+              className={`flex flex-nowrap items-center w-full justify-between ${
+                direction === "column" ? "flex-col" : "flex-row"
+              }`}
+            >
+              {items2.map(({ icon, id }) => {
+                return (
                   <div
-                    className={`w-[20px] h-[20px] flex items-center justify-center cursor-pointer`}
-                    onClick={() => setActiveView(id)}
+                    className={`flex items-center justify-center w-[32px] h-[28px] rounded-[5px] ${
+                      id === activeView ? "bg-caak-titaniumwhite" : ""
+                    }`}
+                    key={id}
                   >
-                    <span
-                      className={`${
-                        id === activeView ? `${icon}-f` : `${icon}-o`
-                      } ${iconSize ? iconSize : "text-[16.67px]"} ph:text-15px`}
-                    />
+                    <div
+                      className={`w-[20px] h-[20px] flex items-center justify-center cursor-pointer`}
+                      onClick={() => setActiveView(id)}
+                    >
+                      <span
+                        className={`${
+                          id === activeView ? `${icon}-f` : `${icon}-o`
+                        } ${
+                          iconSize ? iconSize : "text-[16.67px]"
+                        } ph:text-15px`}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     )
   );

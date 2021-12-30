@@ -93,6 +93,8 @@ const Video = ({
     } else if (!inView && loaded) {
       setIsPlaying(false);
     }
+
+    // eslint-disable-next-line
   }, [inView]);
 
   return (

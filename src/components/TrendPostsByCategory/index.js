@@ -49,6 +49,8 @@ const TrendPostsByCategory = () => {
   useEffect(() => {
     // getUserCategories()
     getTrendPostsByCategory();
+    
+    // eslint-disable-next-line
   }, []);
 
   return trendingPostsByCategory.items?.length > 0 ? (

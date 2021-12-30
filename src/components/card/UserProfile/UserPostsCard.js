@@ -29,9 +29,9 @@ const UserPostsCard = ({ post }) => {
             playing={playing}
             loop
             onReady={(e) => setVideoDuration(Math.floor(e.getDuration()))}
-            onProgress={(e) =>
-              setVideoDuration(Math.floor(e.loadedSeconds - e.playedSeconds))
-            }
+            // onProgress={(e) =>
+            //   setVideoDuration(Math.floor(e.loadedSeconds - e.playedSeconds))
+            // }
             className={"react-player rounded-[4px] object-cover"}
             width={"100%"}
             height={"100%"}
@@ -39,19 +39,35 @@ const UserPostsCard = ({ post }) => {
           />
         </div>
       ) : (
-        <div className={"relative w-full h-full"}>
-          <Image
-            className={"rounded-[4px]"}
-            objectFit={"cover"}
-            layout={"fill"}
-            alt={""}
-            src={
-              firstItem.file
-                ? getFileUrl(firstItem.file)
-                : "https://picusm.photos/300/600"
-            }
-          />
-        </div>
+        <Link
+          shallow
+          href={{
+            query: {
+              ...router.query,
+              viewPost: "post",
+              id: post.id,
+              prevPath: router.asPath,
+              isModal: true,
+            },
+          }}
+          as={`/post/view/${post.id}`}
+        >
+          <a>
+            <div className={"relative w-full h-full"}>
+              <Image
+                className={"rounded-[4px]"}
+                objectFit={"cover"}
+                layout={"fill"}
+                alt={""}
+                src={
+                  firstItem.file
+                    ? getFileUrl(firstItem.file)
+                    : "https://picusm.photos/300/600"
+                }
+              />
+            </div>
+          </a>
+        </Link>
       )}
       <div
         className={`absolute bottom-0 rounded-b-[4px] w-full h-[161px] z-[1] userProfilePostsCardGradient ${
@@ -87,17 +103,13 @@ const UserPostsCard = ({ post }) => {
           isMobile ? "opacity-100" : "opacity-0"
         } group-hover:opacity-100 transition-all duration-300`}
       >
-        <Link href={`/post/view/${post.id}`}>
-          <a>
-            <p
-              className={
-                "text-white font-roboto text-[18px] tracking-[0.36px] leading-[23px]"
-              }
-            >
-              {post.title}
-            </p>
-          </a>
-        </Link>
+        <p
+          className={
+            "text-white font-roboto text-[18px] tracking-[0.36px] leading-[23px]"
+          }
+        >
+          {post.title}
+        </p>
 
         <div
           className={

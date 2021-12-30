@@ -428,9 +428,13 @@ const GroupLayout = ({
             <GroupAdminsCard groupId={groupData.id} />
             <Banner/>
             <FooterSidebar
+<<<<<<< HEAD
             topItemHeight={"426px"}
             banner
               containerClassname={"mt-[16px] bg-white rounded-square p-[20px]"}
+=======
+              containerClassname={"bg-white rounded-square p-[20px]"}
+>>>>>>> 9c9e3ac2d3520688dfd26cb0803d7ada1d8da46b
             />
 
             {!isLogged && <FooterSidebar />}

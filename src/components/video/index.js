@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { useRouter } from "next/router";
 import ItemsCounterCard from "../card/ItemsCounterCard";
+import { useInView } from "react-intersection-observer";
 
 const dblTouchTapMaxDelay = 300;
 let latestTouchTap = {
@@ -31,15 +32,21 @@ const Video = ({
   smallIndicator,
   thumbnailIcon,
   durationIndicator,
+  disableOnClick,
+  ...props
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const videoRef = useRef();
+  const videoRef = useRef(null);
   const router = useRouter();
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const [played, setPlayed] = useState(0);
   const [seeking, setSeeking] = useState(false);
+  const [ref, inView] = useInView({
+    threshold: 1,
+  });
   const handleSeekChange = (e) => {
     e.stopPropagation();
     setPlayed(parseFloat(e.target.value));
@@ -76,10 +83,24 @@ const Video = ({
     return `${m}:${s}`;
   }
 
+  useEffect(() => {
+    if (inView) {
+      setLoaded(true);
+
+      if (loaded) {
+        setIsPlaying(true);
+      }
+    } else if (!inView && loaded) {
+      setIsPlaying(false);
+    }
+  }, [inView]);
+
   return (
     <div
-      onClick={() => setIsPlaying(!isPlaying)}
+      ref={ref}
+      onClick={() => !disableOnClick && setIsPlaying(!isPlaying)}
       onDoubleClick={() =>
+        !disableOnClick &&
         route &&
         router.push({
           pathname: `/post/view/${postId}`,
@@ -87,7 +108,7 @@ const Video = ({
       }
       onTouchEnd={(e) => {
         if (isDblTouchTap(e)) {
-          if (route) {
+          if (!disableOnClick && route) {
             setIsPlaying(false);
             router.push({
               pathname: `/post/view/${postId}`,
@@ -99,21 +120,25 @@ const Video = ({
         containerClassname ? containerClassname : ""
       } relative w-full h-full group bg-black`}
     >
-      <ReactPlayer
-        light={thumbnailIcon}
-        ref={videoRef}
-        playing={isPlaying}
-        muted={isMuted}
-        loop
-        onReady={(e) => {
-          setVideoDuration(e.getDuration());
-        }}
-        onProgress={handleProgress}
-        className={`${videoClassname ? videoClassname : ""} react-player`}
-        width={"100%"}
-        height={"100%"}
-        url={src}
-      />
+      {inView || loaded ? (
+        <ReactPlayer
+          light={thumbnailIcon}
+          ref={videoRef}
+          playing={isPlaying}
+          muted={isMuted}
+          loop
+          onReady={(e) => {
+            setVideoDuration(e.getDuration());
+          }}
+          onProgress={handleProgress}
+          className={`${videoClassname ? videoClassname : ""} react-player`}
+          width={"100%"}
+          height={"100%"}
+          url={src}
+          {...props}
+        />
+      ) : null}
+
       {smallIndicator && !isPlaying && (
         <div
           className={

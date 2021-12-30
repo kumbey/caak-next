@@ -49,7 +49,8 @@ async function modify(record){
             group_id: newImg.group_id,
             status: newImg.status,
             category_id: newImg.category_id,
-            groupAndStatus: `${newImg.group_id}#${newImg.status}`
+            groupAndStatus: `${newImg.group_id}#${newImg.status}`,
+            categoryAndStatus: `${newImg.category_id}#${newImg.status}`
         },["post_id"], "post_id")
 
 

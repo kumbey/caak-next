@@ -32,7 +32,7 @@ const PostDenyModal = ({
           <textarea
             defaultValue={denyReason}
             onChange={(e) => setDenyReason(e.target.value)}
-            className={"w-full h-[80px] rounded-[4px]"}
+            className={"w-full h-[160px] rounded-[4px]"}
             placeholder={"Шалтгаан"}
           />
           <div className={"flex flex-row self-end mt-[10px]"}>

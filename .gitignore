@@ -33,7 +33,7 @@ yarn-error.log*
 # vercel
 .vercel
 
-src/redirectUrls.js
+./src/redirectUrls.js
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

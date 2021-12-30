@@ -8,6 +8,12 @@ const post0004 = /* GraphQL */ `
     commentType
     owned
     status
+      status_history {
+          items {
+              description
+              id
+          }
+      }
     user_id
     group_id
     category_id

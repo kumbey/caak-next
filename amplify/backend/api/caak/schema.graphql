@@ -234,7 +234,7 @@ type PostTotal @model(mutations: null)
   @key(fields:["post_id"])
   @key(name:"orderByReactions", fields:["status","total_reactions"] queryField:"listPostOrderByReactions")
   @key(name:"byGroupOrderByReactions", fields:["groupAndStatus","total_reactions"] queryField:"listPostByGroupOrderByReactions")
-  @key(name:"byCategoryOrderByReactions", fields:["category_id","total_reactions"] queryField:"listPostByCategoryOrderByReactions"){
+  @key(name:"byCategoryOrderByReactions", fields:["categoryAndStatus","total_reactions"] queryField:"listPostByCategoryOrderByReactions"){
   post_id: ID!
   post: Post @connection(fields:["post_id"])
   status: String
@@ -248,6 +248,7 @@ type PostTotal @model(mutations: null)
   views: Int!
   shares: Int!
   groupAndStatus: String
+  categoryAndStatus: String
 }
 
 type PostItemsTotal @model(mutations: null)

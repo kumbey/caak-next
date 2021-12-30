@@ -18,6 +18,7 @@ async function insert(newImg){
             group_id: newImg.group_id,
             category_id: newImg.category_id,
             groupAndStatus: `${newImg.group_id}#${newImg.status}`,
+            categoryAndStatus: `${newImg.category_id}#${newImg.status}`,
             search_key: "P",
             reactions: 0,
             total_reactions: 0,

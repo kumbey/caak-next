@@ -110,7 +110,7 @@ const UserInformation = ({ nextStep }) => {
             onChange={handleChange}
             placeholder={"Профайл нэр"}
             className={
-              "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"
+              "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite hover:bg-white mt-[8px]"
             }
           />
           <DateInput
@@ -121,7 +121,7 @@ const UserInformation = ({ nextStep }) => {
             errorMessage={errors.birthdate}
             onChange={handleChange}
             className={
-              "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"
+              "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite hover:bg-white mt-[8px]"
             }
           />
           {/* <Input

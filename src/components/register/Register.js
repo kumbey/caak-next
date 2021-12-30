@@ -140,11 +140,11 @@ const Register = () => {
         <Button
           key={1}
           onClick={() => setActiveType("phone")}
-          className={`w-full text-15px h-c32  rounded-none hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  
+          className={`w-full text-15px h-c32  rounded-none hover:text-opacity-60 flex items-center justify-center font-bold  
                                     ${
                                       "phone" === activeType
                                         ? "bg-white text-caak-primary border-b-2 border-caak-primary "
-                                        : "bg-transparent text-caak-aleutian"
+                                        : "bg-transparent text-caak-darkBlue"
                                     }
                                     `}
         >
@@ -155,11 +155,11 @@ const Register = () => {
         <Button
           key={2}
           onClick={() => setActiveType("mail")}
-          className={`w-full text-15px h-c32 rounded-none  hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  
+          className={`w-full text-15px h-c32 rounded-none  hover:text-opacity-60 flex items-center justify-center font-bold  
                                     ${
                                       "mail" === activeType
                                         ? "bg-white text-caak-primary border-b-2 border-caak-primary "
-                                        : "bg-transparent text-caak-aleutian"
+                                        : "bg-transparent text-caak-darkBlue"
                                     }
                                     `}
         >
@@ -179,7 +179,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder={`${condition ? "Утасны дугаар" : "Имэйл хаяг"}`}
             className={
-              "border border-caak-titaniumwhite h-[44px] mt-[8px] bg-caak-liquidnitrogen"
+              "border border-caak-titaniumwhite h-[44px] mt-[8px] bg-caak-liquidnitrogen hover:bg-white"
             }
           />
           <Input
@@ -191,7 +191,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder={"Нууц үг"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-[8px]"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen hover:bg-white h-[44px] mt-[8px]"
             }
           />
           <Input
@@ -203,7 +203,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder={"Нууц үг давтах"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-[8px]"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen hover:bg-white  h-[44px] mt-[8px]"
             }
           />
         </div>
@@ -211,7 +211,7 @@ const Register = () => {
           <Button
             loading={loading}
             onClick={() => handleSubmit(doSubmit)}
-            className={`rounded-md w-full h-c9 text-17px font-bold bg-caak-primary  ${
+            className={`rounded-md w-full h-c9 text-16px font-medium  ${
               isValid
                 ? "bg-caak-primary text-white"
                 : "bg-caak-titaniumwhite text-caak-shit"

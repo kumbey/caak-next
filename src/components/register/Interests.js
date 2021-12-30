@@ -30,7 +30,7 @@ export default function Interests() {
   const submitHandler = async () => {
     try {
       setLoading(true);
-      isLoginValid()
+      isLoginValid();
       for (var i = 0; i < selected.length; i++) {
         await API.graphql(
           graphqlOperation(createUserCategory, {
@@ -42,17 +42,25 @@ export default function Interests() {
           })
         );
       }
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            signInUp: "complete",
+      if (router.query.isModal) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              signInUp: "complete",
+            },
           },
-        },
-        `/signInUp/complete`,
-        { shallow: true, scroll: false }
-      );
+          `/signInUp/complete`,
+          { shallow: true, scroll: false }
+        );
+      } else {
+        router.replace("/signInUp/complete", undefined, {
+          shallow: true,
+          scroll: false,
+        });
+      }
+
       setLoading(false);
     } catch (ex) {
       setLoading(false);

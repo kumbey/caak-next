@@ -58,7 +58,7 @@ const Completed = () => {
             {loading ? (
               "Уншиж байна"
             ) : (
-              <span className="icon-fi-rs-thick-check h-[16px] w-[20px]" />
+              <span className="icon-fi-rs-thick-check text-24px" />
             )}
           </Button>
         </div>

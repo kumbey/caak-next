@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useModalLayout from "/src/hooks/useModalLayout";
 
-import Register from "/src/components/register/Register";
+import Register from "../../src/components/register/Register";
 import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 import { _objectWithoutKeys } from "../../src/utility/Util";
@@ -13,13 +13,17 @@ const Up = ({ ...props }) => {
   const ModalLayout = useModalLayout({ layoutName: "step" });
 
   const back = () => {
-      router.replace({
+    router.replace(
+      {
         query: {
           ...query,
-          signInUp: "signUp"
-        }
-      }, "/signInUp/signUp", {shallow : true, scroll: false})
-  }
+          signInUp: "signUp",
+        },
+      },
+      "/signInUp/signUp",
+      { shallow: true, scroll: false }
+    );
+  };
 
   return (
     <ModalLayout

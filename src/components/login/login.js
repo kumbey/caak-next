@@ -41,11 +41,10 @@ const Login = ({ nextStep }) => {
       setLoading(true);
       await Auth.signIn(checkUsername(username), password);
       if (router.query.prevPath && router.query.prevPath !== router.asPath) {
-        router.replace(
-          router.query.prevPath,
-          undefined,
-          { shallow: false, scroll: false }
-        );
+        router.replace(router.query.prevPath, undefined, {
+          shallow: false,
+          scroll: false,
+        });
       } else {
         router.replace("/");
       }
@@ -81,7 +80,7 @@ const Login = ({ nextStep }) => {
             onChange={handleChange}
             placeholder={"Имэйл хаяг/Утасны дугаар"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-2"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen hover:bg-white h-[44px] mt-2"
             }
           />
           <Input
@@ -93,7 +92,7 @@ const Login = ({ nextStep }) => {
             onChange={handleChange}
             placeholder={"Нууц үг"}
             className={
-              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen h-[44px] mt-2"
+              "border border-caak-titaniumwhite  bg-caak-liquidnitrogen hover:bg-white h-[44px] mt-2"
             }
           />
         </div>
@@ -114,7 +113,7 @@ const Login = ({ nextStep }) => {
                 {
                   query: {
                     ...router.query,
-                    signInUp: "forgotpassword"
+                    signInUp: "forgotpassword",
                   },
                 },
                 `/signInUp/forgotpassword`,

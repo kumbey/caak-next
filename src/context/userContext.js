@@ -86,7 +86,7 @@ function UserProvider(props) {
   useEffect(() => {
     if (cognitoUser) {
       if(!lsGet(Consts.addPostKey)){
-        lsSet(Consts.addPostKey, {addPost: true})
+        lsSet(Consts.addPostKey, {addPost: true, addPostGuide: true})
       }
     } else {
       lsRemove(Consts.addPostKey);

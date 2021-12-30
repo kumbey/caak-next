@@ -11,6 +11,7 @@ import { feedType } from "../../navigation/sortButtonTypes";
 import { useWrapper } from "../../../context/wrapperContext";
 import useWindowSize from "../../../hooks/useWindowSize";
 import AuraModal from "../../modals/auraModal";
+import Banner from "../../banner";
 
 const DefaultFeedLayout = ({
   children,
@@ -97,6 +98,7 @@ const DefaultFeedLayout = ({
           )}
 
           {!isLogged && <FooterSidebar />}
+          <Banner/>
         </div>
       </div>
     )

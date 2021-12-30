@@ -36,7 +36,7 @@ const data1 = [
         image: group,
     },
     {
-        title: "Цалинтай болох",
+        title: "Орлоготой болох",
         id: 6,
         image: money,
     }
@@ -58,11 +58,30 @@ export default function Help() {
                             <span className='icon-fi-rs-next'/>
                         </a>
                     </Link>
-                    <Link href="/help/secure" shallow>
+                    <Link href={{
+                        pathname: "/help/secure",
+                        query: {
+                            index: 1
+                        }
+                    }} shallow>
                         <a className='flex flex-row items-center justify-between mt-[28px]'>
                             <div className='flex flex-row items-center'>
                                 <span className='icon-fi-rs-info text-[22px]'/>
-                                <p className='ml-[14.5px]'>{`Үйлчилгээний нөхцөл болон Нууцлалын бодлого`}</p>
+                                <p className='ml-[14.5px]'>{`Үйлчилгээний нөхцөл`}</p>
+                            </div>
+                            <span className='icon-fi-rs-next'/>
+                        </a>
+                    </Link>
+                    <Link href={{
+                        pathname: "/help/secure",
+                        query: {
+                            index: 2
+                        }
+                    }} shallow>
+                        <a className='flex flex-row items-center justify-between mt-[28px]'>
+                            <div className='flex flex-row items-center'>
+                                <span className='icon-fi-rs-info text-[22px]'/>
+                                <p className='ml-[14.5px]'>{`Нууцлалын бодлого`}</p>
                             </div>
                             <span className='icon-fi-rs-next'/>
                         </a>

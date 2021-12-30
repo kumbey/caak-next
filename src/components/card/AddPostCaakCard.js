@@ -9,14 +9,15 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
 
 const AddPostCaakCard = ({ isOpen, setIsOpen }) => {
+  
   const {lsSet, lsGet} = useLocalStorage("session")
-
   const { isLogged } = useUser();
   const router = useRouter();
 
   useEffect(() => {
     setIsOpen(lsGet(Consts.addPostKey).addPost)
   }, [])
+
   return isOpen ? (
     <div
       className={
@@ -26,7 +27,7 @@ const AddPostCaakCard = ({ isOpen, setIsOpen }) => {
       <div
         onClick={() => {
           setIsOpen(false)
-         lsSet(Consts.addPostKey, {addPost: false})
+          lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPost: false})
         }}
         className={
           "w-[30px] h-[30px] hover:bg-gray-200 cursor-pointer flex items-center justify-center rounded-full absolute top-[12px] right-[12px] bg-caak-liquidnitrogen"

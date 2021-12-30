@@ -127,7 +127,7 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
                 <div className="flex justify-start mb-[20px]">
                   <span className="icon-fi-rs-trophy text-20px text-caak-generalblack" />
                   <p className="font-inter font-normal text-15px text-caak-generalblack">
-                    Цалинтай нийтлэгч болох
+                    Орлоготой нийтлэгч болох
                   </p>
                 </div>
                 <div className="flex justify-start ">

@@ -45,7 +45,7 @@ const GroupAdminsCard = ({ groupId }) => {
   }, [groupId]);
 
   return !loading ? (
-    <div className={"flex flex-col w-[320px] bg-white rounded-[8px] p-[18px]"}>
+    <div className={"flex flex-col w-[320px] bg-white rounded-[8px] p-[18px] mb-[15px]"}>
       <div>
         <p className={"text-caak-extraBlack text-[15px] font-semibold"}>
           Группын удирдагчид

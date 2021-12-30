@@ -20,9 +20,9 @@ export default function ConnectUs() {
                     <div className='flex flex-row items-center justify-between'>
                         <p className='text-[22px] font-bold'>{`Холбоо барих`}</p>
                         <div>
-                            <span className='icon-fi-rs-fb text-[16px]'/>
-                            <span className='icon-fi-rs-tw ml-[8px] text-[16px]'/>
-                            <span className='icon-fi-rs-ig ml-[8px] text-[16px]'/>
+                            <a href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
+                            <a className='ml-[8px]' href='https://twitter.com/caaktwt' target="_blank"><span className='icon-fi-rs-tw text-[16px]'/></a>
+                            <a className='ml-[8px]' href='https://www.instagram.com/caak.mn/' target="_blank"><span className='icon-fi-rs-ig text-[16px]'/></a>
                         </div>
                     </div>
                     <div className='border-t mt-[16px] py-[23px]'>

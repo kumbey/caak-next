@@ -73,7 +73,6 @@ const Post = ({ssrData}) => {
     }
     setLoading(false);
   };
-  console.log(post);
   const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   return post ? (
     <>
@@ -178,12 +177,17 @@ const Post = ({ssrData}) => {
                     }
                   >
                     <Tooltip
-                      className={"-left-6"}
-                      content={<ProfileHoverCard userId={post.user.id} />}
+                        className={"-left-6"}
+                        content={<ProfileHoverCard userId={post.user.id}/>}
                     >
-                      <p className={"cursor-pointer opacity-90"}>
-                        @{post.user.nickname}
-                      </p>
+                      <Link href={`/user/${post.user.id}/profile`}>
+                        <a>
+                          <p className={"cursor-pointer opacity-90"}>
+                            @{post.user.nickname}
+                          </p>
+                        </a>
+                      </Link>
+
                     </Tooltip>
                     &nbsp; &middot; &nbsp;
                     <p>{generateTimeAgo(post.createdAt)}</p>

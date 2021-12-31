@@ -10,23 +10,35 @@ export default function AddPostHandler({groupId}) {
     return (
         <div className="bg-white h-[60px] rounded-[8px] flex flex-row items-center w-full mb-[32px] px-[16px]">
             {isLogged ? (
-                <Image
-                    alt={""}
-                    src={getFileUrl(user.pic)}
-          width={36}
-          height={36}
-          objectFit="cover"
-          className="rounded-full bg-[#6C7392]"
-        />
-      ) : (
-                <Image
-                    alt={""}
-                    src={getGenderImage("MALE")}
-                    width={36}
-                    height={36}
-                    objectFit="cover"
-                    className="rounded-full bg-[#6C7392]"
-                />
+                <div
+                    className={
+                        "relative bg-[#6C7392] w-[36px] h-[36px] rounded-full flex-shrink-0"
+                    }
+                >
+                    <Image
+                        alt={""}
+                        src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender)}
+                        width={36}
+                        height={36}
+                        objectFit="cover"
+                        className="rounded-full"
+                    />
+                </div>
+            ) : (
+                <div
+                    className={
+                        "relative bg-[#6C7392] w-[36px] h-[36px] rounded-full flex-shrink-0"
+                    }
+                >
+                    <Image
+                        alt={""}
+                        src={getGenderImage("MALE")}
+                        width={36}
+                        height={36}
+                        objectFit="cover"
+                        className="rounded-full bg-[#6C7392]"
+                    />
+                </div>
             )}
       <div
         onClick={() =>

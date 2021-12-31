@@ -85,7 +85,7 @@ const Post = ({ssrData}) => {
         <div
           onClick={() => setIsReactionActive(!isReactionActive)}
           className={
-            "flex md:hidden animate-pulse items-center justify-center w-[52px] h-[52px] bg-caak-primary rounded-full fixed p-[4px] z-[6] bottom-[74px] right-[14px]"
+            "flex md:hidden items-center justify-center w-[52px] h-[52px] bg-caak-primary rounded-full fixed p-[4px] z-[6] bottom-[74px] right-[14px]"
           }
         >
           <span className={"icon-fi-rs-rock-f text-white text-[30px]"} />

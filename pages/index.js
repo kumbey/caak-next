@@ -22,9 +22,10 @@ import toast, {Toaster} from "react-hot-toast";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import FeedBack from "../src/components/feedback";
 import useLocalStorage from "../src/hooks/useLocalStorage";
+import {useRouter} from "next/router";
 
 export async function getServerSideProps({req}) {
-  const { API, Auth } = withSSRContext({ req });
+  const {API, Auth} = withSSRContext({req});
   let user;
 
   try {
@@ -52,7 +53,9 @@ export async function getServerSideProps({req}) {
       for (let i = 0; i < role.length; i++) {
         if (role[i] === "NOT_MEMBER") {
           const resp = await API.graphql(graphqlOperation(listGroups));
-          const followed = getReturnData(resp).items.filter(item => !item.followed)
+          const followed = getReturnData(resp).items.filter(
+              (item) => !item.followed
+          );
           retData = [...retData, ...followed];
         } else {
           const resp = await API.graphql(
@@ -84,16 +87,16 @@ export async function getServerSideProps({req}) {
 }
 
 const Feed = ({ ssrData }) => {
-
-  const {lsGet} = useLocalStorage("session")
-  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost)
+  const {lsGet} = useLocalStorage("session");
+  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost);
+  const router = useRouter();
 
   const FeedLayout = useFeedLayout();
-  const { user, isLogged } = useUser();
+  const {user, isLogged} = useUser();
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const { setFeedSortType } = useWrapper();
+  const {setFeedSortType} = useWrapper();
   const [loading, setLoading] = useState(false);
-  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
 
   const subscriptions = {};
@@ -199,7 +202,6 @@ const Feed = ({ ssrData }) => {
 
     // eslint-disable-next-line
   }, [user]);
-
   useEffect(() => {
     setFeedSortType("DEFAULT");
   }, [setFeedSortType]);
@@ -212,62 +214,68 @@ const Feed = ({ ssrData }) => {
     if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
   };
   return (
-    <>
-      <Head>
-        <title>{Consts.siteMainTitle} - Сайхан мэдрэмжээ хуваалцъя!</title>
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
-        />
-      </Head>
-      {!isFeedbackOpen && <div onClick={() => {
-        setIsFeedbackOpen(!isFeedbackOpen)
-      }}
-                               className={"animate-pulse cursor-pointer flex items-center justify-center cContentGradient z-[10] w-[60px] h-[60px] fixed bottom-[78px] md:bottom-[24px] right-[4px] md:right-[24px] rounded-full"}>
-        <span className={"icon-fi-rs-desc text-white"}/>
-      </div>}
+      <>
+        <Head>
+          <title>{Consts.siteMainTitle} - Сайхан мэдрэмжээ хуваалцъя!</title>
+          <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+          />
+        </Head>
+        {router.asPath === "/" && !isFeedbackOpen && (
+            <div
+                onClick={() => {
+                  setIsFeedbackOpen(!isFeedbackOpen);
+                }}
+                className={
+                  "cursor-pointer flex items-center justify-center cContentGradient z-[10] w-[60px] h-[60px] fixed bottom-[78px] md:bottom-[24px] right-[4px] md:right-[24px] rounded-full"
+                }
+            >
+              <span className={"icon-fi-rs-desc text-white"}/>
+            </div>
+        )}
 
-      {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen}/>}
+        {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen}/>}
 
-      <div className={"relative"}>
-        <Toaster
-            toastOptions={{
-              className: "toastOptions",
-              duration: 5000,
-            }}
-        />
-        <div className={`px-0 w-full relative`}>
-          <div
-            className={`h-full flex ${
-              !isLogged ? "flex-col items-center" : "flex-row items-start"
-            }`}
-          >
-            <FeedLayout
-              adminModeratorGroups={ssrData.adminModerator}
-              myGroups={ssrData.myGroups}
+        <div className={"relative"}>
+          <Toaster
+              toastOptions={{
+                className: "toastOptions",
+                duration: 5000,
+              }}
+          />
+          <div className={`px-0 w-full relative`}>
+            <div
+                className={`h-full flex ${
+                    !isLogged ? "flex-col items-center" : "flex-row items-start"
+                }`}
+            >
+              <FeedLayout
+                  adminModeratorGroups={ssrData.adminModerator}
+                  myGroups={ssrData.myGroups}
               allGroups={ssrData.allGroups}
               buttonType={feedType}
               {...(isLogged ? { columns: 3 } : { columns: 2 })}
             >
-              <FeedSortButtons
-                feed
-                items={feedType}
-                initialSort={"DEFAULT"}
-                hide={isLogged && !isTablet}
-                containerClassname={"mb-[19px] justify-center"}
-                direction={"row"}
-              />
-              <AddPostCaakCard setIsOpen={setOpen} isOpen={open}/>
-              <InfinitScroller onNext={fetchPosts} loading={loading}>
-                {posts.map((data, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      video={data?.items?.items[0]?.file?.type?.startsWith(
-                        "video"
-                      )}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4"
+                <FeedSortButtons
+                    feed
+                    items={feedType}
+                    initialSort={"DEFAULT"}
+                    hide={isLogged && !isTablet}
+                    containerClassname={"mb-[19px] justify-center"}
+                    direction={"row"}
+                />
+                <AddPostCaakCard setIsOpen={setOpen} isOpen={open}/>
+                <InfinitScroller onNext={fetchPosts} loading={loading}>
+                  {posts.map((data, index) => {
+                    return (
+                        <Card
+                            key={index}
+                            video={data?.items?.items[0]?.file?.type?.startsWith(
+                                "video"
+                            )}
+                            post={data}
+                            className="ph:mb-4 sm:mb-4"
                       handleToast={handleToast}
                     />
                   );

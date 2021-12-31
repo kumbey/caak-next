@@ -2,7 +2,7 @@ import Image from "next/image";
 import Divider from "../divider";
 import {API, graphqlOperation} from "aws-amplify";
 import {getGroupCard} from "../../graphql-custom/group/queries";
-import {extractDate, generateFileUrl, getReturnData,} from "../../utility/Util";
+import {extractDate, generateFileUrl, getGenderImage, getReturnData,} from "../../utility/Util";
 import {useEffect, useState} from "react";
 import Link from "next/link";
 import {useUser} from "../../context/userContext";
@@ -102,7 +102,7 @@ const GroupInfoCard = ({groupId, containerClassname}) => {
       <div className={"h-[34px] w-full relative"}>
         <Image
           alt={"group cover"}
-          src={generateFileUrl(group.cover)}
+          src={group.profile ? generateFileUrl(group.cover) : getGenderImage("default")}
           layout={"fill"}
           objectFit={"cover"}
           className={"rounded-t-square"}
@@ -119,7 +119,7 @@ const GroupInfoCard = ({groupId, containerClassname}) => {
               <Image
                 quality={100}
                 alt={"profile picture"}
-                src={generateFileUrl(group.profile)}
+                src={group.profile ? generateFileUrl(group.profile) : getGenderImage("default")}
                 objectFit={"cover"}
                 height={48}
                 width={48}

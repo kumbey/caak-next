@@ -33,9 +33,9 @@
     {
       "type": "ProjectLayer",
       "resourceName": "caaklayer001",
-      "env": "dev",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true
+      "isLatestVersionSelected": true,
+      "env": "prod"
     }
   ]
 }

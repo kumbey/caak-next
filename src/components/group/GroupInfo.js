@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Divider from "../divider";
-import { extractDate, getFileUrl, getGenderImage } from "../../utility/Util";
+import {extractDate, getFileUrl, getGenderImage} from "../../utility/Util";
 import Button from "../button";
 
 const GroupInfo = ({ groupData, totalMember }) => {
@@ -75,7 +75,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
         <div className="flex mt-[22px]">
           <div className="flex flex-col mr-[40px]">
             <p className="text-17px font-inter font-medium text-caak-generalblack">
-              2434
+              {groupData.aura}
             </p>
             <p className="text-14px text-caak-darkBlue">Аура</p>
           </div>

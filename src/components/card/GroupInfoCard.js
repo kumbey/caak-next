@@ -1,28 +1,21 @@
 import Image from "next/image";
 import Divider from "../divider";
-import { API, graphqlOperation } from "aws-amplify";
-import { getGroupCard } from "../../graphql-custom/group/queries";
-import {
-  extractDate,
-  generateFileUrl,
-  getReturnData,
-} from "../../utility/Util";
-import { useEffect, useState } from "react";
+import {API, graphqlOperation} from "aws-amplify";
+import {getGroupCard} from "../../graphql-custom/group/queries";
+import {extractDate, generateFileUrl, getReturnData,} from "../../utility/Util";
+import {useEffect, useState} from "react";
 import Link from "next/link";
-import { useUser } from "../../context/userContext";
-import {
-  createGroupUsers,
-  deleteGroupUsers,
-} from "../../graphql-custom/GroupUsers/mutation";
-import { useRouter } from "next/router";
+import {useUser} from "../../context/userContext";
+import {createGroupUsers, deleteGroupUsers,} from "../../graphql-custom/GroupUsers/mutation";
+import {useRouter} from "next/router";
 
-const GroupInfoCard = ({ groupId, containerClassname }) => {
+const GroupInfoCard = ({groupId, containerClassname}) => {
   const [group, setGroup] = useState({});
   const [isDataFetched, setIsDataFetched] = useState(true);
   const [loading, setLoading] = useState(false);
   const [forceRender, setForceRender] = useState(0);
 
-  const { isLogged, user } = useUser();
+  const {isLogged, user} = useUser();
   const router = useRouter();
 
   const followGroup = async () => {
@@ -173,7 +166,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
                 "text-[17px] text-caak-generalblack font-medium tracking-[0.26px] leading-[20px]"
               }
             >
-              853
+              {group.aura}
             </p>
             <p
               className={

@@ -1,33 +1,24 @@
 import FooterSidebar from "../../footer/FooterSidebar";
 import Image from "next/image";
 import SuggestedGroupsCard from "../../card/SuggestedGroupsCard/";
-import { useUser } from "../../../context/userContext";
+import {useUser} from "../../../context/userContext";
 import useMediaQuery from "../../navigation/useMeduaQuery";
 import GroupRules from "../../card/GroupRules";
 import Dropzone from "react-dropzone";
 import Button from "../../button";
-import {
-  getFileExt,
-  getFileName,
-  getFileUrl,
-  getGenderImage,
-  useClickOutSide,
-} from "../../../utility/Util";
-import { useCallback, useEffect, useState } from "react";
+import {getFileExt, getFileName, getFileUrl, getGenderImage, useClickOutSide,} from "../../../utility/Util";
+import {useCallback, useEffect, useState} from "react";
 import awsExports from "../../../aws-exports";
-import { ApiFileUpload } from "../../../utility/ApiHelper";
-import { API, graphqlOperation } from "aws-amplify";
-import { updateGroup } from "../../../graphql-custom/group/mutation";
-import { deleteFile } from "../../../graphql-custom/file/mutation";
+import {ApiFileUpload} from "../../../utility/ApiHelper";
+import {API, graphqlOperation} from "aws-amplify";
+import {updateGroup} from "../../../graphql-custom/group/mutation";
+import {deleteFile} from "../../../graphql-custom/file/mutation";
 
-import {
-  createGroupUsers,
-  deleteGroupUsers,
-} from "../../../graphql-custom/GroupUsers/mutation";
+import {createGroupUsers, deleteGroupUsers,} from "../../../graphql-custom/GroupUsers/mutation";
 import DropDown from "../../navigation/DropDown";
 import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import Loader from "../../loader";
 import GroupAdminsCard from "../../group/GroupAdminsCard";
 import Banner from "../../banner";
@@ -348,8 +339,8 @@ const GroupLayout = ({
                   </div>
                   <div className="flex md:flex-row flex-col">
                     <div className="flex mr-[22px] items-center">
-                      <span className={"icon-fi-rs-aura mr-1"} />
-                      <p className="text-sm">2434 Аура</p>
+                      <span className={"icon-fi-rs-aura mr-1"}/>
+                      <p className="text-sm">{groupData.aura ? groupData.aura : 0} Аура</p>
                     </div>
                     <div className="flex mr-[22px] items-center">
                       <span className={"icon-fi-rs-globe mr-1"} />

@@ -7,6 +7,7 @@ const post0004 = /* GraphQL */ `
     description
     commentType
     owned
+    f_text
     status
       status_history {
           items {
@@ -87,7 +88,7 @@ const post0004 = /* GraphQL */ `
       views
     }
     reacted
-    items {
+     items(filter: {isEmbed: {attributeExists: false}}) {
       items {
         user_id
         post_id

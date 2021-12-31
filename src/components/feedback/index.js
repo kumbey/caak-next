@@ -7,20 +7,20 @@ import smileHeart from "/public/assets/images/feedback/smileHeart.svg";
 import Image from "next/image";
 import Input from "../input";
 import Button from "../button";
-import { useState } from "react";
-import { API } from "aws-amplify";
-import { createFeedBack } from "../../graphql-custom/feedback/mutations";
-import { useUser } from "../../context/userContext";
+import {useState} from "react";
+import {API} from "aws-amplify";
+import {createFeedBack} from "../../graphql-custom/feedback/mutations";
+import {useUser} from "../../context/userContext";
 
-const FeedBack = ({ setIsOpen }) => {
+const FeedBack = ({setIsOpen}) => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const [star, setStar] = useState(4);
-  const { isLogged } = useUser();
+  const {isLogged} = useUser();
 
   const emojis = [
-    { id: 0, emoji: dead },
-    { id: 1, emoji: confusedEmoji },
+    {id: 0, emoji: dead},
+    {id: 1, emoji: confusedEmoji},
     { id: 2, emoji: smile },
     { id: 3, emoji: wink },
     { id: 4, emoji: smileHeart },
@@ -46,7 +46,7 @@ const FeedBack = ({ setIsOpen }) => {
   return (
     <div
       className={
-        "feedBack flex flex-col z-[2] fixed bottom-[78px] md:bottom-[24px] right-[24px] w-[321px] p-[25px]"
+        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[24px] right-[24px] w-[321px] p-[25px]"
       }
     >
       <div

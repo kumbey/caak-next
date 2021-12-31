@@ -217,17 +217,25 @@ const Post = ({ssrData}) => {
                 {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
               </p>
               {post.status === "ARCHIVED" &&
-                post.status_history.items?.length > 0 && (
+              post.status_history.items?.length > 0 && (
                   <p className={"text-caak-scriptink"}>
                     Шалтгаан: {post.status_history.items[0].description}
                   </p>
-                )}
+              )}
+              {post.description && <p
+                  className={
+                    "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                  }
+              >
+                {post.description}
+              </p>}
+
             </div>
 
             {post.items.items.length > 1 && (
               <div
                 className={
-                  "relative h-[444px] w-full pt-[4px] mb-[20px] md:mb-[40px]"
+                  "relative h-[444px] w-full pt-[4px] mb-[13px]"
                 }
               >
                 {post.items.items[0].file.type.startsWith("video") ? (
@@ -276,23 +284,23 @@ const Post = ({ssrData}) => {
                     post.status === "CONFIRMED" ? "" : "rounded-square"
                 } border-b border-caak-titaniumwhite`}
             >
-              <p
-                  className={
-                    "text-[16px] mb-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
-                  }
-              >
-                {post.description}
-              </p>
+              {/*<p*/}
+              {/*    className={*/}
+              {/*      "text-[16px] mb-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"*/}
+              {/*    }*/}
+              {/*>*/}
+              {/*  {post.description}*/}
+              {/*</p>*/}
               {post.items.items.map((item, index) => {
                 if (post.items.items.length === 1) {
                   return (
-                    <ViewPostBlogItem
-                      // singleItem
-                      key={index}
-                      index={index}
-                      postId={post.id}
-                      postItem={item}
-                    />
+                      <ViewPostBlogItem
+                          // singleItem
+                          key={index}
+                          index={index}
+                          postId={post.id}
+                          postItem={item}
+                      />
                   );
                 } else {
                   if (index > 0)

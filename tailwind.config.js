@@ -1,6 +1,6 @@
 module.exports = {
-  mode: 'jit',
-  purge: ["./src/**/*.{js,jsx}", './pages/**/*.{js,jsx}'],
+  mode: "jit",
+  purge: ["./src/**/*.{js,jsx}", "./pages/**/*.{js,jsx}"],
   darkMode: "class", // or 'media' or 'class'
   important: true,
   theme: {
@@ -29,8 +29,10 @@ module.exports = {
       },
       boxShadow: {
         dropdown: "0 3px 20px rgba(0, 0, 0, 0.25)",
+        profileCamera: "0 3px 6px rgba(0, 0, 0, 0.29)",
         card: "0px 1px 2px rgba(0, 0, 0, 0.1)",
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
+        searchInput: "0px 5px 6px rgba(0, 0, 0, 0.12)",
       },
       screens: {
         xs: { max: "360px" },
@@ -48,8 +50,8 @@ module.exports = {
       },
       colors: {
         caak: {
-          primary: "#f64900",
-          primaryHover: "#F65A60",
+          primary: "#FF6600",
+          primaryHover: "#FF8939",
           bleachedsilk: "#F2F2F2",
           aleutian: "#9A9FB4",
           liquidnitrogen: "#F3F3F4",
@@ -58,6 +60,7 @@ module.exports = {
           upscale: "#A8AEC1",
           darkBlue: "#6C7392",
           extraBlack: "#0D1026",
+          "extraBlack-hover": "#161b3f",
           blue: "#4B587C",
           2: "rgba(0, 0, 0, 0.15)",
           3: "rgba(0, 0, 0, 0.1)",
@@ -89,6 +92,36 @@ module.exports = {
           peachbreeze: "#FEECE5",
           washme: "#fafafc",
           absoluteapricot: "#ff963c",
+          icingrose: "#F5EDE7",
+          doctor: "#F9F9F9",
+          carbonfootprint: "#7A7F8A",
+          lynxwhite: "#F7F7F7",
+          aliceblue: "#eff7fe",
+          uclagold: "#FDB400",
+          flashoforange: "#FDA900",
+          fieryflamingo: "#FB6B7C",
+          herablue: "#737EE6",
+          bluerhapsody: "#3B4555",
+          cherenkov: "#24B9F8",
+          paperwhite: "#EFEFF2",
+          pinkmirage: "#F4EEEA",
+          lightmaidensblush: "#F5DDCE",
+          cardinal: "#BE1E39",
+          extraLight: "#F2F2F3",
+          emptiness: "#FCFCFC",
+          placeboblue: "#EDF5FE",
+          sweetfrosting: "#FFF7E5",
+          cookiedough: "#AC6D00",
+          errigalwhite: "#F0F1F4",
+          unicornsilver: "#E8E8E8",
+          scriptink: "#5D636B",
+          retroblue: "#256BEE",
+          macarooncream: "#FFE8D6",
+          carbon: {
+            DEFAULT: "#333333",
+            hover: "#4D4D4D",
+          },
+          nocturnal: "#777D85",
         },
         darkblue: {
           DEFAULT: "#6C7392",
@@ -128,6 +161,8 @@ module.exports = {
       },
       fontFamily: {
         inter: ["Inter"],
+        roboto: ["Roboto"],
+        rubik: ["Rubik"],
       },
       spacing: {
         "px-2": "2px",
@@ -142,6 +177,8 @@ module.exports = {
         "px-45": "45px",
         "px-154": "154px",
         "px-13px": "13px",
+        "px-280": "280px",
+        "px-260": "260px",
         c6: "15px",
         b5: "16px",
         b4: "17px",
@@ -166,6 +203,7 @@ module.exports = {
         c15: "55px",
         c20: "68px",
         c60: "60px",
+        c62: "62px",
         c7: "70px",
         c33: "72px",
         c29: "78px",
@@ -200,7 +238,12 @@ module.exports = {
     },
   },
   variants: {
-    extend: { placeholderColor: ["hover"], opacity: ["group-hover"] },
+    extend: {
+      placeholderColor: ["hover"],
+      opacity: ["group-hover"],
+      backdropBrightness: ["hover"],
+      backdropFilter: ["hover"],
+    },
   },
   plugins: [require("@tailwindcss/forms")],
 };

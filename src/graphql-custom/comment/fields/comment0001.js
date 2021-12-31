@@ -2,13 +2,18 @@ const comment0001 = /* GraphQL */ `
   {
     id
     post_item_id
+    parent_id
+    post_id
     comment
     createdAt
+    reacted
+    type
     totals {
       reactions
     }
     user {
       firstname
+      gender
       id
       followed
       aura
@@ -33,4 +38,4 @@ const comment0001 = /* GraphQL */ `
   }
 `;
 
-export default comment0001
+export default comment0001;

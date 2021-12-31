@@ -1,19 +1,11 @@
 {
-  "lambdaLayers": [
-    {
-      "type": "ProjectLayer",
-      "resourceName": "caakmnlayerAPI",
-      "env": "devs",
-      "version": "Always choose latest version",
-      "isLatestVersionSelected": true
-    }
-  ],
   "permissions": {
     "api": {
-      "caakmn": [
-        "Query",
-        "Mutation",
-        "Subscription"
+      "caak": [
+        "create",
+        "read",
+        "update",
+        "delete"
       ]
     },
     "storage": {
@@ -36,5 +28,14 @@
         "delete"
       ]
     }
-  }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "caaklayer001",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true,
+      "env": "dev"
+    }
+  ]
 }

@@ -1,7 +1,30 @@
 {
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "caaklayer001",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true,
+      "env": "dev"
+    }
+  ],
   "permissions": {
+    "api": {
+      "caak": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
     "storage": {
       "FollowedUsers:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "SavedPost:@model(appsync)": [
         "create",
         "read",
         "update",
@@ -20,14 +43,5 @@
         "delete"
       ]
     }
-  },
-  "lambdaLayers": [
-    {
-      "type": "ProjectLayer",
-      "resourceName": "caakmnlayerAPI",
-      "env": "devs",
-      "version": "Always choose latest version",
-      "isLatestVersionSelected": true
-    }
-  ]
+  }
 }

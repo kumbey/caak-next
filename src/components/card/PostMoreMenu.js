@@ -1,5 +1,4 @@
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../utility/Util";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Consts from "../../utility/Consts";
@@ -10,11 +9,21 @@ import {
 import { useEffect, useState } from "react";
 import { getGroupFollowed } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
+import { useRouter } from "next/router";
+import {
+  createSavedPost,
+  deleteSavedPost,
+} from "../../graphql-custom/post/mutation";
 
-export default function PostMoreMenu({ postUser, postId, groupId }) {
-  const { user } = useUser();
-  const history = useHistory();
-  const location = useLocation();
+export default function PostMoreMenu({
+  postUser,
+  post,
+  groupId,
+  handleToast,
+  setIsOpen,
+}) {
+  const { user, isLogged } = useUser();
+  const router = useRouter();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -22,9 +31,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
     setLoading(true);
     const resp = await API.graphql({
       query: getGroupFollowed,
-      authMode: `${
-        checkUser(user) ? Consts.loggedUserAuth : Consts.publicUserAuth
-      }`,
+      authMode: `${isLogged ? Consts.loggedUserAuth : Consts.publicUserAuth}`,
       variables: {
         id: groupId,
       },
@@ -38,80 +45,150 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
     // eslint-disable-next-line
   }, []);
 
+  const savePost = async () => {
+    await API.graphql(
+      graphqlOperation(createSavedPost, {
+        input: {
+          post_id: post.id,
+          user_id: user.id,
+          id: `${post.id}#${user.id}`,
+        },
+      })
+    );
+    post.isSaved = true;
+    handleToast({ param: "saved" });
+  };
+
+  const unSavePost = async () => {
+    await API.graphql(
+      graphqlOperation(deleteSavedPost, {
+        input: {
+          id: `${post.id}#${user.id}`,
+        },
+      })
+    );
+    post.isSaved = false;
+    handleToast({ param: "unSaved" });
+  };
+
   const joinGroup = async () => {
     await API.graphql(
       graphqlOperation(createGroupUsers, {
         input: {
           group_id: groupId,
-          user_id: user.sysUser.id,
+          user_id: user.id,
+          id: `${groupId}#${user.id}`,
           role: "MEMBER",
         },
       })
     );
     setGroupFollowed(true);
+    handleToast({ param: "follow" });
   };
 
   const leaveGroup = async () => {
     await API.graphql(
       graphqlOperation(deleteGroupUsers, {
-        input: { group_id: groupId, user_id: user.sysUser.id },
+        input: { id: `${groupId}#${user.id}` },
       })
     );
     setGroupFollowed(false);
+    handleToast({ param: "unfollow" });
   };
 
   return !loading ? (
     <div className={"dropdown-item-wrapper"}>
-      <div
-        onClick={() =>
-          !checkUser(user)
-            ? history.push({
-                pathname: `/login`,
-                state: { background: location },
-              })
-            : groupFollowed
-            ? leaveGroup()
-            : joinGroup()
-        }
-        className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
-      >
-        <span className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
-          {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
-        </p>
-      </div>
-      {checkUser(user) && postUser.id === user.sysUser.id && (
+      {!groupFollowed && (
         <div
-          className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>
-            history.push({
-              pathname: `/post/edit/${postId}`,
-              state: { background: location },
-            })
+            !isLogged
+              ? router.push(
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      signInUp: "signIn",
+                      isModal: true,
+                    },
+                  },
+                  `/signInUp/signIn`,
+                  { shallow: true }
+                )
+              : groupFollowed
+              ? leaveGroup()
+              : joinGroup()
           }
+          className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
         >
-          <span className={"icon-fi-rs-pencil mr-px-12 w-c1  text-16px"} />
-          <p className="text-14px text-caak-extraBlack font-roboto">
-            Постыг засах
+          <span
+            className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"}
+          />
+          <p className="text-14px text-caak-extraBlack">
+            {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
           </p>
         </div>
       )}
 
-      <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-        <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  w-c1 text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
-          Хадгалах
-        </p>
-      </div>
-      <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+      {isLogged && postUser.id === user.id && (
+        <div
+          className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          onClick={() =>
+            router.push({
+              pathname: `/post/edit/${post.id}`,
+            })
+          }
+        >
+          <span className={"icon-fi-rs-pencil mr-px-12 w-c1  text-16px"} />
+          <p className="text-14px text-caak-extraBlack">Постыг засах</p>
+        </div>
+      )}
+
+      {isLogged &&
+        postUser.id !== user.id &&
+        (post.isSaved ? (
+          <div
+            onClick={() => unSavePost()}
+            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          >
+            <span
+              className={"icon-fi-rs-bookmark-f mr-px-12 w-c1  text-16px"}
+            />
+            <p className="text-14px text-caak-extraBlack">Хадгалагдсан</p>
+          </div>
+        ) : (
+          <div
+            onClick={() => savePost()}
+            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          >
+            <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  text-16px"} />
+            <p className="text-14px text-caak-extraBlack">Хадгалах</p>
+          </div>
+        ))}
+      <div
+        onClick={() => {
+          isLogged
+            ? setIsOpen(true)
+            : router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    signInUp: "signIn",
+                    isModal: true,
+                  },
+                },
+                `/signInUp/signIn`,
+                { shallow: true }
+              );
+        }}
+        className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+      >
         <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
-          Репорт
-        </p>
+        <p className="text-14px text-caak-extraBlack">Репорт</p>
       </div>
       {/* <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-hide mr-px-12 w-c1  text-16px"} />
-        <p className="text-14px text-caak-extraBlack font-roboto">
+        <p className="text-14px text-caak-extraBlack">
           Дахин харагдуулахгүй
         </p>
       </div> */}

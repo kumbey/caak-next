@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.4\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,17 +16,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "apicaakmnGraphQLAPIIdOutput": {
+    "apicaakGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apicaakmnGraphQLAPIIdOutput"
+      "Default": "apicaakGraphQLAPIIdOutput"
     },
-    "apicaakmnGraphQLAPIEndpointOutput": {
+    "apicaakGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "apicaakmnGraphQLAPIEndpointOutput"
+      "Default": "apicaakGraphQLAPIEndpointOutput"
     },
-    "functioncaakmnlayerAPIArn": {
+    "functioncaaklayer001Arn": {
       "Type": "String",
-      "Default": "functioncaakmnlayerAPIArn"
+      "Default": "functioncaaklayer001Arn"
     }
   },
   "Conditions": {
@@ -82,12 +82,18 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAKMN_USERTOTALTABLE_NAME": {
+            "API_CAAK_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicaakGraphQLAPIIdOutput"
+            },
+            "API_CAAK_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apicaakGraphQLAPIEndpointOutput"
+            },
+            "API_CAAK_USERTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
               }
             },
-            "API_CAAKMN_USERTOTALTABLE_ARN": {
+            "API_CAAK_USERTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -102,21 +108,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicaakmnGraphQLAPIIdOutput"
-            },
-            "API_CAAKMN_GROUPTOTALTABLE_NAME": {
+            "API_CAAK_GROUPTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
               }
             },
-            "API_CAAKMN_GROUPTOTALTABLE_ARN": {
+            "API_CAAK_GROUPTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -131,18 +134,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_NOTIFICATIONTABLE_NAME": {
+            "API_CAAK_NOTIFICATIONTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
               }
             },
-            "API_CAAKMN_NOTIFICATIONTABLE_ARN": {
+            "API_CAAK_NOTIFICATIONTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -157,14 +160,11 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
                     }
                   }
                 ]
               ]
-            },
-            "API_CAAKMN_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apicaakmnGraphQLAPIEndpointOutput"
             }
           }
         },
@@ -177,7 +177,7 @@
         "Runtime": "nodejs14.x",
         "Layers": [
           {
-            "Ref": "functioncaakmnlayerAPIArn"
+            "Ref": "functioncaaklayer001Arn"
           }
         ],
         "Timeout": 25
@@ -189,12 +189,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakmnLambdaRolef117d4fd",
+            "caakLambdaRole3418bb73",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakmnLambdaRolef117d4fd",
+                  "caakLambdaRole3418bb73",
                   "-",
                   {
                     "Ref": "env"
@@ -265,6 +265,264 @@
         }
       }
     },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
     "LambdaTriggerPolicyNotification": {
       "DependsOn": [
         "LambdaExecutionRole"
@@ -290,7 +548,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:StreamArn"
                 }
               }
             }
@@ -309,7 +567,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -319,279 +577,6 @@
           ]
         },
         "StartingPosition": "LATEST"
-      }
-    },
-    "AmplifyResourcesPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-lambda-execution-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "appsync:GraphQL"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apicaakmnGraphQLAPIIdOutput"
-                      },
-                      "/types/Query/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apicaakmnGraphQLAPIIdOutput"
-                      },
-                      "/types/Mutation/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apicaakmnGraphQLAPIIdOutput"
-                      },
-                      "/types/Subscription/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:Update*",
-                "dynamodb:RestoreTable*",
-                "dynamodb:Delete*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:Update*",
-                "dynamodb:RestoreTable*",
-                "dynamodb:Delete*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:Update*",
-                "dynamodb:RestoreTable*",
-                "dynamodb:Delete*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ]
-        }
       }
     }
   },

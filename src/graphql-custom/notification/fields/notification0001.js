@@ -16,6 +16,7 @@ const notification0001 = /* GraphQL */ `{
         about
         nickname
         pic ${file0001}
+        gender
     }
 }`;
 

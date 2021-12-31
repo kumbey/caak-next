@@ -1,7 +1,7 @@
 const https = require('https');
 const AWS = require("aws-sdk");
 const urlParse = require("url").URL;
-const appsyncUrl = process.env.API_CAAKMN_GRAPHQLAPIENDPOINTOUTPUT;
+const appsyncUrl = process.env.API_CAAK_GRAPHQLAPIENDPOINTOUTPUT;
 const region = process.env.REGION;
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
 

@@ -6,97 +6,105 @@
 @import "./components/buttons.css";
 @import "./components/inputs.css";
 @import "./components/dropdown.css";
-
+@import "./components/auraCard.css";
 
 @import "icon-fonts.css";
 @import "./Tooltip.css";
 
 @layer base {
-  html {
-    @apply font-inter;
-  }
+    html {
+        @apply font-inter;
+    }
 
-  body {
-    @apply bg-caak-bleachedsilk;
-  }
+    body {
+        @apply bg-caak-doctor bg-caak-liquidnitrogen;
+        overflow: hidden;
+    }
 
-  ::-webkit-scrollbar {
-    width: 0.6em;
-  }
+    .caak-main-wrapper {
+        overflow: auto;
+        padding-top: var(--topBarSize);
+        height: 100vh;
+        min-height: 100vh;
+    }
 
-  ::-webkit-scrollbar,
-  ::-webkit-scrollbar-thumb {
-    overflow: visible;
-    border-radius: 4px;
-  }
+    ::-webkit-scrollbar {
+        width: 0.6em;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-  }
+    ::-webkit-scrollbar,
+    ::-webkit-scrollbar-thumb {
+        overflow: visible;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+    }
 }
 /*Custom sizing class*/
 @layer utilities {
-  .h-22px {
-    height: 22px;
-  }
+    .h-22px {
+        height: 22px;
+    }
 
-  .h-34px {
-    height: 34px;
-  }
+    .h-34px {
+        height: 34px;
+    }
 
-  .w-22px {
-    width: 22px;
-  }
+    .w-22px {
+        width: 22px;
+    }
 
-  .w-34px {
-    width: 34px;
-  }
+    .w-34px {
+        width: 34px;
+    }
 
-  .w-15px {
-    width: 15px;
-  }
+    .w-15px {
+        width: 15px;
+    }
 
-  .h-15px {
-    height: 15px;
-  }
+    .h-15px {
+        height: 15px;
+    }
 
-  .w-36px {
-    width: 36px;
-  }
+    .w-36px {
+        width: 36px;
+    }
 
-  .h-36px {
-    height: 36px;
-  }
+    .h-36px {
+        height: 36px;
+    }
 
-  .w-18px {
-    width: 18px;
-  }
+    .w-18px {
+        width: 18px;
+    }
 
-  .h-18px {
-    height: 18px;
-  }
+    .h-18px {
+        height: 18px;
+    }
 
-  .w-45px {
-    width: 45px;
-  }
+    .w-45px {
+        width: 45px;
+    }
 
-  .h-45px {
-    height: 45px;
-  }
+    .h-45px {
+        height: 45px;
+    }
 
-  .h-20px {
-    height: 20px;
-  }
+    .h-20px {
+        height: 20px;
+    }
 
-  .w-20px {
-    width: 20px;
-  }
+    .w-20px {
+        width: 20px;
+    }
 
-  .w-13px {
-    width: 13px;
-  }
+    .w-13px {
+        width: 13px;
+    }
 
-  .h-13px {
-    height: 13px;
-  }
+    .h-13px {
+        height: 13px;
+    }
 }

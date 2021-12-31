@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
-const GroupUsers = DB(process.env.API_CAAKMN_GROUPUSERSTABLE_NAME, docClient)
+const GroupUsers = DB(process.env.API_CAAK_GROUPUSERSTABLE_NAME, docClient)
 
 async function roleOnGroup(ctx){
     try{
@@ -14,8 +14,7 @@ async function roleOnGroup(ctx){
         }
 
         const ids = {
-            user_id: user_id,
-            group_id: source.id
+            id: `${source.id}#${user_id}`
         }
 
         let resp = await GroupUsers.get(ids)

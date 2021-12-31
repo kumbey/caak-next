@@ -10,9 +10,9 @@ const PostItemsTotal = require("../db/PostItemsTotal")
 const UserTotal = require("../db/UserTotal")
 const PostTotal = require("../db/PostTotal")
 const NotificationDB = require("../db/Notification")
-const PostDB = DB(process.env.API_CAAKMN_POSTTABLE_NAME, docClient)
-const PostItems = DB(process.env.API_CAAKMN_POSTITEMSTABLE_NAME, docClient)
-const CommentDB = DB(process.env.API_CAAKMN_COMMENTTABLE_NAME, docClient)
+const PostDB = DB(process.env.API_CAAK_POSTTABLE_NAME, docClient)
+const PostItems = DB(process.env.API_CAAK_POSTITEMSTABLE_NAME, docClient)
+const CommentDB = DB(process.env.API_CAAK_COMMENTTABLE_NAME, docClient)
 
 async function insert(record){
     try{
@@ -64,9 +64,13 @@ async function changeReactions(newImg, increase){
 
         if(newImg.on_to === "POST"){
 
-            const post = await PostDB.get(newImg.id)
+            const post = await PostDB.get(newImg.item_id)
 
-            await PostTotal.modify(post.id , items)
+            await PostTotal.modify(post.id , [...items, {
+                field: "total_reactions",
+                increase: increase,
+                count: 1
+            }])
             items[0].field = "post_reactions"
             await UserTotal.modify(post.user_id, items)
             
@@ -77,13 +81,18 @@ async function changeReactions(newImg, increase){
 
         }else if(newImg.on_to === "POST_ITEM"){
 
-            const postItem = await PostItems.get(newImg.id)
+            const postItem = await PostItems.get(newImg.item_id)
             const post = await PostDB.get(postItem.post_id)
 
             await PostItemsTotal.modify(postItem.id, items)
-            await PostTotal.modify(post.id , items)
             items[0].field = "post_items_reactions"
             await UserTotal.modify(post.user_id, items)
+
+            await PostTotal.modify(post.id , [{
+                field: "total_reactions",
+                increase: increase,
+                count: 1
+            }])
 
             react.item_id = postItem.id
             react.action = `REACTION_${newImg.on_to}`
@@ -92,10 +101,10 @@ async function changeReactions(newImg, increase){
 
         }else if(newImg.on_to === "COMMENT"){
             
-            let comment = await CommentDB.get(newImg.id)
+            let comment = await CommentDB.get(newImg.item_id)
             await CommentTotal.modify(comment.id, items)
             items[0].field = "comment_reactions"
-            await UserTotal.modify(comment.user_id)
+            await UserTotal.modify(comment.user_id, items)
 
             react.item_id = comment.id
             react.action = `REACTION_${newImg.on_to}`

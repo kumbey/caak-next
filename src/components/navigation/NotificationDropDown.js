@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Notification from "./Notification";
-import { createPortal } from "react-dom";
 import { useUser } from "../../context/userContext";
-import { checkUser, getReturnData } from "../../utility/Util";
+import { getReturnData } from "../../utility/Util";
 import { useListPager } from "../../utility/ApiHelper";
 import {
   getNotification,
@@ -11,28 +10,40 @@ import {
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
-import { methodNoitification, updateNotification } from "../../graphql-custom/notification/mutation";
+import {
+  methodNoitification,
+  updateNotification,
+} from "../../graphql-custom/notification/mutation";
 import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
 import useInfiniteScroll from "../../hooks/useFetch";
+import { useRouter } from "next/router";
+import { isLogged } from "../../utility/Authenty";
+import { getPost } from "../../graphql-custom/post/queries";
+import useMediaQuery from "./useMeduaQuery";
+import useScrollBlock from "../../hooks/useScrollBlock";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
+import emptyNotificationImage from "../../../public/assets/images/Empty-Notification.svg";
 
 const NotificationDropDown = ({ isOpen }) => {
-  const [domReady, setDomReady] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState();
+  const [blockScroll, allowScroll] = useScrollBlock();
+
   const subscriptions = {};
-  const history = useHistory();
-  const location = useLocation();
+  const history = useRouter();
+  // const location = useLocation();
   // let localNotifications = notifications;
   const notificationRef = useRef();
 
   const [nextNotification] = useListPager({
     query: listNotificationByUser,
     variables: {
-      to: user.sysUser.id,
+      to: user.id,
       sortDirection: "DESC",
       limit: 20,
     },
@@ -76,10 +87,13 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   const handleAllNotifications = () => {
-
-    try{
-
-      API.graphql(graphqlOperation(methodNoitification, {method: "SeenALL", user_id: user.sysUser.id}))
+    try {
+      API.graphql(
+        graphqlOperation(methodNoitification, {
+          method: "SeenALL",
+          user_id: user.id,
+        })
+      );
 
       notifications.map((item, index) => {
         if (item.seen === "FALSE") {
@@ -87,15 +101,14 @@ const NotificationDropDown = ({ isOpen }) => {
         }
         return null;
       });
-    }catch(ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
     }
   };
 
   const handleNotificationClick = async (index) => {
     try {
       const item = notifications[index];
-
       if (item.seen === "FALSE") {
         await API.graphql(
           graphqlOperation(updateNotification, {
@@ -113,17 +126,14 @@ const NotificationDropDown = ({ isOpen }) => {
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
         });
       } else if (item.action === "POST_PENDING") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
         });
       } else if (item.action === "POST_ARCHIVED") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
         let resp = await API.graphql(
@@ -132,9 +142,8 @@ const NotificationDropDown = ({ isOpen }) => {
         resp = getReturnData(resp);
         history.push({
           pathname: `/post/view/${resp.post_id}`,
-          state: { background: location },
         });
-      } else if (item.action === "COMMENT_WRITED") {
+      } else if (item.action === "POST_ITEM_COMMENT_WRITED") {
         let resp = await API.graphql(
           graphqlOperation(getComment, { id: item.item_id })
         );
@@ -144,9 +153,24 @@ const NotificationDropDown = ({ isOpen }) => {
         );
         resp = getReturnData(resp);
         history.push({
-          pathname: `/post/view/${resp.post_id}`,
-          state: { background: location },
+          pathname: `/post/view/${resp.post_id}/${resp.id}`,
         });
+      } else if (item.action === "POST_COMMENT_WRITED") {
+        let resp = await API.graphql(
+          graphqlOperation(getComment, { id: item.item_id })
+        );
+        resp = getReturnData(resp);
+        resp = await API.graphql(
+          graphqlOperation(getPost, { id: resp.post_id })
+        );
+        resp = getReturnData(resp);
+        history.push(
+          {
+            pathname: `/post/view/${resp.id}`,
+            query: { jumpToComment: item.item_id },
+          },
+          `/post/view/${resp.id}`
+        );
       } else if (item.action === "USER_FOLLOWED") {
         history.push({
           pathname: `/user/${item.item_id}/profile`,
@@ -167,7 +191,7 @@ const NotificationDropDown = ({ isOpen }) => {
       query: onNoficationAdded,
       variables: {
         section: "USER",
-        to: user.sysUser.id,
+        to: user.id,
       },
     }).subscribe({
       next: (data) => {
@@ -181,15 +205,15 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   useEffect(() => {
-    if (domReady && checkUser(user)) {
+    if (isLogged) {
       fetchNotifications(notifications, setNotifications);
       setNotificationScroll(fetchNotifications);
     }
     // eslint-disable-next-line
-  }, [domReady]);
+  }, []);
 
   useEffect(() => {
-    if (checkUser(user)) {
+    if (isLogged) {
       subscrip();
     }
 
@@ -200,7 +224,7 @@ const NotificationDropDown = ({ isOpen }) => {
       });
     };
     // eslint-disable-next-line
-  }, [user]);
+  }, [isLogged]);
 
   useEffect(() => {
     if (subscripNotifcation) {
@@ -209,48 +233,80 @@ const NotificationDropDown = ({ isOpen }) => {
     // eslint-disable-next-line
   }, [subscripNotifcation]);
 
-  useEffect(() => {
-    setDomReady(true);
-  }, []);
-
+  useUpdateEffect(() => {
+    if (isOpen && isTablet) {
+      blockScroll();
+    } else {
+      allowScroll();
+    }
+  }, [isOpen, isTablet]);
   return (
-    domReady &&
-    createPortal(
+    <div
+      id={"notificationDropdown"}
+      // onClick={(e) => e.stopPropagation()}
+      className={`${
+        !isOpen && "hidden"
+      } notificationMobile dropdown right-0 md:-right-10 fixed md:absolute z-2 mt-[54px] md:z-50 top-0 w-full md:w-[384px] md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:my-2 flex flex-col bg-white cursor-auto  `}
+    >
       <div
-        id={"notificationDropdown"}
-        // onClick={(e) => e.stopPropagation()}
-        className={`${
-          !isOpen && "hidden"
-        } notificationMobile h-full dropdown overflow-y-scroll pb-c20 fixed z-2 mt-0 md:z-50 top-0 right-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
+        className={
+          "flex flex-row items-center justify-between w-full px-[14px] pb-2 pt-3 border-b border-t md:border-t-0"
+        }
       >
-        <div
+        <span
           className={
-            "flex flex-row items-center justify-between w-full px-5 pb-2 pt-3 border-b border-t md:border-t-0"
+            "text-caak-generalblack font-medium text-20px md:text-16px"
           }
         >
-          <span
+          Мэдэгдэл
+        </span>
+        <div className={"flex items-center justify-center"}>
+          <div className={"w-[24px] h-[24px] cursor-pointer"}>
+            <span
+              onClick={() => handleAllNotifications()}
+              className={
+                "icon-fi-rs-checkall text-caak-darkBlue  text-22px font-medium"
+              }
+            />
+          </div>
+          <div
             className={
-              "text-caak-generalblack font-medium text-20px md:text-16px"
+              "flex md:hidden ml-[10px] w-[24px] h-[24px] items-center justify-center bg-caak-titaniumwhite rounded-full"
             }
           >
-            Мэдэгдэл
-          </span>
-          <span
-            onClick={() => handleAllNotifications()}
-            className={
-              "text-caak-bleudefrance cursor-pointer text-14px font-medium"
-            }
-          >
-            Бүгдийг харсан
-          </span>
+            <span className={"icon-fi-rs-close text-[12px]"} />
+          </div>
         </div>
-        <div className={"notification_body flex flex-col bg-caak-washme p-0"}>
-          <span
-            className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
+      </div>
+      <div
+        className={
+          "notification_body rounded-b-square h-full overflow-y-scroll flex flex-col bg-caak-washme p-0"
+        }
+      >
+        {notifications.length === 0 ? (
+          <div
+            className={
+              "flex flex-col h-full w-full items-center justify-center"
+            }
           >
-            Шинэ
-          </span>
-          {notifications.map((item, index) => {
+            <div className={"w-[120.39px] h-[124px]"}>
+              <img
+                alt={""}
+                src={emptyNotificationImage.src}
+                className={"w-full h-full"}
+              />
+            </div>
+            <div className={"flex flex-col items-center mt-[14px]"}>
+              <p className={"text-caak-generalblack text-[17px]"}>
+                Таньд мэдэгдэл ирээгүй байна.
+              </p>
+              <p className={"text-caak-darkBlue text-[15px] mt-[8px]"}>
+                Өдрийг сайхан өнгөрүүлээрэй!
+              </p>
+            </div>
+          </div>
+        ) : (
+          notifications.map((item, index) => {
             return (
               <Notification
                 onClick={() => handleNotificationClick(index)}
@@ -258,20 +314,29 @@ const NotificationDropDown = ({ isOpen }) => {
                 item={item}
               />
             );
-          })}
-          {/* <span
+          })
+        )}
+        {/*{notifications.map((item, index) => {*/}
+        {/*  return (*/}
+        {/*    <Notification*/}
+        {/*      onClick={() => handleNotificationClick(index)}*/}
+        {/*      key={index}*/}
+        {/*      item={item}*/}
+        {/*    />*/}
+        {/*  );*/}
+        {/*})}*/}
+        {/* <span
             className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
           >
             Сүүлд ирсэн
           </span> */}
-          {/* <Notification type={"caak"} />
+        {/* <Notification type={"caak"} />
           <Notification type={"comment"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} /> */}
-        </div>
         <div
           ref={notificationRef}
           className={"flex justify-center items-center"}
@@ -282,9 +347,8 @@ const NotificationDropDown = ({ isOpen }) => {
             } bg-caak-primary `}
           />
         </div>
-      </div>,
-      document.getElementById("root")
-    )
+      </div>
+    </div>
   );
 };
 

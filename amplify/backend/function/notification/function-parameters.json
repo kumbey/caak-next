@@ -1,5 +1,13 @@
 {
   "permissions": {
+    "api": {
+      "caak": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
     "storage": {
       "Notification:@model(appsync)": [
         "create",
@@ -12,10 +20,10 @@
   "lambdaLayers": [
     {
       "type": "ProjectLayer",
-      "resourceName": "caakmnlayerAPI",
-      "env": "devs",
+      "resourceName": "caaklayer001",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true
+      "isLatestVersionSelected": true,
+      "env": "dev"
     }
   ]
 }

@@ -1,7 +1,7 @@
 /* Amplify Params - DO NOT EDIT
-	API_CAAKMN_GRAPHQLAPIIDOUTPUT
-	API_CAAKMN_USERTOTALTABLE_ARN
-	API_CAAKMN_USERTOTALTABLE_NAME
+	API_CAAK_GRAPHQLAPIIDOUTPUT
+	API_CAAK_USERTOTALTABLE_ARN
+	API_CAAK_USERTOTALTABLE_NAME
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
@@ -30,4 +30,3 @@ exports.handler = async (event) => {
         throw new Error("Error on Post lambda function", ex)
     } 
 };
-

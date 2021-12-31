@@ -30,7 +30,7 @@ export const menu_data = [
   },
   {
     name: "Тусламж",
-    href: "#",
+    href: "/help",
     icon: <span className={"icon-fi-rs-help text-18px w-5 h-5 mr-2"} />,
   },
   {

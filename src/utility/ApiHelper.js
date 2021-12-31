@@ -1,11 +1,11 @@
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Storage from "@aws-amplify/storage";
-import {useMemo} from "react";
-import {useUser} from "../context/userContext";
-import {createFile} from "../graphql-custom/file/mutation";
-import {checkUser} from "./Util";
-import {getUser} from "../graphql-custom/user/queries";
+import { useMemo } from "react";
+import { useUser } from "../context/userContext";
+import { createFile } from "../graphql-custom/file/mutation";
+import { checkUser } from "./Util";
+import { getUser } from "../graphql-custom/user/queries";
 
 /**
  * @param id input of user
@@ -23,10 +23,11 @@ export const getUserById = async ({ id, setUser, authMode }) => {
 
 export const ApiFileUpload = async (file) => {
   try {
-    let fileData = { ...file };
-    const fileObj = fileData.obj;
+    const fileData = { ...file };
+    let fileObj = fileData.obj;
     delete fileData["obj"];
     delete fileData["url"];
+
     if (!fileData.id) {
       let resp = await API.graphql(
         graphqlOperation(createFile, { input: fileData })
@@ -47,18 +48,22 @@ export const useListPager = (params) => {
   const { user } = useUser();
   let lastToken = null;
 
-  if(data.nextToken){
-    lastToken = data.nextToken
-  }
-
   let isFinished = false;
+
+  if (data.nextToken) {
+    lastToken = data.nextToken;
+  }else{
+    if(data.ssr){
+      isFinished = true
+    }
+  }
 
   async function list(qry, limit, items) {
     try {
       let resp = await API.graphql(qry);
       resp = resp.data;
-      let key = Object.keys(resp)[0];
-      let nextToken = resp[key].nextToken;
+      const key = Object.keys(resp)[0];
+      const nextToken = resp[key].nextToken;
 
       items = [...items, ...resp[key].items];
 

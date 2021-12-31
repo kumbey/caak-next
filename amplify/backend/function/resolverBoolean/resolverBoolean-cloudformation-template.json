@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.4\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,13 +16,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "apicaakmnGraphQLAPIIdOutput": {
+    "apicaakGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apicaakmnGraphQLAPIIdOutput"
+      "Default": "apicaakGraphQLAPIIdOutput"
     },
-    "functioncaakmnlayerAPIArn": {
+    "apicaakGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "functioncaakmnlayerAPIArn"
+      "Default": "apicaakGraphQLAPIEndpointOutput"
+    },
+    "functioncaaklayer001Arn": {
+      "Type": "String",
+      "Default": "functioncaaklayer001Arn"
     }
   },
   "Conditions": {
@@ -78,12 +82,18 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAKMN_FOLLOWEDUSERSTABLE_NAME": {
+            "API_CAAK_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicaakGraphQLAPIIdOutput"
+            },
+            "API_CAAK_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apicaakGraphQLAPIEndpointOutput"
+            },
+            "API_CAAK_FOLLOWEDUSERSTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
               }
             },
-            "API_CAAKMN_FOLLOWEDUSERSTABLE_ARN": {
+            "API_CAAK_FOLLOWEDUSERSTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -98,21 +108,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicaakmnGraphQLAPIIdOutput"
-            },
-            "API_CAAKMN_REACTIONSTABLE_NAME": {
+            "API_CAAK_REACTIONSTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
               }
             },
-            "API_CAAKMN_REACTIONSTABLE_ARN": {
+            "API_CAAK_REACTIONSTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -127,18 +134,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_GROUPUSERSTABLE_NAME": {
+            "API_CAAK_GROUPUSERSTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
               }
             },
-            "API_CAAKMN_GROUPUSERSTABLE_ARN": {
+            "API_CAAK_GROUPUSERSTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -153,7 +160,33 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_CAAK_SAVEDPOSTTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
+              }
+            },
+            "API_CAAK_SAVEDPOSTTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
                     }
                   }
                 ]
@@ -170,7 +203,7 @@
         "Runtime": "nodejs14.x",
         "Layers": [
           {
-            "Ref": "functioncaakmnlayerAPIArn"
+            "Ref": "functioncaaklayer001Arn"
           }
         ],
         "Timeout": 25
@@ -182,12 +215,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakmnLambdaRolef80b410a",
+            "caakLambdaRolea1d4a83f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakmnLambdaRolef80b410a",
+                  "caakLambdaRolea1d4a83f",
                   "-",
                   {
                     "Ref": "env"
@@ -276,6 +309,59 @@
             {
               "Effect": "Allow",
               "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "dynamodb:Put*",
                 "dynamodb:Create*",
                 "dynamodb:BatchWriteItem",
@@ -305,7 +391,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
                         }
                       }
                     ]
@@ -326,7 +412,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:Name"
                         }
                       },
                       "/index/*"
@@ -367,7 +453,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
                         }
                       }
                     ]
@@ -388,7 +474,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:SavedPostTable:Name"
                         }
                       },
                       "/index/*"
@@ -429,7 +515,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
                         }
                       }
                     ]
@@ -450,7 +536,69 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:ReactionsTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:Name"
                         }
                       },
                       "/index/*"

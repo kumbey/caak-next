@@ -20,7 +20,6 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
   }, []);
 
   useEffect(() => {
-    console.log(`${year} ${month} ${day}`);
     if (year && month && day) {
       onChange({
         target: {
@@ -29,7 +28,6 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
         },
       });
     }
-    console.log(day);
     // eslint-disable-next-line
   }, [year, month, day]);
 

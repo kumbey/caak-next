@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.4\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,17 +16,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "apicaakmnGraphQLAPIIdOutput": {
+    "apicaakGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apicaakmnGraphQLAPIIdOutput"
+      "Default": "apicaakGraphQLAPIIdOutput"
     },
-    "apicaakmnGraphQLAPIEndpointOutput": {
+    "apicaakGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "apicaakmnGraphQLAPIEndpointOutput"
+      "Default": "apicaakGraphQLAPIEndpointOutput"
     },
-    "functioncaakmnlayerAPIArn": {
+    "functioncaaklayer001Arn": {
       "Type": "String",
-      "Default": "functioncaakmnlayerAPIArn"
+      "Default": "functioncaaklayer001Arn"
     }
   },
   "Conditions": {
@@ -82,12 +82,18 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAKMN_USERTOTALTABLE_NAME": {
+            "API_CAAK_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicaakGraphQLAPIIdOutput"
+            },
+            "API_CAAK_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apicaakGraphQLAPIEndpointOutput"
+            },
+            "API_CAAK_USERTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
               }
             },
-            "API_CAAKMN_USERTOTALTABLE_ARN": {
+            "API_CAAK_USERTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -102,21 +108,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicaakmnGraphQLAPIIdOutput"
-            },
-            "API_CAAKMN_GROUPTOTALTABLE_NAME": {
+            "API_CAAK_GROUPTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
               }
             },
-            "API_CAAKMN_GROUPTOTALTABLE_ARN": {
+            "API_CAAK_GROUPTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -131,18 +134,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_USERNAMETABLE_NAME": {
+            "API_CAAK_POSTTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
               }
             },
-            "API_CAAKMN_USERNAMETABLE_ARN": {
+            "API_CAAK_POSTTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -157,18 +160,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_POSTTABLE_NAME": {
+            "API_CAAK_POSTITEMSTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
               }
             },
-            "API_CAAKMN_POSTTABLE_ARN": {
+            "API_CAAK_POSTITEMSTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -183,18 +186,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_POSTITEMSTABLE_NAME": {
+            "API_CAAK_POSTTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
               }
             },
-            "API_CAAKMN_POSTITEMSTABLE_ARN": {
+            "API_CAAK_POSTTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -209,18 +212,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_POSTTOTALTABLE_NAME": {
+            "API_CAAK_POSTITEMSTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
               }
             },
-            "API_CAAKMN_POSTTOTALTABLE_ARN": {
+            "API_CAAK_POSTITEMSTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -235,18 +238,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_POSTITEMSTOTALTABLE_NAME": {
+            "API_CAAK_COMMENTTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
               }
             },
-            "API_CAAKMN_POSTITEMSTOTALTABLE_ARN": {
+            "API_CAAK_COMMENTTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -261,18 +264,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_COMMENTTABLE_NAME": {
+            "API_CAAK_COMMENTTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
               }
             },
-            "API_CAAKMN_COMMENTTABLE_ARN": {
+            "API_CAAK_COMMENTTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -287,18 +290,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_COMMENTTOTALTABLE_NAME": {
+            "API_CAAK_GROUPUSERNAMETABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
               }
             },
-            "API_CAAKMN_COMMENTTOTALTABLE_ARN": {
+            "API_CAAK_GROUPUSERNAMETABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -313,18 +316,18 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_GROUPUSERNAMETABLE_NAME": {
+            "API_CAAK_NOTIFICATIONTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
               }
             },
-            "API_CAAKMN_GROUPUSERNAMETABLE_ARN": {
+            "API_CAAK_NOTIFICATIONTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -339,33 +342,7 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
-                    }
-                  }
-                ]
-              ]
-            },
-            "API_CAAKMN_NOTIFICATIONTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
-              }
-            },
-            "API_CAAKMN_NOTIFICATIONTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
                     }
                   }
                 ]
@@ -382,7 +359,7 @@
         "Runtime": "nodejs14.x",
         "Layers": [
           {
-            "Ref": "functioncaakmnlayerAPIArn"
+            "Ref": "functioncaaklayer001Arn"
           }
         ],
         "Timeout": 25
@@ -394,12 +371,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakmnLambdaRole71c146ee",
+            "caakLambdaRolec06c0078",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakmnLambdaRole71c146ee",
+                  "caakLambdaRolec06c0078",
                   "-",
                   {
                     "Ref": "env"
@@ -495,7 +472,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTable:StreamArn"
                 }
               }
             }
@@ -514,7 +491,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -551,7 +528,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:StreamArn"
                 }
               }
             }
@@ -570,7 +547,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:FollowedUsersTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -607,7 +584,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTable:StreamArn"
                 }
               }
             }
@@ -626,7 +603,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -663,7 +640,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTable:StreamArn"
                 }
               }
             }
@@ -682,7 +659,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -719,7 +696,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostViewsTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostViewsTable:StreamArn"
                 }
               }
             }
@@ -738,7 +715,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostViewsTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostViewsTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -775,7 +752,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostSharesTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostSharesTable:StreamArn"
                 }
               }
             }
@@ -794,7 +771,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostSharesTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostSharesTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -831,7 +808,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTable:StreamArn"
                 }
               }
             }
@@ -850,7 +827,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -887,7 +864,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:ReactionsTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:ReactionsTable:StreamArn"
                 }
               }
             }
@@ -906,7 +883,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:ReactionsTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:ReactionsTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -943,7 +920,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:StreamArn"
                 }
               }
             }
@@ -962,7 +939,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsersTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -999,7 +976,7 @@
               ],
               "Resource": {
                 "Fn::ImportValue": {
-                  "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTable:StreamArn"
+                  "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTable:StreamArn"
                 }
               }
             }
@@ -1018,7 +995,7 @@
         "Enabled": true,
         "EventSourceArn": {
           "Fn::ImportValue": {
-            "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTable:StreamArn"
+            "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTable:StreamArn"
           }
         },
         "FunctionName": {
@@ -1048,6 +1025,59 @@
             {
               "Effect": "Allow",
               "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "dynamodb:Put*",
                 "dynamodb:Create*",
                 "dynamodb:BatchWriteItem",
@@ -1077,7 +1107,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       }
                     ]
@@ -1098,7 +1128,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       },
                       "/index/*"
@@ -1139,7 +1169,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
                         }
                       }
                     ]
@@ -1160,7 +1190,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupTotalTable:Name"
                         }
                       },
                       "/index/*"
@@ -1201,7 +1231,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
                         }
                       }
                     ]
@@ -1222,7 +1252,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
                         }
                       },
                       "/index/*"
@@ -1263,7 +1293,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
                         }
                       }
                     ]
@@ -1284,7 +1314,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
                         }
                       },
                       "/index/*"
@@ -1325,7 +1355,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
                         }
                       }
                     ]
@@ -1346,7 +1376,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
                         }
                       },
                       "/index/*"
@@ -1387,7 +1417,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
                         }
                       }
                     ]
@@ -1408,7 +1438,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
                         }
                       },
                       "/index/*"
@@ -1449,7 +1479,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
                         }
                       }
                     ]
@@ -1470,7 +1500,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:PostItemsTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
                         }
                       },
                       "/index/*"
@@ -1511,7 +1541,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
                         }
                       }
                     ]
@@ -1532,7 +1562,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
                         }
                       },
                       "/index/*"
@@ -1573,7 +1603,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
                         }
                       }
                     ]
@@ -1594,7 +1624,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:CommentTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
                         }
                       },
                       "/index/*"
@@ -1635,7 +1665,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
                         }
                       }
                     ]
@@ -1656,69 +1686,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:GroupUsernameTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:Update*",
-                "dynamodb:RestoreTable*",
-                "dynamodb:Delete*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
                         }
                       },
                       "/index/*"

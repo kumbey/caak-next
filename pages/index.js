@@ -1,68 +1,106 @@
-import { useEffect, useRef, useState } from "react";
-import Card from "../src/components/card";
-import Button from "../src/components/button";
-import { useUser } from "../src/context/userContext";
+import {useEffect, useState} from "react";
+import Card from "../src/components/card/FeedCard";
+import {useUser} from "../src/context/userContext";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { listGroupsForAddPost } from "../src/graphql-custom/group/queries";
-import { checkUser, getReturnData } from "../src/utility/Util";
-import { getPostByStatus } from "../src/graphql-custom/post/queries";
-import useInfiniteScroll from "../src/hooks/useFetch";
-import Loader from "../src/components/loader";
-import { useListPager } from "../src/utility/ApiHelper";
-import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
-import { withSSRContext } from "aws-amplify";
-// import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {getReturnData} from "../src/utility/Util";
+import {getPostByStatus} from "../src/graphql-custom/post/queries";
+import {useListPager} from "../src/utility/ApiHelper";
+import {onPostUpdateByStatus} from "../src/graphql-custom/post/subscription";
+import {withSSRContext} from "aws-amplify";
+import useFeedLayout from "../src/hooks/useFeedLayout";
+import {listGroupByUserAndRole} from "../src/graphql-custom/GroupUsers/queries";
+import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
+import {feedType} from "../src/components/navigation/sortButtonTypes";
+import {listGroups} from "../src/graphql/queries";
+import {useWrapper} from "../src/context/wrapperContext";
+import Head from "next/head";
+import useMediaQuery from "../src/components/navigation/useMeduaQuery";
+import Consts from "../src/utility/Consts";
+import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
+import toast, {Toaster} from "react-hot-toast";
+import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
+import FeedBack from "../src/components/feedback";
+import useLocalStorage from "../src/hooks/useLocalStorage";
 
-export async function getServerSideProps({req, res}) {
-  
-  const { API } = withSSRContext({req})
+export async function getServerSideProps({req}) {
+  const { API, Auth } = withSSRContext({ req });
+  let user;
+
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ex) {
+    user = null;
+  }
 
   const resp = await API.graphql({
     query: getPostByStatus,
     variables: {
       sortDirection: "DESC",
       status: "CONFIRMED",
-      limit: 6
+      limit: 6,
     },
-    authMode:"AWS_IAM"
-  })
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+  });
+  const fetchGroups = async (user, role) => {
+    try {
+      if (!user) {
+        return null;
+      }
+
+      let retData = [];
+      for (let i = 0; i < role.length; i++) {
+        if (role[i] === "NOT_MEMBER") {
+          const resp = await API.graphql(graphqlOperation(listGroups));
+          const followed = getReturnData(resp).items.filter(item => !item.followed)
+          retData = [...retData, ...followed];
+        } else {
+          const resp = await API.graphql(
+            graphqlOperation(listGroupByUserAndRole, {
+              user_id: user.attributes.sub,
+              role: { eq: role[i] },
+            })
+          );
+          retData = [...retData, ...getReturnData(resp).items];
+        }
+      }
+      return retData;
+    } catch (ex) {
+      console.log(ex);
+      return null;
+    }
+  };
 
   return {
-    props: { ssrData: getReturnData(resp) }
-  }
+    props: {
+      ssrData: {
+        posts: getReturnData(resp),
+        allGroups: await fetchGroups(user, ["NOT_MEMBER"]),
+        myGroups: await fetchGroups(user, ["MEMBER"]),
+        adminModerator: await fetchGroups(user, ["ADMIN", "MODERATOR"]),
+      },
+    },
+  };
 }
 
+const Feed = ({ ssrData }) => {
 
-const Feed = ({ssrData, ...props}) => {
+  const {lsGet} = useLocalStorage("session")
+  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost)
 
-  const feedType = [
-    {
-      id: 0,
-      type: "Тренд",
-      icon: "icon-fi-rs-trend",
-    },
-    {
-      id: 1,
-      type: "Шинэ",
-      icon: "icon-fi-rs-new",
-    },
-    {
-      id: 2,
-      type: "Шилдэг",
-      icon: "icon-fi-rs-top",
-    },
-  ];
+  const FeedLayout = useFeedLayout();
+  const { user, isLogged } = useUser();
+  const [posts, setPosts] = useState(ssrData.posts.items);
+  const { setFeedSortType } = useWrapper();
+  const [loading, setLoading] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false)
+  const [subscripedPost, setSubscripedPost] = useState(0);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const feedRef = useRef();
-  const { user } = useUser();
-  const [groupData, setGroupData] = useState({
-    adminModerator: [],
-    member: [],
-    unMember: [],
-  });
-  const [posts, setPosts] = useState(ssrData.items);
+  const subscriptions = {};
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
+  //FORCE RENDER STATE
+  const [render, setRender] = useState(0);
+
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -70,57 +108,21 @@ const Feed = ({ssrData, ...props}) => {
       status: "CONFIRMED",
       limit: 6,
     },
-    nextToken: ssrData.nextToken
+    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    nextToken: ssrData.posts.nextToken,
+    ssr: true,
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
-  const [loading, setLoading] = useState(false);
-  const [subscripedPost, setSubscripedPost] = useState(0);
-  const subscriptions = {};
 
-  //FORCE RENDER STATE
-  const [render, setRender] = useState(0);
-
-  const listGroups = async () => {
-    try {
-      const grData = {
-        adminModerator: [],
-        member: [],
-        unMember: [],
-      };
-
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-
-      resp = getReturnData(resp).items;
-
-      for (let i = 0; i < resp.length; i++) {
-        const item = resp[i];
-        if (item.role_on_group === "NOT_MEMBER") {
-          grData.unMember.push(item);
-        } else if (item.role_on_group === "MEMBER") {
-          grData.member.push(item);
-        } else {
-          grData.adminModerator.push(item);
-        }
-      }
-
-      setGroupData(grData);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
-  const fetchPosts = async (data, setData) => {
+  const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
-
         const resp = await nextPosts();
         if (resp) {
-          setData([...data, ...resp]);
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
         }
-
-        setLoading(false);
       }
+      setLoading(false);
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -130,7 +132,7 @@ const Feed = ({ssrData, ...props}) => {
   const subscrip = () => {
     let authMode = "AWS_IAM";
 
-    if (checkUser(user)) {
+    if (isLogged) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
 
@@ -145,21 +147,6 @@ const Feed = ({ssrData, ...props}) => {
         setSubscripedPost({
           post: getReturnData(data, true),
           type: "add",
-        });
-      },
-    });
-
-    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
-      query: onPostUpdateByStatus,
-      variables: {
-        status: "ARCHIVED",
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        setSubscripedPost({
-          post: getReturnData(data, true),
-          type: "remove",
         });
       },
     });
@@ -201,21 +188,6 @@ const Feed = ({ssrData, ...props}) => {
   }, [subscripedPost]);
 
   useEffect(() => {
-    // fetchPosts(posts, setPosts);
-    setPostScroll(fetchPosts);
-
-    return () => {
-      setPostScroll(null);
-    };
-
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (checkUser(user)) {
-      listGroups();
-    }
-
     subscrip();
 
     return () => {
@@ -228,182 +200,59 @@ const Feed = ({ssrData, ...props}) => {
     // eslint-disable-next-line
   }, [user]);
 
+  useEffect(() => {
+    setFeedSortType("DEFAULT");
+  }, [setFeedSortType]);
+
+  const handleToast = ({ param }) => {
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
+    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
+  };
   return (
-    <div id={"feed"}>
-      <div className={`px-0 md:px-10 w-full relative`}>
-        <div
-          className={`h-full flex ${
-            user ? "flex-row items-start" : "flex-col items-center"
-          } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
-        >
-          {/* <aside
-            className={`leftSideBar hidden mr-4 md:flex flex flex-col ${
-              user && "sticky"
+    <>
+      <Head>
+        <title>{Consts.siteMainTitle} - Сайхан мэдрэмжээ хуваалцъя!</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
+      {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen}/>}
+
+      <div className={"relative"}>
+        <Toaster
+          toastOptions={{
+            className: "toastOptions",
+            duration: 5000,
+          }}
+        />
+        <div className={`px-0 w-full relative`}>
+          <div
+            className={`h-full flex ${
+              !isLogged ? "flex-col items-center" : "flex-row items-start"
             }`}
           >
-            <div
-              className={`flex ${
-                user ? "flex-col" : "flex-row w-full"
-              } justify-center  pb-4 pr-6`}
+            <FeedLayout
+              adminModeratorGroups={ssrData.adminModerator}
+              myGroups={ssrData.myGroups}
+              allGroups={ssrData.allGroups}
+              buttonType={feedType}
+              {...(isLogged ? { columns: 3 } : { columns: 2 })}
             >
-              {feedType.map(({ icon, type, id }) => {
-                return (
-                  <Button
-                    key={id}
-                    onClick={() => setActiveIndex(id)}
-                    className={`w-56 min-w-max ${
-                      id === activeIndex
-                        ? "white shadow-button mb-2"
-                        : "transparent mb-2"
-                    }`}
-                    iconPosition={"left"}
-                    icon={
-                      <div className={"w-5 mr-px-6 ph:w-4 ph:mr-2"}>
-                        <i
-                          className={`${icon}${
-                            id === activeIndex ? "" : "-o"
-                          } text-19px ph:text-15px`}
-                        />
-                      </div>
-                    }
-                  >
-                    <p className="text-16px ph:text-15px font-bold">{type}</p>
-                  </Button>
-                );
-              })}
-            </div>
-            <div className={""}>
-              <div className={`pr-6`}>
-                {groupData.adminModerator.length > 0 ? (
-                  <>
-                    <div
-                      className={"flex flex-row justify-between px-3.5 pt-2"}
-                    >
-                      <span className={"text-15px text-caak-darkBlue"}>
-                        {`Миний группүүд`}
-                      </span>
-                    </div>
-                    <div className={"px-2"}>
-                      {groupData.adminModerator.map((data, index) => {
-                        return (
-                          <Link
-                            key={index}
-                            to={{
-                              pathname: `/group/${data.id}`,
-                            }}
-                          >
-                            <Suggest
-                              item={data}
-                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                            />
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </>
-                ) : null}
-
-                {groupData.member.length > 0 ? (
-                  <>
-                    <div
-                      className={"flex flex-row justify-between px-3.5 pt-2"}
-                    >
-                      <span className={"text-15px text-caak-darkBlue"}>
-                        {`Миний элссэн группүүд`}
-                      </span>
-                    </div>
-                    <div className={"px-2"}>
-                      {groupData.member.map((data, index) => {
-                        return (
-                          <Link
-                            key={index}
-                            to={{
-                              pathname: `/group/${data.id}`,
-                            }}
-                          >
-                            <Suggest
-                              item={data}
-                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                            />
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </>
-                ) : null}
-
-                {groupData.unMember.length > 0 ? (
-                  <>
-                    <div
-                      className={"flex flex-row justify-between px-3.5 pt-2"}
-                    >
-                      <span className={"text-15px text-caak-darkBlue"}>
-                        {`Бүлгүүд`}
-                      </span>
-                    </div>
-                    <div className={"px-2"}>
-                      {groupData.unMember.map((data, index) => {
-                        return (
-                          <Link
-                            key={index}
-                            to={{
-                              pathname: `/group/${data.id}`,
-                            }}
-                          >
-                            <Suggest
-                              item={data}
-                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                            />
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </>
-                ) : null}
-              </div>
-            </div>
-          </aside> */}
-          <div
-            className={
-              "grid_container_container  w-full flex flex-col justify-center"
-            }
-          >
-            <div
-              className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
-            >
-              {feedType.map(({ icon, type, id }) => {
-                return (
-                  <Button
-                    key={id}
-                    onClick={() => setActiveIndex(id)}
-                    className={`h-8 w-auto mr-2 ${
-                      id === activeIndex
-                        ? "white shadow-button mb-2"
-                        : "transparent mb-2"
-                    }`}
-                    iconPosition={"left"}
-                    icon={
-                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
-                        <i
-                          className={`${icon}${
-                            id === activeIndex ? "" : "-o"
-                          } text-19px ph:text-15px`}
-                        />
-                      </div>
-                    }
-                  >
-                    <p className="text-16px ph:text-15px font-bold">{type}</p>
-                  </Button>
-                );
-              })}
-            </div>
-            <div
-              className={
-                "grid-container justify-center md:justify-center lg:justify-start"
-              }
-            >
-              {posts.length > 0 &&
-                posts.map((data, index) => {
+              <FeedSortButtons
+                feed
+                items={feedType}
+                initialSort={"DEFAULT"}
+                hide={isLogged && !isTablet}
+                containerClassname={"mb-[19px] justify-center"}
+                direction={"row"}
+              />
+              <AddPostCaakCard setIsOpen={setOpen} isOpen={open}/>
+              <InfinitScroller onNext={fetchPosts} loading={loading}>
+                {posts.map((data, index) => {
                   return (
                     <Card
                       key={index}
@@ -412,22 +261,16 @@ const Feed = ({ssrData, ...props}) => {
                       )}
                       post={data}
                       className="ph:mb-4 sm:mb-4"
+                      handleToast={handleToast}
                     />
                   );
                 })}
-            </div>
-            <div ref={feedRef} className={"flex justify-center items-center"}>
-              <Loader
-                containerClassName={"self-center"}
-                className={`bg-caak-primary ${
-                  loading ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </div>
+              </InfinitScroller>
+            </FeedLayout>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default Feed;

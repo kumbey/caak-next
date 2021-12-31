@@ -19,21 +19,24 @@ const Tooltip = ({ children, content, className, style }) => {
       // When to show the tooltip
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
+      onTouchStart={hideTip}
+      onTouchEnd={hideTip}
     >
       {/* Wrapping */}
       {children}
       {debounced && (
         <div
+          onTouchEnd={hideTip}
           ref={(el) => {
             if (!el) return null;
             const itemClientRect = el.getBoundingClientRect();
             const windowHeight = window.screen.height;
 
             if (windowHeight - itemClientRect.bottom < itemClientRect.height) {
-              el.style.top = "-10.3rem";
+              el.style.top = "-11.6rem";
             }
           }}
-          className={`Tooltip-Tip ${className && className}`}
+          className={`Tooltip-Tip ${className ? className : ""}`}
           style={style}
         >
           {/* Content */}

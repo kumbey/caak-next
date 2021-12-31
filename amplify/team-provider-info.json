@@ -1,76 +1,164 @@
 {
-  "devs": {
+  "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-caakmn-devs-100650-authRole",
-      "UnauthRoleArn": "arn:aws:iam::699925983689:role/amplify-caakmn-devs-100650-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::699925983689:role/amplify-caakmn-devs-100650-authRole",
+      "AuthRoleName": "amplify-caak-prod-180235-authRole",
+      "UnauthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-prod-180235-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-prod-180235-authRole",
       "Region": "ap-southeast-1",
-      "DeploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-      "UnauthRoleName": "amplify-caakmn-devs-100650-unauthRole",
-      "StackName": "amplify-caakmn-devs-100650",
-      "StackId": "arn:aws:cloudformation:ap-southeast-1:699925983689:stack/amplify-caakmn-devs-100650/1a5d1b70-0a00-11ec-ba81-023477035e84",
-      "AmplifyAppId": "d3cv0kq0oa3k6b"
+      "DeploymentBucketName": "amplify-caak-prod-180235-deployment",
+      "UnauthRoleName": "amplify-caak-prod-180235-unauthRole",
+      "StackName": "amplify-caak-prod-180235",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:395091497679:stack/amplify-caak-prod-180235/cd593fe0-5bfb-11ec-9209-069d7f8a7db2",
+      "AmplifyAppId": "d36nkdl3p18em1"
     },
     "categories": {
-      "auth": {
-        "caakmn248efac3": {
-          "userPoolId": "ap-southeast-1_aPFBL1JrG",
-          "userPoolName": "caakauth",
-          "webClientId": "513vv9i9nrnd4glini11ips7bt",
-          "nativeClientId": "2ifs9p3e5kpvk26esr45sqmh5p",
-          "identityPoolId": "ap-southeast-1:761b8e04-4eed-48bc-bd42-09320bb21645",
-          "identityPoolName": "caakiam",
-          "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamAuth_Role",
-          "authRoleName": "Cognito_caakiamAuth_Role",
-          "unauthRoleArn": "arn:aws:iam::699925983689:role/Cognito_caakiamUnauth_Role",
-          "unauthRoleName": "Cognito_caakiamUnauth_Role"
-        }
-      },
       "function": {
-        "userpoolpostconfirmation": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/userpoolpostconfirmation-6b7a5232433258332f4b-build.zip"
-        },
-        "caakmnlayerAPI": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersion6ddc7994-build.zip"
-        },
-        "resolverBoolean": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/resolverBoolean-596e745a577879474752-build.zip"
-        },
-        "aura": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/aura-68562f7162445a7a4a5a-build.zip"
-        },
-        "userRoleOnGroup": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/userRoleOnGroup-6654797275354b795837-build.zip"
-        },
-        "triggerTables": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerTables-7a59526a70674738714c-build.zip"
-        },
-        "totals": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/totals-474d4958574877717971-build.zip"
-        },
-        "totalsTrigger": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/totalsTrigger-6d34526a6f3877757769-build.zip"
-        },
-        "triggerNotification": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerNotification-78354351354a54455448-build.zip"
-        },
-        "fixTableData": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/fixTableData-6f39324a397844436948-build.zip"
+        "caaklayer001": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersionc904414b-build.zip"
         },
         "notification": {
-          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/notification-50504f6d4d415573595a-build.zip"
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/notification-655362574c32334c7974-build.zip"
+        },
+        "resolverBoolean": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/resolverBoolean-6c435978727031797835-build.zip"
+        },
+        "totals": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/totals-682b773342515a796532-build.zip"
+        },
+        "totalsTrigger": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/totalsTrigger-4e757270642f4d51466a-build.zip"
+        },
+        "triggerNotification": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/triggerNotification-69597759657573483368-build.zip"
+        },
+        "triggerTables": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/triggerTables-6a713732484438643373-build.zip"
+        },
+        "userRoleOnGroup": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/userRoleOnGroup-684b68486a79734e4944-build.zip"
+        },
+        "aura": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/aura-2f67473931586b41642b-build.zip"
+        },
+        "restoreOldPosts": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/restoreOldPosts-5947686d366339555a68-build.zip"
+        }
+      },
+      "auth": {
+        "caak38fbeb70": {
+          "userPoolId": "ap-southeast-1_rIO08tyP8",
+          "userPoolName": "caak-auth",
+          "webClientId": "3ucknqne71hmd7bqhmbiatic7u",
+          "nativeClientId": "3kkpqu5hd46hd29k7gfubjvoqe",
+          "identityPoolId": "ap-southeast-1:da79ac62-2f04-4e38-b4d8-d3b9b918b315",
+          "identityPoolName": "caak-idp",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
+          "authRoleName": "Cognito_caakidpAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
+          "unauthRoleName": "Cognito_caakidpUnauth_Role",
+          "googleClientId": "208027053621-2h2q0u111jurnufk6onhmpf22h4q20dv.apps.googleusercontent.com",
+          "facebookAppId": "1831776936994333"
+        },
+        "caak7c5cc3bf": {}
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-caak-dev-123611-authRole",
+      "UnauthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-dev-123611-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::395091497679:role/amplify-caak-dev-123611-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-caak-dev-123611-deployment",
+      "UnauthRoleName": "amplify-caak-dev-123611-unauthRole",
+      "StackName": "amplify-caak-dev-123611",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:395091497679:stack/amplify-caak-dev-123611/3b2fe890-4da9-11ec-b9b0-02a58faeed02",
+      "AmplifyAppId": "d36nkdl3p18em1"
+    },
+    "categories": {
+      "function": {
+        "caaklayer001": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/caaklayer001-LambdaLayerVersion668f5ce1-build.zip"
+        },
+        "notification": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/notification-655362574c32334c7974-build.zip"
+        },
+        "resolverBoolean": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/resolverBoolean-6c435978727031797835-build.zip"
+        },
+        "totals": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/totals-682b773342515a796532-build.zip"
+        },
+        "totalsTrigger": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/totalsTrigger-4e757270642f4d51466a-build.zip"
+        },
+        "triggerNotification": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/triggerNotification-69597759657573483368-build.zip"
+        },
+        "triggerTables": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/triggerTables-6a713732484438643373-build.zip"
+        },
+        "userRoleOnGroup": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/userRoleOnGroup-684b68486a79734e4944-build.zip"
+        },
+        "aura": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/aura-2f67473931586b41642b-build.zip"
+        },
+        "restoreOldPosts": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/restoreOldPosts-5947686d366339555a68-build.zip"
+        }
+      },
+      "auth": {
+        "caak7c5cc3bf": {
+          "userPoolId": "ap-southeast-1_rIO08tyP8",
+          "userPoolName": "caak-auth",
+          "webClientId": "3ucknqne71hmd7bqhmbiatic7u",
+          "nativeClientId": "3kkpqu5hd46hd29k7gfubjvoqe",
+          "identityPoolId": "ap-southeast-1:da79ac62-2f04-4e38-b4d8-d3b9b918b315",
+          "identityPoolName": "caak-idp",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
+          "authRoleName": "Cognito_caakidpAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
+          "unauthRoleName": "Cognito_caakidpUnauth_Role",
+          "googleClientId": "208027053621-2h2q0u111jurnufk6onhmpf22h4q20dv.apps.googleusercontent.com",
+          "facebookAppId": "1831776936994333"
+        },
+        "caak38fbeb70": {
+          "userPoolId": "ap-southeast-1_rIO08tyP8",
+          "userPoolName": "caak-auth",
+          "webClientId": "3ucknqne71hmd7bqhmbiatic7u",
+          "nativeClientId": "3kkpqu5hd46hd29k7gfubjvoqe",
+          "identityPoolId": "ap-southeast-1:da79ac62-2f04-4e38-b4d8-d3b9b918b315",
+          "identityPoolName": "caak-idp",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpAuth_Role",
+          "authRoleName": "Cognito_caakidpAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::395091497679:role/Cognito_caakidpUnauth_Role",
+          "unauthRoleName": "Cognito_caakidpUnauth_Role",
+          "googleClientId": "208027053621-2h2q0u111jurnufk6onhmpf22h4q20dv.apps.googleusercontent.com",
+          "facebookAppId": "1831776936994333"
         }
       }
     }

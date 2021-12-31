@@ -11,21 +11,22 @@ import {
 import { ApiFileUpload } from "../utility/ApiHelper";
 import { _objectWithoutKeys, getReturnData } from "../utility/Util";
 
-export const crtPost = async (newPost, userId) => {
+export const crtPost = async (newPost, userId, role) => {
   try {
     let { items, ...post } = { ...newPost };
     post = _objectWithoutKeys(post, ["id"]);
     post.status = "POSTING";
     post.updated_user_id = userId;
+    // post.commentType = true;
+    post.user_id = userId;
 
     const savedPost = getReturnData(
       await API.graphql(graphqlOperation(createPost, { input: post }))
     );
-
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const resp = await ApiFileUpload(item.file);
-      const postItem = _objectWithoutKeys(item, ["file", "chosen"]);
+      const postItem = _objectWithoutKeys(item, ["file", "chosen", "id", "url"]);
       postItem.file_id = resp.id;
       postItem.order = i;
       postItem.post_id = savedPost.id;
@@ -39,7 +40,7 @@ export const crtPost = async (newPost, userId) => {
         input: {
           id: savedPost.id,
           expectedVersion: savedPost.version,
-          status: "PENDING",
+          status: (role === "ADMIN" || role === "MODERATOR") ? "CONFIRMED" : "PENDING",
         },
       })
     );
@@ -50,7 +51,7 @@ export const crtPost = async (newPost, userId) => {
   }
 };
 
-export const pdtPost = async (oldPost, userId) => {
+export const pdtPost = async (oldPost, userId, role) => {
   try {
     let { items, ...post } = { ...oldPost };
 
@@ -87,8 +88,13 @@ export const pdtPost = async (oldPost, userId) => {
       // UPDATE POST ITEM
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        const postItem = _objectWithoutKeys(item, ["file","chosen"]);
-        if (!item.id) {
+        const postItem = _objectWithoutKeys(item, [
+          "file",
+          "url",
+          "chosen",
+          "id",
+        ]);
+        if (typeof item.id === "number") {
           const resp = await ApiFileUpload(item.file);
           postItem.file_id = resp.id;
           postItem.order = i;
@@ -98,6 +104,7 @@ export const pdtPost = async (oldPost, userId) => {
             graphqlOperation(createPostItems, { input: postItem })
           );
         } else {
+          postItem.id = item.id;
           postItem.order = i;
           postItem.user_id = userId;
           await API.graphql(
@@ -107,8 +114,8 @@ export const pdtPost = async (oldPost, userId) => {
       }
 
       //DELETE OLD ITEMS
-      for (let i = 0; i < currentPost.items.length; i++) {
-        const currentItem = currentPost.item[i];
+      for (let i = 0; i < currentPost.items.items.length; i++) {
+        const currentItem = currentPost.items.items[i];
         if (!items.find((item) => item.id === currentItem.id)) {
           await API.graphql(
             graphqlOperation(deletePostItems, { input: { id: currentItem.id } })
@@ -122,7 +129,7 @@ export const pdtPost = async (oldPost, userId) => {
             input: {
               id: post.id,
               expectedVersion: post.version,
-              status: "PENDING",
+              status: (role === "ADMIN" || role === "MODERATOR") ? "CONFIRMED" : "PENDING",
             },
           })
         )

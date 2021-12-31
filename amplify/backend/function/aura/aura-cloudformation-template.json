@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.4\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,13 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "apicaakmnGraphQLAPIIdOutput": {
+    "functioncaaklayer001Arn": {
       "Type": "String",
-      "Default": "apicaakmnGraphQLAPIIdOutput"
+      "Default": "functioncaaklayer001Arn"
     },
-    "functioncaakmnlayerAPIArn": {
+    "apicaakGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "functioncaakmnlayerAPIArn"
+      "Default": "apicaakGraphQLAPIIdOutput"
     }
   },
   "Conditions": {
@@ -78,12 +78,12 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAKMN_USERTOTALTABLE_NAME": {
+            "API_CAAK_USERTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
               }
             },
-            "API_CAAKMN_USERTOTALTABLE_ARN": {
+            "API_CAAK_USERTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -98,14 +98,14 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                     }
                   }
                 ]
               ]
             },
-            "API_CAAKMN_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicaakmnGraphQLAPIIdOutput"
+            "API_CAAK_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicaakGraphQLAPIIdOutput"
             }
           }
         },
@@ -118,7 +118,7 @@
         "Runtime": "nodejs14.x",
         "Layers": [
           {
-            "Ref": "functioncaakmnlayerAPIArn"
+            "Ref": "functioncaaklayer001Arn"
           }
         ],
         "Timeout": 25
@@ -130,12 +130,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakmnLambdaRole338d693f",
+            "caakLambdaRolecde6ee56",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakmnLambdaRole338d693f",
+                  "caakLambdaRolecde6ee56",
                   "-",
                   {
                     "Ref": "env"
@@ -224,12 +224,18 @@
             {
               "Effect": "Allow",
               "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
                 "dynamodb:Get*",
                 "dynamodb:BatchGetItem",
                 "dynamodb:List*",
                 "dynamodb:Describe*",
                 "dynamodb:Scan",
-                "dynamodb:Query"
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
               ],
               "Resource": [
                 {
@@ -247,7 +253,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       }
                     ]
@@ -268,7 +274,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       },
                       "/index/*"

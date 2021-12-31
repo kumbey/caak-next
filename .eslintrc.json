@@ -1,6 +1,11 @@
-{
-  "extends": "next/core-web-vitals",
-  "rules": {
-    "prefer-const": "error"
-  }
-}
+ {
+   "extends": "next/core-web-vitals",
+   "rules": {
+     "prefer-const": "error",
+     "react/no-unescaped-entities": "error",
+     "@next/next/no-page-custom-font": "error",
+     "@next/next/no-img-element": "off",
+     "@next/next/no-document-import-in-page": "off",
+     "react-hooks/exhaustive-deps": "error"
+   }
+ }

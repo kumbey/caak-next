@@ -1,26 +1,16 @@
-import Auth from "@aws-amplify/auth"
-import { useEffect, useState } from "react"
+import { useUser } from "../../context/userContext";
 
 const WithOutAuth = (WrappedComponent) => {
-    return (props) => {
-        
-        const [logged, setLogged] = useState("init")
+  return (props) => {
+    
+    const { isLogged } = useUser()
 
-        useEffect(async () => {
-            try{
-                await Auth.currentAuthenticatedUser()
-                setLogged(true)
-            }catch(ex){
-                setLogged(false)
-            }
-          }, []);
-
-        if(logged === "init" || logged){
-            return null
-        }else{
-            return <WrappedComponent {...props}/>
-        }
+    if (isLogged) {
+      return null;
+    } else {
+      return <WrappedComponent {...props} />;
     }
-}
+  };
+};
 
-export default WithOutAuth
+export default WithOutAuth;

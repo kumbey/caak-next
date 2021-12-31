@@ -1,156 +1,110 @@
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../utility/Util";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Divider from "../divider";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function NavBarMenu({ type }) {
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
+  const router = useRouter();
 
   return (
     <div className={`dropdown-item-wrapper`}>
-      {checkUser(user) && (
+      {isLogged && (
         <Fragment>
           {type !== "mobile" && (
-            <Link to={{ pathname: `/user/${user.sysUser.id}/profile` }}>
-              <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-                <span
-                  className={
-                    "icon-fi-rs-profile text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-                  }
-                />
-                <p className="text-14px text-caak-extraBlack font-roboto">
-                  Миний профайл
-                </p>
-              </div>
+            <Link href={`/user/${user.id}/profile`}>
+              <a>
+                <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+                  <span
+                    className={
+                      "icon-fi-rs-profile text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                    }
+                  />
+                  <p className="text-14px text-caak-extraBlack">
+                    Миний профайл
+                  </p>
+                </div>
+              </a>
             </Link>
           )}
 
-          <Link to={`/user}/profile`}>
-            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-              <span
-                className={
-                  "icon-fi-rs-group text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-                }
-              />
-              <p className="text-14px text-caak-extraBlack font-roboto">
-                Бүлгүүд
-              </p>
-            </div>
-          </Link>
+          <div
+            onClick={() =>
+              router.push(
+                {
+                  pathname: `/user/${user.id}/profile`,
+                  query: { sortType: "SAVED" },
+                },
+                `/user/${user.id}/profile`,
+                { shallow: true }
+              )
+            }
+            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          >
+            <span
+              className={
+                "icon-fi-rs-save-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+              }
+            />
+            <p className="text-14px text-caak-extraBlack">Хадгалсан постууд</p>
+          </div>
 
-          <Link to={`/user/${user.sysUser.id}/settings`}>
-            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-              <span className={" icon-fi-rs-settings text-18px w-5 h-5 mr-2"} />
-              <p className="text-14px text-caak-extraBlack font-roboto">
-                Тохиргоо
-              </p>
-            </div>
-          </Link>
-          <Link to={`/user/profile`}>
-            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-              <span className={"icon-fi-rs-help text-18px w-5 h-5 mr-2"} />
-              <p className="text-14px text-caak-extraBlack font-roboto">
-                Тусламж
-              </p>
-            </div>
+          <Link href={`/user/${user.id}/settings`}>
+            <a>
+              <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+                <div className={"flex justify-center items-center"}>
+                  <span
+                    className={
+                      " icon-fi-rs-settings text-[18px] w-[20px] h-[18px] mr-2"
+                    }
+                  />
+                </div>
+                <p className="text-14px text-caak-extraBlack">Тохиргоо</p>
+              </div>
+            </a>
           </Link>
         </Fragment>
       )}
-      {checkUser(user) && <Divider className={"my-2"} />}
-      <Link to={`/user/profile`}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-view text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack font-roboto">
-            Шөнийн горим
-          </p>
-        </div>
-      </Link>
-      <Link to={{ pathname: `/newcaak` }}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-about text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack font-roboto">
-            Шинэ саак тухай
-          </p>
-        </div>
-      </Link>
-      <Link to={{ pathname: `/about/aura` }}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-auro auroGradient text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack font-roboto">
-            Аура гэж юу вэ?
-          </p>
-        </div>
-      </Link>
-      <Link to={{ pathname: `/newcaak` }}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-notebook text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack font-roboto">Блог</p>
-        </div>
-      </Link>
-
-      <Link to={{ pathname: `/newcaak` }}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-megaphone text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack font-roboto">
-            Сурталчилгаа
-          </p>
-        </div>
-      </Link>
-
-      <Divider className={"my-2"} />
-      <Link to={{ pathname: `/newcaak` }}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-shield-exclamation text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack font-roboto">
-            Нууцлалын бодлого
-          </p>
-        </div>
-      </Link>
-      <Link to={{ pathname: `/newcaak` }}>
-        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-          <span
-            className={
-              "icon-fi-rs-document-signed text-18 px5 text-center w-5 flex items-center h-5 mr-2"
-            }
-          />
-          <p className="text-14px text-caak-extraBlack font-roboto">
-            Үйлчилгээний нөхцөл
-          </p>
-        </div>
-      </Link>
-      {checkUser(user) && type !== "mobile" && (
-        <Link to={`/logout`}>
-          <Divider className={"my-2"} />
+      {isLogged && <Divider className={"my-2"} />}
+      <Link shallow href={`/help/aura`}>
+        <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-            <span className={"icon-fi-rs-exit text-18px w-5 h-5 mr-2"} />
-            <p className="text-14px text-caak-extraBlack font-roboto">Гарах</p>
+            <span
+              className={
+                "icon-fi-rs-auro text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+              }
+            />
+            <p className="text-14px text-caak-extraBlack">Аура гэж юу вэ?</p>
           </div>
-        </Link>
+        </a>
+      </Link>
+      <Link shallow href={`/help`}>
+        <a>
+          <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+            <span
+              className={"icon-fi-rs-help text-[18px] w-[20px] h-[18px] mr-2"}
+            />
+            <p className="text-14px text-caak-extraBlack">Тусламж</p>
+          </div>
+        </a>
+      </Link>
+      {isLogged && type !== "mobile" && (
+        <>
+          <Divider className={"my-2"} />
+          <Link href={`/signInUp/out`} shallow={true}>
+            <a>
+              <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+                <span
+                  className={
+                    "icon-fi-rs-exit text-[18px] w-[20px] h-[18px] mr-2"
+                  }
+                />
+                <p className="text-14px text-caak-extraBlack">Гарах</p>
+              </div>
+            </a>
+          </Link>
+        </>
       )}
     </div>
   );

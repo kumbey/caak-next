@@ -1,23 +1,18 @@
+import { useUser } from "../../context/userContext";
+import { useRouter } from "next/router";
+
 const WithAuth = (WrappedComponent) => {
-    return (props) => {
-        
-        const [logged, setLogged] = useState("init")
+  return (props) => {
 
-        useEffect(async () => {
-            try{
-                await Auth.currentAuthenticatedUser()
-                setLogged(true)
-            }catch(ex){
-                setLogged(false)
-            }
-          }, []);
+    const { isLogged } = useUser();
+    const router = useRouter()
 
-        if(logged === "init" || !logged){
-            return null
-        }else{
-            return <WrappedComponent {...props}/>
-        }
+    if (!isLogged) {
+      return null;
+    } else {
+      return <WrappedComponent {...props} />;
     }
-}
+  };
+};
 
-export default WithAuth
+export default WithAuth;

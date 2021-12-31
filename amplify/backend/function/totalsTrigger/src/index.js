@@ -1,6 +1,6 @@
 /* Amplify Params - DO NOT EDIT
-	API_CAAKMN_GRAPHQLAPIENDPOINTOUTPUT
-	API_CAAKMN_GRAPHQLAPIIDOUTPUT
+	API_CAAK_GRAPHQLAPIENDPOINTOUTPUT
+	API_CAAK_GRAPHQLAPIIDOUTPUT
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
@@ -50,6 +50,7 @@ exports.handler = async (event) => {
 
     return Promise.resolve('Successfully processed DynamoDB record');
   }catch(ex){
+    console.log(ex)
     return Promise.resolve('Error processed DynamoDB record %j', ex);
   }
 };

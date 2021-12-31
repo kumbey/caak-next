@@ -1,11 +1,14 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { Hub } from "aws-amplify";
-import { isLogged, signIn } from "../utility/Authenty";
+import { createContext, useContext, useEffect, useState } from "react";
+import { Auth, Hub } from "aws-amplify";
+import { signIn } from "../utility/Authenty";
 import Consts from "../utility/Consts";
 import { onUserUpdateByUser } from "../graphql-custom/user/subscription";
-import { checkUser, getReturnData } from "../utility/Util";
+import { getReturnData } from "../utility/Util";
 import API from "@aws-amplify/api";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { getUser } from "../graphql-custom/user/queries";
+import { useRouter } from "next/router";
 
 const UserContext = createContext();
 
@@ -19,22 +22,21 @@ function useUser() {
 }
 
 function UserProvider(props) {
-
-  const {lsGet, lsSet, lsRemove} = useLocalStorage("session")
+  const { lsGet, lsSet, lsRemove } = useLocalStorage("session");
+  const [cognitoUser, setCognitoUser] = useState(
+    lsGet(Consts.SS_CognitoUserKey)
+  );
+  const [isLogged, setIsLogged] = useState(cognitoUser);
   const [user, setUser] = useState(lsGet(Consts.SS_UserKey));
   const [updatedUser, setUpdatedUser] = useState();
   const subscriptions = {};
+  const router = useRouter();
 
   useEffect(() => {
-    isLogged(user, setUser);
-
     Hub.listen("auth", ({ payload: { event } }) => {
       switch (event) {
-        case "signOut":
-          setUser(null);
-          break;
         case "signIn":
-          signIn(setUser);
+          isLoginValid();
           break;
         default:
           break;
@@ -50,11 +52,10 @@ function UserProvider(props) {
     subscriptions.onUserUpdateByUser = API.graphql({
       query: onUserUpdateByUser,
       variables: {
-        id: user.sysUser.id,
+        id: user.id,
       },
     }).subscribe({
       next: (data) => {
-        console.log(data);
         const onData = getReturnData(data, true);
         setUpdatedUser(onData);
       },
@@ -74,14 +75,43 @@ function UserProvider(props) {
   }, [user]);
 
   useEffect(() => {
+    if (cognitoUser) {
+      lsSet(Consts.SS_CognitoUserKey, user);
+    } else {
+      lsRemove(Consts.SS_CognitoUserKey);
+    }
+    // eslint-disable-next-line
+  }, [cognitoUser]);
+
+  useEffect(() => {
+    if (cognitoUser) {
+      if(!lsGet(Consts.addPostKey)){
+        lsSet(Consts.addPostKey, {addPost: true, addPostGuide: true})
+      }
+    } else {
+      lsRemove(Consts.addPostKey);
+    }
+    // eslint-disable-next-line
+  }, [cognitoUser]);
+
+  useEffect(() => {
+    if (cognitoUser && user) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+    // eslint-disable-next-line
+  }, [cognitoUser, user]);
+
+  useEffect(() => {
     if (updatedUser) {
-      setUser({ ...user, sysUser: updatedUser });
+      setUser(updatedUser);
     }
     // eslint-disable-next-line
   }, [updatedUser]);
 
   useEffect(() => {
-    if (checkUser(user)) {
+    if (isLogged) {
       subscrip();
     }
 
@@ -93,10 +123,80 @@ function UserProvider(props) {
     };
 
     // eslint-disable-next-line
+  }, [isLogged]);
+
+  useEffect(() => {
+    isLoginValid();
+    // eslint-disable-next-line
   }, []);
 
-  const value = useMemo(() => ({ user, setUser }), [user]);
-  return <UserContext.Provider value={value} {...props} />;
+  const isLoginValid = async () => {
+    try{
+      const usr = await Auth.currentAuthenticatedUser();
+    
+      if (usr) {
+        if (!Object.is(usr, cognitoUser)) {
+          setCognitoUser(usr);
+        }
+
+        let resp = await API.graphql(
+          graphqlOperation(getUser, { id: usr.attributes.sub })
+        );
+
+        resp = getReturnData(resp)
+        if(!resp){
+          router.push({
+            query: {
+              ...router.query,
+              prevPath: router.asPath,
+              signInUp: "information",
+              isModal: true
+            }
+          }, "/signInUp/information", {shallow : true, scroll: false})
+
+        }else{
+          if(resp.category && resp.category.items.length <= 0){
+            router.push({
+              query: {
+                ...router.query,
+                prevPath: router.asPath,
+                signInUp: "intrst",
+                isModal: true
+              }
+            }, "/signInUp/intrst", {shallow : true, scroll: false})
+            return false
+          }
+          setUser(resp);
+        }
+        
+      } else {
+        setIsLogged(false);
+        setUser(null);
+        setCognitoUser(null);
+      }
+    }catch(ex){
+      console.log(ex)
+      setIsLogged(false);
+      setUser(null);
+      setCognitoUser(null);
+    }
+  };
+
+  const logout = async () => {
+    setIsLogged(false);
+    setUser(null);
+    setCognitoUser(null);
+    await Auth.signOut();
+    router.replace("/");
+  };
+
+  // const value = useMemo(() => ({ user, setUser }), [user]);
+  return (
+    <UserContext.Provider
+      value={{ user, cognitoUser, isLogged, logout, isLoginValid}}
+      {...props}
+    />
+  );
 }
 
 export { UserProvider, useUser };

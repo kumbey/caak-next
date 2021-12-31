@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
-import NotificationDropDown from "./NotificationDropDown";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
-import { checkUser, getFileUrl, useClickOutSide } from "../../utility/Util";
+import {
+  getFileUrl,
+  getGenderImage,
+  useClickOutSide,
+} from "../../utility/Util";
 import { useWrapper } from "../../context/wrapperContext";
 import { useUser } from "../../context/userContext";
-import Dummy from "dummyjs";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import NotificationDropDown from "./NotificationDropDown";
+import useMediaQuery from "./useMeduaQuery";
+import SearchInput from "../input/SearchInput";
+import AddPostGuideCard from "../card/AddPostGuideCard";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import Consts from "../../utility/Consts";
 
 const SubMenu = ({ params }) => {
+  const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
+
+  const {lsGet} = useLocalStorage("session")
+  
+  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPostGuide)
+
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
+  const router = useRouter();
+
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
-
   const menuRef = useClickOutSide(() => {
     params.setIsMenuOpen(false);
   });
@@ -23,147 +38,181 @@ const SubMenu = ({ params }) => {
   const toggleMenu = () => {
     params.setIsMenuOpen(!params.isMenuOpen);
   };
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+
   return (
-    ((checkUser(user) && params.type === "mobile") ||
-      (!checkUser(user) && params.type === "mobile") ||
-      (checkUser(user) && params.type === "web")) && (
+    mounted &&
+    ((isLogged && params.type === "mobile") ||
+      (!isLogged && params.type === "mobile") ||
+      (isLogged && params.type === "web")) && (
       <div
         className={
           "flex flex-row items-center w-full justify-around md:w-auto md:justify-center"
         }
       >
-        <div className={"flex items-center mr-0 block md:hidden"}>
-          <span
-            onClick={() =>
-              history.push({
-                pathname: "/",
-              })
-            }
-            className="icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8 p-2 rounded-lg"
-          />
+        <div
+          className={`${
+            isSearchInputOpen ? "" : "hidden"
+          } mobileSearch w-full fixed top-0 left-0 bg-transparent`}
+        >
+          <div className="w-full h-[52px] border-t-[1px] border-caak-liquidnitrogen shadow-card bg-white p-[8px]">
+            <SearchInput
+              containerStyle={"h-[36px] w-full"}
+              hideLabel
+              placeholder={"Групп болон пост хайх"}
+            />
+          </div>
         </div>
-        <div className={"flex items-center mr-0 block md:hidden"}>
-          <span className="icon-fi-rs-search text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
+
+        <div
+          onClick={() => {
+            router.push("/");
+          }}
+          className={"flex items-center mr-0 block md:hidden"}
+        >
+          <span className="icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
         </div>
-        <div className={"mr-0 md:mr-6"}>
+        <div
+          onClick={() => isSetSearchInputOpen(!isSearchInputOpen)}
+          className={"flex items-center mr-0 block md:hidden"}
+        >
+          <span className="p-2 rounded-lg icon-fi-rs-search text-caak-generalblack text-24px py-px-8" />
+        </div>
+        <div className={"mr-0 md:mr-[10px]"}>
           <Button
             roundedSquare
-            skin={"primary"}
-            className={"w-36px h-36px px-0 py-0"}
-            icon={<span className={"icon-fi-rs-add text-15px"} />}
-            onClick={() =>
-              history.push({
-                pathname: checkUser(user) ? "/post/add/new" : "/login",
-                state: { background: location },
-              })
+            skin={"transparent"}
+            className={
+              "w-[34px] h-[32px] px-0 py-0 flex justify-center items-center bg-caak-primary"
             }
-          />
+            icon={
+              <span className={"icon-fi-rs-add-l text-white text-[22px]"} />
+            }
+            onClick={() =>
+              isLogged
+                ? router.push("/post/add", undefined, { shallow: true })
+                : router.push(
+                    {
+                      pathname: router.pathname,
+                      query: {
+                        ...router.query,
+                        signInUp: "signIn",
+                        isModal: true,
+                      },
+                    },
+                    `/signInUp/signIn`,
+                    { shallow: true }
+                  )
+            }
+          >
+            <AddPostGuideCard open={open} setOpen={setOpen}/>
+          </Button>
         </div>
         <div
           ref={notificationRef}
           onClick={() => {
-            checkUser(user)
+            isLogged
               ? setIsNotificationMenu((oldState) => !oldState)
-              : history.push({
-                  pathname: "/login",
-                  state: { background: location },
-                });
+              : router.push(
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      signInUp: "signIn",
+                      isModal: true,
+                    },
+                  },
+                  `/signInUp/signIn`,
+                  { shallow: true }
+                );
           }}
-          className={"relative flex items-center mr-0 md:mr-6 cursor-pointer"}
+          className={`${
+            isNotificationMenu ? "bg-caak-liquidnitrogen" : ""
+          } relative flex items-center justify-center w-[50px] h-[36px] mr-0 md:mr-[10px] cursor-pointer rounded-square  hover:bg-caak-liquidnitrogen transition duration-100`}
         >
-          <span
-            className={`${
-              isNotificationMenu && "bg-caak-titaniumwhite"
-            } icon-fi-rs-notification text-22px text-caak-generalblack text-24px p-2 rounded-square hover:bg-caak-titaniumwhite`}
-          />
-          {parseInt(params.userTotal.unseen) > 0 ? (
+          <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
             <span
+              className={`icon-fi-rs-notification text-22px text-caak-generalblack text-[22px]`}
+            />
+          </div>
+
+          {parseInt(params.userTotal.unseen) > 0 ? (
+            <div
               className={
-                "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
+                "absolute flex justify-center items-center top-1 right-[7px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
               }
             >
-              {params.userTotal.unseen > 9 ? "9+" : params.userTotal.unseen}
-            </span>
+              <span className={"text-white text-11px text-center"}>
+                {params.userTotal.unseen > 9 ? "9+" : params.userTotal.unseen}
+              </span>
+            </div>
           ) : null}
-          {checkUser(user) && (
+          {isLogged && (
             <NotificationDropDown
               isOpen={isNotificationMenu}
               setIsOpen={setIsNotificationMenu}
             />
           )}
         </div>
-        <div className={"relative flex flex-row mr-0 md:mr-6"}>
+        <div
+          className={
+            "relative hidden md:flex flex-row w-max mr-0 md:mr-[10px] h-[36px] bg-caak-liquidnitrogen px-[12px] py-[10px] rounded-square"
+          }
+        >
+          {params.type === "web" && isLogged && (
+            <div className={"flex flex-col items-center justify-center"}>
+              <div className={"flex flex-row justify-center items-center"}>
+                <span className={"icon-fi-rs-auro auroGradient mr-1"} />
+                <span
+                  className={"text-14px text-caak-generalblack font-medium"}
+                >
+                  {`${user && user.aura} Аура`}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div
+          className={
+            "relative cursor-pointer flex items-center justify-center w-[36px] h-[36px] flex-shrink-0"
+          }
+        >
           <DropDown
+            arrow={"topRight"}
             open={params.isMenuOpen}
             onToggle={toggleMenu}
             content={<NavBarMenu />}
-            // items={menu_data}
-            className={"top-10 -right-4"}
+            className={"top-8 -right-3 w-[215px]"}
           />
-          <Link
-            to={{
-              ...(checkUser(user)
-                ? { pathname: `/user/${user.sysUser.id}/profile` }
-                : { pathname: "/login", state: { background: location } }),
-            }}
-          >
-            <div className={"cursor-pointer flex items-center"}>
-              {checkUser(user) ? (
-                <img
-                  alt={user.sysUser.nickname}
-                  src={
-                    user.sysUser.pic
-                      ? getFileUrl(user.sysUser.pic)
-                      : Dummy.img("50x50")
-                  }
-                  className={
-                    "block mr-0 md:mr-px-8 w-c3 h-c3 md:w-px-45 md:h-px-45 object-cover rounded-full"
-                  }
-                />
-              ) : (
-                <span className="icon-fi-rs-profile text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
-              )}
-            </div>
-          </Link>
-          {params.type === "web" && checkUser(user) && (
-            <div
-              className={
-                "hidden md:flex flex flex-col items-center justify-center"
+          {isLogged && user ? (
+            <img
+              ref={menuRef}
+              onClick={() => {
+                if (isTablet) {
+                  router.push(`/user/${user.id}/profile`);
+                } else {
+                  params.setIsMenuOpen(!params.isMenuOpen);
+                }
+              }}
+              alt={user.nickname}
+              src={
+                user.pic
+                  ? getFileUrl(user.pic)
+                  : getGenderImage(user.gender).src
               }
-            >
-              <div className={"flex flex-row justify-center items-center"}>
-                <div className="flex flex-col items-center">
-                  <Link
-                    to={{
-                      pathname: `/user/${user.sysUser.id}/profile`,
-                    }}
-                  >
-                    <span
-                      className={
-                        "text-generalblack text-14px font-bold cursor-pointer"
-                      }
-                    >
-                      {user.sysUser.nickname}
-                    </span>
-                  </Link>
-                  <div className={"flex flex-row items-center self-start"}>
-                    <span className={"icon-fi-rs-auro auroGradient mr-1"} />
-                    <span
-                      className={"text-14px text-caak-darkBlue font-medium"}
-                    >
-                      {user.sysUser.aura}
-                    </span>
-                  </div>
-                </div>
-                <div
-                  ref={menuRef}
-                  onClick={() => params.setIsMenuOpen(!params.isMenuOpen)}
-                  className="text-12px hover:bg-caak-liquidnitrogen flex items-center justify-center w-6 h-6 ml-1 text-center transition duration-100 ease-linear transform -rotate-90 rounded-full cursor-pointer"
-                >
-                  <span className="icon-fi-rs-back" />
-                </div>
-              </div>
-            </div>
+              className={
+                "block mr-0 w-[36px] h-[36px] object-cover rounded-full"
+              }
+            />
+          ) : (
+            <span className="p-2 rounded-lg icon-fi-rs-profile text-caak-generalblack text-24px py-px-8" />
           )}
         </div>
       </div>
@@ -177,11 +226,11 @@ const SubMenu = ({ params }) => {
   //   <spa
   //     onClick={() =
   //       checkUser(user
-  //         ? history.push(
+  //         ? router.push(
   //             pathname: "/post/add/new"
   //             state: { background: location }
   //           }
-  //         : history.push(
+  //         : router.push(
   //             pathname: "/login"
   //             state: { background: location }
   //           }
@@ -193,7 +242,7 @@ const SubMenu = ({ params }) => {
   //     onClick={() =>
   //       checkUser(user
   //         ? setIsNotificationMenu((oldState) => !oldState
-  //         : history.push(
+  //         : router.push(
   //             pathname: "/login"
   //             state: { background: location }
   //           })
@@ -212,7 +261,7 @@ const SubMenu = ({ params }) => {
   //   {checkUser(user) ?
   //     <im
   //       onClick={() =
-  //         history.push(
+  //         router.push(
   //           pathname: `/user/${user.sysUser.id}/profile`
   //         }
   //
@@ -227,7 +276,7 @@ const SubMenu = ({ params }) => {
   //   ) :
   //     <spa
   //       onClick={() =>
-  //         history.push(
+  //         router.push(
   //           pathname: "/login"
   //         })
   //       }

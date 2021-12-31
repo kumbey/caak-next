@@ -1,19 +1,22 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
-const DBClient = DB(process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME, docClient)
+const DBClient = DB(process.env.API_CAAK_NOTIFICATIONTABLE_NAME, docClient)
 
 async function insert(data){
     try{
 
-        const now = new Date().toISOString()
+        if(data.from !== data.to || data.type === "POST"){
+            const now = new Date().toISOString()
 
-        data["__typename"] = "Notification"
-        data["updatedAt"] = now
-        data["createdAt"] = now
-        let resp = await DBClient.create(data)
+            data["__typename"] = "Notification"
+            data["updatedAt"] = now
+            data["createdAt"] = now
+            let resp = await DBClient.create(data)
+            return resp
+        }
 
-        return resp
+        return true
     }catch(ex){
         return ex
     }

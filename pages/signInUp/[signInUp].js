@@ -1,175 +1,167 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faApple,
   faFacebook,
   faGoogle,
   faTwitter,
-  faApple,
 } from "@fortawesome/free-brands-svg-icons";
+import googleImg from "../../public/assets/images/Google-Color.svg";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { closeModal } from "../../src/utility/Util";
 import Button from "../../src/components/button";
-import { isLogged } from "../../src/utility/Authenty";
 import { useUser } from "../../src/context/userContext";
 import useModalLayout from "../../src/hooks/useModalLayout";
 import { useRouter } from "next/router";
-import WithOutAuth  from "../../src/middleware/auth/WithOutAuth";
+import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
+import Image from "next/image";
 
+const SignInUp = () => {
+  const ModalLayout = useModalLayout();
+  const router = useRouter();
+  const type = router.query.signInUp;
 
-const SignInUp = ({...props }) => {
-
-  const ModalLayout = useModalLayout()
-  const router = useRouter()
-  const type = router.query.signInUp
-
-  const host = "/federated/login/";
+  const host = "/signInUp/federated/";
   const windowName = "_blank";
-  const { user, setUser } = useUser();
+  const { isLoginValid } = useUser();
 
   const openWindow = (type) => {
     const opened = window.open(host + type, windowName);
     const timer = setInterval(function () {
       if (opened.closed) {
+        isLoginValid();
         clearInterval(timer);
-        isLogged(user, setUser);
-        closeModal(history, state);
       }
     }, 100);
   };
 
+  const goNext = () => {
+    if (router.query.isModal) {
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            signInUp: type === "signIn" ? "in" : "up",
+          },
+        },
+        type === "signIn" ? "/signInUp/in" : "/signInUp/up",
+        { shallow: true }
+      );
+    } else {
+      router.replace(
+        type === "signIn" ? "/signInUp/in" : "/signInUp/up",
+        undefined,
+        { shallow: true, scroll: false }
+      );
+    }
+  };
+
   return (
-    <ModalLayout 
+    <ModalLayout
+      type={type}
+      onCloseKeys={["signInUp"]}
       className={"flex justify-center items-center"}
-      title={ `Шинэ Саак-т ${type === "signUp" ? "бүртгүүлэх!" : "нэвтрэх!"}`}
     >
-        {/*Social Buttons*/}
-        <div className={"flex flex-col items-center px-c13 "}>
-          <Button
-            onClick={() => {
-              type === "signUp"
-                ? history.replace({
-                    pathname: "/register/main",
-                    state: state,
-                  })
-                : history.replace({ pathname: "/login/main", state: state });
-            }}
-            round
-            className={
-              "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-bold rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
-            }
-          >
-            <FontAwesomeIcon
-              size={"lg"}
-              className={"text-caak-generalblack absolute left-c1"}
-              icon={faEnvelope}
-            />
-            Имэйл хаяг / Утасны дугаар
-          </Button>
-          <Button
-            onClick={() => openWindow("facebook")}
-            round
-            className={
-              "hover:bg-gray-100 border border-gray-200 w-80 h-11   font-bold mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative"
-            }
-          >
-            <FontAwesomeIcon
-              size={"lg"}
-              className={"text-caak-facebook absolute left-c1"}
-              icon={faFacebook}
-            />
-            Facebook
-          </Button>
-          <Button
-            onClick={() => openWindow("google")}
-            round
-            className={
-              "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
-            }
-          >
-            <FontAwesomeIcon
-              size={"lg"}
-              className={"text-caak-primary absolute left-c1"}
-              icon={faGoogle}
-            />
-            <p className="">Google</p>
-          </Button>
-
-          <Button
-            onClick={() => null}
-            round
-            className={
-              "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
-            }
-          >
-            <div className="px-16">
-              <FontAwesomeIcon
-                size={"lg"}
-                className={"text-caak-twitter absolute left-c1"}
-                icon={faTwitter}
-              />
-              <p className="">Twitter</p>
-            </div>
-          </Button>
-          <Button
-            onClick={() => null}
-            round
-            className={
-              "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
-            }
-          >
-            <div className="px-16">
-              <FontAwesomeIcon
-                size={"lg"}
-                className={"text-caak-generalblack absolute left-c1"}
-                icon={faApple}
-              />
-              <p className="">Apple</p>
-            </div>
-          </Button>
-        </div>
-
-        {/*Footer*/}
-        <div
+      {/*Social Buttons*/}
+      <div className={"flex flex-col items-center px-c13 "}>
+        <Button
+          onClick={goNext}
+          round
           className={
-            "signFooter px-c2 mb-c1 flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20 text-sm "
+            "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-medium font-inter rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
           }
         >
-          {type === "signUp" ? (
-            <div className="text-caak-blue text-15px">
-              <span>Бүртгэлтэй хэрэглэгч бол </span>
-              <span
-                onClick={() =>
-                  history.replace({
-                    pathname: "/login/",
-                    state,
-                  })
-                }
-                className="text-caak-primary text-15px font-bold cursor-pointer"
-              >
-                {" "}
-                Нэвтрэх
-              </span>
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-generalblack absolute right-4 top-0 "}
+              icon={faEnvelope}
+            />
+          </div>
+          Имэйл хаяг/Утасны дугаар
+        </Button>
+        <Button
+          onClick={() => openWindow("facebook")}
+          round
+          className={
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11   font-medium font-inter mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative g"
+          }
+        >
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-facebook absolute right-4 top-0"}
+              icon={faFacebook}
+            />
+          </div>
+          <p>Facebook</p>
+          <p className="w-[40px]"></p>
+        </Button>
+        <Button
+          onClick={() => openWindow("google")}
+          round
+          className={
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-medium font-inter mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+          }
+        >
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            {/* <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-primary absolute right-4 top-0"}
+              icon={faGoogle}
+            /> */}
+            <div className="absolute right-4 top-0 w-[24px] h-[24px]">
+              <Image alt="" src={googleImg} height={24} width={24} objectFit="cover" />
             </div>
-          ) : (
-            <div className="text-caak-blue text-15px">
-              <span>Шинэ хэрэглэгч бол </span>
-              <span
-                onClick={() =>
-                  history.replace({
-                    pathname: "/register/",
-                    state,
-                  })
-                }
-                className="text-caak-primary text-15px font-bold cursor-pointer"
-              >
-                {" "}
-                Бүртгүүлэх
-              </span>
-            </div>
-          )}
-          <span className="icon-fi-rs-help text-18px" />
-        </div>
-    </ModalLayout>
-  )
-}
+          </div>
+          <p className="">Google</p>
+          <p className="w-[40px]"></p>
+        </Button>
 
-export default WithOutAuth(SignInUp)
+        {/* <Button
+          onClick={() => null}
+          round
+          className={
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-medium font-inter mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+          }
+        >
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-twitter absolute right-4 top-0"}
+              icon={faTwitter}
+            />
+          </div>
+          <p className="">Twitter</p>
+          <p className="w-[40px]"></p>
+        </Button>
+        <Button
+          onClick={() => null}
+          round
+          className={
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-medium font-inter mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+          }
+        >
+          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+            <FontAwesomeIcon
+              size={"lg"}
+              className={"text-caak-generalblack absolute right-4 top-0"}
+              icon={faApple}
+            />
+          </div>
+          <p className="">Apple</p>
+          <p className="w-[40px]"></p>
+        </Button> */}
+      </div>
+      {type === "signUp" && (
+        <p className="mx-[25px] text-center mt-[34px]  font-inter font-normal text-13px text-caak-aleutian">
+          Та энэ алхамын үргэлжлүүлснээр, сайтын{" "}
+          <span className="text-caak-generalblack">Үйлчилгээний нөхцөл</span>{" "}
+          болон{" "}
+          <span className="text-caak-generalblack">Нууцлалын бодлогыг</span>{" "}
+          зөвшөөрсөнд тооцно.
+        </p>
+      )}
+    </ModalLayout>
+  );
+};
+
+export default WithOutAuth(SignInUp);

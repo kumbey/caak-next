@@ -1,7 +1,16 @@
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import AddPostThumbnailImage from "/public/assets/images/AddPostThumbnail.svg";
 import awsExports from "../../aws-exports";
-import { getFileExt, getFileName } from "../../utility/Util";
+import {
+  findMatchIndex,
+  getFileExt,
+  getFileName,
+  getGenderImage,
+} from "../../utility/Util";
+import imageCompression from "browser-image-compression";
+import Consts from "../../utility/Consts";
 
 const DropZone = ({
   setPost,
@@ -12,24 +21,31 @@ const DropZone = ({
   subTitleStyle,
   titleStyle,
   icon,
+  hideThumbnailImage,
 }) => {
   const [dropZoneFiles, setDropZoneFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: setDropZoneFiles,
-    accept: "image/*, video/*",
+    accept: "image/jpeg, image/png, image/gif, video/*",
     noKeyboard: true,
     noClick: false,
     multiple: true,
   });
 
-  useEffect(() => {
-    if (post.items.length + dropZoneFiles.length > 10) {
-      alert("maxFiles 10 files");
+  const fileChoosed = async () => {
+    if (post.items.length + dropZoneFiles.length > 30) {
+      alert("Зөвшөөрөгдөх зурагны нийт тоо 30");
     } else {
-      const files = [];
+      const localPost = { ...post };
+      const postItemLength = post.items.length;
+      const toCompressFiles = [];
 
-      dropZoneFiles.map((file) => {
+      for (let index = 0; index < dropZoneFiles.length; index++) {
+        const file = dropZoneFiles[index];
+        const realIndex = postItemLength + index + 1;
+
         const fileData = {
+          id: realIndex,
           title: "",
           post_id: post.id,
           file: {
@@ -37,7 +53,7 @@ const DropZone = ({
             name: getFileName(file.name),
             key: file.name,
             type: file.type,
-            url: URL.createObjectURL(file),
+            url: "",
             bucket: awsExports.aws_user_files_s3_bucket,
             region: awsExports.aws_user_files_s3_bucket_region,
             level: "public",
@@ -45,31 +61,69 @@ const DropZone = ({
           },
         };
 
-        // if(post.length <= 0 && index === 0){
-        //     postData.featured = true
-        // }
-        files.push(fileData);
-        return false;
-      });
+        if (Consts.regexImage.test(file.type)) {
+          fileData.url = getGenderImage("default").src;
+          fileData.loading = true;
+          toCompressFiles.push(fileData);
+        } else {
+          fileData.file.url = URL.createObjectURL(file);
+        }
 
-      if (files.length > 0) {
-        const items = [...post.items, ...files];
-        setPost({ ...post, items: items });
+        localPost.items.push(fileData);
       }
+
+      setPost({ ...localPost });
+      compressFiles(toCompressFiles);
     }
+  };
+
+  const compressFiles = async (files) => {
+    for (let index = 0; index < files.length; index++) {
+      const curItem = files[index];
+
+      const options = {
+        maxSizeMB: 1,
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(curItem.file.obj, options);
+
+      curItem.file.obj = compressedFile;
+      curItem.file.url = URL.createObjectURL(compressedFile);
+      const curIndex = findMatchIndex(post.items, "id", curItem.id);
+      const postItems = post.items;
+      postItems[curIndex].file = curItem.file;
+      delete postItems[curIndex].loading;
+      setPost((prev) => ({ ...prev, items: [...postItems] }));
+    }
+  };
+
+  useEffect(() => {
+    fileChoosed();
     // eslint-disable-next-line
   }, [dropZoneFiles]);
 
   return (
     <div
       {...getRootProps({
-        className: `cursor-pointer flex flex-col justify-center items-center rounded-square bg-caak-liquidnitrogen ${
-          className && className
-        }`,
+        className: `${
+          className ? className : ""
+        } cursor-pointer flex flex-col justify-center items-center rounded-square`,
       })}
     >
       <input {...getInputProps()} />
       {icon && icon}
+      {!hideThumbnailImage && (
+        <div className={"relative w-[116px] h-[93px]"}>
+          <Image
+            priority={true}
+            alt={""}
+            layout={"fill"}
+            src={AddPostThumbnailImage}
+          />
+        </div>
+      )}
+
       <span className={`${titleStyle}`}>{title}</span>
       <span className={`${subTitleStyle}`}>{subTitle}</span>
     </div>

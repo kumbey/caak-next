@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.4\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,13 +16,17 @@
     "s3Key": {
       "Type": "String"
     },
-    "apicaakmnGraphQLAPIIdOutput": {
+    "apicaakGraphQLAPIIdOutput": {
       "Type": "String",
-      "Default": "apicaakmnGraphQLAPIIdOutput"
+      "Default": "apicaakGraphQLAPIIdOutput"
     },
-    "functioncaakmnlayerAPIArn": {
+    "apicaakGraphQLAPIEndpointOutput": {
       "Type": "String",
-      "Default": "functioncaakmnlayerAPIArn"
+      "Default": "apicaakGraphQLAPIEndpointOutput"
+    },
+    "functioncaaklayer001Arn": {
+      "Type": "String",
+      "Default": "functioncaaklayer001Arn"
     }
   },
   "Conditions": {
@@ -78,12 +82,18 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAKMN_NOTIFICATIONTABLE_NAME": {
+            "API_CAAK_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicaakGraphQLAPIIdOutput"
+            },
+            "API_CAAK_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apicaakGraphQLAPIEndpointOutput"
+            },
+            "API_CAAK_NOTIFICATIONTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
               }
             },
-            "API_CAAKMN_NOTIFICATIONTABLE_ARN": {
+            "API_CAAK_NOTIFICATIONTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -98,14 +108,11 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                      "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
                     }
                   }
                 ]
               ]
-            },
-            "API_CAAKMN_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicaakmnGraphQLAPIIdOutput"
             }
           }
         },
@@ -118,7 +125,7 @@
         "Runtime": "nodejs14.x",
         "Layers": [
           {
-            "Ref": "functioncaakmnlayerAPIArn"
+            "Ref": "functioncaaklayer001Arn"
           }
         ],
         "Timeout": 25
@@ -130,12 +137,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakmnLambdaRole1f2f50a9",
+            "caakLambdaRole2890a8e6",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakmnLambdaRole1f2f50a9",
+                  "caakLambdaRole2890a8e6",
                   "-",
                   {
                     "Ref": "env"
@@ -224,6 +231,59 @@
             {
               "Effect": "Allow",
               "Action": [
+                "appsync:Create*",
+                "appsync:StartSchemaCreation",
+                "appsync:GraphQL",
+                "appsync:Get*",
+                "appsync:List*",
+                "appsync:Update*",
+                "appsync:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apicaakGraphQLAPIIdOutput"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "dynamodb:Put*",
                 "dynamodb:Create*",
                 "dynamodb:BatchWriteItem",
@@ -253,7 +313,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
                         }
                       }
                     ]
@@ -274,7 +334,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
+                          "Fn::Sub": "${apicaakGraphQLAPIIdOutput}:GetAtt:NotificationTable:Name"
                         }
                       },
                       "/index/*"

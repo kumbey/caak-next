@@ -1,24 +1,25 @@
-import React, { useState, useRef, useEffect, createRef } from "react";
+import { IMaskInput } from "react-imask";
 
-export default function Test({ name, onChange, errorMessage, reset }) {
-  const [otp, setOtp] = useState(new Array(6).fill(""));
-  const refs = useRef(otp.map(() => createRef()));
-  const [pointer, setPointer] = useState(0);
+import { useEffect, useState } from "react";
 
-  useEffect(() => {
-    const arr = [...otp];
-    arr[pointer] = "";
-    setOtp(arr);
-    refs.current[pointer].current.focus();
+const OtpInput = ({
+  className,
+  errorMessage,
+  name,
+  onChange,
+  reset,
+  autoFocus,
+  ...props
+}) => {
+  const [otp, setOtp] = useState("");
 
-    // eslint-disable-next-line
-  }, [pointer]);
+  const seperator = "     ";
 
   useEffect(() => {
     onChange({
       target: {
         name: name,
-        value: otp.join(""),
+        value: otp.replaceAll("     ", ""),
       },
     });
     // eslint-disable-next-line
@@ -31,56 +32,26 @@ export default function Test({ name, onChange, errorMessage, reset }) {
   }, [reset]);
 
   const clearOtp = () => {
-    setOtp(["", "", "", "", "", ""]);
-    setPointer(0);
+    setOtp("");
   };
-
-  const handleChange = (value, index) => {
-    if (isNaN(value)) return false;
-
-    setOtp([...otp.map((d, idx) => (idx === index ? value : d))]);
-
-    if (value) {
-      if (pointer < otp.length - 1) {
-        setPointer(pointer + 1);
-      }
-    } else {
-      if (pointer > 0) {
-        setPointer(pointer - 1);
-      }
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Backspace") {
-      if (pointer > 0) {
-        setPointer(pointer - 1);
-      }
-    }
-    return true;
-  };
-
   return (
     <div className="mx-c13">
-      <div className="flex justify-between w-full">
-        {otp.map((data, index) => {
-          return (
-            <input
-              disabled={pointer === index ? false : true}
-              ref={refs.current[index]}
-              value={data}
-              key={index}
-              onKeyUp={(e) => handleKeyDown(e)}
-              onChange={(e) => handleChange(e.target.value, index)}
-              id={index}
-              type="text"
-              maxLength="1"
-              className="w-11 mr-1 h-14 text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite rounded-lg"
-            />
-          );
-        })}
+      <div className="flex flex-col items-center justify-center w-full">
+        <IMaskInput
+          {...props}
+          className={`w-[350px] justify-center rounded-lg  h-[42px] text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite  ${className}   ${
+            errorMessage ? ` border border-caak-red` : ``
+          }`}
+          onInput={(e) => setOtp(e.target.value)}
+          mask={`0${seperator}0${seperator}0${seperator}0${seperator}0${seperator}0`}
+          lazy={false}
+          placeholderChar={"_"}
+        />
+
+        <p className="error">{errorMessage}</p>
       </div>
-      <p className="error">{errorMessage}</p>
     </div>
   );
-}
+};
+
+export default OtpInput;

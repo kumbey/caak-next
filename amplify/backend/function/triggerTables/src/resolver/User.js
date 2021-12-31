@@ -1,6 +1,6 @@
 const { getValuesFromRecord } = require("/opt/util/Util")
 const UserTotal = require("../db/UserTotal")
-const Username = require("../db/Username")
+// const Username = require("../db/Username")
 
 async function insert(record){
     try{
@@ -9,7 +9,7 @@ async function insert(record){
         const newImg = getValuesFromRecord(NewImage)
 
         await UserTotal.insert(newImg.id)
-        await Username.insert(newImg.id)
+        // await Username.insert(newImg.id)
 
         return true
 

@@ -1,6 +1,6 @@
 {
   "auth": {
-    "caakmn248efac3": {
+    "caak38fbeb70": {
       "service": "Cognito",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",
@@ -9,7 +9,7 @@
     }
   },
   "api": {
-    "caakmn": {
+    "caak": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -17,7 +17,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authcaakmn248efac3"
+              "userPoolId": "authcaak0290cf1f"
             }
           },
           "additionalAuthenticationProviders": [
@@ -30,21 +30,39 @@
     }
   },
   "storage": {
-    "s30c6bf4f5": {
+    "s34dbcce02": {
       "service": "S3",
-      "providerPlugin": "awscloudformation"
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   },
   "function": {
-    "userpoolpostconfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "caakmnlayerAPI": {
+    "caaklayer001": {
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer",
       "build": true
+    },
+    "notification": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "caaklayer001",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "caak",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
     },
     "resolverBoolean": {
       "build": true,
@@ -53,77 +71,15 @@
       "dependsOn": [
         {
           "category": "api",
-          "resourceName": "caakmn",
+          "resourceName": "caak",
           "attributes": [
-            "GraphQLAPIIdOutput"
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
           ]
         },
         {
           "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        }
-      ]
-    },
-    "aura": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ]
-    },
-    "userRoleOnGroup": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ]
-    },
-    "triggerTables": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
+          "resourceName": "caaklayer001",
           "attributes": [
             "Arn"
           ]
@@ -137,16 +93,9 @@
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "caakmnlayerAPI",
+          "resourceName": "caaklayer001",
           "attributes": [
             "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
           ]
         }
       ]
@@ -158,14 +107,14 @@
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "caakmnlayerAPI",
+          "resourceName": "caaklayer001",
           "attributes": [
             "Arn"
           ]
         },
         {
           "category": "api",
-          "resourceName": "caakmn",
+          "resourceName": "caak",
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
@@ -179,58 +128,95 @@
       "service": "Lambda",
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "caaklayer001",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
           "category": "api",
-          "resourceName": "caakmn",
+          "resourceName": "caak",
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
           ]
-        },
+        }
+      ]
+    },
+    "triggerTables": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
         {
           "category": "function",
-          "resourceName": "caakmnlayerAPI",
+          "resourceName": "caaklayer001",
           "attributes": [
             "Arn"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "caak",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
           ]
         }
       ]
     },
-    "fixTableData": {
+    "userRoleOnGroup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "caaklayer001",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "caak",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "aura": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
       "dependsOn": [
         {
           "category": "api",
-          "resourceName": "caakmn",
+          "resourceName": "caak",
           "attributes": [
             "GraphQLAPIIdOutput"
           ]
         },
         {
           "category": "function",
-          "resourceName": "caakmnlayerAPI",
+          "resourceName": "caaklayer001",
           "attributes": [
             "Arn"
           ]
         }
       ]
     },
-    "notification": {
+    "restoreOldPosts": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
           "category": "api",
-          "resourceName": "caakmn",
+          "resourceName": "caak",
           "attributes": [
             "GraphQLAPIIdOutput"
           ]

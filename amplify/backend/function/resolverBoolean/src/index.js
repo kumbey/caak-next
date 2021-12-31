@@ -1,22 +1,29 @@
 /* Amplify Params - DO NOT EDIT
-	API_CAAKMN_FOLLOWEDUSERSTABLE_ARN
-	API_CAAKMN_FOLLOWEDUSERSTABLE_NAME
-	API_CAAKMN_GRAPHQLAPIIDOUTPUT
-	API_CAAKMN_GROUPUSERSTABLE_ARN
-	API_CAAKMN_GROUPUSERSTABLE_NAME
-	API_CAAKMN_REACTIONSTABLE_ARN
-	API_CAAKMN_REACTIONSTABLE_NAME
+	API_CAAK_FOLLOWEDUSERSTABLE_ARN
+	API_CAAK_FOLLOWEDUSERSTABLE_NAME
+	API_CAAK_GRAPHQLAPIENDPOINTOUTPUT
+	API_CAAK_GRAPHQLAPIIDOUTPUT
+	API_CAAK_GROUPUSERSTABLE_ARN
+	API_CAAK_GROUPUSERSTABLE_NAME
+	API_CAAK_REACTIONSTABLE_ARN
+	API_CAAK_REACTIONSTABLE_NAME
+	API_CAAK_SAVEDPOSTTABLE_ARN
+	API_CAAK_SAVEDPOSTTABLE_NAME
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const { isReacted, isFollowed, isFollowedGroup } = require('./resolvers/Resolver')
+const { isReacted, isFollowed, isFollowedGroup, isPostSaved } = require('./resolvers/Resolver')
 
 const Resolver = {
     Post: {
         reacted: isReacted,
+        isSaved: isPostSaved
     },
     PostItems: {
+        reacted: isReacted,
+    },
+    Comment: {
         reacted: isReacted,
     },
     User: {

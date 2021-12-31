@@ -2,18 +2,27 @@ const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
 const Counter = require("/opt/tables/Counter")
-const DBClient = DB(process.env.API_CAAKMN_POSTTOTALTABLE_NAME, docClient)
-const CountClient = Counter(process.env.API_CAAKMN_POSTTOTALTABLE_NAME, docClient)
+const DBClient = DB(process.env.API_CAAK_POSTTOTALTABLE_NAME, docClient)
+const CountClient = Counter(process.env.API_CAAK_POSTTOTALTABLE_NAME, docClient)
 
-async function insert(id){
+async function insert(newImg){
     try{
 
         let data = {
             disableGenId: true,
             pkey: "post_id",
             __typename: "PostTotal",
-            post_id: id,
+            post_id: newImg.id,
+            status: newImg.status,
+            search_id: newImg.id,
+            group_id: newImg.group_id,
+            category_id: newImg.category_id,
+            groupAndStatus: `${newImg.group_id}#${newImg.status}`,
+            categoryAndStatus: `${newImg.category_id}#${newImg.status}`,
+            search_key: "P",
             reactions: 0,
+            total_reactions: 0,
+            comments: 0,
             views: 0,
             shares: 0
         }
@@ -64,9 +73,21 @@ async function get(id){
     }
 }
 
+async function update(data, pass, idField){
+    try{
+
+        let resp = await DBClient.update(data, pass, idField)
+        
+        return resp
+    }catch(ex){
+        return ex
+    }
+}
+
 module.exports = {
     insert: insert,
     modify: modify,
     remove: remove,
-    get: get
+    get: get,
+    update: update
 }

@@ -4,13 +4,59 @@ const post0004 = /* GraphQL */ `
   {
     id
     title
+    description
     commentType
+    owned
+    f_text
     status
+      status_history {
+          items {
+              description
+              id
+          }
+      }
     user_id
     group_id
     category_id
     updatedAt
+    createdAt
     version
+    isSaved
+    comments {
+      items {
+        comment
+        parent_id
+        post_item_id
+        post_id
+        createdAt
+        reacted
+        id
+        totals {
+          reactions
+        }
+        user {
+          nickname
+          pic ${file0001}
+          id
+        }
+        sub {
+          items {
+            comment
+            id
+            createdAt
+            parent_id
+            totals {
+              reactions
+            }
+            user {
+              nickname
+              pic ${file0001}
+              id
+            }
+          }
+        }
+      }
+    }
     user {
       firstname
       id
@@ -27,13 +73,22 @@ const post0004 = /* GraphQL */ `
       id
       name
       profile ${file0001}
+      followed
+      role_on_group
     }
 
     totals {
+      comments
+      createdAt
+      post_id
       reactions
+      search_id
+      shares
+      updatedAt
+      views
     }
     reacted
-    items {
+     items(filter: {isEmbed: {attributeExists: false}}) {
       items {
         user_id
         post_id
@@ -45,6 +100,9 @@ const post0004 = /* GraphQL */ `
         comments {
           items {
             comment
+            id
+            parent_id
+            reacted
             createdAt
             totals {
               reactions

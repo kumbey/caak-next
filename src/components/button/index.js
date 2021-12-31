@@ -1,23 +1,30 @@
-import React from "react";
+import { forwardRef } from "react";
 import Loader from "../loader";
 
-const Button = ({
-  skin,
-  round,
-  circular,
-  iconPosition,
-  icon,
-  loading,
-  roundedSquare,
-  disabled,
-  small,
-  ...props
-}) => {
+const Button = (
+  {
+    skin,
+    round,
+    circular,
+    iconPosition,
+    icon,
+    loading,
+    roundedSquare,
+    disabled,
+    small,
+      className,
+    ...props
+  },
+  ref
+) => {
   return (
     <button
       {...props}
-      className={`button ${small ? "small" : ""} ${skin ? skin : ""} ${round ? "round" : ""} ${
-        disabled && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"
+      ref={ref}
+      className={`button ${className ? className : ""} ${small ? "small" : ""} ${skin ? skin : ""} ${
+        round ? "round" : ""
+      } ${
+        (disabled || loading) && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"
       } ${circular ? "circular" : ""} ${
         roundedSquare ? "rounded-square" : ""
       } ${props.className}`}
@@ -25,9 +32,9 @@ const Button = ({
     >
       {iconPosition === "left" ? icon : ""}
       {circular || roundedSquare ? icon : ""}
-      {loading ? <Loader className={"bg-white"} /> : props.children}
+      {loading ? <Loader className={`${skin === "white" ? "bg-caak-primary" : "bg-white"}`} /> : props.children}
       {iconPosition === "right" ? icon : ""}
     </button>
   );
 };
-export default Button;
+export default forwardRef(Button);

@@ -2,13 +2,21 @@
   "lambdaLayers": [
     {
       "type": "ProjectLayer",
-      "resourceName": "caakmnlayerAPI",
-      "env": "devs",
+      "resourceName": "caaklayer001",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true
+      "isLatestVersionSelected": true,
+      "env": "dev"
     }
   ],
   "permissions": {
+    "api": {
+      "caak": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
     "storage": {
       "UserTotal:@model(appsync)": [
         "create",
@@ -17,12 +25,6 @@
         "delete"
       ],
       "GroupTotal:@model(appsync)": [
-        "create",
-        "read",
-        "update",
-        "delete"
-      ],
-      "Username:@model(appsync)": [
         "create",
         "read",
         "update",

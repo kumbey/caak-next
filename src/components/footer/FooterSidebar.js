@@ -1,0 +1,56 @@
+import Link from "next/link";
+const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
+  return (
+    <div
+    style={{
+      ...(banner ? {position: "sticky", top: `calc(${topItemHeight} + 20px)`} : {})
+    }}
+      className={`flex flex-col text-12px text-caak-darkBlue ${
+        containerClassname ? containerClassname : ""
+      }`}
+    >
+      <div className={"flex flex-wrap my-[4px]"}>
+        <Link href="/help" shallow>
+            <a className=''>
+                <p>Тусламж</p>
+            </a>
+        </Link>
+        <p className="mx-[5px] cursor-default">·</p>
+        <Link href="/help/connectus" shallow>
+          <a className=''>
+              <p>Холбоо барих</p>
+          </a>
+        </Link>
+        <Link href={"/help/connectus"} shallow>
+            <a className=''>
+                <p>Сурталчилгаа</p>
+            </a>
+        </Link>
+        <p className="mx-[5px] cursor-default">·</p>
+        <Link href={{
+                  pathname: "/help/secure",
+                  query: {
+                      index: 1
+                  }
+              }}shallow>
+            <a className=''>
+                <p>Үйлчилгээний нөхцөл</p>
+            </a>
+        </Link>
+        <Link href={{
+                  pathname: "/help/secure",
+                  query: {
+                      index: 2
+                  }
+              }} shallow>
+            <a className=''>
+                <p>Нууцлал</p>
+            </a>
+        </Link>
+      </div>
+      <div className={"my-[4px]"}>©2021 Саак Холдинг ХХК</div>
+    </div>
+  );
+};
+
+export default FooterSidebar;

@@ -10,6 +10,7 @@ const Input = ({
   id,
   type,
   containerStyle,
+  children,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,14 +22,17 @@ const Input = ({
           {label}
         </label>
       )}
+
       <div className={"relative"}>
         {type === "password" ? (
-          <span
-            onClick={() => setShowPassword(!showPassword)}
-            className={`${
-              showPassword ? "icon-fi-rs-view text-sm" : "icon-fi-rs-hide"
-            } right-2 top-1/2  text-caak-darkBlue absolute transform -translate-y-1/2 cursor-pointer`}
-          />
+          <div className="absolute flex flex-row items-center right-2 top-1/2 -translate-y-1/2">
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              className={`${
+                showPassword ? "icon-fi-rs-view text-sm" : "icon-fi-rs-hide"
+              }   text-caak-darkBlue transform cursor-pointer`}
+            />
+          </div>
         ) : null}
         <input
           type={showPassword ? "text" : type}
@@ -37,6 +41,7 @@ const Input = ({
             errorMessage ? `border border-caak-red` : ``
           }`}
         />
+        {children}
       </div>
 
       {!hideError && (

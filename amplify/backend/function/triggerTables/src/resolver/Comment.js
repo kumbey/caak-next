@@ -1,7 +1,8 @@
 const { getValuesFromRecord } = require("/opt/util/Util")
 const CommentTotal = require("../db/CommentTotal")
 const PostItemsTotal = require("../db/PostItemsTotal")
-const UserTotal = require("../db/PostItemsTotal")
+const PostTotal = require("../db/PostTotal")
+const UserTotal = require("../db/UserTotal")
 const NotificationDB = require("../db/Notification")
 
 async function insert(record){
@@ -9,12 +10,13 @@ async function insert(record){
 
         const { NewImage } = record
         const newImg = getValuesFromRecord(NewImage)
+        let notifi_action = ""
 
         //CREATE NEW COMMENT TOTAL
         await CommentTotal.insert(newImg.id)
 
         //UPDATE USER TOTAL
-        await PostItemsTotal.modify(newImg.post_item_id, [
+        await UserTotal.modify(newImg.user_id, [
             {
                 field: "comments",
                 increase: true,
@@ -22,11 +24,32 @@ async function insert(record){
             }
         ])
 
+        if(newImg.on_to === "POST_ITEM"){
+            notifi_action = "POST_ITEM_COMMENT_WRITED"
+            await PostItemsTotal.modify(newImg.post_item_id, [
+                {
+                    field: "comments",
+                    increase: true,
+                    count: 1
+                }
+            ])
+        }else{
+            notifi_action = "POST_COMMENT_WRITED"
+            await PostTotal.modify(newImg.post_id, [
+                {
+                    field: "comments",
+                    increase: true,
+                    count: 1
+                }
+            ])
+        }
+        
+
         const react = {
             section: "USER",
             type: "COMMENT",
             item_id: newImg.id,
-            action: `COMMENT_WRITED`,
+            action: notifi_action,
             from: newImg.user_id,
             to: newImg.replyUserID,
             seen: "FALSE",
@@ -57,16 +80,31 @@ async function remove(record){
             field: "comment_reactions",
             increase: false,
             count: commentTotal.reactions
-        }
-    ])
-
-    await PostItemsTotal.modify(oldImg.post_item_id, [
+        },
         {
             field: "comments",
             increase: false,
             count: 1
         }
     ])
+
+    if(oldImg.on_to === "POST_ITEM"){
+        await PostItemsTotal.modify(oldImg.post_item_id, [
+            {
+                field: "comments",
+                increase: false,
+                count: 1
+            }
+        ])
+    }else{
+        await PostITotal.modify(oldImg.post_id, [
+            {
+                field: "comments",
+                increase: false,
+                count: 1
+            }
+        ])
+    }
 
     await CommentTotal.remove(oldImg.id)
 

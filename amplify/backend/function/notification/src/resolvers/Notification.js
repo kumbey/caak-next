@@ -10,7 +10,7 @@ async function seenALL(event) {
 
         //get items from dynamo
         const params = {
-            TableName: process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME,
+            TableName: process.env.API_CAAK_NOTIFICATIONTABLE_NAME,
             IndexName: "byUserAndSeen",
             KeyConditionExpression: "#to = :to AND seen = :seen",
             ExpressionAttributeValues: {
@@ -36,7 +36,7 @@ async function seenALL(event) {
             Key: {
                 "id": value.id
             },
-            TableName: process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME,
+            TableName: process.env.API_CAAK_NOTIFICATIONTABLE_NAME,
             UpdateExpression: "SET seen = :seen",
             };
         calls.push(docClient.update(params).promise());

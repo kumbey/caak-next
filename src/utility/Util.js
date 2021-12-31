@@ -2,31 +2,70 @@ import Consts from "./Consts";
 import CryptoJS from "crypto-js";
 import Configure from "../configure";
 import { DateTime } from "luxon";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
+import femaleImg from "../../public/assets/images/Female-Avatar.svg";
+import maleImg from "../../public/assets/images/Man-Avatar.svg";
+import defaultImg from "../../public/assets/images/default.png";
 
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
+
+export const sortSearchResultByKeyword = (array, keyword) => {
+  array
+    .filter((prof) => {
+      // Filter results by doing case insensitive match on keyword here
+      return prof.keyword.toLowerCase().includes(keyword?.toLowerCase());
+    })
+    .sort((a, b) => {
+      // Sort results by matching keyword with keyword position in keyword
+      if (
+        a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) >
+        b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
+      ) {
+        return 1;
+      } else if (
+        a.keyword.toLowerCase().indexOf(keyword?.toLowerCase()) <
+        b.keyword.toLowerCase().indexOf(keyword?.toLowerCase())
+      ) {
+        return -1;
+      } else {
+        if (a.keyword > b.keyword) return 1;
+        else return -1;
+      }
+    });
+  return array;
+};
 
 export function useDebounce(value, delay) {
   // State and setters for debounced value
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(
-      () => {
-        // Update debounced value after delay
-        const handler = setTimeout(() => {
-          setDebouncedValue(value);
-        }, delay);
-        // Cancel the timeout if value changes (also on delay change or unmount)
-        // This is how we prevent debounced value from updating if value is changed ...
-        // .. within the delay period. Timeout gets cleared and restarted.
-        return () => {
-          clearTimeout(handler);
-        };
-      },
-      [value, delay] // Only re-call effect if value or delay changes
+    () => {
+      // Update debounced value after delay
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      // Cancel the timeout if value changes (also on delay change or unmount)
+      // This is how we prevent debounced value from updating if value is changed ...
+      // .. within the delay period. Timeout gets cleared and restarted.
+      return () => {
+        clearTimeout(handler);
+      };
+    },
+    [value, delay] // Only re-call effect if value or delay changes
   );
   return debouncedValue;
 }
+
+export const getGenderImage = (gender) => {
+  if (gender === "MALE") {
+    return maleImg;
+  } else if (gender === "FEMALE") {
+    return femaleImg;
+  } else {
+    return defaultImg;
+  }
+};
 
 export const getFileExt = (fileName) => {
   return fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -37,7 +76,7 @@ export const getFileName = (fileName) => {
 };
 
 export const useClickOutSide = (handler) => {
-  let domNode = useRef();
+  const domNode = useRef();
 
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
@@ -49,7 +88,7 @@ export const useClickOutSide = (handler) => {
     return () => {
       document.removeEventListener("click", checkIfClickedOutside);
     };
-    
+
     // eslint-disable-next-line
   }, []);
   return domNode;
@@ -114,7 +153,7 @@ export function mailNumber(mailNumber) {
     mailNumber = arry.join("");
     return mailNumber;
   } else {
-    return alert("Мэйл эсвэл утасны дугаар оруулна уу");
+    return "Мэйл эсвэл утасны дугаар оруулна уу";
   }
 }
 
@@ -229,16 +268,21 @@ export function generateTimeAgo(date) {
   if (diff.years !== 0 || diff.months !== 0) {
     return postdate.toLocaleString();
   } else if (diff.days !== 0) {
-    return diff.days + " өдрийн өмнө";
+    return diff.days + " өдөр";
   } else if (diff.hours !== 0) {
-    return diff.hours + " цагийн өмнө";
+    return diff.hours + " цаг";
   } else if (diff.minutes !== 0) {
-    return diff.minutes + " минутын өмнө";
+    return diff.minutes + " мин";
   } else if (diff.seconds !== 0) {
-    return diff.seconds + " секундын өмнө";
+    return diff.seconds + " сек";
   } else {
-    return "Саяхан";
+    return "Сая";
   }
+}
+
+export function getDate(date){
+  const postDate = DateTime.fromISO(date)
+  return postDate.toLocaleString();
 }
 
 export function checkUser(user) {
@@ -272,12 +316,17 @@ export function checkUsername(username) {
 }
 
 export function getFileUrl(file) {
-  let retUrl = "";
+  let retUrl = `https://media.caak.mn/article_images/01_HKO2Zzb.jpg`;
 
-  if (file.url) {
-    retUrl = file.url;
-  } else {
-    retUrl = generateFileUrl(file);
+  if(file){
+    if (file.url) {
+      retUrl = file.url;
+    } else if(file.isExternal === "TRUE"){
+      retUrl = `https://media.caak.mn/${file.external_url}`
+    }
+    else {
+      retUrl = generateFileUrl(file);
+    }
   }
 
   return retUrl;
@@ -290,48 +339,65 @@ export function removeKeyFromObj(obj, removeKeys) {
   });
 }
 
-export function getReturnData(data, isSubscription){
+export function getReturnData(data, isSubscription) {
+  let retData = {};
 
-    let retData = {}
+  if (isSubscription) {
+    retData = data.value.data;
+  } else {
+    retData = data.data;
+  }
 
-    if(isSubscription){
-      retData = data.value.data
-    }else{
-      retData = data.data
-    }
-
-    retData = retData[Object.keys(retData)[0]]
-    return retData
+  retData = retData[Object.keys(retData)[0]];
+  return retData;
 }
 
-export function _objectWithoutKeys(obj, keys){
+export function _objectWithoutKeys(obj, keys) {
+  let target = {};
 
-    let target = {}
-
-    for(let key in obj){
-      if (keys.indexOf(key) < 0){
-        target[key] = obj[key]
-      } 
+  for (let key in obj) {
+    if (keys.indexOf(key) < 0) {
+      target[key] = obj[key];
     }
+  }
 
-    return target
+  return target;
 }
 
-export function _modalisOpen(params){
-    const {conditions, query} = params
-    let isOpen = false
+export function _modalisOpen(params) {
+  const { conditions, query } = params;
+  let isOpen = false;
+  for (let i = 0; i, conditions.length > i; i++) {
+    const condition = conditions[i];
     
-    for(let i=0; i , conditions.length > i; i++){
-      const condition = conditions[i]
-      
-      if(condition.value === query[condition.key]){
-        isOpen = true
+    if (condition.value === "DYNAMIC" && query[condition.key]) {
+      isOpen = true;
+    } else {
+      if (condition.value === query[condition.key]) {
+        isOpen = true;
+      }
+    }
+  }
+
+  return isOpen;
+}
+
+export async function fetcher(url) {
+  const resp = await fetch(url);
+  return resp.json();
+}
+
+export function findMatchIndex(arr, key, value){
+    let index = -1
+    for(let i=0; i < arr.length; i++){
+      if(arr[i][key] === value){
+          index = i
+          break
       }
     }
 
-    return isOpen
+    return index
 }
-
 
 const object = {
   useQuery,
@@ -349,6 +415,6 @@ const object = {
   getFileUrl,
   getReturnData,
   _objectWithoutKeys,
-  _modalisOpen
+  _modalisOpen,
 };
 export default object;

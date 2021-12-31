@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
-import {
-  getFileUrl,
-  getGenderImage,
-  useClickOutSide,
-} from "../../utility/Util";
-import { useWrapper } from "../../context/wrapperContext";
-import { useUser } from "../../context/userContext";
-import { useRouter } from "next/router";
+import {getFileUrl, getGenderImage, useClickOutSide,} from "../../utility/Util";
+import {useWrapper} from "../../context/wrapperContext";
+import {useUser} from "../../context/userContext";
+import {useRouter} from "next/router";
 import NotificationDropDown from "./NotificationDropDown";
 import useMediaQuery from "./useMeduaQuery";
 import SearchInput from "../input/SearchInput";
@@ -17,11 +13,11 @@ import AddPostGuideCard from "../card/AddPostGuideCard";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
 
-const SubMenu = ({ params }) => {
+const SubMenu = ({params}) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
 
   const {lsGet} = useLocalStorage("session")
-  
+
   const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPostGuide)
 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
@@ -105,6 +101,7 @@ const SubMenu = ({ params }) => {
                         ...router.query,
                         signInUp: "signIn",
                         isModal: true,
+                        prevPath: router.asPath
                       },
                     },
                     `/signInUp/signIn`,
@@ -127,6 +124,7 @@ const SubMenu = ({ params }) => {
                       ...router.query,
                       signInUp: "signIn",
                       isModal: true,
+                      prevPath: router.asPath
                     },
                   },
                   `/signInUp/signIn`,
@@ -212,7 +210,19 @@ const SubMenu = ({ params }) => {
               }
             />
           ) : (
-            <span className="p-2 rounded-lg icon-fi-rs-profile text-caak-generalblack text-24px py-px-8" />
+              <span onClick={() => router.push(
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      signInUp: "signIn",
+                      isModal: true,
+                      prevPath: router.asPath
+                    },
+                  },
+                  `/signInUp/signIn`,
+                  {shallow: true}
+              )} className="p-2 rounded-lg icon-fi-rs-profile text-caak-generalblack text-24px py-px-8"/>
           )}
         </div>
       </div>

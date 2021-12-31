@@ -1,19 +1,16 @@
-import {
-  createFollowedUsers,
-  deleteFollowedUsers,
-} from "../../graphql-custom/user/mutation";
+import {createFollowedUsers, deleteFollowedUsers,} from "../../graphql-custom/user/mutation";
 import API from "@aws-amplify/api";
-import { useUser } from "../../context/userContext";
-import { useEffect, useState } from "react";
-import { getFileUrl, getGenderImage } from "../../utility/Util";
-import { getUserById } from "../../utility/ApiHelper";
+import {useUser} from "../../context/userContext";
+import {useEffect, useState} from "react";
+import {getFileUrl, getGenderImage} from "../../utility/Util";
+import {getUserById} from "../../utility/ApiHelper";
 import Loader from "../loader";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import Image from "next/image";
 import Divider from "../divider";
 
-export default function ProfileHoverCard({ userId }) {
-  const { user, isLogged } = useUser();
+export default function ProfileHoverCard({userId}) {
+  const {user, isLogged} = useUser();
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
@@ -88,6 +85,7 @@ export default function ProfileHoverCard({ userId }) {
             ...router.query,
             signInUp: "signIn",
             isModal: true,
+            prevPath: router.asPath
           },
         },
         `/signInUp/signIn`,

@@ -1,29 +1,23 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import {
-  GroupType,
-  GroupViewType,
-} from "../../../src/components/navigation/sortButtonTypes";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+import {GroupType, GroupViewType,} from "../../../src/components/navigation/sortButtonTypes";
 import useGroupLayout from "../../../src/hooks/useGroupLayout";
-import { API, withSSRContext } from "aws-amplify";
+import {API, withSSRContext} from "aws-amplify";
 
-import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
-import { getReturnData } from "../../../src/utility/Util";
+import {getPostByGroup} from "../../../src/graphql-custom/post/queries";
+import {getReturnData} from "../../../src/utility/Util";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
-import { useListPager } from "../../../src/utility/ApiHelper";
+import {useListPager} from "../../../src/utility/ApiHelper";
 
 import Card from "../../../src/components/card/FeedCard";
-import { useUser } from "../../../src/context/userContext";
-import {
-  getGroupView,
-  listPostByGroupOrderByReactions,
-} from "../../../src/graphql-custom/group/queries";
+import {useUser} from "../../../src/context/userContext";
+import {getGroupView, listPostByGroupOrderByReactions,} from "../../../src/graphql-custom/group/queries";
 import List from "../../../src/components/list";
-import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
+import {onPostByGroup} from "../../../src/graphql-custom/post/subscription";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
-import toast, { Toaster } from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 import AddPostHandler from "../../../src/components/addposthandler";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
@@ -37,7 +31,6 @@ export async function getServerSideProps({ req, query }) {
     console.log(ex);
     user = null;
   }
-
   try{
     const resp = await API.graphql({
       query: getPostByGroup,
@@ -49,7 +42,7 @@ export async function getServerSideProps({ req, query }) {
       },
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
-  
+
     const groupView = await API.graphql({
       query: getGroupView,
       variables: {
@@ -87,7 +80,7 @@ const Group = ({ ssrData }) => {
   const [trendingPosts, setTrendingPosts] = useState({
     items: []
   });
-  const [groupData] = useState(ssrData.groupData);
+  const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
 
   const totalMember =
@@ -141,7 +134,6 @@ const Group = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
         const resp = await nextTrendPosts();
-        console.log(resp)
         if (resp) {
           setTrendingPosts((prev) => ({...prev, items: [...prev.items, ...resp]}));
         }
@@ -232,15 +224,19 @@ const Group = ({ ssrData }) => {
     // eslint-disable-next-line
   }, []);
 
-  const handleToast = ({ param }) => {
+  useEffect(() => {
+    setGroupData(ssrData.groupData)
+  }, [ssrData])
+
+  const handleToast = ({param}) => {
     if (param === "follow") toast.success("Группт амжилттай элслээ.");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
   };
 
   return loaded ? (
-    <>
-      <Head>
+      <>
+        <Head>
         <title>
           {groupData.name} - {Consts.siteMainTitle}
         </title>
@@ -257,7 +253,7 @@ const Group = ({ ssrData }) => {
         totalMember={totalMember}
         columns={2}
       >
-        {isTablet && <GroupAdminPanel groupData={groupData} />}
+        {isTablet && isLogged && <GroupAdminPanel groupData={groupData}/>}
         <AddPostHandler groupId={groupData.id}/>
         <GroupSortButtons
           activeIndex={activeIndex}

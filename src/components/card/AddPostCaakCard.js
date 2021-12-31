@@ -1,33 +1,33 @@
 import contentImage from "../../../public/assets/images/Content@2x.png";
 import Image from "next/image";
 import Button from "../button";
-import {useEffect, useState} from "react";
-import { useUser } from "../../context/userContext";
-import { useRouter } from "next/router";
+import {useEffect} from "react";
+import {useUser} from "../../context/userContext";
+import {useRouter} from "next/router";
 import AddPostHandler from "../addposthandler";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
 
-const AddPostCaakCard = ({ isOpen, setIsOpen }) => {
-  
-  const {lsSet, lsGet} = useLocalStorage("session")
-  const { isLogged } = useUser();
-  const router = useRouter();
+const AddPostCaakCard = ({isOpen, setIsOpen}) => {
+    const {lsSet, lsGet} = useLocalStorage("session");
+    const {isLogged} = useUser();
+    const router = useRouter();
 
-  useEffect(() => {
-    setIsOpen(lsGet(Consts.addPostKey).addPost)
-  }, [setIsOpen, lsGet])
+    useEffect(() => {
+        setIsOpen(lsGet(Consts.addPostKey).addPost);
+    }, [setIsOpen, lsGet]);
 
   return isOpen ? (
     <div
-      className={
-        "w-full bg-white rounded-[8px] p-[12px] mb-[24px] relative"
-      }
+        className={"w-full bg-white rounded-[8px] p-[12px] mb-[24px] relative"}
     >
       <div
         onClick={() => {
-          setIsOpen(false)
-          lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPost: false})
+            setIsOpen(false);
+            lsSet(Consts.addPostKey, {
+                ...lsGet(Consts.addPostKey),
+                addPost: false,
+            });
         }}
         className={
           "w-[30px] h-[30px] hover:bg-gray-200 cursor-pointer flex items-center justify-center rounded-full absolute top-[12px] right-[12px] bg-caak-liquidnitrogen"
@@ -55,9 +55,10 @@ const AddPostCaakCard = ({ isOpen, setIsOpen }) => {
                     {
                       pathname: router.pathname,
                       query: {
-                        ...router.query,
-                        signInUp: "signIn",
-                        isModal: true,
+                          ...router.query,
+                          signInUp: "signIn",
+                          isModal: true,
+                          prevPath: router.asPath,
                       },
                     },
                     `/signInUp/signIn`,
@@ -95,37 +96,32 @@ const AddPostCaakCard = ({ isOpen, setIsOpen }) => {
                   {
                     pathname: router.pathname,
                     query: {
-                      ...router.query,
-                      signInUp: "signIn",
-                      isModal: true,
+                        ...router.query,
+                        signInUp: "signIn",
+                        isModal: true,
+                        prevPath: router.asPath,
                     },
                   },
-                  `/signInUp/signIn`,
-                  { shallow: true }
+                `/signInUp/signIn`,
+                {shallow: true}
                 )
           }
           className={
-            "cursor-pointer flex items-center justify-center h-[44px] bg-caak-primary rounded-[8px] w-[533px]"
+              "cursor-pointer flex items-center justify-center h-[44px] bg-caak-primary rounded-[8px] w-[533px]"
           }
         >
-          <div
-            className={"w-[16px] h-[16px] flex items-center justify-center"}
-          >
-            <span
-              className={"icon-fi-rs-add-l text-[16px] text-white"}
-            />
-          </div>
-          <p
-            className={
-              "text-[15px] ml-[13px] font-medium text-white"
-            }
-          >
-            Пост оруулах
-          </p>
+            <div className={"w-[16px] h-[16px] flex items-center justify-center"}>
+                <span className={"icon-fi-rs-add-l text-[16px] text-white"}/>
+            </div>
+            <p className={"text-[15px] ml-[13px] font-medium text-white"}>
+                Пост оруулах
+            </p>
         </div>
       </div>
     </div>
-  ) : <AddPostHandler/>;
+  ) : (
+      <AddPostHandler/>
+  );
 };
 
 export default AddPostCaakCard;

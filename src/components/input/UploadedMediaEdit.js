@@ -1,27 +1,14 @@
 import Loader from "../loader";
-import { useEffect, useState } from "react";
-import {
-  arrayMove,
-  rectSortingStrategy,
-  SortableContext,
-  useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import {
-  closestCenter,
-  DndContext,
-  DragOverlay,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
+import {useEffect, useState} from "react";
+import {arrayMove, rectSortingStrategy, SortableContext, useSortable,} from "@dnd-kit/sortable";
+import {CSS} from "@dnd-kit/utilities";
+import {closestCenter, DndContext, DragOverlay, MouseSensor, TouchSensor, useSensor, useSensors,} from "@dnd-kit/core";
 import Image from "next/image";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import { generateFileUrl, getGenderImage } from "../../utility/Util";
+import {generateFileUrl, getGenderImage} from "../../utility/Util";
 import Video from "../video";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const thumbnailImageHandler = (item) => {
@@ -429,27 +416,27 @@ const UploadedMediaEdit = ({
                 src={thumbnailImageHandler(post.items[activeIndex])}
               />
             ) : (
-              <Image
-                alt={""}
-                src={thumbnailImageHandler(post.items[activeIndex])}
-                objectFit={"contain"}
-                layout={"fill"}
-              />
+                <Image
+                    alt={""}
+                    src={thumbnailImageHandler(post.items[activeIndex])}
+                    objectFit={"contain"}
+                    layout={"fill"}
+                />
             )}
           </div>
           <div
-            style={{ flexBasis: `366px` }}
-            className={"w-full h-full sm:ml-[14px] mt-[20px] sm:mt-0 relative"}
+              // style={{ flexBasis: `366px` }}
+              className={"addPostImageCaptionContainer w-full h-full sm:ml-[14px] mt-[20px] sm:mt-0 relative"}
           >
             <textarea
-              placeholder={"Зурагны тайлбар"}
-              style={{ resize: "none" }}
-              onChange={captionHandler}
-              value={post.items[activeIndex].title}
-              maxLength={maxLengths.imageDescription}
-              className={
-                "addPostTextarea w-full h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px] rounded-[3px] focus:ring-caak-primary"
-              }
+                placeholder={"Зурагны тайлбар"}
+                // style={{ resize: "none" }}
+                onChange={captionHandler}
+                value={post.items[activeIndex].title}
+                maxLength={maxLengths.imageDescription}
+                className={
+                  "addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px] rounded-[3px] focus:ring-caak-primary"
+                }
             />
             <span
               className={

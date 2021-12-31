@@ -410,6 +410,7 @@
     margin-left: 40px;
     max-width: 616px;
   }
+
   .profileCardView {
     flex-grow: 1;
     flex-basis: 616px;
@@ -417,6 +418,12 @@
     min-width: 320px;
     margin-right: 40px;
     max-width: 616px;
+  }
+
+
+  .addPostImageCaptionContainer {
+    flex-basis: 366px;
+    height: 100%;
   }
 
   @media (max-width: 1100px) {
@@ -450,6 +457,10 @@
 
     .userPostsContainer {
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+
+    .addPostImageCaptionContainer {
+      flex-basis: auto;
     }
   }
 

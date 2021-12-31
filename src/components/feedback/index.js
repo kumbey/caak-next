@@ -11,6 +11,7 @@ import {useState} from "react";
 import {API} from "aws-amplify";
 import {createFeedBack} from "../../graphql-custom/feedback/mutations";
 import {useUser} from "../../context/userContext";
+import toast from "react-hot-toast";
 
 const FeedBack = ({setIsOpen}) => {
   const [title, setTitle] = useState("");
@@ -21,26 +22,29 @@ const FeedBack = ({setIsOpen}) => {
   const emojis = [
     {id: 0, emoji: dead},
     {id: 1, emoji: confusedEmoji},
-    { id: 2, emoji: smile },
-    { id: 3, emoji: wink },
-    { id: 4, emoji: smileHeart },
+    {id: 2, emoji: smile},
+    {id: 3, emoji: wink},
+    {id: 4, emoji: smileHeart},
   ];
 
   const sendFeedBack = async () => {
-    await API.graphql({
-      query: createFeedBack,
-      variables: {
-        input: {
-          description: comment,
-          title: title,
-          star: star,
-          status: "CHECKED",
+    if (comment !== "") {
+      await API.graphql({
+        query: createFeedBack,
+        variables: {
+          input: {
+            description: comment,
+            title: title,
+            star: star,
+            status: "CHECKED",
+          },
         },
-      },
-      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    });
-    setComment("");
-    setTitle("");
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
+      toast.success(`Таны санал амжилттай илгээгдлээ.`);
+      setComment("");
+      setTitle("");
+    }
   };
 
   return (
@@ -83,29 +87,31 @@ const FeedBack = ({setIsOpen}) => {
         </div>
         <div className={"flex flex-col items-center mt-[25px] w-full"}>
           <Input
-            defaultValue={title}
-            onChange={(e) => setTitle(e.target.value)}
-            hideError
-            hideLabel
-            className={
-              "h-[40px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
-            }
-            placeholder={"Нэр"}
+              // defaultValue={title}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              hideError
+              hideLabel
+              className={
+                "h-[40px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
+              }
+              placeholder={"Нэр"}
           />
           <div className={"w-full mt-[10px] relative"}>
             <textarea
-              maxLength={500}
-              defaultValue={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder={"Сэтгэгдэл"}
-              className={
-                "h-[102px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
-              }
+                maxLength={500}
+                value={comment}
+                // defaultValue={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder={"Сэтгэгдэл"}
+                className={
+                  "h-[102px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
+                }
             />
             <div
-              className={
-                "text-[12px] font-medium absolute bottom-[9px] right-[12px] text-darkblue"
-              }
+                className={
+                  "text-[12px] font-medium absolute bottom-[9px] right-[12px] text-darkblue"
+                }
             >
               {comment.length}/500
             </div>

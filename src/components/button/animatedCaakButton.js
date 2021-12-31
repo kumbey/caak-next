@@ -1,22 +1,19 @@
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import {
-  createReaction,
-  deleteReaction,
-} from "../../graphql-custom/post/mutation";
-import { useEffect, useRef, useState } from "react";
-import { useUser } from "../../context/userContext";
-import { useRouter } from "next/router";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {createReaction, deleteReaction,} from "../../graphql-custom/post/mutation";
+import {useEffect, useRef, useState} from "react";
+import {useUser} from "../../context/userContext";
+import {useRouter} from "next/router";
 
 const AnimatedCaakButton = ({
-  disableOnClick,
-  totals,
-  reacted,
-  reactionType,
-  itemId,
-  bottomTotals,
-  iconContainerClassname,
-  iconClassname,
+                              disableOnClick,
+                              totals,
+                              reacted,
+                              reactionType,
+                              itemId,
+                              bottomTotals,
+                              iconContainerClassname,
+                              iconClassname,
   iconColor,
   textClassname,
   hideCaakText,
@@ -77,6 +74,7 @@ const AnimatedCaakButton = ({
             ...router.query,
             signInUp: "signIn",
             isModal: true,
+            prevPath: router.asPath
           },
         },
         `/signInUp/signIn`,

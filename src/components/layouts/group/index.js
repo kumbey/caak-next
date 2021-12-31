@@ -96,6 +96,7 @@ const GroupLayout = ({
             ...router.query,
             signInUp: "signIn",
             isModal: true,
+            prevPath: router.asPath,
           },
         },
         `/signInUp/signIn`,

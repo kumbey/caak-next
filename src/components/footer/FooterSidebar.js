@@ -10,23 +10,30 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
       }`}
     >
       <div className={"flex flex-wrap my-[4px]"}>
+        <Link href="/help" shallow>
+            <a className=''>
+                <p>Тусламж</p>
+            </a>
+        </Link>
+        <p className="mx-[5px] cursor-default">·</p>
         <Link href="/help/connectus" shallow>
-          <a className='sm:ml-[2px] md:ml-[5px]'>
+          <a className=''>
               <p>Холбоо барих</p>
           </a>
         </Link>
         <Link href={"/help/connectus"} shallow>
-            <a className='sm:ml-[2px] md:ml-[5px]'>
+            <a className=''>
                 <p>Сурталчилгаа</p>
             </a>
         </Link>
+        <p className="mx-[5px] cursor-default">·</p>
         <Link href={{
                   pathname: "/help/secure",
                   query: {
                       index: 1
                   }
               }}shallow>
-            <a className='sm:ml-[2px] md:ml-[5px]'>
+            <a className=''>
                 <p>Үйлчилгээний нөхцөл</p>
             </a>
         </Link>
@@ -36,13 +43,8 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
                       index: 2
                   }
               }} shallow>
-            <a className='sm:ml-[2px] md:ml-[5px]'>
+            <a className=''>
                 <p>Нууцлал</p>
-            </a>
-        </Link>
-        <Link href="/help" shallow>
-            <a className='sm:ml-[2px] md:ml-[5px]'>
-                <p>Тусламж</p>
             </a>
         </Link>
       </div>

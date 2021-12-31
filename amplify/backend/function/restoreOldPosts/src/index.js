@@ -29,9 +29,8 @@ exports.handler = async (event) => {
     try{
 
         let jsonFile = []
-        const maxLegth = 1
-        const startIndex = 0
-        let activeIndex = 0
+        const startIndex = 1
+        let activeIndex = 1
 
         const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
@@ -44,11 +43,13 @@ exports.handler = async (event) => {
 
         }
 
+        const maxLegth = jsonFile.length
+
         const nowDate = new Date().toISOString()
 
         bar1.start(startIndex + maxLegth, startIndex);
 
-        for(let i= startIndex; i < startIndex + maxLegth; i++){
+        for(let i = startIndex; i < maxLegth; i++){
 
             activeIndex = i
 
@@ -61,8 +62,8 @@ exports.handler = async (event) => {
             post.status = "CONFIRMED"
             post.user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
             post.updated_user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
-            post.group_id = "4def44e3-9961-4502-b60f-61b28743103f"
-            post.category_id = "9717e8da-6b54-4d3b-8055-fa9000366b4e"
+            post.group_id = "5ecd3b7d-d7fe-40b4-93e5-7946aa026aba"
+            post.category_id = "04eb06c0-e868-44c1-9e76-30372d0b2db8"
             post.owned = "CAAK"
             post.ignoreNotification = "TRUE"
             post.__typename = "Post"

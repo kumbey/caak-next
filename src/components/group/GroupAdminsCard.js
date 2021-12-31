@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
-import { API } from "aws-amplify";
-import { listGroupAdminMods } from "../../graphql-custom/group/queries";
-import {
-  generateFileUrl,
-  getGenderImage,
-  getReturnData,
-} from "../../utility/Util";
+import {useEffect, useState} from "react";
+import {API} from "aws-amplify";
+import {listGroupAdminMods} from "../../graphql-custom/group/queries";
+import {generateFileUrl, getGenderImage, getReturnData,} from "../../utility/Util";
 import Image from "next/image";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
 import Link from "next/link";
+import {useUser} from "../../context/userContext";
 
-const GroupAdminsCard = ({ groupId }) => {
+const GroupAdminsCard = ({groupId}) => {
   const [groupMods, setGroupMods] = useState({});
   const [loading, setLoading] = useState(true);
+  const {isLogged} = useUser()
   const colors = {
     adminText: "#2196F3",
     adminBackground: "rgba(33, 150, 243, 0.1)",
@@ -30,6 +28,7 @@ const GroupAdminsCard = ({ groupId }) => {
           role: { eq: "ADMIN" },
           limit: 5,
         },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
       });
       resp = getReturnData(resp);
       setGroupMods(resp);

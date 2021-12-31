@@ -68,7 +68,7 @@ export default function DefaultHelpLayout({children}) {
                     </div>
                     <div className='flex items-center text-[15px] text-[#6C7392]'>
                         <div className={"flex flex-col sm:flex-row items-center mt-[10px] sm:mt-[25.5px]"}>
-                            <Logo/>
+                            {/* <Logo/> */}
                             <p className='ml-[16px]'>©2021 Саак Холдинг ХХК</p>
                         </div>
                     </div>

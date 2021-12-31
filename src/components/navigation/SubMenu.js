@@ -13,9 +13,17 @@ import { useRouter } from "next/router";
 import NotificationDropDown from "./NotificationDropDown";
 import useMediaQuery from "./useMeduaQuery";
 import SearchInput from "../input/SearchInput";
+import AddPostGuideCard from "../card/AddPostGuideCard";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import Consts from "../../utility/Consts";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
+
+  const {lsGet} = useLocalStorage("session")
+  
+  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPostGuide)
+
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
   const router = useRouter();
@@ -33,9 +41,12 @@ const SubMenu = ({ params }) => {
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
 
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
+
   return (
     mounted &&
     ((isLogged && params.type === "mobile") ||
@@ -100,7 +111,9 @@ const SubMenu = ({ params }) => {
                     { shallow: true }
                   )
             }
-          />
+          >
+            <AddPostGuideCard open={open} setOpen={setOpen}/>
+          </Button>
         </div>
         <div
           ref={notificationRef}

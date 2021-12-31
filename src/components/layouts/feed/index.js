@@ -11,6 +11,7 @@ import { feedType } from "../../navigation/sortButtonTypes";
 import { useWrapper } from "../../../context/wrapperContext";
 import useWindowSize from "../../../hooks/useWindowSize";
 import AuraModal from "../../modals/auraModal";
+import Banner from "../../banner";
 
 const DefaultFeedLayout = ({
   children,
@@ -90,13 +91,14 @@ const DefaultFeedLayout = ({
 
           {!hideSuggestedGroups && (
             <SuggestedGroupsCard
-              maxColumns={7}
+              maxColumns={10}
               title={"Санал болгох группүүд"}
               className={"mb-[24px]"}
             />
           )}
 
           {!isLogged && <FooterSidebar />}
+          <Banner/>
         </div>
       </div>
     )

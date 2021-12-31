@@ -20,21 +20,21 @@ export default function Aura() {
                     <div className='flex flex-row items-center justify-between'>
                         <p className='text-[22px] font-bold'>{`АУРА гэж юу вэ?`}</p>
                         <div>
-                            <a rel={"noreferrer"} href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
-                            <a><span className='icon-fi-rs-tw ml-[8px] text-[16px]'/></a>
-                            <a><span className='icon-fi-rs-ig ml-[8px] text-[16px]'/></a>
+                            <a rel="noreferrer" href='https://www.facebook.com/caakweb' target="_blank"><span  className='icon-fi-rs-fb text-[16px]'/></a>
+                            <a rel="noreferrer" className='ml-[8px]' href='https://twitter.com/caaktwt' target="_blank"><span className='icon-fi-rs-tw text-[16px]'/></a>
+                            <a rel="noreferrer" className='ml-[8px]' href='https://www.instagram.com/caak.mn/' target="_blank"><span className='icon-fi-rs-ig text-[16px]'/></a>
                         </div>
                     </div>
                     <div className='border-t mt-[16px] py-[23px] text-[15px]'>
                         <p className='font-bold'>{`Аура гэдэг нь таны идэвхийн оноо юм. Таны аура оноо өндөр байвал дараах давуу талтай.`}</p>
-                        <ul className='list-disc list-inside'>
+                        <ul className='list-disc  ml-[20px]'>
                             <li>{`Шагнал авах`}</li>
                             <li>{`Пост бүүстлэх эрх`}</li>
-                            <li>{`Цалинтай нийтлэгч болох`}</li>
+                            <li>{`Орлоготой нийтлэгч болох`}</li>
                             <li>{`Харилцагч байгууллагуудын бүтээгдэхүүн, үйлчилгээг хямдралтай авах`}</li>
                         </ul>
-                        <p className='font-bold'>{`Аура оноогоо нэмэх`}</p>
-                        <ul className='list-disc list-inside'>
+                        <p className='font-bold mt-[16px]'>{`Аура оноогоо нэмэх`}</p>
+                        <ul className='list-disc  ml-[20px]'>
                             <li>{`Бүртгүүлэх`}</li>
                             <li>{`Сонирхсон групптээ нэгдэх`}</li>
                             <li>{`Оруулсан постын тоо`}</li>
@@ -44,8 +44,8 @@ export default function Aura() {
                             <li>{`Профайлын мэдээлэл, зургаа бүрэн оруулах`}</li>
                             <li>{`Утасны дугаараа бүртгүүлэх`}</li>
                         </ul>
-                        <p className='font-bold'>{`Аура оноо хасагдах`}</p>
-                        <ul className='list-disc list-inside'>
+                        <p className='font-bold mt-[16px]'>{`Аура оноо хасагдах`}</p>
+                        <ul className='list-disc  ml-[20px]'>
                             <li>{`Хувь хүн, байгууллагын төрд халдах`}</li>
                             <li>{`Спам, сурталчилгааны пост оруулах`}</li>
                             <li>{`Садар самуун, архи дарс дарс сурталчилсан пост оруулах`}</li>

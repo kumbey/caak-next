@@ -216,18 +216,25 @@ const Feed = ({ ssrData }) => {
       <Head>
         <title>{Consts.siteMainTitle} - Сайхан мэдрэмжээ хуваалцъя!</title>
         <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
+      {!isFeedbackOpen && <div onClick={() => {
+        setIsFeedbackOpen(!isFeedbackOpen)
+      }}
+                               className={"animate-pulse cursor-pointer flex items-center justify-center cContentGradient z-[10] w-[60px] h-[60px] fixed bottom-[78px] md:bottom-[24px] right-[4px] md:right-[24px] rounded-full"}>
+        <span className={"icon-fi-rs-desc text-white"}/>
+      </div>}
+
       {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen}/>}
 
       <div className={"relative"}>
         <Toaster
-          toastOptions={{
-            className: "toastOptions",
-            duration: 5000,
-          }}
+            toastOptions={{
+              className: "toastOptions",
+              duration: 5000,
+            }}
         />
         <div className={`px-0 w-full relative`}>
           <div

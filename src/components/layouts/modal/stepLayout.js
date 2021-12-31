@@ -24,11 +24,10 @@ const StepModalLayout = ({
 
   const close = () => {
     if (router.query.prevPath && router.query.prevPath !== router.asPath) {
-      router.replace(
-        router.query.prevPath,
-        undefined,
-        { shallow: true, scroll: false }
-      );
+      router.replace(router.query.prevPath, undefined, {
+        shallow: true,
+        scroll: false,
+      });
     } else {
       router.replace("/");
     }
@@ -40,25 +39,30 @@ const StepModalLayout = ({
         {
           query: {
             ...router.query,
-            signInUp: type === "up" ? "signIn" : "signUp"
-          }
+            signInUp: type === "up" ? "signIn" : "signUp",
+          },
         },
         `/signInUp/${type === "up" ? "signIn" : "signUp"}`,
         { shallow: true, scroll: false }
       );
     } else {
-      router.replace(`/signInUp/${router.asPath === "/signInUp/up" ? "signIn" : "signUp"}`);
+      router.replace(
+        `/signInUp/${router.asPath === "/signInUp/up" ? "signIn" : "signUp"}`
+      );
     }
-  }
+  };
 
   return (
     // <div className={`backdrop ${props.className}`}>
     <div className="popup_modal">
       <div className="popup_modal-content bg-white rounded-lg shadow-xl">
         <>
-          <div className="h-[60px] px-[16px] py-[20px] flex items-center relative justify-between border-b-[1px] border-caak-titaniumwhite mb-[26px]">
+          <div className="h-[60px] px-[16px] py-[20px] flex items-center relative justify-between border-caak-titaniumwhite ">
             {configure.back && (
-              <div className={`w-[18px] h-[15px]`} onClick={onBack ? onBack : close}>
+              <div
+                className={`w-[18px] h-[15px]`}
+                onClick={onBack ? onBack : close}
+              >
                 <span className="cursor-pointer icon-fi-rs-back-2 text-18px text-caak-extraBlack pr-1" />
               </div>
             )}
@@ -102,7 +106,7 @@ const StepModalLayout = ({
                 {router.asPath === "/signInUp/up" ? " Нэвтрэх" : " Бүртгүүлэх"}
               </span>
             </div>
-              <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />
+            {/* <span className="icon-fi-rs-help text-18px text-caak-darkBlue" /> */}
           </div>
         ) : (
           <div className={"pt-10"} />

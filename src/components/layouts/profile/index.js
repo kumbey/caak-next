@@ -343,7 +343,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       : getGenderImage(user.gender).src
                   }
                 />
-                {isLogged && user.id === user.id && !uploadingProfile && (
+                {isLogged && user.id === signedUser.id && !uploadingProfile && (
                   <Dropzone
                     onDropRejected={(e) => console.log(e[0].errors[0].message)}
                     accept={"image/jpeg, image/png, image/gif"}

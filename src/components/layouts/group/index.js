@@ -1,4 +1,3 @@
-import FooterSidebar from "../../footer/FooterSidebar";
 import Image from "next/image";
 import SuggestedGroupsCard from "../../card/SuggestedGroupsCard/";
 import {useUser} from "../../../context/userContext";
@@ -22,6 +21,7 @@ import {useRouter} from "next/router";
 import Loader from "../../loader";
 import GroupAdminsCard from "../../group/GroupAdminsCard";
 import Banner from "../../banner";
+import GroupInfoCard from "../../card/GroupInfoCard";
 
 const GroupLayout = ({
   children,
@@ -409,21 +409,22 @@ const GroupLayout = ({
             {!hideSuggestedGroups && (
               <div className="mt-[16px]">
                 <SuggestedGroupsCard
-                  maxColumns={5}
-                  title={"Санал болгох группүүд"}
-                  className={"mb-[24px]"}
+                    maxColumns={5}
+                    title={"Санал болгох группүүд"}
+                    className={"mb-[24px]"}
                 />
               </div>
             )}
-            <GroupRules groupId={groupData.id} />
+            <GroupInfoCard groupId={groupData.id}/>
+            <GroupRules groupId={groupData.id}/>
             {/*<GroupBadge />*/}
-            <GroupAdminsCard groupId={groupData.id} />
+            <GroupAdminsCard groupId={groupData.id}/>
             <Banner/>
-            <FooterSidebar
-              containerClassname={"bg-white rounded-square p-[20px]"}
-            />
+            {/*<FooterSidebar*/}
+            {/*  containerClassname={"bg-white rounded-square p-[20px]"}*/}
+            {/*/>*/}
 
-            {!isLogged && <FooterSidebar />}
+            {/*{!isLogged && <FooterSidebar />}*/}
           </div>
         </div>
       </div>

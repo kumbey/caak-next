@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import AnimatedCaakButton from "../button/animatedCaakButton";
-import toast, { Toaster } from "react-hot-toast";
-import { FacebookShareButton, TwitterShareButton } from "next-share";
+import toast, {Toaster} from "react-hot-toast";
+import {FacebookShareButton, TwitterShareButton} from "next-share";
+import {decode} from "html-entities";
 
-const PostHeader = ({ addCommentRef, post, activeIndex }) => {
-  const [item, setItem] = useState(post.items.items[activeIndex]);
-  const [pathName, setPathName] = useState("");
+const PostHeader = ({addCommentRef, post, activeIndex}) => {
+    const [item, setItem] = useState(post.items.items[activeIndex]);
+    const [pathName, setPathName] = useState("");
 
-  const notifyCopy = () => toast.success("Холбоос амжилттай хуулагдлаа.");
+    const notifyCopy = () => toast.success("Холбоос амжилттай хуулагдлаа.");
 
-  useEffect(() => {
-    setPathName(window.location.origin);
-  }, []);
+    useEffect(() => {
+        setPathName(window.location.origin);
+    }, []);
 
   useEffect(() => {
     setPathName(window.location.origin);
@@ -31,7 +32,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
         <div
           className={"break-words text-[15px] py-[20px] text-caak-generalblack"}
         >
-          {item.title}
+            {item.title && decode(item.title)}
         </div>
         {post.status === "CONFIRMED" && (
           <div

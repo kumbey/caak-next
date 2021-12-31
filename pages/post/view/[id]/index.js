@@ -21,6 +21,7 @@ import {updatePost} from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
 import {Toaster} from "react-hot-toast";
 import {useUser} from "../../../../src/context/userContext";
+import {decode} from "html-entities";
 
 export async function getServerSideProps({req, query}) {
   const {API, Auth} = withSSRContext({req});
@@ -33,7 +34,7 @@ const Post = ({ssrData}) => {
   const [post, setPost] = useState(ssrData.post);
   const [loading, setLoading] = useState(false);
   const commentRef = useRef();
-  const { jumpToComment } = router.query;
+  const {jumpToComment} = router.query;
   const [isReactionActive, setIsReactionActive] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
@@ -72,6 +73,7 @@ const Post = ({ssrData}) => {
     }
     setLoading(false);
   };
+  console.log(post);
   const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   return post ? (
     <>
@@ -249,25 +251,31 @@ const Post = ({ssrData}) => {
                       />
                     </div>
                     <Image
-                      objectFit={"contain"}
-                      layout={"fill"}
-                      src={getFileUrl(post.items.items[0].file)}
-                      alt={"post picture"}
+                        objectFit={"contain"}
+                        layout={"fill"}
+                        src={getFileUrl(post.items.items[0].file)}
+                        alt={"post picture"}
                     />
                   </div>
                 )}
               </div>
             )}
-
+            <p
+                className={
+                  "text-caak-generalblack text-[16px] px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                }
+            >
+              {decode(post.items.items[0].title)}
+            </p>
             <div
-              className={`px-[10px] md:px-[52px] md:pb-[52px] bg-white ${
-                post.status === "CONFIRMED" ? "" : "rounded-square"
-              } border-b border-caak-titaniumwhite`}
+                className={`px-[10px] md:px-[52px] md:pb-[52px] bg-white ${
+                    post.status === "CONFIRMED" ? "" : "rounded-square"
+                } border-b border-caak-titaniumwhite`}
             >
               <p
-                className={
-                  "text-[16px] mb-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
-                }
+                  className={
+                    "text-[16px] mb-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                  }
               >
                 {post.description}
               </p>
@@ -285,15 +293,22 @@ const Post = ({ssrData}) => {
                 } else {
                   if (index > 0)
                     return (
-                      <ViewPostBlogItem
-                        key={index}
-                        index={index}
-                        postId={post.id}
-                        postItem={item}
-                      />
+                        <ViewPostBlogItem
+                            key={index}
+                            index={index}
+                            postId={post.id}
+                            postItem={item}
+                        />
                     );
                 }
               })}
+              <div
+                  className={
+                    "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                  }
+              >
+                <div dangerouslySetInnerHTML={{__html: post.f_text}}/>
+              </div>
             </div>
             {post.commentType && post.status === "CONFIRMED" && (
               <CommentSection

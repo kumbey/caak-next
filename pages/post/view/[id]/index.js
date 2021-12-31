@@ -29,7 +29,7 @@ export async function getServerSideProps({ req, query }) {
 
 const Post = ({ ssrData }) => {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
   const [post, setPost] = useState(ssrData.post);
   const [loading, setLoading] = useState(false);
   const commentRef = useRef();
@@ -116,12 +116,14 @@ const Post = ({ ssrData }) => {
             duration: 5000,
           }}
         />
-        <ReportModal
-          setIsOpen={setIsReportModalOpen}
-          isOpen={isReportModalOpen}
-          postId={post.id}
-          userId={user.id}
-        />
+        {isLogged && (
+          <ReportModal
+            setIsOpen={setIsReportModalOpen}
+            isOpen={isReportModalOpen}
+            postId={post.id}
+            userId={user.id}
+          />
+        )}
         {post.status === "CONFIRMED" && (
           <div
             className={

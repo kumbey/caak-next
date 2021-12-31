@@ -7,7 +7,6 @@ const post0004 = /* GraphQL */ `
     description
     commentType
     owned
-    f_text
     status
       status_history {
           items {

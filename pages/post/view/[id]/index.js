@@ -1,36 +1,35 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
-import { withSSRContext } from "aws-amplify";
-import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
+import {withSSRContext} from "aws-amplify";
+import {generateTimeAgo, getFileUrl} from "../../../../src/utility/Util";
 import Image from "next/image";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
 import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
 import Link from "next/link";
 import Head from "next/head";
 import Consts from "../../../../src/utility/Consts";
-import { ssrDataViewPost } from "../../../../src/apis/ssrDatas";
+import {ssrDataViewPost} from "../../../../src/apis/ssrDatas";
 import Button from "../../../../src/components/button";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { updatePost } from "../../../../src/graphql-custom/post/mutation";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {updatePost} from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
-import { Toaster } from "react-hot-toast";
-import { useUser } from "../../../../src/context/userContext";
-import { decode } from "html-entities";
+import {Toaster} from "react-hot-toast";
+import {useUser} from "../../../../src/context/userContext";
 
-export async function getServerSideProps({ req, query }) {
-  const { API, Auth } = withSSRContext({ req });
-  return await ssrDataViewPost({ API, Auth, query });
+export async function getServerSideProps({req, query}) {
+  const {API, Auth} = withSSRContext({req});
+  return await ssrDataViewPost({API, Auth, query});
 }
 
-const Post = ({ ssrData }) => {
+const Post = ({ssrData}) => {
   const router = useRouter();
-  const { user, isLogged } = useUser();
+  const {user, isLogged} = useUser();
   const [post, setPost] = useState(ssrData.post);
   const [loading, setLoading] = useState(false);
   const commentRef = useRef();
@@ -73,7 +72,6 @@ const Post = ({ ssrData }) => {
     }
     setLoading(false);
   };
-  console.log(post);
   const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   return post ? (
     <>
@@ -260,13 +258,7 @@ const Post = ({ ssrData }) => {
                 )}
               </div>
             )}
-            <p
-              className={
-                "text-caak-generalblack text-[16px] px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-              }
-            >
-              {decode(post.items.items[0].title)}
-            </p>
+
             <div
               className={`px-[10px] md:px-[52px] md:pb-[52px] bg-white ${
                 post.status === "CONFIRMED" ? "" : "rounded-square"
@@ -302,13 +294,6 @@ const Post = ({ ssrData }) => {
                     );
                 }
               })}
-              <div
-                className={
-                  "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-                }
-              >
-                <div dangerouslySetInnerHTML={{ __html: post.f_text }} />
-              </div>
             </div>
             {post.commentType && post.status === "CONFIRMED" && (
               <CommentSection

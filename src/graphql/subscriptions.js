@@ -67,6 +67,8 @@ export const onCommentByPostItem = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -82,6 +84,8 @@ export const onCommentByPostItem = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -147,6 +151,8 @@ export const onCommentByPostItem = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -162,6 +168,8 @@ export const onCommentByPostItem = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -301,6 +309,7 @@ export const onCommentByPostItem = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -314,6 +323,7 @@ export const onCommentByPostItem = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -329,6 +339,8 @@ export const onCommentByPostItem = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -439,6 +451,8 @@ export const onCommentByPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -454,6 +468,8 @@ export const onCommentByPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -519,6 +535,8 @@ export const onCommentByPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -534,6 +552,8 @@ export const onCommentByPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -673,6 +693,7 @@ export const onCommentByPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -686,6 +707,7 @@ export const onCommentByPost = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -701,6 +723,8 @@ export const onCommentByPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -811,6 +835,8 @@ export const onCommentByParent = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -826,6 +852,8 @@ export const onCommentByParent = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -891,6 +919,8 @@ export const onCommentByParent = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -906,6 +936,8 @@ export const onCommentByParent = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1045,6 +1077,7 @@ export const onCommentByParent = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -1058,6 +1091,7 @@ export const onCommentByParent = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -1073,6 +1107,8 @@ export const onCommentByParent = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1188,6 +1224,8 @@ export const onPostByGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1203,6 +1241,8 @@ export const onPostByGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1268,6 +1308,8 @@ export const onPostByGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1283,6 +1325,8 @@ export const onPostByGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1343,6 +1387,7 @@ export const onPostByGroup = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -1416,6 +1461,7 @@ export const onPostByGroup = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -1430,6 +1476,8 @@ export const onPostByGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1445,6 +1493,8 @@ export const onPostByGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1554,6 +1604,8 @@ export const onPostByUser = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1569,6 +1621,8 @@ export const onPostByUser = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1634,6 +1688,8 @@ export const onPostByUser = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1649,6 +1705,8 @@ export const onPostByUser = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1709,6 +1767,7 @@ export const onPostByUser = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -1782,6 +1841,7 @@ export const onPostByUser = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -1796,6 +1856,8 @@ export const onPostByUser = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1811,6 +1873,8 @@ export const onPostByUser = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1901,6 +1965,8 @@ export const onUserUpdateByUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -1916,6 +1982,8 @@ export const onUserUpdateByUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2032,6 +2100,8 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2047,6 +2117,8 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2112,6 +2184,8 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2127,6 +2201,8 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2187,6 +2263,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -2260,6 +2337,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -2274,6 +2352,8 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2289,6 +2369,8 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2359,6 +2441,8 @@ export const onCreateFile = /* GraphQL */ `
       type
       isExternal
       external_url
+      provider
+      provided_item
       createdAt
       updatedAt
     }
@@ -2378,6 +2462,8 @@ export const onUpdateFile = /* GraphQL */ `
       type
       isExternal
       external_url
+      provider
+      provided_item
       createdAt
       updatedAt
     }
@@ -2397,6 +2483,8 @@ export const onDeleteFile = /* GraphQL */ `
       type
       isExternal
       external_url
+      provider
+      provided_item
       createdAt
       updatedAt
     }
@@ -2436,6 +2524,8 @@ export const onCreateUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2451,6 +2541,8 @@ export const onCreateUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2548,6 +2640,8 @@ export const onUpdateUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2563,6 +2657,8 @@ export const onUpdateUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2660,6 +2756,8 @@ export const onDeleteUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2675,6 +2773,8 @@ export const onDeleteUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2778,6 +2878,8 @@ export const onCreateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2793,6 +2895,8 @@ export const onCreateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2858,6 +2962,8 @@ export const onCreateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2873,6 +2979,8 @@ export const onCreateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2949,6 +3057,8 @@ export const onUpdateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2964,6 +3074,8 @@ export const onUpdateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3029,6 +3141,8 @@ export const onUpdateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3044,6 +3158,8 @@ export const onUpdateFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3120,6 +3236,8 @@ export const onDeleteFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3135,6 +3253,8 @@ export const onDeleteFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3200,6 +3320,8 @@ export const onDeleteFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3215,6 +3337,8 @@ export const onDeleteFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3391,6 +3515,8 @@ export const onCreatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3406,6 +3532,8 @@ export const onCreatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3471,6 +3599,8 @@ export const onCreatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3486,6 +3616,8 @@ export const onCreatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3546,6 +3678,7 @@ export const onCreatePost = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -3619,6 +3752,7 @@ export const onCreatePost = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -3633,6 +3767,8 @@ export const onCreatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3648,6 +3784,8 @@ export const onCreatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3757,6 +3895,8 @@ export const onUpdatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3772,6 +3912,8 @@ export const onUpdatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3837,6 +3979,8 @@ export const onUpdatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3852,6 +3996,8 @@ export const onUpdatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3912,6 +4058,7 @@ export const onUpdatePost = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -3985,6 +4132,7 @@ export const onUpdatePost = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -3999,6 +4147,8 @@ export const onUpdatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4014,6 +4164,8 @@ export const onUpdatePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4123,6 +4275,8 @@ export const onDeletePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4138,6 +4292,8 @@ export const onDeletePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4203,6 +4359,8 @@ export const onDeletePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4218,6 +4376,8 @@ export const onDeletePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4278,6 +4438,7 @@ export const onDeletePost = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -4351,6 +4512,7 @@ export const onDeletePost = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -4365,6 +4527,8 @@ export const onDeletePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4380,6 +4544,8 @@ export const onDeletePost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4550,6 +4716,7 @@ export const onCreateSavedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -4671,6 +4838,7 @@ export const onUpdateSavedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -4792,6 +4960,7 @@ export const onDeleteSavedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -4843,6 +5012,7 @@ export const onCreatePostItems = /* GraphQL */ `
       description
       f_text
       order
+      isEmbed
       reacted
       createdAt
       updatedAt
@@ -4858,6 +5028,8 @@ export const onCreatePostItems = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -4967,6 +5139,7 @@ export const onCreatePostItems = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5011,6 +5184,7 @@ export const onUpdatePostItems = /* GraphQL */ `
       description
       f_text
       order
+      isEmbed
       reacted
       createdAt
       updatedAt
@@ -5026,6 +5200,8 @@ export const onUpdatePostItems = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -5135,6 +5311,7 @@ export const onUpdatePostItems = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5179,6 +5356,7 @@ export const onDeletePostItems = /* GraphQL */ `
       description
       f_text
       order
+      isEmbed
       reacted
       createdAt
       updatedAt
@@ -5194,6 +5372,8 @@ export const onDeletePostItems = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -5303,6 +5483,7 @@ export const onDeletePostItems = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5495,6 +5676,8 @@ export const onCreateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5510,6 +5693,8 @@ export const onCreateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5575,6 +5760,8 @@ export const onCreateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5590,6 +5777,8 @@ export const onCreateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5729,6 +5918,7 @@ export const onCreateComment = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5742,6 +5932,7 @@ export const onCreateComment = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -5757,6 +5948,8 @@ export const onCreateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5867,6 +6060,8 @@ export const onUpdateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5882,6 +6077,8 @@ export const onUpdateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5947,6 +6144,8 @@ export const onUpdateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5962,6 +6161,8 @@ export const onUpdateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6101,6 +6302,7 @@ export const onUpdateComment = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -6114,6 +6316,7 @@ export const onUpdateComment = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -6129,6 +6332,8 @@ export const onUpdateComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6239,6 +6444,8 @@ export const onDeleteComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6254,6 +6461,8 @@ export const onDeleteComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6319,6 +6528,8 @@ export const onDeleteComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6334,6 +6545,8 @@ export const onDeleteComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6473,6 +6686,7 @@ export const onDeleteComment = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -6486,6 +6700,7 @@ export const onDeleteComment = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -6501,6 +6716,8 @@ export const onDeleteComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6674,6 +6891,8 @@ export const onCreateReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6689,6 +6908,8 @@ export const onCreateReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6828,6 +7049,7 @@ export const onCreateReportedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -6877,6 +7099,8 @@ export const onUpdateReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -6892,6 +7116,8 @@ export const onUpdateReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7031,6 +7257,7 @@ export const onUpdateReportedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -7080,6 +7307,8 @@ export const onDeleteReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7095,6 +7324,8 @@ export const onDeleteReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7234,6 +7465,7 @@ export const onDeleteReportedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -7318,6 +7550,8 @@ export const onCreateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7333,6 +7567,8 @@ export const onCreateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7378,6 +7614,7 @@ export const onCreateGroupUsers = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -7392,6 +7629,8 @@ export const onCreateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7407,6 +7646,8 @@ export const onCreateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7504,6 +7745,8 @@ export const onUpdateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7519,6 +7762,8 @@ export const onUpdateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7564,6 +7809,7 @@ export const onUpdateGroupUsers = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -7578,6 +7824,8 @@ export const onUpdateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7593,6 +7841,8 @@ export const onUpdateGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7690,6 +7940,8 @@ export const onDeleteGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7705,6 +7957,8 @@ export const onDeleteGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7750,6 +8004,7 @@ export const onDeleteGroupUsers = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -7764,6 +8019,8 @@ export const onDeleteGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7779,6 +8036,8 @@ export const onDeleteGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7849,6 +8108,7 @@ export const onCreateGroup = /* GraphQL */ `
       featured
       g_rules
       g_attentions
+      aura
       createdAt
       updatedAt
       profile {
@@ -7863,6 +8123,8 @@ export const onCreateGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -7878,6 +8140,8 @@ export const onCreateGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -7913,6 +8177,8 @@ export const onCreateGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -7928,6 +8194,8 @@ export const onCreateGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8008,6 +8276,7 @@ export const onCreateGroup = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -8029,6 +8298,7 @@ export const onUpdateGroup = /* GraphQL */ `
       featured
       g_rules
       g_attentions
+      aura
       createdAt
       updatedAt
       profile {
@@ -8043,6 +8313,8 @@ export const onUpdateGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -8058,6 +8330,8 @@ export const onUpdateGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -8093,6 +8367,8 @@ export const onUpdateGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8108,6 +8384,8 @@ export const onUpdateGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8188,6 +8466,7 @@ export const onUpdateGroup = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -8209,6 +8488,7 @@ export const onDeleteGroup = /* GraphQL */ `
       featured
       g_rules
       g_attentions
+      aura
       createdAt
       updatedAt
       profile {
@@ -8223,6 +8503,8 @@ export const onDeleteGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -8238,6 +8520,8 @@ export const onDeleteGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -8273,6 +8557,8 @@ export const onDeleteGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8288,6 +8574,8 @@ export const onDeleteGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8368,6 +8656,7 @@ export const onDeleteGroup = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -8421,6 +8710,8 @@ export const onCreateNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8436,6 +8727,8 @@ export const onCreateNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8518,6 +8811,8 @@ export const onUpdateNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8533,6 +8828,8 @@ export const onUpdateNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8615,6 +8912,8 @@ export const onDeleteNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -8630,6 +8929,8 @@ export const onDeleteNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }

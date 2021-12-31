@@ -15,6 +15,8 @@ export const getFile = /* GraphQL */ `
       type
       isExternal
       external_url
+      provider
+      provided_item
       createdAt
       updatedAt
     }
@@ -39,6 +41,8 @@ export const listFiles = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -80,6 +84,8 @@ export const getUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -95,6 +101,8 @@ export const getUser = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -197,6 +205,8 @@ export const listUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -212,6 +222,8 @@ export const listUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -398,6 +410,8 @@ export const getUsername = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -413,6 +427,8 @@ export const getUsername = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -608,6 +624,8 @@ export const getFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -623,6 +641,8 @@ export const getFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -688,6 +708,8 @@ export const getFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -703,6 +725,8 @@ export const getFollowedUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1126,6 +1150,8 @@ export const getPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1141,6 +1167,8 @@ export const getPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1206,6 +1234,8 @@ export const getPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1221,6 +1251,8 @@ export const getPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1281,6 +1313,7 @@ export const getPost = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -1354,6 +1387,7 @@ export const getPost = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -1368,6 +1402,8 @@ export const getPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1383,6 +1419,8 @@ export const getPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -1552,6 +1590,7 @@ export const listPosts = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -1683,6 +1722,7 @@ export const getPostByStatus = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -1814,6 +1854,7 @@ export const getPostByGroup = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -1945,6 +1986,7 @@ export const getPostByUser = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -2076,6 +2118,7 @@ export const listPostByOwned = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -2207,6 +2250,7 @@ export const listPostByTitle = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -2336,6 +2380,7 @@ export const searchPosts = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -2459,6 +2504,7 @@ export const getSavedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -2624,6 +2670,7 @@ export const getPostItems = /* GraphQL */ `
       description
       f_text
       order
+      isEmbed
       reacted
       createdAt
       updatedAt
@@ -2639,6 +2686,8 @@ export const getPostItems = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -2748,6 +2797,7 @@ export const getPostItems = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -2797,6 +2847,7 @@ export const listPostItemss = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -2812,6 +2863,8 @@ export const listPostItemss = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -2975,6 +3028,7 @@ export const getPostTotal = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -3394,6 +3448,8 @@ export const getComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3409,6 +3465,8 @@ export const getComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3474,6 +3532,8 @@ export const getComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3489,6 +3549,8 @@ export const getComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3628,6 +3690,7 @@ export const getComment = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -3641,6 +3704,7 @@ export const getComment = /* GraphQL */ `
         description
         f_text
         order
+        isEmbed
         reacted
         createdAt
         updatedAt
@@ -3656,6 +3720,8 @@ export const getComment = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -3810,6 +3876,7 @@ export const listComments = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -3930,6 +3997,7 @@ export const listCommentByPostItem = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -4050,6 +4118,7 @@ export const getCommentsByPost = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -4170,6 +4239,7 @@ export const listCommentsByDateAndType = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -4290,6 +4360,7 @@ export const listCommentsByDateAndTypeForItem = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -4410,6 +4481,7 @@ export const listCommentByParent = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -4530,6 +4602,7 @@ export const listCommentByUser = /* GraphQL */ `
           description
           f_text
           order
+          isEmbed
           reacted
           createdAt
           updatedAt
@@ -4658,6 +4731,8 @@ export const getReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4673,6 +4748,8 @@ export const getReportedPost = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4812,6 +4889,7 @@ export const getReportedPost = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -4952,6 +5030,8 @@ export const getGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -4967,6 +5047,8 @@ export const getGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5012,6 +5094,7 @@ export const getGroupUsers = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -5026,6 +5109,8 @@ export const getGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5041,6 +5126,8 @@ export const getGroupUsers = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5144,6 +5231,7 @@ export const listGroupUserss = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5209,6 +5297,7 @@ export const listGroupByUserAndRole = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5272,6 +5361,7 @@ export const getGroupUsersByGroup = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5337,6 +5427,7 @@ export const listGroupUsersByGroup = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5359,6 +5450,7 @@ export const getGroup = /* GraphQL */ `
       featured
       g_rules
       g_attentions
+      aura
       createdAt
       updatedAt
       profile {
@@ -5373,6 +5465,8 @@ export const getGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -5388,6 +5482,8 @@ export const getGroup = /* GraphQL */ `
         type
         isExternal
         external_url
+        provider
+        provided_item
         createdAt
         updatedAt
       }
@@ -5423,6 +5519,8 @@ export const getGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5438,6 +5536,8 @@ export const getGroup = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5518,6 +5618,7 @@ export const getGroup = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5544,6 +5645,7 @@ export const listGroups = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -5558,6 +5660,8 @@ export const listGroups = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5573,6 +5677,8 @@ export const listGroups = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5659,6 +5765,7 @@ export const listGroupByFeatured = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -5673,6 +5780,8 @@ export const listGroupByFeatured = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5688,6 +5797,8 @@ export const listGroupByFeatured = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5764,6 +5875,7 @@ export const getGroupUsername = /* GraphQL */ `
         featured
         g_rules
         g_attentions
+        aura
         createdAt
         updatedAt
         profile {
@@ -5778,6 +5890,8 @@ export const getGroupUsername = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5793,6 +5907,8 @@ export const getGroupUsername = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5873,6 +5989,7 @@ export const listGroupUsernames = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5913,6 +6030,7 @@ export const groupByIdName = /* GraphQL */ `
           featured
           g_rules
           g_attentions
+          aura
           createdAt
           updatedAt
         }
@@ -5967,6 +6085,8 @@ export const getNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }
@@ -5982,6 +6102,8 @@ export const getNotification = /* GraphQL */ `
           type
           isExternal
           external_url
+          provider
+          provided_item
           createdAt
           updatedAt
         }

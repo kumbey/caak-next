@@ -1,21 +1,21 @@
 import Button from "../button";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { createComment } from "../../graphql-custom/comment/mutation";
-import { useUser } from "../../context/userContext";
-import { useRouter } from "next/router";
-import { getFileUrl, getGenderImage, getReturnData } from "../../utility/Util";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {createComment} from "../../graphql-custom/comment/mutation";
+import {useUser} from "../../context/userContext";
+import {useRouter} from "next/router";
+import {getFileUrl, getGenderImage} from "../../utility/Util";
 import Image from "next/image";
 
 const ViewPostBlogAddComment = ({
-  postId,
-  comments,
-  replyUserId,
-  commentInputValue,
-  setCommentInputValue,
-  setIsActive,
-  reply,
+                                  postId,
+                                  comments,
+                                  replyUserId,
+                                  commentInputValue,
+                                  setCommentInputValue,
+                                  setIsActive,
+                                  reply,
   inputClassname,
   containerClassname,
   rootContainerClassname,
@@ -63,6 +63,7 @@ const ViewPostBlogAddComment = ({
                 ...router.query,
                 signInUp: "signIn",
                 isModal: true,
+                prevPath: router.asPath
               },
             },
             `/signInUp/signIn`,

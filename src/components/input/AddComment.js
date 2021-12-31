@@ -1,20 +1,20 @@
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useUser } from "../../context/userContext";
-import { getFileUrl, getGenderImage, getReturnData } from "../../utility/Util";
-import { createComment } from "../../graphql-custom/comment/mutation";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+import {useUser} from "../../context/userContext";
+import {getFileUrl, getGenderImage, getReturnData} from "../../utility/Util";
+import {createComment} from "../../graphql-custom/comment/mutation";
 import Button from "../button";
 
 const AddComment = ({
-  activeIndex,
-  post,
-  addCommentRef,
-  commentInputValue,
-  setCommentInputValue,
-  reply,
-  setReply,
+                      activeIndex,
+                      post,
+                      addCommentRef,
+                      commentInputValue,
+                      setCommentInputValue,
+                      reply,
+                      setReply,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -68,6 +68,7 @@ const AddComment = ({
                 ...router.query,
                 signInUp: "signIn",
                 isModal: true,
+                prevPath: router.asPath
               },
             },
             `/signInUp/signIn`,
@@ -118,6 +119,7 @@ const AddComment = ({
                   ...router.query,
                   signInUp: "signIn",
                   isModal: true,
+                  prevPath: router.asPath
                 },
               },
               `/signInUp/signIn`,

@@ -3,14 +3,20 @@
     {
       "type": "ProjectLayer",
       "resourceName": "caaklayer001",
+      "env": "dev",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true,
-      "env": "dev"
+      "isLatestVersionSelected": true
     }
   ],
   "permissions": {
     "storage": {
       "UserTotal:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "GroupTotal:@model(appsync)": [
         "create",
         "read",
         "update",

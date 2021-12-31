@@ -1,46 +1,66 @@
 import React from "react";
 import Image from "next/image";
-import { useUser } from "../../context/userContext";
-import { useRouter } from "next/router";
-import { getFileUrl } from "../../utility/Util";
+import {useUser} from "../../context/userContext";
+import {useRouter} from "next/router";
+import {getFileUrl, getGenderImage} from "../../utility/Util";
 
-export default function AddPostHandler({ groupId }) {
-  const { user, isLogged } = useUser();
-  const router = useRouter();
-  return (
-    <div className="bg-white h-[60px] rounded-[8px] flex flex-row items-center w-full mb-[32px] px-[16px]">
-      {isLogged ? (
-        <Image
-          alt={""}
-          src={getFileUrl(user.pic)}
-          width={36}
-          height={36}
-          objectFit="cover"
-          className="rounded-full bg-[#6C7392]"
-        />
-      ) : (
-        <div className="w-[36px] h-[36px] rounded-full bg-[#6C7392]" />
-      )}
+export default function AddPostHandler({groupId}) {
+    const {user, isLogged} = useUser();
+    const router = useRouter();
+    return (
+        <div className="bg-white h-[60px] rounded-[8px] flex flex-row items-center w-full mb-[32px] px-[16px]">
+            {isLogged ? (
+                <div
+                    className={
+                        "relative bg-[#6C7392] w-[36px] h-[36px] rounded-full flex-shrink-0"
+                    }
+                >
+                    <Image
+                        alt={""}
+                        src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender)}
+                        width={36}
+                        height={36}
+                        objectFit="cover"
+                        className="rounded-full"
+                    />
+                </div>
+            ) : (
+                <div
+                    className={
+                        "relative bg-[#6C7392] w-[36px] h-[36px] rounded-full flex-shrink-0"
+                    }
+                >
+                    <Image
+                        alt={""}
+                        src={getGenderImage("MALE")}
+                        width={36}
+                        height={36}
+                        objectFit="cover"
+                        className="rounded-full bg-[#6C7392]"
+                    />
+                </div>
+            )}
       <div
         onClick={() =>
           isLogged
             ? router.push(
-                {
+              {
                   pathname: "/post/add",
                   query: {
-                    groupId: groupId,
+                      groupId: groupId,
                   },
-                },
+              },
               "/post/add",
-                { shallow: true }
+              {shallow: true}
               )
             : router.push(
                 {
                   pathname: router.pathname,
                   query: {
-                    ...router.query,
-                    signInUp: "signIn",
-                    isModal: true,
+                      ...router.query,
+                      signInUp: "signIn",
+                      isModal: true,
+                      prevPath: router.asPath,
                   },
                 },
                 `/signInUp/signIn`,

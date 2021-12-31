@@ -301,6 +301,10 @@
       linear-gradient(180deg, #00000000 0%, #000000cc 100%) 0% 0% no-repeat;
   }
 
+  .logoBeta {
+    background: transparent linear-gradient(180deg, #3f70fe 0%, #9a99fe 100%) 0%
+      0% no-repeat;
+  }
   .userProfileBadge {
     @apply top-[-25px] right-0;
   }

@@ -14,6 +14,8 @@ type File @model
     type: String
     isExternal: String
     external_url: String
+    provider: String
+    provided_item: String
 }
 
 type User @model
@@ -221,6 +223,7 @@ type PostItems @model
   description: String
   f_text: String
   order: Int
+  isEmbed: String
   comments: [Comment] @connection(keyName:"byPostItemQ", fields:["id"])
   totals: PostItemsTotal @connection(fields:["id"])
   reacted: Boolean @function(name:"resolverBoolean-${env}")
@@ -419,6 +422,7 @@ type Group @model
   featured: String
   g_rules: String
   g_attentions: String
+  aura: Int @function(name:"aura-${env}")
 }
 
 type GroupUsername @model(mutations: null)

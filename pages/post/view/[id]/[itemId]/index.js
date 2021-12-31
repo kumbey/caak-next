@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import {
   findMatchIndex,
   generateTimeAgo,
@@ -6,23 +6,20 @@ import {
   getReturnData,
   useClickOutSide,
 } from "../../../../../src/utility/Util";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import PostHeader from "../../../../../src/components/viewpost/PostHeader";
 import PostMoreMenu from "../../../../../src/components/card/PostMoreMenu";
 import DropDown from "../../../../../src/components/navigation/DropDown";
-import { getPostView } from "../../../../../src/graphql-custom/post/queries";
-import { API, graphqlOperation, withSSRContext } from "aws-amplify";
+import {getPostView} from "../../../../../src/graphql-custom/post/queries";
+import {API, graphqlOperation, withSSRContext} from "aws-amplify";
 import Dummy from "dummyjs";
 import Link from "next/link";
 import ImageCarousel from "../../../../../src/components/carousel/ImageCarousel";
 import Button from "../../../../../src/components/button";
 import AddComment from "../../../../../src/components/input/AddComment";
 import CommentCardNew from "../../../../../src/components/card/CommentCardNew";
-import {
-  createGroupUsers,
-  deleteGroupUsers,
-} from "../../../../../src/graphql-custom/GroupUsers/mutation";
-import { useUser } from "../../../../../src/context/userContext";
+import {createGroupUsers, deleteGroupUsers,} from "../../../../../src/graphql-custom/GroupUsers/mutation";
+import {useUser} from "../../../../../src/context/userContext";
 import ProfileHoverCard from "../../../../../src/components/card/ProfileHoverCard";
 import Tooltip from "../../../../../src/components/tooltip/Tooltip";
 import Head from "next/head";
@@ -31,8 +28,8 @@ import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import useWindowSize from "../../../../../src/hooks/useWindowSize";
 import useModalLayout from "../../../../../src/hooks/useModalLayout";
 
-export async function getServerSideProps({ req, query }) {
-  const { API, Auth } = withSSRContext({ req });
+export async function getServerSideProps({req, query}) {
+  const {API, Auth} = withSSRContext({req});
 
   let user = null;
 
@@ -125,6 +122,7 @@ const PostItem = ({ ssrData }) => {
               ...router.query,
               signInUp: "signIn",
               isModal: true,
+              prevPath: router.asPath
             },
           },
           `/signInUp/signIn`,

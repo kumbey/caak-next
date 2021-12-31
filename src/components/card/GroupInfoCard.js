@@ -57,6 +57,7 @@ const GroupInfoCard = ({groupId, containerClassname}) => {
               ...router.query,
               signInUp: "signIn",
               isModal: true,
+              prevPath: router.asPath
             },
           },
           `/signInUp/signIn`,

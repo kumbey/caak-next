@@ -1,29 +1,29 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Card from "../src/components/card/FeedCard";
-import { useUser } from "../src/context/userContext";
+import {useUser} from "../src/context/userContext";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { getReturnData } from "../src/utility/Util";
-import { getPostByStatus } from "../src/graphql-custom/post/queries";
-import { useListPager } from "../src/utility/ApiHelper";
-import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
-import { withSSRContext } from "aws-amplify";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {getReturnData} from "../src/utility/Util";
+import {getPostByStatus} from "../src/graphql-custom/post/queries";
+import {useListPager} from "../src/utility/ApiHelper";
+import {onPostUpdateByStatus} from "../src/graphql-custom/post/subscription";
+import {withSSRContext} from "aws-amplify";
 import useFeedLayout from "../src/hooks/useFeedLayout";
-import { listGroupByUserAndRole } from "../src/graphql-custom/GroupUsers/queries";
+import {listGroupByUserAndRole} from "../src/graphql-custom/GroupUsers/queries";
 import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
-import { feedType } from "../src/components/navigation/sortButtonTypes";
-import { listGroups } from "../src/graphql/queries";
-import { useWrapper } from "../src/context/wrapperContext";
+import {feedType} from "../src/components/navigation/sortButtonTypes";
+import {listGroups} from "../src/graphql/queries";
+import {useWrapper} from "../src/context/wrapperContext";
 import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
 import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
-import toast, { Toaster } from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import FeedBack from "../src/components/feedback";
 import useLocalStorage from "../src/hooks/useLocalStorage";
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({req}) {
   const { API, Auth } = withSSRContext({ req });
   let user;
 
@@ -52,7 +52,8 @@ export async function getServerSideProps({ req }) {
       for (let i = 0; i < role.length; i++) {
         if (role[i] === "NOT_MEMBER") {
           const resp = await API.graphql(graphqlOperation(listGroups));
-          retData = [...retData, ...getReturnData(resp).items];
+          const followed = getReturnData(resp).items.filter(item => !item.followed)
+          retData = [...retData, ...followed];
         } else {
           const resp = await API.graphql(
             graphqlOperation(listGroupByUserAndRole, {
@@ -86,7 +87,7 @@ const Feed = ({ ssrData }) => {
 
   const {lsGet} = useLocalStorage("session")
   const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost)
-  
+
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
   const [posts, setPosts] = useState(ssrData.posts.items);

@@ -31,11 +31,13 @@ export default function DefaultHelpLayout({children}) {
                                 <p>Холбоо барих</p>
                             </a>
                         </Link>
+                        <p className="mx-[5px] cursor-default">·</p>
                         <Link href={"/help/connectus"} shallow>
                             <a className='sm:ml-[10px] md:ml-[35px]'>
                                 <p>Сурталчилгаа</p>
                             </a>
                         </Link>
+                        <p className="mx-[5px] hidden sm:block cursor-default">·</p>
                         <Link href={{
                                     pathname: "/help/secure",
                                     query: {
@@ -46,6 +48,7 @@ export default function DefaultHelpLayout({children}) {
                                     <p>Үйлчилгээний нөхцөл</p>
                                 </a>
                         </Link>
+                        <p className="mx-[5px] cursor-default">·</p>
                         <Link href={{
                                     pathname: "/help/secure",
                                     query: {
@@ -56,6 +59,7 @@ export default function DefaultHelpLayout({children}) {
                                     <p>Нууцлал</p>
                                 </a>
                         </Link>
+                        <p className="mx-[5px] cursor-default">·</p>
                         <Link href="/help" shallow>
                             <a className='sm:ml-[10px] md:ml-[35px]'>
                                 <p>Тусламж</p>
@@ -64,7 +68,7 @@ export default function DefaultHelpLayout({children}) {
                     </div>
                     <div className='flex items-center text-[15px] text-[#6C7392]'>
                         <div className={"flex flex-col sm:flex-row items-center mt-[10px] sm:mt-[25.5px]"}>
-                            <Logo/>
+                            {/* <Logo/> */}
                             <p className='ml-[16px]'>©2021 Саак Холдинг ХХК</p>
                         </div>
                     </div>

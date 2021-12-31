@@ -97,7 +97,7 @@ const DefaultFeedLayout = ({
             />
           )}
 
-          {!isLogged && <FooterSidebar />}
+          {/* {!isLogged && <FooterSidebar />} */}
           <Banner/>
         </div>
       </div>

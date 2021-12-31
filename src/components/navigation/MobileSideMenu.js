@@ -1,18 +1,17 @@
 import Button from "../button";
-import { useUser } from "../../context/userContext";
-import { getFileUrl, getGenderImage } from "../../utility/Util";
-import React, { useEffect } from "react";
-import Dummy from "dummyjs";
+import {useUser} from "../../context/userContext";
+import {getFileUrl, getGenderImage} from "../../utility/Util";
+import React from "react";
 import NavBarMenu from "./NavBarMenu";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import SideBarGroups from "../card/SideBarGroups";
 import useScrollBlock from "../../hooks/useScrollBlock";
-import { useWrapper } from "../../context/wrapperContext";
+import {useWrapper} from "../../context/wrapperContext";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 
-const MobileSideMenu = ({ setOpen }) => {
-  const { user, isLogged, logout } = useUser();
+const MobileSideMenu = ({setOpen}) => {
+    const {user, isLogged, logout} = useUser();
   const { isMobileMenuOpen } = useWrapper();
   const router = useRouter();
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -100,30 +99,32 @@ const MobileSideMenu = ({ setOpen }) => {
           </div>
         )}
         <NavBarMenu type={"mobile"} />
-        {isLogged && (
-          <Button
-            round
-            className={" h-12 w-full"}
-            skin={"secondary"}
-            onClick={() => logout()}
-          >
-            Гарах
-          </Button>
-        )}
-        <div className={"pb-[140px]"}>
-          <SideBarGroups
-            role={["ADMIN", "MODERATOR"]}
-            // maxColumns={3}
-            addGroup
-            title={"Миний группүүд"}
-          />
-          <SideBarGroups
-            role={["MEMBER"]}
-            // maxColumns={0}
-            title={"Дагасан группүүд"}
-          />
-          <SideBarGroups role={["NOT_MEMBER"]} title={"Бүх групп"} />
-        </div>
+          {isLogged && (
+              <Button
+                  round
+                  className={" h-12 w-full"}
+                  skin={"secondary"}
+                  onClick={() => logout()}
+              >
+                  Гарах
+              </Button>
+          )}
+          {isLogged && (
+              <div className={"pb-[140px]"}>
+                  <SideBarGroups
+                      role={["ADMIN", "MODERATOR"]}
+                      // maxColumns={3}
+                      addGroup
+                      title={"Миний группүүд"}
+                  />
+                  <SideBarGroups
+                      role={["MEMBER"]}
+                      // maxColumns={0}
+                      title={"Дагасан группүүд"}
+                  />
+                  <SideBarGroups role={["NOT_MEMBER"]} title={"Бүх групп"}/>
+              </div>
+          )}
       </div>
       {!isLogged && (
         <div className={"flex flex-col"}>
@@ -136,9 +137,10 @@ const MobileSideMenu = ({ setOpen }) => {
                 {
                   pathname: router.pathname,
                   query: {
-                    ...router.query,
-                    signInUp: "signIn",
-                    isModal: true,
+                      ...router.query,
+                      signInUp: "signIn",
+                      isModal: true,
+                      prevPath: router.asPath,
                   },
                 },
                 `/signInUp/signIn`,
@@ -157,9 +159,10 @@ const MobileSideMenu = ({ setOpen }) => {
                 {
                   pathname: router.pathname,
                   query: {
-                    ...router.query,
-                    signInUp: "signUp",
-                    isModal: true,
+                      ...router.query,
+                      signInUp: "signUp",
+                      isModal: true,
+                      prevPath: router.asPath,
                   },
                 },
                 `/signInUp/signUp`,

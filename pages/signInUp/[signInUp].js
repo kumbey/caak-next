@@ -5,12 +5,14 @@ import {
   faGoogle,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+import googleImg from "../../public/assets/images/Google-Color.svg";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import Button from "../../src/components/button";
 import { useUser } from "../../src/context/userContext";
 import useModalLayout from "../../src/hooks/useModalLayout";
 import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
+import Image from "next/image";
 
 const SignInUp = () => {
   const ModalLayout = useModalLayout();
@@ -64,7 +66,7 @@ const SignInUp = () => {
           onClick={goNext}
           round
           className={
-            "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-bold rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
+            "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-medium font-inter rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
           }
         >
           <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
@@ -80,7 +82,7 @@ const SignInUp = () => {
           onClick={() => openWindow("facebook")}
           round
           className={
-            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11   font-bold mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative g"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11   font-medium font-inter mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative g"
           }
         >
           <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
@@ -97,15 +99,18 @@ const SignInUp = () => {
           onClick={() => openWindow("google")}
           round
           className={
-            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-medium font-inter mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
           }
         >
           <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               size={"lg"}
               className={"text-caak-primary absolute right-4 top-0"}
               icon={faGoogle}
-            />
+            /> */}
+            <div className="absolute right-4 top-0 w-[24px] h-[24px]">
+              <Image alt="" src={googleImg} height={24} width={24} objectFit="cover" />
+            </div>
           </div>
           <p className="">Google</p>
           <p className="w-[40px]"></p>
@@ -115,7 +120,7 @@ const SignInUp = () => {
           onClick={() => null}
           round
           className={
-            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-medium font-inter mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
           }
         >
           <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
@@ -132,7 +137,7 @@ const SignInUp = () => {
           onClick={() => null}
           round
           className={
-            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            "flex justify-between hover:bg-gray-100 border border-gray-200 w-80 h-11  font-medium font-inter mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
           }
         >
           <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">

@@ -15,13 +15,13 @@ const Gender = ({
   return (
     <div className={`w-full input  `}>
       {hideLabel ? null : (
-        <label htmlFor={id} className={`${labelStyle}`}>
+        <label htmlFor={id} className={`${labelStyle} `}>
           {label}
         </label>
       )}
-      <div className={"flex  h-32"}>
+      <div className={"flex  h-32 mt-[8px]"}>
         <div
-          className={`cursor-pointer w-1/2 mr-1.5 rounded-lg border-2 border-caak-bleachedsilk ${
+          className={`cursor-pointer w-1/2 mr-1.5 rounded-lg border-2 border-caak-bleachedsilk hover:opacity-60 ${
             gender === "MALE"
               ? " text-caak-primaryHover border-b-2 border-caak-primary border-opacity-30 bg-caak-primaryLighter "
               : "bg-white text-caak-generalblack"
@@ -34,7 +34,7 @@ const Gender = ({
           />
         </div>
         <div
-          className={`cursor-pointer w-1/2 ml-1.5 rounded-lg border-2  border-caak-bleachedsilk ${
+          className={`cursor-pointer w-1/2 ml-1.5 rounded-lg border-2  border-caak-bleachedsilk hover:opacity-60 ${
             gender === "FEMALE"
               ? " text-caak-primaryHover border-b-2 border-caak-primary border-opacity-30 bg-caak-primaryLighter "
               : "bg-white text-caak-generalblack"

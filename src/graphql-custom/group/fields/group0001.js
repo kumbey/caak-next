@@ -6,6 +6,7 @@ const group0001 = /* GraphQL */ `{
     g_rules
     g_attentions
     name
+    aura
     g_rules
     g_attentions
     category_id

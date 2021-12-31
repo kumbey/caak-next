@@ -25,14 +25,19 @@ const TrendPostsByCategory = () => {
   // };
 
   const getTrendPostsByCategory = async () => {
-    let resp = await API.graphql({
-      query: listPostByCategoryOrderByReactions,
-      variables: {
-        category_id: userCategories[Math.floor(Math.random() * userCategories.length)],
-      },
-    });
-    resp = getReturnData(resp);
-    setTrendingPostsByCategory(resp);
+    try {
+      let resp = await API.graphql({
+        query: listPostByCategoryOrderByReactions,
+        variables: {
+          category_id:
+            userCategories[Math.floor(Math.random() * userCategories.length)],
+        },
+      });
+      resp = getReturnData(resp);
+      setTrendingPostsByCategory(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   const nextItem = () => {
@@ -49,7 +54,7 @@ const TrendPostsByCategory = () => {
   useEffect(() => {
     // getUserCategories()
     getTrendPostsByCategory();
-    
+
     // eslint-disable-next-line
   }, []);
 

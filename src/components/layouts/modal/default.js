@@ -15,11 +15,10 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
 
   const close = () => {
     if (router.query.prevPath && router.query.prevPath !== router.asPath) {
-      router.replace(
-        router.query.prevPath,
-        undefined,
-        { shallow: true, scroll: false }
-      );
+      router.replace(router.query.prevPath, undefined, {
+        shallow: true,
+        scroll: false,
+      });
     } else {
       router.replace("/");
     }
@@ -31,8 +30,8 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
         {
           query: {
             ...router.query,
-            signInUp: type === "signUp" ? "signIn" : "signUp"
-          }
+            signInUp: type === "signUp" ? "signIn" : "signUp",
+          },
         },
         `/signInUp/${type === "signUp" ? "signIn" : "signUp"}`,
         { shallow: true, scroll: false }
@@ -54,7 +53,7 @@ const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
           </div>
           <div
             className={
-              "text-center text-caak-generalblack mb-c2 font-bold text-24px pt-c5 relative"
+              "text-center text-caak-generalblack mb-[30px] font-bold text-24px pt-[76px] relative"
             }
           >
             {`${type === "signUp" ? "Бүртгүүлэх" : "Нэвтрэх"}`}

@@ -1,20 +1,13 @@
 import Image from "next/image";
 import Button from "../button";
-import {
-  generateFileUrl,
-  getFileUrl,
-  getGenderImage,
-} from "../../utility/Util";
-import { API, graphqlOperation } from "aws-amplify";
-import {
-  createGroupUsers,
-  deleteGroupUsers,
-} from "../../graphql-custom/GroupUsers/mutation";
-import { useUser } from "../../context/userContext";
-import { useRouter } from "next/router";
+import {getFileUrl, getGenderImage,} from "../../utility/Util";
+import {API, graphqlOperation} from "aws-amplify";
+import {createGroupUsers, deleteGroupUsers,} from "../../graphql-custom/GroupUsers/mutation";
+import {useUser} from "../../context/userContext";
+import {useRouter} from "next/router";
 
-const SearchCardGroup = ({ result, sortType }) => {
-  const { user, isLogged } = useUser();
+const SearchCardGroup = ({result, sortType}) => {
+  const {user, isLogged} = useUser();
   const router = useRouter();
   const followGroup = async () => {
     try {
@@ -55,6 +48,7 @@ const SearchCardGroup = ({ result, sortType }) => {
               ...router.query,
               signInUp: "signIn",
               isModal: true,
+              prevPath: router.asPath
             },
           },
           `/signInUp/signIn`,

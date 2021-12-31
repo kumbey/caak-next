@@ -1,33 +1,24 @@
 import Image from "next/image";
-import {
-  getFileExt,
-  getFileName,
-  getFileUrl,
-  getGenderImage,
-} from "../../../utility/Util";
+import {getFileExt, getFileName, getFileUrl, getGenderImage,} from "../../../utility/Util";
 import Button from "../../button";
 import SideBarGroups from "../../card/SideBarGroups";
-import { useUser } from "../../../context/userContext";
+import {useUser} from "../../../context/userContext";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import {
-  createFollowedUsers,
-  deleteFollowedUsers,
-  updateUser,
-} from "../../../graphql-custom/user/mutation";
-import { ApiFileUpload } from "../../../utility/ApiHelper";
+import {useCallback, useEffect, useState} from "react";
+import {createFollowedUsers, deleteFollowedUsers, updateUser,} from "../../../graphql-custom/user/mutation";
+import {ApiFileUpload} from "../../../utility/ApiHelper";
 
 import awsExports from "../../../aws-exports";
 import Dropzone from "react-dropzone";
-import { API, graphqlOperation } from "aws-amplify";
-import { deleteFile } from "../../../graphql-custom/file/mutation";
+import {API, graphqlOperation} from "aws-amplify";
+import {deleteFile} from "../../../graphql-custom/file/mutation";
 import Loader from "../../loader";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
-const DefaultUserProfileLayout = ({ user, children }) => {
+const DefaultUserProfileLayout = ({user, children}) => {
   const router = useRouter();
   const userId = router.query.userId;
-  const { user: signedUser, isLogged } = useUser();
+  const {user: signedUser, isLogged} = useUser();
   const [doRender, setDoRender] = useState(0);
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
@@ -109,6 +100,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
             ...router.query,
             signInUp: "signIn",
             isModal: true,
+            prevPath: router.asPath
           },
         },
         `/signInUp/signIn`,
@@ -343,7 +335,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       : getGenderImage(user.gender).src
                   }
                 />
-                {isLogged && user.id === user.id && !uploadingProfile && (
+                {isLogged && user.id === signedUser.id && !uploadingProfile && (
                   <Dropzone
                     onDropRejected={(e) => console.log(e[0].errors[0].message)}
                     accept={"image/jpeg, image/png, image/gif"}

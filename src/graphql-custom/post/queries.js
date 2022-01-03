@@ -164,14 +164,14 @@ export const listSavedPostByUser = /* GraphQL */ `
 
 export const listPostByCategoryOrderByReactions = /* GraphQL */ `
     query ListPostByCategoryOrderByReactions(
-        $category_id: ID!
+        $categoryAndStatus: String!
         $sortDirection: ModelSortDirection
         $filter: ModelPostTotalFilterInput
         $limit: Int
         $nextToken: String
     ) {
         listPostByCategoryOrderByReactions(
-            category_id: $category_id
+          categoryAndStatus: $categoryAndStatus
             sortDirection: $sortDirection
             filter: $filter
             limit: $limit

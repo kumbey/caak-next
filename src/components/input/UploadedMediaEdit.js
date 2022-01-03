@@ -64,7 +64,7 @@ const SortableCard = ({
           index === 0 ? "flex" : "group-hover:flex hidden"
         } transition-all duration-150  justify-center items-center rounded-full w-[24px] h-[24px] bg-caak-primary bg-opacity-90 absolute top-[4px] left-[4px] z-[1]`}
       >
-        <span className={"icon-fi-rs-star text-white text-[10px]"} />
+        <span className={"icon-fi-rs-notification-o text-white text-[14px]"} />
       </div>
       <div
         {...listeners}

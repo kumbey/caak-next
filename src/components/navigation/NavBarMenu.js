@@ -56,7 +56,7 @@ export default function NavBarMenu({ type }) {
                 <div className={"flex justify-center items-center"}>
                   <span
                     className={
-                      " icon-fi-rs-settings text-[18px] w-[20px] h-[18px] mr-2"
+                      " icon-fi-rs-settings-o text-[18px] w-[20px] h-[18px] mr-2"
                     }
                   />
                 </div>
@@ -72,7 +72,7 @@ export default function NavBarMenu({ type }) {
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span
               className={
-                "icon-fi-rs-auro text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                "icon-fi-rs-aura-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
               }
             />
             <p className="text-14px text-caak-extraBlack">Аура гэж юу вэ?</p>

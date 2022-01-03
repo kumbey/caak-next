@@ -44,13 +44,14 @@ const FeedBack = ({setIsOpen}) => {
       toast.success(`Таны санал амжилттай илгээгдлээ.`);
       setComment("");
       setTitle("");
+      setIsOpen(false)
     }
   };
 
   return (
     <div
       className={
-        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[24px] right-[24px] w-[321px] p-[25px]"
+        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[90px] right-[24px] w-[321px] p-[25px]"
       }
     >
       <div
@@ -95,7 +96,7 @@ const FeedBack = ({setIsOpen}) => {
               className={
                 "h-[40px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
               }
-              placeholder={"Нэр"}
+              placeholder={"Гарчиг"}
           />
           <div className={"w-full mt-[10px] relative"}>
             <textarea

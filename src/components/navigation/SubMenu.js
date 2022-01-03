@@ -137,14 +137,14 @@ const SubMenu = ({params}) => {
         >
           <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
             <span
-              className={`icon-fi-rs-notification text-22px text-caak-generalblack text-[22px]`}
+              className={`icon-fi-rs-notification-o text-22px text-caak-generalblack text-[22px]`}
             />
           </div>
 
           {parseInt(params.userTotal.unseen) > 0 ? (
             <div
               className={
-                "absolute flex justify-center items-center top-1 right-[7px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
+                "absolute flex justify-center items-center top-1 right-[5px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
               }
             >
               <span className={"text-white text-11px text-center"}>

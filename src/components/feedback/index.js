@@ -12,11 +12,13 @@ import {API} from "aws-amplify";
 import {createFeedBack} from "../../graphql-custom/feedback/mutations";
 import {useUser} from "../../context/userContext";
 import toast from "react-hot-toast";
+import FeedbackDoneCard from "./FeedbackDoneCard";
 
 const FeedBack = ({setIsOpen}) => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const [star, setStar] = useState(4);
+  const [isFeedBackSent, setIsFeedbackSent] = useState(false)
   const {isLogged} = useUser();
 
   const emojis = [
@@ -44,11 +46,11 @@ const FeedBack = ({setIsOpen}) => {
       toast.success(`Таны санал амжилттай илгээгдлээ.`);
       setComment("");
       setTitle("");
-      setIsOpen(false)
+      setIsFeedbackSent(true)
     }
   };
 
-  return (
+  return !isFeedBackSent ? (
     <div
       className={
         "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[90px] right-[24px] w-[321px] p-[25px]"
@@ -130,7 +132,7 @@ const FeedBack = ({setIsOpen}) => {
         </div>
       </div>
     </div>
-  );
+  ) : <FeedbackDoneCard/>;
 };
 
 export default FeedBack;

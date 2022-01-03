@@ -14,6 +14,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import {deleteFile} from "../../../graphql-custom/file/mutation";
 import Loader from "../../loader";
 import {useRouter} from "next/router";
+import userVerifiedSvg from "../../../../public/assets/images/fi-rs-awarded.svg";
 
 const DefaultUserProfileLayout = ({user, children}) => {
   const router = useRouter();
@@ -373,7 +374,14 @@ const DefaultUserProfileLayout = ({user, children}) => {
                       "w-[18px] h-[18px] flex items-center justify-center ml-[5px]"
                     }
                   >
-                    <span className={"icon-fi-rs-verified text-[16px]"} />
+                    <Image
+                      alt={""}
+                      height={14.25}
+                      width={16.5}
+                      quality={100}
+                      priority={true}
+                      src={userVerifiedSvg}
+                    />
                   </div>
                 )}
               </div>

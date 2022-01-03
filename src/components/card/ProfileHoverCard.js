@@ -8,6 +8,7 @@ import Loader from "../loader";
 import {useRouter} from "next/router";
 import Image from "next/image";
 import Divider from "../divider";
+import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 
 export default function ProfileHoverCard({userId}) {
   const {user, isLogged} = useUser();
@@ -129,7 +130,14 @@ export default function ProfileHoverCard({userId}) {
                     "flex items-center justify-center w-[17px] h-[17px]"
                   }
                 >
-                  <span className="icon-fi-rs-verified text-[14px] text-caak-buttonblue" />
+                  <Image
+                    alt={""}
+                    height={14.25}
+                    width={16.5}
+                    quality={100}
+                    priority={true}
+                    src={userVerifiedSvg}
+                  />
                 </div>
               )}
             </div>

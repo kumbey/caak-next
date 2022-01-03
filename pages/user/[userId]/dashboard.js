@@ -30,6 +30,7 @@ import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
+import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -603,7 +604,11 @@ const Dashboard = ({ ssrData }) => {
           <div className="text-2xl font-semibold text-caak-generalblack mr-1">
             @{user?.nickname}
           </div>
-          {user.verified && <span className="icon-fi-rs-verified" />}
+          {user.verified && <img
+            alt={""}
+            className={"h-[22px]"}
+            src={userVerifiedSvg.src}
+          />}
         </div>
         <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
           Дашбоард

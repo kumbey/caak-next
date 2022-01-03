@@ -1,5 +1,4 @@
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import Script from "next/script";
 
 class MyDocument extends Document {
   render() {
@@ -16,22 +15,6 @@ class MyDocument extends Document {
             content="caak.mn, saak.mn, sak.mn, саак, sak, saak, entertainment, top, news, music, social, Mongolia, best, hot, Mongolian girls, Mongolian nature, Mongolian photo, Mongolian video, beauty, nice, cool, шилдэг, топ, сайхан, гоё, хамгийн, халуухан, дуртай, хобби, сонирхол, амьдрал, чөлөөт цаг, зөвлөгөө"
           />
           <meta name="description" content="caak.mn" />
-
-          <Script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-G71ES07K2X"
-          />
-          <Script
-            id={"google-analytics"}
-            dangerouslySetInnerHTML={{
-              __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments)}
-              gtag(js, new Date());
-              gtag(config, G-G71ES07K2X);
-            `,
-            }}
-          />
           <link
             href={
               "https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"

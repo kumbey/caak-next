@@ -11,7 +11,9 @@ import "nprogress/nprogress.css"; //styles of nprogress
 import Router from "next/router";
 import ViewPostModal from "../src/components/modals/viewPostModal";
 import ViewPostItemModal from "../src/components/modals/viewPostItemModal";
-import RedirectUrls from "../src/redirectUrls"
+import RedirectUrls from "../src/redirectUrls";
+import Script from "next/script";
+import Head from "next/head";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -24,16 +26,32 @@ const updatedAwsConfig = {
     redirectSignIn: RedirectUrls.redirectSignIn,
     redirectSignOut: RedirectUrls.redirectSignOut,
   },
-  ssr: true
-}
+  ssr: true,
+};
 
 Amplify.configure(updatedAwsConfig);
 Storage.configure({ level: "public" });
 
-const MyApp = ({ Component, pageProps}) => {
-
+const MyApp = ({ Component, pageProps }) => {
   return (
     <WrapperProvider>
+      <Head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-G71ES07K2X"
+        />
+        <Script
+          id={"google-analytics"}
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments)}
+              gtag(js, new Date());
+              gtag(config, G-G71ES07K2X);
+            `,
+          }}
+        />
+      </Head>
       <UserProvider>
         <div className={"caak-main-wrapper"}>
           <NavBar />
@@ -47,6 +65,6 @@ const MyApp = ({ Component, pageProps}) => {
       </UserProvider>
     </WrapperProvider>
   );
-}
+};
 
 export default MyApp;

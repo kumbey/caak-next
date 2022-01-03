@@ -7,7 +7,6 @@ import awsExports from "../src/aws-exports";
 import NavBar from "../src/components/navigation/NavBar";
 import Modals from "../src/components/modals";
 import NProgress from "nprogress"; //nprogress module
-import "nprogress/nprogress.css"; //styles of nprogress
 import Router from "next/router";
 import ViewPostModal from "../src/components/modals/viewPostModal";
 import ViewPostItemModal from "../src/components/modals/viewPostItemModal";

@@ -10,6 +10,7 @@
 
 @import "icon-fonts.css";
 @import "./Tooltip.css";
+@import "./nprogress.css";
 
 @layer base {
     html {

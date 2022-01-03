@@ -122,7 +122,7 @@ export default function NavBar() {
             <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
               <div className="relative flex items-center justify-between w-full h-full">
                 <div className={"flex   justify-center"}>
-                  <Logo onClick={() => router.push("/", undefined)} />
+                  <Logo onClick={() => router.reload()} />
                   <div className="flex items-center justify-center mt-[5px]  w-[44px] h-[17px] rounded-[3px] bg-transparent logoBeta">
                     <p className="font-inter font-medium text-11px text-white">
                       BETA
@@ -148,7 +148,7 @@ export default function NavBar() {
           <div className="flex items-center h-full md:px-[40px] py-1">
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="md:flex flex flex-row  hidden ">
-                <Logo onClick={() => router.push("/", undefined)} />
+                <Logo onClick={() => router.reload()} />
                 <div className="flex items-center justify-center mt-[5px] w-[44px] h-[17px] rounded-[3px] bg-transparent logoBeta">
                   <p className="font-inter font-medium text-11px text-white">
                     BETA

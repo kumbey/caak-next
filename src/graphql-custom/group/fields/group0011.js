@@ -7,6 +7,8 @@ const group0011 = /* GraphQL */ `{
         profile ${file0001}
         totals{
             member
+            admin
+            moderator
         }
     }
 

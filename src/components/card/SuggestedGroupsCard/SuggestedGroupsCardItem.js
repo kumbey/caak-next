@@ -53,7 +53,7 @@ const SuggestedGroupsCardItem = ({ group }) => {
             "text-13px text-darkblue tracking-[0.2px] leading-[16px] h-[16px]"
           }
         >
-          {group.totals.member} гишүүн
+          {group.totals.member + group.totals.moderator + group.totals.admin} гишүүн
         </div>
       </div>
     </div>

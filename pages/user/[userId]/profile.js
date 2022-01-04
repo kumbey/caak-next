@@ -309,6 +309,7 @@ const Profile = ({ ssrData }) => {
             setSortType={setSortType}
             sortType={sortType}
             direction={"col"}
+            userId={userId}
           />
 
           {sortType === "SAVED" ? (

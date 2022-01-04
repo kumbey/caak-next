@@ -25,7 +25,7 @@ const FeedSortButtons = ({
   );
   const { setFeedSortType } = useWrapper();
   const router = useRouter();
-  const { user: signedUser } = useUser();
+  const { user: signedUser, isLogged } = useUser();
 
   return (
     !hide && (
@@ -36,7 +36,7 @@ const FeedSortButtons = ({
           } ${containerClassname ? containerClassname : ""}`}
         >
           {items.map(({ icon, type, id, title, route }) => {
-            return userId !== signedUser.id && type !== "SAVED" ? (
+            return isLogged && userId === signedUser.id ? (
               <Button
                 key={id}
                 onClick={() => {
@@ -77,7 +77,7 @@ const FeedSortButtons = ({
                   {title}
                 </p>
               </Button>
-            ) : userId === signedUser.id ? (
+            ) : type !== "SAVED" ? (
               <Button
                 key={id}
                 onClick={() => {

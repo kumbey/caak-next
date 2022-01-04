@@ -39,7 +39,7 @@ export async function getServerSideProps({ req }) {
     variables: {
       sortDirection: "DESC",
       status: "CONFIRMED",
-      limit: 6,
+      limit: 1,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });

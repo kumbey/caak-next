@@ -1,17 +1,22 @@
-import {useEffect, useState} from "react";
-import {API} from "aws-amplify";
-import {listGroupAdminMods} from "../../graphql-custom/group/queries";
-import {generateFileUrl, getGenderImage, getReturnData,} from "../../utility/Util";
+import { useEffect, useState } from "react";
+import { API } from "aws-amplify";
+import { listGroupAdminMods } from "../../graphql-custom/group/queries";
+import {
+  generateFileUrl,
+  getGenderImage,
+  getReturnData,
+} from "../../utility/Util";
 import Image from "next/image";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
 import Link from "next/link";
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
+import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 
-const GroupAdminsCard = ({groupId}) => {
+const GroupAdminsCard = ({ groupId }) => {
   const [groupMods, setGroupMods] = useState({});
   const [loading, setLoading] = useState(true);
-  const {isLogged} = useUser()
+  const { isLogged } = useUser();
   const colors = {
     adminText: "#2196F3",
     adminBackground: "rgba(33, 150, 243, 0.1)",
@@ -28,7 +33,7 @@ const GroupAdminsCard = ({groupId}) => {
           role: { eq: "ADMIN" },
           limit: 5,
         },
-        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
       setGroupMods(resp);
@@ -43,8 +48,12 @@ const GroupAdminsCard = ({groupId}) => {
     // eslint-disable-next-line
   }, [groupId]);
 
-  return (!loading && groupMods.items.length > 0) ? (
-    <div className={"flex flex-col w-[320px] bg-white rounded-[8px] p-[18px] mb-[16px]"}>
+  return !loading && groupMods.items.length > 0 ? (
+    <div
+      className={
+        "flex flex-col w-[320px] bg-white rounded-[8px] p-[18px] mb-[16px]"
+      }
+    >
       <div>
         <p className={"text-caak-extraBlack text-[15px] font-semibold"}>
           Группын удирдагчид
@@ -100,7 +109,14 @@ const GroupAdminsCard = ({groupId}) => {
                         "flex items-center justify-center w-[16px] h-[16px] ml-[2px]"
                       }
                     >
-                      <span className={"icon-fi-rs-verified text-[13px]"} />
+                      <Image
+                        alt={""}
+                        height={14.25}
+                        width={16.5}
+                        quality={100}
+                        priority={true}
+                        src={userVerifiedSvg}
+                      />
                     </div>
                   )}
 

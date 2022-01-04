@@ -14,6 +14,7 @@ import Consts from "../src/utility/Consts";
 import Head from "next/head";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import TrendPostsByCategory from "../src/components/TrendPostsByCategory";
+import { usePreserveScroll } from "../src/hooks/useScroll";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -32,7 +33,7 @@ export async function getServerSideProps({ req }) {
         variables: {
           status: "CONFIRMED",
           sortDirection: "DESC",
-          limit: 6,
+          limit: 2,
         },
         authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
@@ -52,6 +53,7 @@ export async function getServerSideProps({ req }) {
 }
 
 const Trending = ({ ssrData }) => {
+  usePreserveScroll();
   const TrendingLayout = useFeedLayout("default");
   const [trendingPosts, setTrendingPosts] = useState(ssrData.trendingPosts);
   const [loading, setLoading] = useState(false);
@@ -63,12 +65,12 @@ const Trending = ({ ssrData }) => {
     query: listPostOrderByReactions,
     variables: {
       status: "CONFIRMED",
-      limit: 6,
-      sortDirection: "DESC"
+      limit: 20,
+      sortDirection: "DESC",
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.trendingPosts.nextToken,
-    ssr: true
+    ssr: true,
   });
 
   const fetchTrendingPosts = async () => {
@@ -114,7 +116,8 @@ const Trending = ({ ssrData }) => {
           containerClassname={"mb-[19px] justify-center"}
           direction={"row"}
         />
-        <TrendPostsByCategory/>
+        {isLogged && <TrendPostsByCategory />}
+
         <InfinitScroller onNext={fetchTrendingPosts} loading={loading}>
           {trendingPosts.items.map((data, index) => {
             return (

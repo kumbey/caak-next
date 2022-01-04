@@ -9,32 +9,44 @@ import { useUser } from "../../context/userContext";
 const TrendPostsByCategory = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [trendingPostsByCategory, setTrendingPostsByCategory] = useState({});
-  const [userCategories, setUserCategories] = useState([
-    "46adc96c-aef9-498a-a8f6-fc05cf264cd1",
-    "33d2e2c7-807c-4a8f-b959-7f5f93e2d54d",
-  ]);
-  const { user } = useUser();
+  const [userCategories, setUserCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState({});
+  const { user, isLogged } = useUser();
 
-  // const getUserCategories = async () => {
-  //   let resp = API.graphql({
-  //     query: listUserCategoryByUser,
-  //     variables: { user_id: user.id },
-  //   });
-  //   // resp = getReturnData(resp)
-  //   setUserCategories(resp);
-  // };
+  const getUserCategories = async () => {
+    let resp = await API.graphql({
+      query: listUserCategoryByUser,
+      variables: { user_id: user.id },
+      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    });
+    resp = getReturnData(resp);
+    return resp;
+  };
 
-  const getTrendPostsByCategory = async () => {
+  const getTrendPosts = async (randomCategory) => {
     try {
       let resp = await API.graphql({
         query: listPostByCategoryOrderByReactions,
         variables: {
-          category_id:
-            userCategories[Math.floor(Math.random() * userCategories.length)],
+          categoryAndStatus: `${randomCategory}#CONFIRMED`,
         },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
       setTrendingPostsByCategory(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const getTrendPostsByCategory = async () => {
+    try {
+      const categories = await getUserCategories();
+      const randomCategory =
+        categories.items[Math.floor(Math.random() * categories.items.length)];
+      setSelectedCategory(randomCategory);
+      setUserCategories(categories.items);
+      await getTrendPosts(randomCategory.category_id);
     } catch (ex) {
       console.log(ex);
     }
@@ -52,7 +64,7 @@ const TrendPostsByCategory = () => {
   };
 
   useEffect(() => {
-    // getUserCategories()
+    // getUserCategories();
     getTrendPostsByCategory();
 
     // eslint-disable-next-line
@@ -105,7 +117,8 @@ const TrendPostsByCategory = () => {
           "font-medium text-caak-extraBlack text-[20px] tracking-[0.3px] leading-[24px]"
         }
       >
-        Хоол
+        {selectedCategory.category.icon}
+        {selectedCategory.category.name}
       </p>
       <div className={"relative overflow-hidden"}>
         <div

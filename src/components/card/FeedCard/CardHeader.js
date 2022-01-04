@@ -15,6 +15,8 @@ import { useWrapper } from "../../../context/wrapperContext";
 import { useRouter } from "next/router";
 import ReportModal from "../../modals/reportModal";
 import { useUser } from "../../../context/userContext";
+import userVerifiedSvg from "../../../../public/assets/images/fi-rs-awarded.svg";
+import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 
 const CardHeader = ({
   post,
@@ -78,10 +80,13 @@ const CardHeader = ({
                 </Link>
               </span>
               {post.group.verified ? (
-                <span
-                  className={
-                    "icon-fi-rs-verified text-caak-buttonblue text-13px mr-1.5"
-                  }
+                <Image
+                  alt={""}
+                  height={14.25}
+                  width={16.5}
+                  quality={100}
+                  priority={true}
+                  src={groupVerifiedSvg}
                 />
               ) : (
                 ""
@@ -111,10 +116,13 @@ const CardHeader = ({
                     </a>
                   </Link>
                   {post.user.verified ? (
-                    <span
-                      className={
-                        "icon-fi-rs-verified text-caak-buttonblue text-13px mr-1.5"
-                      }
+                    <Image
+                      alt={""}
+                      height={14.25}
+                      width={16.5}
+                      quality={100}
+                      priority={true}
+                      src={userVerifiedSvg}
                     />
                   ) : (
                     ""

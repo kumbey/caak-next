@@ -83,7 +83,7 @@ const ViewPostLeftReaction = ({
           }
         >
           <span
-            className={"icon-fi-rs-comment text-caak-extraBlack text-[23px]"}
+            className={"icon-fi-rs-comment-f text-caak-extraBlack text-[23px]"}
           />
         </div>
         <div className={"mt-[6px]"}>

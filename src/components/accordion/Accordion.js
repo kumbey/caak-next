@@ -21,25 +21,37 @@ export const Accordion = ({
     <div className="flex flex-col flex-1">
       <div
         className="box-border appearance-none cursor-pointer focus:outline-none flex items-center justify-between text-left"
-        onClick={toggleAccordion}
+        onClick={() => {
+          if (content) {
+            toggleAccordion();
+          }
+        }}
       >
-        <p className={`max-w-[260px] ${titleClassname ? titleClassname : ""}`}>{title}</p>
-        <div className={"w-[14px] h-[14px] flex justify-center items-center"}>
-          <span
-            className={`icon-fi-rs-next text-[12px] ${
-              active
-                ? "transform duration-300 ease rotate-[270deg]"
-                : "transform duration-300 ease rotate-90"
-            } inline-block`}
-          />
-        </div>
+        <p className={`max-w-[260px] ${titleClassname ? titleClassname : ""}`}>
+          {title}
+        </p>
+        {content && (
+          <div className={"w-[14px] h-[14px] flex justify-center items-center"}>
+            <span
+              className={`icon-fi-rs-next text-[12px] ${
+                active
+                  ? "transform duration-300 ease rotate-[270deg]"
+                  : "transform duration-300 ease rotate-90"
+              } inline-block`}
+            />
+          </div>
+        )}
       </div>
       <div
         ref={contentSpace}
         style={{ maxHeight: `${height}` }}
         className="overflow-auto overflow-y-hidden transition-max-height duration-300 ease-in-out"
       >
-        <div className={`max-w-[260px] ${contentClassname ? contentClassname : ""}`}>
+        <div
+          className={`max-w-[260px] ${
+            contentClassname ? contentClassname : ""
+          }`}
+        >
           {content}
         </div>
       </div>

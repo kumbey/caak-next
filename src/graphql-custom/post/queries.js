@@ -164,14 +164,14 @@ export const listSavedPostByUser = /* GraphQL */ `
 
 export const listPostByCategoryOrderByReactions = /* GraphQL */ `
     query ListPostByCategoryOrderByReactions(
-        $category_id: ID!
+        $categoryAndStatus: String!
         $sortDirection: ModelSortDirection
         $filter: ModelPostTotalFilterInput
         $limit: Int
         $nextToken: String
     ) {
         listPostByCategoryOrderByReactions(
-            category_id: $category_id
+          categoryAndStatus: $categoryAndStatus
             sortDirection: $sortDirection
             filter: $filter
             limit: $limit
@@ -184,4 +184,28 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
             nextToken
         }
     }
+`;
+
+export const listPostByOwned = /* GraphQL */ `
+  query ListPostByOwned(
+    $owned: String
+    $updatedAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostByOwned(
+      owned: $owned
+      updatedAt: $updatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items 
+       ${post0004}
+        nextToken
+    }
+  }
 `;

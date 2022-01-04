@@ -12,11 +12,13 @@ import {API} from "aws-amplify";
 import {createFeedBack} from "../../graphql-custom/feedback/mutations";
 import {useUser} from "../../context/userContext";
 import toast from "react-hot-toast";
+import FeedbackDoneCard from "./FeedbackDoneCard";
 
 const FeedBack = ({setIsOpen}) => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const [star, setStar] = useState(4);
+  const [isFeedBackSent, setIsFeedbackSent] = useState(false)
   const {isLogged} = useUser();
 
   const emojis = [
@@ -44,13 +46,14 @@ const FeedBack = ({setIsOpen}) => {
       toast.success(`Таны санал амжилттай илгээгдлээ.`);
       setComment("");
       setTitle("");
+      setIsFeedbackSent(true)
     }
   };
 
-  return (
+  return !isFeedBackSent ? (
     <div
       className={
-        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[24px] right-[24px] w-[321px] p-[25px]"
+        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[90px] right-[24px] w-[321px] p-[25px]"
       }
     >
       <div
@@ -95,7 +98,7 @@ const FeedBack = ({setIsOpen}) => {
               className={
                 "h-[40px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian"
               }
-              placeholder={"Нэр"}
+              placeholder={"Гарчиг"}
           />
           <div className={"w-full mt-[10px] relative"}>
             <textarea
@@ -129,7 +132,7 @@ const FeedBack = ({setIsOpen}) => {
         </div>
       </div>
     </div>
-  );
+  ) : <FeedbackDoneCard/>;
 };
 
 export default FeedBack;

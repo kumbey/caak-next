@@ -231,7 +231,7 @@ const ImageCarousel = ({
                                 >
                                   <img
                                     alt={""}
-                                    src={generateFileUrl(item.file)}
+                                    src={getFileUrl(item.file)}
                                     className={
                                       "object-contain w-full h-full min-h-[432px] max-h-[770px] z-2"
                                     }

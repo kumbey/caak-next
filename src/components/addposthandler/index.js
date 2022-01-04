@@ -8,7 +8,7 @@ export default function AddPostHandler({groupId}) {
     const {user, isLogged} = useUser();
     const router = useRouter();
     return (
-        <div className="bg-white h-[60px] rounded-[8px] flex flex-row items-center w-full mb-[32px] px-[16px]">
+        <div className="max-w-[616px] mx-auto bg-white h-[60px] rounded-[8px] flex flex-row items-center w-full mb-[32px] px-[16px]">
             {isLogged ? (
                 <div
                     className={

@@ -316,7 +316,7 @@ export function checkUsername(username) {
 }
 
 export function getFileUrl(file) {
-  let retUrl = `https://media.caak.mn/article_images/01_HKO2Zzb.jpg`;
+  let retUrl;
 
   if(file){
     if (file.url) {

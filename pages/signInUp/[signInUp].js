@@ -13,6 +13,7 @@ import useModalLayout from "../../src/hooks/useModalLayout";
 import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 import Image from "next/image";
+import Link from "next/link";
 
 const SignInUp = () => {
   const ModalLayout = useModalLayout();
@@ -109,7 +110,13 @@ const SignInUp = () => {
               icon={faGoogle}
             /> */}
             <div className="absolute right-4 top-0 w-[24px] h-[24px]">
-              <Image alt="" src={googleImg} height={24} width={24} objectFit="cover" />
+              <Image
+                alt=""
+                src={googleImg}
+                height={24}
+                width={24}
+                objectFit="cover"
+              />
             </div>
           </div>
           <p className="">Google</p>
@@ -154,9 +161,35 @@ const SignInUp = () => {
       {type === "signUp" && (
         <p className="mx-[25px] text-center mt-[34px]  font-inter font-normal text-13px text-caak-aleutian">
           Та энэ алхамын үргэлжлүүлснээр, сайтын{" "}
-          <span className="text-caak-generalblack">Үйлчилгээний нөхцөл</span>{" "}
+          <Link
+            href={{
+              pathname: "/help/secure",
+              query: {
+                index: 1,
+              },
+            }}
+            shallow
+          >
+            <a>
+              <span className="text-caak-generalblack">
+                Үйлчилгээний нөхцөл
+              </span>{" "}
+            </a>
+          </Link>
           болон{" "}
-          <span className="text-caak-generalblack">Нууцлалын бодлогыг</span>{" "}
+          <Link
+            href={{
+              pathname: "/help/secure",
+              query: {
+                index: 2,
+              },
+            }}
+            shallow
+          >
+            <a>
+              <span className="text-caak-generalblack">Нууцлалын бодлогыг</span>{" "}
+            </a>
+          </Link>
           зөвшөөрсөнд тооцно.
         </p>
       )}

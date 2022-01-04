@@ -266,7 +266,13 @@ export function generateTimeAgo(date) {
     "milliseconds",
   ]);
   if (diff.years !== 0 || diff.months !== 0) {
-    return postdate.toLocaleString();
+    return (
+      postdate.year +
+      "." +
+      (postdate.month < 10 ? `0${postdate.month}` : postdate.month) +
+      "." +
+      postdate.day
+    );
   } else if (diff.days !== 0) {
     return diff.days + " өдөр";
   } else if (diff.hours !== 0) {
@@ -280,8 +286,8 @@ export function generateTimeAgo(date) {
   }
 }
 
-export function getDate(date){
-  const postDate = DateTime.fromISO(date)
+export function getDate(date) {
+  const postDate = DateTime.fromISO(date);
   return postDate.toLocaleString();
 }
 
@@ -318,13 +324,12 @@ export function checkUsername(username) {
 export function getFileUrl(file) {
   let retUrl;
 
-  if(file){
+  if (file) {
     if (file.url) {
       retUrl = file.url;
-    } else if(file.isExternal === "TRUE"){
-      retUrl = `https://media.caak.mn/${file.external_url}`
-    }
-    else {
+    } else if (file.isExternal === "TRUE") {
+      retUrl = `https://media.caak.mn/${file.external_url}`;
+    } else {
       retUrl = generateFileUrl(file);
     }
   }
@@ -369,7 +374,7 @@ export function _modalisOpen(params) {
   let isOpen = false;
   for (let i = 0; i, conditions.length > i; i++) {
     const condition = conditions[i];
-    
+
     if (condition.value === "DYNAMIC" && query[condition.key]) {
       isOpen = true;
     } else {
@@ -387,16 +392,16 @@ export async function fetcher(url) {
   return resp.json();
 }
 
-export function findMatchIndex(arr, key, value){
-    let index = -1
-    for(let i=0; i < arr.length; i++){
-      if(arr[i][key] === value){
-          index = i
-          break
-      }
+export function findMatchIndex(arr, key, value) {
+  let index = -1;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i][key] === value) {
+      index = i;
+      break;
     }
+  }
 
-    return index
+  return index;
 }
 
 const object = {

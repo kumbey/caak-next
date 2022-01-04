@@ -241,6 +241,7 @@ const AddPost = () => {
     }
     if (selectedGroup) {
       const resp = await getGroup({ id: selectedGroup.id });
+      setSelectedGroup(resp)
       if (resp.role_on_group === "NOT_MEMBER") {
         handleToast({ param: "isFollow" });
 
@@ -290,7 +291,7 @@ const AddPost = () => {
               finish={finish}
               messageTitle={`${
                 selectedGroup.role_on_group === "ADMIN" ||
-                selectedGroup.role_on_group === "ADMIN"
+                selectedGroup.role_on_group === "MODERATOR"
                   ? `Таны пост "${selectedGroup.name}" группт амжилттай нийтлэгдлээ.`
                   : `Таны пост "${selectedGroup.name}" группт амжилттай илгээгдлээ.`
               }`}

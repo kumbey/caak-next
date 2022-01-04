@@ -27,11 +27,12 @@ const DefaultFeedLayout = ({
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
-  const { feedSortType } = useWrapper();
+  const { feedSortType, setNavBarTransparent } = useWrapper();
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
+    setNavBarTransparent(false)
   }, []);
 
   //  If columns is undefined, columns is defaults to 3.
@@ -42,7 +43,6 @@ const DefaultFeedLayout = ({
     loaded && (
       <div
         className={"feedLayoutContainer pb-[200px] md:pb-0"}
-        // style={{ paddingBottom: size.height / 3 }}
       >
         <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
 
@@ -57,6 +57,7 @@ const DefaultFeedLayout = ({
               items={feedType}
               initialSort={feedSortType}
               direction={"column"}
+              containerClassname={"w-full"}
             />
             <SideBarGroups
               role={["ADMIN", "MODERATOR"]}

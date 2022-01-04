@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { generateFileUrl, getGenderImage } from "../../../utility/Util";
 import Link from "next/link";
+import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 
 const SuggestedGroupsCardItem = ({ group }) => {
   return (
@@ -37,7 +38,14 @@ const SuggestedGroupsCardItem = ({ group }) => {
             <a>{group.name}</a>
           </Link>
           {group?.verified ? (
-            <span className={"icon-fi-rs-verified text-14px"} />
+            <Image
+              alt={""}
+              height={14.25}
+              width={16.5}
+              quality={100}
+              priority={true}
+              src={groupVerifiedSvg}
+            />
           ) : null}
         </div>
         <div
@@ -45,7 +53,7 @@ const SuggestedGroupsCardItem = ({ group }) => {
             "text-13px text-darkblue tracking-[0.2px] leading-[16px] h-[16px]"
           }
         >
-          {group.totals.member} гишүүн
+          {group.totals.member + group.totals.moderator + group.totals.admin} гишүүн
         </div>
       </div>
     </div>

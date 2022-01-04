@@ -63,6 +63,7 @@ const post0004 = /* GraphQL */ `
       followed
       aura
       about
+      verified
       totals {
         followers
       }

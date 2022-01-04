@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getFileUrl } from "../../utility/Util";
+import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 
 const GroupTopMemberCardItem = ({ color, user }) => {
   return (
@@ -43,7 +44,14 @@ const GroupTopMemberCardItem = ({ color, user }) => {
             </p>
             {user.verified && (
               <div className={"flex items-center w-[16px] h-[16px] ml-[4px]"}>
-                <span className={"icon-fi-rs-verified text-[14px]"} />
+                <Image
+                  alt={""}
+                  height={14.25}
+                  width={16.5}
+                  quality={100}
+                  priority={true}
+                  src={userVerifiedSvg}
+                />
               </div>
             )}
           </div>

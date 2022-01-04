@@ -1,5 +1,6 @@
 @layer components {
     .auraCard {
-        @apply flex flex-col justify-between items-center bg-caak-icingrose px-px50 py-c1 h-px-260 w-ci  rounded-square mb-[24px];
+        padding: 20px 49px 18px 50px;
+        @apply flex flex-col justify-between items-center bg-caak-icingrose w-ci h-[260px] rounded-square mb-[24px];
     }
 }

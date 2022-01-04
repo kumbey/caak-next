@@ -12,7 +12,6 @@ import { useListPager } from "../../../src/utility/ApiHelper";
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
 
-import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
   getGroupTotal,
   getGroupUsersByGroup,
@@ -38,7 +37,6 @@ export async function getServerSideProps({ req, query }) {
     user = null;
   }
   if (!user) return { notFound: true };
-  const userId = user?.attributes?.sub;
 
   const groupView = await API.graphql({
     query: getGroupView,
@@ -53,42 +51,7 @@ export async function getServerSideProps({ req, query }) {
       group_id: query.groupId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 20,
-    },
-  });
-
-  const pendingPosts = await API.graphql({
-    query: getPostByGroup,
-    variables: {
-      group_id: query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "PENDING" } },
-      limit: 20,
-    },
-  });
-  // const archivedPosts = await API.graphql({
-  //   query: getPostByGroup,
-  //   variables: {
-  //     group_id: query.groupId,
-  //     sortDirection: "DESC",
-  //     filter: { status: { eq: "ARCHIVED" } },
-  //     limit: 6,
-  //   },
-  // });
-
-  const userList = await API.graphql({
-    query: getGroupUsersByGroup,
-    variables: {
-      group_id: query.groupId,
-      limit: 20,
-    },
-  });
-
-  const userComments = await API.graphql({
-    query: listCommentByUser,
-    variables: {
-      user_id: userId,
-      sortDirection: "DESC",
+      limit: 1,
     },
   });
 
@@ -103,11 +66,7 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
-        pendingPosts: getReturnData(pendingPosts),
-        // archivedPosts: getReturnData(archivedPosts),
         groupView: getReturnData(groupView),
-        userFollower: getReturnData(userList),
-        userComment: getReturnData(userComments),
         groupTotals: getReturnData(groupTotals),
       },
     },
@@ -124,13 +83,9 @@ const Dashboard = ({ ssrData }) => {
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
   const [groupTotals, setGroupTotals] = useState(ssrData.groupTotals);
-  const [followedUsers, setFollowedUsers] = useState(
-    ssrData.userFollower.items
-  );
+  const [followedUsers, setFollowedUsers] = useState([]);
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [pendingPosts, setPendingPosts] = useState(
-    ssrData.pendingPosts.items ? ssrData.pendingPosts.items : []
-  );
+  const [pendingPosts, setPendingPosts] = useState([]);
   // const [archivedPosts, setArchivedPosts] = useState(
   //   ssrData.archivedPosts.items
   // );
@@ -186,7 +141,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 2,
       name: "Хүлээгдэж буй постууд",
-      icon: "icon-fi-rs-pending",
+      icon: "icon-fi-rs-pending-posts",
       length: groupTotals?.pending,
     },
   ];
@@ -199,7 +154,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: ssrData.posts.nextToken,
-    ssr:true
+    ssr: true,
   });
   const [nextFollowers] = useListPager({
     query: getGroupUsersByGroup,
@@ -207,8 +162,7 @@ const Dashboard = ({ ssrData }) => {
       group_id: router.query.groupId,
       limit: 20,
     },
-    nextToken: ssrData.userFollower.nextToken,
-    ssr:true
+    nextToken: followedUsers.nextToken,
   });
   const [nextPending] = useListPager({
     query: getPostByGroup,
@@ -218,28 +172,16 @@ const Dashboard = ({ ssrData }) => {
       filter: { status: { eq: "PENDING" } },
       limit: 20,
     },
-    nextToken: ssrData.pendingPosts.nextToken,
-    ssr:true
+    nextToken: pendingPosts.nextToken,
   });
-  // const [nextArchived] = useListPager({
-  //   query: getPostByGroup,
-  //   variables: {
-  //     group_id: router.query.groupId,
-  //     sortDirection: "DESC",
-  //     filter: { status: { eq: "ARCHIVED" } },
-  //     limit: 6,
-  //   },
-  //   nextToken: ssrData.archivedPosts.nextToken,
-  // });
-
   const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
-          const resp = await nextPosts();
-          if (resp) {
-            setPosts((nextPosts) => [...nextPosts, ...resp]);
-          }
+        const resp = await nextPosts();
+        if (resp) {
+          setPosts((nextPosts) => [...nextPosts, ...resp]);
+        }
         setLoading(false);
       }
     } catch (ex) {
@@ -252,10 +194,10 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-          const resp = await nextFollowers();
-          if (resp) {
-            setFollowedUsers((nextFollowers) => [...nextFollowers, ...resp]);
-          }
+        const resp = await nextFollowers();
+        if (resp) {
+          setFollowedUsers((nextFollowers) => [...nextFollowers, ...resp]);
+        }
 
         setLoading(false);
       }
@@ -268,10 +210,10 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-          const resp = await nextPending();
-          if (resp) {
-            setPendingPosts((nextPending) => [...nextPending, ...resp]);
-          }
+        const resp = await nextPending();
+        if (resp) {
+          setPendingPosts((nextPending) => [...nextPending, ...resp]);
+        }
 
         setLoading(false);
       }
@@ -280,23 +222,6 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-  // const fetchArchived = async () => {
-  //   try {
-  //     if (!loading) {
-  //       setLoading(true);
-
-  //       const resp = await nextArchived();
-  //       if (resp) {
-  //         setArchivedPosts((nextArchived) => [...nextArchived, ...resp]);
-  //       }
-
-  //       setLoading(false);
-  //     }
-  //   } catch (ex) {
-  //     setLoading(false);
-  //     console.log(ex);
-  //   }
-  // };
   const subscrib = () => {
     let authMode = "AWS_IAM";
     if (isLogged) {
@@ -600,10 +525,7 @@ const Dashboard = ({ ssrData }) => {
               ) : null}
 
               {activeIndex === 1 ? (
-                <InfinitScroller
-                  onNext={fetchFollowers}
-                  loading={loading}
-                >
+                <InfinitScroller onNext={fetchFollowers} loading={loading}>
                   <div className=" flex flex-row flex-wrap justify-between mt-[14px]">
                     {followedUsers.map((data, index) => {
                       return (

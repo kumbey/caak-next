@@ -22,6 +22,7 @@ import ReportModal from "../../../../src/components/modals/reportModal";
 import { Toaster } from "react-hot-toast";
 import { useUser } from "../../../../src/context/userContext";
 import { decode } from "html-entities";
+import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -183,8 +184,15 @@ const Post = ({ ssrData }) => {
                         }
                       >
                         {post.group.name}{" "}
-                        {post.user.verified && (
-                          <span className={"icon-fi-rs-verified text-[15px]"} />
+                        {post.group.verified && (
+                          <Image
+                            alt={""}
+                            height={14.25}
+                            width={16.5}
+                            quality={100}
+                            priority={true}
+                            src={groupVerifiedSvg}
+                          />
                         )}
                       </p>
                     </a>

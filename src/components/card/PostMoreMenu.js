@@ -146,7 +146,7 @@ export default function PostMoreMenu({
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           >
             <span
-              className={"icon-fi-rs-bookmark-f mr-px-12 w-c1  text-16px"}
+              className={"icon-fi-rs-save-f mr-px-12 w-c1  text-16px"}
             />
             <p className="text-14px text-caak-extraBlack">Хадгалагдсан</p>
           </div>
@@ -155,7 +155,7 @@ export default function PostMoreMenu({
             onClick={() => savePost()}
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           >
-            <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  text-16px"} />
+            <span className={"icon-fi-rs-save-o mr-px-12 w-c1  text-16px"} />
             <p className="text-14px text-caak-extraBlack">Хадгалах</p>
           </div>
         ))}
@@ -179,7 +179,7 @@ export default function PostMoreMenu({
         }}
         className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
       >
-        <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />
+        <span className={"icon-fi-rs-flag mr-px-12 w-c1  text-16px"} />
         <p className="text-14px text-caak-extraBlack">Репорт</p>
       </div>
       {/* <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">

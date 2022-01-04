@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useRef, useState } from "react";
 
 const WrapperContext = createContext();
 
@@ -15,10 +15,19 @@ function WrapperProvider(props) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationMenu, setIsNotificationMenu] = useState(false);
   const [feedSortType, setFeedSortType] = useState("");
-
+  const [navBarTransparent, setNavBarTransparent] = useState(false);
   const value = useMemo(
-    () => ({ isMobileMenuOpen, setIsMobileMenuOpen, isNotificationMenu, setIsNotificationMenu, feedSortType, setFeedSortType }),
-    [isMobileMenuOpen, isNotificationMenu, feedSortType]
+    () => ({
+      isMobileMenuOpen,
+      setIsMobileMenuOpen,
+      isNotificationMenu,
+      setIsNotificationMenu,
+      feedSortType,
+      setFeedSortType,
+      navBarTransparent,
+      setNavBarTransparent,
+    }),
+    [isMobileMenuOpen, isNotificationMenu, feedSortType, navBarTransparent]
   );
   return <WrapperContext.Provider value={value} {...props} />;
 }

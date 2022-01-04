@@ -69,7 +69,7 @@ const GroupRules = ({ groupId }) => {
                   contentClassname={
                     "text-caak-extrablack text-[14px] tracking-[0.21px] leading-[16px] pt-[8px] break-words"
                   }
-                  titleClassname={"text-caak-extrablack text-[15px] break-all"}
+                  titleClassname={"text-caak-extrablack text-[15px] break-words"}
                   content={rule.description}
                   title={rule.title}
                 />

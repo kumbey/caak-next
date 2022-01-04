@@ -1,21 +1,29 @@
 import Image from "next/image";
 import Divider from "../divider";
-import {API, graphqlOperation} from "aws-amplify";
-import {getGroupCard} from "../../graphql-custom/group/queries";
-import {extractDate, generateFileUrl, getReturnData,} from "../../utility/Util";
-import {useEffect, useState} from "react";
+import { API, graphqlOperation } from "aws-amplify";
+import { getGroupCard } from "../../graphql-custom/group/queries";
+import {
+  extractDate,
+  generateFileUrl,
+  getReturnData,
+} from "../../utility/Util";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import {useUser} from "../../context/userContext";
-import {createGroupUsers, deleteGroupUsers,} from "../../graphql-custom/GroupUsers/mutation";
-import {useRouter} from "next/router";
+import { useUser } from "../../context/userContext";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../graphql-custom/GroupUsers/mutation";
+import { useRouter } from "next/router";
+import groupVerifiedSvg from "../../../public/assets/images/fi-rs-verify.svg";
 
-const GroupInfoCard = ({groupId, containerClassname}) => {
+const GroupInfoCard = ({ groupId, containerClassname }) => {
   const [group, setGroup] = useState({});
   const [isDataFetched, setIsDataFetched] = useState(true);
   const [loading, setLoading] = useState(false);
   const [forceRender, setForceRender] = useState(0);
 
-  const {isLogged, user} = useUser();
+  const { isLogged, user } = useUser();
   const router = useRouter();
 
   const followGroup = async () => {
@@ -57,7 +65,7 @@ const GroupInfoCard = ({groupId, containerClassname}) => {
               ...router.query,
               signInUp: "signIn",
               isModal: true,
-              prevPath: router.asPath
+              prevPath: router.asPath,
             },
           },
           `/signInUp/signIn`,
@@ -97,7 +105,7 @@ const GroupInfoCard = ({groupId, containerClassname}) => {
     <div
       className={`${
         containerClassname ? containerClassname : ""
-      } flex flex-col bg-white rounded-square max-w-[380px] relative`}
+      } flex flex-col bg-white rounded-square max-w-[380px] relative mb-[24px]`}
     >
       <div className={"h-[34px] w-full relative"}>
         <Image
@@ -146,7 +154,14 @@ const GroupInfoCard = ({groupId, containerClassname}) => {
           </Link>
 
           {group.verified && (
-            <span className={"icon-fi-rs-verified text-[16px] ml-[3px]"} />
+            <Image
+              alt={""}
+              height={14.25}
+              width={16.5}
+              quality={100}
+              priority={true}
+              src={groupVerifiedSvg}
+            />
           )}
         </div>
       </div>

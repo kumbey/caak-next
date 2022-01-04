@@ -64,7 +64,7 @@ const SortableCard = ({
           index === 0 ? "flex" : "group-hover:flex hidden"
         } transition-all duration-150  justify-center items-center rounded-full w-[24px] h-[24px] bg-caak-primary bg-opacity-90 absolute top-[4px] left-[4px] z-[1]`}
       >
-        <span className={"icon-fi-rs-star text-white text-[10px]"} />
+        <span className={"icon-fi-rs-notification-o text-white text-[14px]"} />
       </div>
       <div
         {...listeners}
@@ -135,7 +135,7 @@ const UploadedMediaEdit = ({
     post?.commentType ? post.commentType : false
   );
   const [caakContent, setCaakContent] = useState(
-    post?.owned === "CAAK" ? true : false
+    post?.owned === "CAAK"
   );
 
   const [draft, setDraft] = useState(false);
@@ -346,7 +346,7 @@ const UploadedMediaEdit = ({
         {loading && (
           <div
             className={
-              "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-30 bg-white bg-opacity-90"
+              "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-[4] bg-white bg-opacity-90"
             }
           >
             <Loader className={"bg-caak-primary"} />

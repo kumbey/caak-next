@@ -28,7 +28,7 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
     {
       id: 2,
       name: "Тохиргоо",
-      icon: "icon-fi-rs-settings",
+      icon: "icon-fi-rs-settings-o",
       path: "settings",
       length: "",
     },

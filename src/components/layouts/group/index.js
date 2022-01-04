@@ -202,6 +202,7 @@ const GroupLayout = ({
       <div className={"flex flex-col"}>
         <div className={"relative w-full h-[240px]"}>
           <Image
+            priority={true}
             quality={100}
             layout={"fill"}
             objectFit={"cover"}
@@ -364,7 +365,7 @@ const GroupLayout = ({
                       skin={`${
                         groupData.followed
                           ? "bg-caak-titaniumwhite"
-                          : "bg-caak-cardinal"
+                          : "bg-caak-primary"
                       }`}
                     >
                       {groupData.followed ? "Нэгдсэн" : "Нэгдэх"}

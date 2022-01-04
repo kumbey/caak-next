@@ -23,6 +23,7 @@ import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import FeedBack from "../src/components/feedback";
 import useLocalStorage from "../src/hooks/useLocalStorage";
 import { useRouter } from "next/router";
+import { usePreserveScroll } from "../src/hooks/useScroll";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -39,7 +40,7 @@ export async function getServerSideProps({ req }) {
     variables: {
       sortDirection: "DESC",
       status: "CONFIRMED",
-      limit: 1,
+      limit: 2,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -78,7 +79,7 @@ export async function getServerSideProps({ req }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
-        allGroups: await fetchGroups(user, ["NOT_MEMBER"]),
+        // allGroups: await fetchGroups(user, ["NOT_MEMBER"]),
         myGroups: await fetchGroups(user, ["MEMBER"]),
         adminModerator: await fetchGroups(user, ["ADMIN", "MODERATOR"]),
       },
@@ -87,6 +88,7 @@ export async function getServerSideProps({ req }) {
 }
 
 const Feed = ({ ssrData }) => {
+  usePreserveScroll();
   const { lsGet } = useLocalStorage("session");
   const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost);
   const router = useRouter();
@@ -243,7 +245,7 @@ const Feed = ({ ssrData }) => {
 
       {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen} />}
 
-      <div className={"relative"}>
+      <div className={"relative pt-[54px]"}>
         <Toaster
           toastOptions={{
             className: "toastOptions",

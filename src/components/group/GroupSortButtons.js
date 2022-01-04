@@ -31,7 +31,7 @@ const GroupSortButtons = ({
                   setSortType(type);
                   setActiveIndex(id);
                 }}
-                className={`mx-[2px] ${
+                className={`mx-[2px] py-[7px] px-[20px] ${
                   direction === "column" ? "w-full h-12" : "w-auto h-9"
                 } min-w-max ${
                   id === activeIndex
@@ -48,7 +48,7 @@ const GroupSortButtons = ({
                     <i
                       className={`${
                         id === activeIndex ? `${icon}-f` : `${icon}-o`
-                      } ${iconSize ? iconSize : "text-[26px] "} ph:text-15px`}
+                      } ${iconSize ? iconSize : "text-[22px] "} ph:text-15px`}
                     />
                   </div>
                 }
@@ -85,7 +85,7 @@ const GroupSortButtons = ({
                     <span
                       className={`${
                         id === activeView ? `${icon}-f` : `${icon}-o`
-                      } ${iconSize ? iconSize : "text-[16.67px]"} ph:text-15px`}
+                      } text-[16.67px] ph:text-15px`}
                     />
                   </div>
                 </div>

@@ -13,6 +13,7 @@ import ViewPostItemModal from "../src/components/modals/viewPostItemModal";
 import RedirectUrls from "../src/redirectUrls";
 import Script from "next/script";
 import Head from "next/head";
+import {usePreserveScroll} from "../src/hooks/useScroll";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());

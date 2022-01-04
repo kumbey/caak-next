@@ -185,3 +185,27 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
         }
     }
 `;
+
+export const listPostByOwned = /* GraphQL */ `
+  query ListPostByOwned(
+    $owned: String
+    $updatedAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostByOwned(
+      owned: $owned
+      updatedAt: $updatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items 
+       ${post0004}
+        nextToken
+    }
+  }
+`;

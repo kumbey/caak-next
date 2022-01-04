@@ -19,6 +19,7 @@ import Consts from "../../../src/utility/Consts";
 import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
 import AuraModal from "../../../src/components/modals/auraModal";
 import {createGroupUsers} from "../../../src/graphql-custom/GroupUsers/mutation";
+import {useWrapper} from "../../../src/context/wrapperContext";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -38,6 +39,7 @@ const AddPost = () => {
   });
   const [permissionDenied, setPermissionDenied] = useState(true);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const { setNavBarTransparent } = useWrapper();
 
   const [post, setPost] = useState({
     id: postId,
@@ -170,6 +172,7 @@ const AddPost = () => {
   };
 
   useEffect(() => {
+    setNavBarTransparent(false)
     if (postId) {
       getGroups();
       loadPost(postId);

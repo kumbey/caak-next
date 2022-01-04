@@ -153,7 +153,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             </a>
           </Link>
 
-          {!group.verified && (
+          {group.verified && (
             <Image
               alt={""}
               height={14.25}

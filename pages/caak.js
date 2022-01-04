@@ -2,6 +2,7 @@ import useFeedLayout from "../src/hooks/useFeedLayout";
 import { withSSRContext } from "aws-amplify";
 import {
   getPostByStatus,
+  listPostByOwned,
   listPostOrderByReactions,
 } from "../src/graphql-custom/post/queries";
 import { getReturnData } from "../src/utility/Util";
@@ -16,6 +17,7 @@ import Consts from "../src/utility/Consts";
 import Head from "next/head";
 import { useWrapper } from "../src/context/wrapperContext";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
+import {usePreserveScroll} from "../src/hooks/useScroll";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -30,12 +32,12 @@ export async function getServerSideProps({ req }) {
   const fetchCaakPosts = async () => {
     try {
       const resp = await API.graphql({
-        query: getPostByStatus,
+        query: listPostByOwned,
         variables: {
-          filter: { owned: { eq: "CAAK" } },
-          status: "CONFIRMED",
+          owned: "CAAK",
+          filter: {status: {eq: "CONFIRMED"}},
           sortDirection: "DESC",
-          // limit: 6,
+          limit: 2,
         },
         authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
@@ -55,6 +57,7 @@ export async function getServerSideProps({ req }) {
 }
 
 const Trending = ({ ssrData }) => {
+  usePreserveScroll()
   const CaakLayout = useFeedLayout("default");
   const [caakPosts, setCaakPosts] = useState(ssrData.caakPosts);
   const [loading, setLoading] = useState(false);
@@ -63,16 +66,16 @@ const Trending = ({ ssrData }) => {
   const { setFeedSortType } = useWrapper();
 
   const [nextCaakPosts] = useListPager({
-    query: getPostByStatus,
+    query: listPostByOwned,
     variables: {
-      filter: { owned: { eq: "CAAK" } },
-      status: "CONFIRMED",
+      owned: "CAAK",
+      filter: {status: {eq: "CONFIRMED"}},
       sortDirection: "DESC",
-      // limit: 6,
+      limit: 20,
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.caakPosts.nextToken,
-    ssr: true
+    ssr: true,
   });
 
   const fetchCaakPosts = async () => {
@@ -107,28 +110,31 @@ const Trending = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      <CaakLayout {...(isLogged ? { columns: 3 } : { columns: 2 })}>
-        <FeedSortButtons
-          feed
-          items={feedType}
-          initialSort={"CAAK"}
-          hide={isLogged && !isTablet}
-          containerClassname={"mb-[19px] justify-center"}
-          direction={"row"}
-        />
-        <InfinitScroller onNext={fetchCaakPosts} loading={loading}>
-          {caakPosts.items.map((data, index) => {
-            return (
-              <Card
-                key={index}
-                video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                post={data}
-                className="ph:mb-4 sm:mb-4"
-              />
-            );
-          })}
-        </InfinitScroller>
-      </CaakLayout>
+      <div className={"pt-[54px]"}>
+        <CaakLayout {...(isLogged ? { columns: 3 } : { columns: 2 })}>
+          <FeedSortButtons
+            feed
+            items={feedType}
+            initialSort={"CAAK"}
+            hide={isLogged && !isTablet}
+            containerClassname={"mb-[19px] justify-center"}
+            direction={"row"}
+          />
+          <InfinitScroller onNext={fetchCaakPosts} loading={loading}>
+            {caakPosts.items.map((data, index) => {
+              return (
+                <Card
+                  key={index}
+                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              );
+            })}
+          </InfinitScroller>
+        </CaakLayout>
+
+      </div>
     </>
   );
 };

@@ -28,7 +28,8 @@ export default function NavBar() {
   const subscriptions = {};
   const [userTotal, setUserTotal] = useState({});
   const [render, setRender] = useState(0);
-  const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
+  const { isMobileMenuOpen, setIsMobileMenuOpen, navBarTransparent } =
+    useWrapper();
   const isTablet = useMediaQuery("(max-width: 767px)");
 
   const toggleMenu = () => {
@@ -117,7 +118,9 @@ export default function NavBar() {
       <Fragment>
         {isTablet && (
           <nav
-            className={`navbarDesktop z-5 fixed block w-full bg-white shadow-sm`}
+            className={`${
+              navBarTransparent ? "bg-transparent" : "bg-white shadow-sm"
+            } navbarDesktop z-5 fixed block w-full`}
           >
             <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
               <div className="relative flex items-center justify-between w-full h-full">
@@ -152,7 +155,11 @@ export default function NavBar() {
           </nav>
         )}
 
-        <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t shadow-sm">
+        <nav
+          className={`${
+            navBarTransparent && !isTablet ? "bg-transparent" : "bg-white shadow-sm"
+          } navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t`}
+        >
           <div className="flex items-center h-full md:px-[40px] py-1">
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="md:flex flex flex-row  hidden ">
@@ -174,6 +181,11 @@ export default function NavBar() {
 
               <div className="navbarSearch hidden md:block p-[8px] mx-4">
                 <SearchInput
+                  className={`bg-caak-liquidnitrogen ${
+                    navBarTransparent
+                      ? "backdrop-blur-[20px] bg-opacity-40"
+                      : ""
+                  }`}
                   containerStyle={"h-[36px]"}
                   hideLabel
                   placeholder={"Групп болон пост хайх"}
@@ -195,7 +207,7 @@ export default function NavBar() {
                       round
                       skin={"secondary"}
                       className={"mr-2"}
-                      onClick={() =>
+                      onClick={() => {
                         router.replace(
                           {
                             query: {
@@ -206,9 +218,9 @@ export default function NavBar() {
                             },
                           },
                           `/signInUp/signIn`,
-                          { shallow: true, scroll: false }
-                        )
-                      }
+                          { shallow: true }
+                        );
+                      }}
                     >
                       Нэвтрэх
                     </Button>

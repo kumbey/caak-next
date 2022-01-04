@@ -19,12 +19,12 @@
 
     body {
         @apply bg-caak-doctor bg-caak-liquidnitrogen;
-        overflow: hidden;
+        /*overflow: hidden;*/
     }
 
     .caak-main-wrapper {
-        overflow: auto;
-        padding-top: var(--topBarSize);
+        /*overflow: auto;*/
+        /*padding-top: var(--topBarSize);*/
         height: 100vh;
         min-height: 100vh;
     }

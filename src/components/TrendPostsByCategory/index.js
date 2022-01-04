@@ -11,12 +11,13 @@ const TrendPostsByCategory = () => {
   const [trendingPostsByCategory, setTrendingPostsByCategory] = useState({});
   const [userCategories, setUserCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
-  const { user } = useUser();
+  const { user, isLogged } = useUser();
 
   const getUserCategories = async () => {
     let resp = await API.graphql({
       query: listUserCategoryByUser,
       variables: { user_id: user.id },
+      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
     resp = getReturnData(resp);
     return resp;
@@ -29,6 +30,7 @@ const TrendPostsByCategory = () => {
         variables: {
           categoryAndStatus: `${randomCategory}#CONFIRMED`,
         },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
       setTrendingPostsByCategory(resp);

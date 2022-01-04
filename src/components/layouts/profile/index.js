@@ -194,7 +194,7 @@ const DefaultUserProfileLayout = ({user, children}) => {
               />
             </div>
           )}
-
+          <div className={"w-full h-[120px] navbarGradient absolute top-0"} />
           <Image
             priority={true}
             quality={100}

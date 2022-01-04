@@ -1,23 +1,32 @@
 import Image from "next/image";
 import SuggestedGroupsCard from "../../card/SuggestedGroupsCard/";
-import {useUser} from "../../../context/userContext";
+import { useUser } from "../../../context/userContext";
 import useMediaQuery from "../../navigation/useMeduaQuery";
 import GroupRules from "../../card/GroupRules";
 import Dropzone from "react-dropzone";
 import Button from "../../button";
-import {getFileExt, getFileName, getFileUrl, getGenderImage, useClickOutSide,} from "../../../utility/Util";
-import {useCallback, useEffect, useState} from "react";
+import {
+  getFileExt,
+  getFileName,
+  getFileUrl,
+  getGenderImage,
+  useClickOutSide,
+} from "../../../utility/Util";
+import { useCallback, useEffect, useState } from "react";
 import awsExports from "../../../aws-exports";
-import {ApiFileUpload} from "../../../utility/ApiHelper";
-import {API, graphqlOperation} from "aws-amplify";
-import {updateGroup} from "../../../graphql-custom/group/mutation";
-import {deleteFile} from "../../../graphql-custom/file/mutation";
+import { ApiFileUpload } from "../../../utility/ApiHelper";
+import { API, graphqlOperation } from "aws-amplify";
+import { updateGroup } from "../../../graphql-custom/group/mutation";
+import { deleteFile } from "../../../graphql-custom/file/mutation";
 
-import {createGroupUsers, deleteGroupUsers,} from "../../../graphql-custom/GroupUsers/mutation";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../../graphql-custom/GroupUsers/mutation";
 import DropDown from "../../navigation/DropDown";
 import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import Loader from "../../loader";
 import GroupAdminsCard from "../../group/GroupAdminsCard";
 import Banner from "../../banner";
@@ -201,6 +210,7 @@ const GroupLayout = ({
     <div className={"flex flex-col relative pb-[200px] md:pb-0"}>
       <div className={"flex flex-col"}>
         <div className={"relative w-full h-[240px]"}>
+          <div className={"w-full h-[120px] navbarGradient absolute top-0"} />
           <Image
             priority={true}
             quality={100}
@@ -341,16 +351,28 @@ const GroupLayout = ({
                   </div>
                   <div className="flex md:flex-row flex-col">
                     <div className="flex mr-[22px] items-center">
-                      <span className={"icon-fi-rs-aura mr-1"}/>
-                      <p className="text-sm">{groupData.aura ? groupData.aura : 0} Аура</p>
+                      <span
+                        className={
+                          "icon-fi-rs-aura-o text-[23.5px] auroGradient mr-1"
+                        }
+                      />
+                      <p className={"text-[14px] text-caak-generalblack"}>
+                        {groupData.aura ? groupData.aura : 0} Аура
+                      </p>
                     </div>
-                    <div className="flex mr-[22px] items-center">
-                      <span className={"icon-fi-rs-globe mr-1"} />
-                      <p className="text-sm">Нээлттэй бүлэг</p>
-                    </div>
+                    {/*<div className="flex mr-[22px] items-center">*/}
+                    {/*  <span className={"icon-fi-rs-globe mr-1"} />*/}
+                    {/*  <p className="text-sm">Нээлттэй бүлэг</p>*/}
+                    {/*</div>*/}
                     <div className="flex items-center">
-                      <span className={"icon-fi-rs-group-o mr-1"} />
-                      <p className="text-sm">{totalMember} Гишүүн</p>
+                      <span
+                        className={
+                          "icon-fi-rs-group-o mr-1 text-[20.17px] text-caak-darkBlue"
+                        }
+                      />
+                      <p className={"text-[14px] text-caak-generalblack"}>
+                        {totalMember} Гишүүн
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -358,13 +380,13 @@ const GroupLayout = ({
                   <>
                     <Button
                       loading={loading}
-                      className="h-[36px] w-[124px] rounded-lg text-white text-base font-medium font-inter"
+                      className="h-[36px] w-[124px] rounded-lg text-base font-medium font-inter"
                       icon={<span className="icon-fi-rs-add-group-f  mr-1" />}
                       iconPosition="left"
                       onClick={handleFollow}
                       skin={`${
                         groupData.followed
-                          ? "bg-caak-titaniumwhite"
+                          ? "bg-caak-titaniumwhite text-caak-generalBlack"
                           : "bg-caak-primary"
                       }`}
                     >
@@ -410,17 +432,17 @@ const GroupLayout = ({
             {!hideSuggestedGroups && (
               <div className="mt-[16px]">
                 <SuggestedGroupsCard
-                    maxColumns={5}
-                    title={"Санал болгох группүүд"}
-                    className={"mb-[24px]"}
+                  maxColumns={5}
+                  title={"Санал болгох группүүд"}
+                  className={"mb-[24px]"}
                 />
               </div>
             )}
-            <GroupInfoCard groupId={groupData.id}/>
-            <GroupRules groupId={groupData.id}/>
+            <GroupInfoCard groupId={groupData.id} />
+            <GroupRules groupId={groupData.id} />
             {/*<GroupBadge />*/}
-            <GroupAdminsCard groupId={groupData.id}/>
-            <Banner/>
+            <GroupAdminsCard groupId={groupData.id} />
+            <Banner />
             {/*<FooterSidebar*/}
             {/*  containerClassname={"bg-white rounded-square p-[20px]"}*/}
             {/*/>*/}

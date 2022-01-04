@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
-import {getFileUrl, getGenderImage, useClickOutSide,} from "../../utility/Util";
-import {useWrapper} from "../../context/wrapperContext";
-import {useUser} from "../../context/userContext";
-import {useRouter} from "next/router";
+import {
+  getFileUrl,
+  getGenderImage,
+  useClickOutSide,
+} from "../../utility/Util";
+import { useWrapper } from "../../context/wrapperContext";
+import { useUser } from "../../context/userContext";
+import { useRouter } from "next/router";
 import NotificationDropDown from "./NotificationDropDown";
 import useMediaQuery from "./useMeduaQuery";
 import SearchInput from "../input/SearchInput";
@@ -13,12 +17,12 @@ import AddPostGuideCard from "../card/AddPostGuideCard";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
 
-const SubMenu = ({params}) => {
+const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
+  const { navBarTransparent } = useWrapper();
+  const { lsGet } = useLocalStorage("session");
 
-  const {lsGet} = useLocalStorage("session")
-
-  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPostGuide)
+  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPostGuide);
 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
@@ -41,7 +45,6 @@ const SubMenu = ({params}) => {
   useEffect(() => {
     setMounted(true);
   }, []);
-
 
   return (
     mounted &&
@@ -73,7 +76,7 @@ const SubMenu = ({params}) => {
           }}
           className={"flex items-center mr-0 block md:hidden"}
         >
-          <span className="icon-fi-sp-home-f text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
+          <span className="icon-fi-rs-home-o text-caak-generalblack text-24px py-px-8 p-2 rounded-lg" />
         </div>
         <div
           onClick={() => isSetSearchInputOpen(!isSearchInputOpen)}
@@ -101,7 +104,7 @@ const SubMenu = ({params}) => {
                         ...router.query,
                         signInUp: "signIn",
                         isModal: true,
-                        prevPath: router.asPath
+                        prevPath: router.asPath,
                       },
                     },
                     `/signInUp/signIn`,
@@ -109,7 +112,7 @@ const SubMenu = ({params}) => {
                   )
             }
           >
-            <AddPostGuideCard open={open} setOpen={setOpen}/>
+            <AddPostGuideCard open={open} setOpen={setOpen} />
           </Button>
         </div>
         <div
@@ -124,7 +127,7 @@ const SubMenu = ({params}) => {
                       ...router.query,
                       signInUp: "signIn",
                       isModal: true,
-                      prevPath: router.asPath
+                      prevPath: router.asPath,
                     },
                   },
                   `/signInUp/signIn`,
@@ -133,11 +136,11 @@ const SubMenu = ({params}) => {
           }}
           className={`${
             isNotificationMenu ? "bg-caak-liquidnitrogen" : ""
-          } relative flex items-center justify-center w-[50px] h-[36px] mr-0 md:mr-[10px] cursor-pointer rounded-square  hover:bg-caak-liquidnitrogen transition duration-100`}
+          } hover:bg-caak-liquidnitrogen relative flex items-center justify-center w-[50px] h-[36px] mr-0 md:mr-[10px] cursor-pointer rounded-square transition duration-100`}
         >
           <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
             <span
-              className={`icon-fi-rs-notification-o text-22px text-caak-generalblack text-[22px]`}
+              className={`${navBarTransparent ? "text-white hover:text-caak-generalblack" : "text-caak-generalblack"} icon-fi-rs-notification-o text-22px text-[22px]`}
             />
           </div>
 
@@ -167,7 +170,7 @@ const SubMenu = ({params}) => {
           {params.type === "web" && isLogged && (
             <div className={"flex flex-col items-center justify-center"}>
               <div className={"flex flex-row justify-center items-center"}>
-                <span className={"icon-fi-rs-auro auroGradient mr-1"} />
+                <span className={"icon-fi-rs-aura-o auroGradient text-[24px] mr-1"} />
                 <span
                   className={"text-14px text-caak-generalblack font-medium"}
                 >
@@ -210,19 +213,24 @@ const SubMenu = ({params}) => {
               }
             />
           ) : (
-              <span onClick={() => router.push(
+            <span
+              onClick={() =>
+                router.push(
                   {
                     pathname: router.pathname,
                     query: {
                       ...router.query,
                       signInUp: "signIn",
                       isModal: true,
-                      prevPath: router.asPath
+                      prevPath: router.asPath,
                     },
                   },
                   `/signInUp/signIn`,
-                  {shallow: true}
-              )} className="p-2 rounded-lg icon-fi-rs-profile text-caak-generalblack text-24px py-px-8"/>
+                  { shallow: true }
+                )
+              }
+              className="p-2 rounded-lg icon-fi-rs-profile text-caak-generalblack text-24px py-px-8"
+            />
           )}
         </div>
       </div>

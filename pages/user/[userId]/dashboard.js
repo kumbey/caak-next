@@ -47,47 +47,7 @@ export async function getServerSideProps({ req, query }) {
       user_id: query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 20,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-  const pendingPosts = await API.graphql({
-    query: getPostByUser,
-    variables: {
-      user_id: query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "PENDING" } },
-      limit: 20,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const archivedPosts = await API.graphql({
-    query: getPostByUser,
-    variables: {
-      user_id: query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "ARCHIVED" } },
-      limit: 20,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const followedUsers = await API.graphql({
-    query: listUsersbyFollowed,
-    variables: {
-      user_id: query.userId,
-      limit: 20,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const userComments = await API.graphql({
-    query: listCommentByUser,
-    variables: {
-      user_id: query.userId,
-      sortDirection: "DESC",
-      limit: 20,
+      limit: 3,
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
@@ -104,10 +64,6 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
-        pendingPosts: getReturnData(pendingPosts),
-        archivedPosts: getReturnData(archivedPosts),
-        followedUsers: getReturnData(followedUsers),
-        userComments: getReturnData(userComments),
         userTotals: getReturnData(userTotals),
       },
     },
@@ -123,15 +79,25 @@ const Dashboard = ({ ssrData }) => {
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
   const [userTotals, setUserTotals] = useState(ssrData.userTotals);
-  const [followedUsers, setFollowedUsers] = useState(ssrData.followedUsers);
-  const [userComments, setUserComments] = useState(ssrData.userComments);
+  const [followedUsers, setFollowedUsers] = useState({
+    items: [],
+    nextToken: ""
+  });
+  const [userComments, setUserComments] = useState({
+    items: [],
+    nextToken: ""
+  });
   const [posts, setPosts] = useState(ssrData.posts);
-  const [pendingPosts, setPendingPosts] = useState(
-    ssrData.pendingPosts ? ssrData.pendingPosts : []
+  const [pendingPosts, setPendingPosts] = useState([]
   );
   const [render, setRender] = useState(0);
 
-  const [archivedPosts, setArchivedPosts] = useState(ssrData.archivedPosts);
+  const [archivedPosts, setArchivedPosts] = useState(
+    {
+      items: [],
+      nextToken: ""
+    }
+  );
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const [totalReaction] = useState(
@@ -186,13 +152,13 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 1,
       name: "Хүлээгдэж буй постууд",
-      icon: "icon-fi-rs-pending",
+      icon: "icon-fi-rs-pending-posts",
       length: userTotals.pending,
     },
     {
       id: 2,
       name: "Архивлагдсан постууд",
-      icon: "icon-fi-rs-archive",
+      icon: "icon-fi-rs-folder-o",
       length: userTotals.archived,
     },
     {
@@ -240,7 +206,6 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: archivedPosts.nextToken,
-    ssr:true
   });
   const [nextComments] = useListPager({
     query: listCommentByUser,
@@ -431,9 +396,6 @@ const Dashboard = ({ ssrData }) => {
     });
   };
 
-  useEffect(() => {
-    console.log(userTotals);
-  }, [userTotals]);
 
   useUpdateEffect(() => {
     if (subscripedPost) {
@@ -580,7 +542,7 @@ const Dashboard = ({ ssrData }) => {
           {user.nickname} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px]">
+      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px] pt-[54px]">
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}

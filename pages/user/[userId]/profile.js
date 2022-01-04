@@ -23,6 +23,7 @@ import Consts from "../../../src/utility/Consts";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 import Card from "../../../src/components/card/FeedCard";
 import toast, { Toaster } from "react-hot-toast";
+import {useWrapper} from "../../../src/context/wrapperContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -43,7 +44,7 @@ export async function getServerSideProps({ req, query }) {
         user_id: userId,
         sortDirection: "DESC",
         filter: { status: { eq: "CONFIRMED" } },
-        limit: 20,
+        limit: 2,
       },
     });
     return getReturnData(resp);
@@ -57,7 +58,7 @@ export async function getServerSideProps({ req, query }) {
         user_id: userId,
         sortDirection: "DESC",
         filter: { status: { eq: "CONFIRMED" } },
-        limit: 20,
+        limit: 2,
       },
     });
     return getReturnData(resp);
@@ -102,7 +103,7 @@ const Profile = ({ ssrData }) => {
   const { isLogged } = useUser();
   const subscriptions = {};
   const [render, setRender] = useState(0);
-
+  const { setNavBarTransparent } = useWrapper();
   const [nextPosts] = useListPager({
     query: getPostByUser,
     variables: {
@@ -269,6 +270,22 @@ const Profile = ({ ssrData }) => {
     setSavedPosts(ssrData.savedPosts);
   }, [ssrData.savedPosts]);
 
+  useEffect(() => {
+    const listener = () => {
+      const scrolled = document.scrollingElement.scrollTop;
+      if(scrolled > 54){
+        setNavBarTransparent(false)
+      }
+      else {
+        setNavBarTransparent(true)
+      }
+    };
+    document.addEventListener("scroll", listener);
+    return () => {
+      document.removeEventListener("scroll", listener);
+    };
+  });
+
   const ProfileLayout = useModalLayout({ layoutName: "userProfile" });
 
   const handleToast = ({ param }) => {
@@ -295,6 +312,7 @@ const Profile = ({ ssrData }) => {
       <ProfileLayout user={fetchedUser}>
         <div className={"pt-0 md:pt-[42px]"}>
           <FeedSortButtons
+            rootContainerClassname={"items-start justify-between"}
             initialSort={router.query.sortType ? router.query.sortType : "POST"}
             iconSize={"text-[17px]"}
             iconContainerSize={"w-[20px] h-[20px]"}

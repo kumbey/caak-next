@@ -26,7 +26,7 @@ const FeedSortButtons = ({
 
   return (
     !hide && (
-      <div className="justify-center flex md:justify-between max-w-[976px] mx-auto">
+      <div className="justify-center flex max-w-[976px] mx-auto">
         <div
           className={`flex ${
             direction === "column" ? "flex-col" : "flex-row"

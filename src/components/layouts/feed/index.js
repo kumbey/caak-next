@@ -57,6 +57,7 @@ const DefaultFeedLayout = ({
               items={feedType}
               initialSort={feedSortType}
               direction={"column"}
+              containerClassname={"w-full"}
             />
             <SideBarGroups
               role={["ADMIN", "MODERATOR"]}

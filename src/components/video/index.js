@@ -96,7 +96,9 @@ const Video = ({
 
   Router.events.on("routeChangeStart", () => setIsPlaying(false));
   return (
-    <div className={"relative w-full h-full group bg-black"}>
+    <div className={`relative w-full h-full group bg-black ${
+      containerClassname ? containerClassname : ""
+    }`}>
       <canvas
         style={{
           filter: "blur(4px)",
@@ -150,9 +152,7 @@ const Video = ({
             }
           }
         }}
-        className={`${
-          containerClassname ? containerClassname : ""
-        } relative w-full h-full group z-[2]`}
+        className={`relative w-full h-full group z-[2]`}
       >
         {inView || loaded ? (
           <ReactPlayer
@@ -220,7 +220,7 @@ const Video = ({
         )}
         {durationIndicator && (
           <ItemsCounterCard
-            containerClassname={"left-[10px]"}
+            containerClassname={"right-[10px]"}
             duration={videoDuration}
           />
         )}

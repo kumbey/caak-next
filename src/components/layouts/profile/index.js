@@ -15,6 +15,7 @@ import {deleteFile} from "../../../graphql-custom/file/mutation";
 import Loader from "../../loader";
 import {useRouter} from "next/router";
 import userVerifiedSvg from "../../../../public/assets/images/fi-rs-awarded.svg";
+import {usePreserveScroll} from "../../../hooks/useScroll";
 
 const DefaultUserProfileLayout = ({user, children}) => {
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);

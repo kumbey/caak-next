@@ -31,6 +31,7 @@ import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
+import { useWrapper } from "../../../src/context/wrapperContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -81,23 +82,20 @@ const Dashboard = ({ ssrData }) => {
   const [userTotals, setUserTotals] = useState(ssrData.userTotals);
   const [followedUsers, setFollowedUsers] = useState({
     items: [],
-    nextToken: ""
+    nextToken: "",
   });
   const [userComments, setUserComments] = useState({
     items: [],
-    nextToken: ""
+    nextToken: "",
   });
   const [posts, setPosts] = useState(ssrData.posts);
-  const [pendingPosts, setPendingPosts] = useState([]
-  );
+  const [pendingPosts, setPendingPosts] = useState([]);
   const [render, setRender] = useState(0);
 
-  const [archivedPosts, setArchivedPosts] = useState(
-    {
-      items: [],
-      nextToken: ""
-    }
-  );
+  const [archivedPosts, setArchivedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const [totalReaction] = useState(
@@ -105,7 +103,7 @@ const Dashboard = ({ ssrData }) => {
       userTotals?.post_reactions +
       userTotals?.post_items_reactions
   );
-
+  const { setNavBarTransparent } = useWrapper();
   const stats = [
     {
       id: 0,
@@ -184,7 +182,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: posts.nextToken,
-    ssr: true
+    ssr: true,
   });
   const [nextPending] = useListPager({
     query: getPostByUser,
@@ -195,7 +193,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: pendingPosts.nextToken,
-    ssr:true
+    ssr: true,
   });
   const [nextArchived] = useListPager({
     query: getPostByUser,
@@ -217,7 +215,7 @@ const Dashboard = ({ ssrData }) => {
     nextToken: userComments.nextToken,
 
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    ssr:true
+    ssr: true,
   });
   const [nextFollowers] = useListPager({
     query: listUsersbyFollowed,
@@ -227,7 +225,7 @@ const Dashboard = ({ ssrData }) => {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: followedUsers.nextToken,
-    ssr:true
+    ssr: true,
   });
   const fetchPosts = async () => {
     try {
@@ -396,7 +394,6 @@ const Dashboard = ({ ssrData }) => {
     });
   };
 
-
   useUpdateEffect(() => {
     if (subscripedPost) {
       const pendingIndex = pendingPosts.items.findIndex(
@@ -523,6 +520,7 @@ const Dashboard = ({ ssrData }) => {
   }, [subscripedPost]);
 
   useEffect(() => {
+    setNavBarTransparent(false);
     subscrip();
 
     setLoaded(true);
@@ -566,11 +564,9 @@ const Dashboard = ({ ssrData }) => {
           <div className="text-2xl font-semibold text-caak-generalblack mr-1">
             @{user?.nickname}
           </div>
-          {user.verified && <img
-            alt={""}
-            className={"h-[22px]"}
-            src={userVerifiedSvg.src}
-          />}
+          {user.verified && (
+            <img alt={""} className={"h-[22px]"} src={userVerifiedSvg.src} />
+          )}
         </div>
         <div className="mb-[14px] font-inter font-semibold text-18px text-caak-generalblack">
           Дашбоард
@@ -720,10 +716,7 @@ const Dashboard = ({ ssrData }) => {
                     </p>
                   </div>
                   <Divider className={"hidden md:flex mb-[20px]"} />
-                  <InfinitScroller
-                    onNext={fetchPending}
-                    loading={loading}
-                  >
+                  <InfinitScroller onNext={fetchPending} loading={loading}>
                     {pendingPosts.items.length > 0 &&
                       pendingPosts.items.map((pendingPost, index) => {
                         return (
@@ -759,10 +752,7 @@ const Dashboard = ({ ssrData }) => {
                     </p>
                   </div>
                   <Divider className={"hidden md:flex mb-[20px]"} />
-                  <InfinitScroller
-                    onNext={fetchArchived}
-                    loading={loading}
-                  >
+                  <InfinitScroller onNext={fetchArchived} loading={loading}>
                     {archivedPosts.items.length > 0 &&
                       archivedPosts.items.map((archivedPost, index) => {
                         return (
@@ -782,10 +772,7 @@ const Dashboard = ({ ssrData }) => {
                 </div>
               ) : null}
               {activeIndex === 3 ? (
-                <InfinitScroller
-                  onNext={fetchFollowers}
-                  loading={loading}
-                >
+                <InfinitScroller onNext={fetchFollowers} loading={loading}>
                   <div className="mt-[14px] flex flex-row flex-wrap justify-between">
                     {followedUsers.items.map((data, index) => {
                       return (
@@ -824,10 +811,7 @@ const Dashboard = ({ ssrData }) => {
                           "hidden md:flex mb-[20px] bg-caak-titaniumwhite"
                         }
                       />
-                      <InfinitScroller
-                        onNext={fetchComments}
-                        loading={loading}
-                      >
+                      <InfinitScroller onNext={fetchComments} loading={loading}>
                         {userComments.items.map((comment, index) => {
                           return (
                             <CommentList

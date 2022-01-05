@@ -86,6 +86,7 @@ const Group = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [trendingPosts, setTrendingPosts] = useState({
     items: [],
+    nextToken: ""
   });
   const { setNavBarTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
@@ -113,6 +114,7 @@ const Group = ({ ssrData }) => {
       limit: 20,
       sortDirection: "DESC",
     },
+    nextToken: trendingPosts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 

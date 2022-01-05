@@ -47,7 +47,7 @@ export default function Settings() {
         <div className="flex items-center bg-transparent">
           <span
             onClick={() => router.back()}
-            className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer"
+            className="icon-fi-rs-back bg-caak-titaniumwhite text-20px flex items-center justify-center rounded-full cursor-pointer"
             style={{ height: "48px", width: "48px" }}
           />
           <img
@@ -65,7 +65,7 @@ export default function Settings() {
           <div className="flex-row flex items-center">
             <p
               style={{ marginRight: "8px" }}
-              className=" text-24px  font-medium"
+              className=" text-22px font-inter  font-semibold"
             >
               {user.firstname}
             </p>
@@ -73,26 +73,28 @@ export default function Settings() {
           </div>
         </div>
         <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
-          <div
-            style={{ marginTop: "24px" }}
-            className="settingsMenuPanel px-c3  bg-white rounded-lg"
-          >
-            {data.map(({ icon, title, id }) => (
-              <div
-                key={id}
-                onClick={() => setActiveIndex(id)}
-                style={{ marginTop: "24px", marginBottom: "24px" }}
-                className={`flex items-center cursor-pointer 
+          <div className="settingsMenuPanel  bg-white rounded-lg mt-[24px]">
+            <div className="my-[30px] mx-[30px]">
+              {data.map(({ icon, title, id }) => (
+                <div
+                  key={id}
+                  onClick={() => setActiveIndex(id)}
+                  style={{ marginTop: "24px", marginBottom: "24px" }}
+                  className={`flex items-center cursor-pointer 
                                     ${
                                       id === activeIndex
                                         ? "text-caak-primary"
                                         : "text-caak-generalblack"
                                     }`}
-              >
-                {icon}
-                <p className="text-17px ml-px-10 font-medium">{title}</p>
-              </div>
-            ))}
+                >
+                  <span
+                    style={{ marginRight: "3px" }}
+                    className={`${icon} text-24px`}
+                  />
+                  <p className="text-17px ml-px-10 font-medium">{title}</p>
+                </div>
+              ))}
+            </div>
           </div>
           <div
             style={{ marginTop: "24px" }}

@@ -75,8 +75,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
             <p className="text-14px text-caak-extraBlack">Хадгалсан постууд</p>
           </div>
           <div
-            // onClick={() => user.aura < 5000 && setIsAuraModalOpen(true)}
-            onClick={() => router.push({
+            onClick={() => user.aura < 5000 ? setIsAuraModalOpen(true) : router.push({
               pathname: '/creategroup'
             })}
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"

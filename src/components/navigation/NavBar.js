@@ -28,7 +28,8 @@ export default function NavBar() {
   const subscriptions = {};
   const [userTotal, setUserTotal] = useState({});
   const [render, setRender] = useState(0);
-  const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
+  const { isMobileMenuOpen, setIsMobileMenuOpen, navBarTransparent } =
+    useWrapper();
   const isTablet = useMediaQuery("(max-width: 767px)");
 
   const toggleMenu = () => {
@@ -117,14 +118,24 @@ export default function NavBar() {
       <Fragment>
         {isTablet && (
           <nav
-            className={`navbarDesktop z-5 fixed block w-full bg-white shadow-sm`}
+            className={`${
+              navBarTransparent ? "bg-transparent" : "bg-white shadow-sm"
+            } navbarDesktop z-5 fixed block w-full`}
           >
             <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
               <div className="relative flex items-center justify-between w-full h-full">
                 <div className={"flex   justify-center"}>
-                  <Logo onClick={() => router.push("/", undefined)} />
-                  <div className="flex items-center justify-center mt-[5px]  w-[44px] h-[17px] rounded-[3px] bg-transparent logoBeta">
-                    <p className="font-inter font-medium text-11px text-white">
+                  <Logo
+                    onClick={() => {
+                      if (router.asPath === "/") {
+                        router.reload();
+                      } else {
+                        router.replace("/");
+                      }
+                    }}
+                  />
+                  <div className="ml-[8px] flex items-center justify-center mt-[5px]  w-[40px] h-[16px] rounded-[3px] bg-transparent logoBeta">
+                    <p className="font-inter font-medium text-11px text-white tracking-[0.28px] leading-[14px]">
                       BETA
                     </p>
                   </div>
@@ -144,12 +155,24 @@ export default function NavBar() {
           </nav>
         )}
 
-        <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t shadow-sm">
+        <nav
+          className={`${
+            navBarTransparent && !isTablet ? "bg-transparent" : "bg-white shadow-sm"
+          } navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t`}
+        >
           <div className="flex items-center h-full md:px-[40px] py-1">
             <div className="relative flex items-center justify-between w-full h-full">
               <div className="md:flex flex flex-row  hidden ">
-                <Logo onClick={() => router.push("/", undefined)} />
-                <div className="flex items-center justify-center mt-[5px] w-[44px] h-[17px] rounded-[3px] bg-transparent logoBeta">
+                <Logo
+                  onClick={() => {
+                    if (router.asPath === "/") {
+                      router.reload();
+                    } else {
+                      router.replace("/");
+                    }
+                  }}
+                />
+                <div className="ml-[8px] flex items-center justify-center mt-[5px] w-[44px] h-[17px] rounded-[3px] bg-transparent logoBeta">
                   <p className="font-inter font-medium text-11px text-white">
                     BETA
                   </p>
@@ -158,6 +181,11 @@ export default function NavBar() {
 
               <div className="navbarSearch hidden md:block p-[8px] mx-4">
                 <SearchInput
+                  className={`bg-caak-liquidnitrogen focus:bg-white ${
+                    navBarTransparent
+                      ? "backdrop-blur-[20px] bg-opacity-40"
+                      : ""
+                  }`}
                   containerStyle={"h-[36px]"}
                   hideLabel
                   placeholder={"Групп болон пост хайх"}
@@ -179,7 +207,7 @@ export default function NavBar() {
                       round
                       skin={"secondary"}
                       className={"mr-2"}
-                      onClick={() =>
+                      onClick={() => {
                         router.replace(
                           {
                             query: {
@@ -190,9 +218,9 @@ export default function NavBar() {
                             },
                           },
                           `/signInUp/signIn`,
-                          { shallow: true, scroll: false }
-                        )
-                      }
+                          { shallow: true }
+                        );
+                      }}
                     >
                       Нэвтрэх
                     </Button>

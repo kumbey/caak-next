@@ -15,23 +15,28 @@ const AuraCard = () => {
     <div className={`auraCard`}>
       <div
         className={
-          "font-bold text-22px text-caak-extraBlack py-px-10 text-center"
+          "font-bold text-[22px] text-caak-extraBlack text-center h-[33px] tracking-[0.44px] leading-[22px]"
         }
       >
         Аура гэж юу вэ?
       </div>
-      <Image
-        src={auraImage}
-        alt="What is Aura"
-        width={"216px"}
-        height={"146px"}
-        objectFit="contain"
-      />
+      <div className={"w-[216px] h-[146px]"}>
+        <Image
+          src={auraImage}
+          alt="What is Aura"
+          width={216}
+          height={146}
+          objectFit="contain"
+        />
+      </div>
+
       <Link shallow href={`/help/aura`}>
         <a>
           <button
             // onClick={() => }
-            className={"button primary w-[220px] h-[36px] font-medium text-14px"}
+            className={
+              "button primary w-[220px] h-[36px] font-medium text-14px"
+            }
           >
             Дэлгэрэнгүй
           </button>
@@ -78,7 +83,7 @@ const AuraCard = () => {
           "button w-[280px] h-c9 font-medium text-14px bg-black text-white  hover:bg-caak-extraBlack-hover"
         }
       >
-        {isHovered ? "Бүртгүүлэх" : "Бидэнтэй нэгдэх"}
+        Бидэнтэй нэгдэх
       </button>
     </div>
   );

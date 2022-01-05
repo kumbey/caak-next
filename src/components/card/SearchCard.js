@@ -139,12 +139,12 @@ const SearchCard = ({ type, result }) => {
                     "relative ml-[20px] w-[100px] h-[100px] relative rounded-square flex-shrink-0"
                   }
                 >
-                  {result.items.items[0].file.type.startsWith("video") ? (
+                  {result?.items?.items[0]?.file?.type.startsWith("video") ? (
                     <Video
                       hideControls
                       thumbnailIcon
                       videoClassname={"object-contain rounded-[4px]"}
-                      src={getFileUrl(result.items.items[0].file)}
+                      src={getFileUrl(result?.items?.items[0]?.file)}
                     />
                   ) : (
                     <Image
@@ -153,7 +153,7 @@ const SearchCard = ({ type, result }) => {
                       height={100}
                       objectFit={"cover"}
                       alt={""}
-                      src={getFileUrl(result.items.items[0].file)}
+                      src={result?.items?.items[0]?.file ? getFileUrl(result?.items?.items[0]?.file) : getGenderImage("default").src}
                     />
                   )}
                 </div>

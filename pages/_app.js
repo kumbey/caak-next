@@ -7,11 +7,10 @@ import awsExports from "../src/aws-exports";
 import NavBar from "../src/components/navigation/NavBar";
 import Modals from "../src/components/modals";
 import NProgress from "nprogress"; //nprogress module
-import "nprogress/nprogress.css"; //styles of nprogress
 import Router from "next/router";
 import ViewPostModal from "../src/components/modals/viewPostModal";
 import ViewPostItemModal from "../src/components/modals/viewPostItemModal";
-import RedirectUrls from "../src/redirectUrls"
+import RedirectUrls from "../src/redirectUrls";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -24,14 +23,13 @@ const updatedAwsConfig = {
     redirectSignIn: RedirectUrls.redirectSignIn,
     redirectSignOut: RedirectUrls.redirectSignOut,
   },
-  ssr: true
-}
+  ssr: true,
+};
 
 Amplify.configure(updatedAwsConfig);
 Storage.configure({ level: "public" });
 
-const MyApp = ({ Component, pageProps}) => {
-
+const MyApp = ({ Component, pageProps }) => {
   return (
     <WrapperProvider>
       <UserProvider>
@@ -47,6 +45,6 @@ const MyApp = ({ Component, pageProps}) => {
       </UserProvider>
     </WrapperProvider>
   );
-}
+};
 
 export default MyApp;

@@ -27,6 +27,8 @@ import Consts from "../../../../../src/utility/Consts";
 import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import useWindowSize from "../../../../../src/hooks/useWindowSize";
 import useModalLayout from "../../../../../src/hooks/useModalLayout";
+import userVerifiedSvg from "../../../../../public/assets/images/fi-rs-awarded.svg";
+import Image from "next/image";
 
 export async function getServerSideProps({req, query}) {
   const {API, Auth} = withSSRContext({req});
@@ -344,7 +346,14 @@ const PostItem = ({ ssrData }) => {
                                   "flex items-center justify-center w-[17px] h-[17px] ml-[3px]"
                                 }
                               >
-                                <span className={"icon-fi-rs-verified"} />
+                                <Image
+                                  alt={""}
+                                  height={14.25}
+                                  width={16.5}
+                                  quality={100}
+                                  priority={true}
+                                  src={userVerifiedSvg}
+                                />
                               </div>
                             )}
                             <p

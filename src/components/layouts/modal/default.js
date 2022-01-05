@@ -1,17 +1,8 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import useScrollBlock from "../../../hooks/useScrollBlock";
-import { _objectWithoutKeys } from "../../../utility/Util";
 
-const DefaultModalLayout = ({ children, onCloseKeys, ...props }) => {
+const DefaultModalLayout = ({ children }) => {
   const router = useRouter();
   const type = router.query.signInUp;
-  const [blockScroll, allowScroll] = useScrollBlock();
-
-  useEffect(() => {
-    blockScroll();
-    return () => allowScroll();
-  }, [allowScroll, blockScroll]);
 
   const close = () => {
     if (router.query.prevPath && router.query.prevPath !== router.asPath) {

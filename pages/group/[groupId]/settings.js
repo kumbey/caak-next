@@ -17,9 +17,9 @@ import GroupInformation from "../../../src/components/group/GroupInformation";
 import GroupPrivacy from "../../../src/components/group/GroupPrivacy";
 import GroupMemberConfig from "../../../src/components/group/GroupMemberConfig";
 import GroupRule from "../../../src/components/group/GroupRule";
-import GroupCaution from "../../../src/components/group/GroupCaution";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
+import {useWrapper} from "../../../src/context/wrapperContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -39,25 +39,6 @@ export async function getServerSideProps({ req, query }) {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
-  // const resp = await API.graphql({
-  //   query: getPostByGroup,
-  //   variables: {
-  //     group_id: query.groupId,
-  //     sortDirection: "DESC",
-  //     filter: { status: { eq: "CONFIRMED" } },
-  //     limit: 6,
-  //   },
-  // });
-
-  // const pendingPosts = await API.graphql({
-  //   query: getPostByGroup,
-  //   variables: {
-  //     group_id: query.groupId,
-  //     sortDirection: "DESC",
-  //     filter: { status: { eq: "PENDING" } },
-  //     limit: 6,
-  //   },
-  // });
 
   const adminList = await API.graphql({
     query: listGroupUsersByGroup,
@@ -93,38 +74,21 @@ export async function getServerSideProps({ req, query }) {
     },
   });
 
-  // const userComments = await API.graphql({
-  //   query: listCommentByUser,
-  //   variables: {
-  //     user_id: userId,
-  //     sortDirection: "DESC",
-  //   },
-  // });
-
-  // const groupTotals = await API.graphql({
-  //   query: getGroupTotal,
-  //   variables: {
-  //     group_id: query.groupId,
-  //   },
-  // });
 
   return {
     props: {
       ssrData: {
-        // posts: getReturnData(resp),
-        // pendingPosts: getReturnData(pendingPosts),
         groupView: getReturnData(groupView),
         adminList: getReturnData(adminList),
         moderatorList: getReturnData(moderatorList),
         memberList: getReturnData(memberList),
         categoryList: getReturnData(categoryList),
-        // groupTotals: getReturnData(groupTotals),
       },
     },
   };
 }
 
-export default function Settings({ ssrData, ...props }) {
+export default function Settings({ ssrData }) {
   const data = [
     {
       id: 0,
@@ -136,11 +100,6 @@ export default function Settings({ ssrData, ...props }) {
       icon: <span className="icon-fi-rs-rule text-24px" />,
       title: "Дүрэм",
     },
-    // {
-    //   id: 2,
-    //   icon: <Image alt={""} src={tipsSvg} height={24} width={24} />,
-    //   title: "Анхаарах зүйлс",
-    // },
     {
       id: 2,
       icon: <span className="icon-fi-rs-group-o text-22px" />,
@@ -156,15 +115,16 @@ export default function Settings({ ssrData, ...props }) {
   const [user, setUser] = useState();
   const { user: signedUser, isLogged } = useUser();
   const [activeIndex, setActiveIndex] = useState(0);
+  const {setNavBarTransparent} = useWrapper()
 
-  const [groupData, setGroupData] = useState(ssrData.groupView);
-  const [memberList, setMemberList] = useState(ssrData.memberList.items);
-  const [adminModeratorList, setAdminModeratorList] = useState([
+  const [groupData] = useState(ssrData.groupView);
+  const [memberList] = useState(ssrData.memberList.items);
+  const [adminModeratorList] = useState([
     ...ssrData.adminList.items,
     ...ssrData.moderatorList.items,
   ]);
 
-  const [categoryList, setCategoryList] = useState(ssrData.categoryList.items);
+  const [categoryList] = useState(ssrData.categoryList.items);
 
   useEffect(() => {
     try {
@@ -183,6 +143,11 @@ export default function Settings({ ssrData, ...props }) {
     // eslint-disable-next-line
   }, [user, signedUser.id]);
 
+  useEffect(()=> {
+    setNavBarTransparent(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
   return user ? (
     <>
       <Head>
@@ -191,7 +156,7 @@ export default function Settings({ ssrData, ...props }) {
         </title>
       </Head>
       <div
-        style={{ marginTop: "36px" }}
+        style={{ marginTop: "90px" }}
         className="flex justify-center  items-center w-full px-4 md:px-6 max-w-4xl mx-auto"
       >
         <div className="flex flex-col w-full settingsPanel">

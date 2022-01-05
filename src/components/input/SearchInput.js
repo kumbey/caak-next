@@ -2,16 +2,12 @@ import Input from "./index";
 import { useEffect, useState } from "react";
 import SearchedGroupItem from "./SearchedGroupItem";
 import Link from "next/link";
-import {
-  generateFileUrl,
-  sortSearchResultByKeyword,
-  useClickOutSide,
-  useDebounce,
-} from "../../utility/Util";
+import { useClickOutSide, useDebounce } from "../../utility/Util";
 import { API } from "aws-amplify";
 import Loader from "../loader";
 import { useRouter } from "next/router";
 import { searchApi } from "../../apis/search";
+import { useWrapper } from "../../context/wrapperContext";
 
 const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
@@ -23,14 +19,17 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const router = useRouter();
   const searchInputRef = useClickOutSide(() => setIsSearchBarOpen(false));
   const debouncedSearchResult = useDebounce(inputValue, 300);
-
+  const { navBarTransparent } = useWrapper();
   const searchQuery = async () => {
-    const resp = await searchApi({ API, searchQuery: inputValue, postLimit: 10 });
+    const resp = await searchApi({
+      API,
+      searchQuery: inputValue,
+      postLimit: 10,
+    });
     setGroups(resp.groups);
     setUsers(resp.users);
     setPosts(resp.posts);
   };
-
 
   useEffect(() => {
     if (debouncedSearchResult) {
@@ -56,7 +55,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   return (
     <div
       ref={searchInputRef}
-      className="relative  flex justify-center items-center"
+      className="relative bg-transparent flex justify-center items-center"
     >
       <div
         className={`${
@@ -117,35 +116,38 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
                 />
               );
             })}
-            <div
-              className={
-                "flex flex-row items-center px-[6px] pt-[14px] border-t border-caak-liquidnitrogen"
-              }
-            >
+            {inputValue && (
               <div
                 className={
-                  "flex justify-center items-center cursor-pointer w-[34px] h-[34px] bg-caak-primary rounded-square"
+                  "flex flex-row items-center px-[6px] pt-[14px] border-t border-caak-liquidnitrogen"
                 }
               >
-                <span className={"icon-fi-rs-search text-white"} />
+                <div
+                  className={
+                    "flex justify-center items-center cursor-pointer w-[34px] h-[34px] bg-caak-primary rounded-square"
+                  }
+                >
+                  <span className={"icon-fi-rs-search text-white"} />
+                </div>
+                <Link
+                  shallow
+                  href={{
+                    pathname: "/search",
+                    query: { q: `${inputValue}` },
+                  }}
+                >
+                  <a>
+                    <div
+                      className={
+                        "text-15px cursor-pointer text-caak-primary ml-[10px]"
+                      }
+                    >
+                      Илүү ихийг харах
+                    </div>
+                  </a>
+                </Link>
               </div>
-              <Link
-                href={{
-                  pathname: "/search",
-                  query: { q: `${inputValue}` },
-                }}
-              >
-                <a>
-                  <div
-                    className={
-                      "text-15px cursor-pointer text-caak-primary ml-[10px]"
-                    }
-                  >
-                    Илүү ихийг харах
-                  </div>
-                </a>
-              </Link>
-            </div>
+            )}
           </div>
         ) : (
           <div className={"w-full flex justify-center items-center"}>
@@ -153,7 +155,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
           </div>
         )}
       </div>
-      <div className={"w-full"}>
+      <div className={"w-full bg-transparent"}>
         <Input
           hideError
           {...props}
@@ -163,12 +165,12 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           label={label}
-          className={`pl-c27 h-[36px] pl-[42px] bg-gray-100 ${
-            className ? className : ""
-          } ${
+          className={`pl-c27 h-[36px] pl-[42px] ${className ? className : ""} ${
             isSearchBarOpen
-              ? "border border-caak-primary ring-2 ring-caak-primary ring-opacity-40"
-              : ""
+              ? "border border-caak-primary ring-2 ring-caak-primary ring-opacity-40 text-caak-generalblack"
+              : navBarTransparent
+              ? "text-white placeholder-white"
+              : "text-caak-generalblack"
           }`}
         >
           <div
@@ -176,7 +178,13 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
               "flex justify-center items-center absolute w-[20px] h-[20px] left-[18px] mr-px-7 top-1/2 transform -translate-y-1/2 z-2"
             }
           >
-            <span className={"icon-fi-rs-search text-16px text-darkblue "} />
+            <span
+              className={`${
+                navBarTransparent && !isSearchBarOpen
+                  ? "text-white"
+                  : "text-caak-darkblue"
+              } icon-fi-rs-search text-16px`}
+            />
           </div>
 
           <div

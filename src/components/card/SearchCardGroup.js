@@ -5,6 +5,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import {createGroupUsers, deleteGroupUsers,} from "../../graphql-custom/GroupUsers/mutation";
 import {useUser} from "../../context/userContext";
 import {useRouter} from "next/router";
+import groupVerifiedSvg from "../../../public/assets/images/fi-rs-verify.svg";
 
 const SearchCardGroup = ({result, sortType}) => {
   const {user, isLogged} = useUser();
@@ -157,7 +158,14 @@ const SearchCardGroup = ({result, sortType}) => {
             >
               {result.name}
               {result.verified && (
-                <span className={"icon-fi-rs-verified text-[14px]"} />
+                <Image
+                  alt={""}
+                  height={14.25}
+                  width={16.5}
+                  quality={100}
+                  priority={true}
+                  src={groupVerifiedSvg}
+                />
               )}
             </p>
           </div>

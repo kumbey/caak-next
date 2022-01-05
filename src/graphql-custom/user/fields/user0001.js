@@ -15,6 +15,7 @@ const user0001 = /* GraphQL */ `{
     createdAt
     updatedAt
     aura
+    verified
     pic ${file0001}
     cover_pic ${file0001}
     followed

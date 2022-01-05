@@ -1,40 +1,41 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
-import {withSSRContext} from "aws-amplify";
-import {generateTimeAgo, getFileUrl} from "../../../../src/utility/Util";
+import { withSSRContext } from "aws-amplify";
+import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
 import Image from "next/image";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
 import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
 import Link from "next/link";
 import Head from "next/head";
 import Consts from "../../../../src/utility/Consts";
-import {ssrDataViewPost} from "../../../../src/apis/ssrDatas";
+import { ssrDataViewPost } from "../../../../src/apis/ssrDatas";
 import Button from "../../../../src/components/button";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {updatePost} from "../../../../src/graphql-custom/post/mutation";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { updatePost } from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
-import {Toaster} from "react-hot-toast";
-import {useUser} from "../../../../src/context/userContext";
-import {decode} from "html-entities";
+import { Toaster } from "react-hot-toast";
+import { useUser } from "../../../../src/context/userContext";
+import { decode } from "html-entities";
+import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 
-export async function getServerSideProps({req, query}) {
-  const {API, Auth} = withSSRContext({req});
-  return await ssrDataViewPost({API, Auth, query});
+export async function getServerSideProps({ req, query }) {
+  const { API, Auth } = withSSRContext({ req });
+  return await ssrDataViewPost({ API, Auth, query });
 }
 
-const Post = ({ssrData}) => {
+const Post = ({ ssrData }) => {
   const router = useRouter();
-  const {user, isLogged} = useUser();
+  const { user, isLogged } = useUser();
   const [post, setPost] = useState(ssrData.post);
   const [loading, setLoading] = useState(false);
   const commentRef = useRef();
-  const {jumpToComment} = router.query;
+  const { jumpToComment } = router.query;
   const [isReactionActive, setIsReactionActive] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
@@ -100,9 +101,28 @@ const Post = ({ssrData}) => {
           </div>
         )}
         <Head>
+          {/* for Twitter */}
+
+          <meta name="twitter:card" content="photo" />
+          <meta name="twitter:title" content={post.title} />
+          <meta name="twitter:description" content={post.description} />
+          <meta
+            name="twitter:url"
+            content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}
+          />
+          <meta
+            property="twitter:image"
+            content={getFileUrl(post.items.items[0].file)}
+          />
+
+          {/* for Facebook  */}
           <meta name="description" content={post.description} />
           <meta property="og:title" content={post.title} />
           <meta property="og:type" content="article" />
+          <meta
+            name="og:url"
+            content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}
+          />
           <meta
             property="og:image"
             content={getFileUrl(post.items.items[0].file)}
@@ -164,8 +184,15 @@ const Post = ({ssrData}) => {
                         }
                       >
                         {post.group.name}{" "}
-                        {post.user.verified && (
-                          <span className={"icon-fi-rs-verified text-[15px]"} />
+                        {post.group.verified && (
+                          <Image
+                            alt={""}
+                            height={14.25}
+                            width={16.5}
+                            quality={100}
+                            priority={true}
+                            src={groupVerifiedSvg}
+                          />
                         )}
                       </p>
                     </a>
@@ -177,8 +204,8 @@ const Post = ({ssrData}) => {
                     }
                   >
                     <Tooltip
-                        className={"-left-6"}
-                        content={<ProfileHoverCard userId={post.user.id}/>}
+                      className={"-left-6"}
+                      content={<ProfileHoverCard userId={post.user.id} />}
                     >
                       <Link href={`/user/${post.user.id}/profile`}>
                         <a>
@@ -187,7 +214,6 @@ const Post = ({ssrData}) => {
                           </p>
                         </a>
                       </Link>
-
                     </Tooltip>
                     &nbsp; &middot; &nbsp;
                     <p>{generateTimeAgo(post.createdAt)}</p>
@@ -217,27 +243,24 @@ const Post = ({ssrData}) => {
                 {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
               </p>
               {post.status === "ARCHIVED" &&
-              post.status_history.items?.length > 0 && (
+                post.status_history.items?.length > 0 && (
                   <p className={"text-caak-scriptink"}>
                     Шалтгаан: {post.status_history.items[0].description}
                   </p>
-              )}
-              {post.description && <p
+                )}
+              {post.description && (
+                <p
                   className={
                     "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
                   }
-              >
-                {post.description}
-              </p>}
-
+                >
+                  {post.description}
+                </p>
+              )}
             </div>
 
             {post.items.items.length > 1 && (
-              <div
-                className={
-                  "relative h-[444px] w-full pt-[4px] mb-[13px]"
-                }
-              >
+              <div className={"relative h-[444px] w-full pt-[4px] mb-[13px]"}>
                 {post.items.items[0].file.type.startsWith("video") ? (
                   <Video
                     videoClassname={"object-contain rounded-[4px]"}
@@ -263,26 +286,26 @@ const Post = ({ssrData}) => {
                       />
                     </div>
                     <Image
-                        objectFit={"contain"}
-                        layout={"fill"}
-                        src={getFileUrl(post.items.items[0].file)}
-                        alt={"post picture"}
+                      objectFit={"contain"}
+                      layout={"fill"}
+                      src={getFileUrl(post.items.items[0].file)}
+                      alt={"post picture"}
                     />
                   </div>
                 )}
               </div>
             )}
             <p
-                className={
-                  "text-caak-generalblack text-[16px] px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-                }
+              className={
+                "text-caak-generalblack text-[16px] px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+              }
             >
               {decode(post.items.items[0].title)}
             </p>
             <div
-                className={`px-[10px] md:px-[52px] md:pb-[52px] bg-white ${
-                    post.status === "CONFIRMED" ? "" : "rounded-square"
-                } border-b border-caak-titaniumwhite`}
+              className={`px-[10px] md:px-[52px] md:pb-[52px] bg-white ${
+                post.status === "CONFIRMED" ? "" : "rounded-square"
+              } border-b border-caak-titaniumwhite`}
             >
               {/*<p*/}
               {/*    className={*/}
@@ -294,32 +317,32 @@ const Post = ({ssrData}) => {
               {post.items.items.map((item, index) => {
                 if (post.items.items.length === 1) {
                   return (
-                      <ViewPostBlogItem
-                          // singleItem
-                          key={index}
-                          index={index}
-                          postId={post.id}
-                          postItem={item}
-                      />
+                    <ViewPostBlogItem
+                      // singleItem
+                      key={index}
+                      index={index}
+                      postId={post.id}
+                      postItem={item}
+                    />
                   );
                 } else {
                   if (index > 0)
                     return (
-                        <ViewPostBlogItem
-                            key={index}
-                            index={index}
-                            postId={post.id}
-                            postItem={item}
-                        />
+                      <ViewPostBlogItem
+                        key={index}
+                        index={index}
+                        postId={post.id}
+                        postItem={item}
+                      />
                     );
                 }
               })}
               <div
-                  className={
-                    "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-                  }
+                className={
+                  "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                }
               >
-                <div dangerouslySetInnerHTML={{__html: post.f_text}}/>
+                <div dangerouslySetInnerHTML={{ __html: post.f_text }} />
               </div>
             </div>
             {post.commentType && post.status === "CONFIRMED" && (

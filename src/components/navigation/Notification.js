@@ -97,7 +97,7 @@ const Notification = ({ item, ...props }) => {
         >
           <span
             style={{ fontSize: "10px" }}
-            className={"icon-fi-rs-follow text-white "}
+            className={"icon-fi-rs-thick-add-friend text-white "}
           />
         </div>
       );

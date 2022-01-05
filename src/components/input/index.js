@@ -37,7 +37,7 @@ const Input = ({
         <input
           type={showPassword ? "text" : type}
           {...props}
-          className={` ${className} ${
+          className={`${className} ${
             errorMessage ? `border border-caak-red` : ``
           }`}
         />

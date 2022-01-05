@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-
-import Dummy from "dummyjs";
 import { getUserById } from "../../../src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
-import {getFileUrl, getGenderImage} from "/src/utility/Util";
+import { getFileUrl, getGenderImage } from "/src/utility/Util";
 import Informations from "../../../src/components/userProfile/Informations";
 import SocialLink from "../../../src/components/userProfile/SocialLink";
 import SiteConfiguration from "../../../src/components/userProfile/SiteConfiguration";
 import Privacy from "../../../src/components/userProfile/Privacy";
 import { data } from "../../../src/components/settingsMenuData";
 import { useRouter } from "next/router";
+import { useWrapper } from "../../../src/context/wrapperContext";
 
 export default function Settings() {
   const router = useRouter();
   const userId = router.query.userId;
   const [user, setUser] = useState();
   const { isLogged } = useUser();
-
+  const { setNavBarTransparent } = useWrapper();
   const [activeIndex, setActiveIndex] = useState(1);
   useEffect(() => {
     try {
@@ -35,10 +34,15 @@ export default function Settings() {
     // eslint-disable-next-line
   }, [user, userId]);
 
+  useEffect(() => {
+    setNavBarTransparent(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return user ? (
     <div
       style={{ marginTop: "36px" }}
-      className="flex justify-center  items-center w-full px-4 md:px-6 max-w-4xl mx-auto"
+      className="flex justify-center  items-center w-full px-4 md:px-6 max-w-4xl mx-auto pt-[54px]"
     >
       <div className="flex flex-col w-full settingsPanel">
         <div className="flex items-center bg-transparent">
@@ -55,7 +59,9 @@ export default function Settings() {
               marginRight: "8px",
             }}
             data-dummy="200x200"
-            src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
+            src={
+              user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src
+            }
           />
           <div className="flex-row flex items-center">
             <p

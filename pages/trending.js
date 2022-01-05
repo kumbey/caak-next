@@ -107,32 +107,35 @@ const Trending = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      <TrendingLayout {...(isLogged ? { columns: 3 } : { columns: 2 })}>
-        <FeedSortButtons
-          feed
-          items={feedType}
-          initialSort={"TREND"}
-          hide={isLogged && !isTablet}
-          containerClassname={"mb-[19px] justify-center"}
-          direction={"row"}
-        />
-        {isLogged && <TrendPostsByCategory />}
+      <div className={"pt-[54px]"}>
+        <TrendingLayout {...(isLogged ? { columns: 3 } : { columns: 2 })}>
+          <FeedSortButtons
+            feed
+            items={feedType}
+            initialSort={"TREND"}
+            hide={isLogged && !isTablet}
+            containerClassname={"mb-[19px] justify-center"}
+            direction={"row"}
+          />
+          {isLogged && <TrendPostsByCategory />}
 
-        <InfinitScroller onNext={fetchTrendingPosts} loading={loading}>
-          {trendingPosts.items.map((data, index) => {
-            return (
-              <Card
-                key={index}
-                video={data.post?.items?.items[0]?.file?.type?.startsWith(
-                  "video"
-                )}
-                post={data.post}
-                className="ph:mb-4 sm:mb-4"
-              />
-            );
-          })}
-        </InfinitScroller>
-      </TrendingLayout>
+          <InfinitScroller onNext={fetchTrendingPosts} loading={loading}>
+            {trendingPosts.items.map((data, index) => {
+              return (
+                <Card
+                  key={index}
+                  video={data.post?.items?.items[0]?.file?.type?.startsWith(
+                    "video"
+                  )}
+                  post={data.post}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              );
+            })}
+          </InfinitScroller>
+        </TrendingLayout>
+      </div>
+
     </>
   );
 };

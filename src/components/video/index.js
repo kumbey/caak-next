@@ -220,7 +220,7 @@ const Video = ({
         )}
         {durationIndicator && (
           <ItemsCounterCard
-            containerClassname={"left-[10px]"}
+            containerClassname={"right-[10px]"}
             duration={videoDuration}
           />
         )}

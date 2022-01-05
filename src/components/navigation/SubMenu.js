@@ -140,7 +140,11 @@ const SubMenu = ({ params }) => {
         >
           <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
             <span
-              className={`${navBarTransparent ? "text-white hover:text-caak-generalblack" : "text-caak-generalblack"} icon-fi-rs-notification-o text-22px text-[22px]`}
+              className={`${
+                navBarTransparent
+                  ? "text-white hover:text-caak-generalblack"
+                  : "text-caak-generalblack"
+              } icon-fi-rs-notification-o text-22px text-[22px]`}
             />
           </div>
 
@@ -170,7 +174,9 @@ const SubMenu = ({ params }) => {
           {params.type === "web" && isLogged && (
             <div className={"flex flex-col items-center justify-center"}>
               <div className={"flex flex-row justify-center items-center"}>
-                <span className={"icon-fi-rs-aura-o auroGradient text-[24px] mr-1"} />
+                <span
+                  className={"icon-fi-rs-aura-o auroGradient text-[24px] mr-1"}
+                />
                 <span
                   className={"text-14px text-caak-generalblack font-medium"}
                 >

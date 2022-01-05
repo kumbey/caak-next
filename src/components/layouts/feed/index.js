@@ -32,7 +32,7 @@ const DefaultFeedLayout = ({
 
   useEffect(() => {
     setLoaded(true);
-    setNavBarTransparent(false)
+    setNavBarTransparent(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -42,9 +42,7 @@ const DefaultFeedLayout = ({
   }
   return (
     loaded && (
-      <div
-        className={"feedLayoutContainer pb-[200px] md:pb-0"}
-      >
+      <div className={"feedLayoutContainer pb-[200px] md:pb-0"}>
         <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
 
         {columns === 3 && (
@@ -64,7 +62,7 @@ const DefaultFeedLayout = ({
               role={["ADMIN", "MODERATOR"]}
               // maxColumns={3}
               addGroup
-              initialData={adminModeratorGroups}
+              // initialData={adminModeratorGroups}
               title={"Миний группүүд"}
               setIsAuraModalOpen={setIsAuraModalOpen}
             />
@@ -100,7 +98,7 @@ const DefaultFeedLayout = ({
           )}
 
           {/* {!isLogged && <FooterSidebar />} */}
-          <Banner/>
+          <Banner />
         </div>
       </div>
     )

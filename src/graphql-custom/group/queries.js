@@ -104,6 +104,12 @@ export const getGroupTotal = /* GraphQL */ `
     }
 `;
 
+export const listGroupTotals = /* GraphQL */ `
+    query ListGroupTotals($group_id: ID) {
+        listGroupTotals(group_id: $group_id) {items ${group0007}}
+    }
+`;
+
 export const getGroupSearchView = /* GraphQL */ `
     query getGroup($id: ID!) {
         getGroup(id: $id) {

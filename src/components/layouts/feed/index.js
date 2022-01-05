@@ -33,6 +33,7 @@ const DefaultFeedLayout = ({
   useEffect(() => {
     setLoaded(true);
     setNavBarTransparent(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //  If columns is undefined, columns is defaults to 3.

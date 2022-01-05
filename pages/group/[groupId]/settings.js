@@ -145,6 +145,7 @@ export default function Settings({ ssrData }) {
 
   useEffect(()=> {
     setNavBarTransparent(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return user ? (

@@ -90,11 +90,8 @@ const Group = ({ ssrData }) => {
   const { setNavBarTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
+  const [totalMember, setTotalMember] = useState(0);
 
-  const totalMember =
-    groupData.totals.member +
-    groupData.totals.admin +
-    groupData.totals.moderator;
 
   const [nextPosts] = useListPager({
     query: getPostByGroup,
@@ -222,6 +219,11 @@ const Group = ({ ssrData }) => {
   }, [subscriptionPosts]);
 
   useEffect(() => {
+      setTotalMember(
+        groupData.totals.member +
+        groupData.totals.admin +
+        groupData.totals.moderator
+      );
     setNavBarTransparent(true);
     subscrib();
     setLoaded(true);

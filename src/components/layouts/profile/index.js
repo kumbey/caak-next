@@ -377,7 +377,7 @@ const DefaultUserProfileLayout = ({user, children}) => {
                   >
                     <img
                       alt={""}
-                      className={"w-[16.5px] h-[14.25px]"}
+                      className={"w-[16.5px] h-[14.25px] object-contain"}
                       height={14.25}
                       width={16.5}
                       // quality={100}

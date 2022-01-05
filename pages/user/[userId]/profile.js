@@ -50,20 +50,6 @@ export async function getServerSideProps({ req, query }) {
     return getReturnData(resp);
   };
 
-  const getSavedPostByUserId = async () => {
-    const resp = await API.graphql({
-      query: listSavedPostByUser,
-      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-      variables: {
-        user_id: userId,
-        sortDirection: "DESC",
-        filter: { status: { eq: "CONFIRMED" } },
-        limit: 2,
-      },
-    });
-    return getReturnData(resp);
-  };
-
   const getUserById = async () => {
     const resp = await API.graphql({
       query: getUser,
@@ -78,7 +64,6 @@ export async function getServerSideProps({ req, query }) {
         ssrData: {
           user: await getUserById(),
           posts: await getPostByUserId(),
-          savedPosts: await getSavedPostByUserId(),
         },
       },
     };
@@ -93,7 +78,10 @@ const Profile = ({ ssrData }) => {
   const [fetchedUser, setFetchedUser] = useState(ssrData.user);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(ssrData.posts);
-  const [savedPosts, setSavedPosts] = useState(ssrData.savedPosts);
+  const [savedPosts, setSavedPosts] = useState({
+    items: [],
+    nextToken: ""
+  });
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeView, setActiveView] = useState(0);
   const [sortType, setSortType] = useState(
@@ -125,9 +113,8 @@ const Profile = ({ ssrData }) => {
       filter: { status: { eq: "CONFIRMED" } },
       limit: 20,
     },
-    nextToken: ssrData.savedPosts.nextToken,
+    nextToken: savedPosts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    ssr: true,
   });
 
   const fetchPosts = async () => {
@@ -246,10 +233,6 @@ const Profile = ({ ssrData }) => {
   }, [subscripedPost]);
 
   useEffect(() => {
-    setPosts(ssrData.posts);
-  }, [ssrData.posts]);
-
-  useEffect(() => {
     subscrip();
 
     return () => {
@@ -265,10 +248,6 @@ const Profile = ({ ssrData }) => {
   useEffect(() => {
     setFetchedUser(ssrData.user);
   }, [ssrData.user]);
-
-  useEffect(() => {
-    setSavedPosts(ssrData.savedPosts);
-  }, [ssrData.savedPosts]);
 
   useEffect(() => {
     const listener = () => {
@@ -409,7 +388,7 @@ const Profile = ({ ssrData }) => {
         </div>
       </ProfileLayout>
     </>
-  );
+  )
 };
 
 export default Profile;

@@ -3,13 +3,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
 
 const AddPostGuideCard = ({open , setOpen}) => {
-
-    const { lsSet, lsGet} = useLocalStorage("session")
-
-    
-    useEffect(() => {
-        setOpen(lsGet(Consts.addPostKey).addPostGuide)
-    }, [setOpen, lsGet])
+    const {lsSet, lsGet} = useLocalStorage("session")
 
     return open ? 
     (
@@ -28,7 +22,7 @@ const AddPostGuideCard = ({open , setOpen}) => {
             <div
                 onClick={() => {
                     setOpen(false)
-                    lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPostGuide: false})
+                    lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPostGuide:  false})
                 }}
                 className={
                     "flex text-[16px] font-medium items-center justify-center text-center mt-[17px] w-[130px] h-[36px] bg-white text-caak-generalblack rounded-[8px]"

@@ -80,7 +80,7 @@ export async function getServerSideProps({ req }) {
       ssrData: {
         posts: getReturnData(resp),
         // allGroups: await fetchGroups(user, ["NOT_MEMBER"]),
-        myGroups: await fetchGroups(user, ["MEMBER"]),
+        // myGroups: await fetchGroups(user, ["MEMBER"]),
         adminModerator: await fetchGroups(user, ["ADMIN", "MODERATOR"]),
       },
     },
@@ -92,7 +92,6 @@ const Feed = ({ ssrData }) => {
   const { lsGet } = useLocalStorage("session");
   const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost);
   const router = useRouter();
-
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
   const [posts, setPosts] = useState(ssrData.posts.items);
@@ -260,7 +259,7 @@ const Feed = ({ ssrData }) => {
           >
             <FeedLayout
               adminModeratorGroups={ssrData.adminModerator}
-              myGroups={ssrData.myGroups}
+              // myGroups={ssrData.myGroups}
               allGroups={ssrData.allGroups}
               buttonType={feedType}
               {...(isLogged ? { columns: 3 } : { columns: 2 })}

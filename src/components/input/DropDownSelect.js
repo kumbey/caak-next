@@ -146,6 +146,18 @@ const DropDownSelect = ({
             <span className={"text-15px text-caak-darkBlue pt-2"}>
               Бүх группүүд
             </span>
+            {
+              filteredData.adminModerator.length === 0
+              ?
+              <span
+              onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
+              className={"text-15px font-medium text-caak-primary"}
+              >
+                Групп үүсгэх
+              </span>
+              :
+              null
+            }
           </div>
           <div className={"px-2"}>
             {filteredData.unMember.map((item, index) => {

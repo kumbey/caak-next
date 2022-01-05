@@ -77,7 +77,7 @@ const GroupAdminsCard = ({ groupId }) => {
                   // objectFit={"cover"}
                   width={42}
                   height={42}
-                  className={"rounded-full object-cover"}
+                  className={"rounded-full object-cover w-full h-full"}
                 />
               </div>
               <div className={"flex flex-col ml-[12px] justify-center"}>

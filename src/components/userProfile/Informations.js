@@ -3,7 +3,6 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../../src/graphql-custom/user/mutation";
 import Input from "/src/components/input";
-import Divider from "../divider";
 import Button from "../button";
 
 export default function Informations({ currentUser }) {
@@ -88,11 +87,8 @@ export default function Informations({ currentUser }) {
     setText({ ...text, [e.target.name]: e.target.value });
   };
   return (
-    <div className="flex flex-col">
-      <p
-        className="font-semibold text-caak-aleutian font-inter text-22px"
-        style={{ marginLeft: "30px", marginTop: "30px", fontSize: "24px" }}
-      >
+    <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
+      <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
         Хувийн мэдээлэл
       </p>
       {settings.map((setting, index) => {
@@ -100,10 +96,12 @@ export default function Informations({ currentUser }) {
           <div
             key={index}
             className={`${
-              currentIndex === index && col ? "flex-col" : ""
-            } mx-c3 flex mt-[20px]  justify-between`}
+              currentIndex === index && col
+                ? "flex-col mt-[12px]"
+                : "justify-between h-[48px] items-center"
+            }  flex   border-b-[1px]`}
           >
-            <p className="font-semibold font-inter text-15px text-caak-generalblack">
+            <p className="font-normal font-inter text-15px text-caak-generalblack">
               {setting.text}
             </p>
             {currentIndex === index && showInput ? (
@@ -118,7 +116,7 @@ export default function Informations({ currentUser }) {
                   // value={currentUser.title}
                   onChange={handleChange}
                   className={
-                    "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    "border border-caak-titaniumwhite bg-caak-liquidnitrogen"
                   }
                 />
                 <div className="justify-end mt-[10px] flex items-center pb-3">
@@ -142,14 +140,13 @@ export default function Informations({ currentUser }) {
               <div className="flex ">
                 <span
                   onClick={() => handleClick(setting.id)}
-                  className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
+                  className="icon-fi-rs-edit-f text-caak-darkBlue ml-10 cursor-pointer"
                 />
               </div>
             )}
           </div>
         );
       })}
-      <Divider className="mx-[30px] mt-[15px] mb-[70px]" />
     </div>
   );
 }

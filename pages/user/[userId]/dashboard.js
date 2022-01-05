@@ -550,8 +550,8 @@ const Dashboard = ({ ssrData }) => {
             style={{ height: "48px", width: "48px" }}
           />
           <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-            <Image
-              className=" bg-white rounded-full"
+            <img
+              className=" bg-white rounded-full object-cover"
               src={
                 user?.pic
                   ? generateFileUrl(user?.pic)
@@ -559,7 +559,7 @@ const Dashboard = ({ ssrData }) => {
               }
               width={52}
               height={52}
-              objectFit={"cover"}
+              // objectFit={"cover"}
               alt="#"
             />
           </div>

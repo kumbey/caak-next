@@ -108,12 +108,12 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
       } flex flex-col bg-white rounded-square max-w-[380px] relative mb-[24px]`}
     >
       <div className={"h-[34px] w-full relative"}>
-        <Image
+        <img
           alt={"group cover"}
           src={generateFileUrl(group.cover)}
-          layout={"fill"}
-          objectFit={"cover"}
-          className={"rounded-t-square"}
+          // layout={"fill"}
+          // objectFit={"cover"}
+          className={"rounded-t-square object-cover w-full h-full"}
         />
       </div>
       <div className={"flex flex-row px-[18px] items-end"}>
@@ -124,14 +124,14 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
                 "flex relative top-[-12px] items-center w-[48px] h-[48px] relative flex-shrink-0 border border-caak-titaniumwhite rounded-[6px]"
               }
             >
-              <Image
-                quality={100}
+              <img
+                // quality={100}
                 alt={"profile picture"}
                 src={generateFileUrl(group.profile)}
-                objectFit={"cover"}
+                // objectFit={"cover"}
                 height={48}
                 width={48}
-                className={"rounded-[6px]"}
+                className={"rounded-[6px] object-cover w-full h-full"}
               />
             </div>
           </a>
@@ -154,12 +154,12 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
           </Link>
 
           {group.verified && (
-            <Image
+            <img
               alt={""}
               height={14.25}
               width={16.5}
-              quality={100}
-              priority={true}
+              // quality={100}
+              // priority={true}
               src={groupVerifiedSvg}
             />
           )}

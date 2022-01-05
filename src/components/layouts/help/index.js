@@ -12,10 +12,10 @@ export default function DefaultHelpLayout({children}) {
         <div className='flex flex-col'>
             <div className='sm:h-[150px] items-center md:h-[250px] xl:h-[396px] relative flex justify-center'>
                 <div className='h-full w-full'>
-                <Image alt='' src={Cover}/>
+                <img alt='' src={Cover}/>
                 </div>
                 <div className='w-[300px] sm:w-[400px] md:w-[700px] xl:w-[1247px] top-[10px] md:top-[60px] xl:top-[129px] absolute text-white flex flex-col'>
-                    <div className=' flex flex-row text-[16px]'>Сайн уу? {isLogged ? <div className='flex flex-row items-center ml-[5px]'><Image alt='' width={26} height={26} className='rounded-full border-[2px] border-[#FF6600]' objectFit='cover' src={getFileUrl(user.pic)}/><p className='ml-[5px]'>{user.nickname === null ? null: user.nickname}</p></div> : null}</div>
+                    <div className=' flex flex-row text-[16px]'>Сайн уу? {isLogged ? <div className='flex flex-row items-center ml-[5px]'><img alt='' width={26} height={26} className='rounded-full border-[2px] border-[#FF6600] object-cover'  src={getFileUrl(user.pic)}/><p className='ml-[5px]'>{user.nickname === null ? null: user.nickname}</p></div> : null}</div>
                     <p className='font-semibold text-[20px] sm:text-[30px] md:text-[38px]'>Танд хэрхэн туслах вэ?</p>
                     <input disabled className='w-[300px] hidden sm:block sm:w-[400px] xl:w-[616px] h-[44px] bg-white rounded-[4px] text-[#6C7392] px-[40px] ' placeholder='Тусламж хайх'/>
                 </div>

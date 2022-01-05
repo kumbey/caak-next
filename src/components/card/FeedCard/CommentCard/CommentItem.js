@@ -10,13 +10,13 @@ const CommentItem = ({ comment }) => {
     >
       <div className={"flex flex-row "}>
         <div className={"w-[24px] h-[24px] rounded-full"}>
-          <Image
-            className={"rounded-full"}
+          <img
+            className={"rounded-full object-cover"}
             src={getFileUrl(comment.user.pic)}
             alt="Comment user"
             width={24}
             height={24}
-            objectFit="cover"
+            // objectFit="cover"
           />
         </div>
         <div

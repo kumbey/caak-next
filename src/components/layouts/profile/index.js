@@ -195,12 +195,13 @@ const DefaultUserProfileLayout = ({user, children}) => {
             </div>
           )}
           <div className={"w-full h-[120px] navbarGradient absolute top-0"} />
-          <Image
-            priority={true}
-            quality={100}
-            layout={"fill"}
-            objectFit={"cover"}
+          <img
+            // priority={true}
+            // quality={100}
+            // layout={"fill"}
+            // objectFit={"cover"}
             alt={user?.cover_pic?.name}
+            className={"object-cover w-full h-full"}
             src={
               user?.cover_pic
                 ? getFileUrl(user?.cover_pic)
@@ -325,11 +326,11 @@ const DefaultUserProfileLayout = ({user, children}) => {
                   </div>
                 )}
 
-                <Image
-                  className={"rounded-full"}
+                <img
+                  className={"rounded-full object-cover"}
                   alt={"user profile"}
-                  layout={"fill"}
-                  objectFit={"cover"}
+                  // layout={"fill"}
+                  // objectFit={"cover"}
                   src={
                     user?.pic
                       ? getFileUrl(user?.pic)
@@ -374,13 +375,14 @@ const DefaultUserProfileLayout = ({user, children}) => {
                       "w-[18px] h-[18px] flex items-center justify-center ml-[5px]"
                     }
                   >
-                    <Image
+                    <img
                       alt={""}
+                      className={"w-[16.5px] h-[14.25px]"}
                       height={14.25}
                       width={16.5}
-                      quality={100}
-                      priority={true}
-                      src={userVerifiedSvg}
+                      // quality={100}
+                      // priority={true}
+                      src={userVerifiedSvg.src}
                     />
                   </div>
                 )}

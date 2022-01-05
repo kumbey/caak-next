@@ -134,8 +134,8 @@ const SearchCardGroup = ({result, sortType}) => {
               "relative flex-shrink-0 w-[58px] h-[58px] border-[3px] border-white rounded-square"
             }
           >
-            <Image
-              className={"rounded-square"}
+            <img
+              className={"rounded-square object-cover"}
               src={
                 result.profile
                   ? getFileUrl(result.profile)
@@ -144,7 +144,7 @@ const SearchCardGroup = ({result, sortType}) => {
               alt={""}
               width={58}
               height={58}
-              objectFit={"cover"}
+              // objectFit={"cover"}
             />
           </div>
         </div>
@@ -158,12 +158,12 @@ const SearchCardGroup = ({result, sortType}) => {
             >
               {result.name}
               {result.verified && (
-                <Image
+                <img
                   alt={""}
                   height={14.25}
                   width={16.5}
-                  quality={100}
-                  priority={true}
+                  // quality={100}
+                  // priority={true}
                   src={groupVerifiedSvg}
                 />
               )}
@@ -208,11 +208,11 @@ const SearchCardGroup = ({result, sortType}) => {
     >
       <div className={"flex flex-row"}>
         <div className={"w-[60px] h-[60px] rounded-full bg-red-200"}>
-          <Image
-            className={"rounded-square"}
+          <img
+            className={"rounded-square object-cover"}
             width={60}
             height={60}
-            objectFit={"cover"}
+            // objectFit={"cover"}
             alt={"sda"}
             src={getFileUrl(result.profile)}
           />

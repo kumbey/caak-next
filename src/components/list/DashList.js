@@ -65,19 +65,21 @@ const DashList = ({ imageSrc, post, type, video }) => {
             <a className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}>
               {video ? (
                 <Video
+                  containerClassname={"rounded-[4px]"}
+                  smallIndicator
+                  disableOnClick
                   videoClassname={"object-contain rounded-[4px]"}
                   src={getFileUrl(video)}
-                  thumbnailIcon
                   hideControls
                 />
               ) : (
-                <Image
-                  quality={100}
-                  className=" bg-white rounded-md"
+                <img
+                  // quality={100}
+                  className=" bg-white rounded-md object-cover w-full h-full"
                   src={getFileUrl(imageSrc)}
                   width={64}
                   height={64}
-                  objectFit={"cover"}
+                  // objectFit={"cover"}
                   alt="#"
                 />
               )}
@@ -117,8 +119,8 @@ const DashList = ({ imageSrc, post, type, video }) => {
             >
               <div className="flex items-center w-[141px] mr-[69px]">
                 <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>
-                  <Image
-                    className=" bg-white rounded-full"
+                  <img
+                    className=" bg-white rounded-full object-cover w-full h-full"
                     src={
                       !post?.user?.pic
                         ? getGenderImage("default")
@@ -126,7 +128,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                     }
                     width={28}
                     height={28}
-                    objectFit="cover"
+                    // objectFit="cover"
                     alt="#"
                   />
                 </div>

@@ -127,8 +127,8 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                   hideControls
                 />
               ) : (
-                <Image
-                  className=" bg-white rounded-md"
+                <img
+                  className=" bg-white rounded-md object-cover"
                   src={
                     !imageSrc
                       ? getGenderImage("default")
@@ -136,8 +136,8 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                   }
                   width={64}
                   height={64}
-                  layout="responsive"
-                  objectFit={"cover"}
+                  // layout="responsive"
+                  // objectFit={"cover"}
                   alt="#"
                 />
               )}
@@ -173,8 +173,8 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
             {type === "group" ? (
               <>
                 <div className={"w-[28px] h-[28px] mr-[6px]  relative"}>
-                  <Image
-                    className=" bg-white rounded-full"
+                  <img
+                    className=" bg-white rounded-full object-cover w-full h-full"
                     src={
                       !post?.user?.pic
                         ? getGenderImage("default")
@@ -182,7 +182,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                     }
                     width={28}
                     height={28}
-                    objectFit="cover"
+                    // objectFit="cover"
                     alt="#"
                   />
                 </div>

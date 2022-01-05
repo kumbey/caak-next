@@ -44,12 +44,12 @@ const GroupTrendPostsCardItem = ({ item }) => {
                 }
               />
             ) : (
-              <Image
+              <img
                 alt={firstItem.file.name}
                 src={getFileUrl(firstItem.file)}
-                layout={"fill"}
-                objectFit={"cover"}
-                className={"rounded-square"}
+                // layout={"fill"}
+                // objectFit={"cover"}
+                className={"rounded-square object-cover w-full h-full"}
               />
             )}
           </div>

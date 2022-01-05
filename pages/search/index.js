@@ -111,7 +111,7 @@ const Search = () => {
               setSortType={setSortType}
             />
             <div className={"pt-[20px] pb-[40px] w-full"}>
-              <div className={"flex flex-row flex-wrap w-full"}>
+              <div className={"flex flex-row flex-wrap w-full justify-center"}>
                 {groups.map((group, index) => {
                   if (sortType === "GROUP") {
                     return (

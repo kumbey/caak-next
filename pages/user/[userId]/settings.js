@@ -36,8 +36,7 @@ export default function Settings() {
 
   useEffect(() => {
     setNavBarTransparent(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setNavBarTransparent]);
 
   return user ? (
     <div

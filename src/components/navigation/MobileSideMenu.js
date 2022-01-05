@@ -9,9 +9,12 @@ import SideBarGroups from "../card/SideBarGroups";
 import useScrollBlock from "../../hooks/useScrollBlock";
 import {useWrapper} from "../../context/wrapperContext";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
+import AuraModal from "../modals/auraModal";
+import { useState } from "react";
 
 const MobileSideMenu = ({setOpen}) => {
-    const {user, isLogged, logout} = useUser();
+  const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
+  const {user, isLogged, logout} = useUser();
   const { isMobileMenuOpen } = useWrapper();
   const router = useRouter();
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -66,7 +69,7 @@ const MobileSideMenu = ({setOpen}) => {
                 </div>
               </a>
             </Link>
-
+            <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen}/>
             <div className={"flex flex-col items-center justify-center  px-3"}>
               <div className={"flex flex-row justify-center items-center"}>
                 <div className="flex flex-col items-center">
@@ -98,7 +101,7 @@ const MobileSideMenu = ({setOpen}) => {
             </div>
           </div>
         )}
-        <NavBarMenu type={"mobile"} />
+        <NavBarMenu type={"mobile"} setIsAuraModalOpen={setIsAuraModalOpen} />
           {isLogged && (
               <Button
                   round
@@ -116,13 +119,15 @@ const MobileSideMenu = ({setOpen}) => {
                       // maxColumns={3}
                       addGroup
                       title={"Миний группүүд"}
+                      setIsAuraModalOpen={setIsAuraModalOpen}
                   />
                   <SideBarGroups
                       role={["MEMBER"]}
                       // maxColumns={0}
                       title={"Дагасан группүүд"}
+                      setIsAuraModalOpen={setIsAuraModalOpen}
                   />
-                  <SideBarGroups role={["NOT_MEMBER"]} title={"Бүх групп"}/>
+                  <SideBarGroups setIsAuraModalOpen={setIsAuraModalOpen} role={["NOT_MEMBER"]} title={"Бүх групп"}/>
               </div>
           )}
       </div>

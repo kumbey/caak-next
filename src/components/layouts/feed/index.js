@@ -32,9 +32,8 @@ const DefaultFeedLayout = ({
 
   useEffect(() => {
     setLoaded(true);
-    setNavBarTransparent(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setNavBarTransparent(false)
+  }, [setNavBarTransparent, setLoaded]);
 
   //  If columns is undefined, columns is defaults to 3.
   if (columns !== (2 || 3)) {
@@ -69,13 +68,17 @@ const DefaultFeedLayout = ({
             <SideBarGroups
               role={["MEMBER"]}
               // maxColumns={0}
+              addGroup
               initialData={myGroups}
               title={"Дагасан группүүд"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
             />
             <SideBarGroups
               role={["NOT_MEMBER"]}
               initialData={allGroups}
+              addGroup
               title={"Бүх групп"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
             />
             {isLogged && <FooterSidebar />}
           </div>

@@ -16,14 +16,16 @@ import SearchInput from "../input/SearchInput";
 import AddPostGuideCard from "../card/AddPostGuideCard";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
+import AuraModal from "../modals/auraModal";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
   const { navBarTransparent } = useWrapper();
   const { lsGet } = useLocalStorage("session");
 
-  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPostGuide);
-
+  const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
+  const xd = lsGet(Consts.addPostKey).addPostGuide
+  const [open, setOpen] = useState(xd)
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
   const router = useRouter();
@@ -69,7 +71,7 @@ const SubMenu = ({ params }) => {
             />
           </div>
         </div>
-
+          <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen}/>
         <div
           onClick={() => {
             router.push("/");
@@ -114,6 +116,10 @@ const SubMenu = ({ params }) => {
           >
             <AddPostGuideCard open={open} setOpen={setOpen} />
           </Button>
+        </div>
+        
+        <div onClick={() => router.push({pathname: "/groups"})} className="ml-0 md:ml-[10px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
+          <span className="icon-fi-rs-group-f text-[20px]" />
         </div>
         <div
           ref={notificationRef}
@@ -195,7 +201,7 @@ const SubMenu = ({ params }) => {
             arrow={"topRight"}
             open={params.isMenuOpen}
             onToggle={toggleMenu}
-            content={<NavBarMenu />}
+            content={<NavBarMenu setIsAuraModalOpen={setIsAuraModalOpen} />}
             className={"top-8 -right-3 w-[215px]"}
           />
           {isLogged && user ? (

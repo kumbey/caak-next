@@ -7,7 +7,7 @@ import Link from "next/link";
 import {useCallback, useEffect, useState} from "react";
 import {createFollowedUsers, deleteFollowedUsers, updateUser,} from "../../../graphql-custom/user/mutation";
 import {ApiFileUpload} from "../../../utility/ApiHelper";
-
+import AuraModal from "../../modals/auraModal";
 import awsExports from "../../../aws-exports";
 import Dropzone from "react-dropzone";
 import {API, graphqlOperation} from "aws-amplify";
@@ -18,7 +18,7 @@ import userVerifiedSvg from "../../../../public/assets/images/fi-rs-awarded.svg"
 import {usePreserveScroll} from "../../../hooks/useScroll";
 
 const DefaultUserProfileLayout = ({user, children}) => {
-  usePreserveScroll()
+  const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
   const router = useRouter();
   const userId = router.query.userId;
   const {user: signedUser, isLogged} = useUser();
@@ -183,6 +183,7 @@ const DefaultUserProfileLayout = ({user, children}) => {
   return loading ? (
     <>
       <div className={"flex flex-col"}>
+      <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
         <div className={"relative w-full h-[240px]"}>
           {uploadingCover && (
             <div
@@ -681,6 +682,7 @@ const DefaultUserProfileLayout = ({user, children}) => {
                   role={["ADMIN", "MODERATOR"]}
                   userId={user.id}
                   title={"Группүүд"}
+                  setIsAuraModalOpen={setIsAuraModalOpen}
                 />
               </div>
             </div>

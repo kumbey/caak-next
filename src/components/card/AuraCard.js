@@ -21,12 +21,13 @@ const AuraCard = () => {
         Аура гэж юу вэ?
       </div>
       <div className={"w-[216px] h-[146px]"}>
-        <Image
-          src={auraImage}
+        <img
+          className={"object-contain"}
+          src={auraImage.src}
           alt="What is Aura"
           width={216}
           height={146}
-          objectFit="contain"
+          // objectFit="contain"
         />
       </div>
 

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   findMatchIndex,
   generateTimeAgo,
@@ -6,20 +6,23 @@ import {
   getReturnData,
   useClickOutSide,
 } from "../../../../../src/utility/Util";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import PostHeader from "../../../../../src/components/viewpost/PostHeader";
 import PostMoreMenu from "../../../../../src/components/card/PostMoreMenu";
 import DropDown from "../../../../../src/components/navigation/DropDown";
-import {getPostView} from "../../../../../src/graphql-custom/post/queries";
-import {API, graphqlOperation, withSSRContext} from "aws-amplify";
+import { getPostView } from "../../../../../src/graphql-custom/post/queries";
+import { API, graphqlOperation, withSSRContext } from "aws-amplify";
 import Dummy from "dummyjs";
 import Link from "next/link";
 import ImageCarousel from "../../../../../src/components/carousel/ImageCarousel";
 import Button from "../../../../../src/components/button";
 import AddComment from "../../../../../src/components/input/AddComment";
 import CommentCardNew from "../../../../../src/components/card/CommentCardNew";
-import {createGroupUsers, deleteGroupUsers,} from "../../../../../src/graphql-custom/GroupUsers/mutation";
-import {useUser} from "../../../../../src/context/userContext";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../../../../src/graphql-custom/GroupUsers/mutation";
+import { useUser } from "../../../../../src/context/userContext";
 import ProfileHoverCard from "../../../../../src/components/card/ProfileHoverCard";
 import Tooltip from "../../../../../src/components/tooltip/Tooltip";
 import Head from "next/head";
@@ -28,10 +31,11 @@ import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import useWindowSize from "../../../../../src/hooks/useWindowSize";
 import useModalLayout from "../../../../../src/hooks/useModalLayout";
 import userVerifiedSvg from "../../../../../public/assets/images/fi-rs-awarded.svg";
+import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 
-export async function getServerSideProps({req, query}) {
-  const {API, Auth} = withSSRContext({req});
+export async function getServerSideProps({ req, query }) {
+  const { API, Auth } = withSSRContext({ req });
 
   let user = null;
 
@@ -124,7 +128,7 @@ const PostItem = ({ ssrData }) => {
               ...router.query,
               signInUp: "signIn",
               isModal: true,
-              prevPath: router.asPath
+              prevPath: router.asPath,
             },
           },
           `/signInUp/signIn`,
@@ -134,6 +138,14 @@ const PostItem = ({ ssrData }) => {
     } catch (ex) {
       console.log(ex);
     }
+  };
+
+  const handleToast = ({ param }) => {
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
+    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
   };
 
   useEffect(() => {
@@ -272,8 +284,9 @@ const PostItem = ({ ssrData }) => {
                       content={
                         <PostMoreMenu
                           groupId={post.group.id}
-                          postId={router.query.itemId}
+                          post={post}
                           postUser={post.user}
+                          handleToast={handleToast}
                         />
                       }
                       className={"top-10 right-1"}
@@ -346,13 +359,14 @@ const PostItem = ({ ssrData }) => {
                                   "flex items-center justify-center w-[17px] h-[17px] ml-[3px]"
                                 }
                               >
-                                <Image
+                                <img
+                                  className={"w-[16.5px] h-[14.25px]"}
                                   alt={""}
                                   height={14.25}
                                   width={16.5}
-                                  quality={100}
-                                  priority={true}
-                                  src={userVerifiedSvg}
+                                  // quality={100}
+                                  // priority={true}
+                                  src={userVerifiedSvg.src}
                                 />
                               </div>
                             )}

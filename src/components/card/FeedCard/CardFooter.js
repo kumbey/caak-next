@@ -150,12 +150,12 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
                             "flex items-center rounded-full cursor-pointer h-[36px] "
                           }
                         >
-                          <Image
-                            priority={true}
+                          <img
+                            // priority={true}
                             width={22}
                             height={22}
                             alt={"facebook icon"}
-                            src={FacebookIcon}
+                            src={FacebookIcon.src}
                           />
                           <p className="text-14px text-caak-extraBlack ml-px-12">
                             Facebook
@@ -170,12 +170,12 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
                             "flex items-center rounded-full cursor-pointer h-[36px]"
                           }
                         >
-                          <Image
-                            priority={true}
+                          <img
+                            // priority={true}
                             width={22}
                             height={22}
                             alt={"twitter icon"}
-                            src={TwitterIcon}
+                            src={TwitterIcon.src}
                           />
                           <p className="text-14px text-caak-extraBlack ml-px-12">
                             Twitter

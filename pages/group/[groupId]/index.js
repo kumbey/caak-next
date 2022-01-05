@@ -90,11 +90,8 @@ const Group = ({ ssrData }) => {
   const { setNavBarTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
+  const [totalMember, setTotalMember] = useState(0);
 
-  const totalMember =
-    groupData.totals.member +
-    groupData.totals.admin +
-    groupData.totals.moderator;
 
   const [nextPosts] = useListPager({
     query: getPostByGroup,
@@ -222,7 +219,12 @@ const Group = ({ ssrData }) => {
   }, [subscriptionPosts]);
 
   useEffect(() => {
-    setNavBarTransparent(true)
+      setTotalMember(
+        groupData.totals.member +
+        groupData.totals.admin +
+        groupData.totals.moderator
+      );
+    setNavBarTransparent(true);
     subscrib();
     setLoaded(true);
 
@@ -237,11 +239,10 @@ const Group = ({ ssrData }) => {
   useEffect(() => {
     const listener = () => {
       const scrolled = document.scrollingElement.scrollTop;
-      if(scrolled > 54){
-        setNavBarTransparent(false)
-      }
-      else {
-        setNavBarTransparent(true)
+      if (scrolled > 54) {
+        setNavBarTransparent(false);
+      } else {
+        setNavBarTransparent(true);
       }
     };
     document.addEventListener("scroll", listener);
@@ -254,9 +255,11 @@ const Group = ({ ssrData }) => {
   }, [ssrData]);
 
   const handleToast = ({ param }) => {
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
     if (param === "follow") toast.success("Группт амжилттай элслээ.");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
-    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
+    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
   };
 
   return loaded ? (
@@ -315,6 +318,7 @@ const Group = ({ ssrData }) => {
                   imageSrc={data?.items?.items[0]?.file}
                   video={data?.items?.items[0]?.file?.type?.startsWith("video")}
                   post={data}
+                  handleToast={handleToast}
                   className="ph:mb-4 sm:mb-4"
                 />
               ) : null;
@@ -333,6 +337,7 @@ const Group = ({ ssrData }) => {
                   imageSrc={data?.items?.items[0]?.file}
                   video={data?.items?.items[0]?.file?.type?.startsWith("video")}
                   post={data}
+                  handleToast={handleToast}
                   className="ph:mb-4 sm:mb-4"
                 />
               ) : null;
@@ -351,6 +356,7 @@ const Group = ({ ssrData }) => {
                 />
               ) : activeView === 1 ? (
                 <List
+                  handleToast={handleToast}
                   key={index}
                   imageSrc={data.post?.items?.items[0]?.file}
                   video={data.post?.items?.items[0]?.file?.type?.startsWith(

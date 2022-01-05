@@ -21,11 +21,11 @@ const SearchCard = ({ type, result }) => {
         <div className={"flex flex-row"}>
           <div className={"relative w-[60px] h-[60px] rounded-full"}>
             {type === "GROUP" && (
-              <Image
-                className={"rounded-square"}
+              <img
+                className={"rounded-square object-cover w-full h-full"}
                 width={60}
                 height={60}
-                objectFit={"cover"}
+                // objectFit={"cover"}
                 alt={"Group"}
                 src={
                   result.profile
@@ -35,11 +35,11 @@ const SearchCard = ({ type, result }) => {
               />
             )}
             {type === "USER" && (
-              <Image
-                className={"rounded-full"}
+              <img
+                className={"rounded-full object-cover w-full h-full"}
                 width={60}
                 height={60}
-                objectFit={"cover"}
+                // objectFit={"cover"}
                 alt={"User"}
                 src={
                   result.pic
@@ -143,15 +143,16 @@ const SearchCard = ({ type, result }) => {
                     <Video
                       hideControls
                       thumbnailIcon
+                      containerClassname={"rounded-[4px]"}
                       videoClassname={"object-contain rounded-[4px]"}
                       src={getFileUrl(result?.items?.items[0]?.file)}
                     />
                   ) : (
-                    <Image
-                      className={"rounded-square"}
+                    <img
+                      className={"rounded-square object-cover w-full h-full"}
                       width={100}
                       height={100}
-                      objectFit={"cover"}
+                      // objectFit={"cover"}
                       alt={""}
                       src={result?.items?.items[0]?.file ? getFileUrl(result?.items?.items[0]?.file) : getGenderImage("default").src}
                     />

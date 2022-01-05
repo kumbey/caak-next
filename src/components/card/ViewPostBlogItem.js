@@ -37,7 +37,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
           >
             <a>
               <img
-                className={"rounded-[6px] object-cover w-full"}
+                className={"rounded-[6px] object-cover w-full h-full"}
                 src={getFileUrl(postItem.file)}
                 alt={postItem.file.name}
               />
@@ -45,10 +45,10 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
           </Link>
         ) : (
           <div className={"relative h-[438px] w-full"}>
-            <Image
-              className={"rounded-[6px]"}
-              objectFit={"cover"}
-              layout={"fill"}
+            <img
+              className={"rounded-[6px] object-cover h-full w-full"}
+              // objectFit={"cover"}
+              // layout={"fill"}
               src={getFileUrl(postItem.file)}
               alt={postItem.file.name}
             />
@@ -58,7 +58,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
         {!singleItem && (
           <div
             className={
-              "flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white rounded-[100px]"
+              "z-[3] flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white rounded-[100px]"
             }
           >
             <AnimatedCaakButton

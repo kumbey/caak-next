@@ -9,16 +9,16 @@ const GroupInfo = ({ groupData, totalMember }) => {
   return (
     <div className=" flex flex-col relative bg-white mb-[16px]">
       <div className={"h-[34px] w-full relative"}>
-        <Image
+        <img
           alt={"group cover"}
           src={
             groupData.cover
               ? getFileUrl(groupData?.cover)
               : getGenderImage("default")
           }
-          layout={"fill"}
-          objectFit={"cover"}
-          className={"rounded-t-square"}
+          // layout={"fill"}
+          // objectFit={"cover"}
+          className={"rounded-t-square object-cover"}
         />
       </div>
       <div className={"flex flex-row px-[18px] absolute top-[24px] items-end"}>
@@ -29,17 +29,17 @@ const GroupInfo = ({ groupData, totalMember }) => {
                 "flex items-center w-[48px] h-[48px] relative flex-shrink-0 border border-caak-titaniumwhite rounded-[6px]"
               }
             >
-              <Image
+              <img
                 alt={"profile picture"}
                 src={
                   groupData.profile
                     ? generateFileUrl(groupData?.profile)
                     : getGenderImage("default")
                 }
-                objectFit={"cover"}
+                // objectFit={"cover"}
                 height={48}
                 width={48}
-                className={"rounded-[6px]"}
+                className={"rounded-[6px] object-cover"}
               />
             </div>
           </a>

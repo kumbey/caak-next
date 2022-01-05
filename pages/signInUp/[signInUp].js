@@ -110,12 +110,13 @@ const SignInUp = () => {
               icon={faGoogle}
             /> */}
             <div className="absolute right-4 top-0 w-[24px] h-[24px]">
-              <Image
+              <img
+                className={"object-cover"}
                 alt=""
                 src={googleImg}
                 height={24}
                 width={24}
-                objectFit="cover"
+                // objectFit="cover"
               />
             </div>
           </div>

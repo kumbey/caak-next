@@ -33,7 +33,9 @@ const GroupTrendPostsCardItem = ({ item }) => {
             {firstItem.file.type.startsWith("video") ? (
               <Video
                 smallIndicator
+                disableOnClick
                 hideControls
+                containerClassname={"rounded-[4px]"}
                 videoClassname={"object-contain rounded-[4px]"}
                 src={
                   firstItem.file.url
@@ -42,12 +44,12 @@ const GroupTrendPostsCardItem = ({ item }) => {
                 }
               />
             ) : (
-              <Image
+              <img
                 alt={firstItem.file.name}
                 src={getFileUrl(firstItem.file)}
-                layout={"fill"}
-                objectFit={"cover"}
-                className={"rounded-square"}
+                // layout={"fill"}
+                // objectFit={"cover"}
+                className={"rounded-square object-cover w-full h-full"}
               />
             )}
           </div>

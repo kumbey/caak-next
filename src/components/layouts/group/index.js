@@ -211,11 +211,12 @@ const GroupLayout = ({
       <div className={"flex flex-col"}>
         <div className={"relative w-full h-[240px]"}>
           <div className={"w-full h-[120px] navbarGradient absolute top-0"} />
-          <Image
-            priority={true}
-            quality={100}
-            layout={"fill"}
-            objectFit={"cover"}
+          <img
+            className={"object-cover h-full w-full"}
+            // priority={true}
+            // quality={100}
+            // layout={"fill"}
+            // objectFit={"cover"}
             alt={groupData?.cover?.name}
             src={
               groupData?.cover
@@ -298,12 +299,12 @@ const GroupLayout = ({
                     />
                   </div>
                 )}
-                <Image
-                  className={"rounded-[34px]"}
+                <img
+                  className={"rounded-[34px] object-cover w-full h-full"}
                   alt={"user profile"}
                   height={148}
                   width={148}
-                  objectFit={"cover"}
+                  // objectFit={"cover"}
                   src={
                     groupData?.profile
                       ? getFileUrl(groupData?.profile)

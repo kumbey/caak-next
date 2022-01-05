@@ -295,7 +295,7 @@ const UploadedMediaEdit = ({
             onChange={postTitleHandler}
             className={`addPostTextarea overflow-hidden min-h-[44px] text-[15px] pb-[25px]   text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm  focus:ring-2 focus:ring-opacity-20  ${
               post.title?.length === maxLengths.title
-                ? "focus:ring-caak-red focus:border-caak-red"
+                ? "ring-caak-red border-caak-red"
                 : "focus:ring-caak-primary focus:border-caak-primary"
             } ${
               !valid && post.title?.length === 0
@@ -337,7 +337,7 @@ const UploadedMediaEdit = ({
             }
             className={`addPostTextarea pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
               post.description?.length === maxLengths.description
-                ? "focus:ring-caak-red focus:border-caak-red"
+                ? "ring-caak-red border-caak-red"
                 : "focus:ring-caak-primary focus:border-caak-primary"
             }`}
             rows={2}
@@ -482,9 +482,12 @@ const UploadedMediaEdit = ({
               onChange={captionHandler}
               value={post.items[activeIndex].title}
               maxLength={maxLengths.imageDescription}
-              className={
-                "addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px] rounded-[3px] focus:ring-caak-primary"
-              }
+              className={`addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px]  focus:ring-2 focus:ring-opacity-20    ${
+                post.items[activeIndex].title?.length ===
+                maxLengths.imageDescription
+                  ? "ring-caak-red border-caak-red"
+                  : "focus:ring-caak-primary focus:border-caak-primary"
+              }`}
             />
             <span
               className={
@@ -494,6 +497,15 @@ const UploadedMediaEdit = ({
               {post.items[activeIndex]?.title?.length || 0}/
               {maxLengths.imageDescription}
             </span>
+            <div className="flex justify-start mt-[14px]">
+              {post.items[activeIndex].title?.length ===
+              maxLengths.imageDescription ? (
+                <p className={"text-[13px] text-caak-red"}>
+                  Текстийн хэмжээ {maxLengths.imageDescription} тэмдэгтээс
+                  хэтэрсэн байна
+                </p>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>

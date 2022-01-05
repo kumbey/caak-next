@@ -1,14 +1,27 @@
 import Loader from "../loader";
-import {useEffect, useState} from "react";
-import {arrayMove, rectSortingStrategy, SortableContext, useSortable,} from "@dnd-kit/sortable";
-import {CSS} from "@dnd-kit/utilities";
-import {closestCenter, DndContext, DragOverlay, MouseSensor, TouchSensor, useSensor, useSensors,} from "@dnd-kit/core";
+import { useEffect, useState } from "react";
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import Image from "next/image";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import {generateFileUrl, getGenderImage} from "../../utility/Util";
+import { generateFileUrl, getGenderImage } from "../../utility/Util";
 import Video from "../video";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const thumbnailImageHandler = (item) => {
@@ -128,15 +141,14 @@ const UploadedMediaEdit = ({
   loading,
   add,
   selectedGroup,
+  valid,
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [allowComment, setAllowComment] = useState(
     post?.commentType ? post.commentType : false
   );
-  const [caakContent, setCaakContent] = useState(
-    post?.owned === "CAAK"
-  );
+  const [caakContent, setCaakContent] = useState(post?.owned === "CAAK");
 
   const [draft, setDraft] = useState(false);
   const [boost, setBoost] = useState(false);
@@ -150,7 +162,7 @@ const UploadedMediaEdit = ({
 
   const maxLengths = {
     title: 200,
-    description: 400,
+    description: 500,
     imageDescription: 500,
   };
   const popItem = (index_arg) => {
@@ -281,17 +293,32 @@ const UploadedMediaEdit = ({
             placeholder={"Гарчиг"}
             value={post.title}
             onChange={postTitleHandler}
-            className={
-              "addPostTextarea overflow-hidden min-h-[44px] text-[15px] pr-[55px] text-caak-extraBlack w-full rounded-[3px] border-[1px] border-caak-titaniumwhite focus:ring-caak-primary"
-            }
+            className={`addPostTextarea overflow-hidden min-h-[44px] text-[15px] pb-[25px]   text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm  focus:ring-2 focus:ring-opacity-20  ${
+              post.title?.length === maxLengths.title
+                ? "focus:ring-caak-red focus:border-caak-red"
+                : "focus:ring-caak-primary focus:border-caak-primary"
+            } ${
+              !valid && post.title?.length === 0
+                ? "ring-caak-red border-caak-red"
+                : ""
+            }`}
           />
           <span
             className={
-              "absolute top-1/2 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
+              "absolute bottom-1 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
             }
           >
             {post.title?.length || 0}/{maxLengths.title}
           </span>
+        </div>
+        <div className="flex justify-start">
+          {post.title?.length === maxLengths.title && viewDescription ? (
+            <p className={"text-[13px] text-caak-red"}>
+              Текстийн хэмжээ {maxLengths.title} тэмдэгтээс хэтэрсэн байна
+            </p>
+          ) : !valid && post.title?.length === 0 ? (
+            <p className={"text-[13px] text-caak-red"}>Гарчиг оруулна уу</p>
+          ) : null}
         </div>
         <div
           className={`w-full relative block mt-[12px] ${
@@ -308,33 +335,52 @@ const UploadedMediaEdit = ({
             onChange={(e) =>
               setPost((prev) => ({ ...prev, description: e.target.value }))
             }
-            className={
-              "addPostTextarea overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border-[1px] border-caak-titaniumwhite focus:ring-caak-primary"
-            }
+            className={`addPostTextarea pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
+              post.description?.length === maxLengths.description
+                ? "focus:ring-caak-red focus:border-caak-red"
+                : "focus:ring-caak-primary focus:border-caak-primary"
+            }`}
             rows={2}
           />
+          {/* border-2 border-rose-600 text-gray-500 rounded-lg shadow-sm
+          focus:outline-none focus:ring focus:ring-rose-200
+          focus:border-rose-500 
+          */}
           <span
             className={
-              "absolute top-1/2 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
+              "absolute bottom-1 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
             }
           >
             {post.description?.length || 0}/{maxLengths.description}
           </span>
         </div>
-        <div
-          onClick={() => setViewDescription(!viewDescription)}
-          className={`flex flex-row items-center ${
-            viewDescription ? "text-caak-generalblack" : "text-caak-primary"
-          }  justify-end cursor-pointer`}
-        >
-          <div className={"flex items-center justify-center w-[14px] h-[14px]"}>
-            <span
-              className={`${
-                viewDescription ? "icon-fi-rs-minus-1" : "icon-fi-rs-add-l "
-              } text-[9.33px]`}
-            />
+        <div className="flex justify-between">
+          <div className="flex justify-start">
+            {post.description?.length === maxLengths.description &&
+            viewDescription ? (
+              <p className={"text-[13px] text-caak-red"}>
+                Текстийн хэмжээ {maxLengths.description} тэмдэгтээс хэтэрсэн
+                байна
+              </p>
+            ) : null}
           </div>
-          <p className={"text-[13px]"}>Оршил</p>
+          <div
+            onClick={() => setViewDescription(!viewDescription)}
+            className={`flex flex-row items-center ${
+              viewDescription ? "text-caak-generalblack" : "text-caak-primary"
+            }  justify-end cursor-pointer`}
+          >
+            <div
+              className={"flex items-center justify-center w-[14px] h-[14px]"}
+            >
+              <span
+                className={`${
+                  viewDescription ? "icon-fi-rs-minus-1" : "icon-fi-rs-add-l "
+                } text-[9.33px]`}
+              />
+            </div>
+            <p className={"text-[13px]"}>Оршил</p>
+          </div>
         </div>
       </div>
 
@@ -416,27 +462,29 @@ const UploadedMediaEdit = ({
                 src={thumbnailImageHandler(post.items[activeIndex])}
               />
             ) : (
-                <Image
-                    alt={""}
-                    src={thumbnailImageHandler(post.items[activeIndex])}
-                    objectFit={"contain"}
-                    layout={"fill"}
-                />
+              <Image
+                alt={""}
+                src={thumbnailImageHandler(post.items[activeIndex])}
+                objectFit={"contain"}
+                layout={"fill"}
+              />
             )}
           </div>
           <div
-              // style={{ flexBasis: `366px` }}
-              className={"addPostImageCaptionContainer w-full h-full sm:ml-[14px] mt-[20px] sm:mt-0 relative"}
+            // style={{ flexBasis: `366px` }}
+            className={
+              "addPostImageCaptionContainer w-full h-full sm:ml-[14px] mt-[20px] sm:mt-0 relative"
+            }
           >
             <textarea
-                placeholder={"Зурагны тайлбар"}
-                // style={{ resize: "none" }}
-                onChange={captionHandler}
-                value={post.items[activeIndex].title}
-                maxLength={maxLengths.imageDescription}
-                className={
-                  "addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px] rounded-[3px] focus:ring-caak-primary"
-                }
+              placeholder={"Зурагны тайлбар"}
+              // style={{ resize: "none" }}
+              onChange={captionHandler}
+              value={post.items[activeIndex].title}
+              maxLength={maxLengths.imageDescription}
+              className={
+                "addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px] rounded-[3px] focus:ring-caak-primary"
+              }
             />
             <span
               className={

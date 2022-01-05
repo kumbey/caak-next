@@ -35,7 +35,7 @@ Storage.configure({ level: "public" });
 const MyApp = ({ Component, pageProps }) => {
   return (
     <WrapperProvider>
-      <Head>
+      {/* <Head>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-G71ES07K2X"
@@ -51,7 +51,7 @@ const MyApp = ({ Component, pageProps }) => {
             `,
           }}
         />
-      </Head>
+      </Head> */}
       <UserProvider>
         <div className={"caak-main-wrapper"}>
           <NavBar />

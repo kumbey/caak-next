@@ -36,7 +36,7 @@ export default function Settings() {
 
   useEffect(() => {
     setNavBarTransparent(false);
-  }, []);
+  }, [setNavBarTransparent]);
 
   return user ? (
     <div

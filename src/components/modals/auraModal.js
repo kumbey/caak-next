@@ -60,14 +60,22 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
                       layout={"fill"}
                     />
                   </div>
-                  <p className={"text-caak-primary"}>500+</p> цуглуулсан
+                  <p className={"text-caak-primary"}>5000+</p> цуглуулсан
                 </div>
                 байх шаардлагатай.
               </div>
 
               <Button
                 loading={loading}
-                onClick={() => setIsNext(true)}
+                onClick={() => {
+                    router.push(
+                      {
+                        pathname: `/help/aura`,
+                      },
+                      `/help/aura`
+                    );
+                    setIsOpen(false)
+                  }}
                 className="bg-caak-primary font-inter font-medium  text-14px text-white mt-[20px]"
               >
                 Аура гэж юу вэ?

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useState } from "react";
 import Button from "../button";
 import {getFileUrl, getGenderImage,} from "../../utility/Util";
 import {API, graphqlOperation} from "aws-amplify";
@@ -6,68 +7,94 @@ import {createGroupUsers, deleteGroupUsers,} from "../../graphql-custom/GroupUse
 import {useUser} from "../../context/userContext";
 import {useRouter} from "next/router";
 import groupVerifiedSvg from "../../../public/assets/images/fi-rs-verify.svg";
+import DropDown from '../navigation/DropDown'
+import { useClickOutSide } from "../../utility/Util";
+import ReportModal from '../modals/reportModal'
+import GroupMoreMenu from "./GroupMoreMenu";
 
 const SearchCardGroup = ({result, sortType}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);  
+  const [forceRender, setForceRender] = useState(0);
+  const [loading, setLoading] = useState(false);
   const {user, isLogged} = useUser();
   const router = useRouter();
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
   const followGroup = async () => {
     try {
-      if (isLogged) {
-        // setLoading(true);
-        if (result.followed) {
-          await API.graphql(
-            graphqlOperation(deleteGroupUsers, {
-              input: {
-                id: `${result.id}#${user.id}`,
-              },
-            })
-          );
-          result.followed = false;
-          result.totals.member -= 1;
-          // setForceRender(forceRender + 1);
-        } else {
-          await API.graphql(
-            graphqlOperation(createGroupUsers, {
-              input: {
-                id: `${result.id}#${user.id}`,
-                group_id: result.id,
-                user_id: user.id,
-                role: "MEMBER",
-              },
-            })
-          );
-          result.followed = true;
-          result.totals.member += 1;
-          // setForceRender(forceRender + 1);
-        }
-        // setLoading(false);
-      } else {
-        router.push(
-          {
-            pathname: router.pathname,
-            query: {
-              ...router.query,
-              signInUp: "signIn",
-              isModal: true,
-              prevPath: router.asPath
+      setLoading(true);
+      if (result.followed) {
+        await API.graphql(
+          graphqlOperation(deleteGroupUsers, {
+            input: {
+              id: `${result.id}#${user.id}`,
             },
-          },
-          `/signInUp/signIn`,
-          { shallow: true }
+          })
         );
+        result.followed = false;
+        result.totals.member -= 1;
+        setForceRender(forceRender + 1);
+      } else {
+        await API.graphql(
+          graphqlOperation(createGroupUsers, {
+            input: {
+              id: `${result.id}#${user.id}`,
+              group_id: result.id,
+              user_id: user.id,
+              role: "MEMBER",
+            },
+          })
+        );
+        result.followed = true;
+        result.totals.member += 1;
+        setForceRender(forceRender + 1);
       }
+      setLoading(false);
     } catch (ex) {
-      // setLoading(false);
+      setLoading(false);
       console.log(ex);
+    }
+  };
+  const handleFollow = () => {
+    if (isLogged) {
+      followGroup();
+    } else {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "signIn",
+            isModal: true,
+            prevPath: router.asPath,
+          },
+        },
+        `/signInUp/signIn`,
+        { shallow: true }
+      );
     }
   };
 
   return sortType !== "DEFAULT" ? (
     <div
       className={
-        "bg-white mr-[8px] flex flex-col justify-start w-[300px] h-full min-h-[201px] rounded-square relative mb-[8px]"
+        "bg-white sm:mr-[8px] flex flex-col justify-start w-[300px] h-[201px] rounded-square relative mb-[8px]"
       }
     >
+      {isLogged && (
+        <ReportModal
+          setIsOpen={setIsReportModalOpen}
+          isOpen={isReportModalOpen}
+          userId={user.id}
+        />
+      )}
       <div className={"w-full h-[58px]"}>
         <div
           className={
@@ -75,19 +102,25 @@ const SearchCardGroup = ({result, sortType}) => {
           }
         >
           <div
-            className={
-              "cursor-pointer w-[28px] h-[28px] rounded-full flex items-center justify-center mr-[5px] group hover:bg-white"
-            }
+            ref={menuRef}
+            onClick={toggleMenu}
+            className={`flex justify-center mr-[5px] flex-shrink-0 w-[35px] h-[35px] transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
           >
-            <span
-              className={
-                "icon-fi-rs-dots text-white text-[18px] group-hover:text-caak-generalblack"
+            <span className="icon-fi-rs-dots text-22px" />
+            <DropDown
+              arrow={"topRight"}
+              open={isMenuOpen}
+              onToggle={toggleMenu}
+              content={
+                <GroupMoreMenu setIsOpen={setIsReportModalOpen}/>
               }
+              className={"top-6 -right-3"}
             />
           </div>
           <Button
-            onClick={followGroup}
+            onClick={handleFollow}
             iconPosition={"left"}
+            loading={loading}
             icon={
               <div
                 className={
@@ -127,7 +160,10 @@ const SearchCardGroup = ({result, sortType}) => {
           />
         </div>
       </div>
-      <div className={"flex flex-col w-full h-full px-[16px] pb-[18px]"}>
+      <div 
+    onClick={() => router.push({
+      pathname: `/group/${result.id}`
+    })} className={"flex flex-col w-full h-full px-[16px] pb-[18px] cursor-pointer"}>
         <div className={"absolute top-[20px]"}>
           <div
             className={

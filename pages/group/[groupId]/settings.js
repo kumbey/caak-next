@@ -145,7 +145,7 @@ export default function Settings({ ssrData }) {
 
   useEffect(()=> {
     setNavBarTransparent(false)
-  },[])
+  },[setNavBarTransparent])
 
   return user ? (
     <>

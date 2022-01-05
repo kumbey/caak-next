@@ -92,7 +92,6 @@ const Feed = ({ ssrData }) => {
   const { lsGet } = useLocalStorage("session");
   const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost);
   const router = useRouter();
-
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
   const [posts, setPosts] = useState(ssrData.posts.items);

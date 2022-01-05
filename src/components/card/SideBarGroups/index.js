@@ -8,14 +8,14 @@ import {listGroupByUserAndRole} from "../../../graphql-custom/GroupUsers/queries
 import {listGroups} from "../../../graphql/queries";
 
 const SideBarGroups = ({
-                         title,
-                         addGroup,
-                         maxColumns,
-                         role,
-                         initialData,
-                         userId,
-                         setIsAuraModalOpen,
-                       }) => {
+    title,
+    addGroup,
+    maxColumns,
+    role,
+    initialData,
+    userId,
+    setIsAuraModalOpen,
+  }) => {
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const { isLogged, user } = useUser();
   const fetchGroups = async (user, role) => {
@@ -70,7 +70,7 @@ const SideBarGroups = ({
         </div>
         {addGroup && (
           <div
-            onClick={() => setIsAuraModalOpen(true)}
+            onClick={() => user.aura < 5000 && setIsAuraModalOpen(true)}
             className={
               "flex justify-center cursor-pointer items-center w-[18px] h-[18px] p-[3px]"
             }

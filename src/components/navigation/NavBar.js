@@ -16,10 +16,12 @@ import SubMenu from "./SubMenu";
 import useMediaQuery from "./useMeduaQuery";
 import { useRouter } from "next/router";
 import Logo from "../logo";
+import AuraModal from "../modals/auraModal";
 
 export default function NavBar() {
   const [loaded, setLoaded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
 
   const router = useRouter();
   const { user, isLogged } = useUser();
@@ -116,6 +118,7 @@ export default function NavBar() {
   return (
     loaded && (
       <Fragment>
+        <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen} />
         {isTablet && (
           <nav
             className={`${
@@ -267,7 +270,7 @@ export default function NavBar() {
                         className={"top-8 -right-3"}
                         open={isMenuOpen}
                         onToggle={toggleMenu}
-                        content={<NavBarMenu />}
+                        content={<NavBarMenu  setIsAuraModalOpen={setIsAuraModalOpen} />}
                       />
                     </div>
                   </div>

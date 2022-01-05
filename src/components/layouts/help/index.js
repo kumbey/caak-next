@@ -1,5 +1,4 @@
 import React from 'react'
-import Logo from '../../logo'
 import { useUser } from '../../../context/userContext'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -8,6 +7,7 @@ import { getFileUrl } from '../../../utility/Util'
 
 export default function DefaultHelpLayout({children}) {
     const {user, isLogged} = useUser()
+    const Profile = getFileUrl(user.pic) ? getFileUrl(user.pic) : false
     return (
         <div className='flex flex-col'>
             <div className='sm:h-[150px] items-center md:h-[250px] xl:h-[396px] relative flex justify-center'>
@@ -15,7 +15,11 @@ export default function DefaultHelpLayout({children}) {
                 <Image alt='' src={Cover}/>
                 </div>
                 <div className='w-[300px] sm:w-[400px] md:w-[700px] xl:w-[1247px] top-[10px] md:top-[60px] xl:top-[129px] absolute text-white flex flex-col'>
-                    <div className=' flex flex-row text-[16px]'>Сайн уу? {isLogged ? <div className='flex flex-row items-center ml-[5px]'><Image alt='' width={26} height={26} className='rounded-full border-[2px] border-[#FF6600]' objectFit='cover' src={getFileUrl(user.pic)}/><p className='ml-[5px]'>{user.nickname === null ? null: user.nickname}</p></div> : null}</div>
+                    <div className=' flex flex-row text-[16px]'>Сайн уу? {isLogged ? <div className='flex flex-row items-center ml-[5px]'>
+                        <div className='w-[26px] h-[26px] rounded-full border-[2px] border-[#FF6600]'>
+                            {/* <Image alt='' objectFit='cover' src={Profile}/> */}
+                        </div>
+                        <p className='ml-[5px]'>{user.nickname === null ? null: user.nickname}</p></div> : null}</div>
                     <p className='font-semibold text-[20px] sm:text-[30px] md:text-[38px]'>Танд хэрхэн туслах вэ?</p>
                     <input disabled className='w-[300px] hidden sm:block sm:w-[400px] xl:w-[616px] h-[44px] bg-white rounded-[4px] text-[#6C7392] px-[40px] ' placeholder='Тусламж хайх'/>
                 </div>

@@ -424,7 +424,6 @@
     max-width: 616px;
   }
 
-
   .addPostImageCaptionContainer {
     flex-basis: 366px;
     height: 100%;
@@ -501,10 +500,10 @@
   }
 
   .settingsMenuPanel {
-    min-width: 280px;
+    min-width: 290px;
     max-width: 290px;
     width: clamp(280px, 100%, 290px);
-    height: 270px;
+    height: 100%;
   }
 
   .settingsDiv {
@@ -691,10 +690,12 @@
     box-shadow: 0 3px 20px #00000029;
   }
   .addPostHandler {
-    box-shadow: 0 1px 2px #0000001A;
+    box-shadow: 0 1px 2px #0000001a;
   }
   .navbarGradient {
-    background: transparent linear-gradient(180deg, #00000099 0%, #80808000 100%) 0 0 no-repeat padding-box;
+    background: transparent
+      linear-gradient(180deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
+      padding-box;
   }
 }
 

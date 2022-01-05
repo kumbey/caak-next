@@ -11,6 +11,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import { listGroupByUserAndRole } from "../../../graphql-custom/GroupUsers/queries";
 import { listGroups } from "../../../graphql/queries";
 import { listGroupTotals } from "../../../graphql-custom/group/queries";
+import { useRouter } from "next/router";
 
 const SideBarGroups = ({
   title,
@@ -24,6 +25,7 @@ const SideBarGroups = ({
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const [groupTotals, setGroupTotals] = useState([]);
   const { isLogged, user } = useUser();
+  const router = useRouter()
   const fetchGroups = async (user, role) => {
     try {
       if (!user) {
@@ -97,7 +99,10 @@ const SideBarGroups = ({
         </div>
         {addGroup && (
           <div
-            onClick={() => user.aura < 5000 && setIsAuraModalOpen(true)}
+            // onClick={() => user.aura < 5000 && setIsAuraModalOpen(true)}
+            onClick={() => router.push({
+              pathname: '/creategroup'
+            })}
             className={
               "flex justify-center cursor-pointer items-center w-[18px] h-[18px] p-[3px]"
             }

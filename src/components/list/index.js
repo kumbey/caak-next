@@ -54,7 +54,7 @@ const List = ({ post, imageSrc, handleToast }) => {
                 <a>
                   <div className={"w-[102px] h-[76px] relative"}>
                     <img
-                      className=" bg-white rounded-[4px] object-cover"
+                      className=" bg-white rounded-[4px] object-cover w-full h-full"
                       // objectFit={"cover"}
                       src={
                         !imageSrc
@@ -63,7 +63,7 @@ const List = ({ post, imageSrc, handleToast }) => {
                       }
                       width={102}
                       height={76}
-                      layout="responsive"
+                      // layout="responsive"
                       //   objectFit={"cover"}
                       alt="#"
                     />
@@ -76,7 +76,8 @@ const List = ({ post, imageSrc, handleToast }) => {
                   containerClassname={"rounded-[4px]"}
                   videoClassname={"rounded-[4px] object-contain"}
                   hideControls
-                  thumbnailIcon
+                  smallIndicator
+                  disableOnClick
                   postId={post.id}
                   src={getFileUrl(imageSrc)}
                 />

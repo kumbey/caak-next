@@ -15,8 +15,10 @@ import {deleteFile} from "../../../graphql-custom/file/mutation";
 import Loader from "../../loader";
 import {useRouter} from "next/router";
 import userVerifiedSvg from "../../../../public/assets/images/fi-rs-awarded.svg";
+import {usePreserveScroll} from "../../../hooks/useScroll";
 
 const DefaultUserProfileLayout = ({user, children}) => {
+  usePreserveScroll()
   const router = useRouter();
   const userId = router.query.userId;
   const {user: signedUser, isLogged} = useUser();

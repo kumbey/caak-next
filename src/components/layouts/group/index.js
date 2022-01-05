@@ -31,6 +31,7 @@ import Loader from "../../loader";
 import GroupAdminsCard from "../../group/GroupAdminsCard";
 import Banner from "../../banner";
 import GroupInfoCard from "../../card/GroupInfoCard";
+import {usePreserveScroll} from "../../../hooks/useScroll";
 
 const GroupLayout = ({
   children,
@@ -38,6 +39,8 @@ const GroupLayout = ({
   totalMember,
   hideSuggestedGroups,
 }) => {
+  usePreserveScroll()
+
   const { isLogged, user: signedUser } = useUser();
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);

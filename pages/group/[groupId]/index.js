@@ -90,11 +90,8 @@ const Group = ({ ssrData }) => {
   const { setNavBarTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
+  const [totalMember, setTotalMember] = useState(0);
 
-  const totalMember =
-    groupData.totals.member +
-    groupData.totals.admin +
-    groupData.totals.moderator;
 
   const [nextPosts] = useListPager({
     query: getPostByGroup,
@@ -222,7 +219,12 @@ const Group = ({ ssrData }) => {
   }, [subscriptionPosts]);
 
   useEffect(() => {
-    setNavBarTransparent(true)
+      setTotalMember(
+        groupData.totals.member +
+        groupData.totals.admin +
+        groupData.totals.moderator
+      );
+    setNavBarTransparent(true);
     subscrib();
     setLoaded(true);
 
@@ -237,11 +239,10 @@ const Group = ({ ssrData }) => {
   useEffect(() => {
     const listener = () => {
       const scrolled = document.scrollingElement.scrollTop;
-      if(scrolled > 54){
-        setNavBarTransparent(false)
-      }
-      else {
-        setNavBarTransparent(true)
+      if (scrolled > 54) {
+        setNavBarTransparent(false);
+      } else {
+        setNavBarTransparent(true);
       }
     };
     document.addEventListener("scroll", listener);

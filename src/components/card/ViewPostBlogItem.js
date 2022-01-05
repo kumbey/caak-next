@@ -58,7 +58,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
         {!singleItem && (
           <div
             className={
-              "flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white rounded-[100px]"
+              "z-[3] flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white rounded-[100px]"
             }
           >
             <AnimatedCaakButton

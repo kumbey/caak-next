@@ -101,6 +101,7 @@ const Dashboard = ({ ssrData }) => {
 
   useEffect(()=> {
     setNavBarTransparent(false)
+    // eslint-disable-next-line
   },[])
 
   const stats = [

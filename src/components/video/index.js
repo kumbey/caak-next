@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import ItemsCounterCard from "../card/ItemsCounterCard";
 import { useInView } from "react-intersection-observer";
 
@@ -33,6 +33,7 @@ const Video = ({
   thumbnailIcon,
   durationIndicator,
   disableOnClick,
+  loop,
   ...props
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,15 +45,15 @@ const Video = ({
   const [loaded, setLoaded] = useState(false);
   const [played, setPlayed] = useState(0);
   const [seeking, setSeeking] = useState(false);
+  const canvasRef = useRef();
+
   const [ref, inView] = useInView({
-    threshold: 1,
+    threshold: 0.8,
   });
   const handleSeekChange = (e) => {
-    e.stopPropagation();
     setPlayed(parseFloat(e.target.value));
   };
-  const handleSeekMouseDown = (e) => {
-    e.stopPropagation();
+  const handleSeekMouseDown = () => {
     setSeeking(true);
   };
   const handleSeekMouseUp = (e) => {
@@ -93,31 +94,27 @@ const Video = ({
     // eslint-disable-next-line
   }, [inView]);
 
+  Router.events.on("routeChangeStart", () => setIsPlaying(false));
   return (
-    <div
-      ref={ref}
-      onClick={() => !disableOnClick && !isPlaying && setIsPlaying(true)}
-      onDoubleClick={() => {
-        !disableOnClick &&
-          route &&
-          router.push(
-            {
-              pathname: router.pathname,
-              query: {
-                ...router.query,
-                viewPost: "post",
-                id: postId,
-                prevPath: router.asPath,
-                isModal: true,
-              },
-            },
-            `/post/view/${postId}`,
-            { shallow: true }
-          );
-      }}
-      onTouchEnd={(e) => {
-        if (isDblTouchTap(e)) {
-          if (!disableOnClick && route) {
+    <div className={"relative w-full h-full group bg-black"}>
+      <canvas
+        style={{
+          filter: "blur(4px)",
+
+          opacity: "0.3",
+        }}
+        className={"w-full h-full absolute top-0 z-[1] object-cover"}
+        ref={canvasRef}
+      />
+
+      <div
+        ref={ref}
+        onClick={() => {
+          !disableOnClick && !isPlaying && setIsPlaying(true);
+        }}
+        onDoubleClick={() => {
+          !disableOnClick &&
+            route &&
             router.push(
               {
                 pathname: router.pathname,
@@ -132,67 +129,106 @@ const Video = ({
               `/post/view/${postId}`,
               { shallow: true }
             );
+        }}
+        onTouchEnd={(e) => {
+          if (isDblTouchTap(e)) {
+            if (!disableOnClick && route) {
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    viewPost: "post",
+                    id: postId,
+                    prevPath: router.asPath,
+                    isModal: true,
+                  },
+                },
+                `/post/view/${postId}`,
+                { shallow: true }
+              );
+            }
           }
-        }
-      }}
-      className={`${
-        containerClassname ? containerClassname : ""
-      } relative w-full h-full group bg-black`}
-    >
-      {inView || loaded ? (
-        <ReactPlayer
-          light={thumbnailIcon}
-          ref={videoRef}
-          playing={isPlaying}
-          muted={isMuted}
-          loop
-          onReady={(e) => {
-            setIsPlaying(false);
-            setVideoDuration(e.getDuration());
-          }}
-          onProgress={handleProgress}
-          className={`${videoClassname ? videoClassname : ""} react-player`}
-          width={"100%"}
-          height={"100%"}
-          url={src}
-          {...props}
-        />
-      ) : null}
-      {!smallIndicator && !isPlaying && (
-        <div
-          onClick={() => {
-            setIsPlaying(true);
-          }}
-          className={
-            "cursor-pointer flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#0000004D] border-[2px] border-white absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"
-          }
-        >
-          <div className={"w-[28px] h-[28px] flex items-center justify-end"}>
-            <span className={"icon-fi-rs-play-button text-[23px] text-white"} />
+        }}
+        className={`${
+          containerClassname ? containerClassname : ""
+        } relative w-full h-full group z-[2]`}
+      >
+        {inView || loaded ? (
+          <ReactPlayer
+            light={thumbnailIcon}
+            ref={videoRef}
+            playing={isPlaying}
+            muted={isMuted}
+            loop={loop}
+            onEnded={() => {
+              setIsPlaying(false);
+            }}
+            onReady={(e) => {
+              if (canvasRef.current && videoRef.current) {
+                canvasRef.current.width =
+                  videoRef.current.player.player.player.videoWidth;
+                canvasRef.current.height =
+                  videoRef.current.player.player.player.videoHeight;
+                const ctx = canvasRef.current.getContext("2d");
+                ctx.drawImage(
+                  videoRef.current.player.player.player,
+                  0,
+                  0,
+                  canvasRef.current.width,
+                  canvasRef.current.height
+                );
+              }
+              setVideoDuration(e.getDuration());
+            }}
+            onProgress={handleProgress}
+            className={`${videoClassname ? videoClassname : ""} react-player`}
+            width={"100%"}
+            height={"100%"}
+            url={src}
+            {...props}
+          />
+        ) : null}
+
+        {!smallIndicator && !isPlaying && (
+          <div
+            onClick={() => {
+              setIsPlaying(true);
+            }}
+            className={
+              "cursor-pointer flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#0000004D] border-[2px] border-white absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"
+            }
+          >
+            <div className={"w-[28px] h-[28px] flex items-center justify-end"}>
+              <span
+                className={"icon-fi-rs-play-button text-[23px] text-white"}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {smallIndicator && !isPlaying && (
-        <div
-          className={
-            "z-[100 flex cursor-pointer items-center justify-center w-[20px] h-[20px] rounded-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
-          }
-        >
-          <span className={"icon-fi-rs-play-button text-[14px] text-white "} />
-        </div>
-      )}
-      {durationIndicator && (
-        <ItemsCounterCard
-          containerClassname={"left-[10px]"}
-          duration={videoDuration}
-        />
-      )}
-
+        {smallIndicator && !isPlaying && (
+          <div
+            className={
+              "z-[100 flex cursor-pointer items-center justify-center w-[20px] h-[20px] rounded-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+            }
+          >
+            <span
+              className={"icon-fi-rs-play-button text-[14px] text-white "}
+            />
+          </div>
+        )}
+        {durationIndicator && (
+          <ItemsCounterCard
+            containerClassname={"left-[10px]"}
+            duration={videoDuration}
+          />
+        )}
+      </div>
       {!hideControls && (
         <div
           className={
-            "h-[18px] w-full absolute bottom-[21px] px-[21px] transition-all duration-300 opacity-0 group-hover:opacity-100"
+            "h-[18px] z-[2] w-full absolute bottom-[21px] px-[21px] transition-all duration-300 opacity-0 group-hover:opacity-100"
           }
         >
           <div className={"flex flex-row items-center"}>
@@ -224,7 +260,6 @@ const Video = ({
               }
             >
               <input
-                onClick={(e) => e.stopPropagation()}
                 className={"videoPlayerSeek w-full h-[2px]"}
                 type="range"
                 min={0}

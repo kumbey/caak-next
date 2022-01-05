@@ -88,16 +88,16 @@ const PendingPostApproveModal = ({
                   "flex-shrink-0 w-[40px] h-[40px] relative rounded-full"
                 }
               >
-                <Image
+                <img
                   alt={""}
-                  layout={"fill"}
+                  // layout={"fill"}
                   src={
                     post.user.pic
                       ? getFileUrl(post.user.pic)
                       : getGenderImage(post.user.gender).src
                   }
-                  objectFit={"cover"}
-                  className={"rounded-full"}
+                  // objectFit={"cover"}
+                  className={"rounded-full object-cover"}
                 />
               </div>
               <div

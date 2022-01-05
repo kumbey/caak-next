@@ -85,8 +85,8 @@ const CommentList = ({
                     hideControls
                   />
                 ) : (
-                  <Image
-                    className=" bg-white rounded-md"
+                  <img
+                    className=" bg-white rounded-md object-cover"
                     src={
                       !imageSrc
                         ? getGenderImage("default")
@@ -94,8 +94,8 @@ const CommentList = ({
                     }
                     width={64}
                     height={64}
-                    layout="fixed"
-                    objectFit={"cover"}
+                    // layout="fixed"
+                    // objectFit={"cover"}
                     alt="#"
                   />
                 )}

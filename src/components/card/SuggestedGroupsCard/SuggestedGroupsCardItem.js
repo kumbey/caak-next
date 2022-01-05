@@ -11,16 +11,16 @@ const SuggestedGroupsCardItem = ({ group }) => {
       <Link href={`/group/${group.id}`}>
         <a>
           <div className={"suggestedGroupsCardItemImage w-[42px] h-[42px]"}>
-            <Image
-              objectFit={"cover"}
-              className={"rounded-full"}
+            <img
+              // objectFit={"cover"}
+              className={"rounded-full object-cover w-full h-full"}
               src={
                 group.profile
                   ? generateFileUrl(group.profile)
                   : getGenderImage("default")
               }
               alt={"group image"}
-              layout={"fixed"}
+              // layout={"fixed"}
               width={42}
               height={42}
             />
@@ -38,12 +38,12 @@ const SuggestedGroupsCardItem = ({ group }) => {
             <a>{group.name}</a>
           </Link>
           {group?.verified ? (
-            <Image
+            <img
               alt={""}
               height={14.25}
               width={16.5}
-              quality={100}
-              priority={true}
+              // quality={100}
+              // priority={true}
               src={groupVerifiedSvg}
             />
           ) : null}

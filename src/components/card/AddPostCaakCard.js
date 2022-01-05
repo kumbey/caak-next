@@ -71,15 +71,15 @@ const AddPostCaakCard = ({isOpen, setIsOpen}) => {
                       </div>
                   }
               />
-              <Image
-                  quality={100}
-                  objectFit={"contain"}
+              <img
+                  // quality={100}
+                  // objectFit={"contain"}
                   // width={533}
                   // height={179}
-                  src={contentImage}
-                  layout={"fill"}
+                  src={contentImage.src}
+                  // layout={"fill"}
                   alt={"caak share"}
-                  className={"rounded-[8px]"}
+                  className={"rounded-[8px] object-contain w-[533px] h-[179px]"}
               />
         </div>
         <div

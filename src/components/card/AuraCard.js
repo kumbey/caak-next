@@ -21,12 +21,13 @@ const AuraCard = () => {
         Аура гэж юу вэ?
       </div>
       <div className={"w-[216px] h-[146px]"}>
-        <Image
-          src={auraImage}
+        <img
+          className={"object-contain"}
+          src={auraImage.src}
           alt="What is Aura"
           width={216}
           height={146}
-          objectFit="contain"
+          // objectFit="contain"
         />
       </div>
 
@@ -34,7 +35,9 @@ const AuraCard = () => {
         <a>
           <button
             // onClick={() => }
-            className={"button primary w-[220px] h-[36px] font-medium text-14px"}
+            className={
+              "button primary w-[220px] h-[36px] font-medium text-14px"
+            }
           >
             Дэлгэрэнгүй
           </button>
@@ -81,7 +84,7 @@ const AuraCard = () => {
           "button w-[280px] h-c9 font-medium text-14px bg-black text-white  hover:bg-caak-extraBlack-hover"
         }
       >
-        {isHovered ? "Бүртгүүлэх" : "Бидэнтэй нэгдэх"}
+        Бидэнтэй нэгдэх
       </button>
     </div>
   );

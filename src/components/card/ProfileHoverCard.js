@@ -102,12 +102,12 @@ export default function ProfileHoverCard({userId}) {
       <div className={"flex flex-col"}>
         <div className={"flex flex-row flex-nowrap max-h-[48px]"}>
           <div className={"w-[48px] h-[48px] rounded-full"}>
-            <Image
-              className={"rounded-full"}
+            <img
+              className={"rounded-full object-cover w-full h-full"}
               width={48}
               height={48}
               alt={"user profile"}
-              objectFit={"cover"}
+              // objectFit={"cover"}
               src={
                 profileUser.pic
                   ? getFileUrl(profileUser.pic)
@@ -130,13 +130,14 @@ export default function ProfileHoverCard({userId}) {
                     "flex items-center justify-center w-[17px] h-[17px]"
                   }
                 >
-                  <Image
+                  <img
+                    className={"w-[16.5px] h-[14.25px]"}
                     alt={""}
                     height={14.25}
                     width={16.5}
-                    quality={100}
-                    priority={true}
-                    src={userVerifiedSvg}
+                    // quality={100}
+                    // priority={true}
+                    src={userVerifiedSvg.src}
                   />
                 </div>
               )}

@@ -119,8 +119,8 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
               "flex flex-shrink-0 items-center justify-center w-[34px] h-[34px] rounded-square"
             }
           >
-            <Image
-              className={"rounded-square object-cover"}
+            <img
+              className={"rounded-square object-cover w-full h-full"}
               src={postImageHandler()}
               alt=""
               width={34}

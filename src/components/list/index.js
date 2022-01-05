@@ -18,7 +18,7 @@ import PostMoreMenu from "../card/PostMoreMenu";
 import Consts from "../../utility/Consts";
 import Video from "../video";
 
-const List = ({ post, imageSrc }) => {
+const List = ({ post, imageSrc, handleToast }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [pathName, setPathName] = useState("");
@@ -53,9 +53,9 @@ const List = ({ post, imageSrc }) => {
               >
                 <a>
                   <div className={"w-[102px] h-[76px] relative"}>
-                    <Image
-                      className=" bg-white rounded-[4px]"
-                      objectFit={"cover"}
+                    <img
+                      className=" bg-white rounded-[4px] object-cover"
+                      // objectFit={"cover"}
                       src={
                         !imageSrc
                           ? getGenderImage("default")
@@ -190,7 +190,7 @@ const List = ({ post, imageSrc }) => {
                                   "flex items-center rounded-full cursor-pointer h-[36px] "
                                 }
                               >
-                                <Image
+                                <img
                                   width={22}
                                   height={22}
                                   alt={"facebook icon"}
@@ -211,7 +211,7 @@ const List = ({ post, imageSrc }) => {
                                   "flex items-center rounded-full cursor-pointer h-[36px]"
                                 }
                               >
-                                <Image
+                                <img
                                   width={22}
                                   height={22}
                                   alt={"twitter icon"}
@@ -274,8 +274,9 @@ const List = ({ post, imageSrc }) => {
             content={
               <PostMoreMenu
                 groupId={post.group.id}
-                postId={post.id}
+                post={post}
                 postUser={post.user}
+                handleToast={handleToast}
               />
             }
             className={"top-6 -right-3"}

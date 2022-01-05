@@ -21,13 +21,13 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
               }
             >
               <div className="flex justify-center h-[180px] w-full ">
-                <Image
-                  priority={true}
-                  className=" bg-white rounded-[10px] bg-transparent"
+                <img
+                  // priority={true}
+                  className="object-cover bg-white rounded-[10px] bg-transparent"
                   src={helloImg}
                   height={180}
-                  layout="fixed"
-                  objectFit={"cover"}
+                  // layout="fixed"
+                  // objectFit={"cover"}
                   alt="#"
                 />
               </div>
@@ -53,11 +53,11 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
                 Аура оноо
                 <div className={"flex flex-row  items-center flex-shrink-0"}>
                   <div className={"w-[14px] h-[14px] relative"}>
-                    <Image
-                      quality={100}
+                    <img
+                      // quality={100}
                       src={auraImg}
                       alt={""}
-                      layout={"fill"}
+                      // layout={"fill"}
                     />
                   </div>
                   <p className={"text-caak-primary"}>5000+</p> цуглуулсан
@@ -98,12 +98,12 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
                 <span className={"icon-fi-rs-close text-[14px]"} />
               </div>
               <div className="flex justify-center h-[180px] w-full ">
-                <Image
-                  className=" bg-white rounded-[10px] bg-transparent"
+                <img
+                  className="object-cover bg-white rounded-[10px] bg-transparent"
                   src={helloImg}
                   height={180}
-                  layout="fixed"
-                  objectFit={"cover"}
+                  // layout="fixed"
+                  // objectFit={"cover"}
                   alt="#"
                 />
               </div>

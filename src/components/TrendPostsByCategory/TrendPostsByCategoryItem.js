@@ -41,16 +41,16 @@ const TrendPostsByCategoryItem = ({ item }) => {
                   videoClassname={"rounded-[8px] object-cover"}
                 />
               ) : (
-                <Image
+                <img
                   alt={""}
-                  layout={"fill"}
+                  // layout={"fill"}
                   src={
                     firstItem.file
                       ? generateFileUrl(firstItem.file)
                       : getGenderImage("default")
                   }
-                  objectFit={"cover"}
-                  className={"rounded-[8px]"}
+                  // objectFit={"cover"}
+                  className={"rounded-[8px] object-cover w-full h-full"}
                 />
               )}
             </div>
@@ -75,16 +75,16 @@ const TrendPostsByCategoryItem = ({ item }) => {
                   "flex items-center justify-center relative w-[18px] h-[18px]"
                 }
               >
-                <Image
+                <img
                   alt={""}
-                  layout={"fill"}
+                  // layout={"fill"}
                   src={
                     item.post.group.profile
                       ? generateFileUrl(item.post.group.profile)
                       : getGenderImage("default")
                   }
-                  objectFit={"cover"}
-                  className={"rounded-[4px]"}
+                  // objectFit={"cover"}
+                  className={"rounded-[4px] object-cover"}
                 />
               </div>
 

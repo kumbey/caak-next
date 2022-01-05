@@ -166,8 +166,8 @@ export default function Settings({ ssrData }) {
               style={{ height: "48px", width: "48px" }}
             />
             <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-              <Image
-                className=" bg-white rounded-[10px]"
+              <img
+                className=" bg-white rounded-[10px] object-cover"
                 src={
                   groupData?.cover
                     ? getFileUrl(groupData?.cover)
@@ -175,7 +175,7 @@ export default function Settings({ ssrData }) {
                 }
                 width={52}
                 height={52}
-                objectFit={"cover"}
+                // objectFit={"cover"}
                 alt="#"
               />
             </div>

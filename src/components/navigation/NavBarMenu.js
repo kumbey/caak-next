@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 import Divider from "../divider";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import AuraModal from "../modals/auraModal";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
 
 export default function NavBarMenu({ type, setIsAuraModalOpen }) {
   const { user, isLogged } = useUser();
@@ -17,13 +17,37 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
             <Link href={`/user/${user.id}/profile`}>
               <a>
                 <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-                  <span
+                  {/* <span
                     className={
                       "icon-fi-rs-profile text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
                     }
-                  />
+                  /> */}
+                  <div
+                    className={
+                      "relative cursor-pointer flex items-center justify-center w-[18px] h-[18px] flex-shrink-0 text-[18px] px5 text-center mr-2"
+                    }
+                  >
+                    <img
+                      onClick={() => {
+                        if (isTablet) {
+                          router.push(`/user/${user.id}/profile`);
+                        } else {
+                          params.setIsMenuOpen(!params.isMenuOpen);
+                        }
+                      }}
+                      alt={user.nickname}
+                      src={
+                        user.pic
+                          ? getFileUrl(user.pic)
+                          : getGenderImage(user.gender).src
+                      }
+                      className={
+                        "block mr-0 w-[18px] h-[18px] object-cover rounded-full"
+                      }
+                    />
+                  </div>
                   <p className="text-14px text-caak-extraBlack">
-                    Миний профайл
+                    {user.nickname}
                   </p>
                 </div>
               </a>

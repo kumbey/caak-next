@@ -50,7 +50,7 @@ const GroupMemberList = ({ userList, ...props }) => {
       <div className="flex items-center">
         <div className="">
           <div className={"w-[48px] h-[48px] mr-[8px] relative"}>
-            <Image
+            <img
               className=" bg-white rounded-full"
               src={
                 userList?.user.pic
@@ -59,7 +59,7 @@ const GroupMemberList = ({ userList, ...props }) => {
               }
               width={48}
               height={48}
-              layout="fixed"
+              // layout="fixed"
               //   objectFit={"cover"}
               alt="#"
             />

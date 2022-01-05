@@ -89,15 +89,16 @@ const SortableCard = ({
             videoClassname={"object-cover rounded-[4px]"}
             hideControls
             smallIndicator
+            disableOnClick
             src={thumbnailImageHandler(item)}
           />
         ) : (
-          <Image
-            className={"rounded-[5px]"}
+          <img
+            className={"rounded-[5px] object-cover w-full h-full"}
             alt={""}
             src={thumbnailImageHandler(item)}
-            layout={"fill"}
-            objectFit={"cover"}
+            // layout={"fill"}
+            // objectFit={"cover"}
           />
         )}
       </div>
@@ -411,16 +412,16 @@ const UploadedMediaEdit = ({
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
                 durationIndicator={true}
-                smallIndicator
                 videoClassname={"object-contain rounded-[4px]"}
                 src={thumbnailImageHandler(post.items[activeIndex])}
               />
             ) : (
-                <Image
+                <img
+                  className={"w-full h-full object-contain"}
                     alt={""}
                     src={thumbnailImageHandler(post.items[activeIndex])}
-                    objectFit={"contain"}
-                    layout={"fill"}
+                    // objectFit={"contain"}
+                    // layout={"fill"}
                 />
             )}
           </div>

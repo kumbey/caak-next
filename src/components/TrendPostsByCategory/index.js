@@ -30,6 +30,7 @@ const TrendPostsByCategory = () => {
         variables: {
           categoryAndStatus: `${randomCategory}#CONFIRMED`,
         },
+        limit: 10,
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);

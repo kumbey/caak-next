@@ -266,9 +266,10 @@ const ImageCarousel = ({
                             }}
                           >
                             <div className={"relative w-full h-auto"}>
-                              <Image
-                                objectFit={"cover"}
-                                layout={"fill"}
+                              <img
+                                className={"object-cover"}
+                                // objectFit={"cover"}
+                                // layout={"fill"}
                                 alt={item.file.type}
                                 src={getFileUrl(item.file)}
                               />

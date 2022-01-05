@@ -11,13 +11,13 @@ const SideBarGroupItem = ({ name, notification, image, groupId }) => {
           }
         >
           <div className={"flex flex-row items-center"}>
-            <Image
-              className={"w-[32px] h-[32px] rounded-square"}
+            <img
+              className={"w-[32px] h-[32px] rounded-square object-cover"}
               src={image}
               alt={"group icon"}
               width={32}
               height={32}
-              objectFit={"cover"}
+              // objectFit={"cover"}
             />
 
             <div

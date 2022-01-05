@@ -26,6 +26,7 @@ import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
+import {useWrapper} from "../../../src/context/wrapperContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -92,10 +93,15 @@ const Dashboard = ({ ssrData }) => {
   const [groupData] = useState(ssrData.groupView);
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
+  const {setNavBarTransparent} = useWrapper()
   const { isLogged } = useUser();
   const [totalMember] = useState(
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin
   );
+
+  useEffect(()=> {
+    setNavBarTransparent(false)
+  },[])
 
   const stats = [
     {
@@ -365,7 +371,7 @@ const Dashboard = ({ ssrData }) => {
           {groupData.name} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div className="max-w-[1240px] mx-auto flex flex-col justify-center px-[10px] lg:px-0 mt-[50px] pb-[250px]">
+      <div className="max-w-[1240px] mx-auto flex flex-col justify-center px-[10px] lg:px-0 mt-[50px] pb-[250px] pt-[54px]">
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}
@@ -373,8 +379,8 @@ const Dashboard = ({ ssrData }) => {
             style={{ height: "48px", width: "48px" }}
           />
           <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-            <Image
-              className=" bg-white rounded-[10px]"
+            <img
+              className="bg-white rounded-[10px] object-cover w-full h-full"
               src={
                 groupData?.cover
                   ? getFileUrl(groupData?.cover)
@@ -382,8 +388,8 @@ const Dashboard = ({ ssrData }) => {
               }
               width={52}
               height={52}
-              layout="fixed"
-              objectFit={"cover"}
+              // layout="fixed"
+              // objectFit={"cover"}
               alt="#"
             />
           </div>

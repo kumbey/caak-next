@@ -83,7 +83,7 @@ const FeedBack = ({setIsOpen}) => {
                   star === index ? "mix-blend-normal" : "mix-blend-luminosity"
                 } transition-all duration-300 hover:mix-blend-normal  cursor-pointer relative mr-[14px] last:mr-0`}
               >
-                <Image alt={""} src={emoji.emoji} height={38} width={38} />
+                <img alt={""} src={emoji.emoji.src} height={38} width={38} />
               </div>
             );
           })}

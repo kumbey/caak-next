@@ -346,13 +346,14 @@ const PostItem = ({ ssrData }) => {
                                   "flex items-center justify-center w-[17px] h-[17px] ml-[3px]"
                                 }
                               >
-                                <Image
+                                <img
+                                  className={"w-[16.5px] h-[14.25px]"}
                                   alt={""}
                                   height={14.25}
                                   width={16.5}
-                                  quality={100}
-                                  priority={true}
-                                  src={userVerifiedSvg}
+                                  // quality={100}
+                                  // priority={true}
+                                  src={userVerifiedSvg.src}
                                 />
                               </div>
                             )}

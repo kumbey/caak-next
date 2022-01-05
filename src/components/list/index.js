@@ -53,9 +53,9 @@ const List = ({ post, imageSrc }) => {
               >
                 <a>
                   <div className={"w-[102px] h-[76px] relative"}>
-                    <Image
-                      className=" bg-white rounded-[4px]"
-                      objectFit={"cover"}
+                    <img
+                      className=" bg-white rounded-[4px] object-cover"
+                      // objectFit={"cover"}
                       src={
                         !imageSrc
                           ? getGenderImage("default")
@@ -190,7 +190,7 @@ const List = ({ post, imageSrc }) => {
                                   "flex items-center rounded-full cursor-pointer h-[36px] "
                                 }
                               >
-                                <Image
+                                <img
                                   width={22}
                                   height={22}
                                   alt={"facebook icon"}
@@ -211,7 +211,7 @@ const List = ({ post, imageSrc }) => {
                                   "flex items-center rounded-full cursor-pointer h-[36px]"
                                 }
                               >
-                                <Image
+                                <img
                                   width={22}
                                   height={22}
                                   alt={"twitter icon"}

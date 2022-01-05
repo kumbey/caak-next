@@ -47,16 +47,16 @@ const GroupFollowerList = ({
       <div className="flex w-full mx-[20px] my-[20px] items-center justify-between">
         <div className="flex items-center">
           <div className={"w-[68px] h-[68px] mr-[12px] relative"}>
-            <Image
-              className=" bg-white rounded-full"
+            <img
+              className=" bg-white rounded-full object-cover w-full h-full"
               src={
                 !imageSrc
-                  ? getGenderImage(followedUser?.user?.gender)
+                  ? getGenderImage(followedUser?.user?.gender).src
                   : getFileUrl(imageSrc)
               }
               width={68}
               height={68}
-              objectFit="cover"
+              // objectFit="cover"
               alt="#"
             />
           </div>

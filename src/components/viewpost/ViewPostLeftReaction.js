@@ -125,11 +125,11 @@ const ViewPostLeftReaction = ({
                           "flex items-center rounded-full cursor-pointer h-[36px] "
                         }
                       >
-                        <Image
+                        <img
                           width={22}
                           height={22}
                           alt={"facebook icon"}
-                          src={FacebookIcon}
+                          src={FacebookIcon.src}
                         />
                         <p className="text-14px text-caak-extraBlack ml-px-12">
                           Facebook
@@ -144,11 +144,11 @@ const ViewPostLeftReaction = ({
                           "flex items-center rounded-full cursor-pointer h-[36px]"
                         }
                       >
-                        <Image
+                        <img
                           width={22}
                           height={22}
                           alt={"twitter icon"}
-                          src={TwitterIcon}
+                          src={TwitterIcon.src}
                         />
                         <p className="text-14px text-caak-extraBlack ml-px-12">
                           Twitter

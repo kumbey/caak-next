@@ -40,7 +40,7 @@ const GroupRules = ({ groupId }) => {
         }
       >
         <div className={"flex items-center justify-center w-[24px] h-[24px]"}>
-          <Image alt={""} src={ruleSvg} height={24} width={24} />
+          <img alt={""} src={ruleSvg.src} height={24} width={24} />
         </div>
         <p
           className={

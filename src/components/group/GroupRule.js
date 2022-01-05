@@ -163,12 +163,13 @@ const GroupRule = ({ groupData, ...props }) => {
           <div className="flex flex-col items-center ">
             <div className="flex mb-[20px]">
               <div className="mr-[10px] h-[28px] w-[23px]">
-                <Image
+                <img
                   alt={""}
                   src={clipboardImg}
                   height={28}
                   width={23}
-                  objectFit="cover"
+                  className={"object-cover"}
+                  // objectFit="cover"
                 />
               </div>
               <p className="font-inter font-semibold text-20px text-caak-generalblack">

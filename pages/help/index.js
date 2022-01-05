@@ -105,7 +105,7 @@ export default function Help() {
                                         <a>
                                             <div className='flex flex-col items-center w-[135px] sm:w-[150px] md:w-[180px] xl:w-[273px] h-[120px] sm:h-[162px] bg-[#F3F4F6] rounded-[6px] mb-[14px] pt-[15px] sm:pt-[40px]'>
                                                 <div className='w-[64px] h-[56px] flex items-center justify-center'>
-                                                    <Image alt={""} src={image}/>
+                                                    <img alt={""} src={image}/>
                                                 </div>
                                                 <p className='text-center sm:mt-[16px]'>{title}</p>
                                             </div>

@@ -181,7 +181,7 @@ export default function NavBar() {
 
               <div className="navbarSearch hidden md:block p-[8px] mx-4">
                 <SearchInput
-                  className={`bg-caak-liquidnitrogen ${
+                  className={`bg-caak-liquidnitrogen focus:bg-white ${
                     navBarTransparent
                       ? "backdrop-blur-[20px] bg-opacity-40"
                       : ""

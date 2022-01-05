@@ -34,7 +34,9 @@ const AuraCard = () => {
         <a>
           <button
             // onClick={() => }
-            className={"button primary w-[220px] h-[36px] font-medium text-14px"}
+            className={
+              "button primary w-[220px] h-[36px] font-medium text-14px"
+            }
           >
             Дэлгэрэнгүй
           </button>
@@ -81,7 +83,7 @@ const AuraCard = () => {
           "button w-[280px] h-c9 font-medium text-14px bg-black text-white  hover:bg-caak-extraBlack-hover"
         }
       >
-        {isHovered ? "Бүртгүүлэх" : "Бидэнтэй нэгдэх"}
+        Бидэнтэй нэгдэх
       </button>
     </div>
   );

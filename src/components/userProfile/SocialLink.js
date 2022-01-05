@@ -35,7 +35,7 @@ export default function SocialLink() {
       text: "Facebook",
       name: "facebook",
       value: text?.facebook ? text.facebook : "",
-      icon: "icon-fi-rs-fb",
+      icon: "icon-fi-rs-facebook",
     },
     {
       id: 2,
@@ -89,18 +89,17 @@ export default function SocialLink() {
   }, [user]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mx-[30px]">
       <p
-        className="font-medium"
+        className="font-semibold text-caak-aleutian font-inter text-22px"
         style={{
-          marginLeft: "30px",
           marginTop: "30px",
           fontSize: "24px",
         }}
       >
         Сошиал холболтууд
       </p>
-      <div style={{ marginTop: "21px" }} className="flex flex-col pb-c60">
+      <div style={{ marginTop: "10px" }} className="flex flex-col pb-c60">
         {menus.map((menu, index) => {
           return (
             <div
@@ -108,20 +107,13 @@ export default function SocialLink() {
               style={{ paddingBlock: "14px" }}
               className={`${
                 currentIndex === index && col ? "flex-col" : ""
-              } px-c3 flex   justify-between w-full border-b  `}
+              } flex   justify-between w-full border-b  `}
             >
               <div className="flex items-center ">
                 <span
-                  className={`${
-                    menu.icon ? menu.icon : "mr-5"
-                  } text-caak-darkBlue text-20px`}
+                  className={`${menu.icon} mr-[10px] text-caak-darkBlue text-20px w-[28px]`}
                 />
-                <p
-                  style={{ marginLeft: "22px" }}
-                  className="text-16px font-medium  "
-                >
-                  {menu.text}
-                </p>
+                <p className="text-15px font-normal  ">{menu.text}</p>
               </div>
               {currentIndex === index && showInput ? (
                 <form

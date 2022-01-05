@@ -9,7 +9,6 @@ const PostSuccessModal = ({
   role,
 }) => {
   const router = useRouter();
-
   return isOpen ? (
     <div className="popup_modal">
       <div className="popup_modal-success rounded-xl">

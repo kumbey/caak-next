@@ -14,28 +14,19 @@ export default function SiteConfiguration() {
   }, [active]);
 
   return (
-    <>
-      <p
-        className="font-medium"
-        style={{
-          marginLeft: "30px",
-          marginTop: "30px",
-          fontSize: "24px",
-        }}
-      >
+    <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
+      <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
         Сайтын тохиргоо
       </p>
-      <div style={{ marginTop: "21px" }} className=" border-b">
-        <div
-          style={{ paddingBlock: "14px" }}
-          className="px-c3 flex items-center justify-between w-full border-b"
-        >
-          <p className="text-16px font-medium">
-            Видео бичлэгийг автоматаар тоглуулах
-          </p>
-          <Switch toggle={toggle} active={active === "true" ? true : false} />
-        </div>
+      <div
+        style={{ paddingBlock: "14px" }}
+        className=" flex items-center justify-between w-full border-b"
+      >
+        <p className="text-15px font-normal">
+          Видео бичлэгийг автоматаар тоглуулах
+        </p>
+        <Switch toggle={toggle} active={active === "true" ? true : false} />
       </div>
-    </>
+    </div>
   );
 }

@@ -1,25 +1,28 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import SelectGroup from "../../../src/components/addpost/SelectGroup";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {useRouter} from "next/router";
-import {useUser} from "../../../src/context/userContext";
-import {getGroupView, listGroupsForAddPost,} from "../../../src/graphql-custom/group/queries";
-import {getReturnData} from "../../../src/utility/Util";
-import {getPost} from "../../../src/graphql-custom/post/queries";
-import {crtPost} from "../../../src/apis/post";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { useRouter } from "next/router";
+import { useUser } from "../../../src/context/userContext";
+import {
+  getGroupView,
+  listGroupsForAddPost,
+} from "../../../src/graphql-custom/group/queries";
+import { getReturnData } from "../../../src/utility/Util";
+import { getPost } from "../../../src/graphql-custom/post/queries";
+import { crtPost } from "../../../src/apis/post";
 import UploadedMediaEdit from "../../../src/components/input/UploadedMediaEdit";
 import DropZoneWithCaption from "../../../src/components/input/DropZoneWithCaption";
 import useAddPostLayout from "../../../src/hooks/useAddPostLayout";
 import Button from "../../../src/components/button";
 import WithAuth from "../../../src/middleware/auth/WithAuth";
 import Head from "next/head";
-import toast, {Toaster} from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Consts from "../../../src/utility/Consts";
 import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
 import AuraModal from "../../../src/components/modals/auraModal";
-import {createGroupUsers} from "../../../src/graphql-custom/GroupUsers/mutation";
-import {useWrapper} from "../../../src/context/wrapperContext";
+import { createGroupUsers } from "../../../src/graphql-custom/GroupUsers/mutation";
+import { useWrapper } from "../../../src/context/wrapperContext";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -40,7 +43,7 @@ const AddPost = () => {
   const [permissionDenied, setPermissionDenied] = useState(true);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const { setNavBarTransparent } = useWrapper();
-
+  const [valid, setValid] = useState(true);
   const [post, setPost] = useState({
     id: postId,
     title: "",
@@ -107,25 +110,25 @@ const AddPost = () => {
       );
     } else {
       router.push(
-          {
-            pathname: `/post/view/${newPostId}`,
-          },
-          `/post/view/${newPostId}`,
-          {shallow: true, scroll: false}
+        {
+          pathname: `/post/view/${newPostId}`,
+        },
+        `/post/view/${newPostId}`,
+        { shallow: true, scroll: false }
       );
     }
   };
 
   const followGroup = async () => {
     await API.graphql(
-        graphqlOperation(createGroupUsers, {
-          input: {
-            id: `${selectedGroup.id}#${user.id}`,
-            group_id: selectedGroup.id,
-            user_id: user.id,
-            role: "MEMBER",
-          },
-        })
+      graphqlOperation(createGroupUsers, {
+        input: {
+          id: `${selectedGroup.id}#${user.id}`,
+          group_id: selectedGroup.id,
+          user_id: user.id,
+          role: "MEMBER",
+        },
+      })
     );
   };
 
@@ -134,10 +137,10 @@ const AddPost = () => {
   };
   const toastIcon = {
     icon: (
-        <div className="flex items-center">
-          <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
-            <span className="icon-fi-rs-warning-1 text-white"/>
-          </div>
+      <div className="flex items-center">
+        <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
+          <span className="icon-fi-rs-warning-1 text-white" />
+        </div>
       </div>
     ),
   };
@@ -146,33 +149,36 @@ const AddPost = () => {
     if (param === "isTitle") toast.success("Гарчиг бичнэ үү.", toastIcon);
     if (param === "isFollow")
       toast((t) => (
-          <div className={"flex flex-row items-center"}>
-            <div className="flex items-center">
-              <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
-                <span className="icon-fi-rs-warning-1 text-white"/>
-              </div>
-            </div>
-            <span className={"text-[16px] text-[#363636] mr-[2px]"}>
-            {`Та "${selectedGroup.name}" группт нэгдээгүй байна.`}
-          </span>
-            <div
-                className={"cursor-pointer text-caak-primary"}
-                onClick={() => {
-                  followGroup().then(() => {
-                    toast.success(`Та ${selectedGroup.name} бүлэгт амжилттай нэгдлээ.`, toastIcon)
-                    toast.dismiss(t.id);
-                  });
-                }}
-            >
-              нэгдэх
+        <div className={"flex flex-row items-center"}>
+          <div className="flex items-center">
+            <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
+              <span className="icon-fi-rs-warning-1 text-white" />
             </div>
           </div>
+          <span className={"text-[16px] text-[#363636] mr-[2px]"}>
+            {`Та "${selectedGroup.name}" группт нэгдээгүй байна.`}
+          </span>
+          <div
+            className={"cursor-pointer text-caak-primary"}
+            onClick={() => {
+              followGroup().then(() => {
+                toast.success(
+                  `Та ${selectedGroup.name} бүлэгт амжилттай нэгдлээ.`,
+                  toastIcon
+                );
+                toast.dismiss(t.id);
+              });
+            }}
+          >
+            нэгдэх
+          </div>
+        </div>
       ));
     if (param === "isGroup") toast.success("Группээ сонгоно уу.", toastIcon);
   };
 
   useEffect(() => {
-    setNavBarTransparent(false)
+    setNavBarTransparent(false);
     if (postId) {
       getGroups();
       loadPost(postId);
@@ -239,12 +245,12 @@ const AddPost = () => {
     }
     if (!post.title) {
       handleToast({ param: "isTitle" });
-
+      setValid(false);
       return;
     }
     if (selectedGroup) {
       const resp = await getGroup({ id: selectedGroup.id });
-      setSelectedGroup(resp)
+      setSelectedGroup(resp);
       if (resp.role_on_group === "NOT_MEMBER") {
         handleToast({ param: "isFollow" });
 
@@ -256,6 +262,8 @@ const AddPost = () => {
           setNewPostId(getReturnData(resp).id);
         });
         setLoading(false);
+        setValid(true);
+
         setIsSuccessModalOpen(true);
       } catch (ex) {
         ex?.errors?.map((error) => {
@@ -327,6 +335,7 @@ const AddPost = () => {
                   post={post}
                   loading={loading}
                   uploadPost={uploadPost}
+                  valid={valid}
                 />
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />

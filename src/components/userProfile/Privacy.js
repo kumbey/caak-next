@@ -23,6 +23,7 @@ export default function Privacy() {
   const [isCreatedGroup, setIsCreatedGroup] = useState(
     localCreated ? localCreated : "false"
   );
+  const [col, setCol] = useState(false);
 
   const toggleFollow = () => {
     setIsFollowedGroup(isFollowedGroup === "true" ? "false" : "true");
@@ -56,6 +57,7 @@ export default function Privacy() {
 
   const handleClick = () => {
     setShowInput(true);
+    setCol(true);
   };
 
   const clear = () => {
@@ -63,6 +65,7 @@ export default function Privacy() {
     setPassword("");
     setPasswordRepeat("");
     setShowInput(false);
+    setCol(false);
   };
 
   const doConfirm = async () => {
@@ -74,6 +77,8 @@ export default function Privacy() {
       setMessage("Нууц үг амжилттай солигдлоо!");
       setLoading(false);
       setShowInput(false);
+      setCol(false);
+
       clear();
     } catch (ex) {
       setLoading(false);
@@ -101,115 +106,110 @@ export default function Privacy() {
     );
   }, [isFollowedGroup, isCreatedGroup]);
   return (
-    <>
-      <p
-        className="font-medium"
-        style={{
-          marginLeft: "30px",
-          marginTop: "30px",
-          fontSize: "24px",
-        }}
-      >
+    <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
+      <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
         Нууцлал
       </p>
-      <div style={{ marginTop: "21px" }} className="">
-        <div
-          style={{ paddingBlock: "14px" }}
-          className="px-c3 flex items-center justify-between w-full border-b"
-        >
-          <p className="text-16px font-medium">Элссэн группуудыг ил харуулах</p>
-          <Switch
-            toggle={toggleFollow}
-            active={isFollowedGroup === "true" ? true : false}
-          />
-        </div>
-        <div
-          style={{ paddingBlock: "14px" }}
-          className="px-c3 flex items-center justify-between w-full border-b"
-        >
-          <p className="text-16px font-medium">
-            Миний үүсгэсэн группуудыг ил харуулах
-          </p>
-          <Switch
-            toggle={toggleCreated}
-            active={isCreatedGroup === "true" ? true : false}
-          />
-        </div>
-        <div
-          style={{ paddingBlock: "14px" }}
-          className="ph:ml-7 ph:flex-col md:flex-row flex items-center justify-between w-full border-b"
-        >
-          <p className="ph:w-full ph:mb-3 text-16px ph:pl-0 pl-c3 font-medium">
-            Нууц үгээ шинэчлэх
-          </p>
-          {showInput ? (
-            <form className="w-full" onSubmit={(e) => e.preventDefault()}>
-              <div className="flex w-full">
-                <div className="flex flex-col w-full">
-                  <p className="error">{error}</p>
-                  <Input
-                    value={oldPassword}
-                    name={"oldPassword"}
-                    type={"password"}
-                    // errorMessage={errors.oldPassword}
-                    onChange={handleChange}
-                    placeholder={"Хуучин нууц үгээ оруулах"}
-                    className={
-                      "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                    }
-                  />
-                  <Input
-                    value={password}
-                    name={"password"}
-                    type={"password"}
-                    errorMessage={errors.password}
-                    onChange={handleChange}
-                    placeholder={"Шинэ нууц үг"}
-                    className={
-                      "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                    }
-                  />
-                  <Input
-                    value={passwordRepeat}
-                    name={"passwordRepeat"}
-                    type={"password"}
-                    errorMessage={errors.passwordRepeat}
-                    onChange={handleChange}
-                    placeholder={"Шинэ нууц үг давтах"}
-                    className={
-                      "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                    }
-                  />
-                </div>
-                <button
-                  onClick={() => clear()}
-                  className="icon-fi-rs-close font-bold text-caak-boilingmagma ml-10"
+      <div
+        style={{ paddingBlock: "14px" }}
+        className=" flex items-center justify-between w-full border-b"
+      >
+        <p className="text-15px font-inter font-normal">
+          Элссэн группуудыг ил харуулах
+        </p>
+        <Switch
+          toggle={toggleFollow}
+          active={isFollowedGroup === "true" ? true : false}
+        />
+      </div>
+      <div
+        style={{ paddingBlock: "14px" }}
+        className=" flex items-center justify-between w-full border-b"
+      >
+        <p className="text-15px font-inter font-normal">
+          Миний үүсгэсэн группуудыг ил харуулах
+        </p>
+        <Switch
+          toggle={toggleCreated}
+          active={isCreatedGroup === "true" ? true : false}
+        />
+      </div>
+      <div
+        className={`${
+          col ? "flex-col mt-[12px]" : "justify-between items-center h-[48px]"
+        }  flex  border-b`}
+      >
+        <p className=" text-15px   font-normal font-inter">
+          Нууц үгээ шинэчлэх
+        </p>
+        {showInput ? (
+          <form className="w-full" onSubmit={(e) => e.preventDefault()}>
+            <div className="flex w-full">
+              <div className="flex flex-col w-full">
+                <p className="error">{error}</p>
+                <Input
+                  value={oldPassword}
+                  name={"oldPassword"}
+                  type={"password"}
+                  // errorMessage={errors.oldPassword}
+                  onChange={handleChange}
+                  placeholder={"Хуучин нууц үгээ оруулах"}
+                  className={
+                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                  }
                 />
-                <button
-                  loading={loading}
-                  onClick={() => handleSubmit(doConfirm)}
-                  className="ph:mr-10 pr-c3 icon-fi-rs-thick-check text-caak-algalfuel ml-4"
+                <Input
+                  value={password}
+                  name={"password"}
+                  type={"password"}
+                  errorMessage={errors.password}
+                  onChange={handleChange}
+                  placeholder={"Шинэ нууц үг"}
+                  className={
+                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                  }
+                />
+                <Input
+                  value={passwordRepeat}
+                  name={"passwordRepeat"}
+                  type={"password"}
+                  errorMessage={errors.passwordRepeat}
+                  onChange={handleChange}
+                  placeholder={"Шинэ нууц үг давтах"}
+                  className={
+                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                  }
                 />
               </div>
-            </form>
-          ) : (
-            <>
-              <p className="text-green-500">{message}</p>
-              <span
-                onClick={() => handleClick()}
-                className="px-c3 icon-fi-rs-pencil text-caak-darkBlue cursor-pointer"
+              <button
+                onClick={() => clear()}
+                className="icon-fi-rs-close font-bold text-caak-boilingmagma ml-10"
               />
-            </>
-          )}
-        </div>
-        <div
-          style={{ marginTop: "60px", paddingBottom: "22px" }}
-          className="text-caak-red px-c3 flex items-center justify-end cursor-pointer"
-        >
-          <span className="icon-fi-rs-delete text-15px" />
-          <p className="text-15px ml-px-6 font-medium">Бүртгэлээ устгах</p>
+              <button
+                loading={loading}
+                onClick={() => handleSubmit(doConfirm)}
+                className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
+              />
+            </div>
+          </form>
+        ) : (
+          <>
+            <p className="text-green-500">{message}</p>
+            <span
+              onClick={() => handleClick()}
+              className=" icon-fi-rs-edit-f text-caak-darkBlue cursor-pointer"
+            />
+          </>
+        )}
+      </div>
+      <div className="flex justify-end">
+        <div className="text-caak-red mt-[60px] pb-[22px] flex items-center j cursor-pointer">
+          <span className="icon-fi-rs-delete-o text-18px" />
+          <p className="text-14px ml-px-6 font-normal font-inter">
+            Бүртгэлээ устгах
+          </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }

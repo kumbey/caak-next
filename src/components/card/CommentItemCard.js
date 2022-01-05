@@ -33,9 +33,9 @@ const CommentItemCard = ({
             subComment ? "w-[26px] h-[26px]" : "w-[38px] h-[38px]"
           }  flex-shrink-0 relative rounded-full`}
         >
-          <Image
-            className={"rounded-full"}
-            objectFit={"cover"}
+          <img
+            className={"rounded-full object-cover"}
+            // objectFit={"cover"}
             width={subComment ? 26 : 38}
             height={subComment ? 26 : 38}
             src={`${

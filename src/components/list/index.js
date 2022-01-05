@@ -53,9 +53,9 @@ const List = ({ post, imageSrc, handleToast }) => {
               >
                 <a>
                   <div className={"w-[102px] h-[76px] relative"}>
-                    <Image
-                      className=" bg-white rounded-[4px]"
-                      objectFit={"cover"}
+                    <img
+                      className=" bg-white rounded-[4px] object-cover w-full h-full"
+                      // objectFit={"cover"}
                       src={
                         !imageSrc
                           ? getGenderImage("default")
@@ -63,7 +63,7 @@ const List = ({ post, imageSrc, handleToast }) => {
                       }
                       width={102}
                       height={76}
-                      layout="responsive"
+                      // layout="responsive"
                       //   objectFit={"cover"}
                       alt="#"
                     />
@@ -76,7 +76,8 @@ const List = ({ post, imageSrc, handleToast }) => {
                   containerClassname={"rounded-[4px]"}
                   videoClassname={"rounded-[4px] object-contain"}
                   hideControls
-                  thumbnailIcon
+                  smallIndicator
+                  disableOnClick
                   postId={post.id}
                   src={getFileUrl(imageSrc)}
                 />
@@ -190,7 +191,7 @@ const List = ({ post, imageSrc, handleToast }) => {
                                   "flex items-center rounded-full cursor-pointer h-[36px] "
                                 }
                               >
-                                <Image
+                                <img
                                   width={22}
                                   height={22}
                                   alt={"facebook icon"}
@@ -211,7 +212,7 @@ const List = ({ post, imageSrc, handleToast }) => {
                                   "flex items-center rounded-full cursor-pointer h-[36px]"
                                 }
                               >
-                                <Image
+                                <img
                                   width={22}
                                   height={22}
                                   alt={"twitter icon"}

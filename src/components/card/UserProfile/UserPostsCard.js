@@ -54,10 +54,10 @@ const UserPostsCard = ({ post }) => {
         >
           <a>
             <div className={"relative w-full h-full"}>
-              <Image
-                className={"rounded-[4px]"}
-                objectFit={"cover"}
-                layout={"fill"}
+              <img
+                className={"rounded-[4px] object-cover w-full h-full"}
+                // objectFit={"cover"}
+                // layout={"fill"}
                 alt={""}
                 src={
                   firstItem.file

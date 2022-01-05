@@ -14,20 +14,20 @@ const GroupTopMemberCardItem = ({ color, user }) => {
           className={"w-[42px] h-[42px] relative flex-shrink-0 rounded-full"}
         >
           {user.pic ? (
-            <Image
-              className={"rounded-full"}
+            <img
+              className={"rounded-full object-cover"}
               height={42}
               width={42}
-              objectFit={"cover"}
+              // objectFit={"cover"}
               alt={"user profile pic"}
               src={getFileUrl(user.pic)}
             />
           ) : (
-            <Image
-              className={"rounded-full"}
+            <img
+              className={"rounded-full object-cover"}
               height={42}
               width={42}
-              objectFit={"cover"}
+              // objectFit={"cover"}
               alt={"user profile pic"}
               src={"https://picsum.photos/100"}
             />
@@ -44,13 +44,14 @@ const GroupTopMemberCardItem = ({ color, user }) => {
             </p>
             {user.verified && (
               <div className={"flex items-center w-[16px] h-[16px] ml-[4px]"}>
-                <Image
+                <img
                   alt={""}
+                  className={"w-[16.5px] h-[14.25px]"}
                   height={14.25}
                   width={16.5}
-                  quality={100}
-                  priority={true}
-                  src={userVerifiedSvg}
+                  // quality={100}
+                  // priority={true}
+                  src={userVerifiedSvg.src}
                 />
               </div>
             )}

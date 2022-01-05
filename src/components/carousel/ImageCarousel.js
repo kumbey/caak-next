@@ -154,8 +154,8 @@ const ImageCarousel = ({
                 className={`w-full h-full flex items-center flex-shrink-0 transition duration-300 ${
                   card
                     ? `${
-                        !singleItem ? "h-[650px]" : ""
-                      } min-h-[432px] max-h-[770px]`
+                        !singleItem ? "" : ""
+                      }  max-h-[770px]`
                     : ""
                 } `}
                 style={{
@@ -172,7 +172,7 @@ const ImageCarousel = ({
                       durationIndicator={duration}
                       postId={postId}
                       route={route}
-                      containerClassname={"bg-black"}
+                      // containerClassname={"bg-black"}
                       videoClassname={"object-contain rounded-none"}
                       src={getFileUrl(item.file)}
                     />
@@ -266,9 +266,10 @@ const ImageCarousel = ({
                             }}
                           >
                             <div className={"relative w-full h-auto"}>
-                              <Image
-                                objectFit={"cover"}
-                                layout={"fill"}
+                              <img
+                                className={"object-cover"}
+                                // objectFit={"cover"}
+                                // layout={"fill"}
                                 alt={item.file.type}
                                 src={getFileUrl(item.file)}
                               />

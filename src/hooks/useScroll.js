@@ -14,7 +14,7 @@ export const usePreserveScroll = () => {
     })
 
     const onRouteChangeStart = () => {
-      const url = router.pathname
+      const url = router.asPath
       scrollPositions.current[url] = window.scrollY
     }
 

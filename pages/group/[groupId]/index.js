@@ -86,15 +86,13 @@ const Group = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts.items);
   const [trendingPosts, setTrendingPosts] = useState({
     items: [],
+    nextToken: ""
   });
   const { setNavBarTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
+  const [totalMember, setTotalMember] = useState(0);
 
-  const totalMember =
-    groupData.totals.member +
-    groupData.totals.admin +
-    groupData.totals.moderator;
 
   const [nextPosts] = useListPager({
     query: getPostByGroup,
@@ -116,6 +114,7 @@ const Group = ({ ssrData }) => {
       limit: 20,
       sortDirection: "DESC",
     },
+    nextToken: trendingPosts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
 
@@ -222,6 +221,11 @@ const Group = ({ ssrData }) => {
   }, [subscriptionPosts]);
 
   useEffect(() => {
+      setTotalMember(
+        groupData.totals.member +
+        groupData.totals.admin +
+        groupData.totals.moderator
+      );
     setNavBarTransparent(true);
     subscrib();
     setLoaded(true);

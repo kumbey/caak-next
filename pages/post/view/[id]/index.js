@@ -167,11 +167,11 @@ const Post = ({ ssrData }) => {
             >
               <div className={"flex flex-row "}>
                 <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
-                  <Image
-                    className={"rounded-[6px]"}
+                  <img
+                    className={"rounded-[6px] object-cover w-full h-full"}
                     src={getFileUrl(post.group.profile)}
-                    layout={"fill"}
-                    objectFit={"cover"}
+                    // layout={"fill"}
+                    // objectFit={"cover"}
                     alt={""}
                   />
                 </div>
@@ -185,12 +185,13 @@ const Post = ({ ssrData }) => {
                       >
                         {post.group.name}{" "}
                         {post.group.verified && (
-                          <Image
+                          <img
+                            className={"w-full h-full"}
                             alt={""}
                             height={14.25}
                             width={16.5}
-                            quality={100}
-                            priority={true}
+                            // quality={100}
+                            // priority={true}
                             src={groupVerifiedSvg}
                           />
                         )}
@@ -277,19 +278,21 @@ const Post = ({ ssrData }) => {
                         opacity: "0.3",
                       }}
                     >
-                      <Image
-                        objectFit={"cover"}
-                        objectPosition={"center"}
-                        layout={"fill"}
+                      <img
+                        className={"object-cover h-full w-full z-[1]"}
+                        // objectFit={"cover"}
+                        // objectPosition={"center"}
+                        // layout={"fill"}
                         alt={post.items.items[0].file.type}
                         src={getFileUrl(post.items.items[0].file)}
                       />
                     </div>
-                    <Image
-                      objectFit={"contain"}
-                      layout={"fill"}
+                    <img
+                      // objectFit={"contain"}
+                      // layout={"fill"}
                       src={getFileUrl(post.items.items[0].file)}
                       alt={"post picture"}
+                      className={"object-contain w-full h-full z-[2] relative"}
                     />
                   </div>
                 )}

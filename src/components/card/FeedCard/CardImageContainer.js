@@ -13,17 +13,17 @@ const CardImageContainer = ({ file, cover, card }) => {
           card ? "max-h-[770px] h-[650px] min-h-[432px]" : ""
         } `}
       >
-        <Image
-          priority={true}
-          quality={100}
+        <img
+          // priority={true}
+          // quality={100}
           placeholder={"blur"}
-          blurDataURL={getFileUrl(file)}
+          // blurDataURL={getFileUrl(file)}
           alt={file.name}
           src={getFileUrl(file)}
           className={`w-full h-auto ${
             cover ? "object-cover" : "object-contain"
           } custom-img`}
-          layout={"fill"}
+          // layout={"fill"}
         />
       </div>
     </div>

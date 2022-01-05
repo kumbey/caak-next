@@ -140,7 +140,7 @@ const GroupCaution = ({ groupData, ...props }) => {
           <div className="flex flex-col items-center ">
             <div className="flex mb-[20px]">
               <div className="mr-[10px] h-[28px] w-[28px]">
-                <Image alt={""} src={tipsSvg} height={28} width={28} objectFit="cover" />
+                <img alt={""} src={tipsSvg} height={28} width={28} className={"object-cover"} />
               </div>
               <p className="font-inter font-semibold text-20px text-caak-generalblack">
                 Анхаарах зүйлс

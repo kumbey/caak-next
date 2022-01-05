@@ -115,11 +115,11 @@ const DropZone = ({
       {icon && icon}
       {!hideThumbnailImage && (
         <div className={"relative w-[116px] h-[93px]"}>
-          <Image
-            priority={true}
+          <img
+            // priority={true}
             alt={""}
-            layout={"fill"}
-            src={AddPostThumbnailImage}
+            // layout={"fill"}
+            src={AddPostThumbnailImage.src}
           />
         </div>
       )}

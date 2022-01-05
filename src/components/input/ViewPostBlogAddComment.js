@@ -114,7 +114,7 @@ const ViewPostBlogAddComment = ({
       {isLogged && (
         <div className={"flex flex-row items-center"}>
           <div className={"w-[28px] h-[28px] rounded-full relative"}>
-            <Image
+            <img
               width={28}
               height={28}
               className={"rounded-full"}

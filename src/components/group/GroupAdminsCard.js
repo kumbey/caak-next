@@ -67,17 +67,17 @@ const GroupAdminsCard = ({ groupId }) => {
           >
             <div className={"flex flex-row"}>
               <div className={"w-[42px] h-[42px] rounded-full relative"}>
-                <Image
+                <img
                   src={
                     mod.user.pic
                       ? generateFileUrl(mod.user.pic)
                       : getGenderImage(mod.user.gender).src
                   }
                   alt={""}
-                  objectFit={"cover"}
+                  // objectFit={"cover"}
                   width={42}
                   height={42}
-                  className={"rounded-full"}
+                  className={"rounded-full object-cover w-full h-full"}
                 />
               </div>
               <div className={"flex flex-col ml-[12px] justify-center"}>
@@ -109,13 +109,14 @@ const GroupAdminsCard = ({ groupId }) => {
                         "flex items-center justify-center w-[16px] h-[16px] ml-[2px]"
                       }
                     >
-                      <Image
+                      <img
                         alt={""}
+                        className={"w-[16.5px] h-[14.25px]"}
                         height={14.25}
                         width={16.5}
-                        quality={100}
-                        priority={true}
-                        src={userVerifiedSvg}
+                        // quality={100}
+                        // priority={true}
+                        src={userVerifiedSvg.src}
                       />
                     </div>
                   )}

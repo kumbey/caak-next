@@ -28,7 +28,7 @@ export default function Banner() {
         <div className="sticky top-[74px]">
             <a rel="noreferrer" href={data[number].link} target="_blank">
                 <div className='flex items-center justify-center w-full h-auto'>
-                    <Image
+                    <img
                         alt=''
                         src={data[number].image}
                         className='rounded-[8px]'

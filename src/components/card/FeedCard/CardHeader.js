@@ -58,8 +58,8 @@ const CardHeader = ({
           <div
             className={`relative flex-shrink-0 border border-caak-titaniumwhite rounded-square w-[34px] h-[34px]`}
           >
-            <Image
-              className={`rounded-square`}
+            <img
+              className={`rounded-square object-cover w-full h-full`}
               width={34}
               height={34}
               src={
@@ -67,7 +67,7 @@ const CardHeader = ({
                   ? getFileUrl(post.group?.profile)
                   : getGenderImage("default")
               }
-              objectFit={"cover"}
+              // objectFit={"cover"}
               alt="Group profile"
             />
           </div>
@@ -80,12 +80,12 @@ const CardHeader = ({
                 </Link>
               </span>
               {post.group.verified ? (
-                <Image
+                <img
                   alt={""}
                   height={14.25}
                   width={16.5}
-                  quality={100}
-                  priority={true}
+                  // quality={100}
+                  // priority={true}
                   src={groupVerifiedSvg}
                 />
               ) : (
@@ -116,13 +116,14 @@ const CardHeader = ({
                     </a>
                   </Link>
                   {post.user.verified ? (
-                    <Image
+                    <img
+                      className={"w-[16.5] h-[14.25]"}
                       alt={""}
                       height={14.25}
                       width={16.5}
-                      quality={100}
-                      priority={true}
-                      src={userVerifiedSvg}
+                      // quality={100}
+                      // priority={true}
+                      src={userVerifiedSvg.src}
                     />
                   ) : (
                     ""

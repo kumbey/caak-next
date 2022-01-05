@@ -54,7 +54,7 @@ const FollowerList = ({
       <div className="flex flex-col sm:flex-row w-full mx-[20px] my-[20px] items-start justify-between">
         <div className="flex items-center">
           <div className={"w-[68px] h-[68px] mr-[12px] relative"}>
-            <Image
+            <img
               className=" bg-white rounded-full"
               src={
                 !imageSrc
@@ -63,7 +63,7 @@ const FollowerList = ({
               }
               width={68}
               height={68}
-              layout="fixed"
+              // layout="fixed"
               alt="#"
             />
           </div>

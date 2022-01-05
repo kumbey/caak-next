@@ -36,7 +36,7 @@ const GroupTips = ({ groupId }) => {
         }
       >
         <div className={"flex items-center justify-center w-[24px] h-[24px]"}>
-          <Image alt={""} src={tipsSvg} height={24} width={24} />
+          <img alt={""} src={tipsSvg.src} height={24} width={24} />
         </div>
         <p
           className={

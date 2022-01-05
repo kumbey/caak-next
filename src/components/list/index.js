@@ -18,7 +18,7 @@ import PostMoreMenu from "../card/PostMoreMenu";
 import Consts from "../../utility/Consts";
 import Video from "../video";
 
-const List = ({ post, imageSrc }) => {
+const List = ({ post, imageSrc, handleToast }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [pathName, setPathName] = useState("");
@@ -274,8 +274,9 @@ const List = ({ post, imageSrc }) => {
             content={
               <PostMoreMenu
                 groupId={post.group.id}
-                postId={post.id}
+                post={post}
                 postUser={post.user}
+                handleToast={handleToast}
               />
             }
             className={"top-6 -right-3"}

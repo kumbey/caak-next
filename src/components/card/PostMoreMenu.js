@@ -1,22 +1,28 @@
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Consts from "../../utility/Consts";
-import {createGroupUsers, deleteGroupUsers,} from "../../graphql-custom/GroupUsers/mutation";
-import {useEffect, useState} from "react";
-import {getGroupFollowed} from "../../graphql-custom/group/queries";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../graphql-custom/GroupUsers/mutation";
+import { useEffect, useState } from "react";
+import { getGroupFollowed } from "../../graphql-custom/group/queries";
 import Loader from "../loader";
-import {useRouter} from "next/router";
-import {createSavedPost, deleteSavedPost,} from "../../graphql-custom/post/mutation";
+import { useRouter } from "next/router";
+import {
+  createSavedPost,
+  deleteSavedPost,
+} from "../../graphql-custom/post/mutation";
 
 export default function PostMoreMenu({
-                                       postUser,
-                                       post,
-                                       groupId,
-                                       handleToast,
-                                       setIsOpen,
-                                     }) {
-  const {user, isLogged} = useUser();
+  postUser,
+  post,
+  groupId,
+  handleToast,
+  setIsOpen,
+}) {
+  const { user, isLogged } = useUser();
   const router = useRouter();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -103,7 +109,7 @@ export default function PostMoreMenu({
                       ...router.query,
                       signInUp: "signIn",
                       isModal: true,
-                      prevPath: router.asPath
+                      prevPath: router.asPath,
                     },
                   },
                   `/signInUp/signIn`,
@@ -145,9 +151,7 @@ export default function PostMoreMenu({
             onClick={() => unSavePost()}
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           >
-            <span
-              className={"icon-fi-rs-save-f mr-px-12 w-c1  text-16px"}
-            />
+            <span className={"icon-fi-rs-save-f mr-px-12 w-c1  text-16px"} />
             <p className="text-14px text-caak-extraBlack">Хадгалагдсан</p>
           </div>
         ) : (
@@ -170,7 +174,7 @@ export default function PostMoreMenu({
                     ...router.query,
                     signInUp: "signIn",
                     isModal: true,
-                    prevPath: router.asPath
+                    prevPath: router.asPath,
                   },
                 },
                 `/signInUp/signIn`,

@@ -33,7 +33,9 @@ const GroupTrendPostsCardItem = ({ item }) => {
             {firstItem.file.type.startsWith("video") ? (
               <Video
                 smallIndicator
+                disableOnClick
                 hideControls
+                containerClassname={"rounded-[4px]"}
                 videoClassname={"object-contain rounded-[4px]"}
                 src={
                   firstItem.file.url

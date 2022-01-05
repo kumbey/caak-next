@@ -86,10 +86,6 @@ const Video = ({
   useEffect(() => {
     if (inView) {
       setLoaded(true);
-
-      if (loaded) {
-        setIsPlaying(true);
-      }
     } else if (!inView && loaded) {
       setIsPlaying(false);
     }
@@ -100,21 +96,42 @@ const Video = ({
   return (
     <div
       ref={ref}
-      onClick={() => !disableOnClick && setIsPlaying(!isPlaying)}
-      onDoubleClick={() =>
+      onClick={() => !disableOnClick && !isPlaying && setIsPlaying(true)}
+      onDoubleClick={() => {
         !disableOnClick &&
-        route &&
-        router.push({
-          pathname: `/post/view/${postId}`,
-        })
-      }
+          route &&
+          router.push(
+            {
+              pathname: router.pathname,
+              query: {
+                ...router.query,
+                viewPost: "post",
+                id: postId,
+                prevPath: router.asPath,
+                isModal: true,
+              },
+            },
+            `/post/view/${postId}`,
+            { shallow: true }
+          );
+      }}
       onTouchEnd={(e) => {
         if (isDblTouchTap(e)) {
           if (!disableOnClick && route) {
-            setIsPlaying(false);
-            router.push({
-              pathname: `/post/view/${postId}`,
-            });
+            router.push(
+              {
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  viewPost: "post",
+                  id: postId,
+                  prevPath: router.asPath,
+                  isModal: true,
+                },
+              },
+              `/post/view/${postId}`,
+              { shallow: true }
+            );
           }
         }
       }}
@@ -130,6 +147,7 @@ const Video = ({
           muted={isMuted}
           loop
           onReady={(e) => {
+            setIsPlaying(false);
             setVideoDuration(e.getDuration());
           }}
           onProgress={handleProgress}
@@ -140,6 +158,20 @@ const Video = ({
           {...props}
         />
       ) : null}
+      {!smallIndicator && !isPlaying && (
+        <div
+          onClick={() => {
+            setIsPlaying(true);
+          }}
+          className={
+            "cursor-pointer flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#0000004D] border-[2px] border-white absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"
+          }
+        >
+          <div className={"w-[28px] h-[28px] flex items-center justify-end"}>
+            <span className={"icon-fi-rs-play-button text-[23px] text-white"} />
+          </div>
+        </div>
+      )}
 
       {smallIndicator && !isPlaying && (
         <div
@@ -147,7 +179,7 @@ const Video = ({
             "z-[100 flex cursor-pointer items-center justify-center w-[20px] h-[20px] rounded-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
           }
         >
-          <span className={"icon-fi-rs-play text-[14px] text-white "} />
+          <span className={"icon-fi-rs-play-button text-[14px] text-white "} />
         </div>
       )}
       {durationIndicator && (
@@ -176,7 +208,9 @@ const Video = ({
               {isPlaying ? (
                 <span className={"icon-fi-rs-pause text-[18px] text-white"} />
               ) : (
-                <span className={"icon-fi-rs-play text-[14px] text-white"} />
+                <span
+                  className={"icon-fi-rs-play-button text-[14px] text-white"}
+                />
               )}
             </div>
             <div className={"ml-[8px] w-[44px]"}>

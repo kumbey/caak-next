@@ -28,7 +28,7 @@ const GroupTrendPostsCard = ({ groupId, maxItems }) => {
       console.log(ex);
     }
   };
-  //TODO FIX RECURS
+
   useEffect(() => {
     fetchTrendPosts().then(() => {
       setLoading(false)

@@ -66,7 +66,7 @@ const SortableCard = ({
       <div
         onClick={onClickClose}
         className={
-          "transition-all duration-150 group-hover:flex  hidden justify-center items-center rounded-full w-[24px] h-[24px] bg-black bg-opacity-60 absolute top-[4px] right-[4px] z-[1]"
+          "transition-all duration-150 group-hover:flex hidden justify-center items-center rounded-full w-[24px] h-[24px] bg-black bg-opacity-60 absolute top-[4px] right-[4px] z-[3]"
         }
       >
         <span className={"icon-fi-rs-close text-white text-[10px]"} />
@@ -75,7 +75,7 @@ const SortableCard = ({
         onClick={setFeaturedPost}
         className={`${
           index === 0 ? "flex" : "group-hover:flex hidden"
-        } transition-all duration-150  justify-center items-center rounded-full w-[24px] h-[24px] bg-caak-primary bg-opacity-90 absolute top-[4px] left-[4px] z-[1]`}
+        } transition-all duration-150  justify-center items-center rounded-full w-[24px] h-[24px] bg-caak-primary bg-opacity-90 absolute top-[4px] left-[4px] z-[3]`}
       >
         <span className={"icon-fi-rs-notification-o text-white text-[14px]"} />
       </div>
@@ -90,7 +90,7 @@ const SortableCard = ({
         {item.loading && (
           <div
             className={
-              "flex items-center justify-center w-full h-full bg-white bg-opacity-80 z-[1]"
+              "flex items-center absolute justify-center w-full h-full bg-white bg-opacity-80 z-[1]"
             }
           >
             <Loader className={"bg-caak-primary"} />
@@ -151,8 +151,8 @@ const UploadedMediaEdit = ({
   );
   const [caakContent, setCaakContent] = useState(post?.owned === "CAAK");
 
-  const [draft, setDraft] = useState(false);
-  const [boost, setBoost] = useState(false);
+  // const [draft, setDraft] = useState(false);
+  // const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
   const [viewDescription, setViewDescription] = useState(!add);
@@ -167,18 +167,17 @@ const UploadedMediaEdit = ({
     imageDescription: 500,
   };
   const popItem = (index_arg) => {
-    const filteredArray = post.items.filter(function (item, index) {
-      return index !== index_arg;
+    const popIndex = post.items.findIndex((_, index) => index === index_arg);
+    const postsArr = post.items;
+    postsArr.splice(popIndex, 1)
+    //Updating item id after removing item from array
+    postsArr.map((item, index) => {
+      item.id = index + 1;
     });
 
-    setActiveIndex((prev) => {
-      if (prev === post.items.length - 1) {
-        return prev - 1;
-      }
-      return prev;
-    });
-
-    setPost({ ...post, items: filteredArray });
+    setPost(prev=> ({
+      ...prev, items: postsArr
+    }))
   };
 
   const featuredPostHandler = (index) => {
@@ -287,40 +286,44 @@ const UploadedMediaEdit = ({
       )}
       <div className={"px-[18px] mt-[12px]"}>
         <div className={"w-full block relative"}>
-          <textarea
-            onFocus={auto_grow}
-            onInput={auto_grow}
-            maxLength={maxLengths.title}
-            placeholder={"Гарчиг"}
-            value={post.title}
-            onChange={postTitleHandler}
-            className={`addPostTextarea overflow-hidden min-h-[44px] text-[15px] pb-[25px]   text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm  focus:ring-2 focus:ring-opacity-20  ${
-              post.title?.length === maxLengths.title
-                ? "ring-caak-red border-caak-red"
-                : "focus:ring-caak-primary focus:border-caak-primary"
-            } ${
-              !valid && post.title?.length === 0
-                ? "ring-caak-red border-caak-red"
-                : ""
-            }`}
-          />
-          <span
-            className={
-              "absolute bottom-1 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
-            }
-          >
+          <div className={"w-full block relative"}>
+             <textarea
+               onFocus={auto_grow}
+               onInput={auto_grow}
+               maxLength={maxLengths.title}
+               placeholder={"Гарчиг"}
+               value={post.title}
+               onChange={postTitleHandler}
+               className={`addPostTextarea overflow-hidden min-h-[44px] text-[15px] pb-[25px]   text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm  focus:ring-2 focus:ring-opacity-20  ${
+                 post.title?.length === maxLengths.title
+                   ? "ring-caak-red border-caak-red"
+                   : "focus:ring-caak-primary focus:border-caak-primary"
+               } ${
+                 !valid && post.title?.length === 0
+                   ? "ring-caak-red border-caak-red"
+                   : ""
+               }`}
+             />
+            <span
+              className={
+                "absolute bottom-1 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
+              }
+            >
             {post.title?.length || 0}/{maxLengths.title}
           </span>
+          </div>
+
+          <div className="flex justify-start">
+            {post.title?.length === maxLengths.title ? (
+              <p className={"text-[13px] text-caak-red"}>
+                Текстийн хэмжээ {maxLengths.title} тэмдэгтээс хэтэрсэн байна
+              </p>
+            ) : !valid && post.title?.length === 0 ? (
+              <p className={"text-[13px] text-caak-red"}>Гарчиг оруулна уу</p>
+            ) : null}
+          </div>
         </div>
-        <div className="flex justify-start">
-          {post.title?.length === maxLengths.title && viewDescription ? (
-            <p className={"text-[13px] text-caak-red"}>
-              Текстийн хэмжээ {maxLengths.title} тэмдэгтээс хэтэрсэн байна
-            </p>
-          ) : !valid && post.title?.length === 0 ? (
-            <p className={"text-[13px] text-caak-red"}>Гарчиг оруулна уу</p>
-          ) : null}
-        </div>
+
         <div
           className={`w-full relative block mt-[12px] ${
             !viewDescription ? "hidden" : ""
@@ -376,7 +379,7 @@ const UploadedMediaEdit = ({
             >
               <span
                 className={`${
-                  viewDescription ? "icon-fi-rs-minus-1" : "icon-fi-rs-add-l "
+                  viewDescription ? "icon-fi-rs-minus" : "icon-fi-rs-add-l "
                 } text-[9.33px]`}
               />
             </div>
@@ -476,28 +479,31 @@ const UploadedMediaEdit = ({
               "addPostImageCaptionContainer w-full h-full sm:ml-[14px] mt-[20px] sm:mt-0 relative"
             }
           >
-            <textarea
-              placeholder={"Зурагны тайлбар"}
-              // style={{ resize: "none" }}
-              onChange={captionHandler}
-              value={post.items[activeIndex].title}
-              maxLength={maxLengths.imageDescription}
-              className={`addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px]  focus:ring-2 focus:ring-opacity-20    ${
-                post.items[activeIndex].title?.length ===
-                maxLengths.imageDescription
-                  ? "ring-caak-red border-caak-red"
-                  : "focus:ring-caak-primary focus:border-caak-primary"
-              }`}
-            />
-            <span
-              className={
-                "absolute bottom-[12px] right-[12px] text-[12px] text-caak-darkBlue"
-              }
-            >
+            <div className={"w-full h-full relative"}>
+              <textarea
+                placeholder={"Зурагны тайлбар"}
+                // style={{ resize: "none" }}
+                onChange={captionHandler}
+                value={post.items[activeIndex].title}
+                maxLength={maxLengths.imageDescription}
+                className={`addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px]  focus:ring-2 focus:ring-opacity-20    ${
+                  post.items[activeIndex].title?.length ===
+                  maxLengths.imageDescription
+                    ? "ring-caak-red border-caak-red"
+                    : "focus:ring-caak-primary focus:border-caak-primary"
+                }`}
+              />
+              <span
+                className={
+                  "absolute bottom-[12px] right-[12px] text-[12px] text-caak-darkBlue"
+                }
+              >
               {post.items[activeIndex]?.title?.length || 0}/
-              {maxLengths.imageDescription}
+                {maxLengths.imageDescription}
             </span>
-            <div className="flex justify-start mt-[14px]">
+            </div>
+
+            <div className="flex justify-end mt-[14px]">
               {post.items[activeIndex].title?.length ===
               maxLengths.imageDescription ? (
                 <p className={"text-[13px] text-caak-red"}>

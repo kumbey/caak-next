@@ -208,7 +208,7 @@ const DefaultUserProfileLayout = ({user, children}) => {
             src={
               user?.cover_pic
                 ? getFileUrl(user?.cover_pic)
-                : getGenderImage("default")
+                : getGenderImage("default").src
             }
           />
           {isLogged && user?.id === signedUser?.id && (
@@ -330,7 +330,7 @@ const DefaultUserProfileLayout = ({user, children}) => {
                 )}
 
                 <img
-                  className={"rounded-full object-cover"}
+                  className={"rounded-full object-cover w-full h-full"}
                   alt={"user profile"}
                   // layout={"fill"}
                   // objectFit={"cover"}

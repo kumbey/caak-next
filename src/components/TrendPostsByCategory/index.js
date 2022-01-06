@@ -118,7 +118,6 @@ const TrendPostsByCategory = () => {
           "font-medium text-caak-extraBlack text-[20px] tracking-[0.3px] leading-[24px]"
         }
       >
-        {selectedCategory.category.icon}
         {selectedCategory.category.name}
       </p>
       <div className={"relative overflow-hidden"}>

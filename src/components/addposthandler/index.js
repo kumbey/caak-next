@@ -17,11 +17,11 @@ export default function AddPostHandler({ groupId }) {
         >
           <img
             alt={""}
-            src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender)}
+            src={user.pic ? getFileUrl(user.pic) : getGenderImage(user.gender).src}
             width={36}
             height={36}
             // objectFit="cover"
-            className="rounded-full object-cover"
+            className="rounded-full object-cover w-full h-full"
           />
         </div>
       ) : (
@@ -32,7 +32,7 @@ export default function AddPostHandler({ groupId }) {
         >
           <img
             alt={""}
-            src={getGenderImage("MALE")}
+            src={getGenderImage("MALE").src}
             width={36}
             height={36}
             // objectFit="cover"

@@ -149,8 +149,6 @@
 }
 .icon-fi-rs-facebook.path2:before {
     content: "\e926";
-    margin-left: -1em;
-    color: rgb(33, 41, 60);
 }
 .icon-fi-rs-flag:before {
     content: "\e927";

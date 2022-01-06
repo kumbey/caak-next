@@ -150,7 +150,7 @@ export default function NavBar() {
                     className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
                   >
                     <span className="sr-only">Open main menu</span>
-                    <span className={"icon-fi-sp-hamburger-menu"} />
+                    <span className={"icon-fi-rs-menu"} />
                   </button>
                 </div>
               </div>

@@ -22,13 +22,10 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
             >
               <div className="flex justify-center h-[180px] w-full ">
                 <img
-                  // priority={true}
                   className="object-cover bg-white rounded-[10px] bg-transparent"
-                  src={helloImg}
+                  src={helloImg.src}
                   height={180}
-                  // layout="fixed"
-                  // objectFit={"cover"}
-                  alt="#"
+                  alt="aura image"
                 />
               </div>
               <div

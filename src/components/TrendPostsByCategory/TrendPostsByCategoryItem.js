@@ -32,7 +32,6 @@ const TrendPostsByCategoryItem = ({ item }) => {
             <div className={"relative w-[240px] h-[320px]"}>
               {firstItem.file.type.startsWith("video") ? (
                 <Video
-                  thumbnailIcon
                   hideControls
                   disableOnClick
                   durationIndicator

@@ -99,7 +99,7 @@ const SideBarGroups = ({
         </div>
         {addGroup && (
           <div
-            onClick={() => user.aura < 19 ? setIsAuraModalOpen(true) : router.push({
+            onClick={() => user.aura < 5000 ? setIsAuraModalOpen(true) : router.push({
               pathname: '/creategroup'
             })}
             className={

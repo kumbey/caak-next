@@ -96,7 +96,7 @@ const DropDownSelect = ({
                   Миний группүүд
                 </span>
                 <span
-                  onClick={() => userAura < 19 && setIsAuraModalOpen(true)}
+                  onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
                   className={"text-15px font-medium text-caak-primary"}
                 >
                   Групп үүсгэх
@@ -150,7 +150,7 @@ const DropDownSelect = ({
               filteredData.adminModerator.length === 0
               ?
               <span
-              onClick={() => userAura < 19 && setIsAuraModalOpen(true)}
+              onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
               className={"text-15px font-medium text-caak-primary"}
               >
                 Групп үүсгэх

@@ -75,7 +75,7 @@ export default function AllGroups() {
       }
     };
     fetchGroups();
-  }, [isLogged, id, groups]);
+  }, [isLogged, id, groups, activeIndex]);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -111,7 +111,7 @@ export default function AllGroups() {
     return () => {
       document.removeEventListener("scroll", listener);
     };
-  }, []);
+  }, [setNavBarTransparent]);
   return (
     <>
       <Head>

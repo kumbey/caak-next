@@ -14,23 +14,10 @@ export default function Privacy() {
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
-  const localFollow = localStorage.getItem("isFollowedGroup");
-  const localCreated = localStorage.getItem("isCreatedGroup");
 
-  const [isFollowedGroup, setIsFollowedGroup] = useState(
-    localFollow ? localFollow : "false"
-  );
-  const [isCreatedGroup, setIsCreatedGroup] = useState(
-    localCreated ? localCreated : "false"
-  );
+  const [isFollowedGroup, setIsFollowedGroup] = useState(true);
+  const [isCreatedGroup, setIsCreatedGroup] = useState(true);
   const [col, setCol] = useState(false);
-
-  const toggleFollow = () => {
-    setIsFollowedGroup(isFollowedGroup === "true" ? "false" : "true");
-  };
-  const toggleCreated = () => {
-    setIsCreatedGroup(isCreatedGroup === "true" ? "false" : "true");
-  };
 
   const validate = {
     oldPassword: {
@@ -115,11 +102,11 @@ export default function Privacy() {
         className=" flex items-center justify-between w-full border-b"
       >
         <p className="text-15px font-inter font-normal">
-          Элссэн группуудыг ил харуулах
+          Нэгдсэн группуудыг ил харуулах
         </p>
         <Switch
-          toggle={toggleFollow}
-          active={isFollowedGroup === "true" ? true : false}
+          toggle={() => setIsFollowedGroup(!isFollowedGroup)}
+          active={isFollowedGroup}
         />
       </div>
       <div
@@ -130,8 +117,8 @@ export default function Privacy() {
           Миний үүсгэсэн группуудыг ил харуулах
         </p>
         <Switch
-          toggle={toggleCreated}
-          active={isCreatedGroup === "true" ? true : false}
+          toggle={() => setIsCreatedGroup(!isCreatedGroup)}
+          active={isCreatedGroup}
         />
       </div>
       <div

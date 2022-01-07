@@ -34,11 +34,7 @@ const Gender = ({
               : "bg-white text-caak-generalblack"
           }`}
         >
-          <GenderCard
-            onClick={() => setGender("MALE")}
-            sex={"Эрэгтэй"}
-            src={maleImg.src}
-          />
+          <GenderCard sex={"Эрэгтэй"} src={maleImg.src} />
         </div>
         <div
           onClick={() => setGender("FEMALE")}
@@ -48,11 +44,7 @@ const Gender = ({
               : "bg-white text-caak-generalblack"
           }`}
         >
-          <GenderCard
-            onClick={() => setGender("FEMALE")}
-            sex={"Эмэгтэй"}
-            src={femaleImg.src}
-          />
+          <GenderCard sex={"Эмэгтэй"} src={femaleImg.src} />
         </div>
       </div>
       <p className="text-12px pt-px-10 text-caak-aleutian">

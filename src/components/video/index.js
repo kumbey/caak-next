@@ -42,8 +42,8 @@ const Video = ({
   const { user, isLogged } = useUser();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAutoPlayEnabled] = useState(
-    isLogged && typeof JSON.parse(user.meta).settings?.autoPlay === "boolean"
-      ? JSON.parse(user.meta).settings.autoPlay
+    isLogged && typeof JSON.parse(user.meta)?.settings?.autoPlay === "boolean"
+      ? JSON.parse(user.meta)?.settings?.autoPlay
       : true
   );
   const [isMuted, setIsMuted] = useState(false);

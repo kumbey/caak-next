@@ -128,7 +128,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                 />
               ) : (
                 <img
-                  className=" bg-white rounded-md object-cover"
+                  className=" bg-white rounded-md object-cover w-full h-full"
                   src={
                     !imageSrc
                       ? getGenderImage("default")

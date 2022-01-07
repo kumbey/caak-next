@@ -25,8 +25,8 @@
     .caak-main-wrapper {
         /*overflow: auto;*/
         /*padding-top: var(--topBarSize);*/
-        height: 100vh;
-        min-height: 100vh;
+        /*height: 100vh;*/
+        /*min-height: 100vh;*/
     }
 
     ::-webkit-scrollbar {

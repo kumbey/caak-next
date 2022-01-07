@@ -129,7 +129,7 @@ const CommentSubItemCard = ({
                 className={`w-[26px] h-[26px] flex-shrink-0 relative rounded-full`}
               >
                 <img
-                  className={"rounded-full object-cover"}
+                  className={"rounded-full object-cover w-full h-full"}
                   // objectFit={"cover"}
                   width={26}
                   height={26}

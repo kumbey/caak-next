@@ -89,7 +89,10 @@ const Dashboard = ({ ssrData }) => {
     nextToken: "",
   });
   const [posts, setPosts] = useState(ssrData.posts);
-  const [pendingPosts, setPendingPosts] = useState([]);
+  const [pendingPosts, setPendingPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
   const [render, setRender] = useState(0);
 
   const [archivedPosts, setArchivedPosts] = useState({
@@ -181,7 +184,7 @@ const Dashboard = ({ ssrData }) => {
       filter: { status: { eq: "CONFIRMED" } },
       limit: 20,
     },
-    nextToken: posts.nextToken,
+    nextToken: ssrData.posts.nextToken,
     ssr: true,
   });
   const [nextPending] = useListPager({
@@ -193,7 +196,7 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: pendingPosts.nextToken,
-    ssr: true,
+    // ssr: true,
   });
   const [nextArchived] = useListPager({
     query: getPostByUser,
@@ -215,7 +218,7 @@ const Dashboard = ({ ssrData }) => {
     nextToken: userComments.nextToken,
 
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    ssr: true,
+    // ssr: true,
   });
   const [nextFollowers] = useListPager({
     query: listUsersbyFollowed,
@@ -225,20 +228,18 @@ const Dashboard = ({ ssrData }) => {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: followedUsers.nextToken,
-    ssr: true,
+    // ssr: true,
   });
   const fetchPosts = async () => {
     try {
       if (!loading) {
         setLoading(true);
-        if (posts.nextToken) {
-          const resp = await nextPosts();
-          if (resp) {
-            setPosts((nextPosts) => ({
-              ...nextPosts,
-              items: [...nextPosts.items, ...resp],
-            }));
-          }
+        const resp = await nextPosts();
+        if (resp) {
+          setPosts((nextPost) => ({
+            ...nextPost,
+            items: [...nextPost.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -253,15 +254,12 @@ const Dashboard = ({ ssrData }) => {
     try {
       if (!loading) {
         setLoading(true);
-
-        if (pendingPosts.nextToken) {
-          const resp = await nextPending();
-          if (resp) {
-            setPendingPosts((nextPending) => ({
-              ...nextPending,
-              items: [...nextPending.items, ...resp],
-            }));
-          }
+        const resp = await nextPending();
+        if (resp) {
+          setPendingPosts((nextPending) => ({
+            ...nextPending,
+            items: [...nextPending.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -276,14 +274,12 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        if (archivedPosts.nextToken) {
-          const resp = await nextArchived();
-          if (resp) {
-            setArchivedPosts((nextArchived) => ({
-              ...nextArchived,
-              items: [...nextArchived.items, ...resp],
-            }));
-          }
+        const resp = await nextArchived();
+        if (resp) {
+          setArchivedPosts((nextArchived) => ({
+            ...nextArchived,
+            items: [...nextArchived.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -298,14 +294,12 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        if (userComments.nextToken) {
-          const resp = await nextComments();
-          if (resp) {
-            setUserComments((nextComments) => ({
-              ...nextComments,
-              items: [...nextComments.items, ...resp],
-            }));
-          }
+        const resp = await nextComments();
+        if (resp) {
+          setUserComments((nextComments) => ({
+            ...nextComments,
+            items: [...nextComments.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -320,14 +314,12 @@ const Dashboard = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
 
-        if (followedUsers.nextToken) {
-          const resp = await nextFollowers();
-          if (resp) {
-            setFollowedUsers((nextFollowers) => ({
-              ...nextFollowers,
-              items: [...nextFollowers.items, ...resp],
-            }));
-          }
+        const resp = await nextFollowers();
+        if (resp) {
+          setFollowedUsers((nextFollowers) => ({
+            ...nextFollowers,
+            items: [...nextFollowers.items, ...resp],
+          }));
         }
 
         setLoading(false);
@@ -553,7 +545,7 @@ const Dashboard = ({ ssrData }) => {
               src={
                 user?.pic
                   ? generateFileUrl(user?.pic)
-                  : getGenderImage(user?.gender)
+                  : getGenderImage(user?.gender).src
               }
               width={52}
               height={52}
@@ -681,20 +673,21 @@ const Dashboard = ({ ssrData }) => {
                     className={"mb-[20px] bg-caak-titaniumwhite hidden md:flex"}
                   />
                   <InfinitScroller onNext={fetchPosts} loading={loading}>
-                    {posts.items.map((post, index) => {
-                      return (
-                        <DashList
-                          key={index}
-                          type={"user"}
-                          imageSrc={post?.items?.items[0]?.file}
-                          video={post?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={post}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    })}
+                    {posts.items.length > 0 &&
+                      posts.items.map((post, index) => {
+                        return (
+                          <DashList
+                            key={index}
+                            type={"user"}
+                            imageSrc={post?.items?.items[0]?.file}
+                            video={post?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={post}
+                            className="ph:mb-4 sm:mb-4"
+                          />
+                        );
+                      })}
                   </InfinitScroller>
                 </div>
               ) : null}
@@ -778,7 +771,7 @@ const Dashboard = ({ ssrData }) => {
                       return (
                         <FollowerList
                           key={index}
-                          imageSrc={data?.cover_pic}
+                          imageSrc={data?.pic}
                           followedUser={data}
                           followedUsers={followedUsers}
                           setFollowedUsers={setFollowedUsers}
@@ -789,49 +782,45 @@ const Dashboard = ({ ssrData }) => {
                 </InfinitScroller>
               ) : null}
 
-              {activeIndex === 4
-                ? userComments.items.length > 0 && (
-                    <div className="flex flex-col">
-                      <div className="hidden md:flex mb-[13px] ">
-                        <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
-                          Пост
-                        </p>
-                        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[240px]">
-                          Сэтгэгдэл
-                        </p>
-                        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[80px]">
-                          Огноо
-                        </p>
-                        <p className="font-inter font-normal text-14px text-caak-generalblack">
-                          Үйлдэл
-                        </p>
-                      </div>
-                      <Divider
-                        className={
-                          "hidden md:flex mb-[20px] bg-caak-titaniumwhite"
-                        }
-                      />
-                      <InfinitScroller onNext={fetchComments} loading={loading}>
-                        {userComments.items.map((comment, index) => {
-                          return (
-                            <CommentList
-                              key={index}
-                              index={index}
-                              imageSrc={comment?.post?.items?.items[0]?.file}
-                              video={comment?.post?.items.items[0]?.file?.type?.startsWith(
-                                "video"
-                              )}
-                              comment={comment}
-                              userComments={userComments.items}
-                              setUserComments={setUserComments}
-                              className="ph:mb-4 sm:mb-4"
-                            />
-                          );
-                        })}
-                      </InfinitScroller>
-                    </div>
-                  )
-                : null}
+              {activeIndex === 4 ? (
+                <div className="flex flex-col">
+                  <div className="hidden md:flex mb-[13px] ">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
+                      Пост
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[240px]">
+                      Сэтгэгдэл
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[80px]">
+                      Огноо
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack">
+                      Үйлдэл
+                    </p>
+                  </div>
+                  <Divider
+                    className={"hidden md:flex mb-[20px] bg-caak-titaniumwhite"}
+                  />
+                  <InfinitScroller onNext={fetchComments} loading={loading}>
+                    {userComments.items.map((comment, index) => {
+                      return (
+                        <CommentList
+                          key={index}
+                          index={index}
+                          imageSrc={comment?.post?.items?.items[0]?.file}
+                          video={comment?.post?.items.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          comment={comment}
+                          userComments={userComments.items}
+                          setUserComments={setUserComments}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                  </InfinitScroller>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

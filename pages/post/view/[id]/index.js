@@ -260,7 +260,7 @@ const Post = ({ ssrData }) => {
                     "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
                   }
                 >
-                  {post.description}
+                  {decode(post.description)}
                 </p>
               )}
             </div>

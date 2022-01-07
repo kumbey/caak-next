@@ -21,7 +21,6 @@ const DashList = ({ imageSrc, post, type, video }) => {
   const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
 
   const postHandler = async ({ id, status, message }) => {
-    console.log(message);
     setLoading(true);
     try {
       await API.graphql(
@@ -65,11 +64,12 @@ const DashList = ({ imageSrc, post, type, video }) => {
             <a className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}>
               {video ? (
                 <Video
+                  initialAutoPlay={false}
                   containerClassname={"rounded-[4px]"}
                   smallIndicator
                   disableOnClick
                   videoClassname={"object-contain rounded-[4px]"}
-                  src={getFileUrl(video)}
+                  src={getFileUrl(imageSrc)}
                   hideControls
                 />
               ) : (
@@ -123,7 +123,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                     className=" bg-white rounded-full object-cover w-full h-full"
                     src={
                       !post?.user?.pic
-                        ? getGenderImage("default")
+                        ? getGenderImage(post?.user?.gender).src
                         : getFileUrl(post?.user?.pic)
                     }
                     width={28}

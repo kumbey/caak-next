@@ -14,7 +14,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
           src={
             groupData.cover
               ? getFileUrl(groupData?.cover)
-              : getGenderImage("default")
+              : getGenderImage("default").src
           }
           // layout={"fill"}
           // objectFit={"cover"}
@@ -34,7 +34,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
                 src={
                   groupData.profile
                     ? generateFileUrl(groupData?.profile)
-                    : getGenderImage("default")
+                    : getGenderImage("default").src
                 }
                 // objectFit={"cover"}
                 height={48}

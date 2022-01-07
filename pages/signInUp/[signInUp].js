@@ -113,9 +113,10 @@ const SignInUp = () => {
               <img
                 className={"object-cover"}
                 alt=""
-                src={googleImg}
+                src={googleImg.src}
                 height={24}
                 width={24}
+
                 // objectFit="cover"
               />
             </div>

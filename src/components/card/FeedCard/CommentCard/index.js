@@ -43,7 +43,7 @@ const Index = ({ postItemId, isCommentOpen, maxComments }) => {
       <div className={"flex flex-row items-center mb-[10px]"}>
         <div className={"w-[28px] h-[28px] rounded-full"}>
           <img
-            className={"rounded-full object-cover"}
+            className={"rounded-full object-cover w-full h-full"}
             src={"https://picsum.photos/200"}
             alt="Comment user"
             width={28}

@@ -121,17 +121,19 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
             >
               {video ? (
                 <Video
+                  initialAutoPlay={false}
+                  containerClassname={"rounded-[4px]"}
                   videoClassname={"object-contain rounded-[4px]"}
-                  src={generateFileUrl(video)}
-                  thumbnailIcon
+                  src={generateFileUrl(imageSrc)}
+                  smallIndicator
                   hideControls
                 />
               ) : (
                 <img
-                  className=" bg-white rounded-md object-cover"
+                  className=" bg-white rounded-md object-cover w-full h-full"
                   src={
                     !imageSrc
-                      ? getGenderImage("default")
+                      ? getGenderImage("default").src
                       : generateFileUrl(imageSrc)
                   }
                   width={64}
@@ -177,7 +179,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                     className=" bg-white rounded-full object-cover w-full h-full"
                     src={
                       !post?.user?.pic
-                        ? getGenderImage("default")
+                        ? getGenderImage(post?.user?.gender).src
                         : getFileUrl(post?.user?.pic)
                     }
                     width={28}

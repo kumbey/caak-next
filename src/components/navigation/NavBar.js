@@ -150,7 +150,7 @@ export default function NavBar() {
                     className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
                   >
                     <span className="sr-only">Open main menu</span>
-                    <span className={"icon-fi-sp-hamburger-menu"} />
+                    <span className={"icon-fi-rs-menu"} />
                   </button>
                 </div>
               </div>
@@ -160,7 +160,9 @@ export default function NavBar() {
 
         <nav
           className={`${
-            navBarTransparent && !isTablet ? "bg-transparent" : "bg-white shadow-sm"
+            navBarTransparent && !isTablet
+              ? "bg-transparent"
+              : "bg-white shadow-sm"
           } navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t`}
         >
           <div className="flex items-center h-full md:px-[40px] py-1">
@@ -270,7 +272,9 @@ export default function NavBar() {
                         className={"top-8 -right-3"}
                         open={isMenuOpen}
                         onToggle={toggleMenu}
-                        content={<NavBarMenu  setIsAuraModalOpen={setIsAuraModalOpen} />}
+                        content={
+                          <NavBarMenu setIsAuraModalOpen={setIsAuraModalOpen} />
+                        }
                       />
                     </div>
                   </div>

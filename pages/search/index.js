@@ -14,12 +14,14 @@ import { searchPosts } from "../../src/graphql-custom/post/queries";
 import InfinitScroller from "../../src/components/layouts/extra/InfinitScroller";
 import { useListPager } from "../../src/utility/ApiHelper";
 import { useUser } from "../../src/context/userContext";
+import useWindowSize from "../../src/hooks/useWindowSize";
 
 const Search = () => {
   const router = useRouter();
   const SearchLayout = useFeedLayout();
   const [groups, setGroups] = useState([]);
   const [users, setUsers] = useState([]);
+  const { width } = useWindowSize();
   const [posts, setPosts] = useState({
     items: [],
     nextToken: "",
@@ -74,7 +76,7 @@ const Search = () => {
     <>
       <Head>
         <title>
-          {`"${router.query.q}"`} Хайлтын илэрц - {Consts.siteMainTitle}
+          {`"${router.query.q ? router.query.q : ""}"`} Хайлтын илэрц - {Consts.siteMainTitle}
         </title>
       </Head>
       <div className={"pt-[54px]"}>
@@ -94,7 +96,7 @@ const Search = () => {
             Хайлтын илэрц
           </p>
         </div>
-        <div className={"site-container"}>
+        <div className={"max-w-[966px] mx-auto"}>
           <SearchLayout
             search
             buttonType={searchResultType}
@@ -111,7 +113,19 @@ const Search = () => {
               setSortType={setSortType}
             />
             <div className={"pt-[20px] pb-[40px] w-full"}>
-              <div className={"flex flex-row flex-wrap w-full justify-center"}>
+              <div
+                style={{
+                  ...(sortType === "GROUP" ? { gridGap: "16px" } : {}),
+                  gridTemplateColumns: `repeat(auto-fill, minmax(${
+                    width > 1248 ? "300px" : "280px"
+                  }, 1fr))`,
+                }}
+                className={`${
+                  sortType === "GROUP"
+                    ? "groupCardsGrid"
+                    : "flex w-full flex-col justify-center"
+                }`}
+              >
                 {groups.map((group, index) => {
                   if (sortType === "GROUP") {
                     return (

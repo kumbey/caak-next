@@ -85,7 +85,7 @@ const SearchCardGroup = ({result, sortType}) => {
   return sortType !== "DEFAULT" ? (
     <div
       className={
-        "bg-white sm:mr-[8px] flex flex-col justify-start w-[300px] h-[201px] rounded-square relative mb-[8px]"
+        "bg-white flex flex-col justify-start w-full h-[201px] rounded-square relative"
       }
     >
       {isLogged && (
@@ -148,7 +148,7 @@ const SearchCardGroup = ({result, sortType}) => {
         </div>
         <div className={"relative w-full h-full"}>
           <img
-            className={"rounded-t-square object-cover w-[300px] h-[58px]"}
+            className={"rounded-t-square object-cover w-full h-[58px]"}
             alt={""}
             src={
               result.cover
@@ -171,7 +171,7 @@ const SearchCardGroup = ({result, sortType}) => {
             }
           >
             <img
-              className={"rounded-square object-cover"}
+              className={"rounded-square object-cover w-full h-full"}
               src={
                 result.profile
                   ? getFileUrl(result.profile)
@@ -208,7 +208,7 @@ const SearchCardGroup = ({result, sortType}) => {
           <div className={"flex flex-row mt-[12px]"}>
             <div className={"flex flex-row items-center"}>
               <p className={"font-medium text-caak-generalblack text-[17px]"}>
-                {result.aura}
+                {result.aura ? result.aura : 0}
               </p>
               <p className={"text-[14px] text-caak-darkBlue ml-[5px]"}>Аура</p>
             </div>

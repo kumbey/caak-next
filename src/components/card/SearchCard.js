@@ -141,8 +141,9 @@ const SearchCard = ({ type, result }) => {
                 >
                   {result?.items?.items[0]?.file?.type.startsWith("video") ? (
                     <Video
+                      initialAutoPlay={false}
                       hideControls
-                      thumbnailIcon
+                      disableOnClick
                       containerClassname={"rounded-[4px]"}
                       videoClassname={"object-contain rounded-[4px]"}
                       src={getFileUrl(result?.items?.items[0]?.file)}

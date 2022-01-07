@@ -10,15 +10,9 @@ import { API, withSSRContext } from "aws-amplify";
 import { getPostByGroup } from "../../../src/graphql-custom/post/queries";
 import { getReturnData } from "../../../src/utility/Util";
 import GroupSortButtons from "../../../src/components/group/GroupSortButtons";
-import { useListPager } from "../../../src/utility/ApiHelper";
 
-import Card from "../../../src/components/card/FeedCard";
 import { useUser } from "../../../src/context/userContext";
-import {
-  getGroupView,
-  listPostByGroupOrderByReactions,
-} from "../../../src/graphql-custom/group/queries";
-import List from "../../../src/components/list";
+import { getGroupView } from "../../../src/graphql-custom/group/queries";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
@@ -26,8 +20,10 @@ import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
 import toast, { Toaster } from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 import AddPostHandler from "../../../src/components/addposthandler";
-import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 import { useWrapper } from "../../../src/context/wrapperContext";
+import GroupNewPosts from "../../../src/components/group/GroupNewPosts";
+import GroupTrendingPosts from "../../../src/components/group/GroupTrendingPosts";
+import GroupCaakPosts from "../../../src/components/group/GroupCaakPosts";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -74,7 +70,6 @@ export async function getServerSideProps({ req, query }) {
 const Group = ({ ssrData }) => {
   const router = useRouter();
   const GroupLayout = useGroupLayout();
-  const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const { isLogged } = useUser();
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
@@ -84,75 +79,18 @@ const Group = ({ ssrData }) => {
   const [render, setRender] = useState(0);
   const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
-  const [trendingPosts, setTrendingPosts] = useState({
-    items: [],
-    nextToken: ""
-  });
+
   const { setNavBarTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
   const [totalMember, setTotalMember] = useState(0);
 
-
-  const [nextPosts] = useListPager({
-    query: getPostByGroup,
-    variables: {
-      group_id: router.query.groupId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "CONFIRMED" } },
-      limit: 20,
-    },
-    nextToken: ssrData.posts.nextToken,
-    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    ssr: true,
-  });
-
-  const [nextTrendPosts] = useListPager({
-    query: listPostByGroupOrderByReactions,
-    variables: {
-      groupAndStatus: `${groupData.id}#CONFIRMED`,
-      limit: 20,
-      sortDirection: "DESC",
-    },
-    nextToken: trendingPosts.nextToken,
-    authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-  });
-
-  const fetchPosts = async () => {
-    try {
-      if (!loading) {
-        setLoading(true);
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPosts) => [...nextPosts, ...resp]);
-        }
-
-        setLoading(false);
-      }
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
-  };
-
-  const fetchTrendPosts = async () => {
-    try {
-      if (!loading) {
-        setLoading(true);
-        const resp = await nextTrendPosts();
-        if (resp) {
-          setTrendingPosts((prev) => ({
-            ...prev,
-            items: [...prev.items, ...resp],
-          }));
-        }
-
-        setLoading(false);
-      }
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
+  const handleToast = ({ param }) => {
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
+    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
   };
 
   const subscrib = () => {
@@ -194,14 +132,14 @@ const Group = ({ ssrData }) => {
     });
   };
 
-  useEffect(() => {
-    if (sortType === "TREND") {
-      if (trendingPosts.items.length >= 0) {
-        fetchTrendPosts();
-      }
-    }
-    // eslint-disable-next-line
-  }, [sortType]);
+  // useEffect(() => {
+  //   if (sortType === "TREND") {
+  //     if (trendingPosts.items.length >= 0) {
+  //       fetchTrendPosts();
+  //     }
+  //   }
+  //   // eslint-disable-next-line
+  // }, [sortType]);
 
   useEffect(() => {
     if (subscriptionPosts) {
@@ -221,11 +159,11 @@ const Group = ({ ssrData }) => {
   }, [subscriptionPosts]);
 
   useEffect(() => {
-      setTotalMember(
-        groupData.totals.member +
+    setTotalMember(
+      groupData.totals.member +
         groupData.totals.admin +
         groupData.totals.moderator
-      );
+    );
     setNavBarTransparent(true);
     subscrib();
     setLoaded(true);
@@ -254,15 +192,9 @@ const Group = ({ ssrData }) => {
   });
   useEffect(() => {
     setGroupData(ssrData.groupData);
-  }, [ssrData]);
-
-  const handleToast = ({ param }) => {
-    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
-    if (param === "follow") toast.success("Группт амжилттай элслээ.");
-    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
-    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
-    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
-  };
+    setPosts(ssrData.posts.items);
+    //eslint-disable-next-line
+  }, [router.query]);
 
   return loaded ? (
     <>
@@ -283,7 +215,7 @@ const Group = ({ ssrData }) => {
         totalMember={totalMember}
         columns={2}
       >
-        {isTablet && isLogged && <GroupAdminPanel groupData={groupData} />}
+        {isTablet && isLogged && <GroupAdminPanel groupId={groupData.id} />}
         <AddPostHandler groupId={groupData.id} />
         <GroupSortButtons
           activeIndex={activeIndex}
@@ -298,79 +230,30 @@ const Group = ({ ssrData }) => {
           textClassname={"font-medium text-15px"}
           setSortType={setSortType}
         />
-
-        <InfinitScroller
-          onNext={fetchPosts}
-          className={"pb-[20px]"}
-          loading={loading}
-        >
-          {posts.map((data, index) => {
-            if (sortType === "CAAK" && data.owned === "CAAK") {
-              return activeView === 0 ? (
-                <Card
-                  key={index}
-                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                  post={data}
-                  className="ph:mb-4 sm:mb-4"
-                  handleToast={handleToast}
-                />
-              ) : activeView === 1 ? (
-                <List
-                  key={index}
-                  imageSrc={data?.items?.items[0]?.file}
-                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                  post={data}
-                  handleToast={handleToast}
-                  className="ph:mb-4 sm:mb-4"
-                />
-              ) : null;
-            } else if (sortType === "DEFAULT") {
-              return activeView === 0 ? (
-                <Card
-                  key={index}
-                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                  post={data}
-                  className="ph:mb-4 sm:mb-4"
-                  handleToast={handleToast}
-                />
-              ) : activeView === 1 ? (
-                <List
-                  key={index}
-                  imageSrc={data?.items?.items[0]?.file}
-                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                  post={data}
-                  handleToast={handleToast}
-                  className="ph:mb-4 sm:mb-4"
-                />
-              ) : null;
-            }
-          })}
-        </InfinitScroller>
-        {sortType === "TREND" && trendingPosts.items?.length > 0 ? (
-          <InfinitScroller className={"pb-[20px]"} onNext={fetchTrendPosts}>
-            {trendingPosts.items.map((data, index) => {
-              return activeView === 0 ? (
-                <Card
-                  key={index}
-                  video={data?.items?.items[0]?.file?.type?.startsWith("video")}
-                  post={data.post}
-                  className="ph:mb-4 sm:mb-4"
-                />
-              ) : activeView === 1 ? (
-                <List
-                  handleToast={handleToast}
-                  key={index}
-                  imageSrc={data.post?.items?.items[0]?.file}
-                  video={data.post?.items?.items[0]?.file?.type?.startsWith(
-                    "video"
-                  )}
-                  post={data.post}
-                  className="ph:mb-4 sm:mb-4"
-                />
-              ) : null;
-            })}
-          </InfinitScroller>
-        ) : null}
+        <div className={`${sortType === "DEFAULT" ? "block" : "hidden"}`}>
+          <GroupNewPosts
+            handleToast={handleToast}
+            initialPosts={ssrData.posts}
+            sortType={sortType}
+            activeView={activeView}
+          />
+        </div>
+        <div className={`${sortType === "TREND" ? "block" : "hidden"}`}>
+          <GroupTrendingPosts
+            handleToast={handleToast}
+            sortType={sortType}
+            groupId={groupData.id}
+            activeView={activeView}
+          />
+        </div>
+        <div className={`${sortType === "CAAK" ? "block" : "hidden"}`}>
+          <GroupCaakPosts
+            handleToast={handleToast}
+            sortType={sortType}
+            groupId={groupData.id}
+            activeView={activeView}
+          />
+        </div>
       </GroupLayout>
     </>
   ) : null;

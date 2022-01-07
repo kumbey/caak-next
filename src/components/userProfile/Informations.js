@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../../src/graphql-custom/user/mutation";
-import Input from "/src/components/input";
+import Input from "../../components/input";
 import Button from "../button";
+import DateInput from "../input/MaskedInput";
+import Gender from "../gender/gender";
 
 export default function Informations({ currentUser }) {
   const [showInput, setShowInput] = useState(false);
-  const [text, setText] = useState({});
+  const [text, setText] = useState({
+    ...text,
+    birthdate: currentUser.birthdate,
+  });
+  const [gender, setGender] = useState(currentUser.gender);
+  const [birth, setBirth] = useState(currentUser.birthdate);
   const [loading, setLoading] = useState(false);
   const [col, setCol] = useState(false);
 
@@ -27,7 +34,7 @@ export default function Informations({ currentUser }) {
       name: "nickname",
       type: "text",
       value: currentUser.nickname,
-      isReadOnly: true,
+      isReadOnly: false,
     },
     {
       id: 2,
@@ -35,6 +42,22 @@ export default function Informations({ currentUser }) {
       name: "about",
       type: "text",
       value: currentUser.about,
+      isReadOnly: false,
+    },
+    {
+      id: 3,
+      text: "Төрсөн огноо",
+      name: "birthdate",
+      type: "date",
+      value: currentUser.birthdate,
+      isReadOnly: false,
+    },
+    {
+      id: 4,
+      text: "Хүйс",
+      name: "gender",
+      type: "gender",
+      value: currentUser.gender,
       isReadOnly: false,
     },
     // {
@@ -66,7 +89,7 @@ export default function Informations({ currentUser }) {
           },
         })
       );
-      setText("");
+      // setText("");
     }
     setCol(false);
 
@@ -86,6 +109,12 @@ export default function Informations({ currentUser }) {
   const handleChange = (e) => {
     setText({ ...text, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    console.log(text);
+  }, [text]);
+  console.log(currentUser.birthdate);
+
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
       <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
@@ -109,16 +138,39 @@ export default function Informations({ currentUser }) {
                 className="w-full mt-[10px]"
                 onSubmit={(e) => e.preventDefault()}
               >
-                <Input
-                  name={setting.name}
-                  defaultValue={setting.value}
-                  type="text"
-                  // value={currentUser.title}
-                  onChange={handleChange}
-                  className={
-                    "border border-caak-titaniumwhite bg-caak-liquidnitrogen"
-                  }
-                />
+                {setting.type === "text" ? (
+                  <Input
+                    name={setting.name}
+                    defaultValue={setting.value}
+                    type="text"
+                    // value={currentUser.title}
+                    onChange={handleChange}
+                    className={
+                      "border border-caak-titaniumwhite bg-caak-liquidnitrogen"
+                    }
+                  />
+                ) : setting.type === "gender" ? (
+                  <Gender
+                    setText={setText}
+                    setGender={setGender}
+                    gender={gender}
+                  />
+                ) : setting.type === "date" ? (
+                  <DateInput
+                    format={"YYYY-MM-DD"}
+                    defaultValue={setting.value || ""}
+                    value={text.birthdate}
+                    text={text}
+                    onChange={(e) => {
+                      setText({ ...text, birthdate: e.target.value });
+                      setting.birthdate = text.birthdate;
+                    }}
+                    className={
+                      "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite hover:bg-white mt-[8px]"
+                    }
+                  />
+                ) : null}
+
                 <div className="justify-end mt-[10px] flex items-center pb-3">
                   <Button
                     loading={loading}

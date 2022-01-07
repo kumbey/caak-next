@@ -55,7 +55,7 @@ const GroupMemberList = ({ userList, ...props }) => {
               src={
                 userList?.user.pic
                   ? getFileUrl(userList?.user.pic)
-                  : getGenderImage(userList?.user?.gender)
+                  : getGenderImage(userList?.user?.gender).src
               }
               width={48}
               height={48}

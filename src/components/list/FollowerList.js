@@ -2,25 +2,19 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Button from "../../components/button";
 import { getFileUrl, getGenderImage } from "../../utility/Util";
-import { API, graphqlOperation } from "aws-amplify";
-import Image from "next/image";
+import { API } from "aws-amplify";
 import { deleteFollowedUsers } from "../../graphql-custom/user/mutation";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
-import Tooltip from "../tooltip/Tooltip";
-import ProfileHoverCard from "../card/ProfileHoverCard";
 
 const FollowerList = ({
   imageSrc,
   followedUser,
-  groupData,
-  type,
   followedUsers,
   setFollowedUsers,
 }) => {
   const router = useRouter();
-  const { isLogged, user: signedUser } = useUser();
-
+  const { isLogged } = useUser();
   const [loading, setLoading] = useState(false);
 
   const deleteFollowFromUser = async () => {
@@ -35,12 +29,16 @@ const FollowerList = ({
               id: `${router.query.userId}#${followedUser.followed_user_id}`,
             },
           },
+          authMode: "AMAZON_COGNITO_USER_POOLS",
         });
-        const res = followedUsers.filter(
-          (item) => item.followed_user_id !== followedUser.followed_user_id
-        );
 
-        setFollowedUsers(res);
+        const tempArr = followedUsers.items;
+        const userIndex = tempArr.findIndex(
+          (item) => item.followed_user_id === followedUser.followed_user_id
+        );
+        tempArr.splice(userIndex, 1);
+
+        setFollowedUsers({ ...followedUsers, items: [...tempArr] });
       }
       setLoading(false);
     } catch (ex) {
@@ -58,7 +56,7 @@ const FollowerList = ({
               className=" bg-white rounded-full"
               src={
                 !imageSrc
-                  ? getGenderImage(followedUser.follower_user.gender)
+                  ? getGenderImage(followedUser.follower_user.gender).src
                   : getFileUrl(imageSrc)
               }
               width={68}
@@ -68,24 +66,17 @@ const FollowerList = ({
             />
           </div>
           <div className="flex flex-col">
-            <Tooltip
-              className={"-left-14"}
-              content={
-                <ProfileHoverCard userId={followedUser.followed_user_id} />
-              }
+            <Link
+              href={{
+                pathname: `/user/${followedUser.followed_user_id}/profile`,
+              }}
             >
-              <Link
-                href={{
-                  pathname: `/user/${followedUser.followed_user_id}/profile`,
-                }}
-              >
-                <a>
-                  <div className="text-15px text-caak-generalblack font-semibold font-inter">
-                    @{followedUser.follower_user.nickname}
-                  </div>
-                </a>
-              </Link>
-            </Tooltip>
+              <a>
+                <div className="text-15px text-caak-generalblack font-semibold font-inter">
+                  @{followedUser.follower_user.nickname}
+                </div>
+              </a>
+            </Link>
             <div className="flex items-center">
               <span className="icon-fi-rs-aura mr-1 text-20px" />
               <p className="font-inter font-medium text-14px text-caak-darkBlue">

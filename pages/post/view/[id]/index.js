@@ -162,19 +162,24 @@ const Post = ({ ssrData }) => {
           <div className={"bg-white h-full w-full rounded-square"}>
             <div
               className={`absolute flex flex-row justify-between w-full top-[-54px] ${
-                post.status === "CONFIRMED" ? "md:pl-[69px]" : ""
+                post.status === "CONFIRMED" ? "md:pl-[69px] px-[10px]" : ""
               } right-0 `}
             >
               <div className={"flex flex-row "}>
-                <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
-                  <img
-                    className={"rounded-[6px] object-cover w-full h-full"}
-                    src={getFileUrl(post.group.profile)}
-                    // layout={"fill"}
-                    // objectFit={"cover"}
-                    alt={""}
-                  />
-                </div>
+                <Link href={`/group/${post.group.id}`}>
+                  <a>
+                    <div className={"relative w-[40px] h-[40px] rounded-[6px]"}>
+                      <img
+                        className={"rounded-[6px] object-cover w-full h-full"}
+                        src={getFileUrl(post.group.profile)}
+                        // layout={"fill"}
+                        // objectFit={"cover"}
+                        alt={""}
+                      />
+                    </div>
+                  </a>
+                </Link>
+
                 <div className={"flex flex-col ml-[10px] justify-between"}>
                   <Link href={`/group/${post.group.id}`}>
                     <a>
@@ -255,7 +260,7 @@ const Post = ({ ssrData }) => {
                     "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
                   }
                 >
-                  {post.description}
+                  {decode(post.description)}
                 </p>
               )}
             </div>
@@ -300,13 +305,13 @@ const Post = ({ ssrData }) => {
             )}
             <p
               className={
-                "text-caak-generalblack text-[16px] px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
               }
             >
               {decode(post.items.items[0].title)}
             </p>
             <div
-              className={`px-[10px] md:px-[52px] md:pb-[52px] bg-white ${
+              className={`px-[22px] md:px-[52px] md:pb-[52px] bg-white ${
                 post.status === "CONFIRMED" ? "" : "rounded-square"
               } border-b border-caak-titaniumwhite`}
             >

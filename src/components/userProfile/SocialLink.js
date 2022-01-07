@@ -35,7 +35,7 @@ export default function SocialLink() {
       text: "Facebook",
       name: "facebook",
       value: text?.facebook ? text.facebook : "",
-      icon: "icon-fi-rs-facebook",
+      icon: "icon-fi-rs-facebook path2",
     },
     {
       id: 2,
@@ -85,7 +85,7 @@ export default function SocialLink() {
   };
 
   useEffect(() => {
-    setText(JSON.parse(user.meta));
+    setText(user.meta ? JSON.parse(user.meta) : "");
   }, [user]);
 
   return (
@@ -109,11 +109,20 @@ export default function SocialLink() {
                 currentIndex === index && col ? "flex-col" : ""
               } flex   justify-between w-full border-b  `}
             >
-              <div className="flex items-center ">
-                <span
-                  className={`${menu.icon} mr-[10px] text-caak-darkBlue text-20px w-[28px]`}
-                />
-                <p className="text-15px font-normal  ">{menu.text}</p>
+              <div className="flex items-center">
+                <div
+                  className={
+                    "w-[24px] h-[24px] flex items-center justify-center"
+                  }
+                >
+                  <span
+                    className={`${menu.icon} text-caak-darkBlue text-[20px]`}
+                  />
+                </div>
+
+                <p className="text-[15px] ml-[14px] font-normal  ">
+                  {menu.text}
+                </p>
               </div>
               {currentIndex === index && showInput ? (
                 <form

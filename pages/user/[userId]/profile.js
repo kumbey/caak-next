@@ -24,6 +24,8 @@ import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroll
 import Card from "../../../src/components/card/FeedCard";
 import toast, { Toaster } from "react-hot-toast";
 import {useWrapper} from "../../../src/context/wrapperContext";
+import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
+import {usePreserveScroll} from "../../../src/hooks/useScroll";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -73,6 +75,7 @@ export async function getServerSideProps({ req, query }) {
 }
 
 const Profile = ({ ssrData }) => {
+  usePreserveScroll()
   const router = useRouter();
   const { userId } = router.query;
   const [fetchedUser, setFetchedUser] = useState(ssrData.user);
@@ -98,7 +101,7 @@ const Profile = ({ ssrData }) => {
       user_id: userId,
       sortDirection: "DESC",
       filter: { status: { eq: "CONFIRMED" } },
-      limit: 3,
+      limit: 20,
     },
     nextToken: ssrData.posts.nextToken,
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
@@ -245,8 +248,10 @@ const Profile = ({ ssrData }) => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     setFetchedUser(ssrData.user);
+    setPosts(ssrData.posts)
+    fetchPosts()
   }, [ssrData.user]);
 
   useEffect(() => {

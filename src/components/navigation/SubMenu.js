@@ -118,8 +118,8 @@ const SubMenu = ({ params }) => {
           </Button>
         </div>
         
-        <div onClick={() => router.push({pathname: "/groups"})} className="ml-0 md:ml-[10px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
-          <span className="icon-fi-rs-group-f text-[20px]" />
+        <div onClick={() => router.push({pathname: "/groups"})} className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
+          <span className={`${navBarTransparent ? "text-white" : "text-caak-generalblack"} icon-fi-rs-group-f text-[20px]`} />
         </div>
         <div
           ref={notificationRef}
@@ -142,22 +142,22 @@ const SubMenu = ({ params }) => {
           }}
           className={`${
             isNotificationMenu ? "bg-caak-liquidnitrogen" : ""
-          } hover:bg-caak-liquidnitrogen relative flex items-center justify-center w-[50px] h-[36px] mr-0 md:mr-[10px] cursor-pointer rounded-square transition duration-100`}
+          } hover:bg-caak-liquidnitrogen relative flex items-center justify-center w-[32px] h-[32px] mr-0 md:mr-[10px] cursor-pointer rounded-square transition duration-100`}
         >
           <div className={"flex items-center justify-center w-[26px] h-[26px]"}>
             <span
               className={`${
-                navBarTransparent
+                navBarTransparent && !isNotificationMenu && !isTablet
                   ? "text-white hover:text-caak-generalblack"
                   : "text-caak-generalblack"
-              } icon-fi-rs-notification-o text-22px text-[22px]`}
+              } icon-fi-rs-notification-o text-[22px]`}
             />
           </div>
 
           {parseInt(params.userTotal.unseen) > 0 ? (
             <div
               className={
-                "absolute flex justify-center items-center top-1 right-[5px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
+                "absolute flex justify-center items-center top-[1px] right-[-4px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
               }
             >
               <span className={"text-white text-11px text-center"}>

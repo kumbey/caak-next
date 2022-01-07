@@ -32,7 +32,7 @@ const TrendPostsByCategoryItem = ({ item }) => {
             <div className={"relative w-[240px] h-[320px]"}>
               {firstItem.file.type.startsWith("video") ? (
                 <Video
-                  thumbnailIcon
+                  initialAutoPlay={false}
                   hideControls
                   disableOnClick
                   durationIndicator
@@ -47,7 +47,7 @@ const TrendPostsByCategoryItem = ({ item }) => {
                   src={
                     firstItem.file
                       ? generateFileUrl(firstItem.file)
-                      : getGenderImage("default")
+                      : getGenderImage("default").src
                   }
                   // objectFit={"cover"}
                   className={"rounded-[8px] object-cover w-full h-full"}
@@ -81,7 +81,7 @@ const TrendPostsByCategoryItem = ({ item }) => {
                   src={
                     item.post.group.profile
                       ? generateFileUrl(item.post.group.profile)
-                      : getGenderImage("default")
+                      : getGenderImage("default").src
                   }
                   // objectFit={"cover"}
                   className={"rounded-[4px] object-cover"}

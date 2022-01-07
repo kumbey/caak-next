@@ -44,7 +44,7 @@ const PostSuccessModal = ({
             onClick={() => finish(role)}
             // disabled
             className={
-              "mr-2 mt-[24px] text-14px font-inter font-medium text-white  w-[146px] h-[36px] bg-caak-bleudefrance"
+              "mt-[24px] text-14px font-inter font-medium text-white min-w-[146px] h-[36px] bg-caak-bleudefrance"
             }
           >
             Постыг харах

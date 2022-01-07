@@ -58,7 +58,7 @@ const List = ({ post, imageSrc, handleToast }) => {
                       // objectFit={"cover"}
                       src={
                         !imageSrc
-                          ? getGenderImage("default")
+                          ? getGenderImage("default").src
                           : getFileUrl(imageSrc)
                       }
                       width={102}
@@ -73,6 +73,7 @@ const List = ({ post, imageSrc, handleToast }) => {
             ) : (
               <div className={"w-[102px] h-[76px] relative"}>
                 <Video
+                  initialAutoPlay={false}
                   containerClassname={"rounded-[4px]"}
                   videoClassname={"rounded-[4px] object-contain"}
                   hideControls

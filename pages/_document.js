@@ -4,21 +4,6 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <NextScript
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-G71ES07K2X"
-        />
-        <NextScript
-          id={"google-analytics"}
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments)}
-              gtag(js, new Date());
-              gtag(config, G-G71ES07K2X);
-            `,
-          }}
-        />
         <Head>
           <meta
             name="google-site-verification"

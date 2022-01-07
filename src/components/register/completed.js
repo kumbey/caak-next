@@ -35,7 +35,7 @@ const Completed = () => {
     <div className={`backdrop flex justify-center items-center`}>
       <div className="popup absolute bg-white rounded-xl pt-[46px] shadow-xl">
         <div className="flex flex-col items-center mt-1">
-          <img width={182} height={144} src={successImg} alt={"success"} />
+          <img width={182} height={144} src={successImg.src} alt={"success"} />
           <div
             className={
               "text-center text-caak-generalblack mt-2 mb-4 font-bold text-24px  "

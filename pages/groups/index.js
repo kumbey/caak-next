@@ -3,7 +3,6 @@ import { listGroups, listGroupByFeatured } from "../../src/graphql/queries";
 import { API, graphqlOperation } from "aws-amplify";
 import Cover from "../../public/assets/images/groups.jpeg";
 import SearchCardGroup from "../../src/components/card/SearchCardGroup";
-import SuggestedGroupsCard from "../../src/components/card/SuggestedGroupsCard";
 import Loader from "../../src/components/loader";
 import { listCategorys } from "../../src/graphql/queries";
 import { useUser } from "../../src/context/userContext";
@@ -212,11 +211,6 @@ export default function AllGroups() {
                   );
                 })}
               </div>
-              <SuggestedGroupsCard
-                maxColumns={10}
-                title={"Санал болгох группүүд"}
-                className={"mb-[24px]"}
-              />
             </div>
           </div>
         </div>

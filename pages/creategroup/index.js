@@ -184,165 +184,165 @@ export default function CreateGroup() {
     }, [data.category])
 
     return (
-        <div>
-            <div className='flex flex-row pt-[54px]'>
-                <div className='w-[440px] bg-white px-[30px]'>
-                    <div>
-                        <div className='mt-[20px] flex flex-row items-center'>
-                            <span className='w-[48px] h-[48px] bg-[#0000001A] rounded-full flex items-center justify-center align-center text-center icon-fi-rs-back text-[18px]'/>
-                            <p className='text-[15px] font-medium text-[#21293C] ml-[6px]'>Өмнөх хуудас руу буцах</p>
-                        </div>
-                        <input required maxLength={20} type='text' value={data.name} onChange={handleChangeName} placeholder='Группийн нэр' className='border w-full h-[48px] rounded-[8px] border-[#E4E4E5] px-[10px] mt-[14px]' />
-                        <textarea value={data.about} onChange={handleChangeAboout} placeholder='Тайлбар' className='border w-full h-[100px] rounded-[8px] border-[#E4E4E5] px-[10px] mt-[14px] text-[15px]' />
-                        <MyDropZone
-                            title={"Нүүр зураг"}
-                            keyName={"profile"}
-                            file={data.profile}
-                            setFile={setFile}
-                            className={'mt-[14px]'}
-                        />
-                        <MyDropZone
-                            title={"Дэвсгэр зураг"}
-                            keyName={"cover"}
-                            file={data.cover}
-                            setFile={setFile}
-                            className={'mt-[14px]'}
-                        />
-                        <select value={data.category.id} onChange={handleCategoryChange} aria-label='Групп төрөл' className='w-full border-[#E4E4E5] rounded-[8px] mt-[14px] h-[48px] text-[#6C7392] text-[16px]'>
-                            <option>
-                                Групп төрөл
-                            </option>
-                            {
-                                categories.map((cat) => {
-                                    return(
-                                        <option value={cat.id} key={cat.id}>
-                                            {cat.name}
-                                        </option>
-                                    )
-                                })
-                            }
-                        </select>
-                        <Button loading={loading} onClick={() => {
-                            updateGroupData()
-                        }} skin="primary" className="w-full my-[14px] h-[48px]">
-                            Үүсгэх
-                        </Button>
+        <div className='flex justify-center'>
+            <div className='flex w-full max-w-[500px] sm:max-w-full flex-col sm:flex-row py-[54px]'>
+            <div className='w-full max-w-[440px] bg-white px-[10px] xl:px-[30px]'>
+                <div>
+                    <div className='mt-[20px] flex flex-row items-center'>
+                        <span className='w-[30px] h-[30px] xl:w-[48px] xl:h-[48px] bg-[#0000001A] rounded-full flex items-center justify-center align-center text-center icon-fi-rs-back text-[18px]'/>
+                        <p className='text-[15px] font-medium text-[#21293C] ml-[6px]'>Өмнөх хуудас руу буцах</p>
+                    </div>
+                    <input required maxLength={20} type='text' value={data.name} onChange={handleChangeName} placeholder='Группийн нэр' className='border w-full h-[48px] rounded-[8px] border-[#E4E4E5] px-[10px] mt-[14px]' />
+                    <textarea value={data.about} onChange={handleChangeAboout} placeholder='Тайлбар' className='border w-full h-[100px] rounded-[8px] border-[#E4E4E5] px-[10px] mt-[14px] text-[15px]' />
+                    <MyDropZone
+                        title={"Нүүр зураг"}
+                        keyName={"profile"}
+                        file={data.profile}
+                        setFile={setFile}
+                        className={'mt-[14px]'}
+                    />
+                    <MyDropZone
+                        title={"Дэвсгэр зураг"}
+                        keyName={"cover"}
+                        file={data.cover}
+                        setFile={setFile}
+                        className={'mt-[14px]'}
+                    />
+                    <select value={data.category.id} onChange={handleCategoryChange} aria-label='Групп төрөл' className='w-full border-[#E4E4E5] rounded-[8px] mt-[14px] h-[48px] text-[#6C7392] text-[16px]'>
+                        <option>
+                            Групп төрөл
+                        </option>
                         {
-                            error
+                            categories.map((cat) => {
+                                return(
+                                    <option value={cat.id} key={cat.id}>
+                                        {cat.name}
+                                    </option>
+                                )
+                            })
+                        }
+                    </select>
+                    <Button loading={loading} onClick={() => {
+                        updateGroupData()
+                    }} skin="primary" className="w-full my-[14px] h-[48px]">
+                        Үүсгэх
+                    </Button>
+                    {
+                        error
+                        ?
+                        <p className='text-[#FF0000] font-semibold'>Алдаа гарлаа</p>
+                        :
+                        null
+                    }
+                </div>
+            </div>
+            <div className='bg-white rounded-[8px] sm:h-[801px] sm:ml-[30px] border xl:ml-[128px] w-full max-w-[1220px] mt-[40px] sm:p-[30px]'>
+                <div className='w-full relative border'>
+                    <img alt='' src={getFileUrl(data.cover) ? getFileUrl(data.cover) : Cover.src} className='w-full h-full max-h-[100px] xl:max-h-[196px]'/>
+                    <div className='absolute top-[20px] lg:top-[60px] 2xl:top-[128px] left-[10px] xl:left-[80px] w-[80px] xl:w-[148px] h-[80px] xl:h-[148px] rounded-[34px] border-[6px] border-white bg-[#ECEDF1] flex justify-center items-center'>
+                        {
+                            getFileUrl(data.profile)
                             ?
-                            <p className='text-[#FF0000] font-semibold'>Алдаа гарлаа</p>
+                            <img alt='' className='w-full h-full rounded-[34px]'  src={getFileUrl(data.profile)}/>
                             :
-                            null
+                            <span className='icon-fi-rs-group-f text-[45px] text-[#9A9FB4]' />
                         }
                     </div>
+                    <div className='pl-[60px] sm:pl-[140px] xl:pl-[248px] xl:pr-[162px] h-[110px] w-fill flex  flex-col md:flex-row xl:justify-between items-center'>
+                        <div>
+                            <p className='text-[15px] md:text-[25px] font-semibold break-word'>{data.name ? data.name : "Группын нэр"}</p>
+                            <div className='flex flex-row items-center'>
+                                <div className='flex flex-row items-center'>
+                                    <span className='icon-fi-rs-aura-o'/>
+                                    <p className='text-[14px] ml-[2px]'>Аура</p>
+                                </div>
+                                <div className='flex flex-row items-center ml-[15px]'>
+                                    <span className='icon-fi-rs-group-o'/>
+                                    <p className='text-[14px] ml-[2px]'>Гишүүн</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='flex flex-row items-center'>
+                            <Button
+                                iconPosition={"left"}
+                                icon={
+                                <div
+                                    className={
+                                    "w-[20px] h-[20px] flex items-center justify-center "
+                                    }
+                                >
+                                    <span
+                                    className={`icon-fi-rs-add-group-f text-[16px] `}
+                                    />
+                                </div>
+                                }
+                                skin={"primary"}
+                                className={`bg-[#9A9FB4] text-white h-[36px] w-full sm:w-[120px] rounded-[6px] font-medium text-[15px] tracking-[0.18px] leading-[15px] py-[4px] pr-[12px] pl-[6px]`}
+                            >
+                                Нэгдэх
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-                <div className='bg-white rounded-[8px] h-[801px] ml-[128px] w-[1220px] mt-[40px] p-[30px]'>
-                    <div className='w-full relative border'>
-                        <img alt='' src={getFileUrl(data.cover) ? getFileUrl(data.cover) : Cover.src} className='w-full h-[196px]'/>
-                        <div className='absolute top-[128px] left-[80px] w-[148px] h-[148px] rounded-[34px] border-[6px] border-white bg-[#ECEDF1] flex justify-center items-center'>
+                <div className='w-full h-auto bg-[#F3F3F4] flex flex-col sm:flex-row items-center sm:items-start justify-center pt-[22px] pb-[35px]'>
+                    <div className='max-w-[500px] sm:max-w-[616px] w-full px-[10px] sm:px-0'>
+                        <div className='w-full h-[60px] bg-white rounded-[8px] flex flex-row items-center justify-evenly'>
+                            <div className='bg-[#F3F3F4] w-[36px] h-[36px] rounded-full flex items-center justify-center'>
+                                <span className='icon-fi-rs-profile text-[22px] text-[#AFAFAF]'/>
+                            </div>
+                            <div className='bg-[#F3F3F4] max-w-[498px] w-full h-[36px] rounded-[6px] flex items-center'>
+                                <p className='text-[#6C7392] text-[14px] ml-[16px]'>Пост оруулах</p>
+                            </div>
+                            <span className='icon-fi-rs-image-o text-[#9A9FB4] text-[20px]'/>
+                        </div>
+                    </div>
+                    <div className='w-full max-w-[320px] h-full max-h-[378px] bg-white mt-[20px] sm:mt-0 sm:ml-[25px] rounded-[8px] relative'>
+                        <img alt='' src={getFileUrl(data.cover) ? getFileUrl(data.cover) : Cover.src} className='w-full h-[34px] rounded-t-[8px]'/>
+                        <div className='absolute top-[25px] left-[18px] w-[48px] h-[48px] bg-[#ECEDF1] border-[3px] border-white rounded-[6px] flex justify-center items-center'>
                             {
                                 getFileUrl(data.profile)
                                 ?
-                                <img alt='' className='w-full h-full rounded-[34px]'  src={getFileUrl(data.profile)}/>
+                                <img alt='' className='w-full h-full rounded-[6px]'  src={getFileUrl(data.profile)}/>
                                 :
-                                <span className='icon-fi-rs-group-f text-[45px] text-[#9A9FB4]' />
+                                <span className='icon-fi-rs-group-f text-[26px] text-[#9A9FB4]' />
                             }
                         </div>
-                        <div className='pl-[248px] pr-[162px] h-[110px] w-fill flex flex-row justify-between items-center'>
-                            <div>
-                                <p className='text-[25px] font-semibold'>{data.name ? data.name : "Группын нэр"}</p>
+                        <p className='ml-[77px] mt-[13px] text-[15px] font-semibold break-word'>{data.name ? data.name : 'Групп нэр'}</p>
+                        <div className='mt-[24px] px-[18px]'>
+                            <p className='text-[15px] h-[18px]'>{data.about ? data.about : 'Тайлбар'}</p>
+                            <div className='flex flex-row mt-[22px]'>
+                                <div>
+                                    <p className='h-[16px] text-[17px] font-medium'>0</p>
+                                    <p className='text-[#6C7392] text-[14px]'>Аура</p>
+                                </div>
+                                <div className='ml-[52px]'>
+                                    <p className='h-[16px] text-[17px] font-medium'>0</p>
+                                    <p className='text-[#6C7392] text-[14px]'>Гишүүн</p>
+                                </div>
+                            </div>
+                            <div className='border-b border-t py-[20px] flex flex-col justify-center mt-[16px]'>
                                 <div className='flex flex-row items-center'>
-                                    <div className='flex flex-row items-center'>
-                                        <span className='icon-fi-rs-aura-o'/>
-                                        <p className='text-[14px] ml-[2px]'>Аура</p>
-                                    </div>
-                                    <div className='flex flex-row items-center ml-[15px]'>
-                                        <span className='icon-fi-rs-group-o'/>
-                                        <p className='text-[14px] ml-[2px]'>Гишүүн</p>
-                                    </div>
+                                    <span className='icon-fi-rs-birth text-[17.88px] text-[#6C7392]'/>
+                                    <p className='text-[#6C7392] text-[14px] ml-[8px]'>{newdate}</p>
+                                </div>
+                                <div className='flex flex-row items-center mt-[10px]'>
+                                    <span className='icon-fi-rs-globe text-[18.33px] text-[#6C7392]'/>
+                                    <p className='text-[#6C7392] text-[14px] ml-[8px]'>Нээлттэй бүлэг</p>
                                 </div>
                             </div>
-                            <div className='flex flex-row items-center'>
-                                <Button
-                                    iconPosition={"left"}
-                                    icon={
-                                    <div
-                                        className={
-                                        "w-[20px] h-[20px] flex items-center justify-center "
-                                        }
-                                    >
-                                        <span
-                                        className={`icon-fi-rs-add-group-f text-[16px] `}
-                                        />
-                                    </div>
-                                    }
-                                    skin={"primary"}
-                                    className={`bg-[#9A9FB4] text-white h-[36px] w-[120px] rounded-[6px] font-medium text-[15px] tracking-[0.18px] leading-[15px] py-[4px] pr-[12px] pl-[6px]`}
-                                >
-                                    Нэгдэх
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='w-full h-auto bg-[#F3F3F4] flex flex-row justify-center pt-[22px] pb-[35px]'>
-                        <div className='max-w-[616px] w-full'>
-                            <div className='w-[full] h-[60px] bg-white rounded-[8px] flex flex-row items-center justify-evenly'>
-                                <div className='bg-[#F3F3F4] w-[36px] h-[36px] rounded-full flex items-center justify-center'>
-                                    <span className='icon-fi-rs-profile text-[22px] text-[#AFAFAF]'/>
-                                </div>
-                                <div className='bg-[#F3F3F4] max-w-[498px] w-full h-[36px] rounded-[6px] flex items-center'>
-                                    <p className='text-[#6C7392] text-[14px] ml-[16px]'>Пост оруулах</p>
-                                </div>
-                                <span className='icon-fi-rs-image-o text-[#9A9FB4] text-[20px]'/>
-                            </div>
-                        </div>
-                        <div className='w-[320px] h-[378px] bg-white ml-[25px] rounded-[8px] relative'>
-                            <img alt='' src={getFileUrl(data.cover) ? getFileUrl(data.cover) : Cover.src} className='w-full h-[34px] rounded-t-[8px]'/>
-                            <div className='absolute top-[25px] left-[18px] w-[48px] h-[48px] bg-[#ECEDF1] border-[3px] border-white rounded-[6px] flex justify-center items-center'>
-                                {
-                                    getFileUrl(data.profile)
-                                    ?
-                                    <img alt='' className='w-full h-full rounded-[6px]'  src={getFileUrl(data.profile)}/>
-                                    :
-                                    <span className='icon-fi-rs-group-f text-[26px] text-[#9A9FB4]' />
-                                }
-                            </div>
-                            <p className='ml-[77px] mt-[13px] text-[15px] font-semibold'>{data.name ? data.name : 'Групп нэр'}</p>
-                            <div className='mt-[24px] px-[18px]'>
-                                <p className='text-[15px] h-[18px]'>{data.about ? data.about : 'Тайлбар'}</p>
-                                <div className='flex flex-row mt-[22px]'>
-                                    <div>
-                                        <p className='h-[16px] text-[17px] font-medium'>0</p>
-                                        <p className='text-[#6C7392] text-[14px]'>Аура</p>
-                                    </div>
-                                    <div className='ml-[52px]'>
-                                        <p className='h-[16px] text-[17px] font-medium'>0</p>
-                                        <p className='text-[#6C7392] text-[14px]'>Гишүүн</p>
-                                    </div>
-                                </div>
-                                <div className='border-b border-t py-[20px] flex flex-col justify-center mt-[16px]'>
-                                    <div className='flex flex-row items-center'>
-                                        <span className='icon-fi-rs-birth text-[17.88px] text-[#6C7392]'/>
-                                        <p className='text-[#6C7392] text-[14px] ml-[8px]'>{newdate}</p>
-                                    </div>
-                                    <div className='flex flex-row items-center mt-[10px]'>
-                                        <span className='icon-fi-rs-globe text-[18.33px] text-[#6C7392]'/>
-                                        <p className='text-[#6C7392] text-[14px] ml-[8px]'>Нээлттэй бүлэг</p>
-                                    </div>
-                                </div>
-                                <p className='text-[#6C7392] text-[14px] mt-[16px]'>Грүппын төрөл</p>
-                                {
-                                    oneCategory 
-                                    ?
-                                    <p className='rounded-full mt-[10px] border h-[37px] max-w-[180px] flex justify-center items-center'>{oneCategory.icon}{oneCategory.name}</p>
-                                    :
-                                    null
-                                }
-                            </div>
+                            <p className='text-[#6C7392] text-[14px] mt-[16px]'>Грүппын төрөл</p>
+                            {
+                                oneCategory 
+                                ?
+                                <p className='rounded-full mt-[10px] border h-[37px] max-w-[180px] flex justify-center items-center'>{oneCategory.icon}{oneCategory.name}</p>
+                                :
+                                null
+                            }
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     )
 }

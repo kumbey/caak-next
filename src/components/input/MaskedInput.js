@@ -1,6 +1,5 @@
 import { IMaskInput } from "react-imask";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
 
 const DateInput = ({
   labelStyle,
@@ -17,6 +16,7 @@ const DateInput = ({
   format,
   value,
   onChange,
+  setText,
   ...props
 }) => {
   return (

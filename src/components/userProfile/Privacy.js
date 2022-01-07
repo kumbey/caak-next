@@ -85,6 +85,8 @@ export default function Privacy() {
       setLoading(false);
       if (ex.code === "CodeMismatchException") {
         setErrors({ ...errors, code: "Баталгаажуулах код буруу байна" });
+      } else if (ex.code === "LimitExceededException") {
+        setError("Түр хугацааны дараа дахин оролдоно уу");
       } else if (ex.code === "UserNotFoundException") {
         setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
       } else if (ex.code === "InvalidParameterException") {
@@ -176,18 +178,19 @@ export default function Privacy() {
           <form className="w-full" onSubmit={(e) => e.preventDefault()}>
             <div className="flex w-full">
               <div className="flex flex-col w-full">
-                <p className="error">{error}</p>
                 <Input
                   value={oldPassword}
                   name={"oldPassword"}
                   type={"password"}
-                  // errorMessage={errors.oldPassword}
+                  errorMessage={errors.oldPassword}
                   onChange={handleChange}
                   placeholder={"Хуучин нууц үгээ оруулах"}
                   className={
-                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen mt-[10px]"
                   }
                 />
+                <p className="text-13px text-caak-red">{error}</p>
+
                 <Input
                   value={password}
                   name={"password"}
@@ -216,7 +219,6 @@ export default function Privacy() {
                 className="icon-fi-rs-close font-bold text-caak-boilingmagma ml-10"
               />
               <button
-                loading={loading}
                 onClick={() => handleSubmit(doConfirm)}
                 className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
               />

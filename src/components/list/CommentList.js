@@ -46,7 +46,9 @@ const CommentList = ({
         (ucomment) => ucomment.id !== comment.id
       );
       await deleteComments(comment.id);
-      setUserComments(filteredComments);
+      setUserComments((prev=> ({
+        ...prev, items: [prev.items, ...filteredComments]
+      })));
     } else {
       comment.sub.items.map((sub) => {
         deleteComments(sub.id);
@@ -55,7 +57,9 @@ const CommentList = ({
         (comm) => id !== comm.parent_id
       );
 
-      setUserComments(filteredComments);
+      setUserComments((prev=> ({
+        ...prev, items: [prev.items, ...filteredComments]
+      })));
 
       await deleteComments(comment.id);
     }
@@ -63,7 +67,9 @@ const CommentList = ({
     filteredComments = filteredComments.filter(
       (ucomment) => ucomment.id !== comment.id
     );
-    setUserComments(filteredComments);
+    setUserComments((prev=> ({
+      ...prev, items: [prev.items, ...filteredComments]
+    })));
   };
 
   return (
@@ -79,17 +85,19 @@ const CommentList = ({
               <div className={"w-[64px] h-[64px] mr-[12px] relative"}>
                 {video ? (
                   <Video
+                    initialAutoPlay={false}
                     videoClassname={"object-contain rounded-[4px]"}
-                    src={getFileUrl(video)}
-                    thumbnailIcon
+                    src={getFileUrl(imageSrc)}
+                    smallIndicator
+                    disableOnClick
                     hideControls
                   />
                 ) : (
                   <img
-                    className=" bg-white rounded-md object-cover"
+                    className=" bg-white rounded-md object-cover w-full h-full"
                     src={
                       !imageSrc
-                        ? getGenderImage("default")
+                        ? getGenderImage("default").src
                         : getFileUrl(imageSrc)
                     }
                     width={64}

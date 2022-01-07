@@ -67,7 +67,7 @@ const CardHeader = ({
                   src={
                     post.group.profile
                       ? getFileUrl(post.group?.profile)
-                      : getGenderImage("default")
+                      : getGenderImage("default").src
                   }
                   // objectFit={"cover"}
                   alt="Group profile"

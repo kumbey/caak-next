@@ -97,7 +97,7 @@ const PendingPostApproveModal = ({
                       : getGenderImage(post.user.gender).src
                   }
                   // objectFit={"cover"}
-                  className={"rounded-full object-cover"}
+                  className={"rounded-full object-cover w-full h-full"}
                 />
               </div>
               <div
@@ -153,7 +153,7 @@ const PendingPostApproveModal = ({
           >
             Татгалзах
           </Button>
-          <Button
+          {!isDenyReasonActive ? <Button
             onClick={() => postHandler({id: post.id, status: "CONFIRMED"})}
             className={
               "ml-[10px] h-[44px] text-[16px] font-medium text-white bg-[#257CEE]"
@@ -161,7 +161,16 @@ const PendingPostApproveModal = ({
             skin={"primary"}
           >
             Зөвшөөрөх
-          </Button>
+          </Button> : <Button
+            onClick={() => setIsDenyReasonActive(false)}
+            className={
+              "ml-[10px] h-[44px] text-[16px] font-medium text-white bg-[#257CEE]"
+            }
+            skin={"primary"}
+          >
+            Буцах
+          </Button>}
+
         </div>
       </div>
     </div>

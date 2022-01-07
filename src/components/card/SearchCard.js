@@ -141,6 +141,7 @@ const SearchCard = ({ type, result }) => {
                 >
                   {result?.items?.items[0]?.file?.type.startsWith("video") ? (
                     <Video
+                      initialAutoPlay={false}
                       hideControls
                       disableOnClick
                       containerClassname={"rounded-[4px]"}

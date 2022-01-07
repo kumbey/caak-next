@@ -157,7 +157,7 @@ const SubMenu = ({ params }) => {
           {parseInt(params.userTotal.unseen) > 0 ? (
             <div
               className={
-                "absolute flex justify-center items-center top-1 right-[5px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
+                "absolute flex justify-center items-center top-[1px] right-[-4px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
               }
             >
               <span className={"text-white text-11px text-center"}>

@@ -167,7 +167,7 @@ export default function Settings({ ssrData }) {
             />
             <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
               <img
-                className=" bg-white rounded-[10px] object-cover"
+                className=" bg-white rounded-[10px] object-cover w-full h-full"
                 src={
                   groupData?.cover
                     ? getFileUrl(groupData?.cover)

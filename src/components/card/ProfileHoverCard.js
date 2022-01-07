@@ -111,7 +111,7 @@ export default function ProfileHoverCard({userId}) {
               src={
                 profileUser.pic
                   ? getFileUrl(profileUser.pic)
-                  : getGenderImage(profileUser.gender)
+                  : getGenderImage(profileUser.gender).src
               }
             />
           </div>

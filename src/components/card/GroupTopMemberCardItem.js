@@ -15,7 +15,7 @@ const GroupTopMemberCardItem = ({ color, user }) => {
         >
           {user.pic ? (
             <img
-              className={"rounded-full object-cover"}
+              className={"rounded-full object-cover w-full h-full"}
               height={42}
               width={42}
               // objectFit={"cover"}
@@ -24,7 +24,7 @@ const GroupTopMemberCardItem = ({ color, user }) => {
             />
           ) : (
             <img
-              className={"rounded-full object-cover"}
+              className={"rounded-full object-cover w-full h-full"}
               height={42}
               width={42}
               // objectFit={"cover"}

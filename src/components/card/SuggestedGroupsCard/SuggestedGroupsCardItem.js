@@ -17,7 +17,7 @@ const SuggestedGroupsCardItem = ({ group }) => {
               src={
                 group.profile
                   ? generateFileUrl(group.profile)
-                  : getGenderImage("default")
+                  : getGenderImage("default").src
               }
               alt={"group image"}
               // layout={"fixed"}

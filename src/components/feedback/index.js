@@ -131,12 +131,13 @@ const FeedBack = ({ setIsOpen }) => {
             }
             placeholder={"Гарчиг"}
           />
+
           <select
             className=" form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid rounded transitions ease-in-out m-0 ring-blue-300  border-blue-300 text-[15px] placeholder-caak-aleutian"
             aria-label="Default select example"
             onChange={(e) => setType(e.target.value)}
           >
-            <option className="" selected hidden>
+            <option selected hidden>
               Төрөл /Таны сонголт/
             </option>
             {feedTypes.map((feed, index) => {
@@ -170,7 +171,7 @@ const FeedBack = ({ setIsOpen }) => {
             <Button
               onClick={() => sendFeedBack()}
               className={
-                "w-[130px] h-[36px] self-center rounded-[8px] bg-white text-caak-generalblack font-medium text-[16px]"
+                "w-[130px] h-[36px] self-center rounded-[8px] ring-caak-cobalite  border-[3px] border-opacity-20 border-caak-cobalite bg-white text-caak-generalblack font-medium text-[16px]"
               }
             >
               Илгээх

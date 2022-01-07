@@ -62,7 +62,6 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
                   query: { sortType: "SAVED" },
                 },
                 `/user/${user.id}/profile`,
-                { shallow: true }
               )
             }
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
@@ -104,7 +103,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
         </Fragment>
       )}
       {isLogged && <Divider className={"my-2"} />}
-      <Link shallow href={`/help/aura`}>
+      <Link href={`/help/aura`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span
@@ -116,7 +115,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
           </div>
         </a>
       </Link>
-      <Link shallow href={`/help`}>
+      <Link href={`/help`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
             <span

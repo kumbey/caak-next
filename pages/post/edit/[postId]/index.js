@@ -21,6 +21,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostSuccessModal from "../../../../src/components/modals/postSuccessModal";
 import Consts from "../../../../src/utility/Consts";
 import Head from "next/head";
+import {useWrapper} from "../../../../src/context/wrapperContext";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -94,6 +95,7 @@ const EditPost = ({ ssrData }) => {
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
+  const {setNavBarTransparent} = useWrapper()
   const [groupData] = useState(ssrData.groups);
   const [post, setPost] = useState({
     ...ssrData.post,
@@ -234,6 +236,11 @@ const EditPost = ({ ssrData }) => {
       handleToast({ param: "isGroup" });
     }
   };
+
+  useEffect(()=> {
+    setNavBarTransparent(false)
+    //eslint-disable-next-line
+  },[])
 
   return (
       <>

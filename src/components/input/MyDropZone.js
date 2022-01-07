@@ -22,7 +22,7 @@ const MyDropZone = ({
 
   useEffect(() => {
     dropZoneFile.map((file) => {
-      let fileData = {
+      const fileData = {
         ext: getFileExt(file.name),
         name: getFileName(file.name),
         key: file.name,

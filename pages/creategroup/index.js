@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react'
 import Cover from '../../public/assets/images/defaultCover.png'
 import Button from '../../src/components/button'
 import MyDropZone from '../../src/components/input/MyDropZone'
-import { getFileUrl } from '../../src/utility/Util';
+import { getFileUrl, getReturnData } from '../../src/utility/Util';
 import { API, graphqlOperation } from 'aws-amplify';
 import { listCategorys, getCategory } from '../../src/graphql/queries';
 import {ApiFileUpload} from '../../src/utility/ApiHelper'
 import { useUser } from '../../src/context/userContext';
 import {createGroup} from '../../src/graphql-custom/group/mutation'
+import { createGroupUsers } from '../../src/graphql-custom/GroupUsers/mutation';
 import Loader from '../../src/components/loader';
+import { useRouter } from 'next/router';
 
 export default function CreateGroup() {
     const initData = {
@@ -27,9 +29,11 @@ export default function CreateGroup() {
     const [loading, setLoading] = useState();
     const [categories, setCategories] = useState([]);
     const [oneCategory, setOneCategory] = useState()
-    // const [group, setGroup] = useState([])
+    const [error, setError] = useState(false)
+    const [group, setGroup] = useState([])
 
     const {user} = useUser()
+    const router = useRouter()
 
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1;
@@ -52,7 +56,7 @@ export default function CreateGroup() {
 
     const handleCategoryChange = (e) => {
         const { value } = e.target;
-        let category = { ...data.category };
+        const category = { ...data.category };
         category.id = value;
         setData({ ...data, category: category });
     };
@@ -80,23 +84,8 @@ export default function CreateGroup() {
                 : data.profile;
             setData({ ...data, cover: coverImage, profile: profileImage });
         //   if (editId === "new") {
-            // const resp = await API.graphql(
-            //     graphqlOperation(createGroup, {
-            //         input: {
-            //             name: data.name,
-            //             category_id: data.category.id,
-            //             featured: data.featured,
-            //             founder_id: user?.id,
-            //             followed: data.followed,
-            //             role_on_group: data.role_on_group,
-            //             about: data.about,
-            //             groupCoverId: coverImage?.id,
-            //             groupProfileId: profileImage?.id,
-            //         },
-            //     })
-            // );
-            console.log(
-                {
+            let resp = await API.graphql(
+                graphqlOperation(createGroup, {
                     input: {
                         name: data.name,
                         category_id: data.category.id,
@@ -107,9 +96,20 @@ export default function CreateGroup() {
                         about: data.about,
                         groupCoverId: coverImage?.id,
                         groupProfileId: profileImage?.id,
+                    },
+                })
+            );
+            resp = getReturnData(resp);
+            const respuser  = await API.graphql(
+                graphqlOperation(createGroupUsers, {
+                    input: {
+                        group_id: resp.id,
+                        id: `${resp.id}#${user.id}`,
+                        role: "ADMIN",
+                        user_id: user.id
                     }
                 })
-            // setGroup((prevState) => [...prevState, resp.data.createGroup]);
+            )
             //   } else if (editId !== "new" && editId !== "init") {
             //     postData.id = data.id;
         
@@ -135,13 +135,19 @@ export default function CreateGroup() {
             //     //   );
             //     // }
             //   }
-            setData(initData)
             setLoading(false);
-            // alert("Амжилттай үүсгэлээ.")
+            router.push({
+                pathname: `/group/${resp.id}`
+            })
         } catch (ex) {
+            setError(true)
+            setTimeout(() => {
+                setError(false)
+            },  5000)
             console.log(ex);
+            setLoading(false)
         }
-    };   
+    };    
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -182,13 +188,11 @@ export default function CreateGroup() {
             <div className='flex flex-row pt-[54px]'>
                 <div className='w-[440px] bg-white px-[30px]'>
                     <div>
-                        <div className='mt-[20px]'>
-                            <p className='text-[15px] font-medium text-[#21293C]'>Өмнөх хуудас руу буцах</p>
+                        <div className='mt-[20px] flex flex-row items-center'>
+                            <span className='w-[48px] h-[48px] bg-[#0000001A] rounded-full flex items-center justify-center align-center text-center icon-fi-rs-back text-[18px]'/>
+                            <p className='text-[15px] font-medium text-[#21293C] ml-[6px]'>Өмнөх хуудас руу буцах</p>
                         </div>
-                        <input maxLength={20} type='text' value={data.name} onChange={handleChangeName} placeholder='Группийн нэр' className='border w-full h-[48px] rounded-[8px] border-[#E4E4E5] px-[10px] mt-[14px]' />
-                        {
-                            data.name.length > 20 && alert("asd")
-                        }
+                        <input required maxLength={20} type='text' value={data.name} onChange={handleChangeName} placeholder='Группийн нэр' className='border w-full h-[48px] rounded-[8px] border-[#E4E4E5] px-[10px] mt-[14px]' />
                         <textarea value={data.about} onChange={handleChangeAboout} placeholder='Тайлбар' className='border w-full h-[100px] rounded-[8px] border-[#E4E4E5] px-[10px] mt-[14px] text-[15px]' />
                         <MyDropZone
                             title={"Нүүр зураг"}
@@ -218,9 +222,18 @@ export default function CreateGroup() {
                                 })
                             }
                         </select>
-                        <Button loading={loading} onClick={() => updateGroupData()} skin="primary" className="w-full my-[14px] h-[48px]">
+                        <Button loading={loading} onClick={() => {
+                            updateGroupData()
+                        }} skin="primary" className="w-full my-[14px] h-[48px]">
                             Үүсгэх
                         </Button>
+                        {
+                            error
+                            ?
+                            <p className='text-[#FF0000] font-semibold'>Алдаа гарлаа</p>
+                            :
+                            null
+                        }
                     </div>
                 </div>
                 <div className='bg-white rounded-[8px] h-[801px] ml-[128px] w-[1220px] mt-[40px] p-[30px]'>

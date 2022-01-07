@@ -22,13 +22,13 @@ export default function Privacy() {
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
   const [isFollowedGroup, setIsFollowedGroup] = useState(
-    typeof JSON.parse(user.meta).settings.showFollowedGroup === "boolean"
-      ? JSON.parse(user.meta).settings.showFollowedGroup
+    typeof JSON.parse(user.meta)?.settings?.showFollowedGroup === "boolean"
+      ? JSON.parse(user.meta)?.settings?.showFollowedGroup
       : true
   );
   const [isCreatedGroup, setIsCreatedGroup] = useState(
-    typeof JSON.parse(user.meta).settings.showCreatedGroup === "boolean"
-      ? JSON.parse(user.meta).settings.showCreatedGroup
+    typeof JSON.parse(user.meta)?.settings?.showCreatedGroup === "boolean"
+      ? JSON.parse(user.meta)?.settings?.showCreatedGroup
       : true
   );
   const [col, setCol] = useState(false);

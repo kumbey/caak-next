@@ -101,10 +101,9 @@ const FeedBack = ({ setIsOpen }) => {
         <div className={"flex flex-row items-center mt-[18px]"}>
           {emojis.map((emoji, index) => {
             return (
-              <div className="group relative">
+              <div key={index} className="group relative">
                 <div
                   onClick={() => setStar(emoji.id)}
-                  key={index}
                   className={` ${
                     star === index ? "mix-blend-normal" : "mix-blend-luminosity"
                   } transition-all duration-300 hover:mix-blend-normal  cursor-pointer relative mr-[14px] last:mr-0   ease-in-out delay-50 bg-blue-500 hover:scale-110 hover:bg-indigo-500 rounded-full `}
@@ -142,7 +141,7 @@ const FeedBack = ({ setIsOpen }) => {
             </option>
             {feedTypes.map((feed, index) => {
               return (
-                <option value={feed.value}>
+                <option key={index} value={feed.value}>
                   0{index + 1}: {feed.label}
                 </option>
               );

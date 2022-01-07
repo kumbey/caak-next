@@ -55,22 +55,27 @@ const CardHeader = ({
 
       <div className={"flex justify-between items-center h-[34px]"}>
         <div className="flex justify-between items-center h-full">
-          <div
-            className={`relative flex-shrink-0 border border-caak-titaniumwhite rounded-square w-[34px] h-[34px]`}
-          >
-            <img
-              className={`rounded-square object-cover w-full h-full`}
-              width={34}
-              height={34}
-              src={
-                post.group.profile
-                  ? getFileUrl(post.group?.profile)
-                  : getGenderImage("default")
-              }
-              // objectFit={"cover"}
-              alt="Group profile"
-            />
-          </div>
+          <Link href={`/group/${post.group.id}`}>
+            <a>
+              <div
+                className={`relative flex-shrink-0 border border-caak-titaniumwhite rounded-square w-[34px] h-[34px]`}
+              >
+                <img
+                  className={`rounded-square object-cover w-full h-full`}
+                  width={34}
+                  height={34}
+                  src={
+                    post.group.profile
+                      ? getFileUrl(post.group?.profile)
+                      : getGenderImage("default")
+                  }
+                  // objectFit={"cover"}
+                  alt="Group profile"
+                />
+              </div>
+            </a>
+          </Link>
+
 
           <div className="flex flex-col justify-between ml-[8px] h-full">
             <div className={"flex flex-row items-center"}>

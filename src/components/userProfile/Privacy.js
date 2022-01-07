@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Switch from "./Switch";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
 import Validate from "/src/utility/Validate";
 import Input from "/src/components/input";
+import { useUser } from "../../context/userContext";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { updateUser } from "../../graphql-custom/user/mutation";
 
 export default function Privacy() {
+  const { user } = useUser();
+
   const [showInput, setShowInput] = useState(false);
   const [loading, setLoading] = useState();
   const [error, setError] = useState("");
@@ -14,23 +20,18 @@ export default function Privacy() {
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
-  const localFollow = localStorage.getItem("isFollowedGroup");
-  const localCreated = localStorage.getItem("isCreatedGroup");
 
   const [isFollowedGroup, setIsFollowedGroup] = useState(
-    localFollow ? localFollow : "false"
+    typeof JSON.parse(user.meta).settings.showFollowedGroup === "boolean"
+      ? JSON.parse(user.meta).settings.showFollowedGroup
+      : true
   );
   const [isCreatedGroup, setIsCreatedGroup] = useState(
-    localCreated ? localCreated : "false"
+    typeof JSON.parse(user.meta).settings.showCreatedGroup === "boolean"
+      ? JSON.parse(user.meta).settings.showCreatedGroup
+      : true
   );
   const [col, setCol] = useState(false);
-
-  const toggleFollow = () => {
-    setIsFollowedGroup(isFollowedGroup === "true" ? "false" : "true");
-  };
-  const toggleCreated = () => {
-    setIsCreatedGroup(isCreatedGroup === "true" ? "false" : "true");
-  };
 
   const validate = {
     oldPassword: {
@@ -95,16 +96,51 @@ export default function Privacy() {
       }
     }
   };
-  useEffect(() => {
-    localStorage.setItem(
-      "isFollowedGroup",
-      isFollowedGroup === "true" ? "true" : "false"
+
+  const updateUserData = async (res) => {
+    await API.graphql(
+      graphqlOperation(updateUser, {
+        input: {
+          id: user.id,
+          meta: res,
+        },
+      })
     );
-    localStorage.setItem(
-      "isCreatedGroup",
-      isCreatedGroup === "true" ? "true" : "false"
-    );
-  }, [isFollowedGroup, isCreatedGroup]);
+  };
+
+  const toggleFollowedGroup = async () => {
+    setIsFollowedGroup(!isFollowedGroup);
+    const temp = JSON.parse(user.meta);
+
+    const res1 = {
+      ...temp,
+      settings: {
+        autoPlay: temp.settings.autoPlay,
+        showFollowedGroup: !isFollowedGroup,
+        showCreatedGroup: temp.settings.showCreatedGroup,
+      },
+    };
+
+    const res = JSON.stringify(res1);
+    await updateUserData(res);
+  };
+  const toggleCreatedGroup = async () => {
+    setIsCreatedGroup(!isCreatedGroup);
+    const temp = JSON.parse(user.meta);
+
+    const res1 = {
+      ...temp,
+      settings: {
+        autoPlay: temp.settings.autoPlay,
+        showFollowedGroup: temp.settings.showFollowedGroup,
+        showCreatedGroup: !isCreatedGroup,
+      },
+    };
+
+    const res = JSON.stringify(res1);
+    await updateUserData(res);
+  };
+
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
       <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
@@ -115,12 +151,9 @@ export default function Privacy() {
         className=" flex items-center justify-between w-full border-b"
       >
         <p className="text-15px font-inter font-normal">
-          Элссэн группуудыг ил харуулах
+          Нэгдсэн группуудыг ил харуулах
         </p>
-        <Switch
-          toggle={toggleFollow}
-          active={isFollowedGroup === "true" ? true : false}
-        />
+        <Switch toggle={toggleFollowedGroup} active={isFollowedGroup} />
       </div>
       <div
         style={{ paddingBlock: "14px" }}
@@ -129,10 +162,7 @@ export default function Privacy() {
         <p className="text-15px font-inter font-normal">
           Миний үүсгэсэн группуудыг ил харуулах
         </p>
-        <Switch
-          toggle={toggleCreated}
-          active={isCreatedGroup === "true" ? true : false}
-        />
+        <Switch toggle={toggleCreatedGroup} active={isCreatedGroup} />
       </div>
       <div
         className={`${

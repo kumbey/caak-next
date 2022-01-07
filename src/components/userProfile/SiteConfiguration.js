@@ -1,17 +1,38 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Switch from "./Switch";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { updateUser } from "../../graphql-custom/user/mutation";
+import { useUser } from "../../context/userContext";
 
 export default function SiteConfiguration() {
-  const local = localStorage.getItem("autoPlay");
-  const [active, setActive] = useState(local ? local : "false");
+  const { user } = useUser();
+  const [active, setActive] = useState(
+    typeof JSON.parse(user.meta).settings?.autoPlay === "boolean"
+      ? JSON.parse(user.meta).settings?.autoPlay
+      : true
+  );
 
-  const toggle = () => {
-    setActive(active === "true" ? "false" : "true");
+  const toggle = async () => {
+    setActive(!active);
+    const temp = JSON.parse(user.meta);
+    const res1 = {
+      ...temp,
+      settings: {
+        autoPlay: !active,
+      },
+    };
+    const res = JSON.stringify(res1);
+
+    await API.graphql(
+      graphqlOperation(updateUser, {
+        input: {
+          id: user.id,
+          meta: res,
+        },
+      })
+    );
   };
-
-  useEffect(() => {
-    localStorage.setItem("autoPlay", active === "true" ? "true" : "false");
-  }, [active]);
 
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
@@ -25,7 +46,7 @@ export default function SiteConfiguration() {
         <p className="text-15px font-normal">
           Видео бичлэгийг автоматаар тоглуулах
         </p>
-        <Switch toggle={toggle} active={active === "true" ? true : false} />
+        <Switch toggle={toggle} active={active} />
       </div>
     </div>
   );

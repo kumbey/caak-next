@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Switch from "./Switch";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
@@ -13,10 +13,9 @@ export default function SiteConfiguration() {
       : true
   );
 
-  const toggle = async (e) => {
+  const toggle = async () => {
     setActive(!active);
     const temp = JSON.parse(user.meta);
-    console.log(temp);
     const res1 = {
       ...temp,
       settings: {
@@ -24,8 +23,6 @@ export default function SiteConfiguration() {
       },
     };
     const res = JSON.stringify(res1);
-
-    console.log(res1);
 
     await API.graphql(
       graphqlOperation(updateUser, {
@@ -36,13 +33,6 @@ export default function SiteConfiguration() {
       })
     );
   };
-  // useEffect(() => {
-  //   console.log(JSON.parse(user.meta).settings.autoPlay);
-  // }, []);
-  useEffect(() => {
-    console.log(JSON.parse(user.meta).settings.autoPlay);
-    console.log(active);
-  }, [active]);
 
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">

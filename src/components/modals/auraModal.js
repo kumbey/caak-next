@@ -24,7 +24,7 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
                 <img
                   // priority={true}
                   className="object-cover bg-white rounded-[10px] bg-transparent"
-                  src={helloImg}
+                  src={helloImg.src}
                   height={180}
                   // layout="fixed"
                   // objectFit={"cover"}

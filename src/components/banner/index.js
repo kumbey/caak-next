@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import khan from '../../../public/assets/images/khanbanner.jpg'
 import unitel from '../../../public/assets/images/unitel_banner.jpg'
 import golomt from '../../../public/assets/images/golomtbank.jpg'
-import Image from 'next/image'
 
 const data = [
     {
@@ -30,7 +29,7 @@ export default function Banner() {
                 <div className='flex items-center justify-center w-full h-auto'>
                     <img
                         alt=''
-                        src={data[number].image}
+                        src={data[number].image.src}
                         className='rounded-[8px]'
                     />
                 </div>

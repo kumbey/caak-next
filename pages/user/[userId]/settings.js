@@ -8,32 +8,15 @@ import SiteConfiguration from "../../../src/components/userProfile/SiteConfigura
 import Privacy from "../../../src/components/userProfile/Privacy";
 import { data } from "../../../src/components/settingsMenuData";
 import { useRouter } from "next/router";
+import Consts from "../../../src/utility/Consts";
 import { useWrapper } from "../../../src/context/wrapperContext";
 import Head from "next/head";
 
 export default function Settings() {
   const router = useRouter();
-  const userId = router.query.userId;
-  const [user, setUser] = useState();
-  const { isLogged } = useUser();
+  const { user } = useUser();
   const { setNavBarTransparent } = useWrapper();
   const [activeIndex, setActiveIndex] = useState(1);
-  useEffect(() => {
-    try {
-      if (isLogged) {
-        getUserById({
-          id: userId,
-          setUser,
-          authMode: "AMAZON_COGNITO_USER_POOLS",
-        });
-      } else {
-        router.back();
-      }
-    } catch (ex) {
-      console.log(ex);
-    }
-    // eslint-disable-next-line
-  }, [user, userId]);
 
   useEffect(() => {
     setNavBarTransparent(false);
@@ -42,7 +25,7 @@ export default function Settings() {
   return user ? (
     <>
       <Head>
-        <title>@{user.nickname} - Тохиргоо</title>
+        <title>Профайл тохиргоо - {Consts.siteMainTitle}</title>
       </Head>
       <div
         style={{ marginTop: "36px" }}

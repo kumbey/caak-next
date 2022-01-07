@@ -30,7 +30,7 @@ const Gender = ({
           <GenderCard
             onClick={() => setGender("MALE")}
             sex={"Эрэгтэй"}
-            src={maleImg}
+            src={maleImg.src}
           />
         </div>
         <div
@@ -43,7 +43,7 @@ const Gender = ({
           <GenderCard
             onClick={() => setGender("FEMALE")}
             sex={"Эмэгтэй"}
-            src={femaleImg}
+            src={femaleImg.src}
           />
         </div>
       </div>

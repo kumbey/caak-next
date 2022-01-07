@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const GenderCard = ({ onClick, sex, className, src, ...props }) => {
   return (
     <div

@@ -59,6 +59,7 @@ const post0004 = /* GraphQL */ `
     }
     user {
       firstname
+      gender
       id
       followed
       aura

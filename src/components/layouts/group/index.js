@@ -224,7 +224,7 @@ const GroupLayout = ({
             src={
               groupData?.cover
                 ? getFileUrl(groupData.cover)
-                : getGenderImage("default")
+                : getGenderImage("default").src
             }
           />
           {isLogged &&
@@ -311,7 +311,7 @@ const GroupLayout = ({
                   src={
                     groupData?.profile
                       ? getFileUrl(groupData?.profile)
-                      : getGenderImage("default")
+                      : getGenderImage("default").src
                   }
                 />
                 {isLogged &&
@@ -430,7 +430,7 @@ const GroupLayout = ({
           >
             {groupData.role_on_group === "ADMIN" ||
             groupData.role_on_group === "MODERATOR" ? (
-              <GroupAdminPanel groupData={groupData} />
+              <GroupAdminPanel groupId={groupData.id} />
             ) : null}
             {/*<GroupTopMembersCard groupId={groupData.id}/>*/}
             {!hideSuggestedGroups && (

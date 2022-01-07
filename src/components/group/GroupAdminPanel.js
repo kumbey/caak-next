@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import Divider from "../divider";
 import { getReturnData } from "../../utility/Util";
 import { API } from "aws-amplify";
-import { useRouter } from "next/router";
 import { getGroupTotal } from "../../graphql-custom/group/queries";
+import {useRouter} from "next/router";
 
-const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
-  const router = useRouter();
-  const [groupTotals, setGroupTotals] = useState();
-  const [totalPending, setTotalPending] = useState();
+const GroupAdminPanel = ({groupId}) => {
+  const router  = useRouter()
+  const [groupTotals, setGroupTotals] = useState({});
+  // const [totalPending, setTotalPending] = useState();
 
   const adminMenu = [
     {
@@ -16,7 +16,7 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending-posts",
       path: "dashboard",
-      length: totalPending,
+      length: groupTotals?.pending,
     },
     {
       id: 1,
@@ -43,21 +43,16 @@ const GroupAdminPanel = ({ groupData, totalMember, ...props }) => {
     const resp = await API.graphql({
       query: getGroupTotal,
       variables: {
-        group_id: router.query.groupId,
+        group_id: groupId,
       },
     });
     setGroupTotals(getReturnData(resp));
   };
 
   useEffect(() => {
-    setTotalPending(groupTotals?.pending);
-    // eslint-disable-next-line
-  }, [groupTotals]);
-
-  useEffect(() => {
     getGroupTotals();
     // eslint-disable-next-line
-  }, []);
+  }, [groupId]);
   return (
     <div className="max-w-[616px] mx-auto flex flex-col relative rounded-lg bg-white mb-[16px]">
       <div className={"p-[18px] "}>

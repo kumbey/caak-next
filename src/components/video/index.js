@@ -37,12 +37,16 @@ const Video = ({
   disableOnClick,
   loop,
   videoFileId,
+  initialAutoPlay,
   ...props
 }) => {
   const { user, isLogged } = useUser();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAutoPlayEnabled] = useState(
-    isLogged && typeof JSON.parse(user.meta)?.settings?.autoPlay === "boolean"
+    typeof initialAutoPlay === "boolean"
+      ? initialAutoPlay
+      : isLogged &&
+        typeof JSON.parse(user.meta)?.settings?.autoPlay === "boolean"
       ? JSON.parse(user.meta)?.settings?.autoPlay
       : true
   );

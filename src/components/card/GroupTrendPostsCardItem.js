@@ -32,6 +32,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
           >
             {firstItem.file.type.startsWith("video") ? (
               <Video
+                initialAutoPlay={false}
                 smallIndicator
                 disableOnClick
                 hideControls

@@ -385,7 +385,7 @@ const Dashboard = ({ ssrData }) => {
               src={
                 groupData?.cover
                   ? getFileUrl(groupData?.cover)
-                  : getGenderImage(groupData?.gender)
+                  : getGenderImage(groupData?.gender).src
               }
               width={52}
               height={52}

@@ -99,6 +99,7 @@ const SortableCard = ({
 
         {item.file?.type?.startsWith("video") ? (
           <Video
+            initialAutoPlay={false}
             videoClassname={"object-cover rounded-[4px]"}
             hideControls
             smallIndicator
@@ -460,6 +461,7 @@ const UploadedMediaEdit = ({
           >
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
+                initialAutoPlay={false}
                 durationIndicator={true}
                 videoClassname={"object-contain rounded-[4px]"}
                 src={thumbnailImageHandler(post.items[activeIndex])}

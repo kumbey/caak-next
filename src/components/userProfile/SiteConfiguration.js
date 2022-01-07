@@ -8,8 +8,8 @@ import { useUser } from "../../context/userContext";
 export default function SiteConfiguration() {
   const { user } = useUser();
   const [active, setActive] = useState(
-    typeof JSON.parse(user.meta).settings.autoPlay === "boolean"
-      ? JSON.parse(user.meta).settings.autoPlay
+    typeof JSON.parse(user.meta).settings?.autoPlay === "boolean"
+      ? JSON.parse(user.meta).settings?.autoPlay
       : true
   );
 

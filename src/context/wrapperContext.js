@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useRef, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 const WrapperContext = createContext();
 
@@ -16,6 +16,7 @@ function WrapperProvider(props) {
   const [isNotificationMenu, setIsNotificationMenu] = useState(false);
   const [feedSortType, setFeedSortType] = useState("");
   const [navBarTransparent, setNavBarTransparent] = useState(false);
+  const [currentPlayingVideoId, setCurrentPlayingVideoId] = useState(null);
   const value = useMemo(
     () => ({
       isMobileMenuOpen,
@@ -26,8 +27,16 @@ function WrapperProvider(props) {
       setFeedSortType,
       navBarTransparent,
       setNavBarTransparent,
+      currentPlayingVideoId,
+      setCurrentPlayingVideoId,
     }),
-    [isMobileMenuOpen, isNotificationMenu, feedSortType, navBarTransparent]
+    [
+      isMobileMenuOpen,
+      isNotificationMenu,
+      feedSortType,
+      navBarTransparent,
+      currentPlayingVideoId,
+    ]
   );
   return <WrapperContext.Provider value={value} {...props} />;
 }

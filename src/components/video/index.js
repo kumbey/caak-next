@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import Router, { useRouter } from "next/router";
 import ItemsCounterCard from "../card/ItemsCounterCard";
+import { useWrapper } from "../../context/wrapperContext";
 import { useInView } from "react-intersection-observer";
+import { useUser } from "../../context/userContext";
 
 const dblTouchTapMaxDelay = 300;
 let latestTouchTap = {
@@ -34,9 +36,16 @@ const Video = ({
   durationIndicator,
   disableOnClick,
   loop,
+  videoFileId,
   ...props
 }) => {
+  const { user } = useUser();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isAutoPlayEnabled] = useState(
+    typeof JSON.parse(user.meta).settings?.autoPlay === "boolean"
+      ? JSON.parse(user.meta).settings.autoPlay
+      : true
+  );
   const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef(null);
   const router = useRouter();
@@ -46,9 +55,9 @@ const Video = ({
   const [played, setPlayed] = useState(0);
   const [seeking, setSeeking] = useState(false);
   const canvasRef = useRef();
-
+  const { currentPlayingVideoId, setCurrentPlayingVideoId } = useWrapper();
   const [ref, inView] = useInView({
-    threshold: 0.8,
+    threshold: 0.6,
   });
   const handleSeekChange = (e) => {
     setPlayed(parseFloat(e.target.value));
@@ -84,21 +93,45 @@ const Video = ({
     return `${m}:${s}`;
   }
 
+  //Buggy when 2 videos visible on viewport at the same time
   useEffect(() => {
     if (inView) {
       setLoaded(true);
+      setIsPlaying(isAutoPlayEnabled);
+      setIsMuted(isAutoPlayEnabled);
+      setCurrentPlayingVideoId(videoFileId);
     } else if (!inView && loaded) {
       setIsPlaying(false);
+      setCurrentPlayingVideoId(null);
     }
 
     // eslint-disable-next-line
   }, [inView]);
 
+  useEffect(() => {
+    const onBlur = () => {
+      setIsPlaying(false);
+    };
+    window.addEventListener("blur", onBlur);
+    return () => {
+      window.addEventListener("blur", onBlur);
+    };
+  });
+
+  //Only play one video at a time
+  useEffect(() => {
+    if (currentPlayingVideoId !== videoFileId) {
+      setIsPlaying(false);
+    }
+  }, [currentPlayingVideoId, videoFileId]);
+
   Router.events.on("routeChangeStart", () => setIsPlaying(false));
   return (
-    <div className={`relative w-full h-full group bg-black ${
-      containerClassname ? containerClassname : ""
-    }`}>
+    <div
+      className={`relative w-full h-full group bg-black ${
+        containerClassname ? containerClassname : ""
+      }`}
+    >
       <canvas
         style={{
           filter: "blur(4px)",
@@ -112,7 +145,10 @@ const Video = ({
       <div
         ref={ref}
         onClick={() => {
-          !disableOnClick && !isPlaying && setIsPlaying(true);
+          if (!disableOnClick && !isPlaying) {
+            setCurrentPlayingVideoId(videoFileId);
+            setIsPlaying(true);
+          }
         }}
         onDoubleClick={() => {
           !disableOnClick &&

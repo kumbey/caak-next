@@ -215,7 +215,12 @@ const Group = ({ ssrData }) => {
         totalMember={totalMember}
         columns={2}
       >
-        {isTablet && isLogged && <GroupAdminPanel groupId={groupData.id} />}
+        {isTablet &&
+          isLogged &&
+          (groupData.role_on_group === "ADMIN" ||
+            groupData.role_on_group === "MODERATOR") && (
+            <GroupAdminPanel groupId={groupData.id} />
+          )}
         <AddPostHandler groupId={groupData.id} />
         <GroupSortButtons
           activeIndex={activeIndex}

@@ -700,6 +700,14 @@
       linear-gradient(180deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
       padding-box;
   }
+  .trendPostsCardWrapper {
+    scrollbar-width: none !important;
+  }
+  .trendPostsCardWrapper::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: 0 0;
+  }
 }
 
 .react-player {

@@ -270,7 +270,7 @@ const EditPost = ({ ssrData }) => {
                   className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
               >
                 <SelectGroup
-                    containerClassName={"mt-[28px]"}
+                    containerClassName={"mt-[28px] z-[4]"}
                     groupData={groupData}
                     isGroupVisible={isGroupVisible}
                     setIsGroupVisible={setIsGroupVisible}

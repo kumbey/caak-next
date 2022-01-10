@@ -92,7 +92,7 @@ export default function Settings({ ssrData }) {
   const data = [
     {
       id: 0,
-      icon: <span className="icon-fi-rs-settings text-24px" />,
+      icon: <span className="icon-fi-rs-settings-o text-[24px]" />,
       title: "Группын тохиргоо",
     },
     {

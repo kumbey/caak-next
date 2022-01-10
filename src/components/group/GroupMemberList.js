@@ -51,7 +51,7 @@ const GroupMemberList = ({ userList, ...props }) => {
         <div className="">
           <div className={"w-[48px] h-[48px] mr-[8px] relative"}>
             <img
-              className=" bg-white rounded-full"
+              className=" bg-white rounded-full w-full h-full"
               src={
                 userList?.user.pic
                   ? getFileUrl(userList?.user.pic)

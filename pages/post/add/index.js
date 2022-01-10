@@ -163,7 +163,7 @@ const AddPost = () => {
             onClick={() => {
               followGroup().then(() => {
                 toast.success(
-                  `Та ${selectedGroup.name} бүлэгт амжилттай нэгдлээ.`,
+                  `Та ${selectedGroup.name} группт амжилттай нэгдлээ.`,
                   toastIcon
                 );
                 toast.dismiss(t.id);

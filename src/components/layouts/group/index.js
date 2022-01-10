@@ -366,7 +366,7 @@ const GroupLayout = ({
                     </div>
                     {/*<div className="flex mr-[22px] items-center">*/}
                     {/*  <span className={"icon-fi-rs-globe mr-1"} />*/}
-                    {/*  <p className="text-sm">Нээлттэй бүлэг</p>*/}
+                    {/*  <p className="text-sm">Нээлттэй групп</p>*/}
                     {/*</div>*/}
                     <div className="flex items-center">
                       <span

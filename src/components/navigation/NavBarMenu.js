@@ -84,7 +84,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
                 "icon-fi-rs-add-l text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
               }
             />
-            <p className="text-14px text-caak-extraBlack">Грүпп үүсгэх</p>
+            <p className="text-14px text-caak-extraBlack">Групп үүсгэх</p>
           </div>
           <Link href={`/user/${user.id}/settings`}>
             <a>

@@ -97,7 +97,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
           </div>
           <div className="flex text-caak-darkBlue items-center">
             <span className="icon-fi-rs-globe text-xl mr-2" />
-            <p className="text-14px ">Нээлттэй бүлэг</p>
+            <p className="text-14px ">Нээлттэй групп</p>
           </div>
         </div>
         <Divider
@@ -106,7 +106,7 @@ const GroupInfo = ({ groupData, totalMember }) => {
         />
         <div className="flex flex-col">
           <div className="text-caak-darkBlue text-sm mb-[10px]">
-            Грүппын төрөл
+            Группын төрөл
           </div>
           <div className="flex  items-center  w-auto h-[35px] rounded-full border-2 border-caak-liquidnitrogen">
             <div className="flex items-center mx-[16px]">

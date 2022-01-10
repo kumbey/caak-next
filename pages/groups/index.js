@@ -170,8 +170,6 @@ export default function AllGroups() {
             <div className="w-full mt-[20px]">
               {loading ? (
                 <Loader className={`bg-caak-primary self-center`} />
-              ) : groups.length === 0 ? (
-                <div>Тус төрөлд хамаарах грүпп байхгүй байна.</div>
               ) : (
                 <div
                   style={{

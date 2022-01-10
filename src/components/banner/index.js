@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import khan from "../../../public/assets/images/khanbanner.jpg";
-import unitel from "../../../public/assets/images/unitel_banner.jpg";
-import golomt from "../../../public/assets/images/golomtbank.jpg";
-import Image from "next/image";
+import React, { useState, useEffect } from 'react'
+import khan from '../../../public/assets/images/khanbanner.jpg'
+import unitel from '../../../public/assets/images/unitel_banner.jpg'
+import golomt from '../../../public/assets/images/golomtbank.jpg'
 
 const data = [
   {

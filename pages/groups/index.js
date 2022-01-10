@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { listGroups } from "../../src/graphql/queries";
+import { listGroups, listGroupByFeatured } from "../../src/graphql/queries";
 import { API, graphqlOperation } from "aws-amplify";
-import Image from "next/image";
 import Cover from "../../public/assets/images/groups.jpeg";
 import SearchCardGroup from "../../src/components/card/SearchCardGroup";
-import SuggestedGroupsCard from "../../src/components/card/SuggestedGroupsCard";
 import Loader from "../../src/components/loader";
 import { listCategorys } from "../../src/graphql/queries";
 import { useUser } from "../../src/context/userContext";
@@ -43,6 +41,7 @@ export default function AllGroups() {
   const { isLogged } = useUser();
   const { width } = useWindowSize();
   const { setNavBarTransparent } = useWrapper();
+  console.log(groups)
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -50,16 +49,34 @@ export default function AllGroups() {
         const resp = await API.graphql({
           query: listGroups,
           variables: {
-            filter: id ? { category_id: { eq: id } } : null,
+            filter: id === null ? null : { category_id: { eq: id } },
           },
           authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
         });
-        setGroups(resp.data.listGroups.items);
+
+        const respFeatured = await API.graphql({
+          query: listGroupByFeatured,
+          variables: {
+            featured: "true",
+          },
+          authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+        });
+
+        activeIndex === 3
+        ?
+        setGroups(respFeatured.data.listGroupByFeatured.items)
+        :
+        setGroups(resp.data.listGroups.items)
+
         setLoading(false);
       } catch (ex) {
         console.log(ex);
       }
     };
+    fetchGroups();
+  }, [isLogged, id, groups, activeIndex]);
+
+  useEffect(() => {
     const fetchCategory = async () => {
       try {
         const resp = await API.graphql({
@@ -72,10 +89,8 @@ export default function AllGroups() {
         console.log(ex);
       }
     };
-
-    fetchGroups();
     fetchCategory();
-  }, [isLogged, id]);
+  }, [])
 
   useEffect(() => {
     setNavBarTransparent(true);
@@ -95,7 +110,7 @@ export default function AllGroups() {
     return () => {
       document.removeEventListener("scroll", listener);
     };
-  });
+  }, [setNavBarTransparent]);
   return (
     <>
       <Head>
@@ -155,8 +170,6 @@ export default function AllGroups() {
             <div className="w-full mt-[20px]">
               {loading ? (
                 <Loader className={`bg-caak-primary self-center`} />
-              ) : groups.length === 0 ? (
-                <div>Тус төрөлд хамаарах грүпп байхгүй байна.</div>
               ) : (
                 <div
                   style={{
@@ -182,9 +195,7 @@ export default function AllGroups() {
                   return (
                     <div
                       onClick={() => {
-                        setLoading(true);
                         setId(data.id);
-                        setLoading(false);
                         setActiveIndex(0);
                       }}
                       key={index}
@@ -198,11 +209,6 @@ export default function AllGroups() {
                   );
                 })}
               </div>
-              <SuggestedGroupsCard
-                maxColumns={10}
-                title={"Санал болгох группүүд"}
-                className={"mb-[24px]"}
-              />
             </div>
           </div>
         </div>

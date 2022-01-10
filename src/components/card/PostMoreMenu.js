@@ -139,7 +139,7 @@ export default function PostMoreMenu({
             })
           }
         >
-          <span className={"icon-fi-rs-pencil mr-px-12 w-c1  text-16px"} />
+          <span className={"icon-fi-rs-edit-f mr-px-12 w-c1  text-16px"} />
           <p className="text-14px text-caak-extraBlack">Постыг засах</p>
         </div>
       )}

@@ -105,7 +105,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
     <div
       className={`${
         containerClassname ? containerClassname : ""
-      } flex flex-col bg-white rounded-square max-w-[380px] relative mb-[24px]`}
+      } flex flex-col bg-white rounded-square relative mb-[24px]`}
     >
       <div className={"h-[34px] w-full relative"}>
         <img

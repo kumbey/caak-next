@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { getFileUrl } from "../../../utility/Util";
 import { useUser } from "../../../context/userContext";
 import ItemsCounterCard from "../ItemsCounterCard";
@@ -21,23 +20,36 @@ const UserPostsCard = ({ post }) => {
       className={"rounded-[4px] w-full h-[391px] userPostsItem relative group"}
     >
       {firstItem.file.type.startsWith("video") ? (
-        <div
-          onClick={() => setPlaying(!playing)}
-          className={"rounded-[4px] relative w-full h-full"}
+        <Link
+          shallow
+          href={{
+            query: {
+              ...router.query,
+              viewPost: "post",
+              id: post.id,
+              prevPath: router.asPath,
+              isModal: true,
+            },
+          }}
+          as={`/post/view/${post.id}`}
         >
-          <ReactPlayer
-            playing={playing}
-            loop
-            onReady={(e) => setVideoDuration(Math.floor(e.getDuration()))}
-            // onProgress={(e) =>
-            //   setVideoDuration(Math.floor(e.loadedSeconds - e.playedSeconds))
-            // }
-            className={"react-player rounded-[4px] object-cover"}
-            width={"100%"}
-            height={"100%"}
-            url={getFileUrl(firstItem.file)}
-          />
-        </div>
+          <a>
+            <div className={"rounded-[4px] relative w-full h-full"}>
+              <ReactPlayer
+                playing={playing}
+                loop
+                onReady={(e) => setVideoDuration(Math.floor(e.getDuration()))}
+                // onProgress={(e) =>
+                //   setVideoDuration(Math.floor(e.loadedSeconds - e.playedSeconds))
+                // }
+                className={"react-player rounded-[4px] object-cover"}
+                width={"100%"}
+                height={"100%"}
+                url={getFileUrl(firstItem.file)}
+              />
+            </div>
+          </a>
+        </Link>
       ) : (
         <Link
           shallow
@@ -103,14 +115,29 @@ const UserPostsCard = ({ post }) => {
           isMobile ? "opacity-100" : "opacity-0"
         } group-hover:opacity-100 transition-all duration-300`}
       >
-        <p
-          className={
-            "text-white font-roboto text-[18px] tracking-[0.36px] leading-[23px]"
-          }
+        <Link
+          shallow
+          href={{
+            query: {
+              ...router.query,
+              viewPost: "post",
+              id: post.id,
+              prevPath: router.asPath,
+              isModal: true,
+            },
+          }}
+          as={`/post/view/${post.id}`}
         >
-          {post.title}
-        </p>
-
+          <a>
+            <p
+              className={
+                "text-white font-roboto text-[18px] tracking-[0.36px] leading-[23px]"
+              }
+            >
+              {post.title}
+            </p>
+          </a>
+        </Link>
         <div
           className={
             "flex flex-row items-center rounded-[100px] bg-black bg-opacity-60 self-start py-[4px] px-[8px] mt-[13px]"

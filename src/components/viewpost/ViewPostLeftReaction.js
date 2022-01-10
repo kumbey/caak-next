@@ -220,7 +220,7 @@ const ViewPostLeftReaction = ({
               />
             }
             className={
-              "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[500] rounded-[4px]"
+              "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
             }
           />
           <span

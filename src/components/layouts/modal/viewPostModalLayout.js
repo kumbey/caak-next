@@ -44,7 +44,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
               <div ref={viewPostRef} className={"viewPostItem"}>
                 {children}
               </div>
-              <div className={"rightSideBar"}>
+              <div className={"viewPostRightSideBar ml-0 md:ml-[20px]"}>
                 <GroupInfoCard
                   containerClassname={"mb-[16px]"}
                   groupId={post.group_id}

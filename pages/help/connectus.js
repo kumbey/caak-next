@@ -36,7 +36,7 @@ export default function ConnectUs() {
                         </div>
                         <div className='flex flex-row items-center'>
                             <span className='icon-fi-rs-location'/>
-                            <p className='text-[15px] ml-[10px]'>{`Улаанбаатар, Хан-Уул дүүрэг, 11-р хороолол "Кинг тауэр", 121/102`}</p>
+                            <p className='text-[15px] ml-[10px]'>{`Улаанбаатар, Хан-Уул дүүрэг, 11-р хороо, 121-р байр 102 тоот`}</p>
                         </div>
                     </div>
                 </div>

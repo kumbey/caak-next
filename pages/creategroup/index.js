@@ -11,6 +11,7 @@ import {createGroup} from '../../src/graphql-custom/group/mutation'
 import { createGroupUsers } from '../../src/graphql-custom/GroupUsers/mutation';
 import Loader from '../../src/components/loader';
 import { useRouter } from 'next/router';
+import toast, {Toaster} from 'react-hot-toast';
 
 export default function CreateGroup() {
     const initData = {
@@ -30,7 +31,6 @@ export default function CreateGroup() {
     const [categories, setCategories] = useState([]);
     const [oneCategory, setOneCategory] = useState()
     const [error, setError] = useState(false)
-    const [group, setGroup] = useState([])
 
     const {user} = useUser()
     const router = useRouter()
@@ -44,13 +44,11 @@ export default function CreateGroup() {
 
     const handleChangeName = (e) => {
         const { value } = e.target;
-        // value = JSON.stringify(value);
         setData({ ...data, name: value });
     };
 
     const handleChangeAboout = (e) => {
         const { value } = e.target;
-        // value = JSON.stringify(value);
         setData({ ...data, about: value });
     };
 
@@ -222,11 +220,15 @@ export default function CreateGroup() {
                             })
                         }
                     </select>
-                    <Button loading={loading} onClick={() => {
-                        updateGroupData()
-                    }} skin="primary" className="w-full my-[14px] h-[48px]">
+                    <Button loading={loading} onClick={() => user.aura < 5000 ? toast.error("Таны аура оноо хүрэлцэхгүй байна.") : updateGroupData()} skin="primary" className="w-full my-[14px] h-[48px]">
                         Үүсгэх
                     </Button>
+                        <Toaster
+                            toastOptions={{
+                                className: "toastOptions",
+                                duration: 10000,
+                            }}
+                        />
                     {
                         error
                         ?

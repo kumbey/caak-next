@@ -52,7 +52,7 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
                   <div className={"w-[14px] h-[14px] relative"}>
                     <img
                       // quality={100}
-                      src={auraImg}
+                      src={auraImg.src}
                       alt={""}
                       // layout={"fill"}
                     />

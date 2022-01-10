@@ -148,7 +148,7 @@ const Post = ({ ssrData }) => {
         {post.status === "CONFIRMED" && (
           <div
             className={
-              "viewPostLeftSideBar hidden md:flex mx-[4px] md:mr-[25px] z-1"
+              "viewPostLeftSideBar hidden md:flex mx-[4px] md:mr-[25px] z-[3]"
             }
           >
             <ViewPostLeftReaction

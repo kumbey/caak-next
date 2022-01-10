@@ -80,7 +80,7 @@ const Post = ({ ssrData }) => {
       <ViewPostModal
         post={post}
         containerClassname={
-          "w-full flex flex-row max-w-[1200px] mx-auto py-[20px] pb-[270px] py-[78px] rounded-b-square z-[0]"
+          "w-full flex flex-row max-w-[1200px] mx-auto py-[20px] py-[78px] min-h-[100vh] rounded-b-square z-[0]"
         }
       >
         <div
@@ -148,7 +148,7 @@ const Post = ({ ssrData }) => {
         {post.status === "CONFIRMED" && (
           <div
             className={
-              "viewPostLeftSideBar hidden md:flex mx-[4px] md:mr-[25px] z-1"
+              "viewPostLeftSideBar hidden md:flex mx-[4px] md:mr-[25px] z-[3]"
             }
           >
             <ViewPostLeftReaction
@@ -162,8 +162,8 @@ const Post = ({ ssrData }) => {
           <div className={"bg-white h-full w-full rounded-square"}>
             <div
               className={`absolute flex flex-row justify-between w-full top-[-54px] ${
-                post.status === "CONFIRMED" ? "md:pl-[69px] px-[10px]" : ""
-              } right-0 `}
+                post.status === "CONFIRMED" ? "md:pl-[74px] px-[10px] md:px-0" : ""
+              } right-0`}
             >
               <div className={"flex flex-row "}>
                 <Link href={`/group/${post.group.id}`}>

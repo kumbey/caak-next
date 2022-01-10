@@ -165,10 +165,10 @@ const GroupRule = ({ groupData, ...props }) => {
               <div className="mr-[10px] h-[28px] w-[23px]">
                 <img
                   alt={""}
-                  src={clipboardImg}
+                  src={clipboardImg.src}
                   height={28}
                   width={23}
-                  className={"object-cover"}
+                  className={"object-cover w-full h-full"}
                   // objectFit="cover"
                 />
               </div>

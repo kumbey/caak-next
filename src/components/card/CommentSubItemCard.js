@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   generateTimeAgo,
   getFileUrl,
@@ -15,23 +14,19 @@ import Loader from "../loader";
 import ProfileHoverCard from "./ProfileHoverCard";
 import Tooltip from "../tooltip/Tooltip";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
-import useUpdateEffect from "../../hooks/useUpdateEffect";
+import Link from "next/link";
 
-const CommentSubItemCard = ({
-  parentId,
-  maxComment,
-  jumpToCommentId,
-}) => {
+const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId }) => {
   const { isLogged } = useUser();
   const subscriptions = {};
   const [subscriptionComment, setSubscriptionComment] = useState(null);
   const [reRender, setReRender] = useState(0);
   const [isFetchingComment, setIsFetchingComment] = useState(false);
   const [isReplyInputActive, setIsReplyInputActive] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0);
   // const [replyInputValue, setReplyInputValue] = useState("");
   const [reply, setReply] = useState({
-    isReplying: true
+    isReplying: true,
   });
   const [subComments, setSubComments] = useState({
     items: [],
@@ -151,13 +146,17 @@ const CommentSubItemCard = ({
                     className={"-left-6"}
                     content={<ProfileHoverCard userId={subComment.user.id} />}
                   >
-                    <p
-                      className={
-                        "cursor-pointer text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
-                      }
-                    >
-                      {subComment?.user?.nickname}
-                    </p>
+                    <Link href={`/user/${subComment.user.id}/profile`}>
+                      <a>
+                        <p
+                          className={
+                            "cursor-pointer text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
+                          }
+                        >
+                          {subComment?.user?.nickname}
+                        </p>
+                      </a>
+                    </Link>
                   </Tooltip>
                 </div>
 
@@ -182,8 +181,8 @@ const CommentSubItemCard = ({
                       </div>
                       <div
                         onClick={() => {
-                          setIsReplyInputActive(true)
-                          setActiveIndex(index)
+                          setIsReplyInputActive(true);
+                          setActiveIndex(index);
                           setReply({
                             isReplying: true,
                             user_id: subComment.user.id,
@@ -231,7 +230,7 @@ const CommentSubItemCard = ({
                     />
                   </div>
                 </div>
-                {isReplyInputActive && (activeIndex === index) && (
+                {isReplyInputActive && activeIndex === index && (
                   <ViewPostBlogAddComment
                     commentId={parentId}
                     setIsActive={setIsReplyInputActive}
@@ -247,18 +246,24 @@ const CommentSubItemCard = ({
       {subComments.nextToken && (
         <div
           onClick={() => listSubCommentByParentId()}
-          className={
-            "pl-[40px] mb-[10px] cursor-pointer"
-          }
+          className={"pl-[40px] mb-[10px] cursor-pointer"}
         >
           {isFetchingComment ? (
             <Loader className={`bg-caak-primary self-center`} />
           ) : (
-            <div className={'flex flex-row items-center'}>
-              <div className={'flex items-center justify-center w-[14px] h-[14px]'}>
-                <span className={"fi-rs-reply text-[11.67px]"}/>
+            <div className={"flex flex-row items-center"}>
+              <div
+                className={"flex items-center justify-center w-[14px] h-[14px]"}
+              >
+                <span className={"fi-rs-reply text-[11.67px]"} />
               </div>
-              <p className={"ml-[3px] text-caak-nocturnal font-semibold text-[13px]"}>Илүү ихийг үзэх</p>
+              <p
+                className={
+                  "ml-[3px] text-caak-nocturnal font-semibold text-[13px]"
+                }
+              >
+                Илүү ихийг үзэх
+              </p>
             </div>
           )}
         </div>

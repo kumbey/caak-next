@@ -152,7 +152,7 @@ export default function GroupInformation({
           <div className="flex ">
             <span
               onClick={() => handleClick(1)}
-              className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
+              className="icon-fi-rs-edit-f text-caak-darkBlue ml-10 cursor-pointer"
             />
           </div>
         )}
@@ -203,7 +203,7 @@ export default function GroupInformation({
           <div className="flex ">
             <span
               onClick={() => handleClick(2)}
-              className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
+              className="icon-fi-rs-edit-f text-caak-darkBlue ml-10 cursor-pointer"
             />
           </div>
         )}

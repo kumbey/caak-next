@@ -1,5 +1,5 @@
 import TrendPostsByCategoryItem from "./TrendPostsByCategoryItem";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { API } from "aws-amplify";
 import { listPostByCategoryOrderByReactions } from "../../graphql-custom/post/queries";
 import { getReturnData } from "../../utility/Util";
@@ -11,6 +11,7 @@ const TrendPostsByCategory = () => {
   const [trendingPostsByCategory, setTrendingPostsByCategory] = useState({});
   const [userCategories, setUserCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
+  const trendPostsRef = useRef(null);
   const { user, isLogged } = useUser();
 
   const getUserCategories = async () => {
@@ -77,16 +78,17 @@ const TrendPostsByCategory = () => {
         "flex flex-col w-full p-[18px] bg-white rounded-[8px] mb-[24px] relative"
       }
     >
-      {activeIndex < trendingPostsByCategory.items.length - 1 && (
+      {activeIndex + 1 < trendingPostsByCategory.items.length - 1 && (
         <div
-          style={{
-            transform: `translateY(calc(-50% - "20px"))`,
-          }}
           onClick={() => {
+            trendPostsRef.current.scrollTo({
+              left: (1 + activeIndex) * 252,
+              behavior: "smooth",
+            });
             nextItem();
           }}
           className={
-            "cursor-pointer z-[2] w-[40px] h-[40px] flex items-center justify-center bg-[#000000B3] rounded-full absolute right-[11px] top-1/2"
+            "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-[#000000B3] rounded-full absolute right-[11px] top-1/2"
           }
         >
           <span
@@ -95,23 +97,24 @@ const TrendPostsByCategory = () => {
         </div>
       )}
 
-      {activeIndex > 0 && (
+      {activeIndex > 0 &&
         <div
-          style={{
-            transform: `translateY(calc(-50% - "20px"))`,
-          }}
           onClick={() => {
+            trendPostsRef.current.scrollTo({
+              left: (activeIndex-1) * 252,
+              behavior: "smooth",
+            });
             prevItem();
           }}
           className={
-            "cursor-pointer z-[2] w-[40px] h-[40px] flex items-center justify-center bg-[#000000B3] rounded-full absolute left-[11px] top-1/2 rotate-180"
+            "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-[#000000B3] rounded-full absolute left-[11px] top-1/2 rotate-180"
           }
         >
           <span
             className={"ml-[2px] icon-fi-rs-next text-white text-[16.5px]"}
           />
         </div>
-      )}
+      }
 
       <p
         className={
@@ -120,13 +123,13 @@ const TrendPostsByCategory = () => {
       >
         {selectedCategory.category.name}
       </p>
-      <div className={"relative overflow-hidden"}>
+      <div
+        ref={trendPostsRef}
+        className={"trendPostsCardWrapper relative overflow-x-scroll"}
+      >
         <div
-          style={{
-            transform: `translateX(calc(${activeIndex} * -252px))`,
-          }}
           className={
-            "trendPostsCardWrapper flex flex-row flex-nowrap w-full h-full mt-[14px] transition-all duration-300"
+            " flex flex-row flex-nowrap w-full h-full mt-[14px] transition-all duration-300"
           }
         >
           {trendingPostsByCategory.items.map((item, index) => {

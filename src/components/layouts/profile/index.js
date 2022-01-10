@@ -126,9 +126,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
       query: createFollowedUsers,
       variables: {
         input: {
-          followed_user_id: user.id,
+          followed_user_id: signedUser.id,
           user_id: user.id,
-          id: `${user.id}#${user.id}`,
+          id: `${user.id}#${signedUser.id}`,
         },
       },
     });
@@ -142,7 +142,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
       query: deleteFollowedUsers,
       variables: {
         input: {
-          id: `${user.id}#${user.id}`,
+          id: `${user.id}#${signedUser.id}`,
         },
       },
     });
@@ -523,7 +523,11 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   </>
                 ) : (
                   <Button
-                    className={"rounded-[100px] h-[44px] shadow-none"}
+                    className={`${
+                      user.followed
+                        ? "text-gray-400 border-gray-400 bg-caak-titaniumwhite"
+                        : "text-white border-caak-primary"
+                    } rounded-[100px] h-[44px] shadow-none`}
                     onClick={() => handleClick()}
                     skin={"primary"}
                     iconPosition={"left"}
@@ -534,9 +538,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         }
                       >
                         <span
-                          className={
-                            "icon-fi-rs-thick-add-friend text-white text-[16px]"
-                          }
+                          className={`${
+                            user.followed ? "text-gray-400" : "text-white"
+                          } icon-fi-rs-thick-add-friend text-[16px]`}
                         />
                       </div>
                     }

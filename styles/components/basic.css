@@ -350,7 +350,7 @@
   }
 
   .viewPostLayoutContainer {
-    @apply flex flex-nowrap justify-center flex-row relative;
+    @apply flex flex-nowrap justify-center flex-col md:flex-row relative;
     flex-shrink: 1;
     flex-grow: 1;
     width: 100%;
@@ -366,6 +366,7 @@
     width: 100%;
     min-width: 320px;
     max-width: 859px;
+    margin-bottom: 16px;
   }
 
   .viewPostLeftSideBar {
@@ -474,6 +475,12 @@
     .rightSideBar {
       display: none;
     }
+  }
+
+  .viewPostRightSideBar {
+    flex-grow: 1;
+    flex-basis: 320px;
+    min-width: 320px;
   }
 
   .rightSideBar {

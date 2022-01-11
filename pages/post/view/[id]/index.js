@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
 import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
-import Image from "next/image";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
 import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
@@ -30,6 +29,7 @@ export async function getServerSideProps({ req, query }) {
 }
 
 const Post = ({ ssrData }) => {
+  const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
   const router = useRouter();
   const { user, isLogged } = useUser();
   const [post, setPost] = useState(ssrData.post);
@@ -53,7 +53,7 @@ const Post = ({ ssrData }) => {
 
   const back = () => {
     if (router.query && router.query.prevPath) {
-      router.back();
+      router.replace(router.query.prevPath, undefined, { shallow: true });
     } else {
       router.replace(`/`);
     }
@@ -74,7 +74,20 @@ const Post = ({ ssrData }) => {
     }
     setLoading(false);
   };
-  const ViewPostModal = useModalLayout({ layoutName: "viewpost" });
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.keyCode === 27) {
+        if (!router.query.viewItemPost) back();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+    //eslint-disable-next-line
+  }, [router.query]);
+
   return post ? (
     <>
       <ViewPostModal
@@ -162,7 +175,9 @@ const Post = ({ ssrData }) => {
           <div className={"bg-white h-full w-full rounded-square"}>
             <div
               className={`absolute flex flex-row justify-between w-full top-[-54px] ${
-                post.status === "CONFIRMED" ? "md:pl-[74px] px-[10px] md:px-0" : ""
+                post.status === "CONFIRMED"
+                  ? "md:pl-[74px] px-[10px] md:px-0"
+                  : ""
               } right-0`}
             >
               <div className={"flex flex-row "}>

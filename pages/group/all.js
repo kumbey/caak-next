@@ -66,8 +66,8 @@ export default function AllGroups() {
           setGroups(respFeatured.data.listGroupByFeatured.items)
           :
           setGroups(resp.data.listGroups.items)
-
-        setLoading(false);
+          
+          setLoading(false)
       } catch (ex) {
         console.log(ex);
       }
@@ -194,8 +194,10 @@ export default function AllGroups() {
                   return (
                     <div
                       onClick={() => {
+                        setLoading(true)
                         setId(data.id);
                         setActiveIndex(0);
+                        setLoading(false)
                       }}
                       key={index}
                       className={`py-[9.5px] pl-[18px] font-inter text-[15px] text-[#0D1026] flex flex-row cursor-pointer bg-[${

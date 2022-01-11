@@ -79,27 +79,20 @@ export default function Interests() {
 
   return router.query.isModal ? (
     <div className="px-2 sm:px-10 pb-c1">
-      <div
+      <p
         className={
           "flex text-caak-generalblack justify-center text-center align-center  pb-c2 mt-9 font-bold text-24px"
         }
       >
-        Таны сонирхол
-      </div>
-      <div
-        style={{ maxWidth: "360px" }}
-        className={"flex text-caak-darkBlue mb-c2 text-15px text-center"}
-      >
-        Та өөрийн дуртай сонирхлуудыг сонгосноор өөрийн хүрээллийг хурдан олох
-        боломжтой.
-      </div>
-      <div className="flex flex-row flex-wrap items-center justify-center gap-3">
+        Таны дуртай сонирхолууд?
+      </p>
+      <div className="flex flex-row flex-wrap items-center gap-3">
         {categories.map((data, index) => {
           return (
             <div
               key={index}
               onClick={(e) => selectHandler(data.id)}
-              className={`flex items-center border py-px-6 rounded-full justify-center cursor-pointer px-c6 
+              className={`flex  border py-px-6 w-[170px] h-[170px] hover:w-[164px] hover:h-[164px] rounded-[8px] items-end cursor-pointer px-c6 
                           ${
                             selected.find((item) => item === data.id)
                               ? "bg-caak-primary text-white"
@@ -107,12 +100,12 @@ export default function Interests() {
                           }
                                         `}
             >
-              {selected.find((item) => item === data.id) ? (
+              {/* {selected.find((item) => item === data.id) ? (
                 <span className="icon-fi-rs-check text-12px mr-1.5" />
               ) : (
                 <span className={`mr-1.5 text-18px`}>{data.icon}</span>
-              )}
-              <p className="text-15px font-medium">{data.name}</p>
+              )} */}
+              <p className="text-[16px] font-semibold">{data.name}</p>
             </div>
           );
         })}
@@ -130,7 +123,7 @@ export default function Interests() {
           loading={loading}
           onClick={() => submitHandler()}
           className={
-            "rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
+            "rounded-md w-[420px] h-[44px] text-17px font-bold bg-caak-primary"
           }
         >
           Дуусгах

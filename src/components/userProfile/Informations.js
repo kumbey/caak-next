@@ -140,6 +140,7 @@ export default function Informations({ currentUser }) {
               >
                 {setting.type === "text" ? (
                   <Input
+                    maxLength={80}
                     name={setting.name}
                     defaultValue={setting.value}
                     type="text"

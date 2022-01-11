@@ -6,7 +6,6 @@ import {getFileUrl, getGenderImage} from "../../utility/Util";
 import {getUserById} from "../../utility/ApiHelper";
 import Loader from "../loader";
 import {useRouter} from "next/router";
-import Image from "next/image";
 import Divider from "../divider";
 import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 
@@ -95,17 +94,11 @@ export default function ProfileHoverCard({userId}) {
     }
   };
   return !loading && profileUser.id ? (
-    <div
-      className={`min-w-[300px] rounded-square shadow-dropdown px-[18px] py-[16px] bg-white`}
-      // style={{ top: "45px" }}
-    >
-      <div className={"flex flex-col"}>
-        <div className={"flex flex-row flex-nowrap max-h-[48px]"}>
-          <div className={"w-[48px] h-[48px] rounded-full"}>
+      <div className={`flex flex-col w-full max-w-[300px] rounded-square shadow-dropdown px-[18px] py-[16px] bg-white`}>
+        <div className={"flex flex-row items-center w-full"}>
+          <div className={"w-[48px] h-[48px] rounded-full w-full"}>
             <img
               className={"rounded-full object-cover w-full h-full"}
-              width={48}
-              height={48}
               alt={"user profile"}
               // objectFit={"cover"}
               src={
@@ -115,11 +108,11 @@ export default function ProfileHoverCard({userId}) {
               }
             />
           </div>
-          <div className={"flex flex-col  items-center ml-[10px]"}>
+          <div className={"ml-[10px]"}>
             <div className={"flex flex-row self-start"}>
               <p
                 className={
-                  "font-bold text-caak-generalblack text-16px tracking-[0.24px] leading-[19px]"
+                  "font-bold text-caak-generalblack text-[16px] tracking-[0.24px] leading-[19px]"
                 }
               >
                 {profileUser.nickname}
@@ -144,7 +137,7 @@ export default function ProfileHoverCard({userId}) {
             </div>
             <p
               className={
-                "text-14px text-caak-generalblack self-start tracking-[0.21px] leading-[16px]"
+                "text-14px whitespace-normal text-caak-generalblack w-[200px] "
               }
             >
               {profileUser.about ? profileUser.about : "Саак хэрэглэгч"}
@@ -218,7 +211,6 @@ export default function ProfileHoverCard({userId}) {
           </>
         )}
       </div>
-    </div>
   ) : (
     <Loader
       containerClassName={

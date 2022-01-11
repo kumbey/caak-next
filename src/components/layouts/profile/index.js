@@ -689,13 +689,27 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   />
                 </div>
               </div>
-              <div className={"hidden md:block h-screen overflow-y-auto"}>
-                <SideBarGroups
-                  role={["ADMIN", "MODERATOR"]}
-                  userId={user.id}
-                  title={"Группүүд"}
-                  setIsAuraModalOpen={setIsAuraModalOpen}
-                />
+              <div className={"hidden md:block overflow-y-auto"}>
+                {JSON.parse(user?.meta)?.settings?.showCreatedGroup ||
+                user.id === signedUser.id ? (
+                  <SideBarGroups
+                    role={["ADMIN", "MODERATOR"]}
+                    userId={user.id}
+                    title={"Удирддаг группүүд"}
+                    setIsAuraModalOpen={setIsAuraModalOpen}
+                  />
+                ) : null}
+              </div>
+              <div className={"hidden md:block overflow-y-auto w-full"}>
+                {JSON.parse(user?.meta)?.settings?.showFollowedGroup ||
+                user.id === signedUser.id ? (
+                  <SideBarGroups
+                    role={["MEMBER"]}
+                    userId={user.id}
+                    title={"Нэгдсэн группүүд"}
+                    setIsAuraModalOpen={setIsAuraModalOpen}
+                  />
+                ) : null}
               </div>
             </div>
           </div>

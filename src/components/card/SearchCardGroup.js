@@ -88,7 +88,7 @@ const SearchCardGroup = ({ result, sortType }) => {
   return sortType !== "DEFAULT" ? (
     <div
       className={
-        "bg-white flex flex-col justify-start w-full h-[201px] rounded-square relative"
+        "bg-white flex flex-col w-full rounded-square relative"
       }
     >
       {isLogged && (
@@ -98,8 +98,8 @@ const SearchCardGroup = ({ result, sortType }) => {
           userId={user.id}
         />
       )}
-      <div className={"w-full h-[58px]"}>
-        <div
+      <div className={"w-full h-[74px]"}>
+        {/* <div
           className={
             "flex flex-row items-center absolute top-[10px] right-[10px] z-[1]"
           }
@@ -118,38 +118,10 @@ const SearchCardGroup = ({ result, sortType }) => {
               className={"top-6 -right-3"}
             />
           </div>
-          <Button
-            onClick={handleFollow}
-            iconPosition={"left"}
-            loading={loading}
-            icon={
-              <div
-                className={
-                  "w-[20px] h-[20px] flex items-center justify-center "
-                }
-              >
-                <span
-                  className={`${
-                    result.followed
-                      ? "icon-fi-rs-check text-caak-extraBlack"
-                      : "icon-fi-rs-add-l text-white"
-                  } text-[14px] `}
-                />
-              </div>
-            }
-            skin={"primary"}
-            className={`${
-              result.followed
-                ? "text-caak-extraBlack bg-caak-titaniumwhite"
-                : "bg-caak-primary text-white"
-            } h-[28px] rounded-[6px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px] py-[4px] pr-[12px] pl-[6px]`}
-          >
-            {result.followed ? `Нэгдсэн` : `Нэгдэх`}
-          </Button>
-        </div>
+        </div> */}
         <div className={"relative w-full h-full"}>
           <img
-            className={"rounded-t-square object-cover w-full h-[58px]"}
+            className={"rounded-t-square object-cover w-full h-[74px]"}
             alt={""}
             src={
               result.cover
@@ -161,10 +133,10 @@ const SearchCardGroup = ({ result, sortType }) => {
           />
         </div>
       </div>
-      <div className={"flex flex-col w-full h-full px-[16px] pb-[18px]"}>
+      <div className={"flex flex-col w-full px-[16px]"}>
         <Link href={`/group/${result.id}`}>
           <a>
-            <div className={"absolute top-[20px]"}>
+            <div className={"absolute top-[36px]"}>
               <div
                 className={
                   "relative flex-shrink-0 w-[58px] h-[58px] border-[3px] border-white rounded-square"
@@ -186,7 +158,6 @@ const SearchCardGroup = ({ result, sortType }) => {
             </div>
           </a>
         </Link>
-
         <div className={"flex flex-col mt-[20px]"}>
           <div className={"mt-[12px] flex flex-row items-center"}>
             <Link href={`/group/${result.id}`}>
@@ -231,7 +202,7 @@ const SearchCardGroup = ({ result, sortType }) => {
       </div>
       <div
         className={
-          "flex flex-row text-caak-darkBlue items-center px-[16px] mb-[18px]"
+          "flex flex-row text-caak-darkBlue items-center px-[16px]"
         }
       >
         <div className={"flex justify-center items-center w-[16px] h-[16px]"}>
@@ -241,6 +212,14 @@ const SearchCardGroup = ({ result, sortType }) => {
           <p className={"text-[14px]"}>Нээлттэй групп</p>
         </div>
       </div>
+      <Button
+        onClick={handleFollow}
+        iconPosition={"left"}
+        loading={loading}
+        className={`${result.followed ? 'bg-[#FF6600] text-white' : 'bg-[#E4E4E5] text-[#21293C]'} h-[36px] rounded-[6px] m-[16px] w-[248px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px]`}
+      >
+        {result.followed ? `Нэгдсэн` : `Нэгдэх`}
+      </Button>
     </div>
   ) : (
     <div

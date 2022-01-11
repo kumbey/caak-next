@@ -17,7 +17,6 @@ export default function Settings() {
   const { user } = useUser();
   const { setNavBarTransparent } = useWrapper();
   const [activeIndex, setActiveIndex] = useState(1);
-  console.log(user);
   useEffect(() => {
     setNavBarTransparent(false);
   }, [setNavBarTransparent]);

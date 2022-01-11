@@ -70,33 +70,31 @@ const MobileSideMenu = ({setOpen}) => {
               </a>
             </Link>
             <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen}/>
-            <div className={"flex flex-col items-center justify-center  px-3"}>
-              <div className={"flex flex-row justify-center items-center"}>
-                <div className="flex flex-col items-center">
-                  <Link
-                    href={{
-                      pathname: `/user/${user.id}/profile`,
-                    }}
+            <div className="flex flex-col ml-[10px]">
+              <Link
+                href={{
+                  pathname: `/user/${user.id}/profile`,
+                }}
+              >
+                <a>
+                  <span
+                    className={
+                      "text-generalblack text-14px font-bold cursor-pointer"
+                    }
                   >
-                    <a>
-                      <span
-                        className={
-                          "text-generalblack text-14px font-bold cursor-pointer"
-                        }
-                      >
-                        {user.nickname}
-                      </span>
-                    </a>
-                  </Link>
-                  <div className={"flex flex-row items-center self-start"}>
-                    <span className={"icon-fi-rs-auro auroGradient mr-1"} />
-                    <span
-                      className={"text-14px text-caak-darkBlue font-medium"}
-                    >
-                      {user.aura}
-                    </span>
-                  </div>
-                </div>
+                    {user.nickname}
+                  </span>
+                </a>
+              </Link>
+              <div className={"flex flex-row justify-center items-center bg-[#F3F3F4] rounded-[8px] px-[12px] py-[3px]"}>
+                <span
+                  className={"icon-fi-rs-aura-o auroGradient text-[24px] mr-1"}
+                />
+                <span
+                  className={"text-14px text-caak-generalblack font-medium"}
+                >
+                  {`${user && user.aura} Аура`}
+                </span>
               </div>
             </div>
           </div>

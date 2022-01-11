@@ -125,7 +125,7 @@ export default function PostMoreMenu({
             className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"}
           />
           <p className="text-14px text-caak-extraBlack">
-            {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
+            {groupFollowed ? "Группээс гарах" : "Группт нэгдэх"}
           </p>
         </div>
       )}

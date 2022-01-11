@@ -41,7 +41,6 @@ export default function AllGroups() {
   const { isLogged } = useUser();
   const { width } = useWindowSize();
   const { setNavBarTransparent } = useWrapper();
-  console.log(groups)
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -63,12 +62,12 @@ export default function AllGroups() {
         });
 
         activeIndex === 3
-        ?
-        setGroups(respFeatured.data.listGroupByFeatured.items)
-        :
-        setGroups(resp.data.listGroups.items)
-
-        setLoading(false);
+          ?
+          setGroups(respFeatured.data.listGroupByFeatured.items)
+          :
+          setGroups(resp.data.listGroups.items)
+          
+          setLoading(false)
       } catch (ex) {
         console.log(ex);
       }
@@ -121,7 +120,7 @@ export default function AllGroups() {
           <img src={Cover.src} alt="" className={"object-cover w-full"} />
           <div className="absolute text-white top-1/2 -translate-y-1/2">
             <p className="xl:text-[30px] font-medium text-center">
-              Өөрийн дуртай грүппээ олоорой
+              Өөрийн дуртай группээ олоорой
             </p>
             <p className="text-[12px] text-center">
               Инээдэм, Видео тоглоом гэх мэт төрлийн грүддүүдийг танд хүргэж
@@ -195,8 +194,10 @@ export default function AllGroups() {
                   return (
                     <div
                       onClick={() => {
+                        setLoading(true)
                         setId(data.id);
                         setActiveIndex(0);
+                        setLoading(false)
                       }}
                       key={index}
                       className={`py-[9.5px] pl-[18px] font-inter text-[15px] text-[#0D1026] flex flex-row cursor-pointer bg-[${

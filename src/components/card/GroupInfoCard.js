@@ -244,7 +244,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             </div>
             <div className={"ml-[8px]"}>
               <p className={"text-[14px] tracking-[0.21px] leading-[16px]"}>
-                Нээлттэй бүлэг
+                Нээлттэй групп
               </p>
             </div>
           </div>

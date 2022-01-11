@@ -13,6 +13,24 @@ import Loader from '../../src/components/loader';
 import { useRouter } from 'next/router';
 import toast, {Toaster} from 'react-hot-toast';
 
+const button = [
+    {
+        id: 1,
+        title: 'Трэнд',
+        icon: "icon-fi-rs-trend-f"
+    },
+    {
+        id: 2,
+        title: 'Шинэ',
+        icon: "icon-fi-rs-new-o"
+    },
+    {
+        id: 3,
+        title: 'Шилдэг',
+        icon: "icon-fi-rs-flash-o"
+    }
+]
+
 export default function CreateGroup() {
     const initData = {
         name: "",
@@ -31,6 +49,7 @@ export default function CreateGroup() {
     const [categories, setCategories] = useState([]);
     const [oneCategory, setOneCategory] = useState()
     const [error, setError] = useState(false)
+    const [selected, setSelected] = useState(1)
 
     const {user} = useUser()
     const router = useRouter()
@@ -296,6 +315,24 @@ export default function CreateGroup() {
                                 <p className='text-[#6C7392] text-[14px] ml-[16px]'>Пост оруулах</p>
                             </div>
                             <span className='icon-fi-rs-image-o text-[#9A9FB4] text-[20px]'/>
+                        </div>
+                        <div className='flex flex-row items-center justify-between mt-[32px]'>
+                            <div className='flex flex-row items-center'>
+                                {
+                                    button.map(({title, icon, id}) => {
+                                        return(
+                                            <div key={id} onClick={() => setSelected(id)} className={`w-[110px] h-[36px] cursor-pointer justify-center ${selected === id ? 'bg-white' : null} rounded-[8px] flex flex-row justify-center items-center text-[#9A9FB4]`}>
+                                                <span className={icon}/>
+                                                <p className='text-[15px] ml-[4px] font-medium'>{title}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className='w-[80px] bg-white flex flex-row items-center justify-evenly text-[#9A9FB4] h-[36px] rounded-[5px] text-[16px]'>
+                                <span className='icon-fi-rs-list-card-f'/>
+                                <span className='icon-fi-rs-list-grid-o'/>
+                            </div>
                         </div>
                     </div>
                     <div className='w-full max-w-[320px] h-full max-h-[378px] bg-white mt-[20px] sm:mt-0 sm:ml-[25px] rounded-[8px] relative'>

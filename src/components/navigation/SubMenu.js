@@ -17,6 +17,7 @@ import AddPostGuideCard from "../card/AddPostGuideCard";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
 import AuraModal from "../modals/auraModal";
+import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
@@ -24,8 +25,8 @@ const SubMenu = ({ params }) => {
   const { lsGet } = useLocalStorage("session");
 
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
-  const xd = lsGet(Consts.addPostKey).addPostGuide
-  const [open, setOpen] = useState(xd)
+  const xd = lsGet(Consts.addPostKey).addPostGuide;
+  const [open, setOpen] = useState(xd);
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
   const router = useRouter();
@@ -71,7 +72,7 @@ const SubMenu = ({ params }) => {
             />
           </div>
         </div>
-          <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen}/>
+        <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen} />
         <div
           onClick={() => {
             router.push("/");
@@ -117,10 +118,20 @@ const SubMenu = ({ params }) => {
             <AddPostGuideCard open={open} setOpen={setOpen} />
           </Button>
         </div>
-        
-        <div onClick={() => router.push({pathname: "/groups"})} className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
-          <span className={`${navBarTransparent ? "text-white" : "text-caak-generalblack"} icon-fi-rs-group-f text-[20px]`} />
-        </div>
+        {!isTablet && (
+          <Link href={"/group/all"}>
+            <a>
+              <div className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
+                <span
+                  className={`${
+                    navBarTransparent ? "text-white" : "text-caak-generalblack"
+                  } icon-fi-rs-group-f text-[20px]`}
+                />
+              </div>
+            </a>
+          </Link>
+        )}
+
         <div
           ref={notificationRef}
           onClick={() => {

@@ -79,6 +79,7 @@ const Dashboard = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
+  
   const [userTotals, setUserTotals] = useState(ssrData.userTotals);
   const [followedUsers, setFollowedUsers] = useState({
     items: [],

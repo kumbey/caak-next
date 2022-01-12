@@ -350,7 +350,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       : getGenderImage(user.gender).src
                   }
                 />
-                {isLogged && user.id === signedUser.id && !uploadingProfile && (
+                {isLogged && user.id === signedUser?.id && !uploadingProfile && (
                   <Dropzone
                     onDropRejected={(e) => console.log(e[0].errors[0].message)}
                     accept={"image/jpeg, image/png, image/gif"}
@@ -691,18 +691,19 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               </div>
               <div className={"hidden md:block overflow-y-auto"}>
                 {JSON.parse(user?.meta)?.settings?.showCreatedGroup ||
-                user.id === signedUser.id ? (
-                  <SideBarGroups
-                    role={["ADMIN", "MODERATOR"]}
-                    userId={user.id}
-                    title={"Удирддаг группүүд"}
-                    setIsAuraModalOpen={setIsAuraModalOpen}
-                  />
-                ) : null}
+                  user.id === signedUser?.id ? (
+                    <SideBarGroups
+                      role={["ADMIN", "MODERATOR"]}
+                      userId={user.id}
+                      title={"Удирддаг группүүд"}
+                      setIsAuraModalOpen={setIsAuraModalOpen}
+                    />
+                  ) : null
+                }
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
                 {JSON.parse(user?.meta)?.settings?.showFollowedGroup ||
-                user.id === signedUser.id ? (
+                user.id === signedUser?.id ? (
                   <SideBarGroups
                     role={["MEMBER"]}
                     userId={user.id}

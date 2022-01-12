@@ -35,7 +35,8 @@
     "react-input-mask": "^2.0.4",
     "react-intersection-observer": "^8.33.1",
     "react-player": "^2.9.0",
-    "sharp": "^0.29.3"
+    "sharp": "^0.29.3",
+    "simplebar-react": "^2.3.6"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.3.4",

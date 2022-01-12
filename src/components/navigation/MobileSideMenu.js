@@ -122,10 +122,10 @@ const MobileSideMenu = ({setOpen}) => {
                   <SideBarGroups
                       role={["MEMBER"]}
                       // maxColumns={0}
-                      title={"Дагасан группүүд"}
+                      title={"Нэгдсэн группүүд"}
                       setIsAuraModalOpen={setIsAuraModalOpen}
                   />
-                  <SideBarGroups setIsAuraModalOpen={setIsAuraModalOpen} role={["NOT_MEMBER"]} title={"Бүх групп"}/>
+                  <SideBarGroups setIsAuraModalOpen={setIsAuraModalOpen} role={["NOT_MEMBER"]} title={"Бусад групп"}/>
               </div>
           )}
       </div>

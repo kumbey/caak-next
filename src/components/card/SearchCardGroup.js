@@ -191,7 +191,7 @@ const SearchCardGroup = ({ result, sortType }) => {
             </div>
             <div className={"flex flex-row items-center ml-[24px]"}>
               <p className={"font-medium text-caak-generalblack text-[17px]"}>
-                {result.totals.member}
+                {result.totals.member + result.totals.admin + result.totals.moderator}
               </p>
               <p className={"text-[14px] text-caak-darkBlue ml-[5px]"}>
                 Гишүүн

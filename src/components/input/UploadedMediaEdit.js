@@ -234,10 +234,17 @@ const UploadedMediaEdit = ({
   }, []);
 
   useEffect(() => {
+    let cContent
+    if(caakContent){
+      cContent = {owned: "CAAK"}
+    }
+    else {
+      delete post.owned
+    }
     setPost({
       ...post,
       commentType: !!allowComment,
-      ...(caakContent ? { owned: "CAAK" } : {}),
+      ...cContent,
     });
     // eslint-disable-next-line
   }, [allowComment, caakContent]);

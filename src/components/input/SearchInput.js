@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import SearchedGroupItem from "./SearchedGroupItem";
 import Link from "next/link";
 import { useClickOutSide, useDebounce } from "../../utility/Util";
-import { API } from "aws-amplify";
+import {API, Auth} from "aws-amplify";
 import Loader from "../loader";
 import { useRouter } from "next/router";
 import { searchApi } from "../../apis/search";
@@ -23,6 +23,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
   const searchQuery = async () => {
     const resp = await searchApi({
       API,
+      Auth,
       searchQuery: inputValue,
       postLimit: 10,
     });

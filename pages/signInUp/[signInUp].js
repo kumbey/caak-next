@@ -1,9 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faApple,
   faFacebook,
-  faGoogle,
-  faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import googleImg from "../../public/assets/images/Google-Color.svg";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
@@ -12,7 +9,6 @@ import { useUser } from "../../src/context/userContext";
 import useModalLayout from "../../src/hooks/useModalLayout";
 import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
-import Image from "next/image";
 import Link from "next/link";
 
 const SignInUp = () => {

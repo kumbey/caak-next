@@ -13,7 +13,7 @@ const Confirm = ({ ...props }) => {
 
   return usrInfo ? (
     <ModalLayout
-      maxStep={4}
+      maxStep={3}
       activeStep={2}
       className={"flex justify-center items-center"}
       configure={{

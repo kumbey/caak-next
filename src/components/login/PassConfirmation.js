@@ -5,7 +5,6 @@ import Validate from "../../utility/Validate";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
 import Input from "../input";
-import { mailNumber } from "/src/utility/Util";
 import OtpInput from "/src/components/input/OtpInput";
 
 const PassConfirmation = () => {
@@ -113,7 +112,7 @@ const PassConfirmation = () => {
         </div>
         <div className={" flex flex-col "}>
           <div className="px-c8 ">
-            <div className=" flex justify-center text-14px text-caak-darkBlue mt-8"></div>
+            <div className=" flex justify-center text-14px text-caak-darkBlue mt-8"/>
             {counter > 0 ? (
               <>
                 <p className="text-green-600 text-center">

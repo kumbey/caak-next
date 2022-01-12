@@ -100,7 +100,7 @@ const SideBarGroups = ({
         {addGroup && (
           <div
             onClick={() => user.aura < 5000 ? setIsAuraModalOpen(true) : router.push({
-              pathname: '/creategroup'
+              pathname: '/group/create'
             })}
             className={
               "flex justify-center cursor-pointer items-center w-[18px] h-[18px] p-[3px]"

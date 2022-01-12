@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { generateFileUrl, getFileUrl } from "../../utility/Util";
 import Link from "next/link";
 import Video from "../video";
@@ -10,7 +9,6 @@ const GroupTrendPostsCardItem = ({ item }) => {
 
   return (
     <div className={"flex flex-row mb-[21px]"}>
-      {/* <Link shallow href={`/post/view/${item.id}`}> */}
       <Link
         shallow
         as={`/post/view/${item.id}`}
@@ -19,7 +17,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
             ...router.query,
             viewPost: "post",
             id: item.id,
-            prevPath: router.asPath,
+            // prevPath: router.query.prevPath,
             isModal: true,
           },
         }}
@@ -48,8 +46,6 @@ const GroupTrendPostsCardItem = ({ item }) => {
               <img
                 alt={firstItem.file.name}
                 src={getFileUrl(firstItem.file)}
-                // layout={"fill"}
-                // objectFit={"cover"}
                 className={"rounded-square object-cover w-full h-full"}
               />
             )}
@@ -66,7 +62,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
               ...router.query,
               viewPost: "post",
               id: item.id,
-              prevPath: router.asPath,
+              // prevPath: router.asPath,
               isModal: true,
             },
           }}

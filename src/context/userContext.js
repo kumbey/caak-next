@@ -9,6 +9,7 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getUser } from "../graphql-custom/user/queries";
 import { useRouter } from "next/router";
+import { listGroupsByUser } from "../graphql-custom/GroupUsers/queries";
 
 const UserContext = createContext();
 
@@ -85,8 +86,8 @@ function UserProvider(props) {
 
   useEffect(() => {
     if (cognitoUser) {
-      if(!lsGet(Consts.addPostKey)){
-        lsSet(Consts.addPostKey, {addPost: true, addPostGuide: true})
+      if (!lsGet(Consts.addPostKey)) {
+        lsSet(Consts.addPostKey, { addPost: true, addPostGuide: true });
       }
     } else {
       lsRemove(Consts.addPostKey);
@@ -131,9 +132,8 @@ function UserProvider(props) {
   }, []);
 
   const isLoginValid = async () => {
-    try{
+    try {
       const usr = await Auth.currentAuthenticatedUser();
-    
       if (usr) {
         if (!Object.is(usr, cognitoUser)) {
           setCognitoUser(usr);
@@ -143,39 +143,54 @@ function UserProvider(props) {
           graphqlOperation(getUser, { id: usr.attributes.sub })
         );
 
-        resp = getReturnData(resp)
-        if(!resp){
-          router.push({
-            query: {
-              ...router.query,
-              prevPath: router.asPath,
-              signInUp: "information",
-              isModal: true
-            }
-          }, "/signInUp/information", {shallow : true, scroll: false})
-
-        }else{
-          if(resp.category && resp.category.items.length <= 0){
-            router.push({
+        resp = getReturnData(resp);
+        let userGroups = await API.graphql(
+          graphqlOperation(listGroupsByUser, {
+            user_id: usr.attributes.sub,
+            limit: 3,
+          })
+        );
+        userGroups = getReturnData(userGroups);
+        if (!resp) {
+          router.push(
+            {
               query: {
                 ...router.query,
                 prevPath: router.asPath,
-                signInUp: "intrst",
-                isModal: true
-              }
-            }, "/signInUp/intrst", {shallow : true, scroll: false})
-            return false
+                signInUp: "information",
+                isModal: true,
+              },
+            },
+            "/signInUp/information",
+            { shallow: true, scroll: false }
+          );
+        } else {
+          setUser({ ...resp, groups: userGroups });
+
+          if (resp.category && resp.category.items.length <= 0) {
+            router.push(
+              {
+                query: {
+                  ...router.query,
+                  prevPath: router.asPath,
+                  signInUp: "intrst",
+                  isModal: true,
+                },
+              },
+              "/signInUp/intrst",
+              { shallow: true, scroll: false }
+            );
+            setUser({ ...resp, groups: userGroups });
+            return false;
           }
-          setUser(resp);
         }
-        
       } else {
         setIsLogged(false);
         setUser(null);
         setCognitoUser(null);
       }
-    }catch(ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
       setIsLogged(false);
       setUser(null);
       setCognitoUser(null);
@@ -193,7 +208,7 @@ function UserProvider(props) {
   // const value = useMemo(() => ({ user, setUser }), [user]);
   return (
     <UserContext.Provider
-      value={{ user, cognitoUser, isLogged, logout, isLoginValid}}
+      value={{ user, cognitoUser, isLogged, logout, isLoginValid }}
       {...props}
     />
   );

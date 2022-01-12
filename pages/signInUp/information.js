@@ -2,13 +2,13 @@ import useModalLayout from "../../src/hooks/useModalLayout";
 import UserInformation from "../../src/components/register/UserInformation";
 import WithUserComplete from "../../src/middleware/auth/WithUserComplete";
 
-const Information = ({ ...props }) => {
+const Information = () => {
 
   const ModalLayout = useModalLayout({ layoutName: "step" });
 
   return (
     <ModalLayout
-      maxStep={4}
+      maxStep={3}
       activeStep={3}
       className={"flex justify-center items-center"}
       configure={{

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
@@ -165,7 +165,7 @@ const SubMenu = ({ params }) => {
             />
           </div>
 
-          {parseInt(params.userTotal.unseen) > 0 ? (
+          {parseInt(params?.userTotal?.unseen) > 0 ? (
             <div
               className={
                 "absolute flex justify-center items-center top-[1px] right-[-4px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"

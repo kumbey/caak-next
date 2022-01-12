@@ -6,7 +6,7 @@ import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
 import Input from "../input";
 
-const ForgotPass = ({ nextStep }) => {
+const ForgotPass = ( ) => {
   const router = useRouter();
 
   const [error, setError] = useState("");
@@ -56,9 +56,6 @@ const ForgotPass = ({ nextStep }) => {
 
   const submitHandler = () => {
     handleSubmit(doSubmit);
-    if (nextStep) {
-      nextStep();
-    }
   };
 
   return (
@@ -85,6 +82,7 @@ const ForgotPass = ({ nextStep }) => {
         </div>
         <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
           <Button
+            skin={"primary"}
             loading={loading}
             onClick={() => submitHandler()}
             className={

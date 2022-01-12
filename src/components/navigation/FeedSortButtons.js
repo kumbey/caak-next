@@ -41,7 +41,7 @@ const FeedSortButtons = ({
           } ${containerClassname ? containerClassname : ""}`}
         >
           {items.map(({ icon, type, id, title, route }) => {
-            return isLogged && userId === signedUser.id ? (
+            return isLogged && userId === signedUser?.id ? (
               <Button
                 key={id}
                 onClick={() => {
@@ -91,7 +91,7 @@ const FeedSortButtons = ({
                   setActiveIndex(id);
                   feed && router.replace(route);
                 }}
-                className={`mx-[2px] ${
+                className={`${
                   direction === "column" ? "w-full h-12" : "w-auto h-9"
                 } min-w-max ${
                   id === activeIndex

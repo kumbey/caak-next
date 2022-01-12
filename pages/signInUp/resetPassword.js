@@ -1,8 +1,7 @@
 import PassConfirmation from "../../src/components/login/PassConfirmation";
 import useModalLayout from "../../src/hooks/useModalLayout";
 
-const ResetPassword = ({ ...props }) => {
-
+const ResetPassword = () => {
   const ModalLayout = useModalLayout({ layoutName: "step" });
 
   return (
@@ -11,7 +10,7 @@ const ResetPassword = ({ ...props }) => {
       activeStep={2}
       className={"flex justify-center items-center"}
       configure={{
-        back: false,
+        back: true,
         footer: false,
       }}
     >

@@ -104,3 +104,18 @@ export const FeedViewType = [
     icon: " icon-fi-rs-list-card",
   },
 ];
+
+export const InterestGroupsType = [
+  {
+    id: 0,
+    title: "Зөвхөн танд",
+    type: "FORYOU",
+    icon: "icon-fi-rs-love",
+  },
+  {
+    id: 1,
+    title: "Тренд болж буй",
+    type: "TREND",
+    icon: " icon-fi-rs-flash",
+  },
+];

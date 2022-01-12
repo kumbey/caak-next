@@ -60,31 +60,29 @@ const DefaultFeedLayout = ({
               direction={"column"}
               containerClassname={"w-full"}
             />
-
-              <SideBarGroups
-                role={["ADMIN", "MODERATOR"]}
-                // maxColumns={3}
-                addGroup
-                // initialData={adminModeratorGroups}
-                title={"Миний группүүд"}
-                setIsAuraModalOpen={setIsAuraModalOpen}
-              />
-              <SideBarGroups
-                role={["MEMBER"]}
-                // maxColumns={0}
-                addGroup
-                initialData={myGroups}
-                title={"Дагасан группүүд"}
-                setIsAuraModalOpen={setIsAuraModalOpen}
-              />
-              <SideBarGroups
-                role={["NOT_MEMBER"]}
-                initialData={allGroups}
-                addGroup
-                title={"Бүх групп"}
-                setIsAuraModalOpen={setIsAuraModalOpen}
-              />
-
+            <SideBarGroups
+              role={["ADMIN", "MODERATOR"]}
+              // maxColumns={3}
+              addGroup
+              // initialData={adminModeratorGroups}
+              title={"Миний группүүд"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
+            />
+            <SideBarGroups
+              role={["MEMBER"]}
+              // maxColumns={0}
+              addGroup
+              initialData={myGroups}
+              title={"Дагасан группүүд"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
+            />
+            <SideBarGroups
+              role={["NOT_MEMBER"]}
+              initialData={allGroups}
+              addGroup
+              title={myGroups !== null && myGroups.length === 0 ?  "Бүх групп" : "Бусад групп"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
+            />
             {isLogged && <FooterSidebar />}
             </SimpleBar>
           </div>

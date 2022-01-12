@@ -166,13 +166,22 @@ export default function SocialLink() {
                 </form>
               ) : (
                 <div className="flex  items-center">
-                  <Button
+                  {
+                    menu.value === ""
+                    ?
+                    <Button
                     onClick={() => handleClick(menu.id)}
-                    style={{ width: "75px" }}
-                    className="bg-caak-bleudefrance text-white font-inter font-medium text-12px h-c2 rounded-full"
+                    className="bg-caak-bleudefrance w-[101px] text-white font-medium text-12px h-c2 rounded-full"
                   >
                     Холбох
                   </Button>
+                  :
+                  <Button
+                    className="bg-[#E4E4E5] w-[101px] text-black font-medium text-12px h-c2 rounded-full"
+                    >
+                    Холбосон
+                  </Button>
+                  }
                 </div>
               )}
             </div>

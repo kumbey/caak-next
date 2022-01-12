@@ -315,6 +315,11 @@ const AddPost = () => {
             <div
               className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
             >
+              <div className="flex justify-end mt-[10px] mr-[10px] sm:hidden">
+                <p onClick={() => handleSubmit()} className=" font-medium text-white bg-caak-primary p-[5px] rounded-[8px]">
+                  Нийтлэх
+                </p>
+              </div>
               <SelectGroup
                 containerClassName={"mt-[28px] z-[4]"}
                 groupData={groupData}
@@ -344,7 +349,7 @@ const AddPost = () => {
                 <Button
                   onClick={() => router.back()}
                   className={
-                    "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
+                    "font-medium text-[16px] mr-2 mt-4 text-17px w-[116px] border border-caak-titaniumwhite h-[44px]"
                   }
                 >
                   Болих
@@ -352,9 +357,9 @@ const AddPost = () => {
                 <Button
                   onClick={() => handleSubmit()}
                   loading={loading}
-                  skin={"white"}
+                  skin={"primary"}
                   className={
-                    "mr-2 mt-4 shadow-sm text-black text-[17px] font-medium border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
+                    "mr-2 mt-4 shadow-sm text-white text-[16px] font-semibold border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
                   }
                 >
                   Нийтлэх

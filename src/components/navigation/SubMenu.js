@@ -21,7 +21,7 @@ import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
-  const { navBarTransparent } = useWrapper();
+  const { navBarTransparent, groupTransparent } = useWrapper();
   const { lsGet } = useLocalStorage("session");
 
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
@@ -118,20 +118,23 @@ const SubMenu = ({ params }) => {
             <AddPostGuideCard open={open} setOpen={setOpen} />
           </Button>
         </div>
-        {!isTablet && (
-          <Link href={"/group/all"}>
-            <a>
-              <div className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
-                <span
-                  className={`${
-                    navBarTransparent ? "text-white" : "text-caak-generalblack"
-                  } icon-fi-rs-group-f text-[20px]`}
-                />
-              </div>
-            </a>
-          </Link>
-        )}
-
+        {
+          groupTransparent ? null 
+          :
+          !isTablet && (
+            <Link href={"/group/all"}>
+              <a>
+                <div className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
+                  <span
+                    className={`${
+                      navBarTransparent ? "text-white" : "text-caak-generalblack"
+                    } icon-fi-rs-group-f text-[20px]`}
+                  />
+                </div>
+              </a>
+            </Link>
+          )
+        }
         <div
           ref={notificationRef}
           onClick={() => {

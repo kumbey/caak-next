@@ -15,7 +15,7 @@ const Gender = ({
   useEffect(() => {
     if (typeof setText === "function")
       setText((prev) => ({ ...prev, gender: gender }));
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, [gender]);
 
   return (

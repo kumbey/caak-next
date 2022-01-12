@@ -1,16 +1,19 @@
-import {createFollowedUsers, deleteFollowedUsers,} from "../../graphql-custom/user/mutation";
+import {
+  createFollowedUsers,
+  deleteFollowedUsers,
+} from "../../graphql-custom/user/mutation";
 import API from "@aws-amplify/api";
-import {useUser} from "../../context/userContext";
-import {useEffect, useState} from "react";
-import {getFileUrl, getGenderImage} from "../../utility/Util";
-import {getUserById} from "../../utility/ApiHelper";
+import { useUser } from "../../context/userContext";
+import { useEffect, useState } from "react";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
+import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import Divider from "../divider";
 import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 
-export default function ProfileHoverCard({userId}) {
-  const {user, isLogged} = useUser();
+export default function ProfileHoverCard({ userId }) {
+  const { user, isLogged } = useUser();
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
@@ -85,7 +88,7 @@ export default function ProfileHoverCard({userId}) {
             ...router.query,
             signInUp: "signIn",
             isModal: true,
-            prevPath: router.asPath
+            prevPath: router.asPath,
           },
         },
         `/signInUp/signIn`,
@@ -94,123 +97,122 @@ export default function ProfileHoverCard({userId}) {
     }
   };
   return !loading && profileUser.id ? (
-      <div className={`flex flex-col w-full max-w-[300px] rounded-square shadow-dropdown px-[18px] py-[16px] bg-white`}>
-        <div className={"flex flex-row items-center w-full"}>
-          <div className={"w-[48px] h-[48px] rounded-full w-full"}>
-            <img
-              className={"rounded-full object-cover w-full h-full"}
-              alt={"user profile"}
-              // objectFit={"cover"}
-              src={
-                profileUser.pic
-                  ? getFileUrl(profileUser.pic)
-                  : getGenderImage(profileUser.gender).src
-              }
-            />
-          </div>
-          <div className={"ml-[10px]"}>
-            <div className={"flex flex-row self-start"}>
-              <p
-                className={
-                  "font-bold text-caak-generalblack text-[16px] tracking-[0.24px] leading-[19px]"
-                }
-              >
-                {profileUser.nickname}
-              </p>
-              {profileUser.verified && (
-                <div
-                  className={
-                    "flex items-center justify-center w-[17px] h-[17px]"
-                  }
-                >
-                  <img
-                    className={"w-[16.5px] h-[14.25px]"}
-                    alt={""}
-                    height={14.25}
-                    width={16.5}
-                    // quality={100}
-                    // priority={true}
-                    src={userVerifiedSvg.src}
-                  />
-                </div>
-              )}
-            </div>
-            <p
-              className={
-                "text-14px whitespace-normal text-caak-generalblack w-[200px] "
-              }
-            >
-              {profileUser.about ? profileUser.about : "Саак хэрэглэгч"}
-            </p>
-          </div>
+    <div
+      className={`flex flex-col w-full max-w-[300px] rounded-square shadow-dropdown px-[18px] py-[16px] bg-white`}
+    >
+      <div className={"flex flex-row items-center w-full"}>
+        <div className={"w-[48px] h-[48px] rounded-full w-full"}>
+          <img
+            className={"rounded-full object-cover w-full h-full"}
+            alt={"user profile"}
+            // objectFit={"cover"}
+            src={
+              profileUser.pic
+                ? getFileUrl(profileUser.pic)
+                : getGenderImage(profileUser.gender).src
+            }
+          />
         </div>
-        <div className={"flex flex-row items-center py-[15px]"}>
-          <div className={"flex flex-row items-center"}>
+        <div className={"ml-[10px]"}>
+          <div className={"flex flex-row self-start"}>
             <p
               className={
-                "text-[17px] text-caak-generalblack font-medium tracking-[0.26px] leading-[20px]"
+                "font-bold text-caak-generalblack text-[16px] tracking-[0.24px] leading-[19px]"
               }
             >
-              {profileUser.aura}&nbsp;
+              {profileUser.nickname}
             </p>
-            <p
-              className={
-                "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px]"
-              }
-            >
-              Аура
-            </p>
-          </div>
-          <div className={"flex flex-row items-center ml-[14px]"}>
-            <p
-              className={
-                "text-[17px] text-caak-generalblack font-medium tracking-[0.26px] leading-[20px]"
-              }
-            >
-              {profileUser.totals.followers}&nbsp;
-            </p>
-            <p
-              className={
-                "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px]"
-              }
-            >
-              Дагагчид
-            </p>
-          </div>
-        </div>
-        {/*If no user is logged, show only follow button*/}
-        {/*And If user is there show follow or unfollow button*/}
-        {isLogged ? (
-          user.id !== profileUser.id ? (
-            <>
-              <Divider
-                className={"mb-[12px]"}
-                color={"bg-caak-titaniumwhite"}
-              />
-              <button
-                onClick={handleClick}
-                className={
-                  "button small bg-caak-primary text-white font-medium text-15px"
-                }
+            {profileUser.verified && (
+              <div
+                className={"flex items-center justify-center w-[17px] h-[17px]"}
               >
-                {profileUser.followed ? "Дагасан" : "Дагах"}
-              </button>
-            </>
-          ) : null
-        ) : (
+                <img
+                  className={"w-[16.5px] h-[14.25px]"}
+                  alt={""}
+                  height={14.25}
+                  width={16.5}
+                  // quality={100}
+                  // priority={true}
+                  src={userVerifiedSvg.src}
+                />
+              </div>
+            )}
+          </div>
+          <p
+            className={
+              "text-14px whitespace-normal text-caak-generalblack w-[200px] "
+            }
+          >
+            {profileUser.about ? profileUser.about : "Саак хэрэглэгч"}
+          </p>
+        </div>
+      </div>
+      <div className={"flex flex-row items-center py-[15px]"}>
+        <div className={"flex flex-row items-center"}>
+          <p
+            className={
+              "text-[17px] text-caak-generalblack font-medium tracking-[0.26px] leading-[20px]"
+            }
+          >
+            {profileUser.aura}&nbsp;
+          </p>
+          <p
+            className={
+              "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px]"
+            }
+          >
+            Аура
+          </p>
+        </div>
+        <div className={"flex flex-row items-center ml-[14px]"}>
+          <p
+            className={
+              "text-[17px] text-caak-generalblack font-medium tracking-[0.26px] leading-[20px]"
+            }
+          >
+            {profileUser.totals.followers}&nbsp;
+          </p>
+          <p
+            className={
+              "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px]"
+            }
+          >
+            Дагагчид
+          </p>
+        </div>
+      </div>
+      {/*If no user is logged, show only follow button*/}
+      {/*And If user is there show follow or unfollow button*/}
+      {isLogged ? (
+        user.id !== profileUser.id ? (
           <>
             <Divider className={"mb-[12px]"} color={"bg-caak-titaniumwhite"} />
             <button
               onClick={handleClick}
-              className={
-                "button small bg-caak-primary text-white font-medium text-15px"
-              }
+              className={`${
+                profileUser?.followed
+                  ? "bg-caak-titaniumwhite text-caak-shit"
+                  : "bg-caak-primary text-white"
+              }  button small  font-medium text-15px`}
             >
-              Дагах
+              {profileUser.followed ? "Дагасан" : "Дагах"}
             </button>
           </>
-        )}
-      </div>
+        ) : null
+      ) : (
+        <>
+          <Divider className={"mb-[12px]"} color={"bg-caak-titaniumwhite"} />
+          <button
+            onClick={handleClick}
+            className={
+              "button small bg-caak-primary text-white font-medium text-15px"
+            }
+          >
+            Дагах
+          </button>
+        </>
+      )}
+    </div>
   ) : (
     <Loader
       containerClassName={

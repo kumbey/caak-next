@@ -44,6 +44,7 @@ const AddPost = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const { setNavBarTransparent } = useWrapper();
   const [valid, setValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
   const [post, setPost] = useState({
     id: postId,
     title: "",
@@ -248,6 +249,8 @@ const AddPost = () => {
       setValid(false);
       return;
     }
+    setIsValid(true);
+
     if (selectedGroup) {
       const resp = await getGroup({ id: selectedGroup.id });
       setSelectedGroup(resp);
@@ -344,7 +347,7 @@ const AddPost = () => {
                 <Button
                   onClick={() => router.back()}
                   className={
-                    "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
+                    "font-medium text-[16px] mr-2 mt-4  border border-caak-titaniumwhite h-[44px]"
                   }
                 >
                   Болих
@@ -353,9 +356,11 @@ const AddPost = () => {
                   onClick={() => handleSubmit()}
                   loading={loading}
                   skin={"white"}
-                  className={
-                    "mr-2 mt-4 shadow-sm text-black text-[17px] font-medium border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
-                  }
+                  className={`${
+                    isValid
+                      ? "text-black "
+                      : "bg-caak-titaniumwhite text-caak-shit"
+                  } mr-2 mt-4 shadow-sm  text-[16px] font-medium border border-caak-titaniumwhite w-[190px] h-[44px] justify-center`}
                 >
                   Нийтлэх
                 </Button>

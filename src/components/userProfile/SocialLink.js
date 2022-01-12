@@ -130,9 +130,6 @@ export default function SocialLink() {
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <div className="flex items-center ">
-                    <div className="text-caak-darkBlue text-sm pb-2">
-                      www.{menu.name}.com/
-                    </div>
                     <div className="w-full">
                       <Input
                         name={menu.name}

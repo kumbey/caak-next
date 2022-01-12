@@ -554,9 +554,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 {JSON.parse(user?.meta)?.facebook && (
                   <a
                     rel={"noreferrer"}
-                    href={`https://www.facebook.com/${
-                      JSON.parse(user?.meta).facebook
-                    }`}
+                    href={`${JSON.parse(user?.meta).facebook}`}
                     target="_blank"
                   >
                     <div
@@ -580,7 +578,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {JSON.parse(user?.meta).facebook}
+                        {JSON.parse(user?.meta).facebook.slice(21)}
                       </p>
                     </div>
                   </a>
@@ -588,9 +586,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 {JSON.parse(user?.meta)?.twitter && (
                   <a
                     rel={"noreferrer"}
-                    href={`https://www.twitter.com/${
-                      JSON.parse(user?.meta).twitter
-                    }`}
+                    href={`${JSON.parse(user?.meta).twitter}`}
                     target="_blank"
                   >
                     <div className={"flex flex-row items-center mb-[10px]"}>
@@ -610,7 +606,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {JSON.parse(user?.meta).twitter}
+                        {JSON.parse(user?.meta).twitter.slice(20)}
                       </p>
                     </div>
                   </a>
@@ -618,9 +614,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 {JSON.parse(user?.meta)?.instagram && (
                   <a
                     rel={"noreferrer"}
-                    href={`https://www.instagram.com/${
-                      JSON.parse(user?.meta).instagram
-                    }`}
+                    href={`${JSON.parse(user?.meta).instagram}`}
                     target="_blank"
                   >
                     <div className={"flex flex-row items-center mb-[10px]"}>
@@ -640,7 +634,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {JSON.parse(user?.meta).instagram}
+                        {JSON.parse(user?.meta).instagram.slice(22)}
                       </p>
                     </div>
                   </a>
@@ -648,9 +642,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 {JSON.parse(user?.meta)?.tiktok && (
                   <a
                     rel={"noreferrer"}
-                    href={`https://www.tiktok.com/@${
-                      JSON.parse(user?.meta).tiktok
-                    }`}
+                    href={`${JSON.parse(user?.meta).tiktok}`}
                     target="_blank"
                   >
                     <div className={"flex flex-row items-center"}>
@@ -670,7 +662,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {JSON.parse(user?.meta).tiktok}
+                        {JSON.parse(user?.meta).tiktok.slice(24)}
                       </p>
                     </div>
                   </a>

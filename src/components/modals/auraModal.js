@@ -65,14 +65,14 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
               <Button
                 loading={loading}
                 onClick={() => {
-                    router.push(
-                      {
-                        pathname: `/help/aura`,
-                      },
-                      `/help/aura`
-                    );
-                    setIsOpen(false)
-                  }}
+                  router.push(
+                    {
+                      pathname: `/help/aura`,
+                    },
+                    `/help/aura`
+                  );
+                  setIsOpen(false);
+                }}
                 className="bg-caak-primary font-inter font-medium  text-14px text-white mt-[20px]"
               >
                 Аура гэж юу вэ?

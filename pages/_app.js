@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "simplebar/dist/simplebar.min.css";
 import { WrapperProvider } from "../src/context/wrapperContext";
 import { UserProvider } from "../src/context/userContext";
 import Amplify from "@aws-amplify/core";
@@ -79,9 +80,7 @@ const MyApp = ({ Component, pageProps }) => {
         <UserProvider>
           <div className={"caak-main-wrapper"}>
             <NavBar />
-            <div>
-              <Component {...pageProps} />
-            </div>
+            <Component {...pageProps} />
           </div>
           <ViewPostModal />
           <ViewPostItemModal />

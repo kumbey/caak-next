@@ -8,13 +8,11 @@ import { _modalisOpen } from "../../utility/Util";
 import Information from "../../../pages/signInUp/information";
 import Intrst from "../../../pages/signInUp/intrst";
 import ForgotPassword from "../../../pages/signInUp/forgotpassword";
-import PassConfirmation from "../login/PassConfirmation";
-import Post from "../../../pages/post/view/[id]";
-import PostItem from "../../../pages/post/view/[id]/[itemId]";
 import { Auth } from "aws-amplify";
-import { ssrDataViewPost } from "../../apis/ssrDatas";
 import { API } from "aws-amplify";
 import { Fragment, useEffect, useState } from "react";
+import SelectGroups from "../../../pages/signInUp/selectGroups";
+import ResetPassword from "../../../pages/signInUp/resetPassword";
 
 const modals = [
   {
@@ -73,7 +71,7 @@ const modals = [
   },
   {
     name: "signInUp",
-    comp: PassConfirmation,
+    comp: ResetPassword,
     conditions: [
       {
         key: "signInUp",
@@ -103,6 +101,16 @@ const modals = [
   },
   {
     name: "signInUp",
+    comp: SelectGroups,
+    conditions: [
+      {
+        key: "signInUp",
+        value: "groups",
+      },
+    ],
+  },
+  {
+    name: "signInUp",
     comp: Confirm,
     conditions: [
       {
@@ -111,27 +119,6 @@ const modals = [
       },
     ],
   },
-  // {
-  //   name: "viewPost",
-  //   comp: Post,
-  //   ssr: ssrDataViewPost,
-  //   conditions: [
-  //     {
-  //       key: "viewPost",
-  //       value: "post",
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: "viewPostItem",
-  //   comp: PostItem,
-  //   conditions: [
-  //     {
-  //       key: "viewPost",
-  //       value: "item",
-  //     },
-  //   ],
-  // },
 ];
 
 const Modals = () => {
@@ -152,7 +139,6 @@ const Modals = () => {
             })
           ) {
             if(modal.ssr){
-    
               const resp = await modal.ssr({ API ,Auth, query: router.query  })
               setShowing({...modal, ssrData: resp.props.ssrData})
             }else{

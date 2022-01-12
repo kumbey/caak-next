@@ -9,9 +9,7 @@ const StepModalLayout = ({
   activeStep,
   maxStep,
   configure,
-  onCloseKeys,
   onBack,
-  ...props
 }) => {
   const router = useRouter();
   const type = router.query.signInUp;

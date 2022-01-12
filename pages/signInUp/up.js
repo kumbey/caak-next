@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
 import useModalLayout from "/src/hooks/useModalLayout";
 
 import Register from "../../src/components/register/Register";
 import { useRouter } from "next/router";
 import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
-import { _objectWithoutKeys } from "../../src/utility/Util";
 
-const Up = ({ ...props }) => {
+const Up = () => {
   const router = useRouter();
   const query = router.query;
 
@@ -27,7 +25,7 @@ const Up = ({ ...props }) => {
 
   return (
     <ModalLayout
-      maxStep={4}
+      maxStep={3}
       activeStep={1}
       className={"flex justify-center items-center"}
       configure={{

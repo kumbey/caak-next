@@ -185,3 +185,14 @@ export const listGroupByFeatured = /* GraphQL */ `
         ) ${group0011}
     }
 `;
+export const listGroupByCategory = /* GraphQL */ `
+     query ListGroups(
+         $filter: ModelGroupFilterInput
+         $limit: Int
+         $nextToken: String
+     ) {
+         listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) 
+             ${group0011}
+         
+     }
+ `;

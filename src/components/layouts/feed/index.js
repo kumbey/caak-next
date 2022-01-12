@@ -12,6 +12,7 @@ import { useWrapper } from "../../../context/wrapperContext";
 import useWindowSize from "../../../hooks/useWindowSize";
 import AuraModal from "../../modals/auraModal";
 import Banner from "../../banner";
+import SimpleBar from "simplebar-react";
 
 const DefaultFeedLayout = ({
   children,
@@ -46,10 +47,12 @@ const DefaultFeedLayout = ({
 
         {columns === 3 && (
           <div
-            className={`leftSideBar pr-[10px] overflow-hidden hover:overflow-y-scroll ${
+            className={`leftSideBar ${
               isTablet ? "hidden" : "block"
             }`}
           >
+
+          <SimpleBar className={"leftScroll"}>
             <FeedSortButtons
               feed
               items={feedType}
@@ -57,30 +60,33 @@ const DefaultFeedLayout = ({
               direction={"column"}
               containerClassname={"w-full"}
             />
-            <SideBarGroups
-              role={["ADMIN", "MODERATOR"]}
-              // maxColumns={3}
-              addGroup
-              // initialData={adminModeratorGroups}
-              title={"Миний группүүд"}
-              setIsAuraModalOpen={setIsAuraModalOpen}
-            />
-            <SideBarGroups
-              role={["MEMBER"]}
-              // maxColumns={0}
-              addGroup
-              initialData={myGroups}
-              title={"Дагасан группүүд"}
-              setIsAuraModalOpen={setIsAuraModalOpen}
-            />
-            <SideBarGroups
-              role={["NOT_MEMBER"]}
-              initialData={allGroups}
-              addGroup
-              title={"Бүх групп"}
-              setIsAuraModalOpen={setIsAuraModalOpen}
-            />
+
+              <SideBarGroups
+                role={["ADMIN", "MODERATOR"]}
+                // maxColumns={3}
+                addGroup
+                // initialData={adminModeratorGroups}
+                title={"Миний группүүд"}
+                setIsAuraModalOpen={setIsAuraModalOpen}
+              />
+              <SideBarGroups
+                role={["MEMBER"]}
+                // maxColumns={0}
+                addGroup
+                initialData={myGroups}
+                title={"Дагасан группүүд"}
+                setIsAuraModalOpen={setIsAuraModalOpen}
+              />
+              <SideBarGroups
+                role={["NOT_MEMBER"]}
+                initialData={allGroups}
+                addGroup
+                title={"Бүх групп"}
+                setIsAuraModalOpen={setIsAuraModalOpen}
+              />
+
             {isLogged && <FooterSidebar />}
+            </SimpleBar>
           </div>
         )}
 

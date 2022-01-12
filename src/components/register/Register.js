@@ -12,7 +12,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 const Register = () => {
   const { lsSet } = useLocalStorage("session");
 
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const [activeType, setActiveType] = useState("phone");
   const router = useRouter();
 

@@ -213,7 +213,7 @@ const SubMenu = ({ params }) => {
             open={params.isMenuOpen}
             onToggle={toggleMenu}
             content={<NavBarMenu setIsAuraModalOpen={setIsAuraModalOpen} />}
-            className={"top-8 -right-3 w-[215px]"}
+            className={"top-8 -right-3 w-[260px]"}
           />
           {isLogged && user ? (
             <img

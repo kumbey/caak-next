@@ -11,6 +11,24 @@ import { createGroup } from "../../src/graphql-custom/group/mutation";
 import { createGroupUsers } from "../../src/graphql-custom/GroupUsers/mutation";
 import { useRouter } from "next/router";
 
+const button = [
+  {
+      id: 1,
+      title: 'Трэнд',
+      icon: "icon-fi-rs-trend-f"
+  },
+  {
+      id: 2,
+      title: 'Шинэ',
+      icon: "icon-fi-rs-new-o"
+  },
+  {
+      id: 3,
+      title: 'Шилдэг',
+      icon: "icon-fi-rs-flash-o"
+  }
+]
+
 export default function CreateGroup() {
   const initData = {
     name: "",
@@ -29,6 +47,7 @@ export default function CreateGroup() {
   const [categories, setCategories] = useState([]);
   const [oneCategory, setOneCategory] = useState();
   const [error, setError] = useState(false);
+  const [selected, setSelected] = useState(1)
 
   const { user } = useUser();
   const router = useRouter();
@@ -292,6 +311,24 @@ export default function CreateGroup() {
                   </div>
                   <span className="icon-fi-rs-image-o text-[#9A9FB4] text-[20px]" />
                 </div>
+                <div className='flex flex-row items-center justify-between mt-[32px]'>
+                            <div className='flex flex-row items-center'>
+                                {
+                                    button.map(({title, icon, id}) => {
+                                        return(
+                                            <div key={id} onClick={() => setSelected(id)} className={`w-[110px] h-[36px] cursor-pointer justify-center ${selected === id ? 'bg-white' : null} rounded-[8px] flex flex-row justify-center items-center text-[#9A9FB4]`}>
+                                                <span className={icon}/>
+                                                <p className='text-[15px] ml-[4px] font-medium'>{title}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className='w-[80px] bg-white flex flex-row items-center justify-evenly text-[#9A9FB4] h-[36px] rounded-[5px] text-[16px]'>
+                                <span className='icon-fi-rs-list-card-f'/>
+                                <span className='icon-fi-rs-list-grid-o'/>
+                            </div>
+                        </div>
               </div>
               <div className="w-full lg:max-w-[320px] lg:mr-[25px] mt-[22px] xl:mt-0 mr-0 min-w-[320px] h-full bg-white mt-[20px] rounded-[8px] relative">
                 <img

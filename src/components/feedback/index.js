@@ -120,7 +120,7 @@ const FeedBack = ({ setIsOpen }) => {
           })}
         </div>
         <div className={"flex flex-col items-center mt-[25px] w-full"}>
-          <Input
+          {/* <Input
             // defaultValue={title}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -130,7 +130,7 @@ const FeedBack = ({ setIsOpen }) => {
               "h-[40px] w-full rounded-[6px] ring-blue-300 border-[1px] border-blue-300 text-[15px] placeholder-caak-aleutian mb-[10px]"
             }
             placeholder={"Гарчиг"}
-          />
+          /> */}
 
           <select
             className=" form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid rounded transitions ease-in-out m-0 ring-blue-300  border-blue-300 text-[15px] placeholder-caak-aleutian"

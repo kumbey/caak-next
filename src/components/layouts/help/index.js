@@ -20,7 +20,7 @@ export default function DefaultHelpLayout({children}) {
         <Head>
           <title>Тусламж - {Consts.siteMainTitle}</title>
         </Head>
-        <div className='flex flex-col'>
+        <div className='flex flex-col h-screen justify-between'>
           <div className='sm:h-[150px] items-center md:h-[250px] xl:h-[396px] relative flex justify-center'>
             <div className='h-full w-full'>
               <img alt='' src={Cover.src}/>
@@ -31,7 +31,7 @@ export default function DefaultHelpLayout({children}) {
               <input disabled className='w-[300px] hidden sm:block sm:w-[400px] xl:w-[616px] h-[44px] bg-white rounded-[4px] text-[#6C7392] px-[40px] ' placeholder='Тусламж хайх'/>
             </div>
           </div>
-          <div className={"max-w-[1247px] mx-auto flex items-start justify-start"}>
+          <div className={"max-w-[1247px] mx-auto flex items-start justify-start mt-[50px]"}>
             {children}
           </div>
           <div className='bg-white h-[200px] sm:h-[155px] flex justify-center mt-[65px]'>

@@ -6,17 +6,17 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listCategorys } from "../../graphql-custom/category/queries";
 import { createUserCategory } from "../../graphql-custom/category/mutation";
 import { useUser } from "../../context/userContext";
-import { getReturnData } from "../../utility/Util";
-
+import { getGenderImage, getReturnData } from "../../utility/Util";
+import caakLogo from "/public/assets/images/New-Logo.svg";
+import SimpleBar from "simplebar-react";
 export default function Interests() {
   const router = useRouter();
   const { cognitoUser, isLoginValid } = useUser();
-  const userId = cognitoUser ? cognitoUser.attributes.sub : null;
-
+  const userId = cognitoUser ? cognitoUser?.attributes?.sub : null;
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
   const [categories, setCategories] = useState([]);
-
+  const minCategories = 3;
   const selectHandler = (id) => {
     if (selected.length === 0) setSelected([...selected, id]);
 
@@ -31,7 +31,7 @@ export default function Interests() {
     try {
       setLoading(true);
       isLoginValid();
-      for (var i = 0; i < selected.length; i++) {
+      for (let i = 0; i < selected.length; i++) {
         await API.graphql(
           graphqlOperation(createUserCategory, {
             input: {
@@ -42,24 +42,18 @@ export default function Interests() {
           })
         );
       }
-      if (router.query.isModal) {
-        router.replace(
-          {
-            pathname: router.pathname,
-            query: {
-              ...router.query,
-              signInUp: "complete",
-            },
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "groups",
           },
-          `/signInUp/complete`,
-          { shallow: true, scroll: false }
-        );
-      } else {
-        router.replace("/signInUp/complete", undefined, {
-          shallow: true,
-          scroll: false,
-        });
-      }
+        },
+        "/signInUp/groups",
+        { shallow: true, scroll: false }
+      );
+      // router.replace("/");
 
       setLoading(false);
     } catch (ex) {
@@ -70,6 +64,10 @@ export default function Interests() {
 
   const fetchCat = async () => {
     const resp = await API.graphql(graphqlOperation(listCategorys));
+    // const resp = await API.graphql({
+    //   query: listCategorys,
+    //   authMode: "AWS_IAM",
+    // });
     setCategories(getReturnData(resp).items);
   };
 
@@ -78,62 +76,85 @@ export default function Interests() {
   }, []);
 
   return router.query.isModal ? (
-    <div className="px-2 sm:px-10 pb-c1">
+    <div className="rounded-[12px] bg-white pb-[34px] w-full">
       <div
         className={
-          "flex text-caak-generalblack justify-center text-center align-center  pb-c2 mt-9 font-bold text-24px"
+          "flex flex-col items-center justify-center text-center align-center p-[24px] border-b-[1px] border-[#E0E0E1]"
         }
       >
-        Таны сонирхол
-      </div>
-      <div
-        style={{ maxWidth: "360px" }}
-        className={"flex text-caak-darkBlue mb-c2 text-15px text-center"}
-      >
-        Та өөрийн дуртай сонирхлуудыг сонгосноор өөрийн хүрээллийг хурдан олох
-        боломжтой.
-      </div>
-      <div className="flex flex-row flex-wrap items-center justify-center gap-3">
-        {categories.map((data, index) => {
-          return (
-            <div
-              key={index}
-              onClick={(e) => selectHandler(data.id)}
-              className={`flex items-center border py-px-6 rounded-full justify-center cursor-pointer px-c6 
-                          ${
-                            selected.find((item) => item === data.id)
-                              ? "bg-caak-primary text-white"
-                              : ""
-                          }
-                                        `}
-            >
-              {selected.find((item) => item === data.id) ? (
-                <span className="icon-fi-rs-check text-12px mr-1.5" />
-              ) : (
-                <span className={`mr-1.5 text-18px`}>{data.icon}</span>
-              )}
-              <p className="text-15px font-medium">{data.name}</p>
-            </div>
-          );
-        })}
+        <img alt={""} className={"w-[42px] h-[42px]"} src={caakLogo.src} />
+        <p className={"mt-[20px] font-bold text-[24px] text-caak-generalblack"}>
+          Таны дуртай сонирхлууд?
+        </p>
       </div>
 
-      <p
-        className={`${
-          selected.length < 3 ? "opacity-100" : "opacity-0"
-        } text-center mt-5 text-caak-primary text-15px`}
-      >
-        Хамгийн багадаа 3-ыг сонгоно уу!
-      </p>
-      <div className=" px-c8 ph:px-c2 text-white text-14px flex items-center justify-between mt-5">
+      <SimpleBar style={{ maxHeight: "50vh" }}>
+        <div className="px-[36px] py-[28px] interestsContainer justify-center items-center">
+          {categories.map((data, index) => {
+            return (
+              <div
+                key={index}
+                onClick={() => selectHandler(data.id)}
+                className={`relative w-full h-[170px] flex items-center justify-center rounded-[8px]  cursor-pointer`}
+              >
+                <div
+                  className={`${
+                    selected.find((item) => item === data.id)
+                      ? "border-[3px] border-caak-primary"
+                      : ""
+                  } flex items-center rounded-[8px] border w-full h-full transition-all duration-300 justify-center group hover:scale-[0.97] transition-all duration-300 `}
+                >
+                  {/*<img*/}
+                  {/*  className={*/}
+                  {/*    "group-hover:brightness-75 rounded-[8px] transition-all duration-300 w-full h-full object-cover"*/}
+                  {/*  }*/}
+                  {/*  alt={""}*/}
+                  {/*  src={getGenderImage("default").src}*/}
+                  {/*/>*/}
+                  {selected.find((item) => item === data.id) && (
+                    <div
+                      className={
+                        "w-[24px] h-[24px] flex items-center justify-center rounded-full bg-caak-primary absolute right-[10px] top-[10px]"
+                      }
+                    >
+                      <span
+                        className={
+                          "icon-fi-rs-thick-check text-[13px] w-[13px] h-[12px] text-white"
+                        }
+                      />
+                    </div>
+                  )}
+                  <div className={"absolute bottom-[10px] left-[14px]"}>
+                    <span className={`mr-1.5 text-18px`}>{data.icon}</span>
+                    <p
+                      style={{
+                        textShadow: "0px 3px 4px #0000004D",
+                      }}
+                      className="text-white text-[16px] font-semibold tracking-[0.24px] leading-[19px]"
+                    >
+                      {data.name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </SimpleBar>
+
+      <div className="text-white text-14px flex items-center justify-between pt-[26px]">
         <Button
+          disabled={minCategories - selected.length > 0}
+          skin={"primary"}
           loading={loading}
           onClick={() => submitHandler()}
-          className={
-            "rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
-          }
+          className={"rounded-md w-full max-w-[420px] mx-auto h-[44px]"}
         >
-          Дуусгах
+          <p className={"text-[16px] font-medium"}>
+            Үргэлжлүүлэх
+            {minCategories - selected.length > 0 &&
+              ` (${minCategories - selected.length})`}
+          </p>
         </Button>
       </div>
     </div>

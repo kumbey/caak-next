@@ -134,7 +134,7 @@ export default function GroupPrivacy({ groupData }) {
           <div className="flex ">
             <span
               onClick={() => handleClick(1)}
-              className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
+              className="icon-fi-rs-edit-f text-caak-darkBlue ml-10 cursor-pointer"
             />
           </div>
         )}

@@ -4,6 +4,7 @@ const group0011 = /* GraphQL */ `{
     items {
         id
         name
+        followed
         profile ${file0001}
         totals{
             member
@@ -11,7 +12,7 @@ const group0011 = /* GraphQL */ `{
             moderator
         }
     }
-
+nextToken
 }`;
 
 export default group0011;

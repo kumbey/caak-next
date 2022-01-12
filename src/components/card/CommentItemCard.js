@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   generateTimeAgo,
   getFileUrl,
@@ -8,18 +7,19 @@ import AnimatedCaakButton from "../button/animatedCaakButton";
 import ProfileHoverCard from "./ProfileHoverCard";
 import Tooltip from "../tooltip/Tooltip";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
 
 const CommentItemCard = ({
   children,
   subComment,
   comment,
   jumpToCommentId,
-  postId
+  postId,
 }) => {
   const [isReplyInputActive, setIsReplyInputActive] = useState(false);
   const [reply, setReply] = useState({
-    isReplying: true
+    isReplying: true,
   });
 
   return (
@@ -56,13 +56,17 @@ const CommentItemCard = ({
               className={"-left-6"}
               content={<ProfileHoverCard userId={comment.user.id} />}
             >
-              <p
-                className={
-                  "cursor-pointer text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
-                }
-              >
-                {comment?.user?.nickname}
-              </p>
+              <Link href={`/user/${comment.user.id}/profile`}>
+                <a>
+                  <p
+                    className={
+                      "cursor-pointer text-caak-generalblack text-[15px] tracking-[0.23px] leading-[17px] font-semibold"
+                    }
+                  >
+                    {comment?.user?.nickname}
+                  </p>
+                </a>
+              </Link>
             </Tooltip>
           </div>
           <div className={"flex flex-col"}>

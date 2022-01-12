@@ -270,7 +270,7 @@ const EditPost = ({ ssrData }) => {
                   className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
               >
                 <SelectGroup
-                    containerClassName={"mt-[28px]"}
+                    containerClassName={"mt-[28px] z-[4]"}
                     groupData={groupData}
                     isGroupVisible={isGroupVisible}
                     setIsGroupVisible={setIsGroupVisible}
@@ -301,9 +301,9 @@ const EditPost = ({ ssrData }) => {
                   </Button>
                   <Button
                       onClick={() => handleSubmit()}
-                      // disabled
+                      skin={"primary"}
                       className={
-                        "mr-2 mt-4 text-17px border border-caak-titaniumwhite w-[190px] h-[44px]"
+                        "mr-2 mt-4 text-[16px] text-white border text-semibold border-caak-titaniumwhite w-[190px] h-[44px]"
                       }
                   >
                     Хадгалах

@@ -1,23 +1,26 @@
-import Image from "next/image";
 import { useState } from "react";
 import Button from "../button";
-import {getFileUrl, getGenderImage,} from "../../utility/Util";
-import {API, graphqlOperation} from "aws-amplify";
-import {createGroupUsers, deleteGroupUsers,} from "../../graphql-custom/GroupUsers/mutation";
-import {useUser} from "../../context/userContext";
-import {useRouter} from "next/router";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
+import { API, graphqlOperation } from "aws-amplify";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../graphql-custom/GroupUsers/mutation";
+import { useUser } from "../../context/userContext";
+import { useRouter } from "next/router";
 import groupVerifiedSvg from "../../../public/assets/images/fi-rs-verify.svg";
-import DropDown from '../navigation/DropDown'
+import DropDown from "../navigation/DropDown";
 import { useClickOutSide } from "../../utility/Util";
-import ReportModal from '../modals/reportModal'
+import ReportModal from "../modals/reportModal";
 import GroupMoreMenu from "./GroupMoreMenu";
+import Link from "next/link";
 
-const SearchCardGroup = ({result, sortType}) => {
+const SearchCardGroup = ({ result, sortType }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false);  
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [forceRender, setForceRender] = useState(0);
   const [loading, setLoading] = useState(false);
-  const {user, isLogged} = useUser();
+  const { user, isLogged } = useUser();
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -85,7 +88,7 @@ const SearchCardGroup = ({result, sortType}) => {
   return sortType !== "DEFAULT" ? (
     <div
       className={
-        "bg-white flex flex-col justify-start w-full h-[201px] rounded-square relative"
+        "bg-white flex flex-col w-full rounded-square relative"
       }
     >
       {isLogged && (
@@ -95,8 +98,8 @@ const SearchCardGroup = ({result, sortType}) => {
           userId={user.id}
         />
       )}
-      <div className={"w-full h-[58px]"}>
-        <div
+      <div className={"w-full h-[74px]"}>
+        {/* <div
           className={
             "flex flex-row items-center absolute top-[10px] right-[10px] z-[1]"
           }
@@ -111,44 +114,14 @@ const SearchCardGroup = ({result, sortType}) => {
               arrow={"topRight"}
               open={isMenuOpen}
               onToggle={toggleMenu}
-              content={
-                <GroupMoreMenu setIsOpen={setIsReportModalOpen}/>
-              }
+              content={<GroupMoreMenu setIsOpen={setIsReportModalOpen} />}
               className={"top-6 -right-3"}
             />
           </div>
-          <Button
-            onClick={handleFollow}
-            iconPosition={"left"}
-            loading={loading}
-            icon={
-              <div
-                className={
-                  "w-[20px] h-[20px] flex items-center justify-center "
-                }
-              >
-                <span
-                  className={`${
-                    result.followed
-                      ? "icon-fi-rs-check text-caak-extraBlack"
-                      : "icon-fi-rs-add-l text-white"
-                  } text-[14px] `}
-                />
-              </div>
-            }
-            skin={"primary"}
-            className={`${
-              result.followed
-                ? "text-caak-extraBlack bg-caak-titaniumwhite"
-                : "bg-caak-primary text-white"
-            } h-[28px] rounded-[6px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px] py-[4px] pr-[12px] pl-[6px]`}
-          >
-            {result.followed ? `Нэгдсэн` : `Нэгдэх`}
-          </Button>
-        </div>
+        </div> */}
         <div className={"relative w-full h-full"}>
           <img
-            className={"rounded-t-square object-cover w-full h-[58px]"}
+            className={"rounded-t-square object-cover w-full h-[74px]"}
             alt={""}
             src={
               result.cover
@@ -160,50 +133,54 @@ const SearchCardGroup = ({result, sortType}) => {
           />
         </div>
       </div>
-      <div 
-    onClick={() => router.push({
-      pathname: `/group/${result.id}`
-    })} className={"flex flex-col w-full h-full px-[16px] pb-[18px] cursor-pointer"}>
-        <div className={"absolute top-[20px]"}>
-          <div
-            className={
-              "relative flex-shrink-0 w-[58px] h-[58px] border-[3px] border-white rounded-square"
-            }
-          >
-            <img
-              className={"rounded-square object-cover w-full h-full"}
-              src={
-                result.profile
-                  ? getFileUrl(result.profile)
-                  : getGenderImage("default").src
-              }
-              alt={""}
-              width={58}
-              height={58}
-              // objectFit={"cover"}
-            />
-          </div>
-        </div>
-
+      <div className={"flex flex-col w-full px-[16px]"}>
+        <Link href={`/group/${result.id}`}>
+          <a>
+            <div className={"absolute top-[36px]"}>
+              <div
+                className={
+                  "relative flex-shrink-0 w-[58px] h-[58px] border-[3px] border-white rounded-square"
+                }
+              >
+                <img
+                  className={"rounded-square object-cover w-full h-full"}
+                  src={
+                    result.profile
+                      ? getFileUrl(result.profile)
+                      : getGenderImage("default").src
+                  }
+                  alt={""}
+                  width={58}
+                  height={58}
+                  // objectFit={"cover"}
+                />
+              </div>
+            </div>
+          </a>
+        </Link>
         <div className={"flex flex-col mt-[20px]"}>
           <div className={"mt-[12px] flex flex-row items-center"}>
-            <p
-              className={
-                "text-[16px] truncate-3 font-semibold text-caak-generalblack"
-              }
-            >
-              {result.name}
-              {result.verified && (
-                <img
-                  alt={""}
-                  height={14.25}
-                  width={16.5}
-                  // quality={100}
-                  // priority={true}
-                  src={groupVerifiedSvg}
-                />
-              )}
-            </p>
+            <Link href={`/group/${result.id}`}>
+              <a>
+                <p
+                  className={
+                    "text-[16px] truncate-3 font-semibold text-caak-generalblack"
+                  }
+                >
+                  {result.name}
+                  {result.verified && (
+                    <img
+                      alt={""}
+                      height={14.25}
+                      width={16.5}
+                      // quality={100}
+                      // priority={true}
+                      src={groupVerifiedSvg}
+                    />
+                  )}
+                </p>
+              </a>
+            </Link>
           </div>
           <div className={"flex flex-row mt-[12px]"}>
             <div className={"flex flex-row items-center"}>
@@ -214,7 +191,7 @@ const SearchCardGroup = ({result, sortType}) => {
             </div>
             <div className={"flex flex-row items-center ml-[24px]"}>
               <p className={"font-medium text-caak-generalblack text-[17px]"}>
-                {result.totals.member}
+                {result.totals.member + result.totals.admin + result.totals.moderator}
               </p>
               <p className={"text-[14px] text-caak-darkBlue ml-[5px]"}>
                 Гишүүн
@@ -225,16 +202,24 @@ const SearchCardGroup = ({result, sortType}) => {
       </div>
       <div
         className={
-          "flex flex-row text-caak-darkBlue items-center px-[16px] mb-[18px]"
+          "flex flex-row text-caak-darkBlue items-center px-[16px]"
         }
       >
         <div className={"flex justify-center items-center w-[16px] h-[16px]"}>
           <span className={"icon-fi-rs-globe text-[14px]"} />
         </div>
         <div className={"ml-[4px]"}>
-          <p className={"text-[14px]"}>Нээлттэй бүлэг</p>
+          <p className={"text-[14px]"}>Нээлттэй групп</p>
         </div>
       </div>
+      <Button
+        onClick={handleFollow}
+        iconPosition={"left"}
+        loading={loading}
+        className={`${result.followed ? 'bg-[#FF6600] text-white' : 'bg-[#E4E4E5] text-[#21293C]'} h-[36px] rounded-[6px] m-[16px] w-[248px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px]`}
+      >
+        {result.followed ? `Нэгдсэн` : `Нэгдэх`}
+      </Button>
     </div>
   ) : (
     <div

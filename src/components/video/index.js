@@ -233,7 +233,7 @@ const Video = ({
         {!smallIndicator && !isPlaying && (
           <div
             onClick={() => {
-              setIsPlaying(true);
+              !disableOnClick && setIsPlaying(true);
             }}
             className={
               "cursor-pointer flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#0000004D] border-[2px] border-white absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"

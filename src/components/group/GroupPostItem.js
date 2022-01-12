@@ -9,7 +9,8 @@ import {
   extractDate,
   generateFileUrl,
   getFileUrl,
-  getGenderImage, getReturnData,
+  getGenderImage,
+  getReturnData,
 } from "../../utility/Util";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "../card/ProfileHoverCard";
@@ -17,7 +18,10 @@ import Video from "../video";
 import { useRouter } from "next/router";
 import PostDenyModal from "../modals/postDenyModal";
 import PendingPostApproveModal from "../modals/pendingPostApproveModal";
-import {createPostStatusHistory, updatePostStatusHistory} from "../../graphql-custom/postHistory/mutation";
+import {
+  createPostStatusHistory,
+  updatePostStatusHistory,
+} from "../../graphql-custom/postHistory/mutation";
 import { useUser } from "../../context/userContext";
 
 const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
@@ -35,18 +39,25 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
           input: { id, status, expectedVersion: post.version },
         })
       );
-      resp = getReturnData(resp)
-      if(resp.status_history.items?.length){
+      resp = getReturnData(resp);
+      if (resp.status_history.items?.length) {
         await API.graphql(
           graphqlOperation(updatePostStatusHistory, {
-            input: { description: message, post_id: id, id: `${user.id}#${id}`},
+            input: {
+              description: message,
+              post_id: id,
+              id: `${user.id}#${id}`,
+            },
           })
         );
-      }
-      else {
+      } else {
         await API.graphql(
           graphqlOperation(createPostStatusHistory, {
-            input: { description: message, post_id: id, id: `${user.id}#${id}`},
+            input: {
+              description: message,
+              post_id: id,
+              id: `${user.id}#${id}`,
+            },
           })
         );
       }
@@ -232,7 +243,8 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
               }.${extractDate(post.updatedAt).day}`}
             </p>
           </div>
-          {post.status === "ARCHIVED" ? (
+          {post.status === "ARCHIVED" ||
+          (post.status === "PENDING" && type === "user") ? (
             <div className=" flex w-[102px] ">
               <Link href={`/post/edit/${post.id}`}>
                 <a>
@@ -247,31 +259,32 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                 </a>
               </Link>
             </div>
-          ) : post.status === "PENDING" && type === "user" ? (
-            <div className=" flex w-[120px] ">
-              <Button
-                loading={loading}
-                onClick={() => {
-                  router.push(
-                    {
-                      query: {
-                        ...router.query,
-                        viewPost: "post",
-                        id: post.id,
-                        prevPath: router.asPath,
-                        isModal: true,
-                      },
-                    },
-                    `/post/view/${post.id}`,
-                    { shallow: true, scroll: false }
-                  );
-                }}
-                className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
-              >
-                Үзэх
-              </Button>
-            </div>
           ) : (
+            //  post.status === "PENDING" && type === "user" ? (
+            //   <div className=" flex w-[120px] ">
+            //     <Button
+            //       loading={loading}
+            //       onClick={() => {
+            //         router.push(
+            //           {
+            //             query: {
+            //               ...router.query,
+            //               viewPost: "post",
+            //               id: post.id,
+            //               prevPath: router.asPath,
+            //               isModal: true,
+            //             },
+            //           },
+            //           `/post/view/${post.id}`,
+            //           { shallow: true, scroll: false }
+            //         );
+            //       }}
+            //       className="text-caak-generalblack text-14px font-inter font-medium w-[102px] bg-white border"
+            //     >
+            //       Үзэх
+            //     </Button>
+            //   </div>
+            // ) :
             <div className=" flex w-[224px] ">
               <Button
                 loading={loading}

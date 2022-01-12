@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
@@ -17,15 +17,16 @@ import AddPostGuideCard from "../card/AddPostGuideCard";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import Consts from "../../utility/Consts";
 import AuraModal from "../modals/auraModal";
+import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
-  const { navBarTransparent } = useWrapper();
+  const { navBarTransparent, groupTransparent } = useWrapper();
   const { lsGet } = useLocalStorage("session");
 
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
-  const xd = lsGet(Consts.addPostKey).addPostGuide
-  const [open, setOpen] = useState(xd)
+  const xd = lsGet(Consts.addPostKey).addPostGuide;
+  const [open, setOpen] = useState(xd);
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
   const router = useRouter();
@@ -71,7 +72,7 @@ const SubMenu = ({ params }) => {
             />
           </div>
         </div>
-          <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen}/>
+        <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen} />
         <div
           onClick={() => {
             router.push("/");
@@ -117,10 +118,23 @@ const SubMenu = ({ params }) => {
             <AddPostGuideCard open={open} setOpen={setOpen} />
           </Button>
         </div>
-        
-        <div onClick={() => router.push({pathname: "/groups"})} className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
-          <span className={`${navBarTransparent ? "text-white" : "text-caak-generalblack"} icon-fi-rs-group-f text-[20px]`} />
-        </div>
+        {
+          groupTransparent ? null 
+          :
+          !isTablet && (
+            <Link href={"/group/all"}>
+              <a>
+                <div className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
+                  <span
+                    className={`${
+                      navBarTransparent ? "text-white" : "text-caak-generalblack"
+                    } icon-fi-rs-group-f text-[20px]`}
+                  />
+                </div>
+              </a>
+            </Link>
+          )
+        }
         <div
           ref={notificationRef}
           onClick={() => {
@@ -154,7 +168,7 @@ const SubMenu = ({ params }) => {
             />
           </div>
 
-          {parseInt(params.userTotal.unseen) > 0 ? (
+          {parseInt(params?.userTotal?.unseen) > 0 ? (
             <div
               className={
                 "absolute flex justify-center items-center top-[1px] right-[-4px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"
@@ -202,7 +216,7 @@ const SubMenu = ({ params }) => {
             open={params.isMenuOpen}
             onToggle={toggleMenu}
             content={<NavBarMenu setIsAuraModalOpen={setIsAuraModalOpen} />}
-            className={"top-8 -right-3 w-[215px]"}
+            className={"top-8 -right-3 w-[260px]"}
           />
           {isLogged && user ? (
             <img

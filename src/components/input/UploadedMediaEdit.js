@@ -165,7 +165,7 @@ const UploadedMediaEdit = ({
   const maxLengths = {
     title: 200,
     description: 500,
-    imageDescription: 500,
+    imageDescription: 1000,
   };
   const popItem = (index_arg) => {
     const popIndex = post.items.findIndex((_, index) => index === index_arg);
@@ -234,10 +234,17 @@ const UploadedMediaEdit = ({
   }, []);
 
   useEffect(() => {
+    let cContent
+    if(caakContent){
+      cContent = {owned: "CAAK"}
+    }
+    else {
+      delete post.owned
+    }
     setPost({
       ...post,
       commentType: !!allowComment,
-      ...(caakContent ? { owned: "CAAK" } : {}),
+      ...cContent,
     });
     // eslint-disable-next-line
   }, [allowComment, caakContent]);

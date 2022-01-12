@@ -1,6 +1,6 @@
 export const post_menu_data = [
   {
-    name: "Бүлэгт элсэх",
+    name: "Группт нэгдэх",
     href: `/user/:userId/profile`,
     icon: <span className={"icon-fi-rs-add-group-f  mr-px-12 text-16px"} />,
     user: true,
@@ -8,7 +8,7 @@ export const post_menu_data = [
   {
     name: "Постыг засах",
     href: "#",
-    icon: <span className={"icon-fi-rs-pencil mr-px-12 text-16px"} />,
+    icon: <span className={"icon-fi-rs-edit-f mr-px-12 text-16px"} />,
     user: true,
   },
   {

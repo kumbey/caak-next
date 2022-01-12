@@ -13,7 +13,7 @@ import { useUser } from "../../context/userContext";
 
 const UserInformation = ({ nextStep }) => {
   const router = useRouter();
-  const { cognitoUser } = useUser();
+  const { cognitoUser, isLoginValid } = useUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -58,24 +58,31 @@ const UserInformation = ({ nextStep }) => {
       };
 
       await saveUserData(usr);
-      if (router.query.isModal) {
-        router.replace(
-          {
-            pathname: router.pathname,
-            query: {
-              ...router.query,
-              signInUp: "intrst",
-            },
-          },
-          "/signInUp/intrst",
-          { shallow: true, scroll: false }
-        );
-      } else {
-        router.replace("/signInUp/intrst", undefined, {
-          shallow: true,
-          scroll: false,
-        });
+      try {
+        isLoginValid();
+        router.replace("/");
+      } catch (ex) {
+        console.log(ex);
       }
+
+      // if (router.query.isModal) {
+      //   router.replace(
+      //     {
+      //       pathname: router.pathname,
+      //       query: {
+      //         ...router.query,
+      //         signInUp: "complete",
+      //       },
+      //     },
+      //     "/signInUp/complete",
+      //     { shallow: true, scroll: false }
+      //   );
+      // } else {
+      //   router.replace("/signInUp/complete", undefined, {
+      //     shallow: true,
+      //     scroll: false,
+      //   });
+      // }
       setLoading(false);
     } catch (ex) {
       setLoading(false);

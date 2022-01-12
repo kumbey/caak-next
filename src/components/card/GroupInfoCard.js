@@ -105,7 +105,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
     <div
       className={`${
         containerClassname ? containerClassname : ""
-      } flex flex-col bg-white rounded-square max-w-[380px] relative mb-[24px]`}
+      } flex flex-col bg-white rounded-square relative mb-[24px]`}
     >
       <div className={"h-[34px] w-full relative"}>
         <img
@@ -244,7 +244,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             </div>
             <div className={"ml-[8px]"}>
               <p className={"text-[14px] tracking-[0.21px] leading-[16px]"}>
-                Нээлттэй бүлэг
+                Нээлттэй групп
               </p>
             </div>
           </div>
@@ -259,9 +259,9 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             onClick={followGroup}
             className={`button white ${
               group.followed
-                ? "text-caak-extraBlack"
+                ? "text-caak-extraBlack bg-[#E4E4E5]"
                 : "bg-caak-primary text-white"
-            }  w-full justify-center h-[44px] text-[16px] font-medium tracking-[0.24px] leading-[19px] rounded-[6px] shadow-none border-[2px] border-caak-titaniumwhite`}
+            }  w-full max-w-[284px] justify-center h-[44px] text-[16px] font-medium tracking-[0.24px] leading-[19px] rounded-[6px] shadow-none border-[2px] border-caak-titaniumwhite`}
           >
             {group.followed ? `Нэгдсэн` : `Нэгдэх`}
           </button>

@@ -366,7 +366,7 @@ const GroupLayout = ({
                     </div>
                     {/*<div className="flex mr-[22px] items-center">*/}
                     {/*  <span className={"icon-fi-rs-globe mr-1"} />*/}
-                    {/*  <p className="text-sm">Нээлттэй бүлэг</p>*/}
+                    {/*  <p className="text-sm">Нээлттэй групп</p>*/}
                     {/*</div>*/}
                     <div className="flex items-center">
                       <span
@@ -391,7 +391,7 @@ const GroupLayout = ({
                       skin={`${
                         groupData.followed
                           ? "bg-caak-titaniumwhite text-caak-generalBlack"
-                          : "bg-caak-primary"
+                          : "bg-caak-primary text-white"
                       }`}
                     >
                       {groupData.followed ? "Нэгдсэн" : "Нэгдэх"}

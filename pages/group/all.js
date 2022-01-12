@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { listGroups } from "../../src/graphql/queries";
+import { listGroups, listGroupByFeatured } from "../../src/graphql/queries";
 import { API, graphqlOperation } from "aws-amplify";
-import Image from "next/image";
 import Cover from "../../public/assets/images/groups.jpeg";
 import SearchCardGroup from "../../src/components/card/SearchCardGroup";
-import SuggestedGroupsCard from "../../src/components/card/SuggestedGroupsCard";
 import Loader from "../../src/components/loader";
 import { listCategorys } from "../../src/graphql/queries";
 import { useUser } from "../../src/context/userContext";
@@ -40,9 +38,16 @@ export default function AllGroups() {
   const [id, setId] = useState(null);
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState('')
   const { isLogged } = useUser();
   const { width } = useWindowSize();
   const { setNavBarTransparent } = useWrapper();
+
+  // const filtered = groups.filter((group) => {
+  //   return group.name.toLowerCase().includes(value.toLowerCase())
+  // })
+
+  // console.log(filtered)
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -50,16 +55,38 @@ export default function AllGroups() {
         const resp = await API.graphql({
           query: listGroups,
           variables: {
-            filter: id ? { category_id: { eq: id } } : null,
+            filter: id === null ? null : { category_id: { eq: id } },
           },
           authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
         });
-        setGroups(resp.data.listGroups.items);
-        setLoading(false);
+
+        const respFeatured = await API.graphql({
+          query: listGroupByFeatured,
+          variables: {
+            featured: "true",
+          },
+          authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+        });
+
+        activeIndex === 3
+          ?
+          setGroups(respFeatured.data.listGroupByFeatured.items)
+          :
+          activeIndex === 2
+          ?
+          setGroups([])
+          :
+          setGroups(resp.data.listGroups.items)
+          
+          setLoading(false)
       } catch (ex) {
         console.log(ex);
       }
     };
+    fetchGroups();
+  }, [isLogged, id, groups, activeIndex]);
+
+  useEffect(() => {
     const fetchCategory = async () => {
       try {
         const resp = await API.graphql({
@@ -72,10 +99,8 @@ export default function AllGroups() {
         console.log(ex);
       }
     };
-
-    fetchGroups();
     fetchCategory();
-  }, [isLogged, id]);
+  }, [])
 
   useEffect(() => {
     setNavBarTransparent(true);
@@ -95,7 +120,8 @@ export default function AllGroups() {
     return () => {
       document.removeEventListener("scroll", listener);
     };
-  });
+  }, [setNavBarTransparent]);
+  
   return (
     <>
       <Head>
@@ -106,16 +132,17 @@ export default function AllGroups() {
           <img src={Cover.src} alt="" className={"object-cover w-full"} />
           <div className="absolute text-white top-1/2 -translate-y-1/2">
             <p className="xl:text-[30px] font-medium text-center">
-              Өөрийн дуртай грүппээ олоорой
+              Өөрийн дуртай группээ олоорой
             </p>
             <p className="text-[12px] text-center">
               Инээдэм, Видео тоглоом гэх мэт төрлийн грүддүүдийг танд хүргэж
               байна.
             </p>
             <input
-              disabled
+            style={{color: "#6C7392"}}
               className="w-[300px] hidden sm:block sm:w-[400px] xl:w-[550px] h-[44px] bg-white rounded-[4px] mt-[10px] md:mt-[20px] xl:mt-[30px] text-[#6C7392] px-[25px] "
               placeholder="Хайлт хийх"
+              onChange={(e) => setValue(e)}
             />
           </div>
         </div>
@@ -155,8 +182,6 @@ export default function AllGroups() {
             <div className="w-full mt-[20px]">
               {loading ? (
                 <Loader className={`bg-caak-primary self-center`} />
-              ) : groups.length === 0 ? (
-                <div>Тус төрөлд хамаарах грүпп байхгүй байна.</div>
               ) : (
                 <div
                   style={{
@@ -182,10 +207,10 @@ export default function AllGroups() {
                   return (
                     <div
                       onClick={() => {
-                        setLoading(true);
+                        setLoading(true)
                         setId(data.id);
-                        setLoading(false);
                         setActiveIndex(0);
+                        setLoading(false)
                       }}
                       key={index}
                       className={`py-[9.5px] pl-[18px] font-inter text-[15px] text-[#0D1026] flex flex-row cursor-pointer bg-[${
@@ -198,11 +223,6 @@ export default function AllGroups() {
                   );
                 })}
               </div>
-              <SuggestedGroupsCard
-                maxColumns={10}
-                title={"Санал болгох группүүд"}
-                className={"mb-[24px]"}
-              />
             </div>
           </div>
         </div>

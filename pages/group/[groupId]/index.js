@@ -80,7 +80,7 @@ const Group = ({ ssrData }) => {
   const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
 
-  const { setNavBarTransparent } = useWrapper();
+  const { setNavBarTransparent, setGroupTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
   const [totalMember, setTotalMember] = useState(0);
@@ -140,6 +140,10 @@ const Group = ({ ssrData }) => {
   //   }
   //   // eslint-disable-next-line
   // }, [sortType]);
+
+  useEffect(() => {
+    setGroupTransparent(true);
+  }, [setGroupTransparent]);
 
   useEffect(() => {
     if (subscriptionPosts) {
@@ -215,7 +219,12 @@ const Group = ({ ssrData }) => {
         totalMember={totalMember}
         columns={2}
       >
-        {isTablet && isLogged && <GroupAdminPanel groupId={groupData.id} />}
+        {isTablet &&
+          isLogged &&
+          (groupData.role_on_group === "ADMIN" ||
+            groupData.role_on_group === "MODERATOR") && (
+            <GroupAdminPanel groupId={groupData.id} />
+          )}
         <AddPostHandler groupId={groupData.id} />
         <GroupSortButtons
           activeIndex={activeIndex}

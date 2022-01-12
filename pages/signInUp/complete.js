@@ -1,28 +1,21 @@
-import useModalLayout from "../../src/hooks/useModalLayout";
 import Completed from "../../src/components/register/completed";
+import useScrollBlock from "../../src/hooks/useScrollBlock";
+import { useEffect } from "react";
 
-const Complete = ({ ...props }) => {
+const Complete = () => {
+  const [blockScroll, allowScroll] = useScrollBlock();
 
-  const ModalLayout = useModalLayout({ layoutName: "step" });
-
+  useEffect(() => {
+    blockScroll();
+    return () => allowScroll();
+  }, [allowScroll, blockScroll]);
   return (
-    <ModalLayout
-      maxStep={4}
-      activeStep={3}
-      className={"flex justify-center items-center"}
-      configure={{
-        back: false,
-        footer: false,
-      }}
-      onCloseKeys={["signInUp"]}
-    >
-      <div className="flex flex-col items-center justify-center">
-        <div className=" flex flex-col justify-center w-full">
-          <Completed />
-        </div>
+    <div className="popup_modal">
+      <div className="popup_modal-content rounded-xl">
+            <Completed />
       </div>
-    </ModalLayout>
+    </div>
   );
 };
 
-export default Complete
+export default Complete;

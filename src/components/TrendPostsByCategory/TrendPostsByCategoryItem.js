@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { generateFileUrl, getGenderImage } from "../../utility/Util";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -20,7 +19,7 @@ const TrendPostsByCategoryItem = ({ item }) => {
           query: {
             ...router.query,
             id: item.post.id,
-            viewItemPost: "post",
+            viewPost: "post",
             prevPath: router.asPath,
             isModal: true,
           },
@@ -63,10 +62,16 @@ const TrendPostsByCategoryItem = ({ item }) => {
 
       <div
         className={
-          "flex flex-col self-end absolute bottom-[14px] left-[14px] z-[1]"
+          "flex flex-col self-end absolute bottom-[14px] left-[14px] z-[2]"
         }
       >
-        <p className={"text-[15px] text-white mb-[11px]"}>{item.post.title}</p>
+        <Link href={`/post/view/${item.post.id}`}>
+          <a>
+            <p className={"text-[15px] text-white mb-[11px]"}>
+              {item.post.title}
+            </p>
+          </a>
+        </Link>
         <Link href={`/group/${item.post.group.id}`}>
           <a>
             <div className={"flex flex-row items-center"}>

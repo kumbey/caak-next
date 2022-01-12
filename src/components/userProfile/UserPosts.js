@@ -169,7 +169,7 @@ export default function UserPosts({ userId, type, card }) {
               className="text-left hidden md:flex bg-white rounded-t-xl"
             >
               <th className="w-1/2 text-center md:ml-c32">Пост</th>
-              <th className="w-1/4 text-center">Грүпп</th>
+              <th className="w-1/4 text-center">Групп</th>
               <th className="w-1/6 text-center">Хугацаа</th>
               <th className="w-1/6 text-center">Үйлдэл</th>
             </tr>

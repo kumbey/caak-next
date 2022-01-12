@@ -31,6 +31,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   const router = useRouter();
   const userId = router.query.userId;
   const { user: signedUser, isLogged } = useUser();
+
   const [doRender, setDoRender] = useState(0);
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
@@ -126,9 +127,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
       query: createFollowedUsers,
       variables: {
         input: {
-          followed_user_id: user.id,
+          followed_user_id: signedUser.id,
           user_id: user.id,
-          id: `${user.id}#${user.id}`,
+          id: `${user.id}#${signedUser.id}`,
         },
       },
     });
@@ -142,7 +143,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
       query: deleteFollowedUsers,
       variables: {
         input: {
-          id: `${user.id}#${user.id}`,
+          id: `${user.id}#${signedUser.id}`,
         },
       },
     });
@@ -349,7 +350,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       : getGenderImage(user.gender).src
                   }
                 />
-                {isLogged && user.id === signedUser.id && !uploadingProfile && (
+                {isLogged && user.id === signedUser?.id && !uploadingProfile && (
                   <Dropzone
                     onDropRejected={(e) => console.log(e[0].errors[0].message)}
                     accept={"image/jpeg, image/png, image/gif"}
@@ -523,20 +524,22 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   </>
                 ) : (
                   <Button
-                    className={"rounded-[100px] h-[44px] shadow-none"}
+                    className={`${
+                      user.followed
+                        ? "text-gray-400 border-gray-400 bg-caak-titaniumwhite"
+                        : "text-white border-caak-primary"
+                    } rounded-[100px] h-[44px] shadow-none`}
                     onClick={() => handleClick()}
                     skin={"primary"}
                     iconPosition={"left"}
                     icon={
                       <div
-                        className={
-                          "flex items-center justify-center w-[20px] h-[20px] mr-[8px]"
-                        }
+                        className={`flex items-center justify-center w-[20px] h-[20px] mr-[8px] `}
                       >
                         <span
-                          className={
-                            "icon-fi-rs-thick-add-friend text-white text-[16px]"
-                          }
+                          className={`${
+                            user.followed ? "text-gray-400" : "text-white"
+                          } icon-fi-rs-thick-add-friend text-[16px]`}
                         />
                       </div>
                     }
@@ -568,7 +571,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       >
                         <span
                           className={
-                            "icon-fi-rs-facebook path1 bg-caak-generalblack rounded-full text-[22px]"
+                            "icon-fi-rs-facebook path1  rounded-full text-[22px]"
                           }
                         />
                       </div>
@@ -686,13 +689,28 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   />
                 </div>
               </div>
-              <div className={"hidden md:block h-screen overflow-y-auto"}>
-                <SideBarGroups
-                  role={["ADMIN", "MODERATOR"]}
-                  userId={user.id}
-                  title={"Группүүд"}
-                  setIsAuraModalOpen={setIsAuraModalOpen}
-                />
+              <div className={"hidden md:block overflow-y-auto"}>
+                {JSON.parse(user?.meta)?.settings?.showCreatedGroup ||
+                  user.id === signedUser?.id ? (
+                    <SideBarGroups
+                      role={["ADMIN", "MODERATOR"]}
+                      userId={user.id}
+                      title={"Удирддаг группүүд"}
+                      setIsAuraModalOpen={setIsAuraModalOpen}
+                    />
+                  ) : null
+                }
+              </div>
+              <div className={"hidden md:block overflow-y-auto w-full"}>
+                {JSON.parse(user?.meta)?.settings?.showFollowedGroup ||
+                user.id === signedUser?.id ? (
+                  <SideBarGroups
+                    role={["MEMBER"]}
+                    userId={user.id}
+                    title={"Нэгдсэн группүүд"}
+                    setIsAuraModalOpen={setIsAuraModalOpen}
+                  />
+                ) : null}
               </div>
             </div>
           </div>

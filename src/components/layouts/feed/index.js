@@ -80,7 +80,7 @@ const DefaultFeedLayout = ({
               role={["NOT_MEMBER"]}
               initialData={allGroups}
               addGroup
-              title={myGroups !== null && myGroups.length === 0 ?  "Бүх групп" : "Бусад групп"}
+              title={myGroups !== null && myGroups?.length === 0 ?  "Бүх групп" : "Бусад групп"}
               setIsAuraModalOpen={setIsAuraModalOpen}
             />
             {isLogged && <FooterSidebar />}

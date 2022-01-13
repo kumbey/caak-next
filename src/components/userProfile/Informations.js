@@ -110,11 +110,6 @@ export default function Informations({ currentUser }) {
     setText({ ...text, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
-  console.log(currentUser.birthdate);
-
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
       <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">

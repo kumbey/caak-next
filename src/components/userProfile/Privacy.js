@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Switch from "./Switch";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
@@ -124,7 +124,9 @@ export default function Privacy() {
     };
 
     const res = JSON.stringify(res1);
+    setLoading(true);
     await updateUserData(res);
+    setLoading(false);
   };
   const toggleCreatedGroup = async () => {
     setIsCreatedGroup(!isCreatedGroup);
@@ -140,7 +142,9 @@ export default function Privacy() {
     };
 
     const res = JSON.stringify(res1);
+    setLoading(true);
     await updateUserData(res);
+    setLoading(false);
   };
 
   return (
@@ -155,7 +159,11 @@ export default function Privacy() {
         <p className="text-15px font-inter font-normal">
           Нэгдсэн группуудыг ил харуулах
         </p>
-        <Switch toggle={toggleFollowedGroup} active={isFollowedGroup} />
+        <Switch
+          toggle={toggleFollowedGroup}
+          active={isFollowedGroup}
+          loading={loading}
+        />
       </div>
       <div
         style={{ paddingBlock: "14px" }}
@@ -164,7 +172,11 @@ export default function Privacy() {
         <p className="text-15px font-inter font-normal">
           Миний үүсгэсэн группуудыг ил харуулах
         </p>
-        <Switch toggle={toggleCreatedGroup} active={isCreatedGroup} />
+        <Switch
+          toggle={toggleCreatedGroup}
+          active={isCreatedGroup}
+          loading={loading}
+        />
       </div>
       <div
         className={`${

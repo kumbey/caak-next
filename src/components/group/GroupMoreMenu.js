@@ -18,7 +18,7 @@ export default function GroupMoreMenu() {
       {/*  </p>*/}
       {/*</div>*/}
       <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-        <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />
+        <span className={"icon-fi-rs-flag mr-px-12 w-c1  text-17px"} />
         <p className="text-14px text-caak-extraBlack font-roboto">Репорт</p>
       </div>
     </div>

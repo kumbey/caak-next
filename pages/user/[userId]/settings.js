@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getUserById } from "../../../src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
 import { getFileUrl, getGenderImage } from "/src/utility/Util";
 import Informations from "../../../src/components/userProfile/Informations";
@@ -11,6 +10,19 @@ import { useRouter } from "next/router";
 import Consts from "../../../src/utility/Consts";
 import { useWrapper } from "../../../src/context/wrapperContext";
 import Head from "next/head";
+import { withSSRContext } from "aws-amplify";
+
+export async function getServerSideProps({ req, query }) {
+  const { API, Auth } = withSSRContext({ req });
+  let user;
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ex) {
+    user = null;
+  }
+  if (user?.attributes.sub !== query.userId) return { notFound: true };
+  return { props: {} };
+}
 
 export default function Settings() {
   const router = useRouter();

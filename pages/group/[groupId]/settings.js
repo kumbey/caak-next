@@ -5,7 +5,7 @@ import tipsSvg from "/public/assets/images/lifebuoy.svg";
 import { getUserById } from "/src/utility/ApiHelper";
 import { useUser } from "/src/context/userContext";
 import { withSSRContext } from "aws-amplify";
-import { getFileUrl, getGenderImage } from "/src/utility/Util";
+import {checkAdminModerator, getFileUrl, getGenderImage} from "/src/utility/Util";
 import { listCategorys } from "../../../src/graphql-custom/category/queries";
 import {
   getGroupView,
@@ -39,6 +39,8 @@ export async function getServerSideProps({ req, query }) {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
+  const grpData = getReturnData(groupView);
+  if (!checkAdminModerator(grpData.role_on_group)) return { notFound: true };
 
   const adminList = await API.graphql({
     query: listGroupUsersByGroup,
@@ -78,7 +80,7 @@ export async function getServerSideProps({ req, query }) {
   return {
     props: {
       ssrData: {
-        groupView: getReturnData(groupView),
+        groupView: grpData,
         adminList: getReturnData(adminList),
         moderatorList: getReturnData(moderatorList),
         memberList: getReturnData(memberList),

@@ -357,6 +357,11 @@ export function getReturnData(data, isSubscription) {
   return retData;
 }
 
+export const checkAdminModerator = (role) => {
+  if (role === "ADMIN") return true;
+  return role === "MODERATOR";
+};
+
 export function _objectWithoutKeys(obj, keys) {
   let target = {};
 

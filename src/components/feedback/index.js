@@ -82,8 +82,6 @@ const FeedBack = ({ setIsOpen }) => {
     } else {
       setIsValid(false);
     }
-
-    console.log(isValid);
   }, [comment, type]);
   return !isFeedBackSent ? (
     <div

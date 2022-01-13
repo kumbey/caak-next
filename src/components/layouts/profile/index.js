@@ -429,7 +429,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 <div className={"flex flex-col"}>
                   <p
                     className={
-                      "text-caak-generalblack font-semibold text-[16px] tracking-[0.24px] leading-[19px]"
+                      "text-caak-generalblack font-semibold text-center text-[16px] tracking-[0.24px] leading-[19px]"
                     }
                   >
                     {user?.totals?.followers}
@@ -445,7 +445,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 <div className={"flex flex-col"}>
                   <p
                     className={
-                      "text-caak-generalblack font-semibold text-[16px] tracking-[0.24px] leading-[19px]"
+                      "text-caak-generalblack font-semibold text-center text-[16px] tracking-[0.24px] leading-[19px]"
                     }
                   >
                     {user?.totals?.confirmed}

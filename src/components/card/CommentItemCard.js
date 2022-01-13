@@ -33,18 +33,22 @@ const CommentItemCard = ({
             subComment ? "w-[26px] h-[26px]" : "w-[38px] h-[38px]"
           }  flex-shrink-0 relative rounded-full`}
         >
-          <img
-            className={"rounded-full object-cover w-full h-full"}
-            // objectFit={"cover"}
-            width={subComment ? 26 : 38}
-            height={subComment ? 26 : 38}
-            src={`${
-              comment?.user?.pic
-                ? getFileUrl(comment.user.pic)
-                : getGenderImage(comment.user.gender).src
-            }`}
-            alt={"user profile"}
-          />
+          <Link href={`/user/${comment.user.id}/profile`}>
+            <a>
+              <img
+                className={"rounded-full object-cover w-full h-full"}
+                // objectFit={"cover"}
+                width={subComment ? 26 : 38}
+                height={subComment ? 26 : 38}
+                src={`${
+                  comment?.user?.pic
+                    ? getFileUrl(comment.user.pic)
+                    : getGenderImage(comment.user.gender).src
+                }`}
+                alt={"user profile"}
+              />
+            </a>
+          </Link>
         </div>
         <div
           className={`flex flex-col ml-[12px] w-full rounded-square ${

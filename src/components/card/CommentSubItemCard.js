@@ -123,18 +123,22 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId }) => {
               <div
                 className={`w-[26px] h-[26px] flex-shrink-0 relative rounded-full`}
               >
-                <img
-                  className={"rounded-full object-cover w-full h-full"}
-                  // objectFit={"cover"}
-                  width={26}
-                  height={26}
-                  src={`${
-                    subComment?.user?.pic
-                      ? getFileUrl(subComment.user.pic)
-                      : getGenderImage(subComment.user.gender).src
-                  }`}
-                  alt={"user profile"}
-                />
+                <Link href={`/user/${subComment.user.id}/profile`}>
+                  <a>
+                    <img
+                      className={"rounded-full object-cover w-full h-full"}
+                      // objectFit={"cover"}
+                      width={26}
+                      height={26}
+                      src={`${
+                        subComment?.user?.pic
+                          ? getFileUrl(subComment.user.pic)
+                          : getGenderImage(subComment.user.gender).src
+                      }`}
+                      alt={"user profile"}
+                    />
+                  </a>
+                </Link>
               </div>
               <div
                 className={`flex flex-col ml-[12px] w-full ${

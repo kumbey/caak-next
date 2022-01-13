@@ -115,7 +115,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span
                     className={
-                      "icon-fi-rs-statistic-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                      "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
                     }
                   />
                   <p className="text-14px text-caak-extraBlack">Бүх Групп</p>

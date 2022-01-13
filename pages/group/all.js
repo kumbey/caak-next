@@ -91,6 +91,7 @@ export default function AllGroups() {
     return ()=> {
       setGroupIcon(false)
     }
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

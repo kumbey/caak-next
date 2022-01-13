@@ -41,7 +41,7 @@ export default function AllGroups() {
   const [value, setValue] = useState('')
   const { isLogged } = useUser();
   const { width } = useWindowSize();
-  const { setNavBarTransparent } = useWrapper();
+  const { setNavBarTransparent, setGroupIcon } = useWrapper();
 
   // const filtered = groups.filter((group) => {
   //   return group.name.toLowerCase().includes(value.toLowerCase())
@@ -85,6 +85,13 @@ export default function AllGroups() {
     };
     fetchGroups();
   }, [isLogged, id, groups, activeIndex]);
+
+  useEffect(() => {
+    setGroupIcon(true);
+    return ()=> {
+      setGroupIcon(false)
+    }
+  }, []);
 
   useEffect(() => {
     const fetchCategory = async () => {

@@ -4,10 +4,13 @@ import Divider from "../divider";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getFileUrl, getGenderImage } from "../../utility/Util";
+import useMediaQuery from "./useMeduaQuery";
 
 export default function NavBarMenu({ type, setIsAuraModalOpen }) {
   const { user, isLogged } = useUser();
   const router = useRouter();
+  
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
 
   return (
     <div className={`dropdown-item-wrapper`}>
@@ -105,6 +108,22 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
               </div>
             </a>
           </Link>
+          {
+            isTablet && (
+              <Link href={'/group/all'}>
+            <a>
+              <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+                  <span
+                    className={
+                      "icon-fi-rs-statistic-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                    }
+                  />
+                  <p className="text-14px text-caak-extraBlack">Бүх Групп</p>
+                </div>
+            </a>
+          </Link>
+            )
+          }
           <div
             onClick={() => user.aura < 5000 ? setIsAuraModalOpen(true) : router.push({
               pathname: '/group/create'

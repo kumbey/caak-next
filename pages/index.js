@@ -91,6 +91,7 @@ const Feed = ({ ssrData }) => {
   usePreserveScroll();
   const { lsGet } = useLocalStorage("session");
   const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost);
+  
   const router = useRouter();
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();

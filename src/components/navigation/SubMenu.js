@@ -21,12 +21,14 @@ import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
-  const { navBarTransparent, groupTransparent } = useWrapper();
+  const { navBarTransparent, groupIcon } = useWrapper();
   const { lsGet } = useLocalStorage("session");
 
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
+  
   const xd = lsGet(Consts.addPostKey).addPostGuide;
   const [open, setOpen] = useState(xd);
+
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
   const router = useRouter();
@@ -119,7 +121,7 @@ const SubMenu = ({ params }) => {
           </Button>
         </div>
         {
-          groupTransparent ? null 
+          groupIcon ? null 
           :
           !isTablet && (
             <Link href={"/group/all"}>

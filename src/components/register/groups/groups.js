@@ -135,7 +135,7 @@ const Groups = () => {
               skin={"primary"}
               className={"rounded-md w-full max-w-[420px] mx-auto h-[44px]"}
             >
-              <p className={"text-[16px] font-medium"}>Үргэлжлүүлэх</p>
+              <p className={"text-[16px] font-medium"}>Дуусгах</p>
             </Button>
           </div>
         </div>

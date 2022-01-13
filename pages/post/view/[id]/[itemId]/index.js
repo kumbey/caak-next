@@ -32,7 +32,6 @@ import useWindowSize from "../../../../../src/hooks/useWindowSize";
 import useModalLayout from "../../../../../src/hooks/useModalLayout";
 import userVerifiedSvg from "../../../../../public/assets/images/fi-rs-awarded.svg";
 import toast, { Toaster } from "react-hot-toast";
-import Image from "next/image";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -205,14 +204,16 @@ const PostItem = ({ ssrData }) => {
   useEffect(() => {
     const handler = (e) => {
       if (e.keyCode === 27) {
-        back();
+        if (router.query.viewItemPost) back();
       }
     };
     document.addEventListener("keydown", handler);
     return () => {
       document.removeEventListener("keydown", handler);
     };
-  });
+    //eslint-disable-next-line
+  }, [router.query]);
+
   return (
     <>
       <Head>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import {
-  generateFileUrl, getFileUrl,
+  generateFileUrl,
+  getFileUrl,
   getGenderImage,
   getReturnData,
 } from "../../utility/Util";
@@ -99,9 +100,12 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
       }
     } else {
       if (postData) {
-        return getFileUrl(postData.items.items[0].file);
+        if (postData.items?.items[0]?.file) {
+          return getFileUrl(postData.items.items[0].file);
+        } else {
+          return getGenderImage("default").src;
+        }
       }
-
     }
   };
 

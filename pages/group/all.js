@@ -38,9 +38,16 @@ export default function AllGroups() {
   const [id, setId] = useState(null);
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState('')
   const { isLogged } = useUser();
   const { width } = useWindowSize();
   const { setNavBarTransparent } = useWrapper();
+
+  // const filtered = groups.filter((group) => {
+  //   return group.name.toLowerCase().includes(value.toLowerCase())
+  // })
+
+  // console.log(filtered)
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -64,6 +71,10 @@ export default function AllGroups() {
         activeIndex === 3
           ?
           setGroups(respFeatured.data.listGroupByFeatured.items)
+          :
+          activeIndex === 2
+          ?
+          setGroups([])
           :
           setGroups(resp.data.listGroups.items)
           
@@ -110,6 +121,7 @@ export default function AllGroups() {
       document.removeEventListener("scroll", listener);
     };
   }, [setNavBarTransparent]);
+  
   return (
     <>
       <Head>
@@ -127,9 +139,10 @@ export default function AllGroups() {
               байна.
             </p>
             <input
-              disabled
+            style={{color: "#6C7392"}}
               className="w-[300px] hidden sm:block sm:w-[400px] xl:w-[550px] h-[44px] bg-white rounded-[4px] mt-[10px] md:mt-[20px] xl:mt-[30px] text-[#6C7392] px-[25px] "
               placeholder="Хайлт хийх"
+              onChange={(e) => setValue(e)}
             />
           </div>
         </div>

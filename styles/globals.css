@@ -29,19 +29,19 @@
         /*min-height: 100vh;*/
     }
 
-    ::-webkit-scrollbar {
-        width: 0.6em;
-    }
+    /*::-webkit-scrollbar {*/
+    /*    width: 0.6em;*/
+    /*}*/
 
-    ::-webkit-scrollbar,
-    ::-webkit-scrollbar-thumb {
-        overflow: visible;
-        border-radius: 4px;
-    }
+    /*::-webkit-scrollbar,*/
+    /*::-webkit-scrollbar-thumb {*/
+    /*    overflow: visible;*/
+    /*    border-radius: 4px;*/
+    /*}*/
 
-    ::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.2);
-    }
+    /*::-webkit-scrollbar-thumb {*/
+    /*    background: rgba(0, 0, 0, 0.2);*/
+    /*}*/
 }
 /*Custom sizing class*/
 @layer utilities {

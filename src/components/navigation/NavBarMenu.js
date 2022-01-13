@@ -107,7 +107,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
           </Link>
           <div
             onClick={() => user.aura < 5000 ? setIsAuraModalOpen(true) : router.push({
-              pathname: '/creategroup'
+              pathname: '/group/create'
             })}
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           >

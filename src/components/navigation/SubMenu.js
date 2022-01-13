@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button";
 import DropDown from "./DropDown";
 import NavBarMenu from "./NavBarMenu";
@@ -21,7 +21,7 @@ import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
-  const { navBarTransparent } = useWrapper();
+  const { navBarTransparent, groupTransparent } = useWrapper();
   const { lsGet } = useLocalStorage("session");
 
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
@@ -118,20 +118,23 @@ const SubMenu = ({ params }) => {
             <AddPostGuideCard open={open} setOpen={setOpen} />
           </Button>
         </div>
-        {!isTablet && (
-          <Link href={"/group/all"}>
-            <a>
-              <div className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
-                <span
-                  className={`${
-                    navBarTransparent ? "text-white" : "text-caak-generalblack"
-                  } icon-fi-rs-group-f text-[20px]`}
-                />
-              </div>
-            </a>
-          </Link>
-        )}
-
+        {
+          groupTransparent ? null 
+          :
+          !isTablet && (
+            <Link href={"/group/all"}>
+              <a>
+                <div className="ml-0 md:ml-[8px] md:mr-[12px] cursor-pointer h-[32px] w-[32px] rounded-full flex items-center justify-center border ">
+                  <span
+                    className={`${
+                      navBarTransparent ? "text-white" : "text-caak-generalblack"
+                    } icon-fi-rs-group-f text-[20px]`}
+                  />
+                </div>
+              </a>
+            </Link>
+          )
+        }
         <div
           ref={notificationRef}
           onClick={() => {
@@ -165,7 +168,7 @@ const SubMenu = ({ params }) => {
             />
           </div>
 
-          {parseInt(params.userTotal.unseen) > 0 ? (
+          {parseInt(params?.userTotal?.unseen) > 0 ? (
             <div
               className={
                 "absolute flex justify-center items-center top-[1px] right-[-4px] w-[16px] h-[16px] border-[1px] rounded-[4px] font-medium border-white bg-caak-bleudefrance"

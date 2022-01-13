@@ -30,3 +30,27 @@ export const listGroupByUserAndRole = /* GraphQL */ `
         }
     }
 `;
+
+export const listGroupsByUser = /* GraphQL */ `
+    query ListGroupByUserAndRole(
+        $user_id: ID,
+        $role: ModelStringKeyConditionInput,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelGroupUsersFilterInput,
+        $limit: Int,
+        $nextToken: String
+    ) {
+        listGroupByUserAndRole(
+            user_id: $user_id
+            role: $role
+            sortDirection: $sortDirection
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken,
+        ) {
+            items {
+                id
+            }
+        }
+    }
+`;

@@ -98,7 +98,7 @@ export default function GroupPrivacy({ groupData }) {
                     }`}
                   >
                     <label className="flex items-center">
-                      <span className="icon-fi-rs-lock text-18px mb-1 mr-[6px]" />
+                      <span className="icon-fi-rs-lock-o text-18px mb-1 mr-[6px]" />
                       <p className="text-15px font-inter font-normal text-caak-generalblack">
                         Хаалттай групп
                       </p>

@@ -64,7 +64,7 @@ const DefaultFeedLayout = ({
               role={["ADMIN", "MODERATOR"]}
               // maxColumns={3}
               addGroup
-              // initialData={adminModeratorGroups}
+              initialData={adminModeratorGroups}
               title={"Миний группүүд"}
               setIsAuraModalOpen={setIsAuraModalOpen}
             />

@@ -16,7 +16,7 @@ function WrapperProvider(props) {
   const [isNotificationMenu, setIsNotificationMenu] = useState(false);
   const [feedSortType, setFeedSortType] = useState("");
   const [navBarTransparent, setNavBarTransparent] = useState(false);
-  const [groupTransparent, setGroupTransparent] = useState(false)
+  const [groupIcon, setGroupIcon] = useState(false)
   const [currentPlayingVideoId, setCurrentPlayingVideoId] = useState(null);
   const value = useMemo(
     () => ({
@@ -28,8 +28,8 @@ function WrapperProvider(props) {
       setFeedSortType,
       navBarTransparent,
       setNavBarTransparent,
-      groupTransparent,
-      setGroupTransparent,
+      groupIcon,
+      setGroupIcon,
       currentPlayingVideoId,
       setCurrentPlayingVideoId,
     }),
@@ -38,7 +38,7 @@ function WrapperProvider(props) {
       isNotificationMenu,
       feedSortType,
       navBarTransparent,
-      groupTransparent,
+      groupIcon,
       currentPlayingVideoId,
     ]
   );

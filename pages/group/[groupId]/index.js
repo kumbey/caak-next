@@ -80,7 +80,7 @@ const Group = ({ ssrData }) => {
   const [sortType, setSortType] = useState("DEFAULT");
   const [posts, setPosts] = useState(ssrData.posts.items);
 
-  const { setNavBarTransparent, setGroupTransparent } = useWrapper();
+  const { setNavBarTransparent } = useWrapper();
   const [groupData, setGroupData] = useState(ssrData.groupData);
   const isTablet = useMediaQuery("screen and (max-device-width: 1100px)");
   const [totalMember, setTotalMember] = useState(0);
@@ -140,10 +140,6 @@ const Group = ({ ssrData }) => {
   //   }
   //   // eslint-disable-next-line
   // }, [sortType]);
-
-  useEffect(() => {
-    setGroupTransparent(true);
-  }, [setGroupTransparent]);
 
   useEffect(() => {
     if (subscriptionPosts) {

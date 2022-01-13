@@ -13,20 +13,20 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
     >
       <div className={"flex flex-wrap my-[4px]"}>
         <Link href="/help" shallow>
-          <a className="">
+          <a>
             <p>Тусламж</p>
           </a>
         </Link>
         <p className="mx-[5px] cursor-default">·</p>
         <Link href="/help/connectus" shallow>
-          <a className="">
+          <a>
             <p>Холбоо барих</p>
           </a>
         </Link>
         <p className="mx-[5px] cursor-default">·</p>
 
         <Link href={"/help/connectus"} shallow>
-          <a className="">
+          <a>
             <p>Сурталчилгаа</p>
           </a>
         </Link>
@@ -39,7 +39,7 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
           }}
           shallow
         >
-          <a className="">
+          <a>
             <p>Үйлчилгээний нөхцөл</p>
           </a>
         </Link>

@@ -683,15 +683,14 @@ const DefaultUserProfileLayout = ({ user, children }) => {
               </div>
               <div className={"hidden md:block overflow-y-auto"}>
                 {JSON.parse(user?.meta)?.settings?.showCreatedGroup ||
-                  user.id === signedUser?.id ? (
-                    <SideBarGroups
-                      role={["ADMIN", "MODERATOR"]}
-                      userId={user.id}
-                      title={"Удирддаг группүүд"}
-                      setIsAuraModalOpen={setIsAuraModalOpen}
-                    />
-                  ) : null
-                }
+                user.id === signedUser?.id ? (
+                  <SideBarGroups
+                    role={["ADMIN", "MODERATOR"]}
+                    userId={user.id}
+                    title={"Удирддаг группүүд"}
+                    setIsAuraModalOpen={setIsAuraModalOpen}
+                  />
+                ) : null}
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
                 {JSON.parse(user?.meta)?.settings?.showFollowedGroup ||

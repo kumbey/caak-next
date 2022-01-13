@@ -619,6 +619,7 @@
   .popup_modal-report {
     min-width: 280px;
     max-width: 500px;
+    max-height: 376px;
     margin: 100px auto;
   }
 

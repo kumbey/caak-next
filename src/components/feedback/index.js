@@ -6,7 +6,7 @@ import smileHeart from "/public/assets/images/feedback/smileHeart.svg";
 
 import Input from "../input";
 import Button from "../button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import { createFeedBack } from "../../graphql-custom/feedback/mutations";
 import { useUser } from "../../context/userContext";
@@ -17,6 +17,7 @@ const FeedBack = ({ setIsOpen }) => {
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const [type, setType] = useState("");
+  const [isValid, setIsValid] = useState(false);
   const [star, setStar] = useState(4);
   const [isFeedBackSent, setIsFeedbackSent] = useState(false);
   const { isLogged } = useUser();
@@ -75,6 +76,15 @@ const FeedBack = ({ setIsOpen }) => {
     }
   };
 
+  useEffect(() => {
+    if (comment.length > 0 && type.length > 0) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+
+    console.log(isValid);
+  }, [comment, type]);
   return !isFeedBackSent ? (
     <div
       className={
@@ -169,6 +179,7 @@ const FeedBack = ({ setIsOpen }) => {
           </div>
           <div className={"mt-[24px]"}>
             <Button
+              disabled={!isValid ? true : false}
               onClick={() => sendFeedBack()}
               className={
                 "w-[130px] h-[36px] self-center rounded-[8px] ring-caak-cobalite  border-[3px] border-opacity-20 border-caak-cobalite bg-white text-caak-generalblack font-medium text-[16px]"

@@ -117,7 +117,7 @@ const Search = () => {
                 style={{
                   ...(sortType === "GROUP" ? { gridGap: "16px" } : {}),
                   gridTemplateColumns: `repeat(auto-fill, minmax(${
-                    width > 1248 ? "300px" : "280px"
+                    width > 1248 ? "295px" : "280px"
                   }, 1fr))`,
                 }}
                 className={`${

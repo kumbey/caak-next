@@ -86,6 +86,7 @@ export const getUserSearchView = /* GraphQL */ `
         getUser(id: $id) {
             id
             nickname
+            gender
             pic ${file0001}
         }
     }

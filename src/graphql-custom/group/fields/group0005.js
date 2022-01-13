@@ -7,6 +7,8 @@ const group0005 = /* GraphQL */ `{
     followed
     totals {
         member
+        admin
+        moderator
     }
     profile ${file0001}
     cover ${file0001}

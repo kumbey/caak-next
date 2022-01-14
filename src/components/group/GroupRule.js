@@ -24,7 +24,7 @@ const GroupRule = ({ groupData, ...props }) => {
   const notifyDel = () =>
     toast.success("Амжилттай устгалаа.", {
       icon: (
-        <span className="icon-fi-rs-delete text-18px text-caak-hotembers" />
+        <span className="icon-fi-rs-delete-f text-18px text-caak-hotembers" />
       ),
       style: {
         border: "1px solid #f3baa9",
@@ -32,7 +32,9 @@ const GroupRule = ({ groupData, ...props }) => {
     });
   const notifyEdit = () =>
     toast("Амжилттай заслаа.", {
-      icon: <span className="icon-fi-rs-edit text-18px text-caak-algalfuel" />,
+      icon: (
+        <span className="icon-fi-rs-edit-f text-18px text-caak-algalfuel" />
+      ),
     });
 
   const close = () => {

@@ -95,7 +95,7 @@ const Feed = ({ ssrData }) => {
   const router = useRouter();
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
-  const [posts, setPosts] = useState(ssrData.posts.items);
+  const [posts, setPosts] = useState(ssrData.posts);
   const { setFeedSortType } = useWrapper();
   const [loading, setLoading] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
@@ -105,13 +105,12 @@ const Feed = ({ ssrData }) => {
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   //FORCE RENDER STATE
   const [render, setRender] = useState(0);
-
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
       sortDirection: "DESC",
       status: "CONFIRMED",
-      limit: 6,
+      limit: 20,
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.posts.nextToken,
@@ -124,7 +123,7 @@ const Feed = ({ ssrData }) => {
         setLoading(true);
         const resp = await nextPosts();
         if (resp) {
-          setPosts((nextPosts) => [...nextPosts, ...resp]);
+          setPosts((nextPosts) => ({...nextPosts, items: [...nextPosts.items, ...resp]}));
         }
       }
       setLoading(false);
@@ -174,17 +173,18 @@ const Feed = ({ ssrData }) => {
 
   useEffect(() => {
     if (subscripedPost) {
-      const postIndex = posts.findIndex(
+      const postIndex = posts.items.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
 
       if (subscripedPost.type === "add") {
         if (postIndex <= -1) {
-          setPosts([subscripedPost.post, ...posts]);
+          setPosts({...posts, items: [subscripedPost.post, ...posts.items]})
+          // setPosts([subscripedPost.post, ...posts]);
         }
       } else {
         if (postIndex > -1) {
-          posts.splice(postIndex, 1);
+          posts.items.splice(postIndex, 1);
           setRender(render + 1);
         }
       }
@@ -224,22 +224,25 @@ const Feed = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      {router.asPath === "/" && (
+      {router.asPath === "/" && !isFeedbackOpen && (
         <div
           onClick={() => {
             setIsFeedbackOpen(!isFeedbackOpen);
           }}
           className={
-            "cursor-pointer hover:bg-caak-titaniumwhite flex items-center justify-center bg-white shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[4px] md:right-[24px] rounded-full"
+            "feedbackIconBackground cursor-pointer flex items-center justify-center shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[8px] md:right-[27px] rounded-full"
           }
         >
-          <span
-            className={`${
-              isFeedbackOpen
-                ? "icon-fi-rs-close text-[16.67px]"
-                : "icon-fi-rs-survey text-[25.67px]"
-            } text-caak-generalblack`}
-          />
+          <div className={"flex items-center justify-center w-[28px] h-[28px]"}>
+            <span
+              className={`${
+                isFeedbackOpen
+                  ? "icon-fi-rs-close text-[15.98px] w-[16px]"
+                  : "icon-fi-rs-survey text-[25.67px] h-[20px]"
+              } text-white`}
+            />
+          </div>
+
         </div>
       )}
 
@@ -275,7 +278,7 @@ const Feed = ({ ssrData }) => {
               />
               <AddPostCaakCard setIsOpen={setOpen} isOpen={open} />
               <InfinitScroller onNext={fetchPosts} loading={loading}>
-                {posts.map((data, index) => {
+                {posts.items.map((data, index) => {
                   return (
                     <Card
                       key={index}

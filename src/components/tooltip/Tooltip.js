@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useDebounce } from "../../utility/Util";
 
-const Tooltip = ({ children, content, className, style }) => {
+const Tooltip = ({ children, content, className, style, debounceValue }) => {
   const [active, setActive] = useState(false);
-  const debounced = useDebounce(active, 300);
-
+  const debounced = useDebounce(active, debounceValue ? debounceValue : 300);
   const showTip = () => {
     setActive(true);
   };

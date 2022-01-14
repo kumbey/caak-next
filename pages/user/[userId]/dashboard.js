@@ -11,7 +11,10 @@ import {
   getReturnData,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import { getPostByUser } from "../../../src/graphql-custom/post/queries";
+import {
+  getPostByUser,
+  ListReportedPostByUser,
+} from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
@@ -32,6 +35,7 @@ import Head from "next/head";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 import { useWrapper } from "../../../src/context/wrapperContext";
+import ReportedPostItem from "../../../src/components/group/ReportedPostItem";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -80,7 +84,7 @@ const Dashboard = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
-  
+
   const [userTotals, setUserTotals] = useState(ssrData.userTotals);
   const [followedUsers, setFollowedUsers] = useState({
     items: [],
@@ -98,6 +102,10 @@ const Dashboard = ({ ssrData }) => {
   const [render, setRender] = useState(0);
 
   const [archivedPosts, setArchivedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
+  const [reportedPosts, setReportedPosts] = useState({
     items: [],
     nextToken: "",
   });
@@ -176,6 +184,12 @@ const Dashboard = ({ ssrData }) => {
       icon: "icon-fi-rs-comment-o",
       length: userTotals.comments,
     },
+    {
+      id: 5,
+      name: "Репортлогдсон постууд",
+      icon: "icon-fi-rs-flag",
+      length: userTotals.reported,
+    },
   ];
 
   const [nextPosts] = useListPager({
@@ -230,6 +244,17 @@ const Dashboard = ({ ssrData }) => {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: followedUsers.nextToken,
+    // ssr: true,
+  });
+  const [nextReported] = useListPager({
+    query: ListReportedPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      limit: 20,
+      sortDirection: "DESC",
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    nextToken: reportedPosts.nextToken,
     // ssr: true,
   });
   const fetchPosts = async () => {
@@ -321,6 +346,26 @@ const Dashboard = ({ ssrData }) => {
           setFollowedUsers((nextFollowers) => ({
             ...nextFollowers,
             items: [...nextFollowers.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchReported = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextReported();
+        if (resp) {
+          setReportedPosts((nextReported) => ({
+            ...nextReported,
+            items: [...nextReported.items, ...resp],
           }));
         }
 
@@ -820,6 +865,74 @@ const Dashboard = ({ ssrData }) => {
                         />
                       );
                     })}
+                  </InfinitScroller>
+                </div>
+              ) : null}
+              {activeIndex === 5 ? (
+                <div className="flex flex-col">
+                  {/* <div className="hidden md:flex mb-[13px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[270px] lg:mr-[300px]">
+                      Пост
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px]">
+                      Групп
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px]">
+                      Репорт
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
+                      Огноо
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack">
+                      Үйлдэл
+                    </p>
+                  </div> */}
+                  <InfinitScroller onNext={fetchReported} loading={loading}>
+                    <table className="w-full table">
+                      <thead className="">
+                        <tr className="">
+                          <th className="text-left w-1/3 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                            Пост
+                          </th>
+                          <th className="text-left w-1/6 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                            Групп
+                          </th>
+                          <th className="text-left w-1/6 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                            Репорт
+                          </th>
+                          <th className="text-left w-1/12 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                            Огноо
+                          </th>
+                          <th className="text-left w-1/12 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                            Үйлдэл
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {reportedPosts.items.length > 0 &&
+                          reportedPosts.items.map((reportedPost, index) => {
+                            console.log(reportedPost);
+                            return (
+                              <tr
+                                key={index}
+                                className="border-t border-b mb-2"
+                              >
+                                <ReportedPostItem
+                                  type={"user"}
+                                  key={index}
+                                  imageSrc={reportedPost?.items?.items[0]?.file}
+                                  video={reportedPost?.items?.items[0]?.file?.type?.startsWith(
+                                    "video"
+                                  )}
+                                  post={reportedPost.post}
+                                  reported={reportedPost}
+                                  className="ph:mb-4 sm:mb-4"
+                                />
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
                   </InfinitScroller>
                 </div>
               ) : null}

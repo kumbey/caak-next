@@ -30,7 +30,7 @@ const SelectGroup = ({
           ) : (
             <span
               className={
-                "icon-fi-rs-search text-caak-darkBlue flex items-center justify-center border-2 border-dashed border-caak-darkBlue w-6.5 h-6.5 rounded-square p-1"
+                "icon-fi-rs-thick-search text-caak-darkBlue flex items-center justify-center border-2 border-dashed border-caak-darkBlue w-6.5 h-6.5 rounded-square p-1"
               }
             />
           )}
@@ -60,7 +60,7 @@ const SelectGroup = ({
             }
           >
             <span
-              className={"icon-fi-rs-triangle text-caak-generalblack text-10px"}
+              className={`  icon-fi-rs-triangle text-caak-generalblack text-10px`}
             />
           </div>
 

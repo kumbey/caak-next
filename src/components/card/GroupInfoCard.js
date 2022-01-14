@@ -261,7 +261,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
               group.followed
                 ? "text-caak-extraBlack bg-[#E4E4E5]"
                 : "bg-caak-primary text-white"
-            }  w-full max-w-[284px] justify-center h-[44px] text-[16px] font-medium tracking-[0.24px] leading-[19px] rounded-[6px] shadow-none border-[2px] border-caak-titaniumwhite`}
+            }  w-full max-w-[284px] justify-center h-[44px] text-[16px] font-medium tracking-[0.24px] leading-[19px] rounded-[6px] shadow-none  border-caak-titaniumwhite`}
           >
             {group.followed ? `Нэгдсэн` : `Нэгдэх`}
           </button>

@@ -57,7 +57,7 @@ const DropDownSelect = ({
         <div
           onClick={onToggle}
           className={
-            "relative flex flex-row items-center cursor-pointer bg-white text-16px text-caak-generalblack w-full pl-3 pr-10  block h-[44px] rounded-[3px] text-base  border border-caak-primary placeholder-gray-400 ring-2 ring-caak-primary ring-opacity-20 sm:text-sm hover:border-caak-primary"
+            "relative flex flex-row items-center cursor-pointer bg-white text-16px text-caak-generalblack w-full pl-3 pr-10  block h-[44px] rounded-[3px] text-base  border border-caak-primary placeholder-gray-400 ring-2 ring-caak-primary  ring-opacity-20 sm:text-sm hover:border-caak-primary"
           }
         >
           <span
@@ -83,7 +83,9 @@ const DropDownSelect = ({
             }
           >
             <span
-              className={"icon-fi-rs-triangle text-caak-generalblack text-10px"}
+              className={
+                "icon-fi-rs-triangle rotate-180 text-caak-generalblack text-10px"
+              }
             />
           </div>
           <span />
@@ -123,7 +125,7 @@ const DropDownSelect = ({
                         <div className={"flex flex-col justify-between"}>
                           <span
                             className={
-                              "text-caak-generalblack font-medium text-16px"
+                              "text-caak-generalblack font-medium text-15px"
                             }
                           >
                             {item.name}
@@ -146,18 +148,14 @@ const DropDownSelect = ({
             <span className={"text-15px text-caak-darkBlue pt-2"}>
               Бүх группүүд
             </span>
-            {
-              filteredData.adminModerator.length === 0
-              ?
+            {filteredData.adminModerator.length === 0 ? (
               <span
-              onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
-              className={"text-15px font-medium text-caak-primary"}
+                onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
+                className={"text-15px font-medium text-caak-primary"}
               >
                 Групп үүсгэх
               </span>
-              :
-              null
-            }
+            ) : null}
           </div>
           <div className={"px-2"}>
             {filteredData.unMember.map((item, index) => {

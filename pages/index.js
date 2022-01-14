@@ -111,7 +111,7 @@ const Feed = ({ ssrData }) => {
     variables: {
       sortDirection: "DESC",
       status: "CONFIRMED",
-      limit: 6,
+      limit: 20,
     },
     authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     nextToken: ssrData.posts.nextToken,

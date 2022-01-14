@@ -12,7 +12,7 @@ import {
   _objectWithoutKeys,
 } from "../../utility/Util";
 
-const Login = ({ nextStep }) => {
+const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ const Login = ({ nextStep }) => {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
   };
 

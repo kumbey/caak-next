@@ -170,15 +170,16 @@ const UploadedMediaEdit = ({
   const popItem = (index_arg) => {
     const popIndex = post.items.findIndex((_, index) => index === index_arg);
     const postsArr = post.items;
-    postsArr.splice(popIndex, 1)
+    postsArr.splice(popIndex, 1);
     //Updating item id after removing item from array
     postsArr.map((item, index) => {
       item.id = index + 1;
     });
 
-    setPost(prev=> ({
-      ...prev, items: postsArr
-    }))
+    setPost((prev) => ({
+      ...prev,
+      items: postsArr,
+    }));
   };
 
   const featuredPostHandler = (index) => {
@@ -234,12 +235,11 @@ const UploadedMediaEdit = ({
   }, []);
 
   useEffect(() => {
-    let cContent
-    if(caakContent){
-      cContent = {owned: "CAAK"}
-    }
-    else {
-      delete post.owned
+    let cContent;
+    if (caakContent) {
+      cContent = { owned: "CAAK" };
+    } else {
+      delete post.owned;
     }
     setPost({
       ...post,
@@ -272,6 +272,20 @@ const UploadedMediaEdit = ({
     // eslint-disable-next-line
   }, [post, selectedGroup]);
 
+  useEffect(()=> {
+    const onRouteChangeStart = ()=> {
+      const askBeforeRouteChange =  window.confirm("Та гарахдаа итгэлтэй байна уу?");
+      if(!askBeforeRouteChange){
+        router.events.emit('routeChangeError');
+        throw 'Abort route change. Please ignore this error.';
+      }
+    }
+    router.events.on("routeChangeStart", onRouteChangeStart)
+    return () => {
+      router.events.off("routeChangeStart", onRouteChangeStart)
+    }
+  },[router])
+
   return (
     <div>
       {errors && (
@@ -295,30 +309,30 @@ const UploadedMediaEdit = ({
       <div className={"px-[18px] mt-[12px]"}>
         <div className={"w-full block relative"}>
           <div className={"w-full block relative"}>
-             <textarea
-               onFocus={auto_grow}
-               onInput={auto_grow}
-               maxLength={maxLengths.title}
-               placeholder={"Гарчиг"}
-               value={post.title}
-               onChange={postTitleHandler}
-               className={`addPostTextarea overflow-hidden min-h-[44px] text-[15px] pb-[25px]   text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm  focus:ring-2 focus:ring-opacity-20  ${
-                 post.title?.length === maxLengths.title
-                   ? "ring-caak-red border-caak-red"
-                   : "focus:ring-caak-primary focus:border-caak-primary"
-               } ${
-                 !valid && post.title?.length === 0
-                   ? "ring-caak-red border-caak-red"
-                   : ""
-               }`}
-             />
+            <textarea
+              onFocus={auto_grow}
+              onInput={auto_grow}
+              maxLength={maxLengths.title}
+              placeholder={"Гарчиг"}
+              value={post.title}
+              onChange={postTitleHandler}
+              className={`addPostTextarea overflow-hidden min-h-[44px] text-[15px] pb-[25px]   text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm  focus:ring-2 focus:ring-opacity-20  ${
+                post.title?.length === maxLengths.title
+                  ? "ring-caak-red border-caak-red"
+                  : "focus:ring-caak-primary focus:border-caak-primary"
+              } ${
+                !valid && post.title?.length === 0
+                  ? "ring-caak-red border-caak-red"
+                  : ""
+              }`}
+            />
             <span
               className={
                 "absolute bottom-1 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
               }
             >
-            {post.title?.length || 0}/{maxLengths.title}
-          </span>
+              {post.title?.length || 0}/{maxLengths.title}
+            </span>
           </div>
 
           <div className="flex justify-start">
@@ -466,6 +480,7 @@ const UploadedMediaEdit = ({
               "flex-1 w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
             }
           >
+            asd
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
                 initialAutoPlay={false}
@@ -507,9 +522,9 @@ const UploadedMediaEdit = ({
                   "absolute bottom-[12px] right-[12px] text-[12px] text-caak-darkBlue"
                 }
               >
-              {post.items[activeIndex]?.title?.length || 0}/
+                {post.items[activeIndex]?.title?.length || 0}/
                 {maxLengths.imageDescription}
-            </span>
+              </span>
             </div>
 
             <div className="flex justify-end mt-[14px]">

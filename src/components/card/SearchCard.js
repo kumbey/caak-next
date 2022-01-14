@@ -11,6 +11,7 @@ import Video from "../video";
 import React from "react";
 
 const SearchCard = ({ type, result }) => {
+  console.log(type)
   return result ? (
     type !== "POST" ? (
       <div

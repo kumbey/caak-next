@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Switch from "./Switch";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
@@ -7,6 +7,8 @@ import Input from "/src/components/input";
 import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
+import Button from "../button";
+import toast, { Toaster } from "react-hot-toast";
 import { updateUser } from "../../graphql-custom/user/mutation";
 
 export default function Privacy() {
@@ -67,6 +69,8 @@ export default function Privacy() {
     setPasswordRepeat("");
     setShowInput(false);
     setCol(false);
+    setError("");
+    setErrors("");
   };
 
   const doConfirm = async () => {
@@ -75,10 +79,11 @@ export default function Privacy() {
 
       setLoading(true);
       await Auth.changePassword(authUser, oldPassword, password);
-      setMessage("Нууц үг амжилттай солигдлоо!");
+      // setMessage("Нууц үг амжилттай солигдлоо!");
       setLoading(false);
       setShowInput(false);
       setCol(false);
+      toast.success("Нууц үг амжилттай солигдлоо!");
 
       clear();
     } catch (ex) {
@@ -117,14 +122,16 @@ export default function Privacy() {
     const res1 = {
       ...temp,
       settings: {
-        autoPlay: temp.settings.autoPlay,
+        autoPlay: temp?.settings?.autoPlay,
         showFollowedGroup: !isFollowedGroup,
-        showCreatedGroup: temp.settings.showCreatedGroup,
+        showCreatedGroup: temp?.settings?.showCreatedGroup,
       },
     };
 
     const res = JSON.stringify(res1);
+    setLoading(true);
     await updateUserData(res);
+    setLoading(false);
   };
   const toggleCreatedGroup = async () => {
     setIsCreatedGroup(!isCreatedGroup);
@@ -133,18 +140,26 @@ export default function Privacy() {
     const res1 = {
       ...temp,
       settings: {
-        autoPlay: temp.settings.autoPlay,
-        showFollowedGroup: temp.settings.showFollowedGroup,
+        autoPlay: temp?.settings?.autoPlay,
+        showFollowedGroup: temp?.settings?.showFollowedGroup,
         showCreatedGroup: !isCreatedGroup,
       },
     };
 
     const res = JSON.stringify(res1);
+    setLoading(true);
     await updateUserData(res);
+    setLoading(false);
   };
 
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+          duration: 5000,
+        }}
+      />
       <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
         Нууцлал
       </p>
@@ -155,7 +170,11 @@ export default function Privacy() {
         <p className="text-15px font-inter font-normal">
           Нэгдсэн группуудыг ил харуулах
         </p>
-        <Switch toggle={toggleFollowedGroup} active={isFollowedGroup} />
+        <Switch
+          toggle={toggleFollowedGroup}
+          active={isFollowedGroup}
+          loading={loading}
+        />
       </div>
       <div
         style={{ paddingBlock: "14px" }}
@@ -164,7 +183,11 @@ export default function Privacy() {
         <p className="text-15px font-inter font-normal">
           Миний үүсгэсэн группуудыг ил харуулах
         </p>
-        <Switch toggle={toggleCreatedGroup} active={isCreatedGroup} />
+        <Switch
+          toggle={toggleCreatedGroup}
+          active={isCreatedGroup}
+          loading={loading}
+        />
       </div>
       <div
         className={`${
@@ -186,7 +209,7 @@ export default function Privacy() {
                   onChange={handleChange}
                   placeholder={"Хуучин нууц үгээ оруулах"}
                   className={
-                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen mt-[10px]"
+                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen hover:bg-white mt-[10px]"
                   }
                 />
                 <p className="text-13px text-caak-red">{error}</p>
@@ -199,7 +222,7 @@ export default function Privacy() {
                   onChange={handleChange}
                   placeholder={"Шинэ нууц үг"}
                   className={
-                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen hover:bg-white"
                   }
                 />
                 <Input
@@ -210,23 +233,32 @@ export default function Privacy() {
                   onChange={handleChange}
                   placeholder={"Шинэ нууц үг давтах"}
                   className={
-                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen hover:bg-white"
                   }
                 />
               </div>
-              <button
+            </div>
+            <div className="justify-end mt-[10px] flex items-center pb-3">
+              <Button
+                loading={loading}
                 onClick={() => clear()}
-                className="icon-fi-rs-close font-bold text-caak-boilingmagma ml-10"
-              />
-              <button
+                className="bg-white text-15px border border-caak-unicornsilver rounded-lg text-caak-generalblack mr-[10px]  px-[24px] "
+              >
+                Болих
+              </Button>
+
+              <Button
+                loading={loading}
                 onClick={() => handleSubmit(doConfirm)}
-                className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
-              />
+                className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
+              >
+                Солих
+              </Button>
             </div>
           </form>
         ) : (
           <>
-            <p className="text-green-500">{message}</p>
+            {/* <p className="text-green-500">{message}</p> */}
             <span
               onClick={() => handleClick()}
               className=" icon-fi-rs-edit-f text-caak-darkBlue cursor-pointer"

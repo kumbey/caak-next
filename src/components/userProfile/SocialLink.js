@@ -4,6 +4,7 @@ import Input from "/src/components/input";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
+import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "../../context/userContext";
 
 export default function SocialLink() {
@@ -67,6 +68,7 @@ export default function SocialLink() {
     setText("");
     user.meta = res;
     setCol(false);
+    toast.success("Амжилттай хадгалагдлаа.");
 
     setShowInput(false);
   };
@@ -90,6 +92,12 @@ export default function SocialLink() {
 
   return (
     <div className="flex flex-col mx-[30px]">
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+          duration: 5000,
+        }}
+      />
       <p
         className="font-semibold text-caak-aleutian font-inter text-22px"
         style={{
@@ -130,9 +138,6 @@ export default function SocialLink() {
                   onSubmit={(e) => e.preventDefault()}
                 >
                   <div className="flex items-center ">
-                    <div className="text-caak-darkBlue text-sm pb-2">
-                      www.{menu.name}.com/
-                    </div>
                     <div className="w-full">
                       <Input
                         name={menu.name}
@@ -167,20 +172,16 @@ export default function SocialLink() {
               ) : (
                 <div className="flex  items-center">
                   {
-                    menu.value === ""
-                    ?
                     <Button
-                    onClick={() => handleClick(menu.id)}
-                    className="bg-caak-bleudefrance w-[101px] text-white font-medium text-12px h-c2 rounded-full"
-                  >
-                    Холбох
-                  </Button>
-                  :
-                  <Button
-                    className="bg-[#E4E4E5] w-[101px] text-black font-medium text-12px h-c2 rounded-full"
+                      onClick={() => handleClick(menu.id)}
+                      className={`${
+                        menu.value.length > 0
+                          ? "bg-caak-titaniumwhite text-caak-generalblack"
+                          : "bg-caak-bleudefrance text-white "
+                      } text-12px h-c2 rounded-full font-medium  w-[101px]`}
                     >
-                    Холбосон
-                  </Button>
+                      {menu.value.length > 0 ? "Холбогдсон" : "Холбох"}
+                    </Button>
                   }
                 </div>
               )}

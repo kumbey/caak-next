@@ -4,6 +4,7 @@ import StatsItem from "../../../src/components/stats";
 import Image from "next/image";
 import { API, withSSRContext } from "aws-amplify";
 import {
+  checkAdminModerator,
   getFileUrl,
   getGenderImage,
   getReturnData,
@@ -26,7 +27,7 @@ import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
-import {useWrapper} from "../../../src/context/wrapperContext";
+import { useWrapper } from "../../../src/context/wrapperContext";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -46,6 +47,10 @@ export async function getServerSideProps({ req, query }) {
     },
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
+  const grpData = getReturnData(groupView);
+
+  if (!checkAdminModerator(grpData.role_on_group)) return { notFound: true };
+
   const resp = await API.graphql({
     query: getPostByGroup,
     variables: {
@@ -67,7 +72,7 @@ export async function getServerSideProps({ req, query }) {
     props: {
       ssrData: {
         posts: getReturnData(resp),
-        groupView: getReturnData(groupView),
+        groupView: grpData,
         groupTotals: getReturnData(groupTotals),
       },
     },
@@ -93,16 +98,16 @@ const Dashboard = ({ ssrData }) => {
   const [groupData] = useState(ssrData.groupView);
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
-  const {setNavBarTransparent} = useWrapper()
+  const { setNavBarTransparent } = useWrapper();
   const { isLogged } = useUser();
   const [totalMember] = useState(
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin
   );
 
-  useEffect(()=> {
-    setNavBarTransparent(false)
+  useEffect(() => {
+    setNavBarTransparent(false);
     // eslint-disable-next-line
-  },[])
+  }, []);
 
   const stats = [
     {

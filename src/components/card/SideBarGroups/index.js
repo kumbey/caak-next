@@ -61,12 +61,9 @@ const SideBarGroups = ({
     setGroupData(groups);
   };
 
-  const getGroupTotal = async (id) => {
+  const getGroupTotal = async () => {
     const resp = await API.graphql({
       query: listGroupTotals,
-      // variables: {
-      //   group_id: id,
-      // },
     });
     setGroupTotals(getReturnData(resp).items);
   };

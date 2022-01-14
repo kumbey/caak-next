@@ -1,6 +1,6 @@
-import Image from "next/image";
 import {
-  generateFileUrl, getFileUrl,
+  generateFileUrl,
+  getFileUrl,
   getGenderImage,
   getReturnData,
 } from "../../utility/Util";
@@ -16,7 +16,6 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
   const [userData, setUserData] = useState();
   const [postData, setPostData] = useState();
   const [groupData, setGroupData] = useState();
-
   const { isLogged } = useUser();
   const getPostSearchInfo = async () => {
     try {
@@ -86,7 +85,7 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
         if (userData.pic) {
           return generateFileUrl(userData.pic);
         } else {
-          return getGenderImage("default").src;
+          return getGenderImage(userData.gender).src;
         }
       }
     } else if (type === "GROUP") {
@@ -99,9 +98,12 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
       }
     } else {
       if (postData) {
-        return getFileUrl(postData.items.items[0].file);
+        if (postData.items?.items[0]?.file) {
+          return getFileUrl(postData.items.items[0].file);
+        } else {
+          return getGenderImage("default").src;
+        }
       }
-
     }
   };
 

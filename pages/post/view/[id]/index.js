@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
 import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
@@ -369,11 +369,13 @@ const Post = ({ ssrData }) => {
               </div>
             </div>
             {post.commentType && post.status === "CONFIRMED" && (
-              <CommentSection
-                jumpToCommentId={jumpToComment}
-                commentRef={commentRef}
-                post={post}
-              />
+              <div id={"viewPostCommentSection"} ref={commentRef}>
+                <CommentSection
+                  jumpToCommentId={jumpToComment}
+                  commentRef={commentRef}
+                  post={post}
+                />
+              </div>
             )}
           </div>
           {(post.group.role_on_group === "ADMIN" ||

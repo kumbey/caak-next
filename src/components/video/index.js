@@ -5,6 +5,7 @@ import ItemsCounterCard from "../card/ItemsCounterCard";
 import { useWrapper } from "../../context/wrapperContext";
 import { useInView } from "react-intersection-observer";
 import { useUser } from "../../context/userContext";
+import Tooltip from "../tooltip/Tooltip";
 
 const dblTouchTapMaxDelay = 300;
 let latestTouchTap = {
@@ -57,11 +58,13 @@ const Video = ({
   const [videoDuration, setVideoDuration] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [played, setPlayed] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  const [volumeSliderActive, setVolumeSliderActive] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const canvasRef = useRef();
   const { currentPlayingVideoId, setCurrentPlayingVideoId } = useWrapper();
   const [ref, inView] = useInView({
-    threshold: 0.6,
+    threshold: 1,
   });
   const handleSeekChange = (e) => {
     setPlayed(parseFloat(e.target.value));
@@ -87,6 +90,11 @@ const Video = ({
     }
   };
 
+  const handleVolumeChange = (e) => {
+    e.stopPropagation();
+    setVolume(parseFloat(e.target.value));
+  };
+
   function secondsToTime(e) {
     const m = Math.floor((e % 3600) / 60)
         .toString()
@@ -97,12 +105,19 @@ const Video = ({
     return `${m}:${s}`;
   }
 
+  useEffect(() => {
+    if (volume === 0) {
+      setIsMuted(true);
+    } else {
+      setIsMuted(false);
+    }
+  }, [volume]);
   //Buggy when 2 videos visible on viewport at the same time
   useEffect(() => {
     if (inView) {
       setLoaded(true);
       setIsPlaying(isAutoPlayEnabled);
-      setIsMuted(isAutoPlayEnabled);
+      // setIsMuted(isAutoPlayEnabled);
       setCurrentPlayingVideoId(videoFileId);
     } else if (!inView && loaded) {
       setIsPlaying(false);
@@ -201,6 +216,7 @@ const Video = ({
             playing={isPlaying}
             muted={isMuted}
             loop={loop}
+            volume={volume}
             onEnded={() => {
               setIsPlaying(false);
             }}
@@ -294,6 +310,7 @@ const Video = ({
                 {secondsToTime(videoDuration - playedSeconds)}
               </p>
             </div>
+
             <div
               className={
                 "flex items-center w-full h-[2px] relative bg-white bg-opacity-40 mx-[18px]"
@@ -312,25 +329,47 @@ const Video = ({
                 onChange={handleSeekChange}
                 onMouseUp={handleSeekMouseUp}
               />
-              {/*<span*/}
-              {/*  style={{*/}
-              {/*    width: `${*/}
-              {/*      (100 * Math.floor(playedSeconds)) /*/}
-              {/*      Math.floor(videoDuration)*/}
-              {/*    }%`,*/}
-              {/*  }}*/}
-              {/*  className={"h-full bg-white absolute top-0 left-0"}*/}
-              {/*/>*/}
             </div>
+
+          <Tooltip
+            debounceValue={0.1}
+            className={"right-1/2 translate-x-1/2"}
+            content={
+              <div className={"flex items-center justify-center bg-transparent pt-[4px] rounded-[4px] w-[26px] h-[68px] relative bottom-[90px]"}>
+                <div
+                  className={`transition-all duration-300 items-center justify-center rounded-[4px]`}
+                >
+                  <input
+                    orient="vertical"
+                    onClick={(e) => e.stopPropagation()}
+                    type="range"
+                    min={0}
+                    max={1}
+                    step="any"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                  />
+                </div>
+              </div>
+              }
+          >
             <div
               onClick={(e) => {
                 e.stopPropagation();
+                if(isMuted && volume === 0){
+                  setVolume(0.8)
+                }
+                else {
+                  setVolume(0)
                 setIsMuted(!isMuted);
+                }
+                setVolumeSliderActive(!volumeSliderActive);
               }}
               className={
                 "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer"
               }
             >
+
               <span className={"icon-fi-rs-volume text-white text-[22px]"} />
               {isMuted && (
                 <span
@@ -338,6 +377,7 @@ const Video = ({
                 />
               )}
             </div>
+          </Tooltip>
             <div
               onClick={(e) => {
                 handleFullscreen(e);

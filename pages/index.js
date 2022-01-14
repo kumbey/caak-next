@@ -95,7 +95,7 @@ const Feed = ({ ssrData }) => {
   const router = useRouter();
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
-  const [posts, setPosts] = useState(ssrData.posts.items);
+  const [posts, setPosts] = useState(ssrData.posts);
   const { setFeedSortType } = useWrapper();
   const [loading, setLoading] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
@@ -105,7 +105,6 @@ const Feed = ({ ssrData }) => {
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   //FORCE RENDER STATE
   const [render, setRender] = useState(0);
-
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -124,7 +123,7 @@ const Feed = ({ ssrData }) => {
         setLoading(true);
         const resp = await nextPosts();
         if (resp) {
-          setPosts((nextPosts) => [...nextPosts, ...resp]);
+          setPosts((nextPosts) => ({...nextPosts, items: [...nextPosts.items, ...resp]}));
         }
       }
       setLoading(false);
@@ -174,17 +173,18 @@ const Feed = ({ ssrData }) => {
 
   useEffect(() => {
     if (subscripedPost) {
-      const postIndex = posts.findIndex(
+      const postIndex = posts.items.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
 
       if (subscripedPost.type === "add") {
         if (postIndex <= -1) {
-          setPosts([subscripedPost.post, ...posts]);
+          setPosts({...posts, items: [subscripedPost.post, ...posts.items]})
+          // setPosts([subscripedPost.post, ...posts]);
         }
       } else {
         if (postIndex > -1) {
-          posts.splice(postIndex, 1);
+          posts.items.splice(postIndex, 1);
           setRender(render + 1);
         }
       }
@@ -278,7 +278,7 @@ const Feed = ({ ssrData }) => {
               />
               <AddPostCaakCard setIsOpen={setOpen} isOpen={open} />
               <InfinitScroller onNext={fetchPosts} loading={loading}>
-                {posts.map((data, index) => {
+                {posts.items.map((data, index) => {
                   return (
                     <Card
                       key={index}

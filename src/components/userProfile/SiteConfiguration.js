@@ -16,7 +16,7 @@ export default function SiteConfiguration() {
   const toggle = async () => {
     setActive(!active);
     const temp = JSON.parse(user.meta);
-    const temp1 = JSON.parse(user.meta).settings;
+    const temp1 = JSON.parse(user.meta)?.settings;
     const res1 = {
       ...temp,
       settings: {

@@ -16,7 +16,6 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
   const [userData, setUserData] = useState();
   const [postData, setPostData] = useState();
   const [groupData, setGroupData] = useState();
-  console.log(type)
   const { isLogged } = useUser();
   const getPostSearchInfo = async () => {
     try {

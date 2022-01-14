@@ -4,12 +4,10 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateGroup } from "../../graphql-custom/group/mutation";
 import Button from "/src/components/button";
 import Input from "../input";
+import toast, { Toaster } from "react-hot-toast";
 import Divider from "../divider";
 
-export default function GroupInformation({
-  categoryList,
-  groupData,
-}) {
+export default function GroupInformation({ categoryList, groupData }) {
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState({});
@@ -36,10 +34,11 @@ export default function GroupInformation({
         })
       );
       groupData.name = text.name;
-      setText("");
     }
     setShowInput(false);
+    // setText("");
     setCol(false);
+    toast.success("Амжилттай хадгалагдлаа.");
   };
 
   const handleClick = (id) => {
@@ -59,6 +58,12 @@ export default function GroupInformation({
 
   return (
     <div className="flex flex-col">
+      <Toaster
+        toastOptions={{
+          className: "toastOptions",
+          duration: 5000,
+        }}
+      />
       <p
         className="font-semibold text-caak-aleutian font-inter text-22px"
         style={{ marginLeft: "30px", marginTop: "30px", fontSize: "24px" }}

@@ -31,7 +31,7 @@ const Register = () => {
             value: phoneNumber,
             type: Consts.typePhoneNumber,
             onChange: setPhoneNumber,
-            ignoreOn: true,
+            // ignoreOn: true,
           },
         }
       : {
@@ -39,7 +39,7 @@ const Register = () => {
             value: email,
             type: Consts.typeEmail,
             onChange: setEmail,
-            ignoreOn: true,
+            // ignoreOn: true,
           },
         }),
 
@@ -47,13 +47,13 @@ const Register = () => {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
     passwordRepeat: {
       value: passwordRepeat,
       type: Consts.typePasswordRepeat,
       onChange: setPasswordRepeat,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
   };
 

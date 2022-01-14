@@ -16,6 +16,7 @@ const ViewPostLeftReaction = ({
   containerClassname,
   mobile,
   setIsReportModalOpen,
+  handleToast,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
@@ -217,6 +218,7 @@ const ViewPostLeftReaction = ({
                 post={post}
                 postUser={post.user}
                 groupId={post.group_id}
+                handleToast={handleToast}
               />
             }
             className={

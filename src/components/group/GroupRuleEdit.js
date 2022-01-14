@@ -39,10 +39,8 @@ const GroupRuleEdit = ({
   useEffect(() => {
     if (text?.title?.length > 0 && text?.description?.length > 0) {
       setIsValid(true);
-      console.log("valid");
     } else {
       setIsValid(false);
-      console.log("not valid");
     }
   }, [text]);
   return (

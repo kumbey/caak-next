@@ -13,28 +13,47 @@ export const searchApi = async ({ API, searchQuery, Auth, postLimit }) => {
   } catch (ex) {
     user = null;
   }
-  try {
-    async function fetchItemsNextToken({
-      params,
-      items = [],
-      callback = undefined,
-    }) {
-      let data = await API.graphql(params);
-      data = getReturnData(data);
-
-      items.push(...data.items);
-
-      if (callback) {
-        callback(data.items);
-      }
-      if (!data.nextToken) return items;
-
-      // eslint-disable-next-line no-param-reassign
-      params.variables.nextToken = data.nextToken;
-      return fetchItemsNextToken({ params, items, callback });
+  const getPosts = async () => {
+    try {
+      let post = await API.graphql({
+        query: searchPosts,
+        variables: {
+          filter: {
+            title: { wildcard: `*${searchQuery}*` },
+          },
+          limit: postLimit ? postLimit : 10,
+        },
+        authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+      });
+      post = getReturnData(post);
+      return post;
+    } catch (ex) {
+      console.log(ex);
     }
+  };
+  async function fetchItemsNextToken({
+    params,
+    items = [],
+    callback = undefined,
+  }) {
+    let data = await API.graphql(params);
+    data = getReturnData(data);
 
-    const groups = await fetchItemsNextToken({
+    items.push(...data.items);
+
+    if (callback) {
+      callback(data.items);
+    }
+    if (!data.nextToken) return items;
+
+    // eslint-disable-next-line no-param-reassign
+    params.variables.nextToken = data.nextToken;
+    return fetchItemsNextToken({ params, items, callback });
+  }
+  let groups = [];
+  let users = [];
+  try {
+    groups = await fetchItemsNextToken({
       params: {
         query: listGroupsSearch,
         variables: {
@@ -43,8 +62,11 @@ export const searchApi = async ({ API, searchQuery, Auth, postLimit }) => {
         authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       },
     });
-
-    const users = await fetchItemsNextToken({
+  } catch (ex) {
+    console.log(ex);
+  }
+  try {
+    users = await fetchItemsNextToken({
       params: {
         query: listUsers,
         authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
@@ -54,40 +76,28 @@ export const searchApi = async ({ API, searchQuery, Auth, postLimit }) => {
         },
       },
     });
-    const getPosts = async () => {
-      let post = await API.graphql({
-        query: searchPosts,
-        variables: {
-          filter: {
-            title: { wildcard: `*${searchQuery}*` }
-          },
-          limit: postLimit ? postLimit : 10
-        },
-      });
-      post = getReturnData(post);
-      return post;
-    };
-    const posts = await getPosts()
-
-    const groupsType = groups.map((obj) => ({
-      ...obj,
-      type: "GROUP",
-      keyword: obj.name,
-    }));
-
-    const usersType = users.map((obj) => ({
-      ...obj,
-      type: "USER",
-      keyword: obj.nickname,
-    }));
-
-    // const concated = groupsType.concat(usersType);
-    return {
-      groups: groupsType,
-      users: usersType,
-      posts: posts,
-    };
   } catch (ex) {
     console.log(ex);
   }
+
+  const posts = await getPosts();
+
+  const groupsType = groups.map((obj) => ({
+    ...obj,
+    type: "GROUP",
+    keyword: obj.name,
+  }));
+
+  const usersType = users.map((obj) => ({
+    ...obj,
+    type: "USER",
+    keyword: obj.nickname,
+  }));
+
+  // const concated = groupsType.concat(usersType);
+  return {
+    groups: groupsType,
+    users: usersType,
+    posts: posts,
+  };
 };

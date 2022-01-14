@@ -18,7 +18,7 @@ const FeedBack = ({ setIsOpen }) => {
   const [comment, setComment] = useState("");
   const [type, setType] = useState("");
   const [isValid, setIsValid] = useState(false);
-  const [star, setStar] = useState(4);
+  const [star, setStar] = useState(null);
   const [isFeedBackSent, setIsFeedbackSent] = useState(false);
   const { isLogged } = useUser();
 
@@ -76,17 +76,18 @@ const FeedBack = ({ setIsOpen }) => {
     }
   };
 
+
   useEffect(() => {
-    if (comment.length > 0 && type.length > 0) {
+    if (comment.length > 0 && type.length > 0 && typeof star === "number") {
       setIsValid(true);
     } else {
       setIsValid(false);
     }
-  }, [comment, type]);
+  }, [comment, type, star]);
   return !isFeedBackSent ? (
     <div
       className={
-        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[90px] right-[24px] w-[321px] p-[25px]"
+        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[23px] right-[23px] w-[321px] p-[25px]"
       }
     >
       <div
@@ -100,7 +101,7 @@ const FeedBack = ({ setIsOpen }) => {
       <div className={"mt-[11px] flex flex-col items-center"}>
         <p
           className={
-            "text-white self-center font-bold text-[22px] tracking-[0.55px] leading-[26px] text-center"
+            "text-white self-center font-semibold text-[22px] tracking-[0.55px] leading-[26px] text-center"
           }
         >
           Шинэ Саак <br />
@@ -109,7 +110,7 @@ const FeedBack = ({ setIsOpen }) => {
         <div className={"flex flex-row items-center mt-[18px]"}>
           {emojis.map((emoji, index) => {
             return (
-              <div key={index} className="group relative">
+              <div key={index} className="group relative mr-[14px] last:mr-0">
                 <div
                   onClick={() => setStar(emoji.id)}
                   className={` ${
@@ -118,11 +119,11 @@ const FeedBack = ({ setIsOpen }) => {
                 >
                   <img alt={""} src={emoji.emoji.src} height={38} width={38} />
                 </div>
-                <div className="h-[18px] w-auto absolute top-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block bg-caak-generalblack bg-opacity-40 rounded-full px-[12px] my-[2px] items-center shadow-dropdown">
-                  <p className="font-inter font-normal tracking-[0.2px] leading-4 text-13px text-white w-auto text-center whitespace-nowrap">
-                    {emoji.desc}
-                  </p>
-                </div>
+                {/*<div className="h-[18px] w-auto absolute top-[40px] left-1/2 -translate-x-1/2 hidden group-hover:block bg-caak-generalblack bg-opacity-40 rounded-full px-[12px] my-[2px] items-center shadow-dropdown">*/}
+                {/*  <p className="font-inter font-normal tracking-[0.2px] leading-4 text-13px text-white w-auto text-center whitespace-nowrap">*/}
+                {/*    {emoji.desc}*/}
+                {/*  </p>*/}
+                {/*</div>*/}
               </div>
             );
           })}
@@ -177,7 +178,7 @@ const FeedBack = ({ setIsOpen }) => {
           </div>
           <div className={"mt-[24px]"}>
             <Button
-              disabled={!isValid ? true : false}
+              disabled={!isValid}
               onClick={() => sendFeedBack()}
               className={
                 "w-[130px] h-[36px] self-center rounded-[8px] ring-caak-cobalite  border-[3px] border-opacity-20 border-caak-cobalite bg-white text-caak-generalblack font-medium text-[16px]"
@@ -190,7 +191,7 @@ const FeedBack = ({ setIsOpen }) => {
       </div>
     </div>
   ) : (
-    <FeedbackDoneCard />
+    <FeedbackDoneCard setIsOpen={setIsOpen} isOpen={isFeedBackSent} />
   );
 };
 

@@ -272,6 +272,20 @@ const UploadedMediaEdit = ({
     // eslint-disable-next-line
   }, [post, selectedGroup]);
 
+  useEffect(()=> {
+    const onRouteChangeStart = ()=> {
+      const askBeforeRouteChange =  window.confirm("Та гарахдаа итгэлтэй байна уу?");
+      if(!askBeforeRouteChange){
+        router.events.emit('routeChangeError');
+        throw 'Abort route change. Please ignore this error.';
+      }
+    }
+    router.events.on("routeChangeStart", onRouteChangeStart)
+    return () => {
+      router.events.off("routeChangeStart", onRouteChangeStart)
+    }
+  },[router])
+
   return (
     <div>
       {errors && (

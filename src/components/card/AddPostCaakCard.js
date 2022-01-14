@@ -20,6 +20,7 @@ const AddPostCaakCard = () => {
         if(isFirst){
               lsSet("addPostCard", true)
         }
+        //eslint-disable-next-line
     }, [isFirst]);
 
   return isOpen && isOpen === "true" ? (

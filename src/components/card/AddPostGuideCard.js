@@ -12,6 +12,7 @@ const AddPostGuideCard = () => {
         if(first){
             lsSet("addPostBanner", true)
         }
+        //eslint-disable-next-line
     }, [first]);
 
     return open && open === "true" ? 

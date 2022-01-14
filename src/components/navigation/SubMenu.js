@@ -14,20 +14,14 @@ import NotificationDropDown from "./NotificationDropDown";
 import useMediaQuery from "./useMeduaQuery";
 import SearchInput from "../input/SearchInput";
 import AddPostGuideCard from "../card/AddPostGuideCard";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import Consts from "../../utility/Consts";
 import AuraModal from "../modals/auraModal";
 import Link from "next/link";
 
 const SubMenu = ({ params }) => {
   const [isSearchInputOpen, isSetSearchInputOpen] = useState(false);
   const { navBarTransparent, groupIcon } = useWrapper();
-  const { lsGet } = useLocalStorage("session");
 
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
-  
-  const xd = lsGet(Consts.addPostKey).addPostGuide;
-  const [open, setOpen] = useState(xd);
 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   const { user, isLogged } = useUser();
@@ -117,7 +111,7 @@ const SubMenu = ({ params }) => {
                   )
             }
           >
-            <AddPostGuideCard open={open} setOpen={setOpen} />
+            <AddPostGuideCard/>
           </Button>
         </div>
         {

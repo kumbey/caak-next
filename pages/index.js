@@ -21,7 +21,6 @@ import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
 import toast, { Toaster } from "react-hot-toast";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import FeedBack from "../src/components/feedback";
-import useLocalStorage from "../src/hooks/useLocalStorage";
 import { useRouter } from "next/router";
 import { usePreserveScroll } from "../src/hooks/useScroll";
 
@@ -89,8 +88,6 @@ export async function getServerSideProps({ req }) {
 
 const Feed = ({ ssrData }) => {
   usePreserveScroll();
-  const { lsGet } = useLocalStorage("session");
-  const [open, setOpen] = useState(lsGet(Consts.addPostKey).addPost);
   
   const router = useRouter();
   const FeedLayout = useFeedLayout();
@@ -273,7 +270,7 @@ const Feed = ({ ssrData }) => {
                 containerClassname={"mb-[19px] justify-center"}
                 direction={"row"}
               />
-              <AddPostCaakCard setIsOpen={setOpen} isOpen={open} />
+              <AddPostCaakCard />
               <InfinitScroller onNext={fetchPosts} loading={loading}>
                 {posts.map((data, index) => {
                   return (

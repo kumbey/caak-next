@@ -366,10 +366,10 @@ export default function CreateGroup() {
                                 </div>
                                 <div className='flex flex-row items-center mt-[10px]'>
                                     <span className='icon-fi-rs-globe text-[18.33px] text-[#6C7392]'/>
-                                    <p className='text-[#6C7392] text-[14px] ml-[8px]'>Нээлттэй бүлэг</p>
+                                    <p className='text-[#6C7392] text-[14px] ml-[8px]'>Нээлттэй групп</p>
                                 </div>
                             </div>
-                            <p className='text-[#6C7392] text-[14px] mt-[16px]'>Грүппын төрөл</p>
+                            <p className='text-[#6C7392] text-[14px] mt-[16px]'>Группын төрөл</p>
                             {
                                 oneCategory 
                                 ?

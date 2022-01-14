@@ -1,30 +1,42 @@
 import contentImage from "../../../public/assets/images/Content@2x.png";
-import Image from "next/image";
 import Button from "../button";
 import {useEffect, useState} from "react";
 import {useUser} from "../../context/userContext";
 import {useRouter} from "next/router";
 import AddPostHandler from "../addposthandler";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import Consts from "../../utility/Consts";
 
-const AddPostCaakCard = ({isOpen, setIsOpen}) => {
+const AddPostCaakCard = () => {
     const {isLogged} = useUser();
     const router = useRouter();
     
-    const {lsSet, lsGet} = useLocalStorage("session")
+    const {lsSet, lsGet} = useLocalStorage("local")
 
-  return isOpen ? (
+    const [isFirst] = useState(!lsGet("addPostCard"))
+
+    const [isOpen, setIsOpen] = useState(isFirst ? true : lsGet("addPostCard"));
+
+    useEffect(() => {
+        if(isFirst){
+              lsSet("addPostCard", true)
+        }
+    }, [isFirst]);
+
+  return isOpen && isOpen === "true" ? (
     <div
         className={"w-full bg-white rounded-[8px] p-[12px] mb-[24px] relative"}
     >
       <div
+        // onClick={() => {
+        //     lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPost:  false})
+        //     setTimeout(() => {
+        //       lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPost:  true})
+        //     },  604800000)
+        //     setIsOpen(lsGet(Consts.addPostKey).addPost);
+        // }}
         onClick={() => {
-            lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPost:  false})
-            setTimeout(() => {
-              lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPost:  true})
-            },  604800000)
-            setIsOpen(lsGet(Consts.addPostKey).addPost);
+          lsSet("addPostCard", false)
+          setIsOpen(false)
         }}
         className={
           "w-[30px] h-[30px] hover:bg-gray-200 cursor-pointer flex items-center justify-center rounded-full absolute top-[12px] right-[12px] bg-caak-liquidnitrogen"

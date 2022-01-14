@@ -5,7 +5,7 @@ import useMediaQuery from "../../navigation/useMeduaQuery";
 import GroupRules from "../../card/GroupRules";
 import Dropzone from "react-dropzone";
 import Button from "../../button";
-import LeaveGroup from "../../group/leaveGroup";
+import LeaveGroup from '../../group/LeaveGroup'
 import {
   getFileExt,
   getFileName,

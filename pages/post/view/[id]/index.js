@@ -18,9 +18,9 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updatePost } from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
-import { Toaster } from "react-hot-toast";
 import { useUser } from "../../../../src/context/userContext";
 import { decode } from "html-entities";
+import toast, { Toaster } from "react-hot-toast";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 
 export async function getServerSideProps({ req, query }) {
@@ -38,6 +38,14 @@ const Post = ({ ssrData }) => {
   const { jumpToComment } = router.query;
   const [isReactionActive, setIsReactionActive] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+  const handleToast = ({ param }) => {
+    if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
+    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
+    if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
+    if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
+  };
 
   useEffect(() => {
     setPost(ssrData.post);
@@ -110,7 +118,12 @@ const Post = ({ ssrData }) => {
               "flex items-center bg-black rounded-[100px] p-[4px] bg-opacity-30 justify-center fixed z-[6] bottom-[130px] right-[14px]"
             }
           >
-            <ViewPostLeftReaction mobile commentRef={commentRef} post={post} />
+            <ViewPostLeftReaction
+              mobile
+              commentRef={commentRef}
+              post={post}
+              handleToast={handleToast}
+            />
           </div>
         )}
         <Head>
@@ -168,6 +181,7 @@ const Post = ({ ssrData }) => {
               commentRef={commentRef}
               post={post}
               setIsReportModalOpen={setIsReportModalOpen}
+              handleToast={handleToast}
             />
           </div>
         )}

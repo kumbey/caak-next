@@ -8,7 +8,7 @@ const CardRecommend = () => {
     <div className={"w-96 bg-white rounded-xl"}>
       <div className={"flex flex-col py-3.5 px-5 pb-3"}>
         <div className={"text-caak-generalblack font-bold text-18px"}>
-          Танд санал болгох бүлгүүд
+          Танд санал болгох группууд
         </div>
       </div>
       <Divider />

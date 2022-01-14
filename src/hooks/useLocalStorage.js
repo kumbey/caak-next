@@ -23,12 +23,22 @@ const useLocalStorage = (type) => {
     const get = (key) => {
         try{
             const stored = storage.getItem(key);
+            
             if (!stored || stored === "undefined") {
+               
                 return false;
             }
-        
-            const decrypted = AES.decrypt(stored, Configure.AESKey)
-            return JSON.parse(decrypted.toString(enc.Utf8));
+            if(key === "addPostBanner"){
+                return stored
+            }
+            if(key === "addPostCard"){
+                return stored
+            }
+            else {
+                const decrypted = AES.decrypt(stored, Configure.AESKey)
+                return JSON.parse(decrypted.toString(enc.Utf8));
+            }
+            
         }catch(ex){
             console.log(ex)
             storage.removeItem(key)
@@ -36,10 +46,20 @@ const useLocalStorage = (type) => {
     } 
 
     const set = (key, value) => {
-        const encrypted = AES.encrypt(JSON.stringify(value), Configure.AESKey)
-        storage.setItem(key, encrypted.toString())
-        return true
+        if(key === "addPostBanner"){
+            storage.setItem(key, value)
+            return true
+        } else if(key === "addPostCard"){
+            storage.setItem(key, value)
+            return true
+        }
+        else {
+            const encrypted = AES.encrypt(JSON.stringify(value), Configure.AESKey)
+            storage.setItem(key, encrypted.toString())
+            return true
+        }
     }
+        
 
     const remove = (key) => {
         storage.removeItem(key)

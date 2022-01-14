@@ -74,7 +74,7 @@ export default function AllGroups() {
           :
           activeIndex === 2
           ?
-          setGroups([])
+          setGroups(resp.data.listGroups.items)
           :
           setGroups(resp.data.listGroups.items)
           

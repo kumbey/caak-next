@@ -676,6 +676,11 @@
     background-clip: text;
     color: transparent;
   }
+
+  .feedbackIconBackground {
+    background: transparent linear-gradient(180deg, #3F70FE 0%, #9A99FE 100%) 0 0 no-repeat padding-box;
+  }
+
   .custom-img {
     /*object-fit: cover;*/
     width: 100% !important;

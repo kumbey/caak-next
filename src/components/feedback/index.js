@@ -18,7 +18,7 @@ const FeedBack = ({ setIsOpen }) => {
   const [comment, setComment] = useState("");
   const [type, setType] = useState("");
   const [isValid, setIsValid] = useState(false);
-  const [star, setStar] = useState(4);
+  const [star, setStar] = useState(null);
   const [isFeedBackSent, setIsFeedbackSent] = useState(false);
   const { isLogged } = useUser();
 
@@ -86,7 +86,7 @@ const FeedBack = ({ setIsOpen }) => {
   return !isFeedBackSent ? (
     <div
       className={
-        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[90px] right-[24px] w-[321px] p-[25px]"
+        "feedBack flex flex-col z-[10] fixed bottom-[78px] md:bottom-[23px] right-[23px] w-[321px] p-[25px]"
       }
     >
       <div
@@ -177,7 +177,7 @@ const FeedBack = ({ setIsOpen }) => {
           </div>
           <div className={"mt-[24px]"}>
             <Button
-              disabled={!isValid ? true : false}
+              disabled={!isValid}
               onClick={() => sendFeedBack()}
               className={
                 "w-[130px] h-[36px] self-center rounded-[8px] ring-caak-cobalite  border-[3px] border-opacity-20 border-caak-cobalite bg-white text-caak-generalblack font-medium text-[16px]"
@@ -190,7 +190,7 @@ const FeedBack = ({ setIsOpen }) => {
       </div>
     </div>
   ) : (
-    <FeedbackDoneCard />
+    <FeedbackDoneCard setIsOpen={setIsOpen} isOpen={isFeedBackSent} />
   );
 };
 

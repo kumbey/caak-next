@@ -224,22 +224,25 @@ const Feed = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      {router.asPath === "/" && (
+      {router.asPath === "/" && !isFeedbackOpen && (
         <div
           onClick={() => {
             setIsFeedbackOpen(!isFeedbackOpen);
           }}
           className={
-            "cursor-pointer hover:bg-caak-titaniumwhite flex items-center justify-center bg-white shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[4px] md:right-[24px] rounded-full"
+            "feedbackIconBackground cursor-pointer flex items-center justify-center shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[8px] md:right-[27px] rounded-full"
           }
         >
-          <span
-            className={`${
-              isFeedbackOpen
-                ? "icon-fi-rs-close text-[16.67px]"
-                : "icon-fi-rs-survey text-[25.67px]"
-            } text-caak-generalblack`}
-          />
+          <div className={"flex items-center justify-center w-[28px] h-[28px]"}>
+            <span
+              className={`${
+                isFeedbackOpen
+                  ? "icon-fi-rs-close text-[15.98px] w-[16px]"
+                  : "icon-fi-rs-survey text-[25.67px] h-[20px]"
+              } text-white`}
+            />
+          </div>
+
         </div>
       )}
 

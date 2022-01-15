@@ -15,6 +15,7 @@ import RedirectUrls from "../src/redirectUrls";
 import Script from "next/script";
 import * as gtag from "../src/lib/gtag";
 import { useEffect } from "react";
+import ToastNotification from "../src/components/Toast/toastNotification";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -79,6 +80,7 @@ const MyApp = ({ Component, pageProps }) => {
       <WrapperProvider>
         <UserProvider>
           <div className={"caak-main-wrapper"}>
+            <ToastNotification />
             <NavBar />
             <Component {...pageProps} />
           </div>

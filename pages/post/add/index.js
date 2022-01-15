@@ -17,7 +17,7 @@ import useAddPostLayout from "../../../src/hooks/useAddPostLayout";
 import Button from "../../../src/components/button";
 import WithAuth from "../../../src/middleware/auth/WithAuth";
 import Head from "next/head";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Consts from "../../../src/utility/Consts";
 import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
 import AuraModal from "../../../src/components/modals/auraModal";
@@ -38,6 +38,7 @@ const AddPost = () => {
   const [loading, setLoading] = useState(false);
   const [newPostId, setNewPostId] = useState();
   const [nestedToast, setNestedToast] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [groupData, setGroupData] = useState({
     adminModerator: [],
     unMember: [],
@@ -137,6 +138,7 @@ const AddPost = () => {
 
   const handleSubmit = async () => {
     await uploadPost();
+    setIsEditing(false);
   };
   const toastIcon = {
     icon: (
@@ -301,12 +303,6 @@ const AddPost = () => {
       <Head>
         <title>Шинэ пост нэмэх - {Consts.siteMainTitle}</title>
       </Head>
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
       <div className={"addPostPadding"}>
         <AddPostLayout selectedGroup={selectedGroup}>
@@ -360,6 +356,8 @@ const AddPost = () => {
                   loading={loading}
                   uploadPost={uploadPost}
                   valid={valid}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
                 />
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />

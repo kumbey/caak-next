@@ -16,7 +16,6 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import Image from "next/image";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import { generateFileUrl, getGenderImage } from "../../utility/Util";
@@ -144,6 +143,8 @@ const UploadedMediaEdit = ({
   add,
   selectedGroup,
   valid,
+  isEditing,
+  setIsEditing,
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -230,6 +231,48 @@ const UploadedMediaEdit = ({
     e.returnValue = "";
   };
 
+  useUpdateEffect(() => {
+    setIsEditing(true);
+  }, [post.items]);
+
+  useUpdateEffect(() => {
+    if (isEditing) {
+      const onRouteChangeStart = () => {
+        const askBeforeRouteChange = window.confirm(
+          "Та гарахдаа итгэлтэй байна уу?"
+        );
+        if (!askBeforeRouteChange) {
+          router.events.emit("routeChangeError");
+          throw "Abort route change. Please ignore this error.";
+        }
+      };
+      if (window) {
+        router.beforePopState(() => {
+          const askBeforeRouteChange = window.confirm(
+            "Та гарахдаа итгэлтэй байна уу?"
+          );
+          if (!askBeforeRouteChange) {
+            router.events.emit("routeChangeError");
+            throw "Abort route change. Please ignore this error.";
+          }
+        });
+        window.onbeforeunload = browserTabCloseHandler;
+      }
+      router.events.on("routeChangeStart", onRouteChangeStart);
+      return () => {
+        router.events.off("routeChangeStart", onRouteChangeStart);
+        if (window) {
+          window.onbeforeunload = null;
+        }
+        router.beforePopState(() => {
+          return true;
+        });
+      };
+    }
+
+    // eslint-disable-next-line
+  }, [post, router, isEditing, selectedGroup]);
+
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -253,38 +296,7 @@ const UploadedMediaEdit = ({
     setSortItems([...post.items]);
   }, [post]);
 
-  useUpdateEffect(() => {
-    if (window) {
-      router.beforePopState(() => {
-        return window.confirm("Та гарахдаа итгэлтэй байна уу?");
-      });
-      window.onbeforeunload = browserTabCloseHandler;
-    }
 
-    return () => {
-      if (window) {
-        window.onbeforeunload = null;
-      }
-      router.beforePopState(() => {
-        return true;
-      });
-    };
-    // eslint-disable-next-line
-  }, [post, selectedGroup]);
-
-  useEffect(()=> {
-    const onRouteChangeStart = ()=> {
-      const askBeforeRouteChange =  window.confirm("Та гарахдаа итгэлтэй байна уу?");
-      if(!askBeforeRouteChange){
-        router.events.emit('routeChangeError');
-        throw 'Abort route change. Please ignore this error.';
-      }
-    }
-    router.events.on("routeChangeStart", onRouteChangeStart)
-    return () => {
-      router.events.off("routeChangeStart", onRouteChangeStart)
-    }
-  },[router])
 
   return (
     <div>

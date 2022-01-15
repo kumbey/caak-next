@@ -3,13 +3,19 @@ import { useEffect, useState } from "react";
 import SearchedGroupItem from "./SearchedGroupItem";
 import Link from "next/link";
 import { useClickOutSide, useDebounce } from "../../utility/Util";
-import {API, Auth} from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import Loader from "../loader";
 import { useRouter } from "next/router";
 import { searchApi } from "../../apis/search";
 import { useWrapper } from "../../context/wrapperContext";
 
-const SearchInput = ({ label, containerStyle, className, ...props }) => {
+const SearchInput = ({
+  label,
+  containerStyle,
+  className,
+  isSetSearchInputOpen,
+  ...props
+}) => {
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -170,7 +176,7 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
             isSearchBarOpen
               ? "border border-caak-primary ring-2 ring-caak-primary ring-opacity-40 text-caak-generalblack"
               : navBarTransparent
-              ? "text-white placeholder-white"
+              ? "md:text-white md:placeholder-white text-caak-generalblack border border-caak-primary ring-2 ring-caak-primary ring-opacity-40"
               : "text-caak-generalblack"
           }`}
         >
@@ -182,14 +188,17 @@ const SearchInput = ({ label, containerStyle, className, ...props }) => {
             <span
               className={`${
                 navBarTransparent && !isSearchBarOpen
-                  ? "text-white"
+                  ? "md:text-white text-caak-generalblack"
                   : "text-caak-darkblue"
               } icon-fi-rs-search text-16px`}
             />
           </div>
 
           <div
-            onClick={() => setInputValue("")}
+            onClick={() => {
+              isSetSearchInputOpen && isSetSearchInputOpen(false);
+              setInputValue("");
+            }}
             className={`${
               !isSearchBarOpen ? "hidden" : null
             } flex justify-center items-center text-center absolute w-[20px] h-[20px] cursor-pointer bg-caak-primary rounded-full right-[12px] top-1/2 transform -translate-y-1/2 z-2`}

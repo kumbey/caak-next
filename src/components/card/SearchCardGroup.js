@@ -14,6 +14,7 @@ import { useClickOutSide } from "../../utility/Util";
 import ReportModal from "../modals/reportModal";
 import GroupMoreMenu from "./GroupMoreMenu";
 import Link from "next/link";
+import LeaveGroup from "../group/LeaveGroup";
 
 const SearchCardGroup = ({ result, sortType }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,6 +22,7 @@ const SearchCardGroup = ({ result, sortType }) => {
   const [forceRender, setForceRender] = useState(0);
   const [loading, setLoading] = useState(false);
   const { user, isLogged } = useUser();
+  const [open, setOpen] = useState(false)
   const router = useRouter();
 
   const toggleMenu = () => {
@@ -34,16 +36,17 @@ const SearchCardGroup = ({ result, sortType }) => {
     try {
       setLoading(true);
       if (result.followed) {
-        await API.graphql(
-          graphqlOperation(deleteGroupUsers, {
-            input: {
-              id: `${result.id}#${user.id}`,
-            },
-          })
-        );
-        result.followed = false;
-        result.totals.member -= 1;
-        setForceRender(forceRender + 1);
+        setOpen(true)
+        // await API.graphql(
+        //   graphqlOperation(deleteGroupUsers, {
+        //     input: {
+        //       id: `${result.id}#${user.id}`,
+        //     },
+        //   })
+        // );
+        // result.followed = false;
+        // result.totals.member -= 1;
+        // setForceRender(forceRender + 1);
       } else {
         await API.graphql(
           graphqlOperation(createGroupUsers, {
@@ -98,6 +101,7 @@ const SearchCardGroup = ({ result, sortType }) => {
           userId={user.id}
         />
       )}
+      <LeaveGroup open={open} setOpen={setOpen} groupData={result} setForceRender={setForceRender} forceRender={forceRender}/>
       <div className={"w-full h-[74px]"}>
         {/* <div
           className={

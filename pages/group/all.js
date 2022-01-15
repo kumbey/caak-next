@@ -140,11 +140,7 @@ export default function AllGroups() {
           <img src={Cover.src} alt="" className={"object-cover w-full"} />
           <div className="absolute text-white top-1/2 -translate-y-1/2">
             <p className="xl:text-[30px] font-medium text-center">
-              Өөрийн дуртай группээ олоорой
-            </p>
-            <p className="text-[12px] text-center">
-              Инээдэм, Видео тоглоом гэх мэт төрлийн грүддүүдийг танд хүргэж
-              байна.
+              Өөрийн дуртай группүүддээ нэгдээрэй!
             </p>
             <input
             style={{color: "#6C7392"}}
@@ -221,9 +217,9 @@ export default function AllGroups() {
                         setLoading(false)
                       }}
                       key={index}
-                      className={`py-[9.5px] pl-[18px] font-inter text-[15px] text-[#0D1026] flex flex-row cursor-pointer bg-[${
-                        data.id === id ? "#6C7392" : "transparent"
-                      }]`}
+                      className={`py-[9.5px] pl-[18px] font-inter text-[15px] text-[#0D1026] flex flex-row cursor-pointer ${
+                        data.id === id ? "bg-[#E4E4E5] text-[#21293C]" : "transparent"
+                      }`}
                     >
                       <span>{data.icon}</span>
                       <p className="ml-[8px]">{data.name}</p>

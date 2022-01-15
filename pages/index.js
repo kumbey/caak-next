@@ -18,7 +18,7 @@ import Head from "next/head";
 import useMediaQuery from "../src/components/navigation/useMeduaQuery";
 import Consts from "../src/utility/Consts";
 import AddPostCaakCard from "../src/components/card/AddPostCaakCard";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import FeedBack from "../src/components/feedback";
 import { useRouter } from "next/router";
@@ -246,12 +246,12 @@ const Feed = ({ ssrData }) => {
       {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen} />}
 
       <div className={"relative pt-[54px]"}>
-        <Toaster
-          toastOptions={{
-            className: "toastOptions",
-            duration: 5000,
-          }}
-        />
+        {/*<Toaster*/}
+        {/*  toastOptions={{*/}
+        {/*    className: "toastOptions",*/}
+        {/*    duration: 5000,*/}
+        {/*  }}*/}
+        {/*/>*/}
         <div className={`px-0 w-full relative`}>
           <div
             className={`h-full flex ${

@@ -176,7 +176,7 @@ const SearchInput = ({
             isSearchBarOpen
               ? "border border-caak-primary ring-2 ring-caak-primary ring-opacity-40 text-caak-generalblack"
               : navBarTransparent
-              ? "md:text-white md:placeholder-white text-caak-generalblack border border-caak-primary ring-2 ring-caak-primary ring-opacity-40"
+              ? "md:text-white md:placeholder-white text-caak-generalblack"
               : "text-caak-generalblack"
           }`}
         >

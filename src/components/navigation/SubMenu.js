@@ -49,7 +49,7 @@ const SubMenu = ({ params }) => {
     mounted &&
     ((isLogged && params.type === "mobile") ||
       (!isLogged && params.type === "mobile") ||
-      (isLogged && params.type === "web")) && isTablet &&  (
+      (isLogged && params.type === "web")) && (
       <div
         className={
           "flex flex-row items-center w-full justify-around md:w-auto md:justify-center"
@@ -60,14 +60,15 @@ const SubMenu = ({ params }) => {
             isSearchInputOpen ? "" : "hidden"
           } mobileSearch w-full fixed top-0 left-0 bg-transparent`}
         >
-          <div className="w-full h-[52px] border-t-[1px] border-caak-liquidnitrogen shadow-card bg-white p-[8px]">
+          {params.type === "mobile" && <div className="w-full h-[52px] border-t-[1px] border-caak-liquidnitrogen shadow-card bg-white p-[8px]">
             <SearchInput
               isSetSearchInputOpen={isSetSearchInputOpen}
               containerStyle={"h-[36px] w-full"}
               hideLabel
               placeholder={"Групп болон пост хайх"}
             />
-          </div>
+          </div>}
+
         </div>
         <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen} />
         <div

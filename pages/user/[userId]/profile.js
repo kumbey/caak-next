@@ -22,7 +22,7 @@ import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 import Card from "../../../src/components/card/FeedCard";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import {useWrapper} from "../../../src/context/wrapperContext";
 import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import {usePreserveScroll} from "../../../src/hooks/useScroll";
@@ -287,12 +287,6 @@ const Profile = ({ ssrData }) => {
           @{fetchedUser.nickname} - {Consts.siteMainTitle}
         </title>
       </Head>
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <ProfileLayout user={fetchedUser}>
         <div className={"pt-0 md:pt-[42px]"}>
           <FeedSortButtons

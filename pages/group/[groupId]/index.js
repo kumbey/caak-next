@@ -17,7 +17,7 @@ import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 import AddPostHandler from "../../../src/components/addposthandler";
 import { useWrapper } from "../../../src/context/wrapperContext";
@@ -124,6 +124,7 @@ const Group = ({ ssrData }) => {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
+        toast("New Posts added")
         setSubscriptionPosts(onData);
       },
       error: (error) => {
@@ -203,12 +204,6 @@ const Group = ({ ssrData }) => {
           {groupData.name} - {Consts.siteMainTitle}
         </title>
       </Head>
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <GroupLayout
         hideSuggestedGroups
         groupData={groupData}

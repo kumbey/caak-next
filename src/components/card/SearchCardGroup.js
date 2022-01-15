@@ -216,7 +216,7 @@ const SearchCardGroup = ({ result, sortType }) => {
         onClick={handleFollow}
         iconPosition={"left"}
         loading={loading}
-        className={`${result.followed ? 'bg-[#FF6600] text-white' : 'bg-[#E4E4E5] text-[#21293C]'} h-[36px] self-center rounded-[6px] m-[16px] w-[248px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px]`}
+        className={`${result.followed ? 'bg-[#E4E4E5] text-[#21293C]' : 'bg-[#FF6600] text-white'} h-[36px] self-center rounded-[6px] m-[16px] w-[248px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px]`}
       >
         {result.followed ? `Нэгдсэн` : `Нэгдэх`}
       </Button>

@@ -318,14 +318,14 @@ const AddPost = () => {
             <div
               className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
             >
-              <div className="flex justify-end mt-[10px] mr-[10px] sm:hidden">
+              {/* <div className="flex justify-end mt-[10px] mr-[10px] sm:hidden">
                 <p
                   onClick={() => handleSubmit()}
                   className=" font-medium text-white bg-caak-primary p-[5px] rounded-[8px]"
                 >
                   Нийтлэх
                 </p>
-              </div>
+              </div> */}
               <SelectGroup
                 containerClassName={"mt-[28px] z-[4]"}
                 groupData={groupData}

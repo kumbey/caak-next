@@ -1,11 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import Consts from "../../utility/Consts";
 
-const AddPostGuideCard = ({open , setOpen}) => {
-    const {lsSet, lsGet} = useLocalStorage("session")
+const AddPostGuideCard = () => {
+    const {lsSet, lsGet} = useLocalStorage("local")
 
-    return open ? 
+    const [first] = useState(!lsGet("addPostBanner"))
+
+    const [open, setOpen] = useState(first ? true : lsGet("addPostBanner"));
+
+    useEffect(() => {
+        if(first){
+            lsSet("addPostBanner", true)
+        }
+        //eslint-disable-next-line
+    }, [first]);
+
+    return open && open === "true" ? 
     (
         <div
             onClick={(e) => {
@@ -21,8 +31,8 @@ const AddPostGuideCard = ({open , setOpen}) => {
             <p className="text-white text-[15px] text-center mt-[10px]">Саак мэдрэмжээ бусдад хуваалцах боломж.</p>
             <div
                 onClick={() => {
+                    lsSet("addPostBanner", false)
                     setOpen(false)
-                    lsSet(Consts.addPostKey, {...lsGet(Consts.addPostKey), addPostGuide:  false})
                 }}
                 className={
                     "flex text-[16px] font-medium items-center justify-center text-center mt-[17px] w-[130px] h-[36px] bg-white text-caak-generalblack rounded-[8px]"

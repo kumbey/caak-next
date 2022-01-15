@@ -5,6 +5,7 @@ import useMediaQuery from "../../navigation/useMeduaQuery";
 import GroupRules from "../../card/GroupRules";
 import Dropzone from "react-dropzone";
 import Button from "../../button";
+import LeaveGroup from '../../group/LeaveGroup'
 import {
   getFileExt,
   getFileName,
@@ -20,8 +21,7 @@ import { updateGroup } from "../../../graphql-custom/group/mutation";
 import { deleteFile } from "../../../graphql-custom/file/mutation";
 
 import {
-  createGroupUsers,
-  deleteGroupUsers,
+  createGroupUsers
 } from "../../../graphql-custom/GroupUsers/mutation";
 import DropDown from "../../navigation/DropDown";
 import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
@@ -53,6 +53,7 @@ const GroupLayout = ({
 
   const [forceRender, setForceRender] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -66,16 +67,17 @@ const GroupLayout = ({
     try {
       setLoading(true);
       if (groupData.followed) {
-        await API.graphql(
-          graphqlOperation(deleteGroupUsers, {
-            input: {
-              id: `${groupData.id}#${signedUser.id}`,
-            },
-          })
-        );
-        groupData.followed = false;
-        groupData.totals.member -= 1;
-        setForceRender(forceRender + 1);
+        setOpen(true)
+        // await API.graphql(
+        //   graphqlOperation(deleteGroupUsers, {
+        //     input: {
+        //       id: `${groupData.id}#${signedUser.id}`,
+        //     },
+        //   })
+        // );
+        // groupData.followed = false;
+        // groupData.totals.member -= 1;
+        // setForceRender(forceRender + 1);
       } else {
         await API.graphql(
           graphqlOperation(createGroupUsers, {
@@ -211,6 +213,7 @@ const GroupLayout = ({
   }, []);
   return loaded ? (
     <div className={"flex flex-col relative pb-[200px] md:pb-0"}>
+      <LeaveGroup open={open} setOpen={setOpen} groupData={groupData} setForceRender={setForceRender} forceRender={forceRender}/>
       <div className={"flex flex-col"}>
         <div className={"relative w-full h-[240px]"}>
           <div className={"w-full h-[120px] navbarGradient absolute top-0"} />

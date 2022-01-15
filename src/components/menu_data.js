@@ -6,7 +6,7 @@ export const menu_data = [
     user: true,
   },
   {
-    name: "Бүлгүүд",
+    name: "Группууд",
     href: "#",
     icon: <span className={"icon-fi-rs-group text-18px5 w-5 h-5 mr-2"} />,
     user: true,

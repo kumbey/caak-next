@@ -23,6 +23,7 @@ import PostSuccessModal from "../../../src/components/modals/postSuccessModal";
 import AuraModal from "../../../src/components/modals/auraModal";
 import { createGroupUsers } from "../../../src/graphql-custom/GroupUsers/mutation";
 import { useWrapper } from "../../../src/context/wrapperContext";
+import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 
 const AddPost = () => {
   const AddPostLayout = useAddPostLayout();
@@ -36,6 +37,7 @@ const AddPost = () => {
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
   const [newPostId, setNewPostId] = useState();
+  const [nestedToast, setNestedToast] = useState(false);
   const [groupData, setGroupData] = useState({
     adminModerator: [],
     unMember: [],
@@ -140,7 +142,7 @@ const AddPost = () => {
     icon: (
       <div className="flex items-center">
         <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
-          <span className="icon-fi-rs-warning-1 text-white" />
+          <span className="icon-fi-rs-warning text-white" />
         </div>
       </div>
     ),
@@ -153,7 +155,7 @@ const AddPost = () => {
         <div className={"flex flex-row items-center"}>
           <div className="flex items-center">
             <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
-              <span className="icon-fi-rs-warning-1 text-white" />
+              <span className="icon-fi-rs-warning text-white" />
             </div>
           </div>
           <span className={"text-[16px] text-[#363636] mr-[2px]"}>
@@ -164,10 +166,11 @@ const AddPost = () => {
             onClick={() => {
               followGroup().then(() => {
                 toast.success(
-                  `Та ${selectedGroup.name} группт амжилттай нэгдлээ.`,
+                  `Та "${selectedGroup.name}" группт амжилттай нэгдлээ.`,
                   toastIcon
                 );
                 toast.dismiss(t.id);
+                setNestedToast(!nestedToast);
               });
             }}
           >
@@ -177,6 +180,16 @@ const AddPost = () => {
       ));
     if (param === "isGroup") toast.success("Группээ сонгоно уу.", toastIcon);
   };
+
+  useUpdateEffect(() => {
+    const timer = setTimeout(() => {
+      toast.dismiss();
+    }, 3 * 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [nestedToast]);
 
   useEffect(() => {
     setNavBarTransparent(false);

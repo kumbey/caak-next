@@ -5,7 +5,7 @@ import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
 import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";

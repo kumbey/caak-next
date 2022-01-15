@@ -477,10 +477,9 @@ const UploadedMediaEdit = ({
           <div
             style={{ flexBasis: `300px` }}
             className={
-              "flex-1 w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
+              "flex w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
             }
           >
-            asd
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
                 initialAutoPlay={false}
@@ -489,11 +488,12 @@ const UploadedMediaEdit = ({
                 src={thumbnailImageHandler(post.items[activeIndex])}
               />
             ) : (
-              <Image
+              <img
+                className={"object-contain w-full h-full"}
                 alt={""}
                 src={thumbnailImageHandler(post.items[activeIndex])}
-                objectFit={"contain"}
-                layout={"fill"}
+                // objectFit={"contain"}
+                // layout={"fill"}
               />
             )}
           </div>

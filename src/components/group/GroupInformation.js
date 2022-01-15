@@ -4,7 +4,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateGroup } from "../../graphql-custom/group/mutation";
 import Button from "/src/components/button";
 import Input from "../input";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Divider from "../divider";
 
 export default function GroupInformation({ categoryList, groupData }) {
@@ -58,12 +58,12 @@ export default function GroupInformation({ categoryList, groupData }) {
 
   return (
     <div className="flex flex-col">
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
+      {/*<Toaster*/}
+      {/*  toastOptions={{*/}
+      {/*    className: "toastOptions",*/}
+      {/*    duration: 5000,*/}
+      {/*  }}*/}
+      {/*/>*/}
       <p
         className="font-semibold text-caak-aleutian font-inter text-22px"
         style={{ marginLeft: "30px", marginTop: "30px", fontSize: "24px" }}

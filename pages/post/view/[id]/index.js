@@ -5,7 +5,7 @@ import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
 import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
@@ -20,7 +20,7 @@ import { updatePost } from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
 import { useUser } from "../../../../src/context/userContext";
 import { decode } from "html-entities";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 
 export async function getServerSideProps({ req, query }) {
@@ -157,12 +157,6 @@ const Post = ({ ssrData }) => {
             {post.title} - {Consts.siteMainTitle}
           </title>
         </Head>
-        <Toaster
-          toastOptions={{
-            className: "toastOptions",
-            duration: 5000,
-          }}
-        />
         {isLogged && (
           <ReportModal
             setIsOpen={setIsReportModalOpen}

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import AnimatedCaakButton from "../button/animatedCaakButton";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {FacebookShareButton, TwitterShareButton} from "next-share";
 import {decode} from "html-entities";
 
@@ -22,12 +22,6 @@ const PostHeader = ({addCommentRef, post, activeIndex}) => {
 
   return (
     <>
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <div className={"flex flex-col"}>
         <div
           className={"break-words text-[15px] py-[20px] text-caak-generalblack"}

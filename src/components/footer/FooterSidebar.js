@@ -2,7 +2,7 @@ import Link from "next/link";
 const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
 
   const day = new Date();
-  let year = day.getFullYear();
+  const year = day.getFullYear();
 
   return (
     <div

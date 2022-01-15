@@ -9,6 +9,7 @@ const FeedbackDoneCard = ({ isOpen, setIsOpen }) => {
     return () => {
       clearTimeout(timer);
     };
+    //eslint-disable-next-line
   }, []);
   return (
     isOpen && (

@@ -413,7 +413,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 <div className={"flex flex-col"}>
                   <p
                     className={
-                      "text-caak-generalblack font-semibold text-[16px] tracking-[0.24px] leading-[19px]"
+                      "text-caak-generalblack font-semibold text-center text-[16px] tracking-[0.24px] leading-[19px]"
                     }
                   >
                     {user?.aura}
@@ -681,8 +681,8 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   />
                 </div>
               </div>
-              <div className={"hidden md:block overflow-y-auto"}>
-                {JSON.parse(user?.meta)?.settings?.showCreatedGroup ||
+              <div className={"hidden md:block overflow-y-auto w-full"}>
+                {JSON.parse(user?.meta)?.settings?.showCreatedGroup &&
                 user.id === signedUser?.id ? (
                   <SideBarGroups
                     role={["ADMIN", "MODERATOR"]}
@@ -693,7 +693,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 ) : null}
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
-                {JSON.parse(user?.meta)?.settings?.showFollowedGroup ||
+                {JSON.parse(user?.meta)?.settings?.showFollowedGroup &&
                 user.id === signedUser?.id ? (
                   <SideBarGroups
                     role={["MEMBER"]}

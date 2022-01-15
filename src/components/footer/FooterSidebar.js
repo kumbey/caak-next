@@ -1,5 +1,9 @@
 import Link from "next/link";
 const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
+
+  const day = new Date();
+  let year = day.getFullYear();
+
   return (
     <div
       style={{
@@ -59,7 +63,7 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
           </a>
         </Link>
       </div>
-      <div className={"my-[4px]"}>©2021 Саак Холдинг ХХК</div>
+      <div className={"my-[4px]"}>©{year} Саак Холдинг ХХК</div>
     </div>
   );
 };

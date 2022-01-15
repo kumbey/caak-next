@@ -27,7 +27,17 @@ const LeaveGroup = ({open, setOpen, groupData, setForceRender, forceRender}) => 
         <div className="popup_modal">
             <div className="popup_modal-leaveGroup rounded-[8px] px-[10px] py-[30px]">
                 <p className="text-center font-medium text-[16px]">{`Та "${groupData.name}" группээс гарахдаа итгэлтэй байна уу?`}</p>
-                <p className="text-center font-medium text-[14px]">{`Та тухайн группээс гарснаар таны админ эрх устах тул анхаарна уу!`}</p>
+                {
+                    groupData.role_on_group === "MODERATOR"
+                    ?
+                    <p className="text-center font-semibold text-[12px]">{`Группын модератор эрх хасагдах болохыг анхаарна уу!`}</p>
+                    :
+                    groupData.role_on_group === "ADMIN"
+                    ?
+                    <p className="text-center font-semibold text-[12px]">{`Группын админ эрх хасагдах болохыг анхаарна уу!`}</p>
+                    :
+                    null
+                }
                 <div className="flex flex-row justify-evenly mt-[20px]">
                     <p onClick={() => setOpen(false)} className="cursor-pointer flex justify-center items-center bg-[#F3F3F4] rounded-[8px] font-semibold w-[100px] h-[36px]">
                         буцах

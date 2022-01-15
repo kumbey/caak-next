@@ -551,14 +551,15 @@ const UploadedMediaEdit = ({
         </div>
         <div className={"w-[265px]"}>
           {selectedGroup &&
-            (selectedGroup.role_on_group === "ADMIN" ||
-              selectedGroup.role_on_group === "MODERATOR") && (
+            (selectedGroup.role_on_group === "ADMIN" ?
               <div className={"flex flex-row justify-between mt-[16px]"}>
                 <p className={"text-[15px] text-caak-generalblack"}>
                   Саак контент
                 </p>
                 <Switch toggle={setCaakContent} active={caakContent} />
               </div>
+              :
+              null
             )}
           <div className={"flex flex-row justify-between mt-[16px]"}>
             <p className={"text-[15px] text-caak-generalblack"}>

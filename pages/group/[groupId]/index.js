@@ -217,9 +217,10 @@ const Group = ({ ssrData }) => {
       >
         {isTablet &&
           isLogged &&
-          (groupData.role_on_group === "ADMIN" ||
-            groupData.role_on_group === "MODERATOR") && (
+          (groupData.role_on_group === "ADMIN" ?
             <GroupAdminPanel groupId={groupData.id} />
+            :
+            null
           )}
         <AddPostHandler groupId={groupData.id} />
         <GroupSortButtons

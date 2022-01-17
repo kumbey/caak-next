@@ -1,4 +1,4 @@
-import image404 from "../public/assets/images/500/500.png";
+import image404 from "../public/assets/images/500/Connection-Lost.gif";
 import Button from "../src/components/button";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -19,7 +19,7 @@ export default function Custom500() {
           <img
             alt={""}
             src={image404.src}
-            className={"max-w-[640px] w-full h-full"}
+            className={"w-[260px] h-[260px]"}
           />
           <p
             className={

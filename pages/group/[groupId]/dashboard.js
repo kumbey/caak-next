@@ -49,7 +49,7 @@ export async function getServerSideProps({ req, query }) {
   });
   const grpData = getReturnData(groupView);
 
-  if (!checkAdminModerator(grpData.role_on_group)) return { notFound: true };
+  if (!checkAdminModerator(grpData?.role_on_group)) return { notFound: true };
 
   const resp = await API.graphql({
     query: getPostByGroup,

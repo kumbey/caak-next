@@ -71,6 +71,9 @@ export async function getServerSideProps({ req, res, query }) {
   };
 
   const post = await getPostById();
+  if(!post){
+    return {notFound: true}
+  }
   if (post.user.id !== user.attributes.sub) {
     return { notFound: true };
   }
@@ -128,13 +131,11 @@ const EditPost = ({ ssrData }) => {
     }
     else {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 0,
-            },
-          },
-          `/user/${user.id}/dashboard`
+        {
+          pathname: `/post/view/${post.id}`,
+        },
+        `/post/view/${post.id}`,
+        { shallow: true, scroll: false }
       );
     }
 

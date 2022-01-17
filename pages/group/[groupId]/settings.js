@@ -40,7 +40,7 @@ export async function getServerSideProps({ req, query }) {
     authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
   });
   const grpData = getReturnData(groupView);
-  if (!checkAdminModerator(grpData.role_on_group)) return { notFound: true };
+  if (!checkAdminModerator(grpData?.role_on_group)) return { notFound: true };
 
   const adminList = await API.graphql({
     query: listGroupUsersByGroup,

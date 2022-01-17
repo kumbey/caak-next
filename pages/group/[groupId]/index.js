@@ -45,7 +45,6 @@ export async function getServerSideProps({ req, query }) {
       },
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
-
     const groupView = await API.graphql({
       query: getGroupView,
       variables: {
@@ -53,7 +52,9 @@ export async function getServerSideProps({ req, query }) {
       },
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
-
+    if (!getReturnData(groupView)) {
+      return { notFound: true };
+    }
     return {
       props: {
         ssrData: {
@@ -124,7 +125,7 @@ const Group = ({ ssrData }) => {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        toast("New Posts added")
+        toast("New Posts added");
         setSubscriptionPosts(onData);
       },
       error: (error) => {

@@ -15,6 +15,9 @@ export const ssrDataViewPost = async ({ API, Auth, query }) => {
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       variables: { id: postId },
     });
+    if (!getReturnData(resp)) {
+      return { notFound: true };
+    }
     if (
       getReturnData(resp).status === "ARCHIVED" ||
       getReturnData(resp).status === "PENDING"
@@ -52,6 +55,9 @@ export const ssrDataViewPostItem = async ({ API, Auth, query }) => {
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       variables: { id: postId },
     });
+    if (!getReturnData(resp)) {
+      return { notFound: true };
+    }
     return {
       props: {
         ssrData: {

@@ -23,9 +23,9 @@ import Consts from "../../../src/utility/Consts";
 import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 import Card from "../../../src/components/card/FeedCard";
 import toast from "react-hot-toast";
-import {useWrapper} from "../../../src/context/wrapperContext";
+import { useWrapper } from "../../../src/context/wrapperContext";
 import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
-import {usePreserveScroll} from "../../../src/hooks/useScroll";
+import { usePreserveScroll } from "../../../src/hooks/useScroll";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -53,18 +53,26 @@ export async function getServerSideProps({ req, query }) {
   };
 
   const getUserById = async () => {
-    const resp = await API.graphql({
-      query: getUser,
-      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-      variables: { id: userId },
-    });
-    return getReturnData(resp);
+    try {
+      const resp = await API.graphql({
+        query: getUser,
+        authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+        variables: { id: userId },
+      });
+      return getReturnData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
   };
+  const fetchedUser = await getUserById()
+  if(!fetchedUser){
+    return {notFound: true}
+  }
   try {
     return {
       props: {
         ssrData: {
-          user: await getUserById(),
+          user: fetchedUser,
           posts: await getPostByUserId(),
         },
       },
@@ -75,7 +83,7 @@ export async function getServerSideProps({ req, query }) {
 }
 
 const Profile = ({ ssrData }) => {
-  usePreserveScroll()
+  usePreserveScroll();
   const router = useRouter();
   const { userId } = router.query;
   const [fetchedUser, setFetchedUser] = useState(ssrData.user);
@@ -83,7 +91,7 @@ const Profile = ({ ssrData }) => {
   const [posts, setPosts] = useState(ssrData.posts);
   const [savedPosts, setSavedPosts] = useState({
     items: [],
-    nextToken: ""
+    nextToken: "",
   });
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeView, setActiveView] = useState(0);
@@ -250,18 +258,17 @@ const Profile = ({ ssrData }) => {
 
   useUpdateEffect(() => {
     setFetchedUser(ssrData.user);
-    setPosts(ssrData.posts)
-    fetchPosts()
+    setPosts(ssrData.posts);
+    fetchPosts();
   }, [ssrData.user]);
 
   useEffect(() => {
     const listener = () => {
       const scrolled = document.scrollingElement.scrollTop;
-      if(scrolled > 54){
-        setNavBarTransparent(false)
-      }
-      else {
-        setNavBarTransparent(true)
+      if (scrolled > 54) {
+        setNavBarTransparent(false);
+      } else {
+        setNavBarTransparent(true);
       }
     };
     document.addEventListener("scroll", listener);
@@ -387,7 +394,7 @@ const Profile = ({ ssrData }) => {
         </div>
       </ProfileLayout>
     </>
-  )
+  );
 };
 
 export default Profile;

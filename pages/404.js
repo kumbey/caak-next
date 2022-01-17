@@ -1,5 +1,5 @@
 import Button from "../src/components/button";
-import image404 from '/public/assets/images/404/404.png'
+import image404 from '/public/assets/images/404/404.gif'
 import {useRouter} from "next/router";
 import Head from 'next/head'
 
@@ -11,7 +11,7 @@ export default function Custom404() {
     </Head>
     <div className={"flex flex-col items-center justify-center bg-caak-liquidnitrogen min-h-screen w-full h-full"}>
       <div className={"flex flex-col items-center justify-center"}>
-        <img alt={""} src={image404.src} className={"max-w-[640px] w-full h-full"}/>
+        <img alt={""} src={image404.src} className={"w-[240px] h-[240px]"}/>
         <p className={"text-[38px] font-bold text-caak-generalblack mt-[27.5px]"}>
           Хуудас олдсонгүй.
         </p>

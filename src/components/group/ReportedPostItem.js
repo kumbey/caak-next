@@ -1,20 +1,43 @@
+import API from "@aws-amplify/api";
+
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button";
 
 import {
   extractDate,
   generateFileUrl,
   getGenderImage,
+  getReturnData,
 } from "../../utility/Util";
 
 import Video from "../video";
 import { useRouter } from "next/router";
+import { listPostStatusHistoryByPost } from "../../graphql-custom/post/queries";
 
-const ReportedPostItem = ({ imageSrc, post, video, reported }) => {
+const ReportedPostItem = ({ imageSrc, post, video }) => {
   const router = useRouter();
+  const [postHistory, setPostHistory] = useState();
+
+  const [loading, setLoading] = useState(false);
+
+  const fetchPostHistory = async () => {
+    try {
+      const resp = await API.graphql({
+        query: listPostStatusHistoryByPost,
+        variables: {
+          post_id: post.id,
+        },
+      });
+      setPostHistory(getReturnData(resp).items[0]);
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
 
   useEffect(() => {
+    fetchPostHistory();
     const handler = (e) => {
       if (e.keyCode === 27) {
         setIsModalOpen(false);
@@ -24,8 +47,10 @@ const ReportedPostItem = ({ imageSrc, post, video, reported }) => {
     return () => {
       document.removeEventListener("keydown", handler);
     };
+
     // eslint-disable-next-line
   }, []);
+
   return (
     <>
       <td>
@@ -114,7 +139,7 @@ const ReportedPostItem = ({ imageSrc, post, video, reported }) => {
 
       <td>
         <p className="text-caak-generalblack text-13px font-normal ">
-          {reported.reason}
+          {postHistory && postHistory.description}
         </p>
       </td>
       <td>
@@ -124,9 +149,9 @@ const ReportedPostItem = ({ imageSrc, post, video, reported }) => {
               "text-[12px] font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
             }
           >
-            {`${extractDate(reported.createdAt).year}.${
-              extractDate(reported.createdAt).month
-            }.${extractDate(reported.createdAt).day}`}
+            {`${extractDate(post.createdAt).year}.${
+              extractDate(post.createdAt).month
+            }.${extractDate(post.createdAt).day}`}
           </p>
         </div>
       </td>

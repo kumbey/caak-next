@@ -31,39 +31,12 @@ import useScrollBlock from "../../../../../src/hooks/useScrollBlock";
 import useWindowSize from "../../../../../src/hooks/useWindowSize";
 import useModalLayout from "../../../../../src/hooks/useModalLayout";
 import userVerifiedSvg from "../../../../../public/assets/images/fi-rs-awarded.svg";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import {ssrDataViewPostItem} from "../../../../../src/apis/ssrDatas";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
-
-  let user = null;
-
-  try {
-    user = await Auth.currentAuthenticatedUser();
-  } catch (ex) {
-    user = null;
-  }
-  const postId = query.id;
-
-  const getPostById = async () => {
-    const resp = await API.graphql({
-      query: getPostView,
-      authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-      variables: { id: postId },
-    });
-    return {
-      props: {
-        ssrData: {
-          post: getReturnData(resp),
-        },
-      },
-    };
-  };
-  try {
-    return getPostById();
-  } catch (ex) {
-    console.log(ex);
-  }
+  return await ssrDataViewPostItem({ API, Auth, query });
 }
 
 const PostItem = ({ ssrData }) => {

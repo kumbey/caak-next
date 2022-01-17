@@ -16,12 +16,14 @@ import {
 } from "../../graphql-custom/GroupUsers/mutation";
 import { useRouter } from "next/router";
 import groupVerifiedSvg from "../../../public/assets/images/fi-rs-verify.svg";
+import LeaveGroup from "../group/LeaveGroup";
 
 const GroupInfoCard = ({ groupId, containerClassname }) => {
   const [group, setGroup] = useState({});
   const [isDataFetched, setIsDataFetched] = useState(true);
   const [loading, setLoading] = useState(false);
   const [forceRender, setForceRender] = useState(0);
+  const [open, setOpen] = useState(false)
 
   const { isLogged, user } = useUser();
   const router = useRouter();
@@ -31,16 +33,17 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
       if (isLogged) {
         setLoading(true);
         if (group.followed) {
-          await API.graphql(
-            graphqlOperation(deleteGroupUsers, {
-              input: {
-                id: `${group.id}#${user.id}`,
-              },
-            })
-          );
-          group.followed = false;
-          group.totals.member -= 1;
-          setForceRender(forceRender + 1);
+          setOpen(true)
+          // await API.graphql(
+          //   graphqlOperation(deleteGroupUsers, {
+          //     input: {
+          //       id: `${group.id}#${user.id}`,
+          //     },
+          //   })
+          // );
+          // group.followed = false;
+          // group.totals.member -= 1;
+          // setForceRender(forceRender + 1);
         } else {
           await API.graphql(
             graphqlOperation(createGroupUsers, {
@@ -266,6 +269,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             {group.followed ? `Нэгдсэн` : `Нэгдэх`}
           </button>
         </div>
+        <LeaveGroup open={open} setOpen={setOpen} groupData={group} setForceRender={setForceRender} forceRender={forceRender}/>
       </div>
     </div>
   ) : null;

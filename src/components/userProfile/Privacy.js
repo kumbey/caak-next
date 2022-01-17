@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Switch from "./Switch";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
@@ -8,7 +8,7 @@ import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Button from "../button";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { updateUser } from "../../graphql-custom/user/mutation";
 
 export default function Privacy() {
@@ -17,7 +17,6 @@ export default function Privacy() {
   const [showInput, setShowInput] = useState(false);
   const [loading, setLoading] = useState();
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
 
   const [password, setPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -28,6 +27,9 @@ export default function Privacy() {
       ? JSON.parse(user.meta)?.settings?.showFollowedGroup
       : true
   );
+
+    console.log(JSON.parse(user.meta).settings)
+
   const [isCreatedGroup, setIsCreatedGroup] = useState(
     typeof JSON.parse(user.meta)?.settings?.showCreatedGroup === "boolean"
       ? JSON.parse(user.meta)?.settings?.showCreatedGroup
@@ -154,12 +156,6 @@ export default function Privacy() {
 
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
         Нууцлал
       </p>

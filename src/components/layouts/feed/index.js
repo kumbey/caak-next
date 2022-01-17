@@ -73,7 +73,7 @@ const DefaultFeedLayout = ({
               // maxColumns={0}
               addGroup
               initialData={myGroups}
-              title={"Дагасан группүүд"}
+              title={"Нэгдсэн группүүд"}
               setIsAuraModalOpen={setIsAuraModalOpen}
             />
             <SideBarGroups

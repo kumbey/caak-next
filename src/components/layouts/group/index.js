@@ -77,7 +77,7 @@ const GroupLayout = ({
         // );
         // groupData.followed = false;
         // groupData.totals.member -= 1;
-        // setForceRender(forceRender + 1);
+        // setForceRender(forceRender + 1);   
       } else {
         await API.graphql(
           graphqlOperation(createGroupUsers, {
@@ -231,8 +231,7 @@ const GroupLayout = ({
             }
           />
           {isLogged &&
-            (groupData.role_on_group === "ADMIN" ||
-              groupData.role_on_group === "MODERATOR") && (
+            (groupData.role_on_group === "ADMIN" ?
               <Dropzone
                 noKeyboard
                 maxFiles={1}
@@ -281,6 +280,8 @@ const GroupLayout = ({
                   </div>
                 )}
               </Dropzone>
+              :
+              null
             )}
         </div>
       </div>
@@ -318,8 +319,9 @@ const GroupLayout = ({
                   }
                 />
                 {isLogged &&
-                  (groupData.role_on_group === "ADMIN" ||
-                    groupData.role_on_group === "MODERATOR") && (
+                  (groupData.role_on_group === "ADMIN" 
+                  ?
+                    // groupData.role_on_group === "MODERATOR") && (
                     <Dropzone
                       onDropRejected={(e) =>
                         console.log(e[0].errors[0].message)
@@ -343,6 +345,8 @@ const GroupLayout = ({
                         </div>
                       )}
                     </Dropzone>
+                    :
+                    null
                   )}
               </div>
               <div
@@ -378,7 +382,7 @@ const GroupLayout = ({
                         }
                       />
                       <p className={"text-[14px] text-caak-generalblack"}>
-                        {totalMember} Гишүүн
+                        {totalMember} гишүүн
                       </p>
                     </div>
                   </div>
@@ -431,10 +435,9 @@ const GroupLayout = ({
               isLaptop ? "hidden" : "block"
             }`}
           >
-            {groupData.role_on_group === "ADMIN" ||
-            groupData.role_on_group === "MODERATOR" ? (
+            {groupData.role_on_group === "ADMIN"  ? 
               <GroupAdminPanel groupId={groupData.id} />
-            ) : null}
+            : null}
             {/*<GroupTopMembersCard groupId={groupData.id}/>*/}
             {!hideSuggestedGroups && (
               <div className="mt-[16px]">

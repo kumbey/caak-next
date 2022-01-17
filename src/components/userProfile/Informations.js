@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../../src/graphql-custom/user/mutation";
 import Input from "../../components/input";
 import Button from "../button";
 import DateInput from "../input/MaskedInput";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Gender from "../gender/gender";
 
 export default function Informations({ currentUser }) {
@@ -114,12 +114,6 @@ export default function Informations({ currentUser }) {
 
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
         Хувийн мэдээлэл
       </p>

@@ -61,7 +61,7 @@ const FeedBack = ({ setIsOpen }) => {
           input: {
             description: comment,
             title: title,
-            star: star,
+            star: star + 1,
             status: "CHECKED",
             type: type,
           },
@@ -75,7 +75,6 @@ const FeedBack = ({ setIsOpen }) => {
       setIsFeedbackSent(true);
     }
   };
-
 
   useEffect(() => {
     if (comment.length > 0 && type.length > 0 && typeof star === "number") {

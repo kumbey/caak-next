@@ -16,7 +16,6 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import Image from "next/image";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import { generateFileUrl, getGenderImage } from "../../utility/Util";
@@ -144,6 +143,8 @@ const UploadedMediaEdit = ({
   add,
   selectedGroup,
   valid,
+  isEditing,
+  setIsEditing,
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -230,6 +231,48 @@ const UploadedMediaEdit = ({
     e.returnValue = "";
   };
 
+  useUpdateEffect(() => {
+    setIsEditing(true);
+  }, [post.items]);
+
+  useUpdateEffect(() => {
+    if (isEditing) {
+      const onRouteChangeStart = () => {
+        const askBeforeRouteChange = window.confirm(
+          "Та гарахдаа итгэлтэй байна уу?"
+        );
+        if (!askBeforeRouteChange) {
+          router.events.emit("routeChangeError");
+          throw "Abort route change. Please ignore this error.";
+        }
+      };
+      if (window) {
+        router.beforePopState(() => {
+          const askBeforeRouteChange = window.confirm(
+            "Та гарахдаа итгэлтэй байна уу?"
+          );
+          if (!askBeforeRouteChange) {
+            router.events.emit("routeChangeError");
+            throw "Abort route change. Please ignore this error.";
+          }
+        });
+        window.onbeforeunload = browserTabCloseHandler;
+      }
+      router.events.on("routeChangeStart", onRouteChangeStart);
+      return () => {
+        router.events.off("routeChangeStart", onRouteChangeStart);
+        if (window) {
+          window.onbeforeunload = null;
+        }
+        router.beforePopState(() => {
+          return true;
+        });
+      };
+    }
+
+    // eslint-disable-next-line
+  }, [post, router, isEditing, selectedGroup]);
+
   useEffect(() => {
     setLoaded(true);
   }, []);
@@ -253,38 +296,7 @@ const UploadedMediaEdit = ({
     setSortItems([...post.items]);
   }, [post]);
 
-  useUpdateEffect(() => {
-    if (window) {
-      router.beforePopState(() => {
-        return window.confirm("Та гарахдаа итгэлтэй байна уу?");
-      });
-      window.onbeforeunload = browserTabCloseHandler;
-    }
 
-    return () => {
-      if (window) {
-        window.onbeforeunload = null;
-      }
-      router.beforePopState(() => {
-        return true;
-      });
-    };
-    // eslint-disable-next-line
-  }, [post, selectedGroup]);
-
-  useEffect(()=> {
-    const onRouteChangeStart = ()=> {
-      const askBeforeRouteChange =  window.confirm("Та гарахдаа итгэлтэй байна уу?");
-      if(!askBeforeRouteChange){
-        router.events.emit('routeChangeError');
-        throw 'Abort route change. Please ignore this error.';
-      }
-    }
-    router.events.on("routeChangeStart", onRouteChangeStart)
-    return () => {
-      router.events.off("routeChangeStart", onRouteChangeStart)
-    }
-  },[router])
 
   return (
     <div>
@@ -477,10 +489,9 @@ const UploadedMediaEdit = ({
           <div
             style={{ flexBasis: `300px` }}
             className={
-              "flex-1 w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
+              "flex w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
             }
           >
-            asd
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
                 initialAutoPlay={false}
@@ -489,11 +500,12 @@ const UploadedMediaEdit = ({
                 src={thumbnailImageHandler(post.items[activeIndex])}
               />
             ) : (
-              <Image
+              <img
+                className={"object-contain w-full h-full"}
                 alt={""}
                 src={thumbnailImageHandler(post.items[activeIndex])}
-                objectFit={"contain"}
-                layout={"fill"}
+                // objectFit={"contain"}
+                // layout={"fill"}
               />
             )}
           </div>
@@ -551,14 +563,15 @@ const UploadedMediaEdit = ({
         </div>
         <div className={"w-[265px]"}>
           {selectedGroup &&
-            (selectedGroup.role_on_group === "ADMIN" ||
-              selectedGroup.role_on_group === "MODERATOR") && (
+            (selectedGroup.role_on_group === "ADMIN" ?
               <div className={"flex flex-row justify-between mt-[16px]"}>
                 <p className={"text-[15px] text-caak-generalblack"}>
                   Саак контент
                 </p>
                 <Switch toggle={setCaakContent} active={caakContent} />
               </div>
+              :
+              null
             )}
           <div className={"flex flex-row justify-between mt-[16px]"}>
             <p className={"text-[15px] text-caak-generalblack"}>

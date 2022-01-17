@@ -4,7 +4,7 @@ import Input from "/src/components/input";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useUser } from "../../context/userContext";
 
 export default function SocialLink() {
@@ -92,12 +92,6 @@ export default function SocialLink() {
 
   return (
     <div className="flex flex-col mx-[30px]">
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <p
         className="font-semibold text-caak-aleutian font-inter text-22px"
         style={{

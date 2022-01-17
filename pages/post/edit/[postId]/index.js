@@ -16,7 +16,7 @@ import DropZoneWithCaption from "../../../../src/components/input/DropZoneWithCa
 import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
 import API from "@aws-amplify/api";
-import toast, { Toaster } from "react-hot-toast";
+import toast  from "react-hot-toast";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostSuccessModal from "../../../../src/components/modals/postSuccessModal";
 import Consts from "../../../../src/utility/Consts";
@@ -71,6 +71,9 @@ export async function getServerSideProps({ req, res, query }) {
   };
 
   const post = await getPostById();
+  if(!post){
+    return {notFound: true}
+  }
   if (post.user.id !== user.attributes.sub) {
     return { notFound: true };
   }
@@ -95,6 +98,7 @@ const EditPost = ({ ssrData }) => {
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const {setNavBarTransparent} = useWrapper()
   const [groupData] = useState(ssrData.groups);
   const [post, setPost] = useState({
@@ -127,13 +131,11 @@ const EditPost = ({ ssrData }) => {
     }
     else {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 0,
-            },
-          },
-          `/user/${user.id}/dashboard`
+        {
+          pathname: `/post/view/${post.id}`,
+        },
+        `/post/view/${post.id}`,
+        { shallow: true, scroll: false }
       );
     }
 
@@ -141,12 +143,13 @@ const EditPost = ({ ssrData }) => {
 
   const handleSubmit = async () => {
     await uploadPost();
+    setIsEditing(false)
   };
   const toastIcon = {
     icon: (
       <div className="flex items-center">
         <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
-          <span className="icon-fi-rs-warning-1 text-white" />
+          <span className="icon-fi-rs-warning text-white" />
         </div>
       </div>
     ),
@@ -250,12 +253,6 @@ const EditPost = ({ ssrData }) => {
           </title>
         </Head>
         <div className={"addPostPadding"}>
-          <Toaster
-              toastOptions={{
-                duration: 5000,
-              }}
-          />
-
           <AddPostLayout selectedGroup={selectedGroup}>
             {selectedGroup && <PostSuccessModal
                 isOpen={isSuccessModalOpen}
@@ -286,6 +283,8 @@ const EditPost = ({ ssrData }) => {
                         post={post}
                         loading={loading}
                         uploadPost={uploadPost}
+                        isEditing={isEditing}
+                        setIsEditing={setIsEditing}
                     />
                 ) : (
                     <DropZoneWithCaption post={post} setPost={setPost} />

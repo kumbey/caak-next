@@ -14,6 +14,7 @@ const group0006 = /* GraphQL */ `{
         moderator
     }
     createdAt
+    role_on_group
 }`;
 
 export default group0006;

@@ -17,7 +17,7 @@ import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import GroupAdminPanel from "../../../src/components/group/GroupAdminPanel";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
 import AddPostHandler from "../../../src/components/addposthandler";
 import { useWrapper } from "../../../src/context/wrapperContext";
@@ -45,7 +45,6 @@ export async function getServerSideProps({ req, query }) {
       },
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
-
     const groupView = await API.graphql({
       query: getGroupView,
       variables: {
@@ -53,7 +52,9 @@ export async function getServerSideProps({ req, query }) {
       },
       authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
-
+    if (!getReturnData(groupView)) {
+      return { notFound: true };
+    }
     return {
       props: {
         ssrData: {
@@ -124,6 +125,7 @@ const Group = ({ ssrData }) => {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
+        toast("New Posts added");
         setSubscriptionPosts(onData);
       },
       error: (error) => {
@@ -203,12 +205,6 @@ const Group = ({ ssrData }) => {
           {groupData.name} - {Consts.siteMainTitle}
         </title>
       </Head>
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       <GroupLayout
         hideSuggestedGroups
         groupData={groupData}
@@ -217,9 +213,10 @@ const Group = ({ ssrData }) => {
       >
         {isTablet &&
           isLogged &&
-          (groupData.role_on_group === "ADMIN" ||
-            groupData.role_on_group === "MODERATOR") && (
+          (groupData.role_on_group === "ADMIN" ?
             <GroupAdminPanel groupId={groupData.id} />
+            :
+            null
           )}
         <AddPostHandler groupId={groupData.id} />
         <GroupSortButtons

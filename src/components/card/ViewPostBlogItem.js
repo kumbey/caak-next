@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { getFileUrl } from "../../utility/Util";
 import { useRouter } from "next/router";
 import Video from "../video";

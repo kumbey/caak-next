@@ -1,6 +1,4 @@
-import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useClickOutSide } from "../../utility/Util";
 import clipboardImg from "../../../public/assets/images/clipboard.svg";
 import Button from "../button";
 import { useRouter } from "next/router";
@@ -8,11 +6,11 @@ import GroupRuleEdit from "./GroupRuleEdit";
 import API from "@aws-amplify/api";
 import { updateGroup } from "../../graphql-custom/group/mutation";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import GroupRuleItem from "./GroupRuleItem";
 
-const GroupRule = ({ groupData, ...props }) => {
+const GroupRule = ({ groupData }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -119,12 +117,6 @@ const GroupRule = ({ groupData, ...props }) => {
   }, []);
   return (
     <div className="flex ">
-      <Toaster
-        toastOptions={{
-          className: "toastOptions",
-          duration: 5000,
-        }}
-      />
       {groupData?.g_rules ? (
         <div className="flex flex-col w-full items-center py-[25px] px-[30px]">
           <div className="flex w-full items-center justify-between">

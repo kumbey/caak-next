@@ -78,7 +78,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
             />
             <p className="text-14px text-caak-extraBlack">Хадгалсан постууд</p>
           </div>
-          <div
+          {/* <div
             onClick={() => router.push({
               pathname: `/user/${user.id}/dashboard`,
               query: {
@@ -95,7 +95,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
               }
             />
             <p className="text-[14px] text-caak-extraBlack">Хүлээгдэж буй постууд</p>
-          </div>
+          </div> */}
           <Link href={`/user/${user.id}/dashboard`}>
             <a>
               <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
@@ -118,7 +118,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
                       "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
                     }
                   />
-                  <p className="text-14px text-caak-extraBlack">Бүх Групп</p>
+                  <p className="text-14px text-caak-extraBlack">Бүх групп</p>
                 </div>
             </a>
           </Link>

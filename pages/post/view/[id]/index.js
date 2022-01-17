@@ -5,7 +5,7 @@ import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import ViewPostLeftReaction from "../../../../src/components/viewpost/ViewPostLeftReaction";
 import Tooltip from "../../../../src/components/tooltip/Tooltip";
 import ProfileHoverCard from "../../../../src/components/card/ProfileHoverCard";
@@ -20,7 +20,7 @@ import { updatePost } from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
 import { useUser } from "../../../../src/context/userContext";
 import { decode } from "html-entities";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 
 export async function getServerSideProps({ req, query }) {
@@ -157,12 +157,6 @@ const Post = ({ ssrData }) => {
             {post.title} - {Consts.siteMainTitle}
           </title>
         </Head>
-        <Toaster
-          toastOptions={{
-            className: "toastOptions",
-            duration: 5000,
-          }}
-        />
         {isLogged && (
           <ReportModal
             setIsOpen={setIsReportModalOpen}
@@ -210,28 +204,28 @@ const Post = ({ ssrData }) => {
                 </Link>
 
                 <div className={"flex flex-col ml-[10px] justify-between"}>
-                  <Link href={`/group/${post.group.id}`}>
-                    <a>
-                      <p
-                        className={
-                          "text-[16px] text-white font-semibold tracking-[0.24px] leading-[19px]"
-                        }
-                      >
-                        {post.group.name}{" "}
-                        {post.group.verified && (
-                          <img
-                            className={"w-full h-full"}
-                            alt={""}
-                            height={14.25}
-                            width={16.5}
-                            // quality={100}
-                            // priority={true}
-                            src={groupVerifiedSvg}
-                          />
-                        )}
-                      </p>
-                    </a>
-                  </Link>
+                  <div className={"flex items-center"}>
+                    <Link href={`/group/${post.group.id}`}>
+                      <a>
+                        <p
+                          className={
+                            "text-[16px] text-white font-semibold tracking-[0.24px] leading-[19px]"
+                          }
+                        >
+                          {post.group.name}{" "}
+                        </p>
+                      </a>
+                    </Link>
+                    {post.group.verified && (
+                      <img
+                        className={"w-[16.5px] h-[14.25px]"}
+                        alt={""}
+                        height={14.25}
+                        width={16.5}
+                        src={groupVerifiedSvg.src}
+                      />
+                    )}
+                  </div>
 
                   <div
                     className={
@@ -314,31 +308,49 @@ const Post = ({ ssrData }) => {
                     >
                       <img
                         className={"object-cover h-full w-full z-[1]"}
-                        // objectFit={"cover"}
-                        // objectPosition={"center"}
-                        // layout={"fill"}
                         alt={post.items.items[0].file.type}
                         src={getFileUrl(post.items.items[0].file)}
                       />
                     </div>
-                    <img
-                      // objectFit={"contain"}
-                      // layout={"fill"}
-                      src={getFileUrl(post.items.items[0].file)}
-                      alt={"post picture"}
-                      className={"object-contain w-full h-full z-[2] relative"}
-                    />
+                    <Link
+                      shallow
+                      as={`/post/view/${post.id}/${post.items.items[0].id}`}
+                      href={{
+                        query: {
+                          ...router.query,
+                          id: post.id,
+                          viewItemPost: "postItem",
+                          itemId: post.items.items[0].id,
+                          prevPath: router.asPath,
+                          isModal: true,
+                          itemIndex: 0,
+                        },
+                      }}
+                    >
+                      <a>
+                        <img
+                          src={getFileUrl(post.items.items[0].file)}
+                          alt={"post picture"}
+                          className={
+                            "object-contain w-full h-full z-[2] relative"
+                          }
+                        />
+                      </a>
+                    </Link>
                   </div>
                 )}
               </div>
             )}
-            <p
-              className={
-                "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-              }
-            >
-              {decode(post.items.items[0].title)}
-            </p>
+            {post.items.items.length > 1 && (
+              <p
+                className={
+                  "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                }
+              >
+                {decode(post.items.items[0].title)}
+              </p>
+            )}
+
             <div
               className={`px-[22px] md:px-[52px] md:pb-[52px] bg-white ${
                 post.status === "CONFIRMED" ? "" : "rounded-square"

@@ -71,6 +71,9 @@ export async function getServerSideProps({ req, res, query }) {
   };
 
   const post = await getPostById();
+  if(!post){
+    return {notFound: true}
+  }
   if (post.user.id !== user.attributes.sub) {
     return { notFound: true };
   }

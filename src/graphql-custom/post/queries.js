@@ -1,6 +1,7 @@
 import post0002 from "./fields/post0002";
 import post0004 from "./fields/post0004";
 import post0005 from "./fields/post0005";
+import post0006 from "./fields/post0006";
 import file0001 from "../file/fields/file0001";
 
 export const getPost = /* GraphQL */ `
@@ -17,7 +18,7 @@ export const getPostView = /* GraphQL */ `
 
 export const getPostByStatus = /* GraphQL */ `
     query getPostByStatus($status: String,
-        $updatedAt: ModelStringKeyConditionInput,
+        $createdAt: ModelStringKeyConditionInput,
         $sortDirection: ModelSortDirection,
         $filter: ModelPostFilterInput,
         $limit: Int,
@@ -25,7 +26,7 @@ export const getPostByStatus = /* GraphQL */ `
     {
         getPostByStatus(
             status: $status,
-            updatedAt: $updatedAt,
+            createdAt: $createdAt,
             sortDirection: $sortDirection,
             filter: $filter,
             limit: $limit,
@@ -229,6 +230,30 @@ export const ListReportedPostByUser = /* GraphQL */ `
     ) {
       items 
        ${post0005}
+        nextToken
+    }
+  }
+`;
+
+export const listPostStatusHistoryByPost = /* GraphQL */ `
+  query ListPostStatusHistoryByPost(
+    $post_id: ID,
+    $createdAt: ModelStringKeyConditionInput,
+    $sortDirection: ModelSortDirection,
+    $filter: ModelPostStatusHistoryFilterInput,
+    $limit: Int,
+    $nextToken: String
+  ) {
+    listPostStatusHistoryByPost(
+		post_id: $post_id,
+		createdAt: $createdAt,
+		sortDirection: $sortDirection,
+		filter: $filter,
+		limit: $limit,
+		nextToken: $nextToken
+    ) {
+      items 
+       ${post0006}
         nextToken
     }
   }

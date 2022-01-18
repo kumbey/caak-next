@@ -52,7 +52,7 @@ const DefaultFeedLayout = ({
             }`}
           >
 
-          <SimpleBar className={"leftScroll"}>
+          <SimpleBar className={"leftScroll pr-[12px]"}>
             <FeedSortButtons
               feed
               items={feedType}

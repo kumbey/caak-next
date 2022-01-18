@@ -6,7 +6,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listCategorys } from "../../graphql-custom/category/queries";
 import { createUserCategory } from "../../graphql-custom/category/mutation";
 import { useUser } from "../../context/userContext";
-import { getGenderImage, getReturnData } from "../../utility/Util";
+import { getFileUrl, getGenderImage, getReturnData } from "../../utility/Util";
 import caakLogo from "/public/assets/images/New-Logo.svg";
 import SimpleBar from "simplebar-react";
 export default function Interests() {
@@ -104,13 +104,17 @@ export default function Interests() {
                       : ""
                   } flex items-center rounded-[8px] border w-full h-full transition-all duration-300 justify-center group hover:scale-[0.97] transition-all duration-300 `}
                 >
-                  {/*<img*/}
-                  {/*  className={*/}
-                  {/*    "group-hover:brightness-75 rounded-[8px] transition-all duration-300 w-full h-full object-cover"*/}
-                  {/*  }*/}
-                  {/*  alt={""}*/}
-                  {/*  src={getGenderImage("default").src}*/}
-                  {/*/>*/}
+                  <img
+                    className={
+                      "group-hover:brightness-75 rounded-[8px] transition-all duration-300 w-full h-full object-cover"
+                    }
+                    alt={""}
+                    src={
+                      data?.picture
+                        ? getFileUrl(data?.picture)
+                        : getGenderImage("default").src
+                    }
+                  />
                   {selected.find((item) => item === data.id) && (
                     <div
                       className={

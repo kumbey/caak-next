@@ -4,7 +4,11 @@ const group0011 = /* GraphQL */ `{
     items {
         id
         name
+        aura
         followed
+        category{
+            name
+        }
         profile ${file0001}
         totals{
             member

@@ -30,8 +30,9 @@ const TrendPostsByCategory = () => {
         query: listPostByCategoryOrderByReactions,
         variables: {
           categoryAndStatus: `${randomCategory}#CONFIRMED`,
+          limit: 10,
+          sortDirection: "DESC",
         },
-        limit: 10,
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
@@ -97,11 +98,11 @@ const TrendPostsByCategory = () => {
         </div>
       )}
 
-      {activeIndex > 0 &&
+      {activeIndex > 0 && (
         <div
           onClick={() => {
             trendPostsRef.current.scrollTo({
-              left: (activeIndex-1) * 252,
+              left: (activeIndex - 1) * 252,
               behavior: "smooth",
             });
             prevItem();
@@ -114,7 +115,7 @@ const TrendPostsByCategory = () => {
             className={"ml-[2px] icon-fi-rs-next text-white text-[16.5px]"}
           />
         </div>
-      }
+      )}
 
       <p
         className={

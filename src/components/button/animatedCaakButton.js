@@ -62,38 +62,43 @@ const AnimatedCaakButton = ({
         console.warn(error);
       },
     });
-    subscriptions.onReactionCreateByUserItem = API.graphql({
-      query: onReactionCreateByUserItem,
-      variables: {
-        item_id: itemId,
-        on_to: on_to(),
-        user_id: user.id,
-      },
-      authMode: "AWS_IAM",
-    }).subscribe({
-      next: () => {
-        setIsReacted(true);
-      },
-      error: (error) => {
-        console.warn(error);
-      },
-    });
-    subscriptions.onReactionDeleteByUserItem = API.graphql({
-      query: onReactionDeleteByUserItem,
-      variables: {
-        item_id: itemId,
-        on_to: on_to(),
-        user_id: user.id,
-      },
-      authMode: "AWS_IAM",
-    }).subscribe({
-      next: () => {
-        setIsReacted(false);
-      },
-      error: (error) => {
-        console.warn(error);
-      },
-    });
+    if (isLogged) {
+      subscriptions.onReactionCreateByUserItem = API.graphql({
+        query: onReactionCreateByUserItem,
+        variables: {
+          item_id: itemId,
+          on_to: on_to(),
+          user_id: user.id,
+        },
+        authMode: "AWS_IAM",
+      }).subscribe({
+        next: () => {
+          setIsReacted(true);
+        },
+        error: (error) => {
+          console.warn(error);
+        },
+      });
+    }
+
+    if (isLogged) {
+      subscriptions.onReactionDeleteByUserItem = API.graphql({
+        query: onReactionDeleteByUserItem,
+        variables: {
+          item_id: itemId,
+          on_to: on_to(),
+          user_id: user.id,
+        },
+        authMode: "AWS_IAM",
+      }).subscribe({
+        next: () => {
+          setIsReacted(false);
+        },
+        error: (error) => {
+          console.warn(error);
+        },
+      });
+    }
   };
 
   useUpdateEffect(() => {
@@ -114,7 +119,7 @@ const AnimatedCaakButton = ({
   }, []);
 
   useEffect(() => {
-    initReacted.current = reacted
+    initReacted.current = reacted;
     setIsReacted(reacted);
   }, [reacted]);
 

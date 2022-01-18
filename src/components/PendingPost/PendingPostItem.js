@@ -112,7 +112,7 @@ export default function PendingPostItem({ post, className }) {
             </div>
             <div className="flex sm:w-1/2  justify-center">
               <span className={"text-darkblue text-12px"}>
-                {generateTimeAgo(post.updatedAt)}
+                {generateTimeAgo(post.createdAt)}
               </span>
             </div>
           </div>

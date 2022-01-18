@@ -109,7 +109,7 @@ export default function UserPostItem({ post, className }) {
       </td>
       <td className="w-1/6 text-center">
         <span className={"text-darkblue text-12px"}>
-          {generateTimeAgo(post.updatedAt)}
+          {generateTimeAgo(post.createdAt)}
         </span>
       </td>
       <td className="w-1/6 text-center relative">

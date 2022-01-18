@@ -350,7 +350,7 @@ const PostItem = ({ ssrData }) => {
                               }
                             >
                               &nbsp; &middot; &nbsp;
-                              {generateTimeAgo(post.updatedAt)}
+                              {generateTimeAgo(post.createdAt)}
                             </p>
                           </div>
                         </div>

@@ -16,7 +16,6 @@ const SelectGroup = ({
   const dropDownClickOutsideRef = useClickOutSide(() => {
     setIsGroupVisible(false);
   });
-  console.log(groupData)
   return (
     <div className={`flex flex-col ${containerClassName}`}>
       <div className={"flex flex-row items-center px-[18px]"}>

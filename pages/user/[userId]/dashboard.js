@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import StatsItem from "../../../src/components/stats";
-import Image from "next/image";
 
 import { withSSRContext } from "aws-amplify";
 import {
@@ -11,10 +10,7 @@ import {
   getReturnData,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
-import {
-  getPostByUser,
-  ListReportedPostByUser,
-} from "../../../src/graphql-custom/post/queries";
+import { getPostByUser } from "../../../src/graphql-custom/post/queries";
 import DashList from "../../../src/components/list/DashList";
 
 import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
@@ -247,14 +243,14 @@ const Dashboard = ({ ssrData }) => {
     // ssr: true,
   });
   const [nextReported] = useListPager({
-    query: ListReportedPostByUser,
+    query: getPostByUser,
     variables: {
       user_id: router.query.userId,
-      limit: 20,
       sortDirection: "DESC",
+      filter: { status: { eq: "REPORTED" } },
+      limit: 20,
     },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    nextToken: reportedPosts.nextToken,
+    nextToken: pendingPosts.nextToken,
     // ssr: true,
   });
   const fetchPosts = async () => {
@@ -911,7 +907,6 @@ const Dashboard = ({ ssrData }) => {
                       <tbody>
                         {reportedPosts.items.length > 0 &&
                           reportedPosts.items.map((reportedPost, index) => {
-                            console.log(reportedPost);
                             return (
                               <tr
                                 key={index}
@@ -924,8 +919,7 @@ const Dashboard = ({ ssrData }) => {
                                   video={reportedPost?.items?.items[0]?.file?.type?.startsWith(
                                     "video"
                                   )}
-                                  post={reportedPost.post}
-                                  reported={reportedPost}
+                                  post={reportedPost}
                                   className="ph:mb-4 sm:mb-4"
                                 />
                               </tr>

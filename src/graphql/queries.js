@@ -1602,7 +1602,7 @@ export const listPosts = /* GraphQL */ `
 export const getPostByStatus = /* GraphQL */ `
   query GetPostByStatus(
     $status: String
-    $updatedAt: ModelStringKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPostFilterInput
     $limit: Int
@@ -1610,7 +1610,7 @@ export const getPostByStatus = /* GraphQL */ `
   ) {
     getPostByStatus(
       status: $status
-      updatedAt: $updatedAt
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

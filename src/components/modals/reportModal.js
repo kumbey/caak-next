@@ -18,6 +18,7 @@ const ReportModal = ({ isOpen, setIsOpen, postId, userId }) => {
     post_id: "",
     status: "",
     user_id: "",
+    typeName: "",
   };
 
   let pl;
@@ -38,6 +39,7 @@ const ReportModal = ({ isOpen, setIsOpen, postId, userId }) => {
       initData.post_id = postId;
       initData.user_id = userId;
       initData.status = "UNCHECKED";
+      initData.typeName = "REPORTED_POST";
 
       await API.graphql(
         graphqlOperation(createReportedPost, { input: initData })

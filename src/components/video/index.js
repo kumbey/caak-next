@@ -63,9 +63,10 @@ const Video = ({
   const [seeking, setSeeking] = useState(false);
   const canvasRef = useRef();
   const { currentPlayingVideoId, setCurrentPlayingVideoId } = useWrapper();
-  const [ref, inView] = useInView({
-    threshold: 1,
+  const [ref, inView, entry] = useInView({
+    threshold: 0.5,
   });
+
   const handleSeekChange = (e) => {
     setPlayed(parseFloat(e.target.value));
   };
@@ -116,12 +117,27 @@ const Video = ({
   useEffect(() => {
     if (inView) {
       setLoaded(true);
-      setIsPlaying(isAutoPlayEnabled);
+      if(videoRef.current.player.isReady){
+        const windowHeight = window.innerHeight;
+        const thisVideoEl = videoRef.current.player.player.player,
+          videoHeight = thisVideoEl.clientHeight,
+          videoClientRect = thisVideoEl.getBoundingClientRect().top;
+        if (
+          videoClientRect <= windowHeight - videoHeight * 0.5 &&
+          videoClientRect >= 0 - videoHeight * 0.5
+        ) {
+          setIsPlaying(isAutoPlayEnabled);
+          setCurrentPlayingVideoId(videoFileId);
+        } else {
+          setIsPlaying(false);
+        }
+      }
+      // setIsPlaying(isAutoPlayEnabled);
       // setIsMuted(isAutoPlayEnabled);
       setCurrentPlayingVideoId(videoFileId);
     } else if (!inView && loaded) {
       setIsPlaying(false);
-      setCurrentPlayingVideoId(null);
+      // setCurrentPlayingVideoId(null);
     }
 
     // eslint-disable-next-line
@@ -333,53 +349,55 @@ const Video = ({
               />
             </div>
 
-          <Tooltip
-            debounceValue={0.1}
-            className={"right-1/2 translate-x-1/2"}
-            content={
-              <div className={"flex items-center justify-center bg-transparent pt-[4px] rounded-[4px] w-[26px] h-[68px] relative bottom-[90px]"}>
+            <Tooltip
+              debounceValue={0.1}
+              className={"right-1/2 translate-x-1/2"}
+              content={
                 <div
-                  className={`transition-all duration-300 items-center justify-center rounded-[4px]`}
+                  className={
+                    "flex items-center justify-center bg-transparent pt-[4px] rounded-[4px] w-[26px] h-[68px] relative bottom-[90px]"
+                  }
                 >
-                  <input
-                    orient="vertical"
-                    onClick={(e) => e.stopPropagation()}
-                    type="range"
-                    min={0}
-                    max={1}
-                    step="any"
-                    value={volume}
-                    onChange={handleVolumeChange}
-                  />
+                  <div
+                    className={`transition-all duration-300 items-center justify-center rounded-[4px]`}
+                  >
+                    <input
+                      orient="vertical"
+                      onClick={(e) => e.stopPropagation()}
+                      type="range"
+                      min={0}
+                      max={1}
+                      step="any"
+                      value={volume}
+                      onChange={handleVolumeChange}
+                    />
+                  </div>
                 </div>
-              </div>
-              }
-          >
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                if(isMuted && volume === 0){
-                  setVolume(0.8)
-                }
-                else {
-                  setVolume(0)
-                setIsMuted(!isMuted);
-                }
-                setVolumeSliderActive(!volumeSliderActive);
-              }}
-              className={
-                "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer"
               }
             >
-
-              <span className={"icon-fi-rs-volume text-white text-[22px]"} />
-              {isMuted && (
-                <span
-                  className={`w-full bg-white h-[2px] absolute rotate-[45deg]`}
-                />
-              )}
-            </div>
-          </Tooltip>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isMuted && volume === 0) {
+                    setVolume(0.8);
+                  } else {
+                    setVolume(0);
+                    setIsMuted(!isMuted);
+                  }
+                  setVolumeSliderActive(!volumeSliderActive);
+                }}
+                className={
+                  "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer"
+                }
+              >
+                <span className={"icon-fi-rs-volume text-white text-[22px]"} />
+                {isMuted && (
+                  <span
+                    className={`w-full bg-white h-[2px] absolute rotate-[45deg]`}
+                  />
+                )}
+              </div>
+            </Tooltip>
             <div
               onClick={(e) => {
                 handleFullscreen(e);

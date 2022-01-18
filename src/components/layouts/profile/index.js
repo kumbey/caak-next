@@ -608,13 +608,8 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         className={
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
-<<<<<<< HEAD
-                      >0
-                        {JSON.parse(user?.meta).twitter.slice(20)}
-=======
                       >
                         {getURLUserName(JSON.parse(user?.meta).twitter)}
->>>>>>> 2f5dc19b777acf4c14d9151a67c7078dd4e5579d
                       </p>
                     </div>
                   </a>

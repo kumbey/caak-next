@@ -191,8 +191,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     setLoading(true);
   }, []);
 
-  console.log(JSON.parse(user?.meta))
-
   return loading ? (
     <>
       <div className={"flex flex-col"}>

@@ -5,7 +5,7 @@ import { API } from "aws-amplify";
 import { getGroupTotal } from "../../graphql-custom/group/queries";
 import {useRouter} from "next/router";
 
-const GroupAdminPanel = ({groupId}) => {
+const GroupAdminPanel = ({groupId, groupRole}) => {
   const router  = useRouter()
   const [groupTotals, setGroupTotals] = useState({});
   // const [totalPending, setTotalPending] = useState();
@@ -73,6 +73,10 @@ const GroupAdminPanel = ({groupId}) => {
         <div className="flex flex-col ">
           {adminMenu.map((menu, index) => {
             return (
+              menu.id === 2 && groupRole === "MODERATOR"
+              ?
+              null
+              :
               <div
                 onClick={() => {
                   router.push(

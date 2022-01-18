@@ -89,7 +89,7 @@ const TrendPostsByCategoryItem = ({ item }) => {
                       : getGenderImage("default").src
                   }
                   // objectFit={"cover"}
-                  className={"rounded-[4px] object-cover"}
+                  className={"rounded-[4px] object-cover w-full h-full"}
                 />
               </div>
 

@@ -307,7 +307,12 @@ const EditPost = ({ ssrData }) => {
                 </Button>
                 <Button
                   loading={loading}
-                  disabled={loading}
+                  disabled={
+                    !isEditing ||
+                    !post.title ||
+                    post.items.length <= 0 ||
+                    loading
+                  }
                   onClick={() => handleSubmit()}
                   skin={"primary"}
                   className={

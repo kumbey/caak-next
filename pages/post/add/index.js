@@ -92,14 +92,12 @@ const AddPost = () => {
         const item = resp[i];
         if (item.role_on_group === "NOT_MEMBER") {
           grData.unMember.push(item);
-        } else if(item.role_on_group === "ADMIN") {
+        } else if (item.role_on_group === "ADMIN") {
           grData.adminModerator.push(item);
-        }
-        else if(item.role_on_group === "ADMIN"){
-          grData.adminModerator.push(item)
-        }
-        else {
-          grData.member.push(item)
+        } else if (item.role_on_group === "ADMIN") {
+          grData.adminModerator.push(item);
+        } else {
+          grData.member.push(item);
         }
       }
 
@@ -383,7 +381,12 @@ const AddPost = () => {
                   onClick={() => handleSubmit()}
                   loading={loading}
                   skin={"primary"}
-                  disabled={loading}
+                  disabled={
+                    !isEditing ||
+                    !post.title ||
+                    post.items.length <= 0 ||
+                    loading
+                  }
                   className={
                     "mr-2 mt-4 shadow-sm text-white text-[16px] font-semibold border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
                   }

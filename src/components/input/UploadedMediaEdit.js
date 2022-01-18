@@ -238,7 +238,7 @@ const UploadedMediaEdit = ({
 
   useUpdateEffect(() => {
     setIsEditing(true);
-  }, [post.items]);
+  }, [post.items, post.title]);
 
   useUpdateEffect(() => {
     if (isEditing) {

@@ -186,12 +186,15 @@ export const listGroupByFeatured = /* GraphQL */ `
     }
 `;
 export const listGroupByCategory = /* GraphQL */ `
-     query ListGroups(
+     query ListGroupByCategory(
+         $category_id: ID,
          $filter: ModelGroupFilterInput
          $limit: Int
          $nextToken: String
      ) {
-         listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) 
+         listGroupByCategory(category_id: $category_id, 
+#             name: $name, 
+             filter: $filter, limit: $limit, nextToken: $nextToken) 
              ${group0011}
          
      }

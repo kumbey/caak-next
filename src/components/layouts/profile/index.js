@@ -4,6 +4,7 @@ import {
   getFileName,
   getFileUrl,
   getGenderImage,
+  getURLUserName,
 } from "../../../utility/Util";
 import Button from "../../button";
 import SideBarGroups from "../../card/SideBarGroups";
@@ -580,7 +581,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {JSON.parse(user?.meta).facebook.slice(21)}
+                        {getURLUserName(JSON.parse(user?.meta).facebook)}
                       </p>
                     </div>
                   </a>
@@ -607,8 +608,13 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         className={
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
+<<<<<<< HEAD
                       >0
                         {JSON.parse(user?.meta).twitter.slice(20)}
+=======
+                      >
+                        {getURLUserName(JSON.parse(user?.meta).twitter)}
+>>>>>>> 2f5dc19b777acf4c14d9151a67c7078dd4e5579d
                       </p>
                     </div>
                   </a>
@@ -636,7 +642,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {JSON.parse(user?.meta).instagram.slice(22)}
+                        {getURLUserName(JSON.parse(user?.meta).instagram)}
                       </p>
                     </div>
                   </a>
@@ -664,7 +670,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {JSON.parse(user?.meta).tiktok.slice(24)}
+                        {getURLUserName(JSON.parse(user?.meta).tiktok)}
                       </p>
                     </div>
                   </a>

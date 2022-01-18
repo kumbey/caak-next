@@ -143,7 +143,7 @@ const CardHeader = ({
                   "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
                 }
               >
-                {generateTimeAgo(post.updatedAt)}
+                {generateTimeAgo(post.createdAt)}
               </span>
             </div>
           </div>

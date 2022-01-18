@@ -1,10 +1,8 @@
+import Head from "next/head";
 import image404 from "../public/assets/images/500/Connection-Lost.gif";
 import Button from "../src/components/button";
-import { useRouter } from "next/router";
-import Head from "next/head";
 
-export default function Custom500() {
-  const router = useRouter();
+export default function Error() {
   return (
     <>
       <Head>
@@ -50,5 +48,10 @@ export default function Custom500() {
         </div>
       </div>
     </>
-  );
+  )
+}
+
+Error.getInitialProps = ({ res, err }) => {
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+  return { statusCode }
 }

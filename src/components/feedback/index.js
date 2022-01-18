@@ -63,6 +63,7 @@ const FeedBack = ({ setIsOpen }) => {
             title: title,
             star: star + 1,
             status: "CHECKED",
+            typeName: "FEEDBACK",
             type: type,
           },
         },

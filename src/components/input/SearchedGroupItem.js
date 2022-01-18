@@ -11,6 +11,7 @@ import { getPostSearchItem } from "../../graphql-custom/post/queries";
 import { useUser } from "../../context/userContext";
 import { getGroupSearchView } from "../../graphql-custom/group/queries";
 import { getUserSearchView } from "../../graphql-custom/user/queries";
+import Video from "../video";
 
 const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
   const [userData, setUserData] = useState();
@@ -121,13 +122,25 @@ const SearchedGroupItem = ({ setIsSearchBarOpen, clear, type, id }) => {
               "flex flex-shrink-0 items-center justify-center w-[34px] h-[34px] rounded-square"
             }
           >
-            <img
-              className={"rounded-square object-cover w-full h-full"}
-              src={postImageHandler()}
-              alt=""
-              width={34}
-              height={34}
-            />
+            {postData?.items?.items[0]?.file?.type.startsWith("video") ? (
+              <Video
+                containerClassname={"rounded-square"}
+                videoClassname={"rounded-square"}
+                smallIndicator
+                disableOnClick
+                hideControls
+                initialAutoPlay={false}
+                src={postImageHandler()}
+              />
+            ) : (
+              <img
+                className={"rounded-square object-cover w-full h-full"}
+                src={postImageHandler()}
+                alt=""
+                width={34}
+                height={34}
+              />
+            )}
           </div>
           <div
             className={

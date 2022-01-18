@@ -157,7 +157,9 @@ const Video = ({
 
           opacity: "0.3",
         }}
-        className={"w-full h-full absolute top-0 z-[1] object-cover"}
+        className={`${
+          containerClassname ? containerClassname : ""
+        } w-full h-full absolute top-0 z-[1] object-cover`}
         ref={canvasRef}
       />
 

@@ -238,9 +238,9 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
                 "text-[12px] font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
               }
             >
-              {`${extractDate(post.updatedAt).year}.${
-                extractDate(post.updatedAt).month
-              }.${extractDate(post.updatedAt).day}`}
+              {`${extractDate(post.createdAt).year}.${
+                extractDate(post.createdAt).month
+              }.${extractDate(post.createdAt).day}`}
             </p>
           </div>
           {post.status === "ARCHIVED" ||

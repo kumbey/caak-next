@@ -1,4 +1,5 @@
 import categoryGetField from "./fields/categoryGetField";
+import listUserCategoryField from "./fields/listUserCategoryField";
 
 export const listCategorys = /* GraphQL */ `
     query ListCategorys {
@@ -20,6 +21,6 @@ export const listUserCategoryByUser = /* GraphQL */ `
         filter: $filter,
         limit: $limit,
         nextToken: $nextToken
-        ) ${categoryGetField}
+        ) ${listUserCategoryField}
     }
 `;

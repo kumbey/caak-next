@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { onChangedTotalsBy } from "../../../graphql-custom/totals/subscription";
 import { getReturnData, useClickOutSide } from "../../../utility/Util";
 import DropDown from "../../navigation/DropDown";
-import Image from "next/image";
 import FacebookIcon from "../../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../../public/assets/images/Twitter-Color.svg";
 import AnimatedCaakButton from "../../button/animatedCaakButton";

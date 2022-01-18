@@ -18,17 +18,19 @@ import {
 } from "@dnd-kit/core";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import { generateFileUrl, getGenderImage } from "../../utility/Util";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
 import Video from "../video";
 import { useRouter } from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const thumbnailImageHandler = (item) => {
-  if (item.file) {
+  if (item?.file) {
     if (item.file.url) {
       return item.file.url;
     } else {
-      return generateFileUrl(item.file);
+      if (!getFileUrl(item.file).includes("undefined")) {
+        return getFileUrl(item.file);
+      }
     }
   } else {
     return getGenderImage("default").src;
@@ -157,7 +159,7 @@ const UploadedMediaEdit = ({
   // const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
-  const [viewDescription, setViewDescription] = useState(!add);
+  const [viewDescription, setViewDescription] = useState(false);
 
   const [loaded, setLoaded] = useState(false);
 
@@ -169,6 +171,9 @@ const UploadedMediaEdit = ({
     imageDescription: 1000,
   };
   const popItem = (index_arg) => {
+    if (activeIndex === post.items.length - 1 && activeIndex !== 0) {
+      setActiveIndex(activeIndex - 1);
+    }
     const popIndex = post.items.findIndex((_, index) => index === index_arg);
     const postsArr = post.items;
     postsArr.splice(popIndex, 1);
@@ -233,7 +238,7 @@ const UploadedMediaEdit = ({
 
   useUpdateEffect(() => {
     setIsEditing(true);
-  }, [post.items]);
+  }, [post.items, post.title]);
 
   useUpdateEffect(() => {
     if (isEditing) {
@@ -295,8 +300,6 @@ const UploadedMediaEdit = ({
   useEffect(() => {
     setSortItems([...post.items]);
   }, [post]);
-
-
 
   return (
     <div>
@@ -563,16 +566,14 @@ const UploadedMediaEdit = ({
         </div>
         <div className={"w-[265px]"}>
           {selectedGroup &&
-            (selectedGroup.role_on_group === "ADMIN" ?
+            (selectedGroup.role_on_group === "ADMIN" ? (
               <div className={"flex flex-row justify-between mt-[16px]"}>
                 <p className={"text-[15px] text-caak-generalblack"}>
                   Саак контент
                 </p>
                 <Switch toggle={setCaakContent} active={caakContent} />
               </div>
-              :
-              null
-            )}
+            ) : null)}
           <div className={"flex flex-row justify-between mt-[16px]"}>
             <p className={"text-[15px] text-caak-generalblack"}>
               Сэтгэгдэл зөвшөөрөх

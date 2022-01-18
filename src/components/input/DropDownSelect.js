@@ -21,7 +21,7 @@ const DropDownSelect = ({
     member: [],
   });
   const [inputValue, setInputValue] = useState("");
-  const [hasAnyGroup, setHasAnyGroup] = useState(!!filteredData.adminModerator);
+  const [hasAnyGroup, setHasAnyGroup] = useState(filteredData.adminModerator.length > 0 && filteredData.member.length > 0);
 
   useEffect(() => {
     setFilteredData(groupData);
@@ -97,7 +97,7 @@ const DropDownSelect = ({
         </div>
         <SimpleBar className={"max-h-[400px]"}>
           <div className={"z-50"}>
-            {filteredData.adminModerator.length > 0 ? (
+            {filteredData.adminModerator.length > 0 && (
               <>
                 <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                   <span className={"text-15px text-caak-darkBlue"}>
@@ -143,11 +143,9 @@ const DropDownSelect = ({
                   })}
                 </div>
               </>
-            ) : (
-              hasAnyGroup && <AddPostNewGroupCard setOpen={setHasAnyGroup} />
             )}
 
-            {filteredData.adminModerator.length > 0 ? (
+            {filteredData.member.length > 0 ? (
               <>
                 <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                   <span className={"text-15px text-caak-darkBlue"}>
@@ -190,8 +188,7 @@ const DropDownSelect = ({
             ) : (
               hasAnyGroup && <AddPostNewGroupCard setOpen={setHasAnyGroup} />
             )}
-
-            <div
+            {filteredData.unMember.length > 0 && <div
               className={
                 "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
               }
@@ -207,7 +204,8 @@ const DropDownSelect = ({
                   Групп үүсгэх
                 </span>
               ) : null}
-            </div>
+            </div>}
+
             <div className={"px-2"}>
               {filteredData.unMember.map((item, index) => {
                 return (

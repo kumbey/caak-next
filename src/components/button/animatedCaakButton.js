@@ -7,6 +7,13 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "../../context/userContext";
 import { useRouter } from "next/router";
+import { getReturnData } from "../../utility/Util";
+import {
+  onReactionCreateByUserItem,
+  onReactionDeleteByUserItem,
+} from "../../graphql-custom/reaction/subscriptions";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const AnimatedCaakButton = ({
   disableOnClick,
@@ -27,13 +34,87 @@ const AnimatedCaakButton = ({
 }) => {
   const [shake, setShake] = useState(false);
   const [render, setRender] = useState(0);
+  const [subscripTotal, setSubscripTotal] = useState(0);
   const reactionTimer = useRef(null);
-  const initReacted = useRef(reacted);
-  const [isReacted, setIsReacted] = useState(reacted);
+  const initReacted = useRef();
+  const [isReacted, setIsReacted] = useState();
+  const subscriptions = {};
+
   const { user, isLogged } = useUser();
   const router = useRouter();
 
+  const subscrip = () => {
+    subscriptions.onChangedTotalsBy = API.graphql({
+      query: onChangedTotalsBy,
+      variables: {
+        type: totalType(),
+        id: itemId,
+      },
+      authMode: "AWS_IAM",
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscripTotal(parseInt(JSON.parse(onData.totals).reactions));
+        // totals.reactions = parseInt(JSON.parse(onData.totals).reactions);
+        // setRender(render + 1)
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+    subscriptions.onReactionCreateByUserItem = API.graphql({
+      query: onReactionCreateByUserItem,
+      variables: {
+        item_id: itemId,
+        on_to: on_to(),
+        user_id: user.id,
+      },
+      authMode: "AWS_IAM",
+    }).subscribe({
+      next: () => {
+        setIsReacted(true);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+    subscriptions.onReactionDeleteByUserItem = API.graphql({
+      query: onReactionDeleteByUserItem,
+      variables: {
+        item_id: itemId,
+        on_to: on_to(),
+        user_id: user.id,
+      },
+      authMode: "AWS_IAM",
+    }).subscribe({
+      next: () => {
+        setIsReacted(false);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useUpdateEffect(() => {
+    totals.reactions = subscripTotal;
+    setRender(render + 1);
+  }, [subscripTotal]);
+
   useEffect(() => {
+    subscrip();
+
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    initReacted.current = reacted
     setIsReacted(reacted);
   }, [reacted]);
 
@@ -48,6 +129,7 @@ const AnimatedCaakButton = ({
   const localHandler = () => {
     if (isLogged) {
       setIsReacted(!isReacted);
+      initReacted.current = isReacted;
       setReacted(!isReacted);
       if (reactionTimer.current) {
         clearTimeout(reactionTimer.current);
@@ -77,7 +159,7 @@ const AnimatedCaakButton = ({
             ...router.query,
             signInUp: "signIn",
             isModal: true,
-            prevPath: router.asPath
+            prevPath: router.asPath,
           },
         },
         `/signInUp/signIn`,
@@ -85,17 +167,25 @@ const AnimatedCaakButton = ({
       );
     }
   };
-
+  const totalType = () => {
+    if (reactionType === "POST") {
+      return "PostTotal";
+    } else if (reactionType === "POST_ITEM") {
+      return "PostItemsTotal";
+    } else if (reactionType === "COMMENT") {
+      return "CommentTotal";
+    }
+  };
+  const on_to = () => {
+    if (reactionType === "COMMENT") {
+      return "COMMENT";
+    } else if (reactionType === "POST") {
+      return "POST";
+    } else if (reactionType === "POST_ITEM") {
+      return "POST_ITEM";
+    }
+  };
   const reactionHandler = async (type) => {
-    const on_to = () => {
-      if (reactionType === "COMMENT") {
-        return "COMMENT";
-      } else if (reactionType === "POST") {
-        return "POST";
-      } else if (reactionType === "POST_ITEM") {
-        return "POST_ITEM";
-      }
-    };
     try {
       if (type) {
         await API.graphql(
@@ -164,7 +254,7 @@ const AnimatedCaakButton = ({
         )}
       </div>
       <p className={`${textClassname ? textClassname : "text-caak-scriptink"}`}>
-        {totals ? totals.reactions + `${hideCaakText ? "" : " саак"}`: -21}
+        {totals ? totals.reactions + `${hideCaakText ? "" : " саак"}` : 0}
       </p>
     </div>
   );

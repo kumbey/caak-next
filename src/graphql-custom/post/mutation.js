@@ -1,6 +1,7 @@
 import post0001 from "./fields/post0001";
 import post0004 from "./fields/post0004";
 import post0003 from "./fields/post0003";
+import reaction0001 from "../reaction/fields/reaction0001";
 
 export const createPost = /* GraphQL */ `
     mutation createPost($input: CreatePostInput!) {
@@ -20,14 +21,14 @@ export const updatePost = /* GraphQL */ `
 `;
 
 export const createReaction = /* GraphQL */ `
-    mutation createReaction($input: CreateReactionsInput!) {
-        createReactions(input: $input) ${post0001}
+    mutation createReactions($input: CreateReactionsInput!) {
+        createReactions(input: $input) ${reaction0001}
     }
 `;
 
 export const deleteReaction = /* GraphQL */ `
-    mutation deleteReaction($input: DeleteReactionsInput!) {
-        deleteReactions(input: $input) ${post0001}
+    mutation deleteReactions($input: DeleteReactionsInput!) {
+        deleteReactions(input: $input) ${reaction0001}
     }
 `;
 

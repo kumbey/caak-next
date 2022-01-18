@@ -162,7 +162,7 @@ const SearchInput = ({
           </div>
         )}
       </div>
-      <div className={"w-full bg-transparent"}>
+      <div className={"w-full bg-transparent z-[2]"}>
         <Input
           hideError
           {...props}

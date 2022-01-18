@@ -1,10 +1,6 @@
 import useFeedLayout from "../src/hooks/useFeedLayout";
 import { withSSRContext } from "aws-amplify";
-import {
-  getPostByStatus,
-  listPostByOwned,
-  listPostOrderByReactions,
-} from "../src/graphql-custom/post/queries";
+import { listPostByOwned } from "../src/graphql-custom/post/queries";
 import { getReturnData } from "../src/utility/Util";
 import { useEffect, useState } from "react";
 import { useUser } from "../src/context/userContext";
@@ -17,7 +13,7 @@ import Consts from "../src/utility/Consts";
 import Head from "next/head";
 import { useWrapper } from "../src/context/wrapperContext";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
-import {usePreserveScroll} from "../src/hooks/useScroll";
+import { usePreserveScroll } from "../src/hooks/useScroll";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -35,7 +31,7 @@ export async function getServerSideProps({ req }) {
         query: listPostByOwned,
         variables: {
           owned: "CAAK",
-          filter: {status: {eq: "CONFIRMED"}},
+          filter: { status: { eq: "CONFIRMED" } },
           sortDirection: "DESC",
           limit: 2,
         },
@@ -57,7 +53,7 @@ export async function getServerSideProps({ req }) {
 }
 
 const Trending = ({ ssrData }) => {
-  usePreserveScroll()
+  usePreserveScroll();
   const CaakLayout = useFeedLayout("default");
   const [caakPosts, setCaakPosts] = useState(ssrData.caakPosts);
   const [loading, setLoading] = useState(false);
@@ -69,7 +65,7 @@ const Trending = ({ ssrData }) => {
     query: listPostByOwned,
     variables: {
       owned: "CAAK",
-      filter: {status: {eq: "CONFIRMED"}},
+      filter: { status: { eq: "CONFIRMED" } },
       sortDirection: "DESC",
       limit: 20,
     },
@@ -133,7 +129,6 @@ const Trending = ({ ssrData }) => {
             })}
           </InfinitScroller>
         </CaakLayout>
-
       </div>
     </>
   );

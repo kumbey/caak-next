@@ -191,6 +191,8 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     setLoading(true);
   }, []);
 
+  console.log(JSON.parse(user?.meta))
+
   return loading ? (
     <>
       <div className={"flex flex-col"}>
@@ -688,6 +690,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   <SideBarGroups
                     role={["ADMIN", "MODERATOR"]}
                     userId={user.id}
+                    maxColumns={13}
                     title={"Удирддаг группүүд"}
                     setIsAuraModalOpen={setIsAuraModalOpen}
                   />
@@ -699,6 +702,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   <SideBarGroups
                     role={["MEMBER"]}
                     userId={user.id}
+                    maxColumns={13}
                     title={"Нэгдсэн группүүд"}
                     setIsAuraModalOpen={setIsAuraModalOpen}
                   />

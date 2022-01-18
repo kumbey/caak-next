@@ -375,6 +375,7 @@ const AddPost = () => {
                   onClick={() => handleSubmit()}
                   loading={loading}
                   skin={"primary"}
+                  disabled={loading}
                   className={
                     "mr-2 mt-4 shadow-sm text-white text-[16px] font-semibold border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
                   }

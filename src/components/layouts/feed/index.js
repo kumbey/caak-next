@@ -62,7 +62,7 @@ const DefaultFeedLayout = ({
             />
             <SideBarGroups
               role={["ADMIN", "MODERATOR"]}
-              maxColumns={10}
+              maxColumns={13}
               addGroup
               initialData={adminModeratorGroups}
               title={"Миний группүүд"}
@@ -70,7 +70,7 @@ const DefaultFeedLayout = ({
             />
             <SideBarGroups
               role={["MEMBER"]}
-              maxColumns={10}
+              maxColumns={13}
               addGroup
               initialData={myGroups}
               title={"Нэгдсэн группүүд"}
@@ -80,7 +80,7 @@ const DefaultFeedLayout = ({
               role={["NOT_MEMBER"]}
               initialData={allGroups}
               addGroup
-              maxColumns={10}
+              maxColumns={13}
               title={myGroups !== null && myGroups?.length === 0 ?  "Бүх групп" : "Бусад групп"}
               setIsAuraModalOpen={setIsAuraModalOpen}
             />

@@ -190,6 +190,8 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     setLoading(true);
   }, []);
 
+  console.log(JSON.parse(user?.meta))
+
   return loading ? (
     <>
       <div className={"flex flex-col"}>
@@ -605,7 +607,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                         className={
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
-                      >
+                      >0
                         {JSON.parse(user?.meta).twitter.slice(20)}
                       </p>
                     </div>
@@ -687,6 +689,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   <SideBarGroups
                     role={["ADMIN", "MODERATOR"]}
                     userId={user.id}
+                    maxColumns={13}
                     title={"Удирддаг группүүд"}
                     setIsAuraModalOpen={setIsAuraModalOpen}
                   />
@@ -698,6 +701,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   <SideBarGroups
                     role={["MEMBER"]}
                     userId={user.id}
+                    maxColumns={13}
                     title={"Нэгдсэн группүүд"}
                     setIsAuraModalOpen={setIsAuraModalOpen}
                   />

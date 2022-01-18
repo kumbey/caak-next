@@ -28,8 +28,6 @@ export default function Privacy() {
       : true
   );
 
-    console.log(JSON.parse(user.meta).settings)
-
   const [isCreatedGroup, setIsCreatedGroup] = useState(
     typeof JSON.parse(user.meta)?.settings?.showCreatedGroup === "boolean"
       ? JSON.parse(user.meta)?.settings?.showCreatedGroup

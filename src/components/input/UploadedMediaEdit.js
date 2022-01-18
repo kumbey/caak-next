@@ -159,7 +159,7 @@ const UploadedMediaEdit = ({
   // const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
-  const [viewDescription, setViewDescription] = useState(!add);
+  const [viewDescription, setViewDescription] = useState(false);
 
   const [loaded, setLoaded] = useState(false);
 

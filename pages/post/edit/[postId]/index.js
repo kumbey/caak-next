@@ -145,6 +145,7 @@ const EditPost = ({ ssrData }) => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true)
     await uploadPost();
     setIsEditing(false);
   };

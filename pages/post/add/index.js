@@ -143,6 +143,7 @@ const AddPost = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true)
     await uploadPost();
     setIsEditing(false);
   };

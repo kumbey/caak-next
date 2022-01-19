@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import Switch from "./Switch";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
@@ -27,8 +27,6 @@ export default function Privacy() {
       ? JSON.parse(user.meta)?.settings?.showFollowedGroup
       : true
   );
-
-    console.log(JSON.parse(user.meta).settings)
 
   const [isCreatedGroup, setIsCreatedGroup] = useState(
     typeof JSON.parse(user.meta)?.settings?.showCreatedGroup === "boolean"

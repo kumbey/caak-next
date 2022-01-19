@@ -409,6 +409,23 @@ export function findMatchIndex(arr, key, value) {
   return index;
 }
 
+export function getURLUserName(url) {
+  if (url) {
+    let output = url;
+    let matches;
+
+    // Parse username
+    matches = url.match(
+      /(?:https?:\/\/)?(?:www.)?(?:twitter|tiktok|medium|facebook|vimeo|instagram)(?:.com\/)?([@a-zA-Z0-9-_]+)/im
+    );
+
+    // Set output
+    output = matches && matches.length ? matches[1] : output;
+
+    return output;
+  }
+}
+
 const object = {
   useQuery,
   mailNumber,
@@ -426,5 +443,6 @@ const object = {
   getReturnData,
   _objectWithoutKeys,
   _modalisOpen,
+  getURLUserName,
 };
 export default object;

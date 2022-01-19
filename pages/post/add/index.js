@@ -42,6 +42,7 @@ const AddPost = () => {
   const [groupData, setGroupData] = useState({
     adminModerator: [],
     unMember: [],
+    member: [],
   });
   const [permissionDenied, setPermissionDenied] = useState(true);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -80,6 +81,7 @@ const AddPost = () => {
       const grData = {
         adminModerator: [],
         unMember: [],
+        member: [],
       };
 
       let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
@@ -90,8 +92,12 @@ const AddPost = () => {
         const item = resp[i];
         if (item.role_on_group === "NOT_MEMBER") {
           grData.unMember.push(item);
-        } else {
+        } else if (item.role_on_group === "ADMIN") {
           grData.adminModerator.push(item);
+        } else if (item.role_on_group === "ADMIN") {
+          grData.adminModerator.push(item);
+        } else {
+          grData.member.push(item);
         }
       }
 
@@ -137,6 +143,7 @@ const AddPost = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true)
     await uploadPost();
     setIsEditing(false);
   };
@@ -375,6 +382,12 @@ const AddPost = () => {
                   onClick={() => handleSubmit()}
                   loading={loading}
                   skin={"primary"}
+                  disabled={
+                    !isEditing ||
+                    !post.title ||
+                    post.items.length <= 0 ||
+                    loading
+                  }
                   className={
                     "mr-2 mt-4 shadow-sm text-white text-[16px] font-semibold border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
                   }

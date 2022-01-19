@@ -191,7 +191,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
 export const listPostByOwned = /* GraphQL */ `
   query ListPostByOwned(
     $owned: String
-    $updatedAt: ModelStringKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPostFilterInput
     $limit: Int
@@ -199,7 +199,7 @@ export const listPostByOwned = /* GraphQL */ `
   ) {
     listPostByOwned(
       owned: $owned
-      updatedAt: $updatedAt
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

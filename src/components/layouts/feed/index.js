@@ -52,7 +52,7 @@ const DefaultFeedLayout = ({
             }`}
           >
 
-          <SimpleBar className={"leftScroll"}>
+          <SimpleBar className={"leftScroll pr-[12px]"}>
             <FeedSortButtons
               feed
               items={feedType}
@@ -62,7 +62,7 @@ const DefaultFeedLayout = ({
             />
             <SideBarGroups
               role={["ADMIN", "MODERATOR"]}
-              // maxColumns={3}
+              maxColumns={13}
               addGroup
               initialData={adminModeratorGroups}
               title={"Миний группүүд"}
@@ -70,8 +70,7 @@ const DefaultFeedLayout = ({
             />
             <SideBarGroups
               role={["MEMBER"]}
-              // maxColumns={0}
-              addGroup
+              maxColumns={13}
               initialData={myGroups}
               title={"Нэгдсэн группүүд"}
               setIsAuraModalOpen={setIsAuraModalOpen}
@@ -79,7 +78,7 @@ const DefaultFeedLayout = ({
             <SideBarGroups
               role={["NOT_MEMBER"]}
               initialData={allGroups}
-              addGroup
+              maxColumns={13}
               title={myGroups !== null && myGroups?.length === 0 ?  "Бүх групп" : "Бусад групп"}
               setIsAuraModalOpen={setIsAuraModalOpen}
             />

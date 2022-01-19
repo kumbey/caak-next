@@ -45,7 +45,7 @@ export const ApiFileUpload = async (file) => {
 
 export const useListPager = (params) => {
   const data = params;
-  const { user } = useUser();
+  const { isLogged } = useUser();
   let lastToken = null;
 
   let isFinished = false;
@@ -88,7 +88,7 @@ export const useListPager = (params) => {
         variables: { ...data.variables, nextToken: lastToken },
       };
 
-      if (!checkUser(user)) {
+      if (!isLogged) {
         qry.authMode = "AWS_IAM";
       }
 
@@ -108,7 +108,7 @@ export const useListPager = (params) => {
   }
 
   // eslint-disable-next-line
-  return useMemo(() => [next, renew], [lastToken, isFinished, user]);
+  return useMemo(() => [next, renew], [lastToken, isFinished]);
 };
 
 const object = {

@@ -114,18 +114,18 @@ const MobileSideMenu = ({setOpen}) => {
               <div className={"pb-[140px]"}>
                   <SideBarGroups
                       role={["ADMIN", "MODERATOR"]}
-                      // maxColumns={3}
+                      maxColumns={13}
                       addGroup
                       title={"Миний группүүд"}
                       setIsAuraModalOpen={setIsAuraModalOpen}
                   />
                   <SideBarGroups
                       role={["MEMBER"]}
-                      // maxColumns={0}
+                      maxColumns={13}
                       title={"Нэгдсэн группүүд"}
                       setIsAuraModalOpen={setIsAuraModalOpen}
                   />
-                  <SideBarGroups setIsAuraModalOpen={setIsAuraModalOpen} role={["NOT_MEMBER"]} title={"Бусад групп"}/>
+                  <SideBarGroups maxColumns={13} setIsAuraModalOpen={setIsAuraModalOpen} role={["NOT_MEMBER"]} title={"Бусад групп"}/>
               </div>
           )}
       </div>

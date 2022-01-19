@@ -6,6 +6,24 @@ const categoriesGetField = /* GraphQL */ `
       icon
       createdAt
       updatedAt
+      pic_id
+      picture {
+        id
+        name
+        bucket
+        createdAt
+        ext
+        external_url
+        isExternal
+        key
+        level
+        owner
+        provided_item
+        provider
+        region
+        type
+        updatedAt
+      }
     }
   }
 `;

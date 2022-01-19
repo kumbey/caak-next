@@ -2,7 +2,7 @@ import useAddPostLayout from "../../../../src/hooks/useAddPostLayout";
 import { useRouter } from "next/router";
 import { useUser } from "../../../../src/context/userContext";
 import { useEffect, useState } from "react";
-import {getFileUrl, getReturnData} from "../../../../src/utility/Util";
+import { getFileUrl, getReturnData } from "../../../../src/utility/Util";
 import { withSSRContext } from "aws-amplify";
 import {
   getGroupView,
@@ -16,12 +16,12 @@ import DropZoneWithCaption from "../../../../src/components/input/DropZoneWithCa
 import Button from "../../../../src/components/button";
 import WithAuth from "../../../../src/middleware/auth/WithAuth";
 import API from "@aws-amplify/api";
-import toast  from "react-hot-toast";
+import toast from "react-hot-toast";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostSuccessModal from "../../../../src/components/modals/postSuccessModal";
 import Consts from "../../../../src/utility/Consts";
 import Head from "next/head";
-import {useWrapper} from "../../../../src/context/wrapperContext";
+import { useWrapper } from "../../../../src/context/wrapperContext";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -36,6 +36,7 @@ export async function getServerSideProps({ req, res, query }) {
       const grData = {
         adminModerator: [],
         unMember: [],
+        member: [],
       };
 
       let resp = await API.graphql({
@@ -48,8 +49,12 @@ export async function getServerSideProps({ req, res, query }) {
         const item = resp[i];
         if (item.role_on_group === "NOT_MEMBER") {
           grData.unMember.push(item);
-        } else {
+        } else if (item.role_on_group === "ADMIN") {
           grData.adminModerator.push(item);
+        } else if (item.role_on_group === "ADMIN") {
+          grData.adminModerator.push(item);
+        } else {
+          grData.member.push(item);
         }
       }
       return grData;
@@ -71,8 +76,8 @@ export async function getServerSideProps({ req, res, query }) {
   };
 
   const post = await getPostById();
-  if(!post){
-    return {notFound: true}
+  if (!post) {
+    return { notFound: true };
   }
   if (post.user.id !== user.attributes.sub) {
     return { notFound: true };
@@ -99,7 +104,7 @@ const EditPost = ({ ssrData }) => {
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const {setNavBarTransparent} = useWrapper()
+  const { setNavBarTransparent } = useWrapper();
   const [groupData] = useState(ssrData.groups);
   const [post, setPost] = useState({
     ...ssrData.post,
@@ -118,18 +123,17 @@ const EditPost = ({ ssrData }) => {
     }
   };
   const finish = (role) => {
-    if(role === "MEMBER") {
+    if (role === "MEMBER") {
       router.push(
-          {
-            pathname: `/user/${user.id}/dashboard`,
-            query: {
-              activeIndex: 1,
-            },
+        {
+          pathname: `/user/${user.id}/dashboard`,
+          query: {
+            activeIndex: 1,
           },
-          `/user/${user.id}/dashboard`
+        },
+        `/user/${user.id}/dashboard`
       );
-    }
-    else {
+    } else {
       router.push(
         {
           pathname: `/post/view/${post.id}`,
@@ -138,12 +142,12 @@ const EditPost = ({ ssrData }) => {
         { shallow: true, scroll: false }
       );
     }
-
   };
 
   const handleSubmit = async () => {
+    setLoading(true)
     await uploadPost();
-    setIsEditing(false)
+    setIsEditing(false);
   };
   const toastIcon = {
     icon: (
@@ -240,80 +244,91 @@ const EditPost = ({ ssrData }) => {
     }
   };
 
-  useEffect(()=> {
-    setNavBarTransparent(false)
+  useEffect(() => {
+    setNavBarTransparent(false);
     //eslint-disable-next-line
-  },[])
+  }, []);
 
   return (
-      <>
-        <Head>
-          <title>
-            Пост засах - {post.title} - {Consts.siteMainTitle}
-          </title>
-        </Head>
-        <div className={"addPostPadding"}>
-          <AddPostLayout selectedGroup={selectedGroup}>
-            {selectedGroup && <PostSuccessModal
-                isOpen={isSuccessModalOpen}
-                setIsOpen={setIsSuccessModalOpen}
-                finish={finish}
-                role={selectedGroup.role_on_group}
-                messageTitle={"Таны засвар амжилттай хадгалагдлаа."}
-            />}
+    <>
+      <Head>
+        <title>
+          Пост засах - {post.title} - {Consts.siteMainTitle}
+        </title>
+      </Head>
+      <div className={"addPostPadding"}>
+        <AddPostLayout selectedGroup={selectedGroup}>
+          {selectedGroup && (
+            <PostSuccessModal
+              isOpen={isSuccessModalOpen}
+              setIsOpen={setIsSuccessModalOpen}
+              finish={finish}
+              role={selectedGroup.role_on_group}
+              messageTitle={"Таны засвар амжилттай хадгалагдлаа."}
+            />
+          )}
 
-            <div className={`flex flex-col justify-center items-center pb-[38px]`}>
-              <div
-                  className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
-              >
-                <SelectGroup
-                    containerClassName={"mt-[28px] z-[4]"}
-                    groupData={groupData}
-                    isGroupVisible={isGroupVisible}
-                    setIsGroupVisible={setIsGroupVisible}
-                    selectedGroup={selectedGroup}
-                    setSelectedGroup={setSelectedGroup}
-                    setPost={setPost}
-                    post={post}
+          <div
+            className={`flex flex-col justify-center items-center pb-[38px]`}
+          >
+            <div
+              className={`flex flex-col  bg-white  rounded-square shadow-card h-full w-full`}
+            >
+              <SelectGroup
+                containerClassName={"mt-[28px] z-[4]"}
+                groupData={groupData}
+                isGroupVisible={isGroupVisible}
+                setIsGroupVisible={setIsGroupVisible}
+                selectedGroup={selectedGroup}
+                setSelectedGroup={setSelectedGroup}
+                setPost={setPost}
+                post={post}
+              />
+              {post.items.length !== 0 ? (
+                <UploadedMediaEdit
+                  selectedGroup={selectedGroup}
+                  setPost={setPost}
+                  post={post}
+                  loading={loading}
+                  uploadPost={uploadPost}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
                 />
-                {post.items.length !== 0 ? (
-                    <UploadedMediaEdit
-                        selectedGroup={selectedGroup}
-                        setPost={setPost}
-                        post={post}
-                        loading={loading}
-                        uploadPost={uploadPost}
-                        isEditing={isEditing}
-                        setIsEditing={setIsEditing}
-                    />
-                ) : (
-                    <DropZoneWithCaption post={post} setPost={setPost} />
-                )}
+              ) : (
+                <DropZoneWithCaption post={post} setPost={setPost} />
+              )}
 
-                <div className={"flex flex-row pb-4 px-4 justify-end"}>
-                  <Button
-                      className={
-                        "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
-                      }
-                  >
-                    Болих
-                  </Button>
-                  <Button
-                      onClick={() => handleSubmit()}
-                      skin={"primary"}
-                      className={
-                        "mr-2 mt-4 text-[16px] text-white border text-semibold border-caak-titaniumwhite w-[190px] h-[44px]"
-                      }
-                  >
-                    Хадгалах
-                  </Button>
-                </div>
+              <div className={"flex flex-row pb-4 px-4 justify-end"}>
+                <Button
+                  className={
+                    "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
+                  }
+                >
+                  Болих
+                </Button>
+                <Button
+                  loading={loading}
+                  disabled={
+                    !isEditing ||
+                    !post.title ||
+                    post.items.length <= 0 ||
+                    loading
+                  }
+                  onClick={() => handleSubmit()}
+                  skin={"primary"}
+                  className={
+                    "mr-2 mt-4 text-[16px] text-white border text-semibold border-caak-titaniumwhite w-[190px] h-[44px]"
+                  }
+                >
+                  Хадгалах
+                </Button>
               </div>
             </div>
-            {/*</Backdrop>*/}
-          </AddPostLayout>
-        </div>
-      </>
+          </div>
+          {/*</Backdrop>*/}
+        </AddPostLayout>
+      </div>
+    </>
   );
 };
 export default WithAuth(EditPost);

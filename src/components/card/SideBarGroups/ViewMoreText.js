@@ -1,5 +1,9 @@
+import Link from "next/link";
+
 const ViewMoreText = ({text}) => {
     return (
+        <Link href={"/group/all"}>
+        <a>
         <div className={"flex flex-row items-center cursor-pointer"}>
             <div className={"text-13px text-caak-primary my-[6px]"}>
                 {text}
@@ -12,6 +16,8 @@ const ViewMoreText = ({text}) => {
                 <span className={"icon-fi-rs-next text-[11px] text-caak-primary"} />
             </div>
         </div>
+        </a>
+        </Link>
     );
 };
 

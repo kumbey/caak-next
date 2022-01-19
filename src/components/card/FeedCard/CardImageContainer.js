@@ -1,5 +1,4 @@
 import { getFileUrl } from "../../../utility/Util";
-import Image from "next/image";
 
 const CardImageContainer = ({ file, cover, card }) => {
   return (
@@ -14,16 +13,11 @@ const CardImageContainer = ({ file, cover, card }) => {
         } `}
       >
         <img
-          // priority={true}
-          // quality={100}
-          placeholder={"blur"}
-          // blurDataURL={getFileUrl(file)}
           alt={file.name}
           src={getFileUrl(file)}
           className={`w-full h-auto ${
             cover ? "object-cover" : "object-contain"
           } custom-img`}
-          // layout={"fill"}
         />
       </div>
     </div>

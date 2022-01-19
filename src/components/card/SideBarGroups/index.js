@@ -56,6 +56,7 @@ const SideBarGroups = ({
       return null;
     }
   };
+
   const getGroups = async () => {
     const groups = await fetchGroups(user, [...role]);
     setGroupData(groups);

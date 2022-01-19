@@ -73,10 +73,6 @@ const GroupAdminPanel = ({groupId, groupRole}) => {
         <div className="flex flex-col ">
           {adminMenu.map((menu, index) => {
             return (
-              menu.id === 2 && groupRole === "MODERATOR"
-              ?
-              null
-              :
               <div
                 onClick={() => {
                   router.push(

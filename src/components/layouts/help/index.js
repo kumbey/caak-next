@@ -77,11 +77,8 @@ export default function DefaultHelpLayout({children}) {
                   </a>
                 </Link>
               </div>
-              <div className='flex items-center text-[15px] text-[#6C7392]'>
-                <div className={"flex flex-col sm:flex-row items-center mt-[10px] sm:mt-[25.5px]"}>
-                  {/* <Logo/> */}
-                  <p className='ml-[16px]'>©2021 Саак Холдинг ХХК</p>
-                </div>
+              <div className='sm:flex text-[15px] text-[#6C7392] mt-[10px] sm:mt-[25.5px]'>
+                  <p className='md:ml-[16px] text-center'>©2021 Саак Холдинг ХХК</p>
               </div>
             </div>
           </div>

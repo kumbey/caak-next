@@ -435,7 +435,7 @@ const GroupLayout = ({
               isLaptop ? "hidden" : "block"
             }`}
           >
-            {groupData.role_on_group === "ADMIN" || groupData.role_on_group === "MODERATOR" ? 
+            {groupData.role_on_group === "ADMIN" ? 
               <GroupAdminPanel groupRole={groupData.role_on_group} groupId={groupData.id} />
             : null}
             {/*<GroupTopMembersCard groupId={groupData.id}/>*/}

@@ -63,13 +63,13 @@ const DefaultFeedLayout = ({
             <SideBarGroups
               role={["ADMIN", "MODERATOR"]}
               maxColumns={13}
+              addGroup
               initialData={adminModeratorGroups}
               title={"Миний группүүд"}
               setIsAuraModalOpen={setIsAuraModalOpen}
             />
             <SideBarGroups
               role={["MEMBER"]}
-              addGroup
               maxColumns={13}
               initialData={myGroups}
               title={"Нэгдсэн группүүд"}

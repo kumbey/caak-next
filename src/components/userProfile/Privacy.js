@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import Switch from "./Switch";
 import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";

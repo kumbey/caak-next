@@ -1,6 +1,5 @@
 import CardHeader from "./FeedCard/CardHeader";
 import Divider from "../divider";
-import Image from "next/image";
 import {
   getFileUrl,
   getGenderImage,
@@ -11,7 +10,6 @@ import Video from "../video";
 import React from "react";
 
 const SearchCard = ({ type, result }) => {
-  console.log(type)
   return result ? (
     type !== "POST" ? (
       <div

@@ -783,8 +783,8 @@
   left: 0;
   /*background-color: black;*/
 }
-.react-player video {
-  max-height: 770px;
+.videoMaxHeight.react-player video {
+  max-height: 650px;
 }
 
 .react-player__play-icon {

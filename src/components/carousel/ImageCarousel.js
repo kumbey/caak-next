@@ -5,7 +5,6 @@ import {
   findMatchIndex,
   generateFileUrl,
 } from "../../utility/Util";
-import Image from "next/image";
 import Video from "../video";
 import useWindowSize from "../../hooks/useWindowSize";
 import { useRouter } from "next/router";
@@ -174,7 +173,7 @@ const ImageCarousel = ({
                       route={route}
                       videoFileId={item.file.id}
                       // containerClassname={"bg-black"}
-                      videoClassname={"object-contain rounded-none"}
+                      videoClassname={`object-contain rounded-none ${card ? "videoMaxHeight" : ""}`}
                       src={getFileUrl(item.file)}
                     />
                   ) : (
@@ -252,30 +251,28 @@ const ImageCarousel = ({
                         </Link>
                       ) : (
                         <>
-                          <div
-                            className={""}
-                            style={{
-                              width: "10%",
-                              height: "10%",
-                              filter: "blur(2px)",
-                              position: "absolute",
-                              transform: "scale(12)",
-                              left: "50%",
-                              top: "50%",
-                              opacity: "0.3",
-                              // zIndex: -1
-                            }}
-                          >
-                            <div className={"relative w-full h-auto"}>
+                          {/*<div*/}
+                          {/*  className={"w-full h-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"}*/}
+                          {/*  style={{*/}
+                          {/*    // width: "10%",*/}
+                          {/*    // height: "10%",*/}
+                          {/*    // filter: "blur(2px)",*/}
+                          {/*    position: "absolute",*/}
+                          {/*    // transform: "scale(12)",*/}
+                          {/*    opacity: "0.3",*/}
+                          {/*    // zIndex: -1*/}
+                          {/*  }}*/}
+                          {/*>*/}
+                            <div className={"absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full scale-150 opacity-30 blur-md"}>
                               <img
-                                className={"object-cover"}
+                                className={"object-cover h-full"}
                                 // objectFit={"cover"}
                                 // layout={"fill"}
                                 alt={item.file.type}
                                 src={getFileUrl(item.file)}
                               />
                             </div>
-                          </div>
+                          {/*</div>*/}
                           {card && singleItem ? (
                             <div
                               className={

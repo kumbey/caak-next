@@ -410,18 +410,20 @@ export function findMatchIndex(arr, key, value) {
 }
 
 export function getURLUserName(url) {
-  let output = url;
-  let matches;
+  if (url) {
+    let output = url;
+    let matches;
 
-  // Parse username
-  matches = url.match(
-    /(?:https?:\/\/)?(?:www.)?(?:twitter|tiktok|medium|facebook|vimeo|instagram)(?:.com\/)?([@a-zA-Z0-9-_]+)/im
-  );
+    // Parse username
+    matches = url.match(
+      /(?:https?:\/\/)?(?:www.)?(?:twitter|tiktok|medium|facebook|vimeo|instagram)(?:.com\/)?([@a-zA-Z0-9-_]+)/im
+    );
 
-  // Set output
-  output = matches.length ? matches[1] : output;
+    // Set output
+    output = matches && matches.length ? matches[1] : output;
 
-  return output;
+    return output;
+  }
 }
 
 const object = {

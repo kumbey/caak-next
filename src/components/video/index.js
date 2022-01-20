@@ -39,6 +39,8 @@ const Video = ({
   loop,
   videoFileId,
   initialAutoPlay,
+  postItemId,
+  itemIndex,
   ...props
 }) => {
   const { user, isLogged } = useUser();
@@ -117,7 +119,7 @@ const Video = ({
   useEffect(() => {
     if (inView) {
       setLoaded(true);
-      if(videoRef.current.player.isReady){
+      if (videoRef.current.player.isReady) {
         const windowHeight = window.innerHeight;
         const thisVideoEl = videoRef.current.player.player.player,
           videoHeight = thisVideoEl.clientHeight,
@@ -195,13 +197,19 @@ const Video = ({
                 pathname: router.pathname,
                 query: {
                   ...router.query,
-                  viewPost: "post",
+                  ...(postItemId
+                    ? { viewItemPost: "postItem", itemId: postItemId }
+                    : { viewPost: "post" }),
                   id: postId,
                   prevPath: router.asPath,
                   isModal: true,
                 },
               },
-              `/post/view/${postId}`,
+              `${
+                postItemId
+                  ? `/post/view/${postId}/${postItemId}`
+                  : `/post/view/${postId}`
+              }`,
               { shallow: true }
             );
         }}
@@ -213,13 +221,19 @@ const Video = ({
                   pathname: router.pathname,
                   query: {
                     ...router.query,
-                    viewPost: "post",
+                    ...(postItemId
+                      ? { viewItemPost: "postItem", itemId: postItemId, itemIndex: itemIndex }
+                      : { viewPost: "post" }),
                     id: postId,
                     prevPath: router.asPath,
                     isModal: true,
                   },
                 },
-                `/post/view/${postId}`,
+                `${
+                  postItemId
+                    ? `/post/view/${postId}/${postItemId}`
+                    : `/post/view/${postId}`
+                }`,
                 { shallow: true }
               );
             }

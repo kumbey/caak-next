@@ -663,7 +663,7 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
-          {!isSuperAdmin && (
+          {isSuperAdmin && (
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>
                 Бизнес мэдээ

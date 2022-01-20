@@ -20,6 +20,9 @@ const ViewPostItemModal = () => {
           Auth,
           query: router.query,
         });
+        if(resp.notFound){
+          return null
+        }
         setSsrData(resp.props.ssrData);
       } else {
         setSsrData(null);

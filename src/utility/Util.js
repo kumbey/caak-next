@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import femaleImg from "../../public/assets/images/Female-Avatar.svg";
 import maleImg from "../../public/assets/images/Man-Avatar.svg";
 import defaultImg from "../../public/assets/images/default.png";
+import {Auth} from "aws-amplify";
 
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
@@ -93,6 +94,20 @@ export const useClickOutSide = (handler) => {
   }, []);
   return domNode;
 };
+
+export async function isAdmin(){
+  try {
+    const usr = await Auth.currentAuthenticatedUser();
+    const groups = usr.signInUserSession.accessToken.payload["cognito:groups"];
+
+    return groups.includes('caak-admin');
+
+
+  } catch (ex) {
+    console.log(ex);
+    return false
+  }
+}
 
 export function useQuery() {
   const location = useLocation();

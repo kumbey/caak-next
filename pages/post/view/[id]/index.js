@@ -22,6 +22,7 @@ import { useUser } from "../../../../src/context/userContext";
 import { decode } from "html-entities";
 import toast from "react-hot-toast";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
+import ConditionalLink from "../../../../src/components/conditionalLink";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -265,7 +266,7 @@ const Post = ({ ssrData }) => {
                   "text-[18px] md:text-[22px] break-words text-caak-generalblack font-medium font-roboto tracking-[0.55px] leading-[25px]"
                 }
               >
-                {`${post.title}`}
+                {post.title}
               </p>
               <p className={"text-caak-scriptink"}>
                 {post.status === "PENDING" ? " (Шалгагдаж буй пост)" : ""}
@@ -278,13 +279,26 @@ const Post = ({ ssrData }) => {
                   </p>
                 )}
               {post.description && (
-                <p
-                  className={
-                    "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
-                  }
-                >
-                  {decode(post.description)}
-                </p>
+                <div>
+                  {post.onlyBlogView === "TRUE" ? (
+                    <div
+                      className={
+                        "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                      }
+                      dangerouslySetInnerHTML={{
+                        __html: decode(post.description),
+                      }}
+                    />
+                  ) : (
+                    <p
+                      className={
+                        "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                      }
+                    >
+                      {decode(post.description)}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
 
@@ -292,6 +306,9 @@ const Post = ({ ssrData }) => {
               <div className={"relative h-[444px] w-full pt-[4px] mb-[13px]"}>
                 {post.items.items[0].file.type.startsWith("video") ? (
                   <Video
+                    route={!(post.onlyBlogView === "TRUE")}
+                    postId={post.id}
+                    postItemId={post.items.items[0].id}
                     videoClassname={"object-contain rounded-[4px]"}
                     src={getFileUrl(post.items.items[0].file)}
                   />
@@ -312,43 +329,61 @@ const Post = ({ ssrData }) => {
                         src={getFileUrl(post.items.items[0].file)}
                       />
                     </div>
-                    <Link
-                      shallow
-                      as={`/post/view/${post.id}/${post.items.items[0].id}`}
-                      href={{
-                        query: {
-                          ...router.query,
-                          id: post.id,
-                          viewItemPost: "postItem",
-                          itemId: post.items.items[0].id,
-                          prevPath: router.asPath,
-                          isModal: true,
-                          itemIndex: 0,
-                        },
-                      }}
+                    <ConditionalLink
+                      condition={!(post.onlyBlogView === "TRUE")}
+                      wrapper={(children) => (
+                        <Link
+                          shallow
+                          as={`/post/view/${post.id}/${post.items.items[0].id}`}
+                          href={{
+                            query: {
+                              ...router.query,
+                              id: post.id,
+                              viewItemPost: "postItem",
+                              itemId: post.items.items[0].id,
+                              prevPath: router.asPath,
+                              isModal: true,
+                              itemIndex: 0,
+                            },
+                          }}
+                        >
+                          <a>{children}</a>
+                        </Link>
+                      )}
                     >
-                      <a>
-                        <img
-                          src={getFileUrl(post.items.items[0].file)}
-                          alt={"post picture"}
-                          className={
-                            "object-contain w-full h-full z-[2] relative"
-                          }
-                        />
-                      </a>
-                    </Link>
+                      <img
+                        src={getFileUrl(post.items.items[0].file)}
+                        alt={"post picture"}
+                        className={
+                          "object-contain w-full h-full z-[2] relative"
+                        }
+                      />
+                    </ConditionalLink>
                   </div>
                 )}
               </div>
             )}
             {post.items.items.length > 1 && (
-              <p
-                className={
-                  "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-                }
-              >
-                {decode(post.items.items[0].title)}
-              </p>
+              <div>
+                {post.onlyBlogView === "TRUE" ? (
+                  <div
+                    className={
+                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                    }
+                    dangerouslySetInnerHTML={{
+                      __html: decode(post.items.items[0].title),
+                    }}
+                  />
+                ) : (
+                  <p
+                    className={
+                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                    }
+                  >
+                    {decode(post.items.items[0].title)}
+                  </p>
+                )}
+              </div>
             )}
 
             <div
@@ -367,6 +402,7 @@ const Post = ({ ssrData }) => {
                 if (post.items.items.length === 1) {
                   return (
                     <ViewPostBlogItem
+                      onlyBlogView={post.onlyBlogView === "TRUE"}
                       // singleItem
                       key={index}
                       index={index}
@@ -378,6 +414,7 @@ const Post = ({ ssrData }) => {
                   if (index > 0)
                     return (
                       <ViewPostBlogItem
+                        onlyBlogView={post.onlyBlogView === "TRUE"}
                         key={index}
                         index={index}
                         postId={post.id}

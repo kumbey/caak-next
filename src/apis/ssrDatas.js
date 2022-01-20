@@ -58,6 +58,9 @@ export const ssrDataViewPostItem = async ({ API, Auth, query }) => {
     if (!getReturnData(resp)) {
       return { notFound: true };
     }
+    if(getReturnData(resp).onlyBlogView === "TRUE"){
+      return {notFound: true}
+    }
     return {
       props: {
         ssrData: {

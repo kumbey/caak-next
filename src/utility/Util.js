@@ -409,7 +409,7 @@ export function findMatchIndex(arr, key, value) {
   return index;
 }
 
-export function getURLUserName(url) {
+export function getURLUserName(url, type) {
   if (url) {
     let output = url;
     let matches;
@@ -420,7 +420,11 @@ export function getURLUserName(url) {
     );
 
     // Set output
-    output = matches && matches.length ? matches[1] : output;
+    if(type === "CHECK"){
+      output = matches ? true : false
+    }else{
+      output = matches && matches.length ? matches[1] : output;
+    }
 
     return output;
   }

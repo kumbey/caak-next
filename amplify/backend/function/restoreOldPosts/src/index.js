@@ -29,11 +29,10 @@ exports.handler = async (event) => {
     try{
 
         let jsonFile = []
-        const maxLegth = 20
-        const startIndex = 0
+        const startIndex = 440
+        let activeIndex = 440
 
         const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-        const bar2 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
         switch (event.key) {
             case 'posts1':
@@ -44,11 +43,15 @@ exports.handler = async (event) => {
 
         }
 
+        const maxLegth = jsonFile.length
+
         const nowDate = new Date().toISOString()
 
         bar1.start(startIndex + maxLegth, startIndex);
 
-        for(let i= startIndex; i < startIndex + maxLegth; i++){
+        for(let i = startIndex; i < maxLegth; i++){
+
+            activeIndex = i
 
             bar1.update(i);
 
@@ -59,8 +62,8 @@ exports.handler = async (event) => {
             post.status = "CONFIRMED"
             post.user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
             post.updated_user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
-            post.group_id = "4def44e3-9961-4502-b60f-61b28743103f"
-            post.category_id = "9717e8da-6b54-4d3b-8055-fa9000366b4e"
+            post.group_id = "5ecd3b7d-d7fe-40b4-93e5-7946aa026aba"
+            post.category_id = "04eb06c0-e868-44c1-9e76-30372d0b2db8"
             post.owned = "CAAK"
             post.ignoreNotification = "TRUE"
             post.__typename = "Post"
@@ -77,15 +80,18 @@ exports.handler = async (event) => {
             await docClient.put(params).promise();
 
 
-            bar2.start(postItems.length - 1, 0);
-
             for(let itemIndex = 0; itemIndex < postItems.length; itemIndex++){
-
-                bar2.update(itemIndex);
 
                 const item = postItems[itemIndex]
                 const file = item.block_img
+                const provider = item.video_provider !== "NULL" ? item.video_provider : ""
+                const provider_item = item.video_id !== "NULL" ? item.video_id : ""
+                const itemType = item.block_type
+
                 delete item["block_img"]
+                delete item["provider"]
+                delete item["provider_item"]
+                delete item["itemType"]
 
                 if(file){
 
@@ -99,7 +105,9 @@ exports.handler = async (event) => {
                         external_url: file,
                         createdAt: nowDate,
                         updatedAt: nowDate,
-                        __typename: "File"
+                        __typename: "File",
+                        provider: provider,
+                        provided_item: provider_item
                     }
     
                     const fileParams = {
@@ -115,9 +123,13 @@ exports.handler = async (event) => {
                     item.user_id = post.user_id
                     item.file_id = itemfile.id
                     item.order = itemIndex
-                    item.createdAt = post.createdAt
+                    item.createdAt = post.createdAtx
                     item.updatedAt = post.updatedAt
                     item.__typename = "PostItems"
+
+                    if(itemType === "video"){
+                        item.isEmbed = "TRUE"
+                    }
     
                     const itemParams = {
                         TableName: process.env.API_CAAK_POSTITEMSTABLE_NAME,
@@ -131,10 +143,10 @@ exports.handler = async (event) => {
 
             }
 
-            bar2.stop()
         }
 
         bar1.stop()
+        console.log(`${activeIndex}/${jsonFile.length}`)
 
     }catch(err){
         console.log(err)

@@ -54,6 +54,7 @@ const AddPost = () => {
     title: "",
     description: "",
     commentType: true,
+    onlyBlogView: "FALSE",
     status: "PENDING",
     user_id: user.id,
     group_id: "",

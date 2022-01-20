@@ -1,5 +1,5 @@
 import Loader from "../loader";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   arrayMove,
   rectSortingStrategy,
@@ -18,10 +18,11 @@ import {
 } from "@dnd-kit/core";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import { getFileUrl, getGenderImage } from "../../utility/Util";
+import { getFileUrl, getGenderImage, isAdmin } from "../../utility/Util";
 import Video from "../video";
 import { useRouter } from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
+import { Editor } from "@tinymce/tinymce-react";
 
 const thumbnailImageHandler = (item) => {
   if (item?.file) {
@@ -142,7 +143,6 @@ const UploadedMediaEdit = ({
   post,
   errors,
   loading,
-  add,
   selectedGroup,
   valid,
   isEditing,
@@ -153,17 +153,29 @@ const UploadedMediaEdit = ({
   const [allowComment, setAllowComment] = useState(
     post?.commentType ? post.commentType : false
   );
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [businessPost, setBusinessPost] = useState(
+    post.onlyBlogView ? post.onlyBlogView : "FALSE"
+  );
   const [caakContent, setCaakContent] = useState(post?.owned === "CAAK");
 
   // const [draft, setDraft] = useState(false);
   // const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
-  const [viewDescription, setViewDescription] = useState(false);
+  const [viewDescription, setViewDescription] = useState(
+    post.description ? post.description : false
+  );
 
   const [loaded, setLoaded] = useState(false);
 
   const router = useRouter();
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    setEditorLoaded(true);
+  }, []);
 
   const maxLengths = {
     title: 200,
@@ -194,10 +206,14 @@ const UploadedMediaEdit = ({
     setActiveIndex(0);
   };
 
-  const captionHandler = (e) => {
+  const captionHandler = ({ business, value }) => {
     const arr = [...post.items];
     const currentItem = arr[activeIndex];
-    currentItem.title = e.target.value;
+    if (business) {
+      currentItem.title = value;
+    } else {
+      currentItem.title = value.target.value;
+    }
     setPost({ ...post, items: arr });
   };
 
@@ -235,7 +251,9 @@ const UploadedMediaEdit = ({
     e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
     e.returnValue = "";
   };
-
+  const isAdminAsync = async () => {
+    return await isAdmin();
+  };
   useUpdateEffect(() => {
     setIsEditing(true);
   }, [post.items, post.title]);
@@ -296,6 +314,18 @@ const UploadedMediaEdit = ({
     });
     // eslint-disable-next-line
   }, [allowComment, caakContent]);
+
+  useEffect(() => {
+    isAdminAsync().then((e) => setIsSuperAdmin(e));
+  }, []);
+
+  useUpdateEffect(() => {
+    setPost({
+      ...post,
+      onlyBlogView: businessPost,
+    });
+    // eslint-disable-next-line
+  }, [businessPost]);
 
   useEffect(() => {
     setSortItems([...post.items]);
@@ -366,34 +396,59 @@ const UploadedMediaEdit = ({
             !viewDescription ? "hidden" : ""
           }`}
         >
-          <textarea
-            onFocus={auto_grow}
-            onInput={auto_grow}
-            maxLength={maxLengths.description}
-            placeholder={"Оршил"}
-            style={{ resize: "none" }}
-            value={post.description}
-            onChange={(e) =>
-              setPost((prev) => ({ ...prev, description: e.target.value }))
-            }
-            className={`addPostTextarea pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
-              post.description?.length === maxLengths.description
-                ? "ring-caak-red border-caak-red"
-                : "focus:ring-caak-primary focus:border-caak-primary"
-            }`}
-            rows={2}
-          />
-          {/* border-2 border-rose-600 text-gray-500 rounded-lg shadow-sm
+          {post.onlyBlogView === "TRUE" ? (
+            <Editor
+              apiKey={"d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"}
+              onInit={(evt, editor) => (editorRef.current = editor)}
+              onEditorChange={(e) => {
+                setPost((prev) => ({ ...prev, description: e }));
+              }}
+              value={post.description}
+              init={{
+                height: 200,
+                menubar: false,
+                plugins: [
+                  "advlist autolink lists link preview anchor",
+                  "paste wordcount",
+                ],
+                toolbar:
+                  "bold italic | bullist numlist link | alignleft aligncenter " +
+                  "alignright alignjustify | outdent indent | " +
+                  "undo redo",
+              }}
+            />
+          ) : (
+            <div>
+              <textarea
+                onFocus={auto_grow}
+                onInput={auto_grow}
+                maxLength={maxLengths.description}
+                placeholder={"Оршил"}
+                style={{ resize: "none" }}
+                value={post.description}
+                onChange={(e) =>
+                  setPost((prev) => ({ ...prev, description: e.target.value }))
+                }
+                className={`addPostTextarea pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
+                  post.description?.length === maxLengths.description
+                    ? "ring-caak-red border-caak-red"
+                    : "focus:ring-caak-primary focus:border-caak-primary"
+                }`}
+                rows={2}
+              />
+              {/* border-2 border-rose-600 text-gray-500 rounded-lg shadow-sm
           focus:outline-none focus:ring focus:ring-rose-200
           focus:border-rose-500 
           */}
-          <span
-            className={
-              "absolute bottom-1 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
-            }
-          >
-            {post.description?.length || 0}/{maxLengths.description}
-          </span>
+              <span
+                className={
+                  "absolute bottom-1 -translate-y-1/2 right-[12px] text-[12px] text-caak-darkBlue"
+                }
+              >
+                {post.description?.length || 0}/{maxLengths.description}
+              </span>
+            </div>
+          )}
         </div>
         <div className="flex justify-between">
           <div className="flex justify-start">
@@ -492,7 +547,7 @@ const UploadedMediaEdit = ({
           <div
             style={{ flexBasis: `300px` }}
             className={
-              "flex w-full h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
+              "flex w-full flex-shrink-0 h-full relative bg-caak-liquidnitrogen rounded-[3px] border-[1px] border-caak-titaniumwhite"
             }
           >
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
@@ -519,27 +574,55 @@ const UploadedMediaEdit = ({
             }
           >
             <div className={"w-full h-full relative"}>
-              <textarea
-                placeholder={"Зурагны тайлбар"}
-                // style={{ resize: "none" }}
-                onChange={captionHandler}
-                value={post.items[activeIndex].title}
-                maxLength={maxLengths.imageDescription}
-                className={`addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px]  focus:ring-2 focus:ring-opacity-20    ${
-                  post.items[activeIndex].title?.length ===
-                  maxLengths.imageDescription
-                    ? "ring-caak-red border-caak-red"
-                    : "focus:ring-caak-primary focus:border-caak-primary"
-                }`}
-              />
-              <span
-                className={
-                  "absolute bottom-[12px] right-[12px] text-[12px] text-caak-darkBlue"
-                }
-              >
-                {post.items[activeIndex]?.title?.length || 0}/
-                {maxLengths.imageDescription}
-              </span>
+              <div className={"flex flex-col w-full h-full h-[200px] md:h-full"}>
+                {post.onlyBlogView === "TRUE" ? (
+                  <Editor
+                    apiKey={"d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"}
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    // initialValue={post.items[activeIndex].title}
+                    onEditorChange={(e) => {
+                      captionHandler({ business: true, value: e });
+                    }}
+                    value={post.items[activeIndex].title}
+                    init={{
+                      height: "100%",
+                      menubar: false,
+                      plugins: [
+                        "advlist autolink lists link preview anchor",
+                        "paste wordcount",
+                      ],
+                      toolbar:
+                        "bold italic | bullist numlist link | alignleft aligncenter " +
+                        "alignright alignjustify | outdent indent | " +
+                        "undo redo",
+                    }}
+                  />
+                ) : (
+                  <div>
+                    <textarea
+                      placeholder={"Зурагны тайлбар"}
+                      // style={{ resize: "none" }}
+                      onChange={(e) => captionHandler({ value: e })}
+                      value={post.items[activeIndex].title}
+                      maxLength={maxLengths.imageDescription}
+                      className={`addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px]  focus:ring-2 focus:ring-opacity-20    ${
+                        post.items[activeIndex].title?.length ===
+                        maxLengths.imageDescription
+                          ? "ring-caak-red border-caak-red"
+                          : "focus:ring-caak-primary focus:border-caak-primary"
+                      }`}
+                    />
+                    <span
+                      className={
+                        "absolute bottom-[12px] right-[12px] text-[12px] text-caak-darkBlue"
+                      }
+                    >
+                      {post.items[activeIndex]?.title?.length || 0}/
+                      {maxLengths.imageDescription}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="flex justify-end mt-[14px]">
@@ -580,6 +663,31 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
+          {!isSuperAdmin && (
+            <div className={"flex flex-row justify-between mt-[16px]"}>
+              <p className={"text-[15px] text-caak-generalblack"}>
+                Бизнес мэдээ
+              </p>
+              <label
+                onClick={() =>
+                  setBusinessPost(businessPost === "TRUE" ? "FALSE" : "TRUE")
+                }
+                style={{ minWidth: "40px", height: "22px" }}
+                className={`ml-1 cursor-pointer
+                rounded-full 
+                bg-caak-${
+                  businessPost === "TRUE" ? "algalfuel" : "titaniumwhite"
+                }  
+                flex items-center 
+                justify-${businessPost === "TRUE" ? "end" : "start"}`}
+              >
+                <span
+                  style={{ width: "18px", height: "18px", marginInline: "2px" }}
+                  className={`bg-white rounded-full`}
+                />
+              </label>
+            </div>
+          )}
           {/*<div className={"flex flex-row justify-between mt-[16px]"}>*/}
           {/*  <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>*/}
           {/*  <Switch toggle={setDraft} active={draft} />*/}

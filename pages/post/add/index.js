@@ -48,7 +48,7 @@ const AddPost = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const { setNavBarTransparent } = useWrapper();
   const [valid, setValid] = useState(true);
-  const [isValid, setIsValid] = useState(false);
+  const [uploadValidation, setUploadValidation] = useState(false);
   const [post, setPost] = useState({
     id: postId,
     title: "",
@@ -143,9 +143,8 @@ const AddPost = () => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true)
     await uploadPost();
-    setIsEditing(false);
+    // setIsEditing(false);
   };
   const toastIcon = {
     icon: (
@@ -233,6 +232,20 @@ const AddPost = () => {
   }, [selectedGroup]);
 
   useEffect(() => {
+    if (
+      !selectedGroup ||
+      !post.title ||
+      post.items.length <= 0 ||
+      loading ||
+      !isEditing
+    ) {
+      setUploadValidation(true);
+    } else {
+      setUploadValidation(false);
+    }
+  }, [selectedGroup, post.title, post.items, loading, isEditing]);
+
+  useEffect(() => {
     if (groupData !== undefined && selectedGroupId) {
       if (groupData.adminModerator) {
         const grData = [];
@@ -262,23 +275,25 @@ const AddPost = () => {
   };
 
   const uploadPost = async () => {
+    setLoading(true);
     if (post.items.length === 0) {
       handleToast({ param: "isPost" });
+      setLoading(false);
       return;
     }
     if (!post.title) {
       handleToast({ param: "isTitle" });
       setValid(false);
+      setLoading(false);
       return;
     }
-    setIsValid(true);
 
     if (selectedGroup) {
       const resp = await getGroup({ id: selectedGroup.id });
       setSelectedGroup(resp);
       if (resp.role_on_group === "NOT_MEMBER") {
         handleToast({ param: "isFollow" });
-
+        setLoading(false);
         return;
       }
       try {
@@ -290,6 +305,7 @@ const AddPost = () => {
         setValid(true);
 
         setIsSuccessModalOpen(true);
+        setIsEditing(false)
       } catch (ex) {
         ex?.errors?.map((error) => {
           if (error.message.includes("IndexKey: group_id")) {
@@ -302,6 +318,7 @@ const AddPost = () => {
       }
     } else {
       handleToast({ param: "isGroup" });
+      setLoading(false);
     }
   };
 
@@ -382,12 +399,7 @@ const AddPost = () => {
                   onClick={() => handleSubmit()}
                   loading={loading}
                   skin={"primary"}
-                  disabled={
-                    !isEditing ||
-                    !post.title ||
-                    post.items.length <= 0 ||
-                    loading
-                  }
+                  disabled={uploadValidation}
                   className={
                     "mr-2 mt-4 shadow-sm text-white text-[16px] font-semibold border border-caak-titaniumwhite w-[190px] h-[44px] justify-center"
                   }

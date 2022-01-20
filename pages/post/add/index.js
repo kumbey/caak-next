@@ -143,7 +143,7 @@ const AddPost = () => {
   };
 
   const handleSubmit = async () => {
-    await uploadPost();
+    await uploadPost(); setLoading(false);
     // setIsEditing(false);
   };
   const toastIcon = {

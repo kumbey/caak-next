@@ -22,6 +22,8 @@ import PostSuccessModal from "../../../../src/components/modals/postSuccessModal
 import Consts from "../../../../src/utility/Consts";
 import Head from "next/head";
 import { useWrapper } from "../../../../src/context/wrapperContext";
+import {createGroupUsers} from "../../../../src/graphql-custom/GroupUsers/mutation";
+import useUpdateEffect from "../../../../src/hooks/useUpdateEffect";
 
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -104,6 +106,7 @@ const EditPost = ({ ssrData }) => {
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [nestedToast, setNestedToast] = useState(false);
   const { setNavBarTransparent } = useWrapper();
   const [groupData] = useState(ssrData.groups);
   const [post, setPost] = useState({
@@ -143,11 +146,20 @@ const EditPost = ({ ssrData }) => {
       );
     }
   };
-
+  const followGroup = async () => {
+    await API.graphql(
+      graphqlOperation(createGroupUsers, {
+        input: {
+          id: `${selectedGroup.id}#${user.id}`,
+          group_id: selectedGroup.id,
+          user_id: user.id,
+          role: "MEMBER",
+        },
+      })
+    );
+  };
   const handleSubmit = async () => {
-    setLoading(true)
     await uploadPost();
-    setIsEditing(false);
   };
   const toastIcon = {
     icon: (
@@ -165,9 +177,46 @@ const EditPost = ({ ssrData }) => {
     }
 
     if (param === "isFollow")
-      toast.success("Та уг группт нэгдээгүй байна.", toastIcon);
+      toast((t) => (
+        <div className={"flex flex-row items-center"}>
+          <div className="flex items-center">
+            <div className=" w-[28px] h-[28px] flex items-center justify-center rounded-full bg-[#ffcc00] mr-3">
+              <span className="icon-fi-rs-warning text-white" />
+            </div>
+          </div>
+          <span className={"text-[16px] text-[#363636] mr-[2px]"}>
+            {`Та "${selectedGroup.name}" группт нэгдээгүй байна.`}
+          </span>
+          <div
+            className={"cursor-pointer text-caak-primary"}
+            onClick={() => {
+              followGroup().then(() => {
+                toast.success(
+                  `Та "${selectedGroup.name}" группт амжилттай нэгдлээ.`,
+                  toastIcon
+                );
+                toast.dismiss(t.id);
+                setNestedToast(!nestedToast);
+              });
+            }}
+          >
+            нэгдэх
+          </div>
+        </div>
+      ));
     if (param === "isGroup") toast.success("Группээ сонгоно уу.", toastIcon);
   };
+
+  useUpdateEffect(() => {
+    const timer = setTimeout(() => {
+      toast.dismiss();
+    }, 3 * 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [nestedToast]);
+
   useEffect(() => {
     setSelectedGroupId(post.group_id);
     const handler = (e) => {
@@ -210,18 +259,22 @@ const EditPost = ({ ssrData }) => {
   }, [groupData, selectedGroupId]);
 
   const uploadPost = async () => {
+    setLoading(true);
     if (post.items.length === 0) {
       handleToast({ param: "isPost" });
+      setLoading(false);
       return;
     }
     if (!post.title) {
       handleToast({ param: "isTitle" });
+      setLoading(false);
       return;
     }
     if (selectedGroup) {
       const resp = await getGroup({ id: selectedGroup.id });
       if (resp.role_on_group === "NOT_MEMBER") {
         handleToast({ param: "isFollow" });
+        setLoading(false);
         return;
       }
       try {
@@ -229,6 +282,7 @@ const EditPost = ({ ssrData }) => {
         await pdtPost(post, user.id, resp.role_on_group);
         setLoading(false);
         setIsSuccessModalOpen(true);
+        setIsEditing(false);
       } catch (ex) {
         ex.errors.map((error) => {
           if (error.message.includes("IndexKey: group_id")) {
@@ -241,6 +295,7 @@ const EditPost = ({ ssrData }) => {
       }
     } else {
       handleToast({ param: "isGroup" });
+      setLoading(false);
     }
   };
 
@@ -312,6 +367,7 @@ const EditPost = ({ ssrData }) => {
                     !isEditing ||
                     !post.title ||
                     post.items.length <= 0 ||
+                    !selectedGroup ||
                     loading
                   }
                   onClick={() => handleSubmit()}

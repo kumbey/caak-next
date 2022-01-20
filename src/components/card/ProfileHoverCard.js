@@ -140,7 +140,7 @@ export default function ProfileHoverCard({ userId }) {
           </div>
           <p
             className={
-              "text-14px whitespace-normal text-caak-generalblack w-[200px] "
+              "text-14px max-h-[60px] whitespace-normal truncate text-caak-generalblack w-[200px] "
             }
           >
             {profileUser.about ? profileUser.about : "Саак хэрэглэгч"}

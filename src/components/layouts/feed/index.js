@@ -62,7 +62,6 @@ const DefaultFeedLayout = ({
             />
             <SideBarGroups
               role={["ADMIN", "MODERATOR"]}
-              maxColumns={13}
               addGroup
               initialData={adminModeratorGroups}
               title={"Миний группүүд"}

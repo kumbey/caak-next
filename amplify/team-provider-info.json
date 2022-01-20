@@ -51,7 +51,11 @@
         },
         "restoreOldPosts": {
           "deploymentBucketName": "amplify-caak-prod-180235-deployment",
-          "s3Key": "amplify-builds/restoreOldPosts-5947686d366339555a68-build.zip"
+          "s3Key": "amplify-builds/restoreOldPosts-6252396c373362466c71-build.zip"
+        },
+        "fixTableData": {
+          "deploymentBucketName": "amplify-caak-prod-180235-deployment",
+          "s3Key": "amplify-builds/fixTableData-79795137564d4a6d5744-build.zip"
         }
       },
       "auth": {
@@ -126,7 +130,11 @@
         },
         "restoreOldPosts": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/restoreOldPosts-5947686d366339555a68-build.zip"
+          "s3Key": "amplify-builds/restoreOldPosts-6252396c373362466c71-build.zip"
+        },
+        "fixTableData": {
+          "deploymentBucketName": "amplify-caak-dev-123611-deployment",
+          "s3Key": "amplify-builds/fixTableData-79795137564d4a6d5744-build.zip"
         }
       },
       "auth": {

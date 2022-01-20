@@ -253,7 +253,7 @@ const Post = ({ ssrData }) => {
               <div
                 onClick={back}
                 className={
-                  "flex items-center bg-caak-bluerhapsody cursor-pointer justify-center w-[40px] h-[40px] rounded-full"
+                  "flex items-center bg-[#FFFFFF33] hover:bg-[#FFFFFF4D] cursor-pointer justify-center w-[40px] h-[40px] rounded-full"
                 }
               >
                 <span className={"icon-fi-rs-close text-white text-[13px]"} />

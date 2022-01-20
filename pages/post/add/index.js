@@ -46,7 +46,7 @@ const AddPost = () => {
   });
   const [permissionDenied, setPermissionDenied] = useState(true);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const { setNavBarTransparent } = useWrapper();
+  const { setNavBarTransparent, setIsMobileMenuOpen } = useWrapper();
   const [valid, setValid] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const [post, setPost] = useState({
@@ -304,6 +304,11 @@ const AddPost = () => {
       handleToast({ param: "isGroup" });
     }
   };
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+    //eslint-disable-next-line
+  }, [])
 
   return !permissionDenied ? (
     <>

@@ -12,6 +12,7 @@ const groupUsers0002 = /* GraphQL */ `{
             moderator
         }
         id
+        role_on_group
     }
 }`;
 

@@ -604,10 +604,7 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
   .popup_modal-banner{
-    min-width: 350;
-    max-width: 400;
-    width: clamp(350px, 100%, 400px);
-    max-height: 400;
+    max-width: 500px;
     margin: 160px auto;
     position: relative;
   }

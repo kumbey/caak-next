@@ -603,6 +603,14 @@
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
+  .popup_modal-banner{
+    min-width: 350;
+    max-width: 400;
+    width: clamp(350px, 100%, 400px);
+    max-height: 400;
+    margin: 160px auto;
+    position: relative;
+  }
 
   .popup_modal-viewPost {
     background: #fff;

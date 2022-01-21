@@ -256,7 +256,14 @@ const UploadedMediaEdit = ({
   };
   useUpdateEffect(() => {
     setIsEditing(true);
-  }, [post.items, post.title]);
+  }, [
+    post.items,
+    post.title,
+    post.description,
+    caakContent,
+    businessPost,
+    allowComment,
+  ]);
 
   useUpdateEffect(() => {
     if (isEditing) {
@@ -574,7 +581,9 @@ const UploadedMediaEdit = ({
             }
           >
             <div className={"w-full h-full relative"}>
-              <div className={"flex flex-col w-full h-full h-[200px] md:h-full"}>
+              <div
+                className={"flex flex-col w-full h-full h-[200px] md:h-full"}
+              >
                 {post.onlyBlogView === "TRUE" ? (
                   <Editor
                     apiKey={"d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"}

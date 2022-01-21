@@ -775,6 +775,27 @@
     height: 60px;
     border-radius: 2px;
   }
+  .tinymce-p a:link { color: #0000EE; }
+  .tinymce-p a:visited { color: #551A8B; }
+
+  .youtube-player-wrapper {
+    position: relative;
+    padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
+  }
+
+  .youtube-player-wrapper .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .youtube-player-wrapper .react-player > div {
+    position: absolute
+  }
+  .youtube-player-wrapper .react-player video {
+    position: absolute;
+    object-fit: fill;
+  }
+
 }
 
 .react-player {

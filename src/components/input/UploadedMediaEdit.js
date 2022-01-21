@@ -412,6 +412,7 @@ const UploadedMediaEdit = ({
               }}
               value={post.description}
               init={{
+                extended_valid_elements: 'p[class=tinymce-p]',
                 height: 200,
                 menubar: false,
                 plugins: [
@@ -594,6 +595,7 @@ const UploadedMediaEdit = ({
                     }}
                     value={post.items[activeIndex].title}
                     init={{
+                      extended_valid_elements: 'p[class=tinymce-p]',
                       height: "100%",
                       menubar: false,
                       plugins: [
@@ -672,7 +674,7 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
-          {isSuperAdmin && (
+          {!isSuperAdmin && (
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>
                 Бизнес мэдээ

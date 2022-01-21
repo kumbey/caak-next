@@ -110,7 +110,7 @@ const SideBarGroups = ({
       </div>
       {groupData.map((group, index) => {
         let params = {};
-
+        
         if (group.group) {
           params = {
             name: group.group.name,
@@ -118,6 +118,7 @@ const SideBarGroups = ({
               ? getFileUrl(group.group.profile)
               : getGenderImage("default").src,
             groupId: group.group_id,
+            role: group.group.role_on_group
           };
         } else {
           params = {
@@ -126,6 +127,7 @@ const SideBarGroups = ({
               ? getFileUrl(group.profile)
               : getGenderImage("default").src,
             groupId: group.id,
+            role: group.role_on_group
           };
         }
         if (maxColumns) {
@@ -134,7 +136,11 @@ const SideBarGroups = ({
               <SideBarGroupItem
                 key={index}
                 {...params}
-                notification={getGroupPending(group.group_id)?.pending}
+                notification={
+                  role[0] === "ADMIN"
+                    ? getGroupPending(group.group_id)?.pending
+                    : null
+                }
               />
             );
           } else return null;

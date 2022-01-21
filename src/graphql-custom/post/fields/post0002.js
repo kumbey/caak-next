@@ -6,6 +6,7 @@ const post0002 = /* GraphQL */ `{
     title
     description
     commentType
+    onlyBlogView
     owned
     status
     user_id

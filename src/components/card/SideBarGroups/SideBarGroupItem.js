@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const SideBarGroupItem = ({ name, notification, image, groupId }) => {
+const SideBarGroupItem = ({ name, notification, image, groupId, role }) => {
   return (
     <Link href={`/group/${groupId}`}>
       <a>
@@ -25,19 +25,25 @@ const SideBarGroupItem = ({ name, notification, image, groupId }) => {
               {name}
             </div>
           </div>
-          {notification > 0 && (
-            <div
-              className={
-                "w-[34px] flex justify-center items-center text-center bg-caak-bleudefrance  bg-opacity-[14%] w-[34px] h-[18px] rounded-[100px]"
-              }
-            >
+          {
+            role === "ADMIN"
+            ?
+            notification > 0 && (
               <div
-                className={"font-semibold  text-caak-bleudefrance text-11px"}
+                className={
+                  "w-[34px] flex justify-center items-center text-center bg-caak-bleudefrance  bg-opacity-[14%] w-[34px] h-[18px] rounded-[100px]"
+                }
               >
-                +{notification}
+                <div
+                  className={"font-semibold  text-caak-bleudefrance text-11px"}
+                >
+                  +{notification}
+                </div>
               </div>
-            </div>
-          )}
+            )
+            :
+            null
+          }
         </div>
       </a>
     </Link>

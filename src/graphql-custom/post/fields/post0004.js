@@ -6,6 +6,7 @@ const post0004 = /* GraphQL */ `
     title
     description
     commentType
+    onlyBlogView
     owned
     f_text
     status

@@ -140,11 +140,8 @@
 .icon-fi-rs-exit:before {
     content: "\e925";
 }
-.icon-fi-rs-facebook.path1:before {
+.icon-fi-rs-facebook:before {
     content: "\e926";
-}
-.icon-fi-rs-facebook.path2:before {
-    content: "\e927";
 }
 .icon-fi-rs-flag:before {
     content: "\e928";

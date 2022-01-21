@@ -36,7 +36,7 @@ export default function Error() {
           </p>
           <Button
             onClick={() => {
-              router.replace("/help");
+              router.replace("/help/connectus");
             }}
             className={
               "min-w-[246px] h-[44px] tracking-[0.24px] leading-[19px] text-[16px] text-white font-medium mt-[34px]"

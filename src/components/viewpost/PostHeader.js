@@ -271,7 +271,7 @@ const PostHeader = ({
             <p
               ref={titleRef}
               className={`break-words text-[15px] my-[20px] ${
-                isExpanded
+                !isExpanded
                   ? "truncate-2"
                   : "max-h-[50vh] overflow-y-auto"
               } ${mobile ? "text-white" : "text-caak-generalblack"} `}
@@ -283,7 +283,7 @@ const PostHeader = ({
                 onClick={() => isSetExpanded(!isExpanded)}
                 className={"cursor-pointer text-[12px] text-blue-400 self-end"}
               >
-                {isExpanded ? "Дэлгэрэнгүй" : "Хураах"}
+                {!isExpanded ? "Дэлгэрэнгүй" : "Хураах"}
               </p>
             )}
           </div>

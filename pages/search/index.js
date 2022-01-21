@@ -82,7 +82,7 @@ const Search = () => {
       <div className={"pt-[54px]"}>
         <div
           className={
-            "flex flex-col items-center justify-center h-[110px] bg-white"
+            "flex flex-col items-center justify-end sm:justify-center h-[110px] bg-white"
           }
         >
           <h1 className={"text-22px font-medium text-caak-generalblack"}>

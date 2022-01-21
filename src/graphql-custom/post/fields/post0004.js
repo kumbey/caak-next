@@ -7,6 +7,7 @@ const post0004 = /* GraphQL */ `
     description
     commentType
     onlyBlogView
+    oldCaakId
     owned
     f_text
     status
@@ -95,6 +96,7 @@ const post0004 = /* GraphQL */ `
       items {
         user_id
         post_id
+        description
         id
         title
         reacted

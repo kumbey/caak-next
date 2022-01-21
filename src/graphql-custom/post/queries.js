@@ -258,3 +258,27 @@ export const listPostStatusHistoryByPost = /* GraphQL */ `
     }
   }
 `;
+
+export const listPostByOldId = /* GraphQL */ `
+    query ListPostByOldId(
+      $oldCaakId: String!,
+      $title: ModelStringKeyConditionInput,
+      $sortDirection: ModelSortDirection,
+      $filter: ModelPostFilterInput,
+      $limit: Int,
+      $nextToken: String
+    ) {
+        listPostByOldId(
+        oldCaakId: $oldCaakId,
+        title: $title,
+        sortDirection: $sortDirection,
+        filter: $filter,
+        limit: $limit,
+        nextToken: $nextToken
+        ) {
+            items
+            ${post0004}
+            nextToken 
+        }
+    }
+`;

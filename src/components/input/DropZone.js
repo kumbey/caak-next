@@ -11,6 +11,7 @@ import {
 } from "../../utility/Util";
 import imageCompression from "browser-image-compression";
 import Consts from "../../utility/Consts";
+import toast from "react-hot-toast";
 
 const DropZone = ({
   setPost,
@@ -43,9 +44,9 @@ const DropZone = ({
       for (let index = 0; index < dropZoneFiles.length; index++) {
         const file = dropZoneFiles[index];
         const realIndex = postItemLength + index + 1;
-        
-        if(file.type.startsWith("video/") && await getVideoDuration(file) > 180){
-          alert("Too long video")
+        const maxVideoDuration = 600
+        if(file.type.startsWith("video/") && await getVideoDuration(file) > maxVideoDuration){
+          toast.error(`Та хамгийн ихдээ ${maxVideoDuration / 60} минутын бичлэг оруулах боломжтой`)
         }else{
           const fileData = {
             id: realIndex,

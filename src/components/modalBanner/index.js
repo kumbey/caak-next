@@ -8,7 +8,6 @@ export default function ModalBanner({bannerOpen, setBannerOpen}) {
     const [modal, setModal] = useState(false)
     const [banners, setBanners] = useState([])
     const [number, setNumber] = useState(null);
-    const [meta, setMeta] = useState();
 
     useEffect(() => {
         const fetchBannersByType = async () => {
@@ -34,17 +33,6 @@ export default function ModalBanner({bannerOpen, setBannerOpen}) {
         // eslint-disable-next-line
     }, [banners]);
 
-    useEffect(() => {
-        try{
-            if(banners.length > 0) {
-                const meta = JSON.parse(banners[number].meta)
-                setMeta(meta)
-            }
-        }catch(ex){
-            console.log(ex);
-        }
-    }, []);
-
     return (
         bannerOpen ?
         banners.length > 0
@@ -61,7 +49,7 @@ export default function ModalBanner({bannerOpen, setBannerOpen}) {
                     <div className='popup_modal-banner'>
                         <div className='flex flex-col items-end'>
                             <span onClick={() => setModal(false)}  className='cursor-pointer icon-fi-rs-close bg-[#9A9FB4] p-2 rounded-full'/>
-                            <a href={JSON.parse(banners[number].meta).url ? JSON.parse(banners[number].meta).url : '/'} className={`mt-[20px] rounded-[8px] ${JSON.parse(banners[number].meta).colors.border_color1 ? `border border-[${JSON.parse(banners[number].meta).colors.border_color1}]`: ''}`} target="_blank">
+                            <a href={JSON.parse(banners[number].meta).url ? JSON.parse(banners[number].meta).url : '/'} className={`mt-[20px] rounded-[8px] ${JSON.parse(banners[number].meta).colors.border_color1 ? `border border-[${JSON.parse(banners[number].meta).colors.border_color1}]`: ''}`} rel="noreferrer" target="_blank">
                                 <img alt="" src={getFileUrl(banners[number].pic1)} className="rounded-[8px] w-[500px] max-h-[500px]" />
                             </a>
                         </div>

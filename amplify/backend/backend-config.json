@@ -150,18 +150,18 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "caaklayer001",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
           "category": "api",
           "resourceName": "caak",
           "attributes": [
             "GraphQLAPIIdOutput",
             "GraphQLAPIEndpointOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "caaklayer001",
+          "attributes": [
+            "Arn"
           ]
         }
       ]
@@ -210,6 +210,20 @@
       ]
     },
     "restoreOldPosts": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "caak",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "fixTableData": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",

@@ -3,45 +3,80 @@ import { useRouter } from "next/router";
 import Video from "../video";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 import Link from "next/link";
-import {decode} from 'html-entities';
+import { decode } from "html-entities";
+import ConditionalLink from "../conditionalLink";
+import ReactPlayer from "react-player";
 
-const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
+const ViewPostBlogItem = ({
+  postItem,
+  postId,
+  singleItem,
+  index,
+  onlyBlogView,
+}) => {
   const router = useRouter();
-
   return (
     <div className={"flex flex-col w-full mb-[40px]"}>
       <div className={"relative pt-[4px]"}>
         {postItem.file.type.startsWith("video") ? (
           <div className={"w-full h-[438px]"}>
             <Video
+              itemIndex={index}
+              route={!onlyBlogView}
+              postId={postId}
+              postItemId={postItem.id}
+              containerClassname={"rounded-[4px]"}
               videoClassname={"object-contain rounded-[4px] h-full"}
               src={getFileUrl(postItem.file)}
             />
           </div>
         ) : !singleItem ? (
-          <Link
-            shallow
-            as={`/post/view/${postId}/${postItem.id}`}
-            href={{
-              query: {
-                ...router.query,
-                id: postId,
-                viewItemPost: "postItem",
-                itemId: postItem.id,
-                prevPath: router.asPath,
-                isModal: true,
-                itemIndex: index,
-              },
-            }}
+          <ConditionalLink
+            condition={!onlyBlogView}
+            wrapper={(children) => (
+              <Link
+                shallow
+                as={`/post/view/${postId}/${postItem.id}`}
+                href={{
+                  query: {
+                    ...router.query,
+                    id: postId,
+                    viewItemPost: "postItem",
+                    itemId: postItem.id,
+                    prevPath: router.asPath,
+                    isModal: true,
+                    itemIndex: index,
+                  },
+                }}
+              >
+                <a>{children}</a>
+              </Link>
+            )}
           >
-            <a>
+            {postItem.isEmbed ? (
+              <div className={"youtube-player-wrapper"}>
+                {
+                  <ReactPlayer
+                    config={{
+                      youtube: {
+                        playerVars: { controls: 1 },
+                      },
+                    }}
+                    height={"100%"}
+                    width={"100%"}
+                    url={getFileUrl(postItem.file)}
+                    className={"react-player"}
+                  />
+                }
+              </div>
+            ) : (
               <img
                 className={"rounded-[6px] object-cover w-full h-full"}
                 src={getFileUrl(postItem.file)}
                 alt={postItem.file.name}
               />
-            </a>
-          </Link>
+            )}
+          </ConditionalLink>
         ) : (
           <div className={"relative h-[438px] w-full"}>
             <img
@@ -54,7 +89,7 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
           </div>
         )}
 
-        {!singleItem && (
+        {!singleItem && !onlyBlogView && (
           <div
             className={
               "z-[3] flex flex-row absolute bottom-[12px] right-[10px] bg-white h-[26px] px-[8px] py-[4px] border-[1px] border-white rounded-[100px]"
@@ -73,7 +108,9 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
               textClassname={
                 "text-[14px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal ml-[4px]"
               }
-              iconContainerClassname={"w-[18px] h-[18px] mb-[2px] hover:bg-transparent"}
+              iconContainerClassname={
+                "w-[18px] h-[18px] mb-[2px] hover:bg-transparent"
+              }
               iconColor={"text-caak-nocturnal"}
               iconClassname={"text-[17.25px]"}
             />
@@ -117,32 +154,22 @@ const ViewPostBlogItem = ({ postItem, postId, singleItem, index }) => {
         )}
       </div>
       <div className={"pt-[13px]"}>
-        {!singleItem ? (
-          <Link
-            shallow
-            as={`/post/view/${postId}/${postItem.id}`}
-            href={{
-              query: {
-                ...router.query,
-                id: postId,
-                viewItemPost: "postItem",
-                itemId: postItem.id,
-                prevPath: router.asPath,
-                isModal: true,
-                itemIndex: index,
-              },
-            }}
+        {postItem.description && (
+          <p
+            className={
+              "font-bold text-caak-generalblack text-[16px] mb-[5px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+            }
           >
-            <a className={"relative"}>
-              <p
-                className={
-                  "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-                }
-              >
-                {postItem.title && decode(postItem.title)}
-              </p>
-            </a>
-          </Link>
+            {decode(postItem.description)}
+          </p>
+        )}
+        {onlyBlogView ? (
+          <div
+            className={
+              "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px]"
+            }
+            dangerouslySetInnerHTML={{ __html: postItem.title }}
+          />
         ) : (
           <p
             className={

@@ -22,7 +22,8 @@ type User @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read, create]}
-  ]){
+  ])
+  @key(name:"byStatus", fields:["status","createdAt"], queryField:"listUsersByStatus"){
   id: ID!
   username: Username @connection(fields:["id"])
   firstname: String
@@ -45,6 +46,7 @@ type User @model
   verified: Boolean
   employed: String
   meta: String
+  createdAt: AWSDateTime
 }
 
 type UserTotal @model(mutations: null)
@@ -142,6 +144,8 @@ type Category @model
   ]){
   id: ID!
   name: String!
+  pic_id: ID
+  picture: File @connection(fields:["pic_id"])
   icon: String!
 }
 
@@ -150,11 +154,12 @@ type Post @model @versioned @searchable
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byStatus", fields:["status","updatedAt"] , queryField:"getPostByStatus")
-  @key(name: "byGroup", fields:["group_id","updatedAt"] , queryField:"getPostByGroup")
-  @key(name: "byUser", fields:["user_id","updatedAt"] , queryField:"getPostByUser")
-  @key(name: "byOwner", fields:["owned","updatedAt"] , queryField:"listPostByOwned")
-  @key(name: "byTitle", fields:["status","title"] , queryField:"listPostByTitle"){
+  @key(name: "byStatus", fields:["status","createdAt"] , queryField:"getPostByStatus")
+  @key(name: "byGroup", fields:["group_id","createdAt"] , queryField:"getPostByGroup")
+  @key(name: "byUser", fields:["user_id","createdAt"] , queryField:"getPostByUser")
+  @key(name: "byOwner", fields:["owned","createdAt"] , queryField:"listPostByOwned")
+  @key(name: "byTitle", fields:["status","title"] , queryField:"listPostByTitle")
+  @key(name: "byOldId", fields:["oldCaakId","title"] , queryField:"listPostByOldId"){
   id: ID!
   title: String!
   description: String
@@ -176,9 +181,11 @@ type Post @model @versioned @searchable
   isSaved: Boolean @function(name:"resolverBoolean-${env}")
   comments: [Comment] @connection(keyName:"byPostQ", fields:["id"])
   updatedAt: AWSDateTime!
+  createdAt: AWSDateTime!
   owned: String
   ignoreNotification: String
   oldCaakId: String
+  onlyBlogView: String
 }
 
 type SavedPost @model 
@@ -203,6 +210,7 @@ type PostStatusHistory @model
   @key(name: "byPost", fields:["post_id","createdAt"] , queryField:"listPostStatusHistoryByPost"){
   id: ID!
   post_id: ID!
+  status: String
   description: String
   createdAt: AWSDateTime
 }
@@ -252,6 +260,7 @@ type PostTotal @model(mutations: null)
   shares: Int!
   groupAndStatus: String
   categoryAndStatus: String
+  userAndStatus: String
 }
 
 type PostItemsTotal @model(mutations: null)
@@ -312,7 +321,8 @@ type Comment @model
   @key(name: "byTypeOrderByDate", fields: ["post_id","type","createdAt"] queryField:"listCommentsByDateAndType")
   @key(name: "byTypeOrderByDateForItem", fields: ["post_item_id","type","createdAt"] queryField:"listCommentsByDateAndTypeForItem")
   @key(name: "byParent", fields: ["parent_id","createdAt"] queryField:"listCommentByParent")
-  @key(name: "byUser", fields: ["user_id","createdAt"] queryField:"listCommentByUser"){
+  @key(name: "byUser", fields: ["user_id","createdAt"] queryField:"listCommentByUser")
+  @key(name: "byStatus", fields:["status","createdAt"], queryField:"listCommentsByStatus"){
   id: ID!,
   user_id:ID!
   user: User @connection(fields:["user_id"])
@@ -361,14 +371,19 @@ type ReportedPost @model
    @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
-  ]){
+  ])
+  @key(name:"byUser", fields:["user_id","createdAt"], queryField:"ListReportedPostByUser")
+  @key(name:"byStatus", fields:["status","createdAt"], queryField:"ListReportedPostByStatus")
+  @key(name:"orderByCreateAt", fields:["typeName","createdAt"], queryField:"ListReportedPostOrderByCreatedAt"){
   id: ID!
+  typeName: String
   post_id: ID
   user_id: ID
   post: Post @connection(fields:["post_id"])
   user: User @connection(fields:["user_id"])
   reason: String!
   status: String
+  createdAt: AWSDateTime
 }
 
 type ReportType @model
@@ -403,7 +418,8 @@ type Group @model
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byFeatured", fields: ["featured","name"], queryField:"listGroupByFeatured"){
+  @key(name: "byFeatured", fields: ["featured","name"], queryField:"listGroupByFeatured")
+  @key(name: "byCategory", fields: ["category_id","name"], queryField:"listGroupByCategory"){
   id: ID!
   name: String!
   category_id: ID!
@@ -460,13 +476,38 @@ type FeedBack @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
-  ]){
+  ])
+  @key(name: "orderBy", fields:["typeName","createdAt"], queryField:"listFeedBackOrderByCreatedAt"){
     id: ID!
+    typeName: String
     star: String
     title: String
+    type: String
     description: String
     status: String
+    createdAt: String!
 }
+
+type Banner @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byType", fields:["type","start_date"], queryField:"listBannersByType"){
+    id: ID!
+    type: String!
+    typeName: String!
+    title: String!
+    pic1_id: ID
+    pic1: File @connection(fields:["pic1_id"])
+    pic2_id: ID
+    pic2: File @connection(fields:["pic2_id"])
+    start_date: AWSDateTime!
+    end_date: AWSDateTime!
+    meta: String
+}
+
+
 
 type NotificationAddedType @aws_iam @aws_cognito_user_pools{
     section: String!
@@ -526,6 +567,14 @@ type Subscription {
     @aws_cognito_user_pools 
   onPostUpdateByStatus(status: String!): Post
     @aws_subscribe(mutations: ["updatePost", "createPost"])
+    @aws_iam
+    @aws_cognito_user_pools 
+  onReactionCreateByUserItem(user_id: ID!, on_to: String!, item_id: ID!): Reactions
+    @aws_subscribe(mutations: ["createReactions"])
+    @aws_iam
+    @aws_cognito_user_pools 
+  onReactionDeleteByUserItem(user_id: ID!, on_to: String!, item_id: ID!): Reactions
+    @aws_subscribe(mutations: ["deleteReactions"])
     @aws_iam
     @aws_cognito_user_pools 
 }

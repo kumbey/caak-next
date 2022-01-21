@@ -6,6 +6,8 @@ const post0004 = /* GraphQL */ `
     title
     description
     commentType
+    onlyBlogView
+    oldCaakId
     owned
     f_text
     status
@@ -90,10 +92,12 @@ const post0004 = /* GraphQL */ `
       views
     }
     reacted
-     items(filter: {isEmbed: {attributeExists: false}}) {
+     items {
       items {
         user_id
         post_id
+        description
+        isEmbed
         id
         title
         reacted

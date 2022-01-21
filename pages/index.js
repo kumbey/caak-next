@@ -23,6 +23,7 @@ import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import FeedBack from "../src/components/feedback";
 import { useRouter } from "next/router";
 import { usePreserveScroll } from "../src/hooks/useScroll";
+import ModalBanner from "../src/components/modalBanner";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -97,6 +98,7 @@ const Feed = ({ ssrData }) => {
   const [loading, setLoading] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
+  const [bannerOpen, setBannerOpen] = useState(true)
 
   const subscriptions = {};
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
@@ -188,6 +190,28 @@ const Feed = ({ ssrData }) => {
     }
     // eslint-disable-next-line
   }, [subscripedPost]);
+
+  
+  // useEffect(() => {
+  //   // const listener = () => {
+  //   //   const scrolled = document.scrollingElement.scrollTop;
+  //   //   if(banner){
+  //   //     if (scrolled > 250) {
+  //   //       setBannerOpen(true);
+  //   //       setBanner(false)
+  //   //     } else {
+  //   //       setBannerOpen(false);
+  //   //     }
+  //   //   }
+  //   // };
+  //   // document.addEventListener("scroll", listener);
+  //   // return () => {
+  //   //   document.removeEventListener("scroll", listener);
+  //   // };
+  //   setTimeout(() => {
+  //     setBannerOpen(true)
+  //   }, 1000)
+  // }, []);
 
   useEffect(() => {
     subscrip();
@@ -292,6 +316,7 @@ const Feed = ({ ssrData }) => {
             </FeedLayout>
           </div>
         </div>
+        <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen}/>
       </div>
     </>
   );

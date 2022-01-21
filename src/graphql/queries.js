@@ -261,6 +261,111 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
+export const listUsersByStatus = /* GraphQL */ `
+  query ListUsersByStatus(
+    $status: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsersByStatus(
+      status: $status
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        firstname
+        lastname
+        nickname
+        birthdate
+        age
+        gender
+        pic_id
+        cover_pic_id
+        about
+        aura
+        is_public
+        status
+        followed
+        verified
+        employed
+        meta
+        createdAt
+        updatedAt
+        pic {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+        cover_pic {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+        totals {
+          user_id
+          search_id
+          pending
+          confirmed
+          archived
+          reported
+          drafted
+          following
+          followers
+          comments
+          post_reactions
+          post_items_reactions
+          comment_reactions
+          post_views
+          post_shares
+          unseen
+          createdAt
+          updatedAt
+        }
+        username {
+          id
+          id_name
+          createdAt
+          updatedAt
+        }
+        category {
+          nextToken
+        }
+      }
+      nextToken
+    }
+  }
+`;
 export const getUserTotal = /* GraphQL */ `
   query GetUserTotal($user_id: ID!) {
     getUserTotal(user_id: $user_id) {
@@ -970,9 +1075,27 @@ export const getUserCategory = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
     }
   }
@@ -993,6 +1116,7 @@ export const listUserCategorys = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1026,6 +1150,7 @@ export const listUserCategoryByUser = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1059,6 +1184,7 @@ export const listUserCategoryByCategory = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1073,9 +1199,27 @@ export const getCategory = /* GraphQL */ `
     getCategory(id: $id) {
       id
       name
+      pic_id
       icon
       createdAt
       updatedAt
+      picture {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1089,9 +1233,27 @@ export const listCategorys = /* GraphQL */ `
       items {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       nextToken
     }
@@ -1113,10 +1275,11 @@ export const getPost = /* GraphQL */ `
       reacted
       isSaved
       updatedAt
+      createdAt
       owned
       ignoreNotification
       oldCaakId
-      createdAt
+      onlyBlogView
       version
       user {
         id
@@ -1289,14 +1452,33 @@ export const getPost = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       status_history {
         items {
           id
           post_id
+          status
           description
           createdAt
           updatedAt
@@ -1334,6 +1516,7 @@ export const getPost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -1350,10 +1533,11 @@ export const getPost = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -1460,6 +1644,7 @@ export const getPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1498,10 +1683,11 @@ export const listPosts = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -1548,6 +1734,7 @@ export const listPosts = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1572,6 +1759,7 @@ export const listPosts = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -1630,10 +1818,11 @@ export const getPostByStatus = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -1680,6 +1869,7 @@ export const getPostByStatus = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1704,6 +1894,7 @@ export const getPostByStatus = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -1734,7 +1925,7 @@ export const getPostByStatus = /* GraphQL */ `
 export const getPostByGroup = /* GraphQL */ `
   query GetPostByGroup(
     $group_id: ID
-    $updatedAt: ModelStringKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPostFilterInput
     $limit: Int
@@ -1742,7 +1933,7 @@ export const getPostByGroup = /* GraphQL */ `
   ) {
     getPostByGroup(
       group_id: $group_id
-      updatedAt: $updatedAt
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -1762,10 +1953,11 @@ export const getPostByGroup = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -1812,6 +2004,7 @@ export const getPostByGroup = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1836,6 +2029,7 @@ export const getPostByGroup = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -1866,7 +2060,7 @@ export const getPostByGroup = /* GraphQL */ `
 export const getPostByUser = /* GraphQL */ `
   query GetPostByUser(
     $user_id: ID
-    $updatedAt: ModelStringKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPostFilterInput
     $limit: Int
@@ -1874,7 +2068,7 @@ export const getPostByUser = /* GraphQL */ `
   ) {
     getPostByUser(
       user_id: $user_id
-      updatedAt: $updatedAt
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -1894,10 +2088,11 @@ export const getPostByUser = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -1944,6 +2139,7 @@ export const getPostByUser = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1968,6 +2164,7 @@ export const getPostByUser = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -1998,7 +2195,7 @@ export const getPostByUser = /* GraphQL */ `
 export const listPostByOwned = /* GraphQL */ `
   query ListPostByOwned(
     $owned: String
-    $updatedAt: ModelStringKeyConditionInput
+    $createdAt: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelPostFilterInput
     $limit: Int
@@ -2006,7 +2203,7 @@ export const listPostByOwned = /* GraphQL */ `
   ) {
     listPostByOwned(
       owned: $owned
-      updatedAt: $updatedAt
+      createdAt: $createdAt
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -2026,10 +2223,11 @@ export const listPostByOwned = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2076,6 +2274,7 @@ export const listPostByOwned = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2100,6 +2299,7 @@ export const listPostByOwned = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2158,10 +2358,11 @@ export const listPostByTitle = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2208,6 +2409,7 @@ export const listPostByTitle = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2232,6 +2434,142 @@ export const listPostByTitle = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          aura
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listPostByOldId = /* GraphQL */ `
+  query ListPostByOldId(
+    $oldCaakId: String
+    $title: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostByOldId(
+      oldCaakId: $oldCaakId
+      title: $title
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        createdAt
+        owned
+        ignoreNotification
+        oldCaakId
+        onlyBlogView
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          pic_id
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2288,10 +2626,11 @@ export const searchPosts = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2338,6 +2677,7 @@ export const searchPosts = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2362,6 +2702,7 @@ export const searchPosts = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2412,10 +2753,11 @@ export const getSavedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2462,6 +2804,7 @@ export const getSavedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2486,6 +2829,7 @@ export const getSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2539,10 +2883,11 @@ export const listSavedPosts = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -2587,10 +2932,11 @@ export const listSavedPostByUser = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -2603,6 +2949,7 @@ export const getPostStatusHistory = /* GraphQL */ `
     getPostStatusHistory(id: $id) {
       id
       post_id
+      status
       description
       createdAt
       updatedAt
@@ -2623,6 +2970,7 @@ export const listPostStatusHistorys = /* GraphQL */ `
       items {
         id
         post_id
+        status
         description
         createdAt
         updatedAt
@@ -2651,6 +2999,7 @@ export const listPostStatusHistoryByPost = /* GraphQL */ `
       items {
         id
         post_id
+        status
         description
         createdAt
         updatedAt
@@ -2705,10 +3054,11 @@ export const getPostItems = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2755,6 +3105,7 @@ export const getPostItems = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2779,6 +3130,7 @@ export const getPostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2882,10 +3234,11 @@ export const listPostItemss = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         totals {
@@ -2920,6 +3273,7 @@ export const getPostTotal = /* GraphQL */ `
       shares
       groupAndStatus
       categoryAndStatus
+      userAndStatus
       createdAt
       updatedAt
       post {
@@ -2936,10 +3290,11 @@ export const getPostTotal = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2986,6 +3341,7 @@ export const getPostTotal = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -3010,6 +3366,7 @@ export const getPostTotal = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3065,6 +3422,7 @@ export const listPostTotals = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3081,10 +3439,11 @@ export const listPostTotals = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -3123,6 +3482,7 @@ export const listPostOrderByReactions = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3139,10 +3499,11 @@ export const listPostOrderByReactions = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -3181,6 +3542,7 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3197,10 +3559,11 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -3239,6 +3602,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3255,10 +3619,11 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -3598,10 +3963,11 @@ export const getComment = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -3648,6 +4014,7 @@ export const getComment = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -3672,6 +4039,7 @@ export const getComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3739,10 +4107,11 @@ export const getComment = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         totals {
@@ -3861,10 +4230,11 @@ export const listComments = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         post_item {
@@ -3982,10 +4352,11 @@ export const listCommentByPostItem = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         post_item {
@@ -4103,10 +4474,11 @@ export const getCommentsByPost = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         post_item {
@@ -4224,10 +4596,11 @@ export const listCommentsByDateAndType = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         post_item {
@@ -4345,10 +4718,11 @@ export const listCommentsByDateAndTypeForItem = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         post_item {
@@ -4466,10 +4840,11 @@ export const listCommentByParent = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         post_item {
@@ -4587,10 +4962,133 @@ export const listCommentByUser = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
+          version
+        }
+        post_item {
+          id
+          post_id
+          user_id
+          file_id
+          title
+          description
+          f_text
+          order
+          isEmbed
+          reacted
           createdAt
+          updatedAt
+        }
+        sub {
+          nextToken
+        }
+        totals {
+          comment_id
+          reactions
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listCommentsByStatus = /* GraphQL */ `
+  query ListCommentsByStatus(
+    $status: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCommentsByStatus(
+      status: $status
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user_id
+        post_id
+        post_item_id
+        comment
+        status
+        type
+        on_to
+        parent_id
+        replyUserID
+        reacted
+        createdAt
+        updatedAt
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        replyTo {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          isSaved
+          updatedAt
+          createdAt
+          owned
+          ignoreNotification
+          oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4693,6 +5191,7 @@ export const getReportedPost = /* GraphQL */ `
   query GetReportedPost($id: ID!) {
     getReportedPost(id: $id) {
       id
+      typeName
       post_id
       user_id
       reason
@@ -4797,10 +5296,11 @@ export const getReportedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -4847,6 +5347,7 @@ export const getReportedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -4871,6 +5372,7 @@ export const getReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -4906,6 +5408,7 @@ export const listReportedPosts = /* GraphQL */ `
     listReportedPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        typeName
         post_id
         user_id
         reason
@@ -4947,10 +5450,230 @@ export const listReportedPosts = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
+          version
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listReportedPostByUser = /* GraphQL */ `
+  query ListReportedPostByUser(
+    $user_id: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelReportedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    ListReportedPostByUser(
+      user_id: $user_id
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        typeName
+        post_id
+        user_id
+        reason
+        status
+        createdAt
+        updatedAt
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
           createdAt
+          updatedAt
+        }
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          isSaved
+          updatedAt
+          createdAt
+          owned
+          ignoreNotification
+          oldCaakId
+          onlyBlogView
+          version
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listReportedPostByStatus = /* GraphQL */ `
+  query ListReportedPostByStatus(
+    $status: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelReportedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    ListReportedPostByStatus(
+      status: $status
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        typeName
+        post_id
+        user_id
+        reason
+        status
+        createdAt
+        updatedAt
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          isSaved
+          updatedAt
+          createdAt
+          owned
+          ignoreNotification
+          oldCaakId
+          onlyBlogView
+          version
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listReportedPostOrderByCreatedAt = /* GraphQL */ `
+  query ListReportedPostOrderByCreatedAt(
+    $typeName: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelReportedPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    ListReportedPostOrderByCreatedAt(
+      typeName: $typeName
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        typeName
+        post_id
+        user_id
+        reason
+        status
+        createdAt
+        updatedAt
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        post {
+          id
+          title
+          description
+          f_text
+          commentType
+          status
+          user_id
+          updated_user_id
+          group_id
+          category_id
+          reacted
+          isSaved
+          updatedAt
+          createdAt
+          owned
+          ignoreNotification
+          oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -5167,6 +5890,7 @@ export const getGroupUsers = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -5586,9 +6310,27 @@ export const getGroup = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       members {
         items {
@@ -5718,6 +6460,7 @@ export const listGroups = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -5838,6 +6581,128 @@ export const listGroupByFeatured = /* GraphQL */ `
         category {
           id
           name
+          pic_id
+          icon
+          createdAt
+          updatedAt
+        }
+        members {
+          nextToken
+        }
+        username {
+          id
+          id_name
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listGroupByCategory = /* GraphQL */ `
+  query ListGroupByCategory(
+    $category_id: ID
+    $name: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelGroupFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listGroupByCategory(
+      category_id: $category_id
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        category_id
+        about
+        founder_id
+        rating
+        followed
+        role_on_group
+        featured
+        g_rules
+        g_attentions
+        aura
+        createdAt
+        updatedAt
+        profile {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+        cover {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+        founder {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        totals {
+          group_id
+          search_id
+          pending
+          confirmed
+          member
+          admin
+          moderator
+          unseen
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -5948,6 +6813,7 @@ export const getGroupUsername = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -6299,8 +7165,10 @@ export const getFeedBack = /* GraphQL */ `
   query GetFeedBack($id: ID!) {
     getFeedBack(id: $id) {
       id
+      typeName
       star
       title
+      type
       description
       status
       createdAt
@@ -6317,12 +7185,223 @@ export const listFeedBacks = /* GraphQL */ `
     listFeedBacks(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        typeName
         star
         title
+        type
         description
         status
         createdAt
         updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const listFeedBackOrderByCreatedAt = /* GraphQL */ `
+  query ListFeedBackOrderByCreatedAt(
+    $typeName: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelFeedBackFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFeedBackOrderByCreatedAt(
+      typeName: $typeName
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        typeName
+        star
+        title
+        type
+        description
+        status
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getBanner = /* GraphQL */ `
+  query GetBanner($id: ID!) {
+    getBanner(id: $id) {
+      id
+      type
+      typeName
+      title
+      pic1_id
+      pic2_id
+      start_date
+      end_date
+      meta
+      createdAt
+      updatedAt
+      pic1 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
+      pic2 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const listBanners = /* GraphQL */ `
+  query ListBanners(
+    $filter: ModelBannerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBanners(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        type
+        typeName
+        title
+        pic1_id
+        pic2_id
+        start_date
+        end_date
+        meta
+        createdAt
+        updatedAt
+        pic1 {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+        pic2 {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listBannersByType = /* GraphQL */ `
+  query ListBannersByType(
+    $type: String
+    $start_date: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelBannerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBannersByType(
+      type: $type
+      start_date: $start_date
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        type
+        typeName
+        title
+        pic1_id
+        pic2_id
+        start_date
+        end_date
+        meta
+        createdAt
+        updatedAt
+        pic1 {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+        pic2 {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       nextToken
     }

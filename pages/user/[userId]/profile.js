@@ -356,7 +356,7 @@ const Profile = ({ ssrData }) => {
               >
                 {posts.items.map((item, index) => {
                   if (
-                    item.items.items.length > 0 && item.items.items[0].file.type.startsWith("video") &&
+                    item.items.items[0] && item.items.items[0].file.type.startsWith("video") &&
                     sortType === "VIDEO"
                   ) {
                     return activeView === 0 ? (

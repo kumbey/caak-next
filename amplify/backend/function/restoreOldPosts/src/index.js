@@ -14,6 +14,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 const { v4: uuidv4 } = require('uuid');
 const cliProgress = require('cli-progress');
 const Posts1 = require("../../../../../src/restoreData/posts1.json")
+const Posts2 = require("../../../../../src/restoreData/posts2.json")
 
 
 const getFileExt = (fileName) => {
@@ -29,8 +30,8 @@ exports.handler = async (event) => {
     try{
 
         let jsonFile = []
-        const startIndex = 1
-        let activeIndex = 1
+        const startIndex = 0
+        let activeIndex = 0
 
         const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
@@ -38,16 +39,20 @@ exports.handler = async (event) => {
             case 'posts1':
                 jsonFile = Posts1
                 break
+            case 'posts2':
+                jsonFile = Posts2
+                break
             default:
                 jsonFile = []
 
         }
 
-        const maxLegth = jsonFile.length
+        // const maxLegth = jsonFile.length
+        const maxLegth = 20
 
         const nowDate = new Date().toISOString()
 
-        bar1.start(startIndex + maxLegth, startIndex);
+        bar1.start(maxLegth -1 , startIndex);
 
         for(let i = startIndex; i < maxLegth; i++){
 
@@ -56,19 +61,22 @@ exports.handler = async (event) => {
             bar1.update(i);
 
             const post = jsonFile[i]
-            const postItems = post.items
+            const postItems = [...post.items]
+            delete post["items"]
+
 
             post.id = uuidv4()
             post.status = "CONFIRMED"
             post.user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
             post.updated_user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
-            post.group_id = "5ecd3b7d-d7fe-40b4-93e5-7946aa026aba"
-            post.category_id = "04eb06c0-e868-44c1-9e76-30372d0b2db8"
+            post.group_id = "4def44e3-9961-4502-b60f-61b28743103f"
+            post.category_id = "9717e8da-6b54-4d3b-8055-fa9000366b4e"
             post.owned = "CAAK"
             post.ignoreNotification = "TRUE"
             post.__typename = "Post"
             post.commentType = true
             post.version = 1
+            post.onlyBlogView = "TRUE"
 
 
             const params = {
@@ -79,28 +87,26 @@ exports.handler = async (event) => {
             }
             await docClient.put(params).promise();
 
-
             for(let itemIndex = 0; itemIndex < postItems.length; itemIndex++){
-
-                const item = postItems[itemIndex]
+                const item = {...postItems[itemIndex]}
                 const file = item.block_img
                 const provider = item.video_provider !== "NULL" ? item.video_provider : ""
                 const provider_item = item.video_id !== "NULL" ? item.video_id : ""
                 const itemType = item.block_type
 
                 delete item["block_img"]
-                delete item["provider"]
-                delete item["provider_item"]
-                delete item["itemType"]
+                delete item["video_provider"]
+                delete item["video_id"]
+                delete item["block_type"]
 
-                if(file){
+                if(itemType === "video" || file){
 
                     const itemfile = {
                         id: uuidv4(),
                         key: file,
                         name: getFileName(file),
                         ext: getFileExt(file),
-                        type: getFileExt(file),
+                        type: itemType === "video" ? "EMBED" : getFileExt(file),
                         isExternal: "TRUE",
                         external_url: file,
                         createdAt: nowDate,
@@ -123,7 +129,7 @@ exports.handler = async (event) => {
                     item.user_id = post.user_id
                     item.file_id = itemfile.id
                     item.order = itemIndex
-                    item.createdAt = post.createdAtx
+                    item.createdAt = post.createdAt
                     item.updatedAt = post.updatedAt
                     item.__typename = "PostItems"
 

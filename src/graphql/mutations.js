@@ -894,9 +894,27 @@ export const createUserCategory = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
     }
   }
@@ -915,9 +933,27 @@ export const updateUserCategory = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
     }
   }
@@ -936,9 +972,27 @@ export const deleteUserCategory = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
     }
   }
@@ -951,9 +1005,27 @@ export const createCategory = /* GraphQL */ `
     createCategory(input: $input, condition: $condition) {
       id
       name
+      pic_id
       icon
       createdAt
       updatedAt
+      picture {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -965,9 +1037,27 @@ export const updateCategory = /* GraphQL */ `
     updateCategory(input: $input, condition: $condition) {
       id
       name
+      pic_id
       icon
       createdAt
       updatedAt
+      picture {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -979,9 +1069,27 @@ export const deleteCategory = /* GraphQL */ `
     deleteCategory(input: $input, condition: $condition) {
       id
       name
+      pic_id
       icon
       createdAt
       updatedAt
+      picture {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
     }
   }
 `;
@@ -1004,10 +1112,11 @@ export const createPost = /* GraphQL */ `
       reacted
       isSaved
       updatedAt
+      createdAt
       owned
       ignoreNotification
       oldCaakId
-      createdAt
+      onlyBlogView
       version
       user {
         id
@@ -1180,14 +1289,33 @@ export const createPost = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       status_history {
         items {
           id
           post_id
+          status
           description
           createdAt
           updatedAt
@@ -1225,6 +1353,7 @@ export const createPost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -1241,10 +1370,11 @@ export const createPost = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -1351,6 +1481,7 @@ export const createPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1387,10 +1518,11 @@ export const updatePost = /* GraphQL */ `
       reacted
       isSaved
       updatedAt
+      createdAt
       owned
       ignoreNotification
       oldCaakId
-      createdAt
+      onlyBlogView
       version
       user {
         id
@@ -1563,14 +1695,33 @@ export const updatePost = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       status_history {
         items {
           id
           post_id
+          status
           description
           createdAt
           updatedAt
@@ -1608,6 +1759,7 @@ export const updatePost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -1624,10 +1776,11 @@ export const updatePost = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -1734,6 +1887,7 @@ export const updatePost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -1770,10 +1924,11 @@ export const deletePost = /* GraphQL */ `
       reacted
       isSaved
       updatedAt
+      createdAt
       owned
       ignoreNotification
       oldCaakId
-      createdAt
+      onlyBlogView
       version
       user {
         id
@@ -1946,14 +2101,33 @@ export const deletePost = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       status_history {
         items {
           id
           post_id
+          status
           description
           createdAt
           updatedAt
@@ -1991,6 +2165,7 @@ export const deletePost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -2007,10 +2182,11 @@ export const deletePost = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
       }
@@ -2117,6 +2293,7 @@ export const deletePost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2159,10 +2336,11 @@ export const createSavedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2209,6 +2387,7 @@ export const createSavedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2233,6 +2412,7 @@ export const createSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2284,10 +2464,11 @@ export const updateSavedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2334,6 +2515,7 @@ export const updateSavedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2358,6 +2540,7 @@ export const updateSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2409,10 +2592,11 @@ export const deleteSavedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2459,6 +2643,7 @@ export const deleteSavedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2483,6 +2668,7 @@ export const deleteSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2517,6 +2703,7 @@ export const createPostStatusHistory = /* GraphQL */ `
     createPostStatusHistory(input: $input, condition: $condition) {
       id
       post_id
+      status
       description
       createdAt
       updatedAt
@@ -2531,6 +2718,7 @@ export const updatePostStatusHistory = /* GraphQL */ `
     updatePostStatusHistory(input: $input, condition: $condition) {
       id
       post_id
+      status
       description
       createdAt
       updatedAt
@@ -2545,6 +2733,7 @@ export const deletePostStatusHistory = /* GraphQL */ `
     deletePostStatusHistory(input: $input, condition: $condition) {
       id
       post_id
+      status
       description
       createdAt
       updatedAt
@@ -2600,10 +2789,11 @@ export const createPostItems = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2650,6 +2840,7 @@ export const createPostItems = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2674,6 +2865,7 @@ export const createPostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2775,10 +2967,11 @@ export const updatePostItems = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -2825,6 +3018,7 @@ export const updatePostItems = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -2849,6 +3043,7 @@ export const updatePostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2950,10 +3145,11 @@ export const deletePostItems = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -3000,6 +3196,7 @@ export const deletePostItems = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -3024,6 +3221,7 @@ export const deletePostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3415,10 +3613,11 @@ export const createComment = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -3465,6 +3664,7 @@ export const createComment = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -3489,6 +3689,7 @@ export const createComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3556,10 +3757,11 @@ export const createComment = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         totals {
@@ -3802,10 +4004,11 @@ export const updateComment = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -3852,6 +4055,7 @@ export const updateComment = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -3876,6 +4080,7 @@ export const updateComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3943,10 +4148,11 @@ export const updateComment = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         totals {
@@ -4189,10 +4395,11 @@ export const deleteComment = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -4239,6 +4446,7 @@ export const deleteComment = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -4263,6 +4471,7 @@ export const deleteComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -4330,10 +4539,11 @@ export const deleteComment = /* GraphQL */ `
           reacted
           isSaved
           updatedAt
+          createdAt
           owned
           ignoreNotification
           oldCaakId
-          createdAt
+          onlyBlogView
           version
         }
         totals {
@@ -4469,6 +4679,7 @@ export const createReportedPost = /* GraphQL */ `
   ) {
     createReportedPost(input: $input, condition: $condition) {
       id
+      typeName
       post_id
       user_id
       reason
@@ -4573,10 +4784,11 @@ export const createReportedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -4623,6 +4835,7 @@ export const createReportedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -4647,6 +4860,7 @@ export const createReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -4680,6 +4894,7 @@ export const updateReportedPost = /* GraphQL */ `
   ) {
     updateReportedPost(input: $input, condition: $condition) {
       id
+      typeName
       post_id
       user_id
       reason
@@ -4784,10 +4999,11 @@ export const updateReportedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -4834,6 +5050,7 @@ export const updateReportedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -4858,6 +5075,7 @@ export const updateReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -4891,6 +5109,7 @@ export const deleteReportedPost = /* GraphQL */ `
   ) {
     deleteReportedPost(input: $input, condition: $condition) {
       id
+      typeName
       post_id
       user_id
       reason
@@ -4995,10 +5214,11 @@ export const deleteReportedPost = /* GraphQL */ `
         reacted
         isSaved
         updatedAt
+        createdAt
         owned
         ignoreNotification
         oldCaakId
-        createdAt
+        onlyBlogView
         version
         user {
           id
@@ -5045,6 +5265,7 @@ export const deleteReportedPost = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -5069,6 +5290,7 @@ export const deleteReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -5321,6 +5543,7 @@ export const createGroupUsers = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -5519,6 +5742,7 @@ export const updateGroupUsers = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -5717,6 +5941,7 @@ export const deleteGroupUsers = /* GraphQL */ `
         category {
           id
           name
+          pic_id
           icon
           createdAt
           updatedAt
@@ -5887,9 +6112,27 @@ export const createGroup = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       members {
         items {
@@ -6080,9 +6323,27 @@ export const updateGroup = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       members {
         items {
@@ -6273,9 +6534,27 @@ export const deleteGroup = /* GraphQL */ `
       category {
         id
         name
+        pic_id
         icon
         createdAt
         updatedAt
+        picture {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
       }
       members {
         items {
@@ -6632,8 +6911,10 @@ export const createFeedBack = /* GraphQL */ `
   ) {
     createFeedBack(input: $input, condition: $condition) {
       id
+      typeName
       star
       title
+      type
       description
       status
       createdAt
@@ -6648,8 +6929,10 @@ export const updateFeedBack = /* GraphQL */ `
   ) {
     updateFeedBack(input: $input, condition: $condition) {
       id
+      typeName
       star
       title
+      type
       description
       status
       createdAt
@@ -6664,12 +6947,176 @@ export const deleteFeedBack = /* GraphQL */ `
   ) {
     deleteFeedBack(input: $input, condition: $condition) {
       id
+      typeName
       star
       title
+      type
       description
       status
       createdAt
       updatedAt
+    }
+  }
+`;
+export const createBanner = /* GraphQL */ `
+  mutation CreateBanner(
+    $input: CreateBannerInput!
+    $condition: ModelBannerConditionInput
+  ) {
+    createBanner(input: $input, condition: $condition) {
+      id
+      type
+      typeName
+      title
+      pic1_id
+      pic2_id
+      start_date
+      end_date
+      meta
+      createdAt
+      updatedAt
+      pic1 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
+      pic2 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const updateBanner = /* GraphQL */ `
+  mutation UpdateBanner(
+    $input: UpdateBannerInput!
+    $condition: ModelBannerConditionInput
+  ) {
+    updateBanner(input: $input, condition: $condition) {
+      id
+      type
+      typeName
+      title
+      pic1_id
+      pic2_id
+      start_date
+      end_date
+      meta
+      createdAt
+      updatedAt
+      pic1 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
+      pic2 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const deleteBanner = /* GraphQL */ `
+  mutation DeleteBanner(
+    $input: DeleteBannerInput!
+    $condition: ModelBannerConditionInput
+  ) {
+    deleteBanner(input: $input, condition: $condition) {
+      id
+      type
+      typeName
+      title
+      pic1_id
+      pic2_id
+      start_date
+      end_date
+      meta
+      createdAt
+      updatedAt
+      pic1 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
+      pic2 {
+        id
+        key
+        name
+        owner
+        bucket
+        region
+        level
+        ext
+        type
+        isExternal
+        external_url
+        provider
+        provided_item
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

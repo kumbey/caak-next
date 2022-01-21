@@ -11,6 +11,7 @@ import {
 } from "../../utility/Util";
 import imageCompression from "browser-image-compression";
 import Consts from "../../utility/Consts";
+import toast from "react-hot-toast";
 
 const DropZone = ({
   setPost,
@@ -43,39 +44,55 @@ const DropZone = ({
       for (let index = 0; index < dropZoneFiles.length; index++) {
         const file = dropZoneFiles[index];
         const realIndex = postItemLength + index + 1;
-
-        const fileData = {
-          id: realIndex,
-          title: "",
-          post_id: post.id,
-          file: {
-            ext: getFileExt(file.name),
-            name: getFileName(file.name),
-            key: file.name,
-            type: file.type,
-            url: "",
-            bucket: awsExports.aws_user_files_s3_bucket,
-            region: awsExports.aws_user_files_s3_bucket_region,
-            level: "public",
-            obj: file,
-          },
-        };
-
-        if (Consts.regexImage.test(file.type)) {
-          fileData.url = getGenderImage("default").src;
-          fileData.loading = true;
-          toCompressFiles.push(fileData);
-        } else {
-          fileData.file.url = URL.createObjectURL(file);
+        const maxVideoDuration = 300
+        if(file.type.startsWith("video/") && await getVideoDuration(file) > maxVideoDuration){
+          toast.error(`Та хамгийн ихдээ ${maxVideoDuration / 60} минутын бичлэг оруулах боломжтой`)
+        }else{
+          const fileData = {
+            id: realIndex,
+            title: "",
+            post_id: post.id,
+            file: {
+              ext: getFileExt(file.name),
+              name: getFileName(file.name),
+              key: file.name,
+              type: file.type,
+              url: "",
+              bucket: awsExports.aws_user_files_s3_bucket,
+              region: awsExports.aws_user_files_s3_bucket_region,
+              level: "public",
+              obj: file,
+            },
+          };
+  
+          if (Consts.regexImage.test(file.type)) {
+            fileData.url = getGenderImage("default").src;
+            fileData.loading = true;
+            toCompressFiles.push(fileData);
+          } else {
+            fileData.file.url = URL.createObjectURL(file);
+          }
+  
+          localPost.items.push(fileData); 
         }
-
-        localPost.items.push(fileData);
       }
 
       setPost({ ...localPost });
       compressFiles(toCompressFiles);
     }
   };
+
+  const getVideoDuration = (file) =>
+    new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const media = new Audio(reader.result);
+      media.onloadedmetadata = () => resolve(media.duration);
+    };
+    reader.readAsDataURL(file);
+    reader.onerror = (error) => reject(error);
+  });
+
 
   const compressFiles = async (files) => {
     for (let index = 0; index < files.length; index++) {

@@ -18,6 +18,12 @@
       ]
     },
     "storage": {
+      "File:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
       "UserTotal:@model(appsync)": [
         "create",
         "read",

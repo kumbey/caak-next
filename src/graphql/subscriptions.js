@@ -221,6 +221,7 @@ export const onCommentByPostItem = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -292,6 +293,7 @@ export const onCommentByPostItem = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -363,6 +365,7 @@ export const onCommentByPostItem = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -606,6 +609,7 @@ export const onCommentByPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -677,6 +681,7 @@ export const onCommentByPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -748,6 +753,7 @@ export const onCommentByPost = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -991,6 +997,7 @@ export const onCommentByParent = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -1062,6 +1069,7 @@ export const onCommentByParent = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -1133,6 +1141,7 @@ export const onCommentByParent = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -1194,6 +1203,7 @@ export const onPostByGroup = /* GraphQL */ `
       owned
       ignoreNotification
       oldCaakId
+      onlyBlogView
       version
       user {
         id
@@ -1430,6 +1440,7 @@ export const onPostByGroup = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -1450,6 +1461,7 @@ export const onPostByGroup = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -1594,6 +1606,7 @@ export const onPostByUser = /* GraphQL */ `
       owned
       ignoreNotification
       oldCaakId
+      onlyBlogView
       version
       user {
         id
@@ -1830,6 +1843,7 @@ export const onPostByUser = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -1850,6 +1864,7 @@ export const onPostByUser = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -2110,6 +2125,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
       owned
       ignoreNotification
       oldCaakId
+      onlyBlogView
       version
       user {
         id
@@ -2346,6 +2362,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -2366,6 +2383,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -3695,6 +3713,7 @@ export const onCreatePost = /* GraphQL */ `
       owned
       ignoreNotification
       oldCaakId
+      onlyBlogView
       version
       user {
         id
@@ -3931,6 +3950,7 @@ export const onCreatePost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3951,6 +3971,7 @@ export const onCreatePost = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -4095,6 +4116,7 @@ export const onUpdatePost = /* GraphQL */ `
       owned
       ignoreNotification
       oldCaakId
+      onlyBlogView
       version
       user {
         id
@@ -4331,6 +4353,7 @@ export const onUpdatePost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -4351,6 +4374,7 @@ export const onUpdatePost = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -4495,6 +4519,7 @@ export const onDeletePost = /* GraphQL */ `
       owned
       ignoreNotification
       oldCaakId
+      onlyBlogView
       version
       user {
         id
@@ -4731,6 +4756,7 @@ export const onDeletePost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -4751,6 +4777,7 @@ export const onDeletePost = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -4901,6 +4928,7 @@ export const onCreateSavedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -4972,6 +5000,7 @@ export const onCreateSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -5024,6 +5053,7 @@ export const onUpdateSavedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -5095,6 +5125,7 @@ export const onUpdateSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -5147,6 +5178,7 @@ export const onDeleteSavedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -5218,6 +5250,7 @@ export const onDeleteSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -5330,6 +5363,7 @@ export const onCreatePostItems = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -5401,6 +5435,7 @@ export const onCreatePostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -5503,6 +5538,7 @@ export const onUpdatePostItems = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -5574,6 +5610,7 @@ export const onUpdatePostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -5676,6 +5713,7 @@ export const onDeletePostItems = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -5747,6 +5785,7 @@ export const onDeletePostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -6112,6 +6151,7 @@ export const onCreateComment = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -6183,6 +6223,7 @@ export const onCreateComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -6254,6 +6295,7 @@ export const onCreateComment = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -6497,6 +6539,7 @@ export const onUpdateComment = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -6568,6 +6611,7 @@ export const onUpdateComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -6639,6 +6683,7 @@ export const onUpdateComment = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -6882,6 +6927,7 @@ export const onDeleteComment = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -6953,6 +6999,7 @@ export const onDeleteComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -7024,6 +7071,7 @@ export const onDeleteComment = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -7247,6 +7295,7 @@ export const onCreateReportedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -7318,6 +7367,7 @@ export const onCreateReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -7457,6 +7507,7 @@ export const onUpdateReportedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -7528,6 +7579,7 @@ export const onUpdateReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -7667,6 +7719,7 @@ export const onDeleteReportedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -7738,6 +7791,7 @@ export const onDeleteReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -9365,6 +9419,7 @@ export const onCreateBanner = /* GraphQL */ `
     onCreateBanner {
       id
       type
+      typeName
       title
       pic1_id
       pic2_id
@@ -9415,6 +9470,7 @@ export const onUpdateBanner = /* GraphQL */ `
     onUpdateBanner {
       id
       type
+      typeName
       title
       pic1_id
       pic2_id
@@ -9465,6 +9521,7 @@ export const onDeleteBanner = /* GraphQL */ `
     onDeleteBanner {
       id
       type
+      typeName
       title
       pic1_id
       pic2_id

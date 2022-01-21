@@ -3,6 +3,7 @@ const PostTotal = require("../db/PostTotal")
 const GroupTotal = require("../db/GroupTotal")
 const UserTotal = require("../db/UserTotal")
 const NoficationDB = require("../db/Notification")
+const PostItems = require("../db/PostItems")
 
 async function insert(record){
     try{
@@ -50,7 +51,8 @@ async function modify(record){
             status: newImg.status,
             category_id: newImg.category_id,
             groupAndStatus: `${newImg.group_id}#${newImg.status}`,
-            categoryAndStatus: `${newImg.category_id}#${newImg.status}`
+            categoryAndStatus: `${newImg.category_id}#${newImg.status}`,
+            userAndStatus: `${newImg.user_id}#${newImg.status}`
         },["post_id"], "post_id")
 
 
@@ -118,6 +120,7 @@ async function remove(record){
     const oldImg = getValuesFromRecord(OldImage)
 
     await PostTotal.remove(oldImg.id)
+    await PostItems.removeByPostId(oldImg.id)
 
     //UPDATE USER TOTAL
     await UserTotal.modify(oldImg.user_id, [

@@ -2,6 +2,7 @@ const { getValuesFromRecord } = require("/opt/util/Util")
 const PostTotal = require("../db/PostTotal")
 const PostItemsTotal = require("../db/PostItemsTotal")
 const UserTotal = require("../db/UserTotal")
+const File = require("../db/File")
 
 async function insert(record){
     try{
@@ -34,6 +35,11 @@ async function remove(record){
             field: "reactioins",
             increase: false,
             count: postItemsTotal.reactions
+        },
+        {
+            field: "total_reactioins",
+            increase: false,
+            count: postItemsTotal.reactions
         }
     ])
 
@@ -47,6 +53,7 @@ async function remove(record){
     ])
 
     await PostItemsTotal.remove(oldImg.id)
+    await File.remove(oldImg.file_id)
 
     return true
 

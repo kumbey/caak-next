@@ -92,11 +92,12 @@ const post0004 = /* GraphQL */ `
       views
     }
     reacted
-     items(filter: {isEmbed: {attributeExists: false}}) {
+     items {
       items {
         user_id
         post_id
         description
+        isEmbed
         id
         title
         reacted

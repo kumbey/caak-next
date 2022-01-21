@@ -44,7 +44,7 @@ const DropZone = ({
       for (let index = 0; index < dropZoneFiles.length; index++) {
         const file = dropZoneFiles[index];
         const realIndex = postItemLength + index + 1;
-        const maxVideoDuration = 600
+        const maxVideoDuration = 300
         if(file.type.startsWith("video/") && await getVideoDuration(file) > maxVideoDuration){
           toast.error(`Та хамгийн ихдээ ${maxVideoDuration / 60} минутын бичлэг оруулах боломжтой`)
         }else{

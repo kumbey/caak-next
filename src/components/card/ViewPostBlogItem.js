@@ -5,6 +5,7 @@ import AnimatedCaakButton from "../button/animatedCaakButton";
 import Link from "next/link";
 import { decode } from "html-entities";
 import ConditionalLink from "../conditionalLink";
+import ReactPlayer from "react-player";
 
 const ViewPostBlogItem = ({
   postItem,
@@ -52,11 +53,29 @@ const ViewPostBlogItem = ({
               </Link>
             )}
           >
-            <img
-              className={"rounded-[6px] object-cover w-full h-full"}
-              src={getFileUrl(postItem.file)}
-              alt={postItem.file.name}
-            />
+            {postItem.isEmbed ? (
+              <div className={"youtube-player-wrapper"}>
+                {
+                  <ReactPlayer
+                    config={{
+                      youtube: {
+                        playerVars: { controls: 1 },
+                      },
+                    }}
+                    height={"100%"}
+                    width={"100%"}
+                    url={getFileUrl(postItem.file)}
+                    className={"react-player"}
+                  />
+                }
+              </div>
+            ) : (
+              <img
+                className={"rounded-[6px] object-cover w-full h-full"}
+                src={getFileUrl(postItem.file)}
+                alt={postItem.file.name}
+              />
+            )}
           </ConditionalLink>
         ) : (
           <div className={"relative h-[438px] w-full"}>
@@ -135,13 +154,15 @@ const ViewPostBlogItem = ({
         )}
       </div>
       <div className={"pt-[13px]"}>
-        {postItem.description && <p
-          className={
-            "font-bold text-caak-generalblack text-[16px] mb-[5px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-          }
-        >
-          {decode(postItem.description)}
-        </p>}
+        {postItem.description && (
+          <p
+            className={
+              "font-bold text-caak-generalblack text-[16px] mb-[5px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+            }
+          >
+            {decode(postItem.description)}
+          </p>
+        )}
         {onlyBlogView ? (
           <div
             className={

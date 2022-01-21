@@ -88,7 +88,7 @@ async function modify(record){
 
             // CREATE NOFICATION
 
-            if(newImg.status !== "POSTING" && newImg.ignoreNotification === "TRUE"){
+            if(newImg.status !== "POSTING" && newImg.ignoreNotification !== "TRUE"){
                 const react = {
                     section: "USER",
                     type: "POST",

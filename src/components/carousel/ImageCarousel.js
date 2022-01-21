@@ -24,6 +24,7 @@ const ImageCarousel = ({
   singleItem,
 }) => {
   const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
+  const [itemLength, setItemLength] = useState(0)
   const [touchPosition, setTouchPosition] = useState(null);
   const size = useWindowSize();
   const router = useRouter();
@@ -54,7 +55,7 @@ const ImageCarousel = ({
     setTouchPosition(null);
   };
   const nextItem = () => {
-    if (activeIndex < items.length - 1) {
+    if (activeIndex < itemLength - 1) {
       setActiveIndex(activeIndex + 1);
       changeActiveIndex && changeActiveIndex(activeIndex + 1);
     }
@@ -89,12 +90,26 @@ const ImageCarousel = ({
       document.removeEventListener("keydown", handler);
     };
   });
+
+  useEffect(()=> {
+    if(items){
+      let length = 0
+      items.map((item)=> {
+        if(!(item.isEmbed === "TRUE")){
+          length++
+        }
+      })
+      setItemLength(length)
+    }
+    //eslint-disable-next-line
+  },[])
+
   return (
     <div
       style={!card ? { height: size.height } : {}}
       className={`${card ? "h-full" : ""} relative w-full overflow-hidden`}
     >
-      {card && items.length > 1 && (
+      {card && itemLength > 1 && (
         <div
           className={
             "flex items-center justify-center absolute top-[10px] right-[10px] z-[1] bg-black bg-opacity-60 rounded-[100px] px-[10px] py-[1px]"
@@ -102,7 +117,7 @@ const ImageCarousel = ({
         >
           <p className={"text-[12px] font-roboto text-white"}>{`${
             activeIndex + 1
-          }/${items.length}`}</p>
+          }/${itemLength}`}</p>
         </div>
       )}
       {viewPostItem && (
@@ -114,7 +129,7 @@ const ImageCarousel = ({
           >
             <p className={"text-[16px] font-roboto text-white"}>{`${
               activeIndex + 1
-            }/${items.length}`}</p>
+            }/${itemLength}`}</p>
           </div>
           <div className={"hidden md:flex"}>
             <div
@@ -145,7 +160,7 @@ const ImageCarousel = ({
       <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
         <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
           {items.map((item, index) => {
-            return (
+            return !item.isEmbed && (
               <div
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
@@ -319,7 +334,7 @@ const ImageCarousel = ({
             />
           </div>
         )}
-        {!viewPostItem && activeIndex !== items.length - 1 && (
+        {!viewPostItem && activeIndex !== itemLength - 1 && (
           <div
             onClick={() => nextItem()}
             className={
@@ -340,7 +355,7 @@ const ImageCarousel = ({
         {/*        activeIndex > 10 ? `transform translate-x-[-${activeIndex + 14}px]` : ""*/}
         {/*      }`}*/}
         {/*    >*/}
-        {/*      {items.length > 1 &&*/}
+        {/*      {itemLength > 1 &&*/}
         {/*        items.map((_, index) => {*/}
         {/*          return (*/}
         {/*            <div*/}

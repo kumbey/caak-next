@@ -9,6 +9,8 @@ const file0001 = /* GraphQL */ `
         level
         ext
         type
+        provider
+        provided_item
         isExternal
         external_url
         createdAt

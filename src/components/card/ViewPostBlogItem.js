@@ -135,6 +135,13 @@ const ViewPostBlogItem = ({
         )}
       </div>
       <div className={"pt-[13px]"}>
+        {postItem.description && <p
+          className={
+            "font-bold text-caak-generalblack text-[16px] mb-[5px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+          }
+        >
+          {decode(postItem.description)}
+        </p>}
         {onlyBlogView ? (
           <div
             className={

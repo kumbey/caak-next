@@ -191,6 +191,28 @@ const Feed = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [subscripedPost]);
 
+  
+  // useEffect(() => {
+  //   // const listener = () => {
+  //   //   const scrolled = document.scrollingElement.scrollTop;
+  //   //   if(banner){
+  //   //     if (scrolled > 250) {
+  //   //       setBannerOpen(true);
+  //   //       setBanner(false)
+  //   //     } else {
+  //   //       setBannerOpen(false);
+  //   //     }
+  //   //   }
+  //   // };
+  //   // document.addEventListener("scroll", listener);
+  //   // return () => {
+  //   //   document.removeEventListener("scroll", listener);
+  //   // };
+  //   setTimeout(() => {
+  //     setBannerOpen(true)
+  //   }, 1000)
+  // }, []);
+
   useEffect(() => {
     subscrip();
 

@@ -7,6 +7,7 @@ const post0004 = /* GraphQL */ `
     description
     commentType
     onlyBlogView
+    oldCaakId
     owned
     f_text
     status

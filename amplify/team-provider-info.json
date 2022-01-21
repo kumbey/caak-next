@@ -118,7 +118,7 @@
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",
-          "s3Key": "amplify-builds/triggerTables-6a713732484438643373-build.zip"
+          "s3Key": "amplify-builds/triggerTables-322f7362304c32534b6c-build.zip"
         },
         "userRoleOnGroup": {
           "deploymentBucketName": "amplify-caak-dev-123611-deployment",

@@ -1279,6 +1279,7 @@ export const getPost = /* GraphQL */ `
       owned
       ignoreNotification
       oldCaakId
+      onlyBlogView
       version
       user {
         id
@@ -1515,6 +1516,7 @@ export const getPost = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -1535,6 +1537,7 @@ export const getPost = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -1684,6 +1687,7 @@ export const listPosts = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -1755,6 +1759,7 @@ export const listPosts = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -1817,6 +1822,7 @@ export const getPostByStatus = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -1888,6 +1894,7 @@ export const getPostByStatus = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -1950,6 +1957,7 @@ export const getPostByGroup = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -2021,6 +2029,7 @@ export const getPostByGroup = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2083,6 +2092,7 @@ export const getPostByUser = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -2154,6 +2164,7 @@ export const getPostByUser = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2216,6 +2227,7 @@ export const listPostByOwned = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -2287,6 +2299,7 @@ export const listPostByOwned = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2349,6 +2362,7 @@ export const listPostByTitle = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -2420,6 +2434,142 @@ export const listPostByTitle = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+        }
+        group {
+          id
+          name
+          category_id
+          about
+          founder_id
+          rating
+          followed
+          role_on_group
+          featured
+          g_rules
+          g_attentions
+          aura
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const listPostByOldId = /* GraphQL */ `
+  query ListPostByOldId(
+    $oldCaakId: String
+    $title: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelPostFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPostByOldId(
+      oldCaakId: $oldCaakId
+      title: $title
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        description
+        f_text
+        commentType
+        status
+        user_id
+        updated_user_id
+        group_id
+        category_id
+        reacted
+        isSaved
+        updatedAt
+        createdAt
+        owned
+        ignoreNotification
+        oldCaakId
+        onlyBlogView
+        version
+        user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        updated_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          age
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          employed
+          meta
+          createdAt
+          updatedAt
+        }
+        category {
+          id
+          name
+          pic_id
+          icon
+          createdAt
+          updatedAt
+        }
+        status_history {
+          nextToken
+        }
+        items {
+          nextToken
+        }
+        totals {
+          post_id
+          status
+          search_id
+          group_id
+          category_id
+          search_key
+          reactions
+          total_reactions
+          comments
+          views
+          shares
+          groupAndStatus
+          categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2480,6 +2630,7 @@ export const searchPosts = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -2551,6 +2702,7 @@ export const searchPosts = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2605,6 +2757,7 @@ export const getSavedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -2676,6 +2829,7 @@ export const getSavedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -2733,6 +2887,7 @@ export const listSavedPosts = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -2781,6 +2936,7 @@ export const listSavedPostByUser = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -2902,6 +3058,7 @@ export const getPostItems = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -2973,6 +3130,7 @@ export const getPostItems = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3080,6 +3238,7 @@ export const listPostItemss = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -3114,6 +3273,7 @@ export const getPostTotal = /* GraphQL */ `
       shares
       groupAndStatus
       categoryAndStatus
+      userAndStatus
       createdAt
       updatedAt
       post {
@@ -3134,6 +3294,7 @@ export const getPostTotal = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -3205,6 +3366,7 @@ export const getPostTotal = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3260,6 +3422,7 @@ export const listPostTotals = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3280,6 +3443,7 @@ export const listPostTotals = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -3318,6 +3482,7 @@ export const listPostOrderByReactions = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3338,6 +3503,7 @@ export const listPostOrderByReactions = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -3376,6 +3542,7 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3396,6 +3563,7 @@ export const listPostByGroupOrderByReactions = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -3434,6 +3602,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
         shares
         groupAndStatus
         categoryAndStatus
+        userAndStatus
         createdAt
         updatedAt
         post {
@@ -3454,6 +3623,7 @@ export const listPostByCategoryOrderByReactions = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -3797,6 +3967,7 @@ export const getComment = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -3868,6 +4039,7 @@ export const getComment = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -3939,6 +4111,7 @@ export const getComment = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         totals {
@@ -4061,6 +4234,7 @@ export const listComments = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4182,6 +4356,7 @@ export const listCommentByPostItem = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4303,6 +4478,7 @@ export const getCommentsByPost = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4424,6 +4600,7 @@ export const listCommentsByDateAndType = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4545,6 +4722,7 @@ export const listCommentsByDateAndTypeForItem = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4666,6 +4844,7 @@ export const listCommentByParent = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4787,6 +4966,7 @@ export const listCommentByUser = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -4908,6 +5088,7 @@ export const listCommentsByStatus = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
         post_item {
@@ -5119,6 +5300,7 @@ export const getReportedPost = /* GraphQL */ `
         owned
         ignoreNotification
         oldCaakId
+        onlyBlogView
         version
         user {
           id
@@ -5190,6 +5372,7 @@ export const getReportedPost = /* GraphQL */ `
           shares
           groupAndStatus
           categoryAndStatus
+          userAndStatus
           createdAt
           updatedAt
         }
@@ -5271,6 +5454,7 @@ export const listReportedPosts = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -5343,6 +5527,7 @@ export const listReportedPostByUser = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -5415,6 +5600,7 @@ export const listReportedPostByStatus = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -5487,6 +5673,7 @@ export const listReportedPostOrderByCreatedAt = /* GraphQL */ `
           owned
           ignoreNotification
           oldCaakId
+          onlyBlogView
           version
         }
       }
@@ -7044,10 +7231,11 @@ export const listFeedBackOrderByCreatedAt = /* GraphQL */ `
   }
 `;
 export const getBanner = /* GraphQL */ `
-  query GetBanner($id: ID!, $start_date: AWSDateTime!) {
-    getBanner(id: $id, start_date: $start_date) {
+  query GetBanner($id: ID!) {
+    getBanner(id: $id) {
       id
       type
+      typeName
       title
       pic1_id
       pic2_id
@@ -7095,24 +7283,15 @@ export const getBanner = /* GraphQL */ `
 `;
 export const listBanners = /* GraphQL */ `
   query ListBanners(
-    $id: ID
-    $start_date: ModelStringKeyConditionInput
     $filter: ModelBannerFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listBanners(
-      id: $id
-      start_date: $start_date
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listBanners(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         type
+        typeName
         title
         pic1_id
         pic2_id
@@ -7180,6 +7359,7 @@ export const listBannersByType = /* GraphQL */ `
       items {
         id
         type
+        typeName
         title
         pic1_id
         pic2_id

@@ -29,8 +29,8 @@ exports.handler = async (event) => {
     try{
 
         let jsonFile = []
-        const startIndex = 440
-        let activeIndex = 440
+        const startIndex = 0
+        let activeIndex = 0
 
         const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
@@ -43,7 +43,8 @@ exports.handler = async (event) => {
 
         }
 
-        const maxLegth = jsonFile.length
+        // const maxLegth = jsonFile.length
+        const maxLegth = 1
 
         const nowDate = new Date().toISOString()
 
@@ -56,19 +57,22 @@ exports.handler = async (event) => {
             bar1.update(i);
 
             const post = jsonFile[i]
-            const postItems = post.items
+            const postItems = [...post.items]
+            delete post["items"]
+
 
             post.id = uuidv4()
             post.status = "CONFIRMED"
             post.user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
             post.updated_user_id = "017af4db-0209-4b89-ae19-ad2f29904dc7"
-            post.group_id = "5ecd3b7d-d7fe-40b4-93e5-7946aa026aba"
+            post.group_id = "4def44e3-9961-4502-b60f-61b28743103f"
             post.category_id = "04eb06c0-e868-44c1-9e76-30372d0b2db8"
             post.owned = "CAAK"
             post.ignoreNotification = "TRUE"
             post.__typename = "Post"
             post.commentType = true
             post.version = 1
+            post.onlyBlogView = true
 
 
             const params = {
@@ -79,9 +83,7 @@ exports.handler = async (event) => {
             }
             await docClient.put(params).promise();
 
-
             for(let itemIndex = 0; itemIndex < postItems.length; itemIndex++){
-
                 const item = postItems[itemIndex]
                 const file = item.block_img
                 const provider = item.video_provider !== "NULL" ? item.video_provider : ""
@@ -123,7 +125,7 @@ exports.handler = async (event) => {
                     item.user_id = post.user_id
                     item.file_id = itemfile.id
                     item.order = itemIndex
-                    item.createdAt = post.createdAtx
+                    item.createdAt = post.createdAt
                     item.updatedAt = post.updatedAt
                     item.__typename = "PostItems"
 

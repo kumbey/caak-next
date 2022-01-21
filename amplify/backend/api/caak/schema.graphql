@@ -158,7 +158,8 @@ type Post @model @versioned @searchable
   @key(name: "byGroup", fields:["group_id","createdAt"] , queryField:"getPostByGroup")
   @key(name: "byUser", fields:["user_id","createdAt"] , queryField:"getPostByUser")
   @key(name: "byOwner", fields:["owned","createdAt"] , queryField:"listPostByOwned")
-  @key(name: "byTitle", fields:["status","title"] , queryField:"listPostByTitle"){
+  @key(name: "byTitle", fields:["status","title"] , queryField:"listPostByTitle")
+  @key(name: "byOldId", fields:["oldCaakId","title"] , queryField:"listPostByOldId"){
   id: ID!
   title: String!
   description: String
@@ -184,6 +185,7 @@ type Post @model @versioned @searchable
   owned: String
   ignoreNotification: String
   oldCaakId: String
+  onlyBlogView: String
 }
 
 type SavedPost @model 
@@ -258,6 +260,7 @@ type PostTotal @model(mutations: null)
   shares: Int!
   groupAndStatus: String
   categoryAndStatus: String
+  userAndStatus: String
 }
 
 type PostItemsTotal @model(mutations: null)
@@ -485,24 +488,24 @@ type FeedBack @model
     createdAt: String!
 }
 
-# type Banner @model
-#   @auth(rules: [
-#     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
-#     { allow: public, provider: iam, operations: [read]}
-#   ])
-#   @key(name: "byType", fields:["type","start_date"], queryField:"listBannersByType"){
-#     id: ID!
-#     type: String!
-#     typeName: String!
-#     title: String!
-#     pic1_id: ID
-#     pic1: File @connection(fields:["pic1_id"])
-#     pic2_id: ID
-#     pic2: File @connection(fields:["pic2_id"])
-#     start_date: AWSDateTime!
-#     end_date: AWSDateTime!
-#     meta: String
-# }
+type Banner @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byType", fields:["type","start_date"], queryField:"listBannersByType"){
+    id: ID!
+    type: String!
+    typeName: String!
+    title: String!
+    pic1_id: ID
+    pic1: File @connection(fields:["pic1_id"])
+    pic2_id: ID
+    pic2: File @connection(fields:["pic2_id"])
+    start_date: AWSDateTime!
+    end_date: AWSDateTime!
+    meta: String
+}
 
 
 

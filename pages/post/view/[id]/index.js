@@ -368,7 +368,7 @@ const Post = ({ ssrData }) => {
                 {post.onlyBlogView === "TRUE" ? (
                   <div
                     className={
-                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                     }
                     dangerouslySetInnerHTML={{
                       __html: decode(post.items.items[0].title),
@@ -377,7 +377,7 @@ const Post = ({ ssrData }) => {
                 ) : (
                   <p
                     className={
-                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[10px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                     }
                   >
                     {decode(post.items.items[0].title)}

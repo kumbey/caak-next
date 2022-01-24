@@ -1,21 +1,21 @@
 import Button from "../button";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {createComment} from "../../graphql-custom/comment/mutation";
-import {useUser} from "../../context/userContext";
-import {useRouter} from "next/router";
-import {getFileUrl, getGenderImage} from "../../utility/Util";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { createComment } from "../../graphql-custom/comment/mutation";
+import { useUser } from "../../context/userContext";
+import { useRouter } from "next/router";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
 import Image from "next/image";
 
 const ViewPostBlogAddComment = ({
-                                  postId,
-                                  comments,
-                                  replyUserId,
-                                  commentInputValue,
-                                  setCommentInputValue,
-                                  setIsActive,
-                                  reply,
+  postId,
+  comments,
+  replyUserId,
+  commentInputValue,
+  setCommentInputValue,
+  setIsActive,
+  reply,
   inputClassname,
   containerClassname,
   rootContainerClassname,
@@ -53,7 +53,7 @@ const ViewPostBlogAddComment = ({
             })
           );
           setInputValue("");
-
+          setIsActive && setIsActive(false);
           // comments.push(getReturnData(resp, false));
         } else {
           router.push(
@@ -63,7 +63,7 @@ const ViewPostBlogAddComment = ({
                 ...router.query,
                 signInUp: "signIn",
                 isModal: true,
-                prevPath: router.asPath
+                prevPath: router.asPath,
               },
             },
             `/signInUp/signIn`,
@@ -72,6 +72,7 @@ const ViewPostBlogAddComment = ({
         }
         setLoading(false);
       } catch (ex) {
+        setLoading(false);
         console.log(ex);
       }
     }
@@ -160,10 +161,15 @@ const ViewPostBlogAddComment = ({
           }
         >
           {reply.isReplying && (
-            <div className={"cursor-pointer"} onClick={()=> {
-              setIsActive(false)
-            }}>
-              <p className={"font-medium text-[14px] text-caak-scriptink"}>Болих</p>
+            <div
+              className={"cursor-pointer"}
+              onClick={() => {
+                setIsActive(false);
+              }}
+            >
+              <p className={"font-medium text-[14px] text-caak-scriptink"}>
+                Болих
+              </p>
             </div>
           )}
 

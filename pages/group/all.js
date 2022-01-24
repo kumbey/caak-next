@@ -190,14 +190,12 @@ export default function AllGroups() {
                 <div
                   style={{
                     gridGap: "24px",
-                    gridTemplateColumns: `repeat(auto-fill, minmax(${
-                      width > 1248 ? "280px" : "260px"
-                    }, 1fr))`,
+                    gridTemplateColumns: `repeat(auto-fill, minmax(280px, 1fr))`,
                   }}
                   className={"groupCardsGrid"}
                 >
                   {groups.map((data, index) => {
-                    return <SearchCardGroup key={index} result={data} />;
+                    return <SearchCardGroup all key={index} result={data} />;
                   })}
                 </div>
               )}

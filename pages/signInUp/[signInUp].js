@@ -299,7 +299,7 @@ const SignInUp = () => {
             }}
             shallow
           >
-            <a>
+            <a target="_blank" rel="noopener noreferrer">
               <span className="text-caak-generalblack">
                 Үйлчилгээний нөхцөл
               </span>{" "}
@@ -316,7 +316,7 @@ const SignInUp = () => {
             }}
             shallow
           >
-            <a>
+            <a target="_blank" rel="noopener noreferrer">
               <span className="text-caak-generalblack">Нууцлалын бодлогыг</span>{" "}
             </a>
           </Link>

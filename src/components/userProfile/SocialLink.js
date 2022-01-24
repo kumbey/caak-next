@@ -92,8 +92,7 @@ export default function SocialLink() {
 
   return (
     <div className="flex flex-col mx-[30px]">
-      <p
-        className="font-semibold text-caak-aleutian font-inter text-22px"
+      <p className="font-semibold text-[#21293C] text-22px"
         style={{
           marginTop: "30px",
           fontSize: "24px",

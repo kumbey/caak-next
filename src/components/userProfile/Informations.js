@@ -114,7 +114,7 @@ export default function Informations({ currentUser }) {
 
   return (
     <div className="flex flex-col mt-[30px] mb-[70px] mx-[30px]">
-      <p className="font-semibold text-caak-aleutian font-inter text-22px mb-[10px]">
+      <p className="font-semibold text-[#21293C] text-22px mb-[10px]">
         Хувийн мэдээлэл
       </p>
       {settings.map((setting, index) => {

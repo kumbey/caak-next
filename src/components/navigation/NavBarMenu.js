@@ -53,7 +53,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
                     <p className="text-15px text-[#21293C] font-semibold">
                       @{user.nickname}
                     </p>
-                    <p className="text-[#6C7392] font-[13px]">Миний профайл</p>
+                    <p className="text-[#6C7392] text-[13px]">Миний профайл</p>
                   </div>
                 </div>
               </a>
@@ -151,6 +151,18 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
               </div>
             </a>
           </Link>
+          <Link href={`/group/all`}>
+          <a>
+            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+              <span
+                className={
+                  "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                }
+              />
+              <p className="text-14px text-caak-extraBlack">Бүх групп</p>
+            </div>
+          </a>
+        </Link>
         </Fragment>
       )}
       {isLogged && <Divider className={"my-2"} />}
@@ -166,18 +178,23 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
           </div>
         </a>
       </Link>
-      <Link href={`/group/all`}>
-        <a>
-          <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-            <span
-              className={
-                "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
-              }
-            />
-            <p className="text-14px text-caak-extraBlack">Бүх групп</p>
-          </div>
-        </a>
-      </Link>
+      {
+        isLogged 
+        ? null
+        : 
+        <Link href={`/group/all`}>
+          <a>
+            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+              <span
+                className={
+                  "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                }
+              />
+              <p className="text-14px text-caak-extraBlack">Бүх групп</p>
+            </div>
+          </a>
+        </Link>
+      }
       <Link href={`/help`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">

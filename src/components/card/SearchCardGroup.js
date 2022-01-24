@@ -16,7 +16,7 @@ import GroupMoreMenu from "./GroupMoreMenu";
 import Link from "next/link";
 import LeaveGroup from "../group/LeaveGroup";
 
-const SearchCardGroup = ({ result, sortType }) => {
+const SearchCardGroup = ({ result, sortType, all }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [forceRender, setForceRender] = useState(0);
@@ -33,8 +33,8 @@ const SearchCardGroup = ({ result, sortType }) => {
   });
 
   const followGroup = async () => {
+    setLoading(true)
     try {
-      setLoading(true);
       if (result.followed) {
         setOpen(true)
         // await API.graphql(
@@ -60,11 +60,12 @@ const SearchCardGroup = ({ result, sortType }) => {
         );
         result.followed = true;
         result.totals.member += 1;
-        setForceRender(forceRender + 1);
+        setLoading(false)
+
+        // setForceRender(forceRender + 1);
       }
-      setLoading(false);
     } catch (ex) {
-      setLoading(false);
+      setLoading(false)
       console.log(ex);
     }
   };
@@ -91,7 +92,7 @@ const SearchCardGroup = ({ result, sortType }) => {
   return sortType !== "DEFAULT" ? (
     <div
       className={
-        "bg-white flex flex-col w-full rounded-square relative"
+        `bg-white flex flex-col w-full sm:${all ? 'w-[280px]' : ''} rounded-square relative`
       }
     >
       {isLogged && (
@@ -101,7 +102,7 @@ const SearchCardGroup = ({ result, sortType }) => {
           userId={user.id}
         />
       )}
-      <LeaveGroup open={open} setOpen={setOpen} groupData={result} setForceRender={setForceRender} forceRender={forceRender}/>
+      <LeaveGroup setLoading={setLoading} open={open} setOpen={setOpen} groupData={result} setForceRender={setForceRender} forceRender={forceRender}/>
       <div className={"w-full h-[74px]"}>
         {/* <div
           className={
@@ -125,15 +126,13 @@ const SearchCardGroup = ({ result, sortType }) => {
         </div> */}
         <div className={"relative w-full h-full"}>
           <img
-            className={"rounded-t-square object-cover w-full h-[74px]"}
+            className={`rounded-t-square object-cover w-full ${all ? 'h-[74px]' : 'h-58px'}`}
             alt={""}
             src={
               result.cover
                 ? getFileUrl(result.cover)
                 : getGenderImage("default").src
             }
-            width={300}
-            height={58}
           />
         </div>
       </div>
@@ -162,8 +161,8 @@ const SearchCardGroup = ({ result, sortType }) => {
             </div>
           </a>
         </Link>
-        <div className={"flex flex-col mt-[20px]"}>
-          <div className={"mt-[12px] flex flex-row items-center"}>
+        <div className={"flex flex-col"}>
+          <div className={"mt-[32px] flex flex-row items-center"}>
             <Link href={`/group/${result.id}`}>
               <a>
                 <p
@@ -188,13 +187,13 @@ const SearchCardGroup = ({ result, sortType }) => {
           </div>
           <div className={"flex flex-row mt-[12px]"}>
             <div className={"flex flex-row items-center"}>
-              <p className={"font-medium text-caak-generalblack text-[17px]"}>
+              <p className={"font-medium text-caak-darkBlue text-[15px]"}>
                 {result.aura ? result.aura : 0}
               </p>
               <p className={"text-[14px] text-caak-darkBlue ml-[5px]"}>Аура</p>
             </div>
             <div className={"flex flex-row items-center ml-[24px]"}>
-              <p className={"font-medium text-caak-generalblack text-[17px]"}>
+              <p className={"font-medium text-caak-darkBlue text-[15px]"}>
                 {result.totals.member + result.totals.admin + result.totals.moderator}
               </p>
               <p className={"text-[14px] text-caak-darkBlue ml-[5px]"}>
@@ -216,14 +215,15 @@ const SearchCardGroup = ({ result, sortType }) => {
           <p className={"text-[14px]"}>Нээлттэй групп</p>
         </div>
       </div>
+      <div className="flex justify-center mt-[14px]">
       <Button
+      loading={loading}
         onClick={handleFollow}
-        iconPosition={"left"}
-        loading={loading}
-        className={`${result.followed ? 'bg-[#E4E4E5] text-[#21293C]' : 'bg-[#FF6600] text-white'} h-[36px] self-center rounded-[6px] m-[16px] w-[248px] uppercase font-semibold text-[12px] tracking-[0.18px] leading-[15px]`}
+        className={`${result.followed ? 'bg-white border border-[#E8E8E8] text-[#9A9FB4]' : 'bg-[#E4E4E5] text-[#21293C]'} h-[36px] self-center rounded-[6px] m-[16px] w-full font-medium text-[16px]`}
       >
-        {result.followed ? `Нэгдсэн` : `Нэгдэх`}
+        {result.followed ? `Нэгдсэн` : 'Нэгдэх'}
       </Button>
+      </div>
     </div>
   ) : (
     <div

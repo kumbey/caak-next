@@ -1,8 +1,10 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import image404 from "../public/assets/images/500/Connection-Lost.gif";
 import Button from "../src/components/button";
 
 export default function Error() {
+  const router = useRouter()
   return (
     <>
       <Head>

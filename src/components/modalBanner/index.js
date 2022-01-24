@@ -50,7 +50,7 @@ export default function ModalBanner({bannerOpen, setBannerOpen}) {
     return (
         bannerOpen && meta
         ?
-        <div className="sticky top-[80px] sm:bottom-[50px] left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px]">
+        <div className="sticky bottom-2/3 sm:top-[80px] sm:bottom-[50px] left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px]">
             {
                 modal
                 ?

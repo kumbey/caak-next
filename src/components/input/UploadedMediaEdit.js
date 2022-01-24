@@ -189,15 +189,12 @@ const UploadedMediaEdit = ({
     const popIndex = post.items.findIndex((_, index) => index === index_arg);
     const postsArr = post.items;
     postsArr.splice(popIndex, 1);
-    //Updating item id after removing item from array
-    postsArr.map((item, index) => {
-      item.id = index + 1;
-    });
 
     setPost((prev) => ({
       ...prev,
       items: postsArr,
     }));
+    setIsEditing(true)
   };
 
   const featuredPostHandler = (index) => {

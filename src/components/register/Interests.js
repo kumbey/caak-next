@@ -89,25 +89,23 @@ export default function Interests() {
       </div>
 
       <SimpleBar style={{ maxHeight: "50vh" }}>
-        <div className="px-[36px] py-[28px] interestsContainer justify-center items-center">
+        <div className="px-[16px] md:px-[36px] py-[28px] interestsContainer justify-center items-center">
           {categories.map((data, index) => {
             return (
               <div
                 key={index}
                 onClick={() => selectHandler(data.id)}
-                className={`relative w-full h-[170px] flex items-center justify-center rounded-[8px]  cursor-pointer`}
+                className={`relative flex items-center justify-center h-full max-h-[170px] min-h-[108px] rounded-[8px] cursor-pointer`}
               >
                 <div
-                  className={`${
-                    selected.find((item) => item === data.id)
-                      ? "border-[3px] border-caak-primary"
-                      : ""
-                  } flex items-center rounded-[8px] border w-full h-full transition-all duration-300 justify-center group hover:scale-[0.97] transition-all duration-300 `}
+                  className={`flex items-center rounded-[8px] w-full h-full justify-center group `}
                 >
                   <img
-                    className={
-                      "group-hover:brightness-75 rounded-[8px] transition-all duration-300 w-full h-full object-cover"
-                    }
+                    className={`${
+                      selected.find((item) => item === data.id)
+                        ? "border-[3px] border-caak-primary h-[calc(100%-6px)] w-[calc(100%-6px)]"
+                        : ""
+                    } group-hover:w-[calc(100%-6px)] group-hover:h-[calc(100%-6px)] border-outer group-hover:brightness-75 transition-all duration-100 rounded-[6px] object-cover w-full h-full`}
                     alt={""}
                     src={
                       data?.picture
@@ -128,13 +126,14 @@ export default function Interests() {
                       />
                     </div>
                   )}
-                  <div className={"absolute bottom-[10px] left-[14px]"}>
-                    <span className={`mr-1.5 text-18px`}>{data.icon}</span>
+                  <div
+                    className={"absolute bottom-[10px] left-[14px] pr-[14px]"}
+                  >
                     <p
                       style={{
                         textShadow: "0px 3px 4px #0000004D",
                       }}
-                      className="text-white text-[16px] font-semibold tracking-[0.24px] leading-[19px]"
+                      className="text-white text-[16px] font-semibold tracking-[0.24px] leading-[19px] break-all"
                     >
                       {data.name}
                     </p>

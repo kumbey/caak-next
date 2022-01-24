@@ -154,6 +154,7 @@ const CommentCardNew = ({
             >
               <div className={"mt-[12px]"}>
                 <CommentSubItemCard
+                  postId={setup.id}
                   jumpToCommentId={jumpToCommentId}
                   addCommentRef={addCommentRef}
                   parentId={comment.id}

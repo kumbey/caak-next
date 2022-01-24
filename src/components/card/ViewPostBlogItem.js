@@ -160,7 +160,7 @@ const ViewPostBlogItem = ({
               "font-bold text-caak-generalblack text-[16px] mb-[5px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
             }
           >
-            {decode(postItem.description)}
+            {`${postItem.display_number && postItem.display_number > 0 && postItem.display_number}. ${decode(postItem.description)}`}
           </p>
         )}
         {onlyBlogView ? (

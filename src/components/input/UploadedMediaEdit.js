@@ -150,6 +150,8 @@ const UploadedMediaEdit = ({
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] =
+    useState(false);
   const [allowComment, setAllowComment] = useState(
     post?.commentType ? post.commentType : false
   );
@@ -189,15 +191,12 @@ const UploadedMediaEdit = ({
     const popIndex = post.items.findIndex((_, index) => index === index_arg);
     const postsArr = post.items;
     postsArr.splice(popIndex, 1);
-    //Updating item id after removing item from array
-    postsArr.map((item, index) => {
-      item.id = index + 1;
-    });
 
     setPost((prev) => ({
       ...prev,
       items: postsArr,
     }));
+    setIsEditing(true);
   };
 
   const featuredPostHandler = (index) => {
@@ -412,7 +411,7 @@ const UploadedMediaEdit = ({
               }}
               value={post.description}
               init={{
-                extended_valid_elements: 'p[class=tinymce-p]',
+                extended_valid_elements: "p[class=tinymce-p]",
                 height: 200,
                 menubar: false,
                 plugins: [
@@ -491,7 +490,9 @@ const UploadedMediaEdit = ({
       <div
         className={`relative border-caak-titaniumwhite ${
           post ? "" : "border-dashed"
-        } border  rounded-[3px] p-[12px] mb-[32px] mx-[18px] mt-[22px]`}
+        } ${
+          isImageCaptionSectionVisible ? "pb-0 md:pb-[50px]" : "pb-[12px]"
+        } border rounded-[3px] p-[12px] mx-[18px] mt-[22px]`}
       >
         {loading && (
           <div
@@ -551,7 +552,11 @@ const UploadedMediaEdit = ({
             ) : null}
           </DragOverlay>
         </DndContext>
-        <div className={"flex flex-col sm:flex-row sm:h-[300px] mt-[20px]"}>
+        <div
+          className={`${
+            isImageCaptionSectionVisible ? "" : "hidden"
+          } flex flex-col sm:flex-row sm:h-[300px] mt-[20px]`}
+        >
           <div
             style={{ flexBasis: `300px` }}
             className={
@@ -583,9 +588,12 @@ const UploadedMediaEdit = ({
           >
             <div className={"w-full h-full relative"}>
               <div
-                className={"flex flex-col w-full h-full h-[200px] md:h-full"}
+                className={"flex flex-col w-full h-full"}
               >
                 {post.onlyBlogView === "TRUE" ? (
+                  <div
+                    className={"flex flex-col w-full h-full h-[200px] md:h-full"}
+                  >
                   <Editor
                     apiKey={"d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"}
                     onInit={(evt, editor) => (editorRef.current = editor)}
@@ -595,7 +603,7 @@ const UploadedMediaEdit = ({
                     }}
                     value={post.items[activeIndex].title}
                     init={{
-                      extended_valid_elements: 'p[class=tinymce-p]',
+                      extended_valid_elements: "p[class=tinymce-p]",
                       height: "100%",
                       menubar: false,
                       plugins: [
@@ -608,45 +616,66 @@ const UploadedMediaEdit = ({
                         "undo redo",
                     }}
                   />
+                  </div>
                 ) : (
-                  <div>
-                    <textarea
-                      placeholder={"Зурагны тайлбар"}
-                      // style={{ resize: "none" }}
-                      onChange={(e) => captionHandler({ value: e })}
-                      value={post.items[activeIndex].title}
-                      maxLength={maxLengths.imageDescription}
-                      className={`addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] pr-[38px] border-caak-titaniumwhite p-[18px]  focus:ring-2 focus:ring-opacity-20    ${
-                        post.items[activeIndex].title?.length ===
-                        maxLengths.imageDescription
-                          ? "ring-caak-red border-caak-red"
-                          : "focus:ring-caak-primary focus:border-caak-primary"
-                      }`}
-                    />
-                    <span
-                      className={
-                        "absolute bottom-[12px] right-[12px] text-[12px] text-caak-darkBlue"
-                      }
-                    >
+                  <>
+                    <div>
+                      <textarea
+                        placeholder={"Зурагны тайлбар"}
+                        // style={{ resize: "none" }}
+                        onChange={(e) => captionHandler({ value: e })}
+                        value={post.items[activeIndex].title}
+                        maxLength={maxLengths.imageDescription}
+                        className={`addPostTextarea md:resize-none w-full max-h-[200px] md:h-full md:max-h-[100%] md:h-[300px] rounded-[3px] border-[1px] border-caak-titaniumwhite p-[18px]  focus:ring-2 focus:ring-opacity-20    ${
+                          post.items[activeIndex].title?.length ===
+                          maxLengths.imageDescription
+                            ? "ring-caak-red border-caak-red"
+                            : "focus:ring-caak-primary focus:border-caak-primary"
+                        }`}
+                      />
+                    </div>
+                    <span className={"text-[12px] self-end text-caak-darkBlue"}>
                       {post.items[activeIndex]?.title?.length || 0}/
                       {maxLengths.imageDescription}
                     </span>
-                  </div>
+                    <div className="flex justify-end items-end]">
+                      {post.items[activeIndex].title?.length ===
+                      maxLengths.imageDescription ? (
+                        <p className={"text-[13px] text-caak-red"}>
+                          Текстийн хэмжээ {maxLengths.imageDescription} тэмдэгтээс
+                          хэтэрсэн байна
+                        </p>
+                      ) : null}
+                    </div>
+                  </>
                 )}
               </div>
             </div>
 
-            <div className="flex justify-end mt-[14px]">
-              {post.items[activeIndex].title?.length ===
-              maxLengths.imageDescription ? (
-                <p className={"text-[13px] text-caak-red"}>
-                  Текстийн хэмжээ {maxLengths.imageDescription} тэмдэгтээс
-                  хэтэрсэн байна
-                </p>
-              ) : null}
-            </div>
+
           </div>
         </div>
+      </div>
+      <div
+        onClick={() =>
+          setIsImageCaptionSectionVisible(!isImageCaptionSectionVisible)
+        }
+        className={`flex flex-row items-center mb-[32px] mt-[6px] mx-[18px] ${
+          isImageCaptionSectionVisible
+            ? "text-caak-generalblack"
+            : "text-caak-primary"
+        }  justify-end cursor-pointer`}
+      >
+        <div className={"flex items-center justify-center w-[14px] h-[14px]"}>
+          <span
+            className={`${
+              isImageCaptionSectionVisible
+                ? "icon-fi-rs-minus"
+                : "icon-fi-rs-add-l "
+            } text-[9.33px]`}
+          />
+        </div>
+        <p className={"text-[13px]"}>Зургийн тайлбар</p>
       </div>
       <div
         className={
@@ -674,7 +703,7 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
-          {!isSuperAdmin && (
+          {isSuperAdmin && (
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>
                 Бизнес мэдээ

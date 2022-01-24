@@ -365,8 +365,6 @@ const EditPost = ({ ssrData }) => {
                   loading={loading}
                   disabled={
                     !isEditing ||
-                    !post.title ||
-                    post.items.length <= 0 ||
                     !selectedGroup ||
                     loading
                   }

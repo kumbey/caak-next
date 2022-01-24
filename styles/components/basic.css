@@ -351,6 +351,11 @@
     grid-gap: 12px;
   }
 
+  .border-outer {
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+  }
   .groupsSelectContainer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(269px, 1fr));
@@ -409,13 +414,18 @@
     margin-right: auto;
   }
 
-  .bounce_banner{
+  .bounce_banner {
     animation: bounce_banner 1s ease infinite;
   }
 
   @keyframes bounce_banner {
-    0%, 100% {transform: translateY(0);}
-    50% {transform: translateY(-4px);}
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
   }
 
   .leftSideBar {
@@ -503,6 +513,12 @@
 
     .addPostImageCaptionContainer {
       flex-basis: auto;
+    }
+
+    .interestsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(107px, 1fr));
+      grid-gap: 10px;
     }
   }
 
@@ -615,7 +631,7 @@
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
-  .popup_modal-banner{
+  .popup_modal-banner {
     max-width: 500px;
     max-height: 500px;
     margin: 70px auto;
@@ -703,7 +719,8 @@
   }
 
   .feedbackIconBackground {
-    background: transparent linear-gradient(180deg, #3F70FE 0%, #9A99FE 100%) 0 0 no-repeat padding-box;
+    background: transparent linear-gradient(180deg, #3f70fe 0%, #9a99fe 100%) 0
+      0 no-repeat padding-box;
   }
 
   .custom-img {
@@ -785,19 +802,23 @@
     scrollbar-gutter: stable both-edges;
   }
 
-  input[type=range][orient=vertical] {
+  input[type="range"][orient="vertical"] {
     writing-mode: bt-lr; /* IE */
     -webkit-appearance: slider-vertical; /* WebKit */
     width: 4px;
     height: 60px;
     border-radius: 2px;
   }
-  .tinymce-p a:link { color: #0000EE; }
-  .tinymce-p a:visited { color: #551A8B; }
+  .tinymce-p a:link {
+    color: #0000ee;
+  }
+  .tinymce-p a:visited {
+    color: #551a8b;
+  }
 
   .youtube-player-wrapper {
     position: relative;
-    padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
+    padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
   }
 
   .youtube-player-wrapper .react-player {
@@ -806,13 +827,12 @@
     left: 0;
   }
   .youtube-player-wrapper .react-player > div {
-    position: absolute
+    position: absolute;
   }
   .youtube-player-wrapper .react-player video {
     position: absolute;
     object-fit: fill;
   }
-
 }
 
 .react-player {

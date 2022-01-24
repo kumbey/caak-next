@@ -115,13 +115,15 @@ export default function ProfileHoverCard({ userId }) {
         </div>
         <div className={"ml-[10px]"}>
           <div className={"flex flex-row self-start"}>
-            <p
-              className={
-                "font-bold text-caak-generalblack text-[16px] tracking-[0.24px] leading-[19px]"
-              }
-            >
-              {profileUser.nickname}
-            </p>
+            <a href={`/user/${profileUser.id}/profile`}>
+              <p
+                className={
+                  "font-bold text-caak-generalblack text-[16px] tracking-[0.24px] leading-[19px]"
+                }
+              >
+                {profileUser.nickname}
+              </p>
+            </a>
             {profileUser.verified && (
               <div
                 className={"flex items-center justify-center w-[17px] h-[17px]"}

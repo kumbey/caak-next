@@ -6,6 +6,7 @@ import { useWrapper } from "../../context/wrapperContext";
 import { useInView } from "react-intersection-observer";
 import { useUser } from "../../context/userContext";
 import Tooltip from "../tooltip/Tooltip";
+import Loader from "../loader";
 
 const dblTouchTapMaxDelay = 300;
 let latestTouchTap = {
@@ -44,6 +45,7 @@ const Video = ({
   ...props
 }) => {
   const { user, isLogged } = useUser();
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAutoPlayEnabled] = useState(
     typeof initialAutoPlay === "boolean"
@@ -65,7 +67,7 @@ const Video = ({
   const [seeking, setSeeking] = useState(false);
   const canvasRef = useRef();
   const { currentPlayingVideoId, setCurrentPlayingVideoId } = useWrapper();
-  const [ref, inView, entry] = useInView({
+  const [ref, inView] = useInView({
     threshold: 0.5,
   });
 
@@ -119,21 +121,22 @@ const Video = ({
   useEffect(() => {
     if (inView) {
       setLoaded(true);
-      if (videoRef.current.player.isReady) {
-        const windowHeight = window.innerHeight;
-        const thisVideoEl = videoRef.current.player.player.player,
-          videoHeight = thisVideoEl.clientHeight,
-          videoClientRect = thisVideoEl.getBoundingClientRect().top;
-        if (
-          videoClientRect <= windowHeight - videoHeight * 0.5 &&
-          videoClientRect >= 0 - videoHeight * 0.5
-        ) {
-          setIsPlaying(isAutoPlayEnabled);
-          setCurrentPlayingVideoId(videoFileId);
-        } else {
-          setIsPlaying(false);
+      if (videoRef.current)
+        if (videoRef.current.player.isReady) {
+          const windowHeight = window.innerHeight;
+          const thisVideoEl = videoRef.current.player.player.player,
+            videoHeight = thisVideoEl.clientHeight,
+            videoClientRect = thisVideoEl.getBoundingClientRect().top;
+          if (
+            videoClientRect <= windowHeight - videoHeight * 0.5 &&
+            videoClientRect >= 0 - videoHeight * 0.5
+          ) {
+            setIsPlaying(isAutoPlayEnabled);
+            setCurrentPlayingVideoId(videoFileId);
+          } else {
+            setIsPlaying(false);
+          }
         }
-      }
       // setIsPlaying(isAutoPlayEnabled);
       // setIsMuted(isAutoPlayEnabled);
       setCurrentPlayingVideoId(videoFileId);
@@ -222,7 +225,11 @@ const Video = ({
                   query: {
                     ...router.query,
                     ...(postItemId
-                      ? { viewItemPost: "postItem", itemId: postItemId, itemIndex: itemIndex }
+                      ? {
+                          viewItemPost: "postItem",
+                          itemId: postItemId,
+                          itemIndex: itemIndex,
+                        }
                       : { viewPost: "post" }),
                     id: postId,
                     prevPath: router.asPath,
@@ -253,6 +260,7 @@ const Video = ({
               setIsPlaying(false);
             }}
             onReady={(e) => {
+              setIsVideoLoaded(true);
               if (canvasRef.current && videoRef.current) {
                 canvasRef.current.width =
                   videoRef.current.player.player.player.videoWidth;
@@ -279,19 +287,33 @@ const Video = ({
         ) : null}
 
         {!smallIndicator && !isPlaying && (
-          <div
-            onClick={() => {
-              !disableOnClick && setIsPlaying(true);
-            }}
-            className={
-              "cursor-pointer flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#0000004D] border-[2px] border-white absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"
-            }
-          >
-            <div className={"w-[28px] h-[28px] flex items-center justify-end"}>
-              <span
-                className={"icon-fi-rs-play-button text-[23px] text-white"}
-              />
-            </div>
+          <div>
+            {isVideoLoaded ? (
+              <div
+                onClick={() => {
+                  !disableOnClick && setIsPlaying(true);
+                }}
+                className={
+                  "cursor-pointer flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#0000004D] border-[2px] border-white absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"
+                }
+              >
+                <div
+                  className={"w-[28px] h-[28px] flex items-center justify-end"}
+                >
+                  <span
+                    className={"icon-fi-rs-play-button text-[23px] text-white"}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div
+                className={
+                  "absolute top-0 left-0 flex items-center justify-center w-full h-full"
+                }
+              >
+                <Loader className={"bg-caak-primary"} />
+              </div>
+            )}
           </div>
         )}
 
@@ -306,7 +328,7 @@ const Video = ({
             />
           </div>
         )}
-        {durationIndicator && (
+        {durationIndicator && isVideoLoaded && (
           <ItemsCounterCard
             containerClassname={"right-[10px]"}
             duration={videoDuration}

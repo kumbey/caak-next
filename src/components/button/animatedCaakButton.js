@@ -14,6 +14,7 @@ import {
 } from "../../graphql-custom/reaction/subscriptions";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
+import { getReactions } from "../../graphql/queries";
 
 const AnimatedCaakButton = ({
   disableOnClick,
@@ -100,28 +101,6 @@ const AnimatedCaakButton = ({
       });
     }
   };
-
-  useUpdateEffect(() => {
-    totals.reactions = subscripTotal;
-    setRender(render + 1);
-  }, [subscripTotal]);
-
-  useEffect(() => {
-    subscrip();
-
-    return () => {
-      Object.keys(subscriptions).map((key) => {
-        subscriptions[key].unsubscribe();
-        return true;
-      });
-    };
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    initReacted.current = reacted;
-    setIsReacted(reacted);
-  }, [reacted]);
 
   const animate = () => {
     // Button begins to shake
@@ -218,6 +197,51 @@ const AnimatedCaakButton = ({
       console.log(ex);
     }
   };
+
+  const getIsReacted = async () => {
+    try {
+      let resp = await API.graphql({
+        query: getReactions,
+        variables: { id: `${itemId}#${user.id}` },
+      });
+      resp = getReturnData(resp);
+      if (resp) {
+        setReacted(true);
+        setIsReacted(true);
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  useUpdateEffect(() => {
+    totals.reactions = subscripTotal;
+    setRender(render + 1);
+  }, [subscripTotal]);
+
+  useEffect(() => {
+    subscrip();
+
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    initReacted.current = reacted;
+    setIsReacted(reacted);
+  }, [reacted]);
+
+  useUpdateEffect(() => {
+    if (isLogged) {
+      getIsReacted();
+    }
+  }, [isLogged]);
+
   return (
     <div
       className={`flex ${bottomTotals ? "flex-col" : "flex-row"} items-center`}

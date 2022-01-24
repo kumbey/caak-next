@@ -64,13 +64,13 @@ export default function Settings() {
               }
             />
             <div className="flex-row flex items-center">
-              <p
+              {/* <p
                 style={{ marginRight: "8px" }}
-                className=" text-22px font-inter  font-semibold"
+                className=" text-[22px] font-semibold"
               >
                 {user.firstname}
-              </p>
-              <p className="text-18px">@{user.nickname}</p>
+              </p> */}
+              <p className="text-[22px] font-semibold">@{user.nickname}</p>
             </div>
           </div>
           <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
@@ -92,14 +92,14 @@ export default function Settings() {
                       style={{ marginRight: "3px" }}
                       className={`${icon} text-24px`}
                     />
-                    <p className="text-17px ml-px-10 font-medium">{title}</p>
+                    <p className="text-[16px] ml-px-10 font-medium">{title}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div
               style={{ marginTop: "24px" }}
-              className="md:ml-c11 sm:ml-0 mb-c11 bg-white rounded-lg settingsDiv"
+              className="md:ml-c11 sm:ml-0 mb-c11 bg-white drop-shadow rounded-lg settingsDiv"
             >
               {activeIndex === 1 ? (
                 <Informations currentUser={user} />

@@ -49,7 +49,7 @@ export default function Banner() {
               setMeta(data);
         };
         fetch()
-    }, [])
+    }, [now])
 
   return (
     meta 

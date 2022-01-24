@@ -51,7 +51,7 @@ export default function ModalBanner({bannerOpen, setBannerOpen}) {
             setMeta(data);
         };
         fetch()
-    }, [])
+    }, [now])
 
     const toggleHover = () =>{
         setHover(!hover)

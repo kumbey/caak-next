@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { API } from 'aws-amplify';
 import { getFileUrl } from '../../utility/Util';
-import { listBannersByType } from '../../graphql/queries';
+import { listBannersByType, listBannersByTypeOrderByEndDate } from '../../graphql/queries';
 
 export default function ModalBanner({bannerOpen, setBannerOpen}) {
     const [modal, setModal] = useState(false)
@@ -10,26 +10,48 @@ export default function ModalBanner({bannerOpen, setBannerOpen}) {
     const [hover, setHover] = useState(false)
     const [swap, setSwap] = useState(false)
 
-    const fetchBanners = async () => {
-        const resp = await API.graphql({
-            query: listBannersByType,
-            variables: {
-              type: 'A1',
+    // const fetchBanners = async () => {
+    //     const resp = await API.graphql({
+    //         query: listBannersByType,
+    //         variables: {
+    //           type: 'A1',
               
-            }, 
-            authMode: 'AWS_IAM'
-          });
+    //         }, 
+    //         authMode: 'AWS_IAM'
+    //       });
 
-        const number = Math.floor(Math.random() * resp.data.listBannersByType.items.length)
+    //     const number = Math.floor(Math.random() * resp.data.listBannersByType.items.length)
 
-        setBanner(resp.data.listBannersByType.items[number])
-        const data = JSON.parse(resp.data.listBannersByType.items[number].meta);
-        setMeta(data);
-    };
+    //     setBanner(resp.data.listBannersByType.items[number])
+    //     const data = JSON.parse(resp.data.listBannersByType.items[number].meta);
+    //     setMeta(data);
+    // };
+    
+    // useEffect(() => {
+    //     fetchBanners()
+    // },[])
+
+    const date = new Date()
+    const now = date.toISOString()
 
     useEffect(() => {
-        fetchBanners()
-    },[])
+        const fetch = async () => {
+            const resp = await API.graphql({
+                query: listBannersByTypeOrderByEndDate,
+                variables: {
+                  type: 'A1',
+                  end_date: {gt: now}
+                }, 
+                authMode: 'AWS_IAM'
+              });
+              const number = Math.floor(Math.random() * resp.data.listBannersByTypeOrderByEndDate.items.length)
+
+            setBanner(resp.data.listBannersByTypeOrderByEndDate.items[number])
+            const data = JSON.parse(resp.data.listBannersByTypeOrderByEndDate.items[number].meta);
+            setMeta(data);
+        };
+        fetch()
+    }, [])
 
     const toggleHover = () =>{
         setHover(!hover)

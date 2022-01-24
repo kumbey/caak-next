@@ -7407,3 +7407,73 @@ export const listBannersByType = /* GraphQL */ `
     }
   }
 `;
+
+export const listBannersByTypeOrderByEndDate = /* GraphQL */ `
+  query ListBannersByTypeOrderByEndDate(
+    $type: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelBannerFilterInput
+    $limit: Int
+    $nextToken: String
+    $end_date: ModelStringKeyConditionInput
+  ) {
+    listBannersByTypeOrderByEndDate(
+      type: $type
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      end_date: $end_date
+    ) {
+      items {
+        id
+        type
+        typeName
+        title
+        pic1_id
+        pic2_id
+        start_date
+        end_date
+        meta
+        createdAt
+        updatedAt
+        pic1 {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+        pic2 {
+          id
+          key
+          name
+          owner
+          bucket
+          region
+          level
+          ext
+          type
+          isExternal
+          external_url
+          provider
+          provided_item
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
+

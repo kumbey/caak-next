@@ -24,7 +24,7 @@ export const feedType = [
     id: 3,
     title: "Танд",
     type: "FORYOU",
-    icon: "icon-fi-rs-aura",
+    icon: "icon-fi-rs-for-you",
     route: "/foryou",
   },
 ];

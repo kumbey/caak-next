@@ -137,11 +137,6 @@ export default function NavBar() {
                       }
                     }}
                   />
-                  <div className="ml-[8px] flex items-center justify-center mt-[5px]  w-[40px] h-[16px] rounded-[3px] bg-transparent logoBeta">
-                    <p className="font-inter font-medium text-11px text-white tracking-[0.28px] leading-[14px]">
-                      BETA
-                    </p>
-                  </div>
                 </div>
                 {/* Mobile menu button */}
                 <div className="flex">
@@ -177,11 +172,6 @@ export default function NavBar() {
                     }
                   }}
                 />
-                <div className="ml-[8px] flex items-center justify-center mt-[5px] w-[44px] h-[17px] rounded-[3px] bg-transparent logoBeta">
-                  <p className="font-inter font-medium text-11px text-white">
-                    BETA
-                  </p>
-                </div>
               </div>
 
               <div className="navbarSearch hidden md:block p-[8px] ml-[40px]">

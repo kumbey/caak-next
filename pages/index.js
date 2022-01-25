@@ -158,10 +158,24 @@ const Feed = ({ ssrData }) => {
       },
     });
 
-    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
+    subscriptions.onPostUpdateByStatusPending = API.graphql({
       query: onPostUpdateByStatus,
       variables: {
         status: "PENDING",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
+      },
+    });
+    subscriptions.onPostUpdateByStatusPending = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "ARCHIVED",
       },
       authMode: authMode,
     }).subscribe({

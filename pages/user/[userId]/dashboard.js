@@ -568,6 +568,19 @@ const Dashboard = ({ ssrData }) => {
 
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (window) {
+      if (window.scrollY < 300) {
+        window.scrollTo({
+          left: 0,
+          top: 400,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [activeIndex]);
+
   return isLogged && loaded ? (
     <>
       <Head>
@@ -575,7 +588,9 @@ const Dashboard = ({ ssrData }) => {
           {user.nickname} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px] pt-[54px]">
+      <div
+        className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px] pt-[54px]"
+      >
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}
@@ -693,7 +708,7 @@ const Dashboard = ({ ssrData }) => {
             </div>
             <div
               className={
-                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-scroll"
+                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-auto"
               }
             >
               {activeIndex === 0 ? (
@@ -887,7 +902,7 @@ const Dashboard = ({ ssrData }) => {
                     <table className="w-full table">
                       <thead className="">
                         <tr className="">
-                          <th className="text-left w-1/3 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                          <th className="min-w-[200px] text-left w-1/3 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
                             Пост
                           </th>
                           <th className="text-left w-1/6 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">

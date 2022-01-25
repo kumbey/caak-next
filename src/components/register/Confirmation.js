@@ -142,14 +142,14 @@ const Confirmation = ({ usr }) => {
           ) : (
             <>
               <div className=" flex justify-center text-14px text-caak-darkBlue mt-7">
-                Баталгаажуулах код дахин авах
+                Баталгаажуулах код ирээгүй бол
               </div>{" "}
               <div
                 onClick={() => doGetCode()}
                 className=" flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer"
               >
                 <span className={"icon-fi-rs-resend text-13px mr-1"} />
-                Дахин илгээх
+                Дахин авах
               </div>
             </>
           )}

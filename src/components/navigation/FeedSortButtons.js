@@ -1,5 +1,5 @@
 import Button from "../button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWrapper } from "../../context/wrapperContext";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
@@ -27,7 +27,16 @@ const FeedSortButtons = ({
   const { setFeedSortType } = useWrapper();
   const router = useRouter();
   const { user: signedUser, isLogged } = useUser();
+  const [sortArray, setSortArray] = useState(items);
 
+  useEffect(() => {
+    if (!isLogged) {
+      setSortArray(items.filter((item) => item.type !== "FORYOU"));
+    }
+    else {
+      setSortArray(items.filter((item) => item.type !== "CAAK"));
+    }
+  }, [isLogged, items]);
   return (
     !hide && (
       <div
@@ -40,7 +49,7 @@ const FeedSortButtons = ({
             direction === "column" ? "flex-col" : "flex-row"
           } ${containerClassname ? containerClassname : ""}`}
         >
-          {items.map(({ icon, type, id, title, route }) => {
+          {sortArray.map(({ icon, type, id, title, route }) => {
             return isLogged && userId === signedUser?.id ? (
               <Button
                 key={id}

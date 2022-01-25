@@ -50,6 +50,7 @@ const ViewPostLeftReaction = ({
     >
       <div className={"flex flex-col items-center mb-[22px]"}>
         <AnimatedCaakButton
+          subscription={true}
           reactionType={"POST"}
           itemId={post.id}
           totals={post.totals}

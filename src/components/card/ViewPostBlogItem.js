@@ -97,6 +97,7 @@ const ViewPostBlogItem = ({
           >
             <AnimatedCaakButton
               // disableOnClick
+              subscription={true}
               reactionType={"POST_ITEM"}
               hideCaakText
               itemId={postItem.id}

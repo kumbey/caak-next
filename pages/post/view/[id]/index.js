@@ -130,7 +130,7 @@ const Post = ({ ssrData }) => {
         <Head>
           {/* for Twitter */}
 
-          <meta name="twitter:card" content="photo" />
+          <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content={post.title} />
           <meta name="twitter:description" content={post.description} />
           <meta

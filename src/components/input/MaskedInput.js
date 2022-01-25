@@ -36,8 +36,8 @@ const DateInput = ({
         mask={Date}
         pattern={format}
         lazy={false}
-        min={new Date(1970, 0, 1)}
-        max={new Date(2030, 0, 1)}
+        min={new Date(1900, 0, 1)}
+        max={new Date(2090, 0, 1)}
         format={function (date) {
           return moment(date).format(format);
         }}
@@ -47,8 +47,8 @@ const DateInput = ({
         blocks={{
           YYYY: {
             mask: IMask.MaskedRange,
-            from: 1970,
-            to: 2030,
+            from: 1900,
+            to: 2090,
           },
           MM: {
             mask: IMask.MaskedRange,

@@ -24,6 +24,7 @@ import FeedBack from "../src/components/feedback";
 import { useRouter } from "next/router";
 import { usePreserveScroll } from "../src/hooks/useScroll";
 import ModalBanner from "../src/components/modalBanner";
+import {onCreateReactions, onDeleteReactions} from "../src/graphql/subscriptions";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -99,6 +100,7 @@ const Feed = ({ ssrData }) => {
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
   const [bannerOpen, setBannerOpen] = useState(true)
+  const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
 
   const subscriptions = {};
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
@@ -170,6 +172,29 @@ const Feed = ({ ssrData }) => {
     });
   };
 
+  const subscribeOnReaction = ()=> {
+    try {
+      subscriptions.onCreateReactions = API.graphql({
+        query: onCreateReactions,
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true);
+          setSubscribedReactionPost({ ...onData, type: "CREATE" });
+        },
+      });
+      subscriptions.onDeleteReactions = API.graphql({
+        query: onDeleteReactions,
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true);
+          setSubscribedReactionPost({ ...onData, type: "DELETE" });
+        },
+      });
+    }catch (ex){
+      console.log(ex)
+    }
+  }
+
   useEffect(() => {
     if (subscripedPost) {
       const postIndex = posts.items.findIndex(
@@ -191,29 +216,30 @@ const Feed = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [subscripedPost]);
 
-  
-  // useEffect(() => {
-  //   // const listener = () => {
-  //   //   const scrolled = document.scrollingElement.scrollTop;
-  //   //   if(banner){
-  //   //     if (scrolled > 250) {
-  //   //       setBannerOpen(true);
-  //   //       setBanner(false)
-  //   //     } else {
-  //   //       setBannerOpen(false);
-  //   //     }
-  //   //   }
-  //   // };
-  //   // document.addEventListener("scroll", listener);
-  //   // return () => {
-  //   //   document.removeEventListener("scroll", listener);
-  //   // };
-  //   setTimeout(() => {
-  //     setBannerOpen(true)
-  //   }, 1000)
-  // }, []);
+  useEffect(()=> {
+    if(subscribedReactionPost){
+      const postIndex = posts.items.findIndex((item) => {
+        if (item.post) {
+          return item.post.id === subscribedReactionPost.item_id;
+        } else {
+          return item.id === subscribedReactionPost.item_id;
+        }
+      });
+      if (postIndex !== -1) {
+        const post = posts.items[postIndex];
+        if (post.post) {
+          posts.items[postIndex].post.reacted = subscribedReactionPost.type === "CREATE";
+        } else {
+          posts.items[postIndex].reacted = subscribedReactionPost.type === "CREATE";
+        }
+        setRender(render + 1)
+      }
+    }
+    //eslint-disable-next-line
+  },[subscribedReactionPost])
 
   useEffect(() => {
+    isLogged && subscribeOnReaction();
     subscrip();
 
     return () => {
@@ -270,12 +296,6 @@ const Feed = ({ ssrData }) => {
       {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen} />}
 
       <div className={"relative pt-[54px]"}>
-        {/*<Toaster*/}
-        {/*  toastOptions={{*/}
-        {/*    className: "toastOptions",*/}
-        {/*    duration: 5000,*/}
-        {/*  }}*/}
-        {/*/>*/}
         <div className={`px-0 w-full relative`}>
           <div
             className={`h-full flex ${

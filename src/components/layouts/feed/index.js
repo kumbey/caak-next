@@ -1,5 +1,4 @@
 import FeedSortButtons from "../../navigation/FeedSortButtons";
-import Divider from "../../divider";
 import SideBarGroups from "../../card/SideBarGroups";
 import FooterSidebar from "../../footer/FooterSidebar";
 import AuraCard from "../../card/AuraCard";
@@ -9,7 +8,6 @@ import useMediaQuery from "../../navigation/useMeduaQuery";
 import { useEffect, useState } from "react";
 import { feedType } from "../../navigation/sortButtonTypes";
 import { useWrapper } from "../../../context/wrapperContext";
-import useWindowSize from "../../../hooks/useWindowSize";
 import AuraModal from "../../modals/auraModal";
 import Banner from "../../banner";
 import SimpleBar from "simplebar-react";
@@ -33,7 +31,7 @@ const DefaultFeedLayout = ({
 
   useEffect(() => {
     setLoaded(true);
-    setNavBarTransparent(false)
+    setNavBarTransparent(false);
   }, [setNavBarTransparent, setLoaded]);
 
   //  If columns is undefined, columns is defaults to 3.
@@ -46,42 +44,41 @@ const DefaultFeedLayout = ({
         <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
 
         {columns === 3 && (
-          <div
-            className={`leftSideBar ${
-              isTablet ? "hidden" : "block"
-            }`}
-          >
-
-          <SimpleBar className={"leftScroll pr-[12px]"}>
-            <FeedSortButtons
-              feed
-              items={feedType}
-              initialSort={feedSortType}
-              direction={"column"}
-              containerClassname={"w-full"}
-            />
-            <SideBarGroups
-              role={["ADMIN", "MODERATOR"]}
-              addGroup
-              initialData={adminModeratorGroups}
-              title={"Миний группүүд"}
-              setIsAuraModalOpen={setIsAuraModalOpen}
-            />
-            <SideBarGroups
-              role={["MEMBER"]}
-              maxColumns={13}
-              initialData={myGroups}
-              title={"Нэгдсэн группүүд"}
-              setIsAuraModalOpen={setIsAuraModalOpen}
-            />
-            <SideBarGroups
-              role={["NOT_MEMBER"]}
-              initialData={allGroups}
-              maxColumns={13}
-              title={myGroups !== null && myGroups?.length === 0 ?  "Бүх групп" : "Бусад групп"}
-              setIsAuraModalOpen={setIsAuraModalOpen}
-            />
-            {isLogged && <FooterSidebar />}
+          <div className={`leftSideBar ${isTablet ? "hidden" : "block"}`}>
+            <SimpleBar className={"leftScroll pr-[12px]"}>
+              <FeedSortButtons
+                feed
+                items={feedType}
+                initialSort={feedSortType}
+                direction={"column"}
+                containerClassname={"w-full"}
+              />
+              <SideBarGroups
+                role={["ADMIN", "MODERATOR"]}
+                addGroup
+                initialData={adminModeratorGroups}
+                title={"Миний группүүд"}
+                setIsAuraModalOpen={setIsAuraModalOpen}
+              />
+              <SideBarGroups
+                role={["MEMBER"]}
+                maxColumns={13}
+                initialData={myGroups}
+                title={"Нэгдсэн группүүд"}
+                setIsAuraModalOpen={setIsAuraModalOpen}
+              />
+              <SideBarGroups
+                role={["NOT_MEMBER"]}
+                initialData={allGroups}
+                maxColumns={13}
+                title={
+                  myGroups !== null && myGroups?.length === 0
+                    ? "Бүх групп"
+                    : "Бусад групп"
+                }
+                setIsAuraModalOpen={setIsAuraModalOpen}
+              />
+              {isLogged && <FooterSidebar />}
             </SimpleBar>
           </div>
         )}

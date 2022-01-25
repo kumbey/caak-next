@@ -51,7 +51,8 @@ export default function ModalBanner({bannerOpen, setBannerOpen}) {
             setMeta(data);
         };
         fetch()
-    }, [now])
+        // eslint-disable-next-line
+    }, [])
 
     const toggleHover = () =>{
         setHover(!hover)

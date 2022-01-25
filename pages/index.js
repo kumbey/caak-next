@@ -172,7 +172,7 @@ const Feed = ({ ssrData }) => {
         });
       },
     });
-    subscriptions.onPostUpdateByStatusPending = API.graphql({
+    subscriptions.onPostUpdateByStatusArchived = API.graphql({
       query: onPostUpdateByStatus,
       variables: {
         status: "ARCHIVED",

@@ -33,10 +33,24 @@ export async function getServerSideProps({ req, query }) {
         },
       };
     } else {
-      return { notFound: true };
+      return {
+        props: {},
+        redirect: {
+          destination: `https://old.caak.mn/view/${caakId}`,
+          permanent: false,
+        },
+      };
+      // return { notFound: true };
     }
   } else {
-    return { notFound: true };
+    return {
+      props: {},
+      redirect: {
+        destination: `https://old.caak.mn/view/${caakId}`,
+        permanent: false,
+      },
+    };
+    // return { notFound: true };
   }
 }
 

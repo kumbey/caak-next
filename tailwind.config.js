@@ -118,6 +118,7 @@ module.exports = {
           retroblue: "#256BEE",
           macarooncream: "#FFE8D6",
           cobalite: "#9A99FE",
+          naturallycalm: "#CDCFD9",
           carbon: {
             DEFAULT: "#333333",
             hover: "#4D4D4D",

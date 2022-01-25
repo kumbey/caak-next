@@ -14,6 +14,7 @@ import {
   createSavedPost,
   deleteSavedPost,
 } from "../../graphql-custom/post/mutation";
+import { updatePost } from "../../graphql-custom/post/mutation";
 
 export default function PostMoreMenu({
   postUser,
@@ -21,12 +22,13 @@ export default function PostMoreMenu({
   groupId,
   handleToast,
   setIsOpen,
+  setOpen
 }) {
   const { user, isLogged } = useUser();
   const router = useRouter();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  
   const getGroupFollow = async () => {
     setLoading(true);
     const resp = await API.graphql({
@@ -97,7 +99,7 @@ export default function PostMoreMenu({
   };
 
   return !loading ? (
-    <div className={"dropdown-item-wrapper"}>
+    <div className={"dropdown-item-wrapper"}>    
       {!groupFollowed && (
         <div
           onClick={() =>
@@ -141,6 +143,22 @@ export default function PostMoreMenu({
         >
           <span className={"icon-fi-rs-edit-f mr-px-12 w-c1  text-16px"} />
           <p className="text-14px text-caak-extraBlack">Постыг засах</p>
+        </div>
+      )}
+
+      {isLogged && postUser.id === user.id && (
+        <div
+          className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+          onClick={() =>
+            // postHandler({
+            //     id: post.id,
+            //     status: "ARCHIVED",
+            // })
+            setOpen(true)
+        } 
+        >
+          <span className={"icon-fi-rs-delete-f mr-px-12 w-c1  text-16px"} />
+          <p className="text-14px text-caak-extraBlack">Постыг устгах</p>
         </div>
       )}
 

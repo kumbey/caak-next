@@ -158,6 +158,7 @@ const Trending = ({ ssrData }) => {
         return true;
       });
     };
+    //eslint-disable-next-line
   },[])
 
   return (

@@ -375,7 +375,6 @@ const EditPost = ({ ssrData }) => {
                   loading={loading}
                   disabled={
                     !isEditing ||
-                    !selectedGroup ||
                     loading
                   }
                   onClick={() => handleSubmit()}

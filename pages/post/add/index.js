@@ -110,17 +110,18 @@ const AddPost = () => {
   };
 
   const finish = (role) => {
-    if (role === "MEMBER") {
-      router.push(
-        {
-          pathname: `/user/${user.id}/dashboard`,
-          query: {
-            activeIndex: 1,
-          },
-        },
-        `/user/${user.id}/dashboard`
-      );
-    } else {
+    // if (role === "MEMBER") {
+    //   router.push(
+    //     {
+    //       pathname: `/user/${user.id}/dashboard`,
+    //       query: {
+    //         activeIndex: 1,
+    //       },
+    //     },
+    //     `/user/${user.id}/dashboard`
+    //   );
+    // }
+    // else {
       router.push(
         {
           pathname: `/post/view/${newPostId}`,
@@ -128,7 +129,7 @@ const AddPost = () => {
         `/post/view/${newPostId}`,
         { shallow: true, scroll: false }
       );
-    }
+    // }
   };
 
   const followGroup = async () => {

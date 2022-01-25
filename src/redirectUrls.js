@@ -1,6 +1,6 @@
 const RedirectUrls = {
-     redirectSignIn: "https://beta.caak.mn/signInUp/federated/hook",
-     redirectSignOut: "https://beta.caak.mn/",
+    redirectSignIn: "https://main.d36nkdl3p18em1.amplifyapp.com/signInUp/federated/hook",
+    redirectSignOut: "https://main.d36nkdl3p18em1.amplifyapp.com/"
 }
 
 export default RedirectUrls

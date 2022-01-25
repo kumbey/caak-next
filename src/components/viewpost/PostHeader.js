@@ -5,6 +5,7 @@ import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { decode } from "html-entities";
 import DropDown from "../navigation/DropDown";
 import PostMoreMenu from "../card/PostMoreMenu";
+import PostDeleteConfirm from "../card/PostDeleteConfirm";
 import {
   generateTimeAgo,
   getFileUrl,
@@ -34,6 +35,7 @@ const PostHeader = ({
 }) => {
   const [item, setItem] = useState(post.items.items[activeIndex]);
   const [render, setRender] = useState(0);
+  const [open, setOpen] = useState(false);
   const { user, isLogged } = useUser();
   const [pathName, setPathName] = useState("");
   const isTablet = useMediaQuery("screen and (max-device-width: 1023px)");
@@ -155,11 +157,15 @@ const PostHeader = ({
                   post={post}
                   postUser={post.user}
                   handleToast={handleToast}
+                  setOpen={setOpen}
                 />
               }
               className={"top-10 right-1"}
             />
           </div>
+          {
+        open && <PostDeleteConfirm setOpen={setOpen} post={post}/>
+      }
         </div>
         <div className={"flex flex-col-reverse lg:flex-col px-[24px]"}>
           <div

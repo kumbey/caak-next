@@ -25,10 +25,7 @@ const AddPostGuideCard = () => {
             "absolute top-[50px] addPostNewGroupCard flex flex-col items-center w-[300px] p-[25px] rounded-[8px]"
             }
         >
-            <p className={"font-bold text-[18px] text-white text-center"}>
-                Пост нэмэх товч үргэлж тантай хамт
-            </p>
-            <p className="text-white text-[15px] text-center mt-[10px]">Саак мэдрэмжээ бусдад хуваалцах боломж.</p>
+            <p className="text-white text-[15px] text-center mt-[10px]">Саак мэдрэмжээ энд дарж хуваалцаарай.</p>
             <div
                 onClick={() => {
                     lsSet("addPostBanner", false)

@@ -388,8 +388,8 @@ const Dashboard = ({ ssrData }) => {
             <img
               className="bg-white rounded-[10px] object-cover w-full h-full"
               src={
-                groupData?.cover
-                  ? getFileUrl(groupData?.cover)
+                groupData?.profile
+                  ? getFileUrl(groupData?.profile)
                   : getGenderImage(groupData?.gender).src
               }
               width={52}

@@ -16,7 +16,7 @@ import Tooltip from "../tooltip/Tooltip";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
 import Link from "next/link";
 
-const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId }) => {
+const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) => {
   const { isLogged } = useUser();
   const subscriptions = {};
   const [subscriptionComment, setSubscriptionComment] = useState(null);
@@ -236,6 +236,7 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId }) => {
                 </div>
                 {isReplyInputActive && activeIndex === index && (
                   <ViewPostBlogAddComment
+                    postId={postId}
                     commentId={parentId}
                     setIsActive={setIsReplyInputActive}
                     containerClassname={"h-[94px]"}

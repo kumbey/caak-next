@@ -25,6 +25,7 @@ import useMediaQuery from "./useMeduaQuery";
 import useScrollBlock from "../../hooks/useScrollBlock";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 import emptyNotificationImage from "../../../public/assets/images/Empty-Notification.svg";
+import SimpleBar from "simplebar-react";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [notifications, setNotifications] = useState([]);
@@ -246,11 +247,11 @@ const NotificationDropDown = ({ isOpen }) => {
       // onClick={(e) => e.stopPropagation()}
       className={`${
         !isOpen && "hidden"
-      } notificationMobile dropdown right-0 md:-right-10 fixed md:absolute z-2 mt-[54px] md:z-50 top-0 w-full md:w-[384px] md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:my-2 flex flex-col bg-white cursor-auto  `}
+      } notificationMobile bg-caak-washme overflow-hidden dropdown rounded-[4px] right-0 md:-right-10 fixed md:absolute z-2 mt-[54px] md:z-50 top-0 w-full md:w-[384px] md:mb-2 lg:mb-2 md:bottom-0 md:top-8 md:my-2 flex flex-col bg-white cursor-auto`}
     >
       <div
         className={
-          "flex flex-row items-center justify-between w-full px-[14px] pb-2 pt-3 border-b border-t md:border-t-0"
+          "bg-white flex flex-row items-center justify-between w-full px-[14px] pb-2 pt-3 border-b border-t md:border-t-0"
         }
       >
         <span
@@ -278,76 +279,79 @@ const NotificationDropDown = ({ isOpen }) => {
           </div>
         </div>
       </div>
-      <div
-        className={
-          "notification_body rounded-b-square h-full overflow-y-scroll flex flex-col bg-caak-washme p-0"
-        }
-      >
-        {notifications.length === 0 ? (
-          <div
-            className={
-              "flex flex-col h-full w-full items-center justify-center"
-            }
-          >
-            <div className={"w-[120.39px] h-[124px]"}>
-              <img
-                alt={""}
-                src={emptyNotificationImage.src}
-                className={"w-full h-full"}
-              />
+      <SimpleBar className={"max-h-full md:max-h-[559px] rounded-b-[4px] pb-[200px] md:pb-0"}>
+        <div
+          className={
+            "notification_body overflow-hidden rounded-b-[4px] h-full flex flex-col bg-caak-washme p-0"
+          }
+        >
+          {notifications.length === 0 ? (
+            <div
+              className={
+                "flex flex-col h-full w-full items-center justify-center"
+              }
+            >
+              <div className={"w-[120.39px] h-[124px]"}>
+                <img
+                  alt={""}
+                  src={emptyNotificationImage.src}
+                  className={"w-full h-full"}
+                />
+              </div>
+              <div className={"flex flex-col items-center mt-[14px]"}>
+                <p className={"text-caak-generalblack text-[17px]"}>
+                  Таньд мэдэгдэл ирээгүй байна.
+                </p>
+                <p className={"text-caak-darkBlue text-[15px] mt-[8px]"}>
+                  Өдрийг сайхан өнгөрүүлээрэй!
+                </p>
+              </div>
             </div>
-            <div className={"flex flex-col items-center mt-[14px]"}>
-              <p className={"text-caak-generalblack text-[17px]"}>
-                Таньд мэдэгдэл ирээгүй байна.
-              </p>
-              <p className={"text-caak-darkBlue text-[15px] mt-[8px]"}>
-                Өдрийг сайхан өнгөрүүлээрэй!
-              </p>
-            </div>
-          </div>
-        ) : (
-          notifications.map((item, index) => {
-            return (
-              <Notification
-                onClick={() => handleNotificationClick(index)}
-                key={index}
-                item={item}
-              />
-            );
-          })
-        )}
-        {/*{notifications.map((item, index) => {*/}
-        {/*  return (*/}
-        {/*    <Notification*/}
-        {/*      onClick={() => handleNotificationClick(index)}*/}
-        {/*      key={index}*/}
-        {/*      item={item}*/}
-        {/*    />*/}
-        {/*  );*/}
-        {/*})}*/}
-        {/* <span
+          ) : (
+            notifications.map((item, index) => {
+              return (
+                <Notification
+                  onClick={() => handleNotificationClick(index)}
+                  key={index}
+                  item={item}
+                />
+              );
+            })
+          )}
+          {/*{notifications.map((item, index) => {*/}
+          {/*  return (*/}
+          {/*    <Notification*/}
+          {/*      onClick={() => handleNotificationClick(index)}*/}
+          {/*      key={index}*/}
+          {/*      item={item}*/}
+          {/*    />*/}
+          {/*  );*/}
+          {/*})}*/}
+          {/* <span
             className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
           >
             Сүүлд ирсэн
           </span> */}
-        {/* <Notification type={"caak"} />
+          {/* <Notification type={"caak"} />
           <Notification type={"comment"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} />
           <Notification type={"request"} /> */}
-        <div
-          ref={notificationRef}
-          className={"flex justify-center items-center"}
-        >
-          <Loader
-            className={`${
-              loading ? "opacity-100" : "opacity-0"
-            } bg-caak-primary `}
-          />
+          <div
+            ref={notificationRef}
+            className={"flex justify-center items-center"}
+          >
+            <Loader
+              className={`${
+                loading ? "opacity-100" : "opacity-0"
+              } bg-caak-primary `}
+            />
+          </div>
         </div>
-      </div>
+      </SimpleBar>
+
     </div>
   );
 };

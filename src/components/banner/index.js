@@ -49,7 +49,8 @@ export default function Banner() {
               setMeta(data);
         };
         fetch()
-    }, [now])
+        // eslint-disable-next-line
+    }, [])
 
   return (
     meta 

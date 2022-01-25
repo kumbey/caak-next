@@ -2,7 +2,7 @@ import CardHeader from "./CardHeader";
 import CardFooter from "./CardFooter";
 import ImageCarousel from "../../carousel/ImageCarousel";
 
-const Card = ({ post, handleToast }) => {
+const Card = ({ post, handleToast, subscription }) => {
   return (
     post && (
       <div className="feedCard relative flex flex-col justify-between mx-auto bg-white rounded-xl shadow-card mb-[24px]">
@@ -26,6 +26,7 @@ const Card = ({ post, handleToast }) => {
           title={post.title}
           totals={post.totals}
           handleToast={handleToast}
+          subscription={subscription}
         />
       </div>
     )

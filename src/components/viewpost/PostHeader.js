@@ -301,6 +301,7 @@ const PostHeader = ({
                   }
                 >
                   <AnimatedCaakButton
+                    subscription={true}
                     reactionType={"POST_ITEM"}
                     itemId={item.id}
                     hideCaakText={mobile}

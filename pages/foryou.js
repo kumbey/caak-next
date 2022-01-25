@@ -1,10 +1,7 @@
 import Head from "next/head";
 import Const from "../src/utility/Consts";
-import { API, withSSRContext } from "aws-amplify";
-import {
-  listPostByOwned,
-  searchPosts,
-} from "../src/graphql-custom/post/queries";
+import { API } from "aws-amplify";
+import { searchPosts } from "../src/graphql-custom/post/queries";
 import { getReturnData } from "../src/utility/Util";
 import { useEffect, useState } from "react";
 import { useUser } from "../src/context/userContext";
@@ -20,6 +17,10 @@ import { feedType } from "../src/components/navigation/sortButtonTypes";
 import FeedSortButtons from "../src/components/navigation/FeedSortButtons";
 import Button from "../src/components/button";
 import { useRouter } from "next/router";
+import {
+  onCreateReactions,
+  onDeleteReactions,
+} from "../src/graphql/subscriptions";
 
 const Foryou = () => {
   const { user, isLogged } = useUser();
@@ -33,13 +34,16 @@ const Foryou = () => {
     nextToken: null,
   });
   const [forYouPostsFilter, setForYouPostsFilter] = useState([]);
+  const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
+  const [render, setRender] = useState(0);
+  const subscriptions = {};
 
   const [nextForYouPosts] = useListPager({
     query: searchPosts,
     variables: {
       filter: {
         or: forYouPostsFilter,
-        user_id: {ne: user.id},
+        user_id: { ne: user.id },
       },
       limit: 20,
       sort: { field: "createdAt", direction: "desc" },
@@ -123,9 +127,9 @@ const Foryou = () => {
         variables: {
           filter: {
             or: filter,
-            user_id: {ne: user.id},
+            user_id: { ne: user.id },
           },
-          limit: 2,
+          limit: 20,
           sort: { field: "createdAt", direction: "desc" },
         },
       });
@@ -138,13 +142,68 @@ const Foryou = () => {
     }
   };
 
+  const subscribeOnReaction = () => {
+    try {
+      subscriptions.onCreateReactions = API.graphql({
+        query: onCreateReactions,
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true);
+          setSubscribedReactionPost({ ...onData, type: "CREATE" });
+        },
+      });
+      subscriptions.onDeleteReactions = API.graphql({
+        query: onDeleteReactions,
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true);
+          setSubscribedReactionPost({ ...onData, type: "DELETE" });
+        },
+      });
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
   useEffect(() => {
-    isLogged &&
+    if (subscribedReactionPost) {
+      const postIndex = forYouPosts.items.findIndex((item) => {
+        if (item.post) {
+          return item.post.id === subscribedReactionPost.item_id;
+        } else {
+          return item.id === subscribedReactionPost.item_id;
+        }
+      });
+      if (postIndex !== -1) {
+        const post = forYouPosts.items[postIndex];
+        if (post.post) {
+          forYouPosts.items[postIndex].post.reacted =
+            subscribedReactionPost.type === "CREATE";
+        } else {
+          forYouPosts.items[postIndex].reacted =
+            subscribedReactionPost.type === "CREATE";
+        }
+        setRender(render + 1);
+      }
+    }
+    //eslint-disable-next-line
+  }, [subscribedReactionPost]);
+
+  useEffect(() => {
+    if (isLogged) {
+      subscribeOnReaction();
       fetchUserGroups().then((groups) => {
         fetchUserFollowed().then((users) =>
           fetchForYouPosts({ groups, users })
         );
       });
+    }
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
   }, [isLogged]);
 
   useEffect(() => {
@@ -167,20 +226,22 @@ const Foryou = () => {
             direction={"row"}
           />
           {isLogged ? (
-            <InfinitScroller onNext={fetchForYouPostsInfinite} loading={loading}>
-              {forYouPosts.items &&
-                forYouPosts.items.map((data, index) => {
-                  return (
-                    <Card
-                      key={index}
-                      video={data?.items?.items[0]?.file?.type?.startsWith(
-                        "video"
-                      )}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  );
-                })}
+            <InfinitScroller
+              onNext={fetchForYouPostsInfinite}
+              loading={loading}
+            >
+              {forYouPosts.items.map((data, index) => {
+                return (
+                  <Card
+                    key={index}
+                    video={data?.items?.items[0]?.file?.type?.startsWith(
+                      "video"
+                    )}
+                    post={data}
+                    className="ph:mb-4 sm:mb-4"
+                  />
+                );
+              })}
             </InfinitScroller>
           ) : (
             <div

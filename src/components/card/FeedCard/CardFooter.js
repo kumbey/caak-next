@@ -1,7 +1,7 @@
-import API from "@aws-amplify/api";
+// import API from "@aws-amplify/api";
 import { useEffect, useState } from "react";
-import { onChangedTotalsBy } from "../../../graphql-custom/totals/subscription";
-import { getReturnData, useClickOutSide } from "../../../utility/Util";
+// import { onChangedTotalsBy } from "../../../graphql-custom/totals/subscription";
+import { useClickOutSide } from "../../../utility/Util";
 import DropDown from "../../navigation/DropDown";
 import FacebookIcon from "../../../../public/assets/images/Facebook-Color.svg";
 import TwitterIcon from "../../../../public/assets/images/Twitter-Color.svg";
@@ -9,12 +9,12 @@ import AnimatedCaakButton from "../../button/animatedCaakButton";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { useRouter } from "next/router";
 
-const CardFooter = ({ totals, postId, reacted, handleToast }) => {
-  const [subscripTotal, setSubscripTotal] = useState();
+const CardFooter = ({ totals, postId, reacted, handleToast, subscription }) => {
+  // const [subscripTotal, setSubscripTotal] = useState();
   const router = useRouter();
-  const [render, setRender] = useState(0);
+  // const [render, setRender] = useState(0);
   const [pathName, setPathName] = useState("");
-  const subscriptions = {};
+  // const subscriptions = {};
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -24,44 +24,44 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const subscrip = () => {
-    subscriptions.onChangedTotalsBy = API.graphql({
-      query: onChangedTotalsBy,
-      variables: {
-        type: "PostTotal",
-        id: postId,
-      },
-      authMode: "AWS_IAM",
-    }).subscribe({
-      next: (data) => {
-        const onData = getReturnData(data, true);
-        setSubscripTotal(JSON.parse(onData.totals));
-      },
-      error: (error) => {
-        console.warn(error);
-      },
-    });
-  };
+  // const subscrip = () => {
+  //   subscriptions.onChangedTotalsBy = API.graphql({
+  //     query: onChangedTotalsBy,
+  //     variables: {
+  //       type: "PostTotal",
+  //       id: postId,
+  //     },
+  //     authMode: "AWS_IAM",
+  //   }).subscribe({
+  //     next: (data) => {
+  //       const onData = getReturnData(data, true);
+  //       setSubscripTotal(JSON.parse(onData.totals));
+  //     },
+  //     error: (error) => {
+  //       console.warn(error);
+  //     },
+  //   });
+  // };
+  //
+  // useEffect(() => {
+  //   subscrip();
+  //
+  //   return () => {
+  //     Object.keys(subscriptions).map((key) => {
+  //       subscriptions[key].unsubscribe();
+  //       return true;
+  //     });
+  //   };
+  //   // eslint-disable-next-line
+  // }, []);
 
-  useEffect(() => {
-    subscrip();
-
-    return () => {
-      Object.keys(subscriptions).map((key) => {
-        subscriptions[key].unsubscribe();
-        return true;
-      });
-    };
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (subscripTotal) {
-      totals.reactions = parseInt(subscripTotal.reactions);
-      setRender(render + 1);
-    }
-    // eslint-disable-next-line
-  }, [subscripTotal]);
+  // useEffect(() => {
+  //   if (subscripTotal) {
+  //     totals.reactions = parseInt(subscripTotal.reactions);
+  //     setRender(render + 1);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [subscripTotal]);
 
   useEffect(() => {
     setPathName(window.location.origin);
@@ -78,6 +78,7 @@ const CardFooter = ({ totals, postId, reacted, handleToast }) => {
               }
             >
               <AnimatedCaakButton
+                subscription={subscription}
                 reactionType={"POST"}
                 reacted={reacted}
                 setReacted={(changedReacted) => {

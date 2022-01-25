@@ -114,7 +114,6 @@ const MobileSideMenu = ({setOpen}) => {
               <div className={"pb-[140px]"}>
                   <SideBarGroups
                       role={["ADMIN", "MODERATOR"]}
-                      maxColumns={13}
                       addGroup
                       title={"Миний группүүд"}
                       setIsAuraModalOpen={setIsAuraModalOpen}

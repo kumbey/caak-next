@@ -23,6 +23,7 @@ const DropZone = ({
   titleStyle,
   icon,
   hideThumbnailImage,
+  setVideoDurationError,
 }) => {
   const [dropZoneFiles, setDropZoneFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -46,7 +47,8 @@ const DropZone = ({
         const realIndex = postItemLength + index + 1;
         const maxVideoDuration = 300
         if(file.type.startsWith("video/") && await getVideoDuration(file) > maxVideoDuration){
-          toast.error(`Та хамгийн ихдээ ${maxVideoDuration / 60} минутын бичлэг оруулах боломжтой`)
+          // toast.error(`Та хамгийн ихдээ ${maxVideoDuration / 60} минутын бичлэг оруулах боломжтой`)
+          setVideoDurationError && setVideoDurationError(true)
         }else{
           const fileData = {
             id: realIndex,
@@ -72,6 +74,8 @@ const DropZone = ({
           } else {
             fileData.file.url = URL.createObjectURL(file);
           }
+          
+          setVideoDurationError && setVideoDurationError(false)
   
           localPost.items.push(fileData); 
         }

@@ -1,6 +1,6 @@
 import DropZone from "./DropZone";
 
-const DropZoneWithCaption = ({ setPost, post }) => {
+const DropZoneWithCaption = ({ setPost, post, setVideoDurationError }) => {
   return (
     <div>
       <div
@@ -14,6 +14,7 @@ const DropZoneWithCaption = ({ setPost, post }) => {
           titleStyle={
             "items-center text-caak-generalblack font-medium text-18px "
           }
+          setVideoDurationError={setVideoDurationError}
           subTitle={"эсвэл шууд чирэн оруулна уу"}
           className={"flex items-center w-full h-64 bg-caak-liquidnitrogen"}
           setPost={setPost}

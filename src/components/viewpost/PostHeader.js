@@ -23,6 +23,7 @@ import {
 } from "../../graphql-custom/GroupUsers/mutation";
 import { useUser } from "../../context/userContext";
 import useMediaQuery from "../navigation/useMeduaQuery";
+import {useRouter} from "next/router";
 
 const PostHeader = ({
   addCommentRef,
@@ -37,7 +38,7 @@ const PostHeader = ({
   const [pathName, setPathName] = useState("");
   const isTablet = useMediaQuery("screen and (max-device-width: 1023px)");
   const [isShareButtonVisible, setIsShareButtonVisible] = useState(!isTablet);
-
+  const router = useRouter()
   const titleMaxCharacters = 160;
   const titleRef = useRef();
   const [isViewMoreTextVisible, setIsViewMoreTextVisible] = useState(
@@ -52,7 +53,7 @@ const PostHeader = ({
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleToast = ({ param }) => {
-    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "follow") toast.success("Группт амжилттай нэгдлээ!");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
     if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");

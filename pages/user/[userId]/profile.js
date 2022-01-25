@@ -280,7 +280,7 @@ const Profile = ({ ssrData }) => {
   const ProfileLayout = useModalLayout({ layoutName: "userProfile" });
 
   const handleToast = ({ param }) => {
-    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "follow") toast.success("Группт амжилттай нэгдлээ!");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
     if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");

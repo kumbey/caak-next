@@ -21,7 +21,9 @@ const DropDownSelect = ({
     member: [],
   });
   const [inputValue, setInputValue] = useState("");
-  const [hasAnyGroup, setHasAnyGroup] = useState(filteredData.adminModerator.length > 0 && filteredData.member.length > 0);
+  const [hasAnyGroup, setHasAnyGroup] = useState(
+    filteredData.adminModerator.length > 0 && filteredData.member.length > 0
+  );
 
   useEffect(() => {
     setFilteredData(groupData);
@@ -149,7 +151,7 @@ const DropDownSelect = ({
               <>
                 <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                   <span className={"text-15px text-caak-darkBlue"}>
-                    Дагасан группүүд
+                    Нэгдсэн группүүд
                   </span>
                 </div>
                 <div className={"px-2"}>
@@ -188,23 +190,25 @@ const DropDownSelect = ({
             ) : (
               hasAnyGroup && <AddPostNewGroupCard setOpen={setHasAnyGroup} />
             )}
-            {filteredData.unMember.length > 0 && <div
-              className={
-                "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
-              }
-            >
-              <span className={"text-15px text-caak-darkBlue pt-2"}>
-                Бүх группүүд
-              </span>
-              {filteredData.adminModerator.length === 0 ? (
-                <span
-                  onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
-                  className={"text-15px font-medium text-caak-primary"}
-                >
-                  Групп үүсгэх
+            {filteredData.unMember.length > 0 && (
+              <div
+                className={
+                  "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
+                }
+              >
+                <span className={"text-15px text-caak-darkBlue pt-2"}>
+                  Бүх группүүд
                 </span>
-              ) : null}
-            </div>}
+                {filteredData.adminModerator.length === 0 ? (
+                  <span
+                    onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
+                    className={"text-15px font-medium text-caak-primary"}
+                  >
+                    Групп үүсгэх
+                  </span>
+                ) : null}
+              </div>
+            )}
 
             <div className={"px-2"}>
               {filteredData.unMember.map((item, index) => {

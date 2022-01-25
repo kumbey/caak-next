@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import Card from "../src/components/card/FeedCard";
 import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
@@ -99,7 +99,9 @@ const Feed = ({ ssrData }) => {
   const [loading, setLoading] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
-  const [bannerOpen, setBannerOpen] = useState(true)
+  const [bannerOpen, setBannerOpen] = useState(false)
+  const [bannerDismissed, setBannerDismissed] = useState(false)
+  const currentBannerScrollPosition = useRef(1200)
   const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
 
   const subscriptions = {};
@@ -254,6 +256,20 @@ const Feed = ({ ssrData }) => {
   useEffect(() => {
     setFeedSortType("DEFAULT");
   }, [setFeedSortType]);
+
+
+  const handleScroll = () => {
+    if(window){
+      if(!bannerDismissed && (window.scrollY > currentBannerScrollPosition.current)){
+        setBannerOpen(true)
+        setBannerDismissed(true)
+      }
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");

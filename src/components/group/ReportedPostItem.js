@@ -54,7 +54,7 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
   return (
     <>
       <td>
-        <div className="cursor-pointer flex   items-center ">
+        <div className="cursor-pointer flex items-center ">
           <div
             onClick={() => {
               router.push(
@@ -71,7 +71,7 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
                 { shallow: true, scroll: false }
               );
             }}
-            className={" w-[64px] h-[64px] mr-[12px] relative"}
+            className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}
           >
             {video ? (
               <Video
@@ -84,7 +84,7 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
               />
             ) : (
               <img
-                className=" bg-white rounded-md object-cover w-full h-full"
+                className="bg-white rounded-md object-cover w-full h-full"
                 src={
                   !imageSrc
                     ? getGenderImage("default").src
@@ -92,8 +92,6 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
                 }
                 width={64}
                 height={64}
-                // layout="responsive"
-                // objectFit={"cover"}
                 alt="#"
               />
             )}
@@ -115,7 +113,7 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
                 { shallow: true, scroll: false }
               );
             }}
-            className="cursor-pointer text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium"
+            className="break-words cursor-pointer text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium"
           >
             {post.title}
           </div>

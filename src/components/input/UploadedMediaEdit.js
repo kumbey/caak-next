@@ -259,6 +259,7 @@ const UploadedMediaEdit = ({
     post.items,
     post.title,
     post.description,
+    post.group_id,
     caakContent,
     businessPost,
     allowComment,

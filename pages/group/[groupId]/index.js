@@ -88,7 +88,7 @@ const Group = ({ ssrData }) => {
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
-    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "follow") toast.success("Группт амжилттай нэгдлээ!");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
     if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
     if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");

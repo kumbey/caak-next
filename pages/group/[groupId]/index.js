@@ -125,7 +125,22 @@ const Group = ({ ssrData }) => {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        toast("New Posts added");
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+    subscriptions.onPostByGroupArchived = API.graphql({
+      query: onPostByGroup,
+      variables: {
+        group_id: groupData.id,
+        status: "ARCHIVED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
         setSubscriptionPosts(onData);
       },
       error: (error) => {

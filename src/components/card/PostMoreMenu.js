@@ -15,8 +15,6 @@ import {
   deleteSavedPost,
 } from "../../graphql-custom/post/mutation";
 import { updatePost } from "../../graphql-custom/post/mutation";
-import PostDeleteConfirm from "./PostDeleteConfirm";
-import { onPostUpdateByStatus } from "../../graphql-custom/post/subscription";
 
 export default function PostMoreMenu({
   postUser,
@@ -30,9 +28,7 @@ export default function PostMoreMenu({
   const router = useRouter();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
-useEffect(()=> {
-console.log(open);
-},[open])
+  
   const getGroupFollow = async () => {
     setLoading(true);
     const resp = await API.graphql({
@@ -45,22 +41,6 @@ console.log(open);
     setGroupFollowed(resp.data.getGroup.followed);
     setLoading(false);
   };
-
-  const postHandler = async ({ id, status }) => {
-    // setLoading(true);
-    try {
-      await API.graphql(
-        graphqlOperation(updatePost, {
-          input: { id, status, expectedVersion: post.version },
-        })
-      );
-    } catch (ex) {
-    //   setLoading(false);
-      console.log(ex);
-    }
-    // setLoading(false);
-  };
-  
 
   useEffect(() => {
     getGroupFollow();

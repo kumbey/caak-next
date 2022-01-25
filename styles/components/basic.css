@@ -18,6 +18,12 @@
     width: var(--navBarSearchWidth);
   }
 
+  @media (max-width: 1099px) {
+    .navbarSearch {
+    width: clamp(100px, 35%, 500px)
+    }
+  }
+
   .mobileSearch {
     margin-top: var(--topBarSize);
     /*margin-bottom: var(--bottomTabSize);*/

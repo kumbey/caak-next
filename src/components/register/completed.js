@@ -25,6 +25,7 @@ const Completed = () => {
     return () => {
       clearTimeout(handler);
     };
+    //eslint-disable-next-line
   }, []);
 
   return (

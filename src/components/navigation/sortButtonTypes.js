@@ -20,6 +20,13 @@ export const feedType = [
     icon: "icon-fi-rs-caak",
     route: "/caak",
   },
+  {
+    id: 3,
+    title: "Танд",
+    type: "FORYOU",
+    icon: "icon-fi-rs-aura",
+    route: "/foryou",
+  },
 ];
 
 export const searchResultType = [

@@ -25,13 +25,13 @@ export default function Privacy() {
   const [isFollowedGroup, setIsFollowedGroup] = useState(
     typeof JSON.parse(user.meta)?.settings?.showFollowedGroup === "boolean"
       ? JSON.parse(user.meta)?.settings?.showFollowedGroup
-      : true
+      : false
   );
 
   const [isCreatedGroup, setIsCreatedGroup] = useState(
     typeof JSON.parse(user.meta)?.settings?.showCreatedGroup === "boolean"
       ? JSON.parse(user.meta)?.settings?.showCreatedGroup
-      : true
+      : false
   );
   const [col, setCol] = useState(false);
 

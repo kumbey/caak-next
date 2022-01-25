@@ -34,6 +34,7 @@ const AddPost = () => {
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
+  const [videoDurationError, setVideoDurationError] = useState(false)
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
   const [newPostId, setNewPostId] = useState();
@@ -389,10 +390,18 @@ const AddPost = () => {
                   valid={valid}
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
+                  setVideoDurationError={setVideoDurationError}
                 />
               ) : (
-                <DropZoneWithCaption post={post} setPost={setPost} />
+                <DropZoneWithCaption setVideoDurationError={setVideoDurationError} post={post} setPost={setPost} />
               )}
+              {
+                videoDurationError
+                ?
+                <div className="text-[16px] mx-[22px] my-[5px] text-[#ff0000]">Уучлаарай, таны бичлэг 5 минутаас хэтэрсэн байна</div>
+                :
+                null
+              }
               <div className={"flex flex-row pb-4 px-4 justify-end"}>
                 <Button
                   onClick={() => router.back()}

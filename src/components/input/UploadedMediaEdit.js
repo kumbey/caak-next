@@ -147,6 +147,7 @@ const UploadedMediaEdit = ({
   valid,
   isEditing,
   setIsEditing,
+  setVideoDurationError
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -526,7 +527,7 @@ const UploadedMediaEdit = ({
                   />
                 );
               })}
-              <AddPostCardSmall post={post} setPost={setPost} />
+              <AddPostCardSmall setVideoDurationError={setVideoDurationError} post={post} setPost={setPost} />
             </CardsWrapper>
           </SortableContext>
           <DragOverlay>
@@ -553,6 +554,27 @@ const UploadedMediaEdit = ({
             ) : null}
           </DragOverlay>
         </DndContext>
+        <div
+          onClick={() =>
+            setIsImageCaptionSectionVisible(!isImageCaptionSectionVisible)
+          }
+          className={`flex flex-row items-center mt-[6px] mx-[18px] ${
+            isImageCaptionSectionVisible
+              ? "text-caak-generalblack"
+              : "text-caak-primary"
+          }  justify-end cursor-pointer`}
+        >
+          <div className={"flex items-center justify-center w-[14px] h-[14px]"}>
+            <span
+              className={`${
+                isImageCaptionSectionVisible
+                  ? "icon-fi-rs-minus"
+                  : "icon-fi-rs-add-l "
+              } text-[9.33px]`}
+            />
+          </div>
+          <p className={"text-[13px]"}>Зургийн тайлбар</p>
+        </div>
         <div
           className={`${
             isImageCaptionSectionVisible ? "" : "hidden"
@@ -657,27 +679,7 @@ const UploadedMediaEdit = ({
           </div>
         </div>
       </div>
-      <div
-        onClick={() =>
-          setIsImageCaptionSectionVisible(!isImageCaptionSectionVisible)
-        }
-        className={`flex flex-row items-center mb-[32px] mt-[6px] mx-[18px] ${
-          isImageCaptionSectionVisible
-            ? "text-caak-generalblack"
-            : "text-caak-primary"
-        }  justify-end cursor-pointer`}
-      >
-        <div className={"flex items-center justify-center w-[14px] h-[14px]"}>
-          <span
-            className={`${
-              isImageCaptionSectionVisible
-                ? "icon-fi-rs-minus"
-                : "icon-fi-rs-add-l "
-            } text-[9.33px]`}
-          />
-        </div>
-        <p className={"text-[13px]"}>Зургийн тайлбар</p>
-      </div>
+      
       <div
         className={
           "bg-white px-[28px] py-[20px] border-b-[1px] border-t-[1px] border-caak-titaniumwhite"

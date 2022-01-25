@@ -204,6 +204,7 @@ const Foryou = () => {
         return true;
       });
     };
+    //eslint-disable-next-line
   }, [isLogged]);
 
   useEffect(() => {

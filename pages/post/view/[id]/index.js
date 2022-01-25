@@ -132,7 +132,7 @@ const Post = ({ ssrData }) => {
 
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content={post.title} />
-          <meta name="twitter:description" content={post.description} />
+          <meta name="twitter:description" content={decode(post.description)} />
           <meta
             name="twitter:url"
             content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}
@@ -143,9 +143,9 @@ const Post = ({ ssrData }) => {
           />
 
           {/* for Facebook  */}
-          <meta name="description" content={post.description} />
+          <meta name="description" content={decode(post.description)} />
           <meta property="og:title" content={post.title} />
-          <meta property="og:type" content="article" />
+          <meta property="og:type" content="website" />
           <meta
             name="og:url"
             content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}

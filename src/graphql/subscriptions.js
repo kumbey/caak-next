@@ -7151,8 +7151,6 @@ export const onCreateReactions = /* GraphQL */ `
       user_id
       type
       on_to
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -7177,8 +7175,6 @@ export const onDeleteReactions = /* GraphQL */ `
       user_id
       type
       on_to
-      createdAt
-      updatedAt
     }
   }
 `;

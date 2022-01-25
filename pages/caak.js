@@ -1,5 +1,5 @@
 import useFeedLayout from "../src/hooks/useFeedLayout";
-import { withSSRContext } from "aws-amplify";
+import {API, withSSRContext} from "aws-amplify";
 import { listPostByOwned } from "../src/graphql-custom/post/queries";
 import { getReturnData } from "../src/utility/Util";
 import { useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import Head from "next/head";
 import { useWrapper } from "../src/context/wrapperContext";
 import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import { usePreserveScroll } from "../src/hooks/useScroll";
+import {onCreateReactions, onDeleteReactions} from "../src/graphql/subscriptions";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -57,6 +58,9 @@ const Trending = ({ ssrData }) => {
   const CaakLayout = useFeedLayout("default");
   const [caakPosts, setCaakPosts] = useState(ssrData.caakPosts);
   const [loading, setLoading] = useState(false);
+  const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
+  const [render, setRender] = useState(0);
+  const subscriptions = {};
   const { isLogged } = useUser();
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const { setFeedSortType } = useWrapper();
@@ -94,9 +98,68 @@ const Trending = ({ ssrData }) => {
       console.log(ex);
     }
   };
+
+  const subscribeOnReaction = ()=> {
+    try {
+      subscriptions.onCreateReactions = API.graphql({
+        query: onCreateReactions,
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true);
+          setSubscribedReactionPost({ ...onData, type: "CREATE" });
+        },
+      });
+      subscriptions.onDeleteReactions = API.graphql({
+        query: onDeleteReactions,
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true);
+          setSubscribedReactionPost({ ...onData, type: "DELETE" });
+        },
+      });
+    }catch (ex){
+      console.log(ex)
+    }
+  }
+
   useEffect(() => {
     setFeedSortType("CAAK");
   }, [setFeedSortType]);
+
+  useEffect(()=> {
+    if(subscribedReactionPost){
+      const postIndex = caakPosts.items.findIndex((item) => {
+        if (item.post) {
+          return item.post.id === subscribedReactionPost.item_id;
+        } else {
+          return item.id === subscribedReactionPost.item_id;
+        }
+      });
+      if (postIndex !== -1) {
+        const post = caakPosts.items[postIndex];
+        if (post.post) {
+          caakPosts.items[postIndex].post.reacted = subscribedReactionPost.type === "CREATE";
+        } else {
+          caakPosts.items[postIndex].reacted = subscribedReactionPost.type === "CREATE";
+        }
+        setRender(render + 1)
+      }
+    }
+    //eslint-disable-next-line
+  },[subscribedReactionPost])
+
+  useEffect(()=> {
+    if(isLogged){
+      subscribeOnReaction()
+    }
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+  },[])
+
   return (
     <>
       <Head>

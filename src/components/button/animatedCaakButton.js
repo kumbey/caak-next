@@ -32,6 +32,7 @@ const AnimatedCaakButton = ({
   activeBackgroundColor,
   filledIcon,
   setReacted,
+  subscription
 }) => {
   const [shake, setShake] = useState(false);
   const [render, setRender] = useState(0);
@@ -220,7 +221,9 @@ const AnimatedCaakButton = ({
   }, [subscripTotal]);
 
   useEffect(() => {
-    subscrip();
+    if (isLogged && subscription) {
+      subscrip();
+    }
 
     return () => {
       Object.keys(subscriptions).map((key) => {

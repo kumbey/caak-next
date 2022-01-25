@@ -17,6 +17,7 @@ import ReportModal from "../../modals/reportModal";
 import { useUser } from "../../../context/userContext";
 import userVerifiedSvg from "../../../../public/assets/images/fi-rs-awarded.svg";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
+import PostDeleteConfirm from "../PostDeleteConfirm";
 
 const CardHeader = ({
   post,
@@ -35,6 +36,7 @@ const CardHeader = ({
     setIsMenuOpen(false);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const router = useRouter();
 
@@ -192,11 +194,17 @@ const CardHeader = ({
                   post={post}
                   postUser={post.user}
                   handleToast={handleToast}
+                  setOpen={setOpen}
                 />
               }
               className={"top-6 -right-3"}
             />
           </div>
+          
+
+      {
+        open && <PostDeleteConfirm setOpen={setOpen} post={post}/>
+      }
         </div>
       </div>
       {!hideTitle && (

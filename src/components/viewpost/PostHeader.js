@@ -5,6 +5,7 @@ import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { decode } from "html-entities";
 import DropDown from "../navigation/DropDown";
 import PostMoreMenu from "../card/PostMoreMenu";
+import PostDeleteConfirm from "../card/PostDeleteConfirm";
 import {
   generateTimeAgo,
   getFileUrl,
@@ -22,6 +23,8 @@ import {
   deleteGroupUsers,
 } from "../../graphql-custom/GroupUsers/mutation";
 import { useUser } from "../../context/userContext";
+import useMediaQuery from "../navigation/useMeduaQuery";
+import {useRouter} from "next/router";
 
 const PostHeader = ({
   addCommentRef,
@@ -32,14 +35,18 @@ const PostHeader = ({
 }) => {
   const [item, setItem] = useState(post.items.items[activeIndex]);
   const [render, setRender] = useState(0);
+  const [open, setOpen] = useState(false);
   const { user, isLogged } = useUser();
   const [pathName, setPathName] = useState("");
+  const isTablet = useMediaQuery("screen and (max-device-width: 1023px)");
+  const [isShareButtonVisible, setIsShareButtonVisible] = useState(!isTablet);
+  const router = useRouter()
   const titleMaxCharacters = 160;
   const titleRef = useRef();
   const [isViewMoreTextVisible, setIsViewMoreTextVisible] = useState(
     post.items.items[activeIndex].title.length > titleMaxCharacters
   );
-  const [isExpanded, isSetExpanded] = useState(false)
+  const [isExpanded, isSetExpanded] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -48,7 +55,7 @@ const PostHeader = ({
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleToast = ({ param }) => {
-    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "follow") toast.success("Группт амжилттай нэгдлээ!");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
     if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
@@ -124,6 +131,7 @@ const PostHeader = ({
   return (
     <>
       <div className={"w-full"}>
+        {/*Button*/}
         <div
           onClick={toggleMenu}
           ref={menuRef}
@@ -149,13 +157,17 @@ const PostHeader = ({
                   post={post}
                   postUser={post.user}
                   handleToast={handleToast}
+                  setOpen={setOpen}
                 />
               }
               className={"top-10 right-1"}
             />
           </div>
+          {
+        open && <PostDeleteConfirm setOpen={setOpen} post={post}/>
+      }
         </div>
-        <div className={"px-[24px]"}>
+        <div className={"flex flex-col-reverse lg:flex-col px-[24px]"}>
           <div
             className={"relative flex flex-row justify-between items-center"}
           >
@@ -265,15 +277,11 @@ const PostHeader = ({
               </Button>
             </div>
           </div>
-        </div>
-        <div className={"flex flex-col px-[24px]"}>
           <div className={`flex flex-col`}>
             <p
               ref={titleRef}
-              className={`break-words text-[15px] my-[20px] ${
-                !isExpanded
-                  ? "truncate-2"
-                  : "max-h-[50vh] overflow-y-auto"
+              className={`break-words text-[15px] mb-[10px] lg:mb-[20px] lg:mt-[20px] ${
+                !isExpanded ? "truncate-2" : "max-h-[50vh] overflow-y-auto"
               } ${mobile ? "text-white" : "text-caak-generalblack"} `}
             >
               {item.title && decode(item.title)}
@@ -287,7 +295,9 @@ const PostHeader = ({
               </p>
             )}
           </div>
-
+        </div>
+        {/*Content*/}
+        <div className={"flex flex-col px-[24px]"}>
           {post.status === "CONFIRMED" && (
             <div
               className={
@@ -301,6 +311,7 @@ const PostHeader = ({
                   }
                 >
                   <AnimatedCaakButton
+                    subscription={true}
                     reactionType={"POST_ITEM"}
                     itemId={item.id}
                     hideCaakText={mobile}
@@ -346,14 +357,38 @@ const PostHeader = ({
                   </span>
                 </div>
               </div>
-              <div className={"flex flex-row items-center"}>
-                <span
-                  className={`text-14px ${
-                    mobile ? "text-white" : "text-caak-darkBlue"
-                  } tracking-[0.21px] leading-[16px]`}
+              {isTablet && (
+                <div
+                  onClick={() => setIsShareButtonVisible(!isShareButtonVisible)}
+                  className={
+                    "flex justify-center items-center w-[24px] h-[24px]"
+                  }
                 >
-                  Хуваалцах
-                </span>
+                  <span
+                    className={`${
+                      isShareButtonVisible
+                        ? "icon-fi-rs-share-f text-white"
+                        : "icon-fi-rs-share-o"
+                    }  text-[24px] h-[24px w-[24px]`}
+                  />
+                </div>
+              )}
+
+              <div
+                className={`${isShareButtonVisible ? "flex" : "hidden"} ${
+                  isTablet ? "right-[58px]" : "right-[24px]"
+                } absolute flex flex-row items-center`}
+              >
+                {!isTablet && (
+                  <span
+                    className={`text-14px ${
+                      mobile ? "text-white" : "text-caak-darkBlue"
+                    } tracking-[0.21px] leading-[16px]`}
+                  >
+                    Хуваалцах
+                  </span>
+                )}
+
                 <div
                   className={
                     "flex flex-row items-center justify-center ml-[7px]"
@@ -364,12 +399,12 @@ const PostHeader = ({
                   >
                     <div
                       className={
-                        "flex items-center bg-caak-facebook justify-center w-[22px] h-[22px] rounded-full cursor-pointer"
+                        "flex items-center bg-white justify-center w-[22px] h-[22px] rounded-full cursor-pointer"
                       }
                     >
                       <span
                         className={
-                          "icon-fi-rs-facebook path1 text-white text-[22px]"
+                          "icon-fi-rs-facebook text-facebook text-[22px]"
                         }
                       />
                     </div>

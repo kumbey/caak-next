@@ -42,7 +42,7 @@ const Post = ({ ssrData }) => {
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
-    if (param === "follow") toast.success("Группт амжилттай элслээ.");
+    if (param === "follow") toast.success("Группт амжилттай нэгдлээ!");
     if (param === "unfollow") toast.success("Группээс амжилттай гарлаа.");
     if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
     if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
@@ -130,9 +130,9 @@ const Post = ({ ssrData }) => {
         <Head>
           {/* for Twitter */}
 
-          <meta name="twitter:card" content="photo" />
+          <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content={post.title} />
-          <meta name="twitter:description" content={post.description} />
+          <meta name="twitter:description" content={decode(post.description)} />
           <meta
             name="twitter:url"
             content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}
@@ -143,9 +143,9 @@ const Post = ({ ssrData }) => {
           />
 
           {/* for Facebook  */}
-          <meta name="description" content={post.description} />
+          <meta name="description" content={decode(post.description)} />
           <meta property="og:title" content={post.title} />
-          <meta property="og:type" content="article" />
+          <meta property="og:type" content="website" />
           <meta
             name="og:url"
             content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}

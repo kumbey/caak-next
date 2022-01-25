@@ -36,6 +36,12 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   const [doRender, setDoRender] = useState(0);
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
+  
+  const kFormatter = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  };
 
   const fileParams = (file) => {
     return {
@@ -417,7 +423,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       "text-caak-generalblack font-semibold text-center text-[16px] tracking-[0.24px] leading-[19px]"
                     }
                   >
-                    {user?.aura}
+                    {kFormatter(user?.aura)}
                   </p>
                   <p
                     className={
@@ -449,7 +455,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       "text-caak-generalblack font-semibold text-center text-[16px] tracking-[0.24px] leading-[19px]"
                     }
                   >
-                    {user?.totals?.confirmed}
+                    {kFormatter(user?.totals?.confirmed)}
                   </p>
                   <p
                     className={
@@ -683,8 +689,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 </div>
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
-                {JSON.parse(user?.meta)?.settings?.showCreatedGroup &&
-                user.id === signedUser?.id ? (
+                {JSON.parse(user?.meta)?.settings?.showCreatedGroup 
+                // && user.id === signedUser?.id 
+                ? (
                   <SideBarGroups
                     role={["ADMIN", "MODERATOR"]}
                     userId={user.id}
@@ -695,8 +702,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 ) : null}
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
-                {JSON.parse(user?.meta)?.settings?.showFollowedGroup &&
-                user.id === signedUser?.id ? (
+                {JSON.parse(user?.meta)?.settings?.showFollowedGroup 
+                // && user.id === signedUser?.id
+                 ? (
                   <SideBarGroups
                     role={["MEMBER"]}
                     userId={user.id}

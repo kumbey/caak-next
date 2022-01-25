@@ -70,11 +70,11 @@ export default function Settings() {
               >
                 {user.firstname}
               </p> */}
-              <p className="text-[22px] font-semibold">@{user.nickname}</p>
+              <p className="text-[22px] font-semibold text-[#21293C]">@{user.nickname}</p>
             </div>
           </div>
           <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
-            <div className="settingsMenuPanel  bg-white rounded-lg mt-[24px]">
+            <div className="settingsMenuPanel  bg-white drop-shadow rounded-lg mt-[24px]">
               <div className="my-[30px] mx-[30px]">
                 {data.map(({ icon, title, id }) => (
                   <div

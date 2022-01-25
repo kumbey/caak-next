@@ -102,6 +102,7 @@ const EditPost = ({ ssrData }) => {
   const { user } = useUser();
 
   const [isGroupVisible, setIsGroupVisible] = useState(false);
+  const [videoDurationError, setVideoDurationError] = useState(false)
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
@@ -348,10 +349,19 @@ const EditPost = ({ ssrData }) => {
                   uploadPost={uploadPost}
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
+                  setVideoDurationError={setVideoDurationError}
                 />
               ) : (
-                <DropZoneWithCaption post={post} setPost={setPost} />
+                <DropZoneWithCaption setVideoDurationError={setVideoDurationError} post={post} setPost={setPost} />
               )}
+
+              {
+                videoDurationError
+                ?
+                <div className="text-[16px] mx-[22px] my-[5px] text-[#ff0000]">Уучлаарай, таны бичлэг 5 минутаас хэтэрсэн байна</div>
+                :
+                null
+              }
 
               <div className={"flex flex-row pb-4 px-4 justify-end"}>
                 <Button
@@ -365,7 +375,6 @@ const EditPost = ({ ssrData }) => {
                   loading={loading}
                   disabled={
                     !isEditing ||
-                    !selectedGroup ||
                     loading
                   }
                   onClick={() => handleSubmit()}

@@ -1,12 +1,12 @@
-import { useState} from "react";
+import { useEffect, useState } from "react";
 import successImg from "/public/assets/images/Successfully.svg";
 import Button from "../button";
 import { useRouter } from "next/router";
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
 
 const Completed = () => {
   const [loading] = useState(false);
-  const {isLoginValid} = useUser()
+  const { isLoginValid } = useUser();
   const router = useRouter();
   const submitHandler = async () => {
     try {
@@ -17,8 +17,21 @@ const Completed = () => {
     }
   };
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      submitHandler();
+    }, 2000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+    //eslint-disable-next-line
+  }, []);
+
   return (
-    <div className={`flex justify-center items-center w-full shadow-xl rounded-xl bg-white`}>
+    <div
+      className={`flex justify-center items-center w-full shadow-xl rounded-xl bg-white`}
+    >
       <div className="pt-[46px]">
         <div className="flex flex-col items-center mt-1">
           <img width={182} height={144} src={successImg.src} alt={"success"} />
@@ -29,14 +42,11 @@ const Completed = () => {
           >
             Шинэ саак-т тавтай <br /> морилно уу!
           </div>
-          <p className="text-center  text-caak-darkBlue">
-            Таны сонирхлын дагуу танд зориулан <br /> постуудыг бэлтэж байна.
-          </p>
         </div>{" "}
         <div className="my-[40px] px-[40px] ph:px-c2 text-white text-14px flex items-center justify-between ">
           <Button
             loading={loading}
-            onClick={()=> submitHandler()}
+            onClick={() => submitHandler()}
             className={
               "disabled: rounded-md w-full h-c9 text-17px font-bold bg-caak-primary"
             }

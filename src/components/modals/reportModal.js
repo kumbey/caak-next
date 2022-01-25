@@ -65,12 +65,12 @@ const ReportModal = ({ isOpen, setIsOpen, postId, userId }) => {
   }, []);
 
   return isOpen ? (
-    <div className="popup_modal">
-      <div className="popup_modal-report  ">
+    <div className="popup_modal z-[12]">
+      <div className="popup_modal-report">
         <div className="bg-white rounded-xl py-[20px] px-[20px]">
           <div
             className={
-              "pb-[17px]  flex  justify-center items-center relative  border-b "
+              "pb-[17px] flex justify-center items-center relative  border-b "
             }
           >
             <div
@@ -88,14 +88,12 @@ const ReportModal = ({ isOpen, setIsOpen, postId, userId }) => {
           </div>
           {!isNext ? (
             <>
-              <div className="flex  flex-wrap">
+              <div className="reportModalItemsContainer">
                 {reports.map((report, index) => {
                   return (
                     <div
                       key={index}
-                      className={`${
-                        index % 2 === 0 ? "border-r " : (pl = "pl-[10px] ")
-                      } flex items-center border-b py-[15px]  w-[230px] cursor-pointer`}
+                      className={`reportModalItem odd:border-r pl-[10px] flex items-center border-b py-[15px] min-w-[230px] cursor-pointer`}
                     >
                       <input
                         id={report.id}

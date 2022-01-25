@@ -1,6 +1,6 @@
 import DropZone from "../input/DropZone";
 
-const AddPostCardSmall = ({ post, setPost }) => {
+const AddPostCardSmall = ({ post, setPost, setVideoDurationError }) => {
   return (
     <div
       className={
@@ -8,6 +8,7 @@ const AddPostCardSmall = ({ post, setPost }) => {
       }
     >
       <DropZone
+        setVideoDurationError={setVideoDurationError}
         hideThumbnailImage
         className={"h-full w-full bg-white"}
         post={post}

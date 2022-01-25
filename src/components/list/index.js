@@ -8,6 +8,7 @@ import DropDown from "../../components/navigation/DropDown";
 import FacebookIcon from "../../../public/assets/images/Facebook-Color.svg";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 import TwitterIcon from "../../../public/assets/images/Twitter-Color.svg";
+import PostDeleteConfirm from "../card/PostDeleteConfirm";
 import {
   generateTimeAgo,
   getFileUrl,
@@ -22,6 +23,7 @@ const List = ({ post, imageSrc, handleToast }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [pathName, setPathName] = useState("");
+  const [open, setOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -279,11 +281,15 @@ const List = ({ post, imageSrc, handleToast }) => {
                 post={post}
                 postUser={post.user}
                 handleToast={handleToast}
+                setOpen={setOpen}
               />
             }
             className={"top-6 -right-3"}
           />
         </div>
+        {
+        open && <PostDeleteConfirm setOpen={setOpen} post={post}/>
+      }
       </div>
     </div>
   );

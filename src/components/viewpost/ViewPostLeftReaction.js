@@ -9,6 +9,7 @@ import AnimatedCaakButton from "../button/animatedCaakButton";
 import toast from "react-hot-toast";
 import useMediaQuery from "../navigation/useMeduaQuery";
 import PostMoreMenu from "../card/PostMoreMenu";
+import PostDeleteConfirm from "../card/PostDeleteConfirm";
 
 const ViewPostLeftReaction = ({
   post,
@@ -20,6 +21,7 @@ const ViewPostLeftReaction = ({
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [pathName, setPathName] = useState("");
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const toggleMenu = () => {
@@ -50,6 +52,7 @@ const ViewPostLeftReaction = ({
     >
       <div className={"flex flex-col items-center mb-[22px]"}>
         <AnimatedCaakButton
+          subscription={true}
           reactionType={"POST"}
           itemId={post.id}
           totals={post.totals}
@@ -219,6 +222,7 @@ const ViewPostLeftReaction = ({
                 postUser={post.user}
                 groupId={post.group_id}
                 handleToast={handleToast}
+                setOpen={setOpen}
               />
             }
             className={
@@ -229,6 +233,9 @@ const ViewPostLeftReaction = ({
             className={"icon-fi-rs-dots text-caak-extraBlack text-[24px]"}
           />
         </div>
+        {
+        open && <PostDeleteConfirm setOpen={setOpen} post={post}/>
+      }
         <div className={"mt-[6px]"}>
           <p
             className={

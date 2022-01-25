@@ -1,5 +1,6 @@
 import groupUsers0001 from "./fields/groupUsers0001";
 import groupUsers0002 from "./fields/groupUsers0002";
+import groupUsers0003 from "./fields/groupUsers0003";
 
 
 export const getGroupUserRole = /* GraphQL */ `
@@ -27,6 +28,28 @@ export const listGroupByUserAndRole = /* GraphQL */ `
                 nextToken: $nextToken, 
                 ) {
             items ${groupUsers0002}
+        }
+    }
+`;
+
+export const listGroupByUserAndRoleForYou = /* GraphQL */ `
+    query ListGroupByUserAndRole(
+        $user_id: ID,
+        $role: ModelStringKeyConditionInput,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelGroupUsersFilterInput,
+        $limit: Int,
+        $nextToken: String
+    ) {
+        listGroupByUserAndRole(
+            user_id: $user_id
+            role: $role
+            sortDirection: $sortDirection
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken,
+        ) {
+            items ${groupUsers0003}
         }
     }
 `;

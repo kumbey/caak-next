@@ -1,13 +1,17 @@
 import SideBarGroupItem from "./SideBarGroupItem";
-import {useEffect, useState} from "react";
-import {getFileUrl, getGenderImage, getReturnData,} from "../../../utility/Util";
+import { useEffect, useState } from "react";
+import {
+  getFileUrl,
+  getGenderImage,
+  getReturnData,
+} from "../../../utility/Util";
 import ViewMoreText from "./ViewMoreText";
-import {useUser} from "../../../context/userContext";
-import {API, graphqlOperation} from "aws-amplify";
-import {listGroupByUserAndRole} from "../../../graphql-custom/GroupUsers/queries";
-import {listGroups} from "../../../graphql/queries";
-import {listGroupTotals} from "../../../graphql-custom/group/queries";
-import {useRouter} from "next/router";
+import { useUser } from "../../../context/userContext";
+import { API, graphqlOperation } from "aws-amplify";
+import { listGroupByUserAndRole } from "../../../graphql-custom/GroupUsers/queries";
+import { listGroups } from "../../../graphql/queries";
+import { listGroupTotals } from "../../../graphql-custom/group/queries";
+import { useRouter } from "next/router";
 
 const SideBarGroups = ({
   title,
@@ -22,7 +26,7 @@ const SideBarGroups = ({
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const [groupTotals, setGroupTotals] = useState([]);
   const { isLogged } = useUser();
-  const router = useRouter()
+  const router = useRouter();
   const fetchGroups = async (role) => {
     try {
       let retData = [];
@@ -34,16 +38,14 @@ const SideBarGroups = ({
           );
           retData = [...retData, ...followed];
         } else {
-          const resp = await API.graphql(
-            {
-              query: listGroupByUserAndRole,
-              variables: {
-                user_id: userId,
-                role: { eq: role[i] },
-              },
-              authMode: authMode ? authMode : "AMAZON_COGNITO_USER_POOLS"
-            }
-          );
+          const resp = await API.graphql({
+            query: listGroupByUserAndRole,
+            variables: {
+              user_id: userId,
+              role: { eq: role[i] },
+            },
+            authMode: authMode ? authMode : "AMAZON_COGNITO_USER_POOLS",
+          });
           retData = [...retData, ...getReturnData(resp).items];
         }
       }
@@ -62,7 +64,7 @@ const SideBarGroups = ({
   const getGroupTotal = async () => {
     const resp = await API.graphql({
       query: listGroupTotals,
-      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
     });
     setGroupTotals(getReturnData(resp).items);
   };
@@ -95,9 +97,13 @@ const SideBarGroups = ({
         </div>
         {addGroup && (
           <div
-            onClick={() => user.aura < 5000 ? setIsAuraModalOpen(true) : router.push({
-              pathname: '/group/create'
-            })}
+            onClick={() =>
+              user.aura < 5000
+                ? setIsAuraModalOpen(true)
+                : router.push({
+                    pathname: "/group/create",
+                  })
+            }
             className={
               "flex justify-center cursor-pointer items-center w-[18px] h-[18px] p-[3px]"
             }
@@ -108,7 +114,7 @@ const SideBarGroups = ({
       </div>
       {groupData.map((group, index) => {
         let params = {};
-        
+
         if (group.group) {
           params = {
             name: group.group.name,
@@ -116,7 +122,7 @@ const SideBarGroups = ({
               ? getFileUrl(group.group.profile)
               : getGenderImage("default").src,
             groupId: group.group_id,
-            role: group.group.role_on_group
+            role: group.group.role_on_group,
           };
         } else {
           params = {
@@ -125,7 +131,7 @@ const SideBarGroups = ({
               ? getFileUrl(group.profile)
               : getGenderImage("default").src,
             groupId: group.id,
-            role: group.role_on_group
+            role: group.role_on_group,
           };
         }
         if (maxColumns) {

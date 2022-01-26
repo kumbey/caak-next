@@ -124,6 +124,7 @@ const Video = ({
     if (!localStorageIsVideoMuted) {
       lsSet("isVideoMuted", "TRUE");
     }
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {

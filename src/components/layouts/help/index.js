@@ -13,6 +13,8 @@ export default function DefaultHelpLayout({ children }) {
     setNavBarTransparent(false);
     // eslint-disable-next-line
   }, []);
+  const day = new Date();
+  const year = day.getFullYear();
 
   const { user, isLogged } = useUser();
   return (
@@ -108,7 +110,7 @@ export default function DefaultHelpLayout({ children }) {
               </Link>
             </div>
             <div className="sm:flex text-[15px] text-[#6C7392] mt-[10px] sm:mt-[25.5px]">
-              <p className="md:ml-[16px] text-center">©2021 "Саак Холдинг" ХХК</p>
+              <p className="md:ml-[16px] text-center">{`©${year} "Саак Холдинг" ХХК`}</p>
             </div>
           </div>
         </div>

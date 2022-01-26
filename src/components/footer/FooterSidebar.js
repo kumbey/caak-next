@@ -63,7 +63,7 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
           </a>
         </Link>
       </div>
-      <div className={"my-[4px]"}>©{year} "Саак Холдинг" ХХК</div>
+      <div className={"my-[4px]"}>{`©${year} "Саак Холдинг" ХХК`}</div>
     </div>
   );
 };

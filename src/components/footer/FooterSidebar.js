@@ -34,6 +34,7 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
             <p>Сурталчилгаа</p>
           </a>
         </Link>
+        <p className="mx-[5px] cursor-default">·</p>
         <Link
           href={{
             pathname: "/help/secure",
@@ -48,7 +49,6 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
           </a>
         </Link>
         <p className="mx-[5px] cursor-default">·</p>
-
         <Link
           href={{
             pathname: "/help/secure",
@@ -63,7 +63,7 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
           </a>
         </Link>
       </div>
-      <div className={"my-[4px]"}>©{year} Саак Холдинг ХХК</div>
+      <div className={"my-[4px]"}>©{year} "Саак Холдинг" ХХК</div>
     </div>
   );
 };

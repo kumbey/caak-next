@@ -44,6 +44,7 @@ const Foryou = () => {
       filter: {
         or: forYouPostsFilter,
         user_id: { ne: user.id },
+        status: {eq: "CONFIRMED"},
       },
       limit: 20,
       sort: { field: "createdAt", direction: "desc" },

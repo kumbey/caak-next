@@ -689,10 +689,11 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 </div>
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
-                {JSON.parse(user?.meta)?.settings?.showCreatedGroup 
-                // && user.id === signedUser?.id 
+                {JSON.parse(user?.meta)?.settings?.showCreatedGroup
+                // && user.id === signedUser?.id
                 ? (
                   <SideBarGroups
+                    authMode={"AWS_IAM"}
                     role={["ADMIN", "MODERATOR"]}
                     userId={user.id}
                     maxColumns={13}
@@ -702,10 +703,11 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 ) : null}
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
-                {JSON.parse(user?.meta)?.settings?.showFollowedGroup 
+                {JSON.parse(user?.meta)?.settings?.showFollowedGroup
                 // && user.id === signedUser?.id
                  ? (
                   <SideBarGroups
+                    authMode={"AWS_IAM"}
                     role={["MEMBER"]}
                     userId={user.id}
                     maxColumns={13}

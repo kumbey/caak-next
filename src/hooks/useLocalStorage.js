@@ -28,12 +28,6 @@ const useLocalStorage = (type) => {
                
                 return false;
             }
-            if(key === "addPostBanner"){
-                return stored
-            }
-            if(key === "addPostCard"){
-                return stored
-            }
             else {
                 const decrypted = AES.decrypt(stored, Configure.AESKey)
                 return JSON.parse(decrypted.toString(enc.Utf8));
@@ -46,18 +40,9 @@ const useLocalStorage = (type) => {
     } 
 
     const set = (key, value) => {
-        if(key === "addPostBanner"){
-            storage.setItem(key, value)
-            return true
-        } else if(key === "addPostCard"){
-            storage.setItem(key, value)
-            return true
-        }
-        else {
             const encrypted = AES.encrypt(JSON.stringify(value), Configure.AESKey)
             storage.setItem(key, encrypted.toString())
             return true
-        }
     }
         
 

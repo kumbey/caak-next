@@ -1,17 +1,13 @@
 import SideBarGroupItem from "./SideBarGroupItem";
-import { useEffect, useState } from "react";
-import {
-  getFileUrl,
-  getGenderImage,
-  getReturnData,
-} from "../../../utility/Util";
+import {useEffect, useState} from "react";
+import {getFileUrl, getGenderImage, getReturnData,} from "../../../utility/Util";
 import ViewMoreText from "./ViewMoreText";
-import { useUser } from "../../../context/userContext";
-import { API, graphqlOperation } from "aws-amplify";
-import { listGroupByUserAndRole } from "../../../graphql-custom/GroupUsers/queries";
-import { listGroups } from "../../../graphql/queries";
-import { listGroupTotals } from "../../../graphql-custom/group/queries";
-import { useRouter } from "next/router";
+import {useUser} from "../../../context/userContext";
+import {API, graphqlOperation} from "aws-amplify";
+import {listGroupByUserAndRole} from "../../../graphql-custom/GroupUsers/queries";
+import {listGroups} from "../../../graphql/queries";
+import {listGroupTotals} from "../../../graphql-custom/group/queries";
+import {useRouter} from "next/router";
 
 const SideBarGroups = ({
   title,
@@ -21,17 +17,14 @@ const SideBarGroups = ({
   initialData,
   userId,
   setIsAuraModalOpen,
+  authMode,
 }) => {
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const [groupTotals, setGroupTotals] = useState([]);
-  const { isLogged, user } = useUser();
+  const { isLogged } = useUser();
   const router = useRouter()
-  const fetchGroups = async (user, role) => {
+  const fetchGroups = async (role) => {
     try {
-      if (!user) {
-        return null;
-      }
-
       let retData = [];
       for (let i = 0; i < role.length; i++) {
         if (role[i] === "NOT_MEMBER") {
@@ -42,10 +35,14 @@ const SideBarGroups = ({
           retData = [...retData, ...followed];
         } else {
           const resp = await API.graphql(
-            graphqlOperation(listGroupByUserAndRole, {
-              user_id: userId ? userId : user.id,
-              role: { eq: role[i] },
-            })
+            {
+              query: listGroupByUserAndRole,
+              variables: {
+                user_id: userId,
+                role: { eq: role[i] },
+              },
+              authMode: authMode ? authMode : "AMAZON_COGNITO_USER_POOLS"
+            }
           );
           retData = [...retData, ...getReturnData(resp).items];
         }
@@ -58,24 +55,24 @@ const SideBarGroups = ({
   };
 
   const getGroups = async () => {
-    const groups = await fetchGroups(user, [...role]);
+    const groups = await fetchGroups([...role]);
     setGroupData(groups);
   };
 
   const getGroupTotal = async () => {
     const resp = await API.graphql({
       query: listGroupTotals,
+      authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
     });
     setGroupTotals(getReturnData(resp).items);
   };
 
   const getGroupPending = (id) => {
-    const res = groupTotals.find((item) => item.group_id === id);
-    return res;
+    return groupTotals.find((item) => item.group_id === id);
   };
 
   useEffect(() => {
-    if (!initialData && isLogged) {
+    if (!initialData) {
       getGroups();
     }
     // eslint-disable-next-line
@@ -83,6 +80,7 @@ const SideBarGroups = ({
 
   useEffect(() => {
     getGroupTotal();
+    //eslint-disable-next-line
   }, []);
 
   return groupData && groupData.length > 0 ? (

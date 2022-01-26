@@ -10,27 +10,6 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
   const [hover, setHover] = useState(false);
   const [swap, setSwap] = useState(false);
 
-  // const fetchBanners = async () => {
-  //     const resp = await API.graphql({
-  //         query: listBannersByType,
-  //         variables: {
-  //           type: 'A1',
-
-  //         },
-  //         authMode: 'AWS_IAM'
-  //       });
-
-  //     const number = Math.floor(Math.random() * resp.data.listBannersByType.items.length)
-
-  //     setBanner(resp.data.listBannersByType.items[number])
-  //     const data = JSON.parse(resp.data.listBannersByType.items[number].meta);
-  //     setMeta(data);
-  // };
-
-  // useEffect(() => {
-  //     fetchBanners()
-  // },[])
-
   const date = new Date();
   const now = date.toISOString();
 
@@ -44,15 +23,17 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
         },
         authMode: "AWS_IAM",
       });
-      const number = Math.floor(
-        Math.random() * resp.data.listBannersByTypeOrderByEndDate.items.length
-      );
-
-      setBanner(resp.data.listBannersByTypeOrderByEndDate.items[number]);
-      const data = JSON.parse(
-        resp.data.listBannersByTypeOrderByEndDate.items[number].meta
-      );
-      setMeta(data);
+      if (resp.data.listBannersByTypeOrderByEndDate.items.length > 0) {
+        const number = Math.floor(
+          Math.random() * resp.data.listBannersByTypeOrderByEndDate.items.length
+        );
+  
+        setBanner(resp.data.listBannersByTypeOrderByEndDate.items[number]);
+        const data = JSON.parse(
+          resp.data.listBannersByTypeOrderByEndDate.items[number]?.meta
+        );
+        setMeta(data);
+      }
     };
     fetch();
     // eslint-disable-next-line
@@ -74,7 +55,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
     }
   }, [swap]);
 
-  return bannerOpen && meta ? (
+  return bannerOpen && meta && banner ? (
     <div className="sticky bottom-2/3 sm:top-[80px] sm:bottom-[50px] left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px] z-[5]">
       {modal ? null : (
         <div className="bounce_banner flex flex-row items-start">

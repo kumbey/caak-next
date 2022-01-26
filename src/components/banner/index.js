@@ -8,27 +8,6 @@ export default function Banner() {
     const [banner, setBanner] = useState()
     const [meta, setMeta] = useState()
 
-    // const fetchBanners = async () => {
-    //     const resp = await API.graphql({
-    //       query: listBannersByType,
-    //       variables: {
-    //         type: 'A2',
-            
-    //       }, 
-    //       authMode: 'AWS_IAM'
-    //     });
-
-    //     const number = Math.floor(Math.random() * resp.data.listBannersByType.items.length)
-
-    //     setBanner(resp.data.listBannersByType.items[number])
-    //     const data = JSON.parse(resp.data.listBannersByType.items[number].meta);
-    //     setMeta(data);
-    // };
-
-    // useEffect(() => {
-    //     fetchBanners()
-    // },[])
-
     const date = new Date()
     const now = date.toISOString()
 
@@ -42,18 +21,20 @@ export default function Banner() {
                 }, 
                 authMode: 'AWS_IAM'
               });
-              const number = Math.floor(Math.random() * resp.data.listBannersByTypeOrderByEndDate.items.length)
+              if (resp.data.listBannersByTypeOrderByEndDate.items.length > 0) {
+                const number = Math.floor(Math.random() * resp.data.listBannersByTypeOrderByEndDate.items.length)
 
-              setBanner(resp.data.listBannersByTypeOrderByEndDate.items[number])
-              const data = JSON.parse(resp.data.listBannersByTypeOrderByEndDate.items[number].meta);
-              setMeta(data);
+                setBanner(resp.data.listBannersByTypeOrderByEndDate.items[number])
+                const data = JSON.parse(resp.data.listBannersByTypeOrderByEndDate.items[number].meta);
+                setMeta(data);
+              }
         };
         fetch()
         // eslint-disable-next-line
     }, [])
 
   return (
-    meta 
+    meta && banner
     ?
     <div className="sticky top-[74px] flex flex-col items-end">
       <Link href={meta.url}>

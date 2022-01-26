@@ -366,6 +366,7 @@ const Feed = ({ ssrData }) => {
             </FeedLayout>
           </div>
         </div>
+
         <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen}/>
       </div>
     </>

@@ -429,6 +429,17 @@
     margin-right: auto;
   }
 
+  .a2_banner {
+    bottom: 50px;
+  }
+  @media (max-width: 767px) {
+    .a2_banner {
+      bottom: unset;
+      top: 64px;
+    }
+  }
+
+
   .bounce_banner {
     animation: bounce_banner 1s ease infinite;
   }

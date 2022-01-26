@@ -56,7 +56,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
   }, [swap]);
 
   return bannerOpen && meta && banner ? (
-    <div className="sticky bottom-2/3 sm:top-[80px] sm:bottom-[50px] left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px] z-[5]">
+    <div className="a2_banner fixed left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px] z-[11]">
       {modal ? null : (
         <div className="bounce_banner flex flex-row items-start">
           <div
@@ -84,7 +84,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
                   ? meta.colors.text_bg_hover_color
                   : meta.colors.text_bg_color,
               }}
-              className={`absolute top-1/2 -translate-y-1/2 right-[-60px] p-1 rounded-[8px] w-full max-w-[100px] text-center max-h-[60px]`}
+              className={`text-[12px] md:text-[16px] absolute top-1/2 -translate-y-1/2 right-[-50px] md:right-[-60px] p-1 rounded-[8px] w-full max-w-[100px] text-center max-h-[60px]`}
             >
               {meta.text}
             </p>

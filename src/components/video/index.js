@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { useUser } from "../../context/userContext";
 import Tooltip from "../tooltip/Tooltip";
 import Loader from "../loader";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 const dblTouchTapMaxDelay = 300;
 let latestTouchTap = {
@@ -55,14 +56,17 @@ const Video = ({
       ? JSON.parse(user.meta)?.settings?.autoPlay
       : true
   );
-  const [isMuted, setIsMuted] = useState(false);
+  const { lsGet, lsSet } = useLocalStorage("local");
+  const localStorageIsVideoMuted = lsGet("isVideoMuted");
+  const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef(null);
   const router = useRouter();
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [played, setPlayed] = useState(0);
-  const [volume, setVolume] = useState(0.8);
+  const [volume, setVolume] = useState(isMuted ? 0.8 : 0);
+
   const [volumeSliderActive, setVolumeSliderActive] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const canvasRef = useRef();
@@ -70,7 +74,6 @@ const Video = ({
   const [ref, inView] = useInView({
     threshold: 0.5,
   });
-
   const handleSeekChange = (e) => {
     setPlayed(parseFloat(e.target.value));
   };
@@ -98,6 +101,13 @@ const Video = ({
   const handleVolumeChange = (e) => {
     e.stopPropagation();
     setVolume(parseFloat(e.target.value));
+    if (parseFloat(e.target.value) === 0) {
+      setIsMuted(localStorageIsVideoMuted === "TRUE");
+      lsSet("isVideoMuted", "TRUE");
+    } else {
+      setIsMuted(false);
+      lsSet("isVideoMuted", "FALSE");
+    }
   };
 
   function secondsToTime(e) {
@@ -111,12 +121,17 @@ const Video = ({
   }
 
   useEffect(() => {
-    if (volume === 0) {
-      setIsMuted(true);
-    } else {
-      setIsMuted(false);
+    if (!localStorageIsVideoMuted) {
+      lsSet("isVideoMuted", "TRUE");
     }
-  }, [volume]);
+    //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    setIsMuted(localStorageIsVideoMuted === "TRUE");
+    setVolume(localStorageIsVideoMuted === "TRUE" ? 0 : 0.8);
+  }, [localStorageIsVideoMuted]);
+
   //Buggy when 2 videos visible on viewport at the same time
   useEffect(() => {
     if (inView) {
@@ -186,35 +201,40 @@ const Video = ({
 
       <div
         ref={ref}
-        onClick={() => {
-          if (!disableOnClick && !isPlaying) {
-            setCurrentPlayingVideoId(videoFileId);
-            setIsPlaying(true);
+        onClick={(e) => {
+          if (!disableOnClick) {
+            if(!isDblTouchTap(e)){
+              setCurrentPlayingVideoId(videoFileId);
+              setIsPlaying(!isPlaying);
+            }
           }
         }}
         onDoubleClick={() => {
-          !disableOnClick &&
-            route &&
-            router.push(
-              {
-                pathname: router.pathname,
-                query: {
-                  ...router.query,
-                  ...(postItemId
-                    ? { viewItemPost: "postItem", itemId: postItemId }
-                    : { viewPost: "post" }),
-                  id: postId,
-                  prevPath: router.asPath,
-                  isModal: true,
+          if (!disableOnClick) {
+            if (route) {
+              setIsPlaying(false)
+              router.push(
+                {
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    ...(postItemId
+                      ? { viewItemPost: "postItem", itemId: postItemId }
+                      : { viewPost: "post" }),
+                    id: postId,
+                    prevPath: router.asPath,
+                    isModal: true,
+                  },
                 },
-              },
-              `${
-                postItemId
-                  ? `/post/view/${postId}/${postItemId}`
-                  : `/post/view/${postId}`
-              }`,
-              { shallow: true }
-            );
+                `${
+                  postItemId
+                    ? `/post/view/${postId}/${postItemId}`
+                    : `/post/view/${postId}`
+                }`,
+                { shallow: true }
+              );
+            }
+          }
         }}
         onTouchEnd={(e) => {
           if (isDblTouchTap(e)) {
@@ -244,6 +264,8 @@ const Video = ({
                 { shallow: true }
               );
             }
+          }else {
+            setIsPlaying(!isPlaying)
           }
         }}
         className={`relative w-full h-full group z-[2]`}
@@ -384,7 +406,18 @@ const Video = ({
                 onMouseUp={handleSeekMouseUp}
               />
             </div>
-
+            <div
+              onClick={(e) => {
+                handleFullscreen(e);
+              }}
+              className={
+                "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer mr-[8px]"
+              }
+            >
+              <span
+                className={"icon-fi-rs-full-screen text-white text-[22px]"}
+              />
+            </div>
             <Tooltip
               debounceValue={0.1}
               className={"right-1/2 translate-x-1/2"}
@@ -406,6 +439,8 @@ const Video = ({
                       step="any"
                       value={volume}
                       onChange={handleVolumeChange}
+                      onMouseUp={(e) => console.log(e.target.value)}
+                      onEnded={(e) => console.log(e)}
                     />
                   </div>
                 </div>
@@ -416,9 +451,11 @@ const Video = ({
                   e.stopPropagation();
                   if (isMuted && volume === 0) {
                     setVolume(0.8);
+                    lsSet("isVideoMuted", "FALSE");
                   } else {
                     setVolume(0);
                     setIsMuted(!isMuted);
+                    lsSet("isVideoMuted", isMuted ? "FALSE" : "TRUE");
                   }
                   setVolumeSliderActive(!volumeSliderActive);
                 }}
@@ -434,18 +471,6 @@ const Video = ({
                 )}
               </div>
             </Tooltip>
-            <div
-              onClick={(e) => {
-                handleFullscreen(e);
-              }}
-              className={
-                "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer ml-[8px]"
-              }
-            >
-              <span
-                className={"icon-fi-rs-full-screen text-white text-[22px]"}
-              />
-            </div>
           </div>
         </div>
       )}

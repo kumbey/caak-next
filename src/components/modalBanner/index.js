@@ -27,7 +27,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
         const number = Math.floor(
           Math.random() * resp.data.listBannersByTypeOrderByEndDate.items.length
         );
-  
+
         setBanner(resp.data.listBannersByTypeOrderByEndDate.items[number]);
         const data = JSON.parse(
           resp.data.listBannersByTypeOrderByEndDate.items[number]?.meta
@@ -68,9 +68,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
                 : meta.colors.border_color1,
             }}
             onClick={() => setModal(true)}
-            className={`
-                            rounded-[8px] cursor-pointer border-[5px] sm:border-[10px]
-                        `}
+            className={`rounded-[8px] cursor-pointer border-[5px] sm:border-[10px] relative`}
           >
             <img
               alt=""
@@ -86,9 +84,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
                   ? meta.colors.text_bg_hover_color
                   : meta.colors.text_bg_color,
               }}
-              className={` 
-                                absolute top-1/2 right-0 p-1 rounded-[8px] max-w-[60px] text-center max-h-[60px]
-                            `}
+              className={`absolute top-1/2 -translate-y-1/2 right-[-60px] p-1 rounded-[8px] w-full max-w-[100px] text-center max-h-[60px]`}
             >
               {meta.text}
             </p>

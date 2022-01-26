@@ -34,7 +34,6 @@ const Gender = ({
   };
 
   useEffect(() => {
-    console.log(gender);
     if (typeof setText === "function")
       setText((prev) => ({ ...prev, gender: gender }));
     // eslint-disable-next-line

@@ -1,6 +1,6 @@
 const RedirectUrls = {
-     redirectSignIn: "https://caak.mn/signInUp/federated/hook",
-     redirectSignOut: "https://caak.mn/",
+     redirectSignIn: "https://www.caak.mn/signInUp/federated/hook",
+     redirectSignOut: "https://www.caak.mn/",
 }
 
 export default RedirectUrls

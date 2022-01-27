@@ -306,6 +306,7 @@ const Post = ({ ssrData }) => {
               <div className={"relative h-[444px] w-full pt-[4px] mb-[13px]"}>
                 {post.items.items[0].file.type.startsWith("video") ? (
                   <Video
+                    videoFileId={post.items.items[0].id}
                     route={!(post.onlyBlogView === "TRUE")}
                     postId={post.id}
                     postItemId={post.items.items[0].id}

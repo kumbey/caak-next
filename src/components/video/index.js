@@ -8,6 +8,7 @@ import { useUser } from "../../context/userContext";
 import Tooltip from "../tooltip/Tooltip";
 import Loader from "../loader";
 import useLocalStorage from "../../hooks/useLocalStorage";
+import { getFileName } from "../../utility/Util";
 
 const dblTouchTapMaxDelay = 300;
 let latestTouchTap = {
@@ -43,11 +44,15 @@ const Video = ({
   initialAutoPlay,
   postItemId,
   itemIndex,
+  generateThumbnail,
+  post,
+  setPost,
   ...props
 }) => {
   const { user, isLogged } = useUser();
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [lightMode, setLightMode] = useState(props.light);
   const [isAutoPlayEnabled] = useState(
     typeof initialAutoPlay === "boolean"
       ? initialAutoPlay
@@ -137,7 +142,7 @@ const Video = ({
     if (inView) {
       setLoaded(true);
       if (videoRef.current)
-        if (videoRef.current.player.isReady) {
+        if (videoRef.current.player?.isReady) {
           const windowHeight = window.innerHeight;
           const thisVideoEl = videoRef.current.player.player.player,
             videoHeight = thisVideoEl.clientHeight,
@@ -146,8 +151,8 @@ const Video = ({
             videoClientRect <= windowHeight - videoHeight * 0.5 &&
             videoClientRect >= 0 - videoHeight * 0.5
           ) {
-            setIsPlaying(isAutoPlayEnabled);
             setCurrentPlayingVideoId(videoFileId);
+            setIsPlaying(isAutoPlayEnabled);
           } else {
             setIsPlaying(false);
           }
@@ -179,7 +184,9 @@ const Video = ({
       setIsPlaying(false);
     }
   }, [currentPlayingVideoId, videoFileId]);
-
+  useEffect(() => {
+    setLightMode(props.light)
+  }, [props.light]);
   Router.events.on("routeChangeStart", () => setIsPlaying(false));
   return (
     <div
@@ -203,7 +210,7 @@ const Video = ({
         ref={ref}
         onClick={(e) => {
           if (!disableOnClick) {
-            if(!isDblTouchTap(e)){
+            if (!isDblTouchTap(e)) {
               setCurrentPlayingVideoId(videoFileId);
               setIsPlaying(!isPlaying);
             }
@@ -212,7 +219,7 @@ const Video = ({
         onDoubleClick={() => {
           if (!disableOnClick) {
             if (route) {
-              setIsPlaying(false)
+              setIsPlaying(false);
               router.push(
                 {
                   pathname: router.pathname,
@@ -264,15 +271,16 @@ const Video = ({
                 { shallow: true }
               );
             }
-          }else {
-            setIsPlaying(!isPlaying)
+          } else {
+            setIsPlaying(!isPlaying);
+            setCurrentPlayingVideoId(videoFileId)
           }
         }}
         className={`relative w-full h-full group z-[2]`}
       >
         {inView || loaded ? (
           <ReactPlayer
-            light={thumbnailIcon}
+            onClickPreview={() => setLightMode("")}
             ref={videoRef}
             playing={isPlaying}
             muted={isMuted}
@@ -296,6 +304,34 @@ const Video = ({
                   canvasRef.current.width,
                   canvasRef.current.height
                 );
+                if (generateThumbnail) {
+                  const thumbnailImageBase64 = canvasRef.current.toDataURL();
+                  const tempPostArr = post;
+                  const currentPostItem = tempPostArr.items[itemIndex];
+
+                  fetch(thumbnailImageBase64)
+                    .then((res) => res.blob())
+                    .then((blob) => {
+                      const file = new File(
+                        [blob],
+                        `${currentPostItem.file.name}_thumbnail`,
+                        {
+                          type: "image/png",
+                        }
+                      );
+
+                      currentPostItem.thumbnail = {
+                        ...currentPostItem.thumbnail,
+                        ext: "png",
+                        name: getFileName(file.name),
+                        key: `${file.name}.png`,
+                        type: file.type,
+                        url: URL.createObjectURL(file),
+                        obj: file,
+                      };
+                    });
+                  setPost(tempPostArr);
+                }
               }
               setVideoDuration(e.getDuration());
             }}
@@ -308,12 +344,15 @@ const Video = ({
           />
         ) : null}
 
-        {!smallIndicator && !isPlaying && (
+        {!lightMode && !smallIndicator && !isPlaying && (
           <div>
             {isVideoLoaded ? (
               <div
                 onClick={() => {
-                  !disableOnClick && setIsPlaying(true);
+                  if(!disableOnClick){
+                    setCurrentPlayingVideoId(videoFileId)
+                    setIsPlaying(true);
+                  }
                 }}
                 className={
                   "cursor-pointer flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#0000004D] border-[2px] border-white absolute top-1/2 -translate-y-1/2 right-1/2 translate-x-1/2"
@@ -339,10 +378,10 @@ const Video = ({
           </div>
         )}
 
-        {smallIndicator && !isPlaying && (
+        {!lightMode && smallIndicator && !isPlaying && (
           <div
             className={
-              "z-[100 flex cursor-pointer items-center justify-center w-[20px] h-[20px] rounded-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+              "flex cursor-pointer items-center justify-center w-[20px] h-[20px] rounded-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
             }
           >
             <span
@@ -350,6 +389,7 @@ const Video = ({
             />
           </div>
         )}
+
         {durationIndicator && isVideoLoaded && (
           <ItemsCounterCard
             containerClassname={"right-[10px]"}
@@ -367,6 +407,7 @@ const Video = ({
             <div
               onClick={(e) => {
                 e.stopPropagation();
+                setCurrentPlayingVideoId(videoFileId)
                 setIsPlaying(!isPlaying);
               }}
               className={

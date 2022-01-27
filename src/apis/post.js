@@ -26,7 +26,17 @@ export const crtPost = async (newPost, userId, role) => {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const resp = await ApiFileUpload(item.file);
-      const postItem = _objectWithoutKeys(item, ["file", "chosen", "id", "url"]);
+      const postItem = _objectWithoutKeys(item, [
+        "file",
+        "thumbnail",
+        "chosen",
+        "id",
+        "url",
+      ]);
+     if(item.file.type.startsWith("video")){
+       const thumbnailResp = await ApiFileUpload(item.thumbnail);
+       postItem.thumbnail_id = thumbnailResp.id;
+     }
       postItem.file_id = resp.id;
       postItem.order = i;
       postItem.post_id = savedPost.id;
@@ -40,7 +50,8 @@ export const crtPost = async (newPost, userId, role) => {
         input: {
           id: savedPost.id,
           expectedVersion: savedPost.version,
-          status: (role === "ADMIN" || role === "MODERATOR") ? "CONFIRMED" : "PENDING",
+          status:
+            role === "ADMIN" || role === "MODERATOR" ? "CONFIRMED" : "PENDING",
         },
       })
     );
@@ -90,11 +101,16 @@ export const pdtPost = async (oldPost, userId, role) => {
         const item = items[i];
         const postItem = _objectWithoutKeys(item, [
           "file",
+          "thumbnail",
           "url",
           "chosen",
           "id",
         ]);
         if (typeof item.id === "number") {
+          if(item.file.type.startsWith("video")){
+            const thumbnailResp = await ApiFileUpload(item.thumbnail);
+            postItem.thumbnail_id = thumbnailResp.id;
+          }
           const resp = await ApiFileUpload(item.file);
           postItem.file_id = resp.id;
           postItem.order = i;
@@ -129,7 +145,10 @@ export const pdtPost = async (oldPost, userId, role) => {
             input: {
               id: post.id,
               expectedVersion: post.version,
-              status: (role === "ADMIN" || role === "MODERATOR") ? "CONFIRMED" : "PENDING",
+              status:
+                role === "ADMIN" || role === "MODERATOR"
+                  ? "CONFIRMED"
+                  : "PENDING",
             },
           })
         )

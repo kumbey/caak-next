@@ -99,7 +99,7 @@ const SubMenu = ({ params }) => {
             }
             onClick={() =>
               isLogged
-                ? router.push("/post/add", undefined, { shallow: true })
+                ? router.push("/post/add", undefined, { shallow: false })
                 : router.push(
                     {
                       pathname: router.pathname,

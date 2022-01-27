@@ -441,7 +441,7 @@
 
 
   .bounce_banner {
-    animation: bounce_banner 1s ease infinite;
+    animation: bounce_banner 2s ease infinite;
   }
 
   @keyframes bounce_banner {

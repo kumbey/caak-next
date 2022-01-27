@@ -110,6 +110,7 @@ const UserInformation = ({ nextStep }) => {
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="px-c13 xs:px-2">
           <Input
+            maxLength={30}
             label={"Профайл нэр"}
             value={nickname || ""}
             name={"nickname"}

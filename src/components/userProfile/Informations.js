@@ -28,6 +28,7 @@ export default function Informations({ currentUser }) {
       type: "text",
       value: currentUser.firstname,
       isReadOnly: false,
+      maxLength: 30
     },
     {
       id: 1,
@@ -36,6 +37,7 @@ export default function Informations({ currentUser }) {
       type: "text",
       value: currentUser.nickname,
       isReadOnly: false,
+      maxLength: 50
     },
     {
       id: 2,
@@ -44,6 +46,7 @@ export default function Informations({ currentUser }) {
       type: "text",
       value: currentUser.about,
       isReadOnly: false,
+      maxLength: 150
     },
     {
       id: 3,
@@ -137,7 +140,7 @@ export default function Informations({ currentUser }) {
               >
                 {setting.type === "text" ? (
                   <Input
-                    maxLength={80}
+                    maxLength={setting.maxLength}
                     name={setting.name}
                     defaultValue={setting.value}
                     type="text"

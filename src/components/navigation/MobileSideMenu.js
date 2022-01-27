@@ -1,20 +1,20 @@
 import Button from "../button";
-import {useUser} from "../../context/userContext";
-import {getFileUrl, getGenderImage} from "../../utility/Util";
+import { useUser } from "../../context/userContext";
+import { getFileUrl, getGenderImage } from "../../utility/Util";
 import React from "react";
 import NavBarMenu from "./NavBarMenu";
 import Link from "next/link";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import SideBarGroups from "../card/SideBarGroups";
 import useScrollBlock from "../../hooks/useScrollBlock";
-import {useWrapper} from "../../context/wrapperContext";
+import { useWrapper } from "../../context/wrapperContext";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 import AuraModal from "../modals/auraModal";
 import { useState } from "react";
 
-const MobileSideMenu = ({setOpen}) => {
+const MobileSideMenu = ({ setOpen }) => {
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
-  const {user, isLogged, logout} = useUser();
+  const { user, isLogged, logout } = useUser();
   const { isMobileMenuOpen } = useWrapper();
   const router = useRouter();
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -69,7 +69,10 @@ const MobileSideMenu = ({setOpen}) => {
                 </div>
               </a>
             </Link>
-            <AuraModal isOpen={isAuraModalOpen} setIsOpen={setIsAuraModalOpen}/>
+            <AuraModal
+              isOpen={isAuraModalOpen}
+              setIsOpen={setIsAuraModalOpen}
+            />
             <div className="flex flex-col ml-[10px]">
               <Link
                 href={{
@@ -86,7 +89,11 @@ const MobileSideMenu = ({setOpen}) => {
                   </span>
                 </a>
               </Link>
-              <div className={"flex flex-row justify-center items-center bg-[#F3F3F4] rounded-[8px] px-[12px] py-[3px]"}>
+              <div
+                className={
+                  "flex flex-row justify-center items-center bg-[#F3F3F4] rounded-[8px] px-[12px] py-[3px]"
+                }
+              >
                 <span
                   className={"icon-fi-rs-aura-o auroGradient text-[24px] mr-1"}
                 />
@@ -100,33 +107,40 @@ const MobileSideMenu = ({setOpen}) => {
           </div>
         )}
         <NavBarMenu type={"mobile"} setIsAuraModalOpen={setIsAuraModalOpen} />
-          {isLogged && (
-              <Button
-                  round
-                  className={" h-12 w-full"}
-                  skin={"secondary"}
-                  onClick={() => logout()}
-              >
-                  Гарах
-              </Button>
-          )}
-          {isLogged && (
-              <div className={"pb-[140px]"}>
-                  <SideBarGroups
-                      role={["ADMIN", "MODERATOR"]}
-                      addGroup
-                      title={"Миний группүүд"}
-                      setIsAuraModalOpen={setIsAuraModalOpen}
-                  />
-                  <SideBarGroups
-                      role={["MEMBER"]}
-                      maxColumns={13}
-                      title={"Нэгдсэн группүүд"}
-                      setIsAuraModalOpen={setIsAuraModalOpen}
-                  />
-                  <SideBarGroups maxColumns={13} setIsAuraModalOpen={setIsAuraModalOpen} role={["NOT_MEMBER"]} title={"Бусад групп"}/>
-              </div>
-          )}
+        {isLogged && (
+          <Button
+            round
+            className={" h-12 w-full"}
+            skin={"secondary"}
+            onClick={() => logout()}
+          >
+            Гарах
+          </Button>
+        )}
+        {isLogged && (
+          <div className={"pb-[140px]"}>
+            <SideBarGroups
+              userId={user.id}
+              role={["ADMIN", "MODERATOR"]}
+              addGroup
+              title={"Миний группүүд"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
+            />
+            <SideBarGroups
+              userId={user.id}
+              role={["MEMBER"]}
+              maxColumns={13}
+              title={"Нэгдсэн группүүд"}
+              setIsAuraModalOpen={setIsAuraModalOpen}
+            />
+            <SideBarGroups
+              maxColumns={13}
+              setIsAuraModalOpen={setIsAuraModalOpen}
+              role={["NOT_MEMBER"]}
+              title={"Бусад групп"}
+            />
+          </div>
+        )}
       </div>
       {!isLogged && (
         <div className={"flex flex-col"}>
@@ -139,10 +153,10 @@ const MobileSideMenu = ({setOpen}) => {
                 {
                   pathname: router.pathname,
                   query: {
-                      ...router.query,
-                      signInUp: "signIn",
-                      isModal: true,
-                      prevPath: router.asPath,
+                    ...router.query,
+                    signInUp: "signIn",
+                    isModal: true,
+                    prevPath: router.asPath,
                   },
                 },
                 `/signInUp/signIn`,
@@ -161,10 +175,10 @@ const MobileSideMenu = ({setOpen}) => {
                 {
                   pathname: router.pathname,
                   query: {
-                      ...router.query,
-                      signInUp: "signUp",
-                      isModal: true,
-                      prevPath: router.asPath,
+                    ...router.query,
+                    signInUp: "signUp",
+                    isModal: true,
+                    prevPath: router.asPath,
                   },
                 },
                 `/signInUp/signUp`,

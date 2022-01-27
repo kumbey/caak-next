@@ -84,6 +84,15 @@ const FeedBack = ({ setIsOpen }) => {
       setIsValid(false);
     }
   }, [comment, type, star]);
+
+  useEffect(() => {
+    if(isFeedBackSent){
+      setTimeout(() => {
+        setIsOpen(false)
+      }, 3000)
+    }
+    //eslint-disable-next-line
+  }, [])
   return !isFeedBackSent ? (
     <div
       className={

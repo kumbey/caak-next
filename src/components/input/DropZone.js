@@ -11,7 +11,6 @@ import {
 } from "../../utility/Util";
 import imageCompression from "browser-image-compression";
 import Consts from "../../utility/Consts";
-import toast from "react-hot-toast";
 
 const DropZone = ({
   setPost,
@@ -45,13 +44,31 @@ const DropZone = ({
       for (let index = 0; index < dropZoneFiles.length; index++) {
         const file = dropZoneFiles[index];
         const realIndex = postItemLength + index + 1;
-        const maxVideoDuration = 300
-        if(file.type.startsWith("video/") && await getVideoDuration(file) > maxVideoDuration){
+        const maxVideoDuration = 300;
+        if (
+          file.type.startsWith("video/") &&
+          (await getVideoDuration(file)) > maxVideoDuration
+        ) {
           // toast.error(`Та хамгийн ихдээ ${maxVideoDuration / 60} минутын бичлэг оруулах боломжтой`)
-          setVideoDurationError && setVideoDurationError(true)
-        }else{
+          setVideoDurationError && setVideoDurationError(true);
+        } else {
           const fileData = {
             id: realIndex,
+            ...(file.type.startsWith("video/")
+              ? {
+                  thumbnail: {
+                    ext: "",
+                    name: "",
+                    key: "",
+                    type: "",
+                    url: "",
+                    bucket: awsExports.aws_user_files_s3_bucket,
+                    region: awsExports.aws_user_files_s3_bucket_region,
+                    level: "public",
+                    obj: "",
+                  },
+                }
+              : {}),
             title: "",
             post_id: post.id,
             file: {
@@ -66,7 +83,7 @@ const DropZone = ({
               obj: file,
             },
           };
-  
+
           if (Consts.regexImage.test(file.type)) {
             fileData.url = getGenderImage("default").src;
             fileData.loading = true;
@@ -74,10 +91,10 @@ const DropZone = ({
           } else {
             fileData.file.url = URL.createObjectURL(file);
           }
-          
+
           setVideoDurationError && setVideoDurationError(false)
-  
-          localPost.items.push(fileData); 
+
+          localPost.items.push(fileData);
         }
       }
 

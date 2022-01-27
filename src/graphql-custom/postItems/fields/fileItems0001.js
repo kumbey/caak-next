@@ -5,6 +5,8 @@ const postItems0001 = /* GraphQL */ `{
   post_id
   file_id
   file ${file0001}
+  thumbnail_id
+  thumbnail ${file0001}
   title
   order
 }`

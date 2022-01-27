@@ -104,6 +104,8 @@ const post0004 = /* GraphQL */ `
         reacted
         file_id
         file ${file0001}
+        thumbnail_id
+        thumbnail ${file0001}
         comments {
           items {
             comment

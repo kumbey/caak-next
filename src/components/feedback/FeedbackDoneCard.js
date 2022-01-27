@@ -21,7 +21,7 @@ const FeedbackDoneCard = ({ isOpen, setIsOpen }) => {
       >
         <img alt={""} src={smileHeart.src} height={38} width={38} />
         <p className={"mt-[16px] text-white text-[22px] font-semibold"}>
-          Танд баярлалаа
+          Таны сэтгэгдлийг хүлээн авлаа.
         </p>
       </div>
     )

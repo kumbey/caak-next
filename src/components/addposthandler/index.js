@@ -51,7 +51,7 @@ export default function AddPostHandler({ groupId }) {
                   },
                 },
                 "/post/add",
-                { shallow: true }
+                { shallow: false }
               )
             : router.push(
                 {

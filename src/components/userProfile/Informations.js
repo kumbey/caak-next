@@ -37,6 +37,7 @@ export default function Informations({ currentUser }) {
       type: "text",
       value: currentUser.nickname,
       isReadOnly: false,
+      maxLength: 50
     },
     {
       id: 2,

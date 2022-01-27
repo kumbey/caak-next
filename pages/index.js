@@ -101,6 +101,7 @@ const Feed = ({ ssrData }) => {
   const [subscripedPost, setSubscripedPost] = useState(0);
   const [bannerOpen, setBannerOpen] = useState(false)
   const [bannerDismissed, setBannerDismissed] = useState(false)
+  const [feedBackShown, setFeedBackShown] = useState(false)
   const currentBannerScrollPosition = useRef(1200)
   const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
 
@@ -271,6 +272,11 @@ const Feed = ({ ssrData }) => {
     setFeedSortType("DEFAULT");
   }, [setFeedSortType]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setFeedBackShown(true)
+    }, 180000 )
+  }, [])
 
   const handleScroll = () => {
     if(window){
@@ -301,27 +307,30 @@ const Feed = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      {router.asPath === "/" && !isFeedbackOpen && (
-        <div
-          onClick={() => {
-            setIsFeedbackOpen(!isFeedbackOpen);
-          }}
-          className={
-            "feedbackIconBackground cursor-pointer flex items-center justify-center shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[8px] md:right-[27px] rounded-full"
-          }
-        >
-          <div className={"flex items-center justify-center w-[28px] h-[28px]"}>
+      {
+        feedBackShown 
+        ?
+        router.asPath === "/" && !isFeedbackOpen && (
+          <div
+            onClick={() => {
+              setIsFeedbackOpen(!isFeedbackOpen);
+            }}
+            className={
+              "feedbackIconBackground cursor-pointer flex items-center justify-center shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[8px] md:right-[27px] rounded-full"
+            }
+          >
             <span
               className={`${
                 isFeedbackOpen
-                  ? "icon-fi-rs-close text-[15.98px] w-[16px]"
-                  : "icon-fi-rs-survey text-[25.67px] h-[20px]"
-              } text-white`}
+                  ? "icon-fi-rs-close"
+                  : "icon-fi-rs-survey"
+              } text-white text-[30px]`}
             />
           </div>
-
-        </div>
-      )}
+        )
+        :
+        null
+      }
 
       {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen} />}
 

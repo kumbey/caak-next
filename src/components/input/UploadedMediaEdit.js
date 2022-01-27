@@ -4,9 +4,7 @@ import {
   arrayMove,
   rectSortingStrategy,
   SortableContext,
-  useSortable,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import {
   closestCenter,
   DndContext,
@@ -23,120 +21,8 @@ import Video from "../video";
 import { useRouter } from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 import { Editor } from "@tinymce/tinymce-react";
-
-const thumbnailImageHandler = (item) => {
-  if (item?.file) {
-    if (item.file.url) {
-      return item.file.url;
-    } else {
-      if (!getFileUrl(item.file).includes("undefined")) {
-        return getFileUrl(item.file);
-      }
-    }
-  } else {
-    return getGenderImage("default").src;
-  }
-};
-
-const SortableCard = ({
-  active,
-  item,
-  onClickClose,
-  setFeaturedPost,
-  index,
-}) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
-  const styles = {
-    backgroundColor: "transparent",
-    borderRadius: "5px",
-    marginRight: "7px",
-    marginBottom: "7px",
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={styles}
-      {...attributes}
-      className={`w-[77px] h-[77px] flex justify-center items-center group relative ${
-        active ? "border-[2px] border-caak-primary" : ""
-      }`}
-    >
-      <div
-        onClick={onClickClose}
-        className={
-          "transition-all duration-150 group-hover:flex hidden justify-center items-center rounded-full w-[24px] h-[24px] bg-black bg-opacity-60 absolute top-[4px] right-[4px] z-[3]"
-        }
-      >
-        <span className={"icon-fi-rs-close text-white text-[10px]"} />
-      </div>
-      <div
-        onClick={setFeaturedPost}
-        className={`${
-          index === 0 ? "flex" : "group-hover:flex hidden"
-        } transition-all duration-150  justify-center items-center rounded-full w-[24px] h-[24px] bg-caak-primary bg-opacity-90 absolute top-[4px] left-[4px] z-[3]`}
-      >
-        <span className={"icon-fi-rs-notification-o text-white text-[14px]"} />
-      </div>
-      <div
-        {...listeners}
-        className={`flex items-center justify-center group-hover:opacity-100 border-[1px] border-caak-titaniumwhite transition-all duration-300 relative ${
-          active
-            ? "w-[64px] h-[64px] opacity-100"
-            : "opacity-[0.66] w-[77px] h-[77px]"
-        }  bg-white rounded-[5px]`}
-      >
-        {item.loading && (
-          <div
-            className={
-              "flex items-center absolute justify-center w-full h-full bg-white bg-opacity-80 z-[1]"
-            }
-          >
-            <Loader className={"bg-caak-primary"} />
-          </div>
-        )}
-
-        {item.file?.type?.startsWith("video") ? (
-          <Video
-            initialAutoPlay={false}
-            videoClassname={"object-cover rounded-[4px]"}
-            hideControls
-            smallIndicator
-            disableOnClick
-            src={thumbnailImageHandler(item)}
-          />
-        ) : (
-          <img
-            className={"rounded-[5px] object-cover w-full h-full"}
-            alt={""}
-            src={thumbnailImageHandler(item)}
-            // layout={"fill"}
-            // objectFit={"cover"}
-          />
-        )}
-      </div>
-    </div>
-  );
-};
-
-function CardsWrapper({ children }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        maxHeight: "168px",
-        overflowY: "scroll",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
+import CardsWrapper from "./CardsWrapper";
+import SortableCard from "./SortableCard";
 
 const UploadedMediaEdit = ({
   setPost,
@@ -170,15 +56,29 @@ const UploadedMediaEdit = ({
     post.description ? post.description : false
   );
 
-  const [loaded, setLoaded] = useState(false);
+  // const [loaded, setLoaded] = useState(false);
 
   const router = useRouter();
-  const [editorLoaded, setEditorLoaded] = useState(false);
+  // const [editorLoaded, setEditorLoaded] = useState(false);
   const editorRef = useRef(null);
 
-  useEffect(() => {
-    setEditorLoaded(true);
-  }, []);
+  const thumbnailImageHandler = (item) => {
+    if (item?.file) {
+      if (item.file.url) {
+        return item.file.url;
+      } else {
+        if (!getFileUrl(item.file).includes("undefined")) {
+          return getFileUrl(item.file);
+        }
+      }
+    } else {
+      return getGenderImage("default").src;
+    }
+  };
+
+  // useEffect(() => {
+  //   setEditorLoaded(true);
+  // }, []);
 
   const maxLengths = {
     title: 200,
@@ -192,6 +92,12 @@ const UploadedMediaEdit = ({
     const popIndex = post.items.findIndex((_, index) => index === index_arg);
     const postsArr = post.items;
     postsArr.splice(popIndex, 1);
+
+    postsArr.map((item, index) => {
+      if (typeof item.id !== "string") {
+        item.id = index + 1;
+      }
+    });
 
     setPost((prev) => ({
       ...prev,
@@ -254,6 +160,8 @@ const UploadedMediaEdit = ({
   const isAdminAsync = async () => {
     return await isAdmin();
   };
+
+
   useUpdateEffect(() => {
     setIsEditing(true);
   }, [
@@ -304,9 +212,9 @@ const UploadedMediaEdit = ({
     // eslint-disable-next-line
   }, [post, router, isEditing, selectedGroup]);
 
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
+  // useEffect(() => {
+  //   setLoaded(true);
+  // }, []);
 
   useEffect(() => {
     let cContent;
@@ -447,7 +355,7 @@ const UploadedMediaEdit = ({
               />
               {/* border-2 border-rose-600 text-gray-500 rounded-lg shadow-sm
           focus:outline-none focus:ring focus:ring-rose-200
-          focus:border-rose-500 
+          focus:border-rose-500
           */}
               <span
                 className={
@@ -517,6 +425,9 @@ const UploadedMediaEdit = ({
               {post.items.map((item, index) => {
                 return (
                   <SortableCard
+                    post={post}
+                    setPost={setPost}
+                    activeIndex={index}
                     onClickClose={() => popItem(index)}
                     setFeaturedPost={() => featuredPostHandler(index)}
                     active={activeIndex === index}
@@ -527,7 +438,11 @@ const UploadedMediaEdit = ({
                   />
                 );
               })}
-              <AddPostCardSmall setVideoDurationError={setVideoDurationError} post={post} setPost={setPost} />
+              <AddPostCardSmall
+                setVideoDurationError={setVideoDurationError}
+                post={post}
+                setPost={setPost}
+              />
             </CardsWrapper>
           </SortableContext>
           <DragOverlay>
@@ -588,14 +503,19 @@ const UploadedMediaEdit = ({
           >
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
+                light={
+                  post.items[activeIndex].thumbnail.hasOwnProperty("url")
+                    ? post.items[activeIndex].thumbnail.url
+                    : getFileUrl(post.items[activeIndex].thumbnail)
+                }
                 initialAutoPlay={false}
                 durationIndicator={true}
-                videoClassname={"object-contain rounded-[4px]"}
+                videoClassname={"object-contain rounded-none"}
                 src={thumbnailImageHandler(post.items[activeIndex])}
               />
             ) : (
               <img
-                className={"object-contain w-full h-full"}
+                className={"object-contain w-full h-full rounded-none"}
                 alt={""}
                 src={thumbnailImageHandler(post.items[activeIndex])}
                 // objectFit={"contain"}
@@ -610,35 +530,37 @@ const UploadedMediaEdit = ({
             }
           >
             <div className={"w-full h-full relative"}>
-              <div
-                className={"flex flex-col w-full h-full"}
-              >
+              <div className={"flex flex-col w-full h-full"}>
                 {post.onlyBlogView === "TRUE" ? (
                   <div
-                    className={"flex flex-col w-full h-full h-[200px] md:h-full"}
+                    className={
+                      "flex flex-col w-full h-full h-[200px] md:h-full"
+                    }
                   >
-                  <Editor
-                    apiKey={"d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"}
-                    onInit={(evt, editor) => (editorRef.current = editor)}
-                    // initialValue={post.items[activeIndex].title}
-                    onEditorChange={(e) => {
-                      captionHandler({ business: true, value: e });
-                    }}
-                    value={post.items[activeIndex].title}
-                    init={{
-                      extended_valid_elements: "p[class=tinymce-p]",
-                      height: "100%",
-                      menubar: false,
-                      plugins: [
-                        "advlist autolink lists link preview anchor",
-                        "paste wordcount",
-                      ],
-                      toolbar:
-                        "bold italic | bullist numlist link | alignleft aligncenter " +
-                        "alignright alignjustify | outdent indent | " +
-                        "undo redo",
-                    }}
-                  />
+                    <Editor
+                      apiKey={
+                        "d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"
+                      }
+                      onInit={(evt, editor) => (editorRef.current = editor)}
+                      // initialValue={post.items[activeIndex].title}
+                      onEditorChange={(e) => {
+                        captionHandler({ business: true, value: e });
+                      }}
+                      value={post.items[activeIndex].title}
+                      init={{
+                        extended_valid_elements: "p[class=tinymce-p]",
+                        height: "100%",
+                        menubar: false,
+                        plugins: [
+                          "advlist autolink lists link preview anchor",
+                          "paste wordcount",
+                        ],
+                        toolbar:
+                          "bold italic | bullist numlist link | alignleft aligncenter " +
+                          "alignright alignjustify | outdent indent | " +
+                          "undo redo",
+                      }}
+                    />
                   </div>
                 ) : (
                   <>
@@ -665,8 +587,8 @@ const UploadedMediaEdit = ({
                       {post.items[activeIndex].title?.length ===
                       maxLengths.imageDescription ? (
                         <p className={"text-[13px] text-caak-red"}>
-                          Текстийн хэмжээ {maxLengths.imageDescription} тэмдэгтээс
-                          хэтэрсэн байна
+                          Текстийн хэмжээ {maxLengths.imageDescription}{" "}
+                          тэмдэгтээс хэтэрсэн байна
                         </p>
                       ) : null}
                     </div>
@@ -674,13 +596,10 @@ const UploadedMediaEdit = ({
                 )}
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
-
-          { 
+          {
                 videoDurationError
                 ?
                 <div className="flex flex-row items-center mx-[22px] my-[5px] rounded-[8px] p-[5px] bg-red-200 max-w-[430px]">
@@ -691,7 +610,7 @@ const UploadedMediaEdit = ({
                 :
                 null
           }
-      
+
       <div
         className={
           "bg-white px-[28px] py-[20px] border-b-[1px] border-t-[1px] border-caak-titaniumwhite"
@@ -703,15 +622,14 @@ const UploadedMediaEdit = ({
           </p>
         </div>
         <div className={"w-[265px]"}>
-          {selectedGroup &&
-            (selectedGroup.role_on_group === "ADMIN" ? (
-              <div className={"flex flex-row justify-between mt-[16px]"}>
-                <p className={"text-[15px] text-caak-generalblack"}>
-                  Саак контент
-                </p>
-                <Switch toggle={setCaakContent} active={caakContent} />
-              </div>
-            ) : null)}
+          {selectedGroup && isSuperAdmin && (
+            <div className={"flex flex-row justify-between mt-[16px]"}>
+              <p className={"text-[15px] text-caak-generalblack"}>
+                Саак контент
+              </p>
+              <Switch toggle={setCaakContent} active={caakContent} />
+            </div>
+          )}
           <div className={"flex flex-row justify-between mt-[16px]"}>
             <p className={"text-[15px] text-caak-generalblack"}>
               Сэтгэгдэл зөвшөөрөх

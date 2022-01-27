@@ -42,9 +42,9 @@ const Foryou = () => {
     query: searchPosts,
     variables: {
       filter: {
+        status: { eq: "CONFIRMED" },
         or: forYouPostsFilter,
         user_id: { ne: user.id },
-        status: {eq: "CONFIRMED"},
       },
       limit: 20,
       sort: { field: "createdAt", direction: "desc" },
@@ -127,6 +127,7 @@ const Foryou = () => {
         query: searchPosts,
         variables: {
           filter: {
+            status: { eq: "CONFIRMED" },
             or: filter,
             user_id: { ne: user.id },
           },

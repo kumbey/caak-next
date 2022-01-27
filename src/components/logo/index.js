@@ -1,6 +1,7 @@
 import logoIcon from "../../../public/New-Logo.svg";
 import logoIconLight from "../../../public/New-Logo-Light.svg";
 import anniversary from "../../../public/assets/images/Anniversary.svg";
+import whiteAnivery from "../../../public/assets/images/Anniversary-white.svg"
 
 import { useWrapper } from "../../context/wrapperContext";
 
@@ -30,7 +31,7 @@ const Logo = ({ ...props }) => {
         height={34.69}
         className={"w-[64px] h-[34.69px]"}
         alt={"16th Anniversary"}
-        src={anniversary.src}
+        src={navBarTransparent ?  whiteAnivery.src : anniversary.src}
       />
     </div>
   );

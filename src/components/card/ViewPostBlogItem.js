@@ -15,6 +15,10 @@ const ViewPostBlogItem = ({
   onlyBlogView,
 }) => {
   const router = useRouter();
+  const displayNumber = (number)=> {
+    if(!number) return ""
+    return `${number}. `
+  }
   return (
     <div className={"flex flex-col w-full mb-[40px]"}>
       <div className={"relative pt-[4px]"}>
@@ -162,7 +166,7 @@ const ViewPostBlogItem = ({
               "font-bold text-caak-generalblack text-[16px] mb-[5px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
             }
           >
-            {`${postItem.display_number && postItem.display_number > 0 && postItem.display_number}. ${decode(postItem.description)}`}
+            {`${displayNumber(postItem.display_number)}${decode(postItem.description)}`}
           </p>
         )}
         {onlyBlogView ? (

@@ -25,7 +25,7 @@ const SideBarGroups = ({
 }) => {
   const [groupData, setGroupData] = useState(initialData ? initialData : []);
   const [groupTotals, setGroupTotals] = useState([]);
-  const { isLogged } = useUser();
+  const { isLogged, user } = useUser();
   const router = useRouter();
   const fetchGroups = async (role) => {
     try {

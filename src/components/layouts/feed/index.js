@@ -22,7 +22,7 @@ const DefaultFeedLayout = ({
   hideSuggestedGroups,
   search,
 }) => {
-  const { isLogged } = useUser();
+  const { isLogged, user } = useUser();
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
@@ -54,6 +54,7 @@ const DefaultFeedLayout = ({
                 containerClassname={"w-full"}
               />
               <SideBarGroups
+                userId={user.id}
                 role={["ADMIN", "MODERATOR"]}
                 addGroup
                 initialData={adminModeratorGroups}
@@ -61,6 +62,7 @@ const DefaultFeedLayout = ({
                 setIsAuraModalOpen={setIsAuraModalOpen}
               />
               <SideBarGroups
+                userId={user.id}
                 role={["MEMBER"]}
                 maxColumns={13}
                 initialData={myGroups}
@@ -68,6 +70,7 @@ const DefaultFeedLayout = ({
                 setIsAuraModalOpen={setIsAuraModalOpen}
               />
               <SideBarGroups
+                userId={user.id}
                 role={["NOT_MEMBER"]}
                 initialData={allGroups}
                 maxColumns={13}

@@ -319,7 +319,6 @@ const Feed = ({ ssrData }) => {
               } text-white`}
             />
           </div>
-
         </div>
       )}
 

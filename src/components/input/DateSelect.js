@@ -8,25 +8,28 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
   const [daysOfCurrentMonth, setDaysOfCurrentMonth] = useState();
   const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const [days, setDays] = useState([]);
+  const [bDay, setBDay] = useState();
+  useEffect(() => {
+    onChange(bDay);
+  }, [bDay]);
 
   useEffect(() => {
     if (value) {
       const splited = value.split("-");
       setYear(splited[0]);
-      setMonth(splited[1]);
-      setDay(splited[2]);
+      setMonth(splited[1].replace(/^0+/, ""));
+      setDay(splited[2].replace(/^0+/, ""));
     }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (year && month && day) {
-      onChange({
-        target: {
-          name: props.name,
-          value: `${year}-${month}-${day}`,
-        },
-      });
+      setBDay(
+        `${year}-${month.length === 1 ? `0${month}` : month}-${
+          day.length === 1 ? `0${day}` : day
+        }`
+      );
     }
     // eslint-disable-next-line
   }, [year, month, day]);
@@ -41,12 +44,12 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
       dates.push(strtyear);
       strtyear++;
     }
-    setDates(dates);
+    setDates(dates.reverse());
     // eslint-disable-next-line
   }, [startYear]);
 
-  function daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
+  function daysInMonth(month) {
+    return new Date(0, month, 0).getDate();
   }
 
   useEffect(() => {
@@ -58,42 +61,20 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
   }, [daysOfCurrentMonth]);
 
   useEffect(() => {
-    setDaysOfCurrentMonth(daysInMonth(month, year));
-  }, [month, year]);
+    setDaysOfCurrentMonth(daysInMonth(month));
+  }, [month]);
 
   return (
     <div>
       <div className={"flex justify-between"}>
         <Select
-          value={year || "DEFAULT"}
-          name={"year"}
-          onChange={(e) => setYear(e.target.value)}
-          containerStyle={"flex-1 mr-2"}
-          className="h-c9 bg-caak-titaniumwhite"
-        >
-          <option disabled value="DEFAULT">
-            {"Он"}
-          </option>
-          {dates.map((year, index) => (
-            <option key={index} value={year}>
-              {`${year}`}
-            </option>
-          ))}
-        </Select>
-        <Select
           value={month || "DEFAULT"}
           name={"month"}
-          onChange={(e) =>
-            setMonth(() => {
-              const length = e.target.value.toString().length;
-              if (length === 2) return `${e.target.value}`;
-              return `0${e.target.value}`;
-            })
-          }
+          onChange={(e) => setMonth(e.target.value)}
           containerStyle={"flex-1 mr-2"}
-          className="h-c9 w-c14 bg-caak-titaniumwhite"
+          className="h-c9 w-c14 bg-caak-lynxwhite"
         >
-          <option disabled value={"DEFAULT"}>
+          <option disabled hidden value={"DEFAULT"}>
             {"Сар"}
           </option>
           {months.map((month, index) => (
@@ -105,22 +86,33 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
         <Select
           value={day || "DEFAULT"}
           name={"day"}
-          onChange={(e) =>
-            setDay(() => {
-              const length = e.target.value.toString().length;
-              if (length === 2) return `${e.target.value}`;
-              return `0${e.target.value}`;
-            })
-          }
-          containerStyle={"flex-1"}
-          className="h-c9 w-c14 bg-caak-titaniumwhite"
+          onChange={(e) => setDay(e.target.value)}
+          containerStyle={"flex-1 mr-2"}
+          className="h-c9 w-c14 bg-caak-lynxwhite"
         >
-          <option disabled value="DEFAULT">
+          <option disabled hidden value="DEFAULT">
             {"Өдөр"}
           </option>
           {days.map((day, index) => (
             <option key={index} value={day}>
               {`${day}`}
+            </option>
+          ))}
+        </Select>
+
+        <Select
+          value={year || "DEFAULT"}
+          name={"year"}
+          onChange={(e) => setYear(e.target.value)}
+          containerStyle={"flex-1 mr-2"}
+          className="h-c9 bg-caak-lynxwhite"
+        >
+          <option disabled hidden value="DEFAULT">
+            {"Он"}
+          </option>
+          {dates.map((year, index) => (
+            <option key={index} value={year}>
+              {`${year}`}
             </option>
           ))}
         </Select>

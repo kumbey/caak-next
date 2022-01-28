@@ -144,6 +144,7 @@ const Post = ({ ssrData }) => {
 
           {/* for Facebook  */}
           <meta name="description" content={decode(post.description)} />
+          <meta property="og:description" content={decode(post.description)} />
           <meta property="og:title" content={post.title} />
           <meta property="og:type" content="website" />
           <meta

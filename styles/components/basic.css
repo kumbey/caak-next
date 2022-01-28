@@ -835,11 +835,14 @@
     height: 60px;
     border-radius: 2px;
   }
+  .tinymce-p a {
+    word-break: break-all !important;
+  }
   .tinymce-p a:link {
-    color: #FF6600;
+    color: #FF6600 !important;
   }
   .tinymce-p a:visited {
-    color: #FF8939;
+    color: #FF8939 !important;
   }
 
   .youtube-player-wrapper {

@@ -202,7 +202,7 @@ const Video = ({
         }}
         className={`${
           containerClassname ? containerClassname : ""
-        } w-full h-full absolute top-0 z-[1] object-cover`}
+        } w-full h-full hidden`}
         ref={canvasRef}
       />
 
@@ -392,7 +392,7 @@ const Video = ({
 
         {durationIndicator && isVideoLoaded && (
           <ItemsCounterCard
-            containerClassname={"right-[10px]"}
+            containerClassname={"left-[10px]"}
             duration={videoDuration}
           />
         )}

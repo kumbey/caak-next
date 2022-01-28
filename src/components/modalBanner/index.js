@@ -75,19 +75,21 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
               src={getFileUrl(banner.pic2)}
               className="w-[80px] h-[80px] sm:w-[130px] sm:h-[130px]"
             />
-            <p
-              style={{
-                color: hover
-                  ? meta.colors.text_hover_color
-                  : meta.colors.text_color,
-                backgroundColor: hover
-                  ? meta.colors.text_bg_hover_color
-                  : meta.colors.text_bg_color,
-              }}
-              className={`text-[12px] md:text-[16px] absolute top-1/2 -translate-y-1/2 right-[-50px] md:right-[-60px] p-1 rounded-[8px] w-full max-w-[100px] text-center max-h-[60px]`}
-            >
-              {meta.text}
-            </p>
+            {meta.text && (
+              <p
+                style={{
+                  color: hover
+                    ? meta.colors.text_hover_color
+                    : meta.colors.text_color,
+                  backgroundColor: hover
+                    ? meta.colors.text_bg_hover_color
+                    : meta.colors.text_bg_color,
+                }}
+                className={`text-[12px] md:text-[16px] absolute top-1/2 -translate-y-1/2 right-[-50px] md:right-[-60px] p-1 rounded-[8px] w-full max-w-[100px] text-center max-h-[60px]`}
+              >
+                {meta.text}
+              </p>
+            )}
           </div>
           <span
             onClick={() => setBannerOpen(false)}

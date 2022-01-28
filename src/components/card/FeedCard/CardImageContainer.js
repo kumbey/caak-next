@@ -8,8 +8,8 @@ const CardImageContainer = ({ file, cover, card }) => {
       }
     >
       <div
-        className={`relative w-full h-full unset-img ${
-          card ? "max-h-[770px] h-[650px] min-h-[432px]" : ""
+        className={`relative flex items-center justify-center w-full h-full ${
+          card ? "max-h-[770px]" : ""
         } `}
       >
         <img
@@ -17,7 +17,7 @@ const CardImageContainer = ({ file, cover, card }) => {
           src={getFileUrl(file)}
           className={`w-full h-auto ${
             cover ? "object-cover" : "object-contain"
-          } custom-img`}
+          }`}
         />
       </div>
     </div>

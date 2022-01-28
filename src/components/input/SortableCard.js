@@ -16,19 +16,20 @@ const SortableCard = ({
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
-  let videoThumbnailProps = {}
-  if(post.items[activeIndex].file.type.startsWith("video")){
-    videoThumbnailProps = {
-      ...(post.items[activeIndex].thumbnail.hasOwnProperty("url")
-        ? {
-          post: post,
-          setPost: setPost,
-          generateThumbnail: true,
-        }
-        : {}),
-    };
+  let videoThumbnailProps = {};
+  if (post.items[activeIndex].file.type.startsWith("video")) {
+    if (post.items[activeIndex].thumbnail) {
+      videoThumbnailProps = {
+        ...(post.items[activeIndex].thumbnail.hasOwnProperty("url")
+          ? {
+              post: post,
+              setPost: setPost,
+              generateThumbnail: true,
+            }
+          : {}),
+      };
+    }
   }
-
 
   const styles = {
     backgroundColor: "transparent",
@@ -99,9 +100,11 @@ const SortableCard = ({
             videoFileId={item.file.id}
             itemIndex={activeIndex}
             light={
-              item.thumbnail.hasOwnProperty("url")
-                ? item.thumbnail.url
-                : getFileUrl(item.thumbnail)
+              item.thumbnail
+                ? item.thumbnail.hasOwnProperty("url")
+                  ? item.thumbnail.url
+                  : getFileUrl(item.thumbnail)
+                : false
             }
             {...videoThumbnailProps}
             initialAutoPlay={false}

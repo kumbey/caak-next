@@ -19,6 +19,12 @@ export default function ProfileHoverCard({ userId }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const kFormatter = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  };
+
   useEffect(() => {
     setLoading(true);
     if (userId)
@@ -156,7 +162,7 @@ export default function ProfileHoverCard({ userId }) {
               "text-[17px] text-caak-generalblack font-medium tracking-[0.26px] leading-[20px]"
             }
           >
-            {profileUser.aura}&nbsp;
+            {kFormatter(profileUser.aura)}&nbsp;
           </p>
           <p
             className={

@@ -32,11 +32,11 @@ const UploadedMediaEdit = ({
   selectedGroup,
   valid,
   isEditing,
-  setIsEditing
+  setIsEditing,
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [videoDurationError, setVideoDurationError] = useState(false)
+  const [videoDurationError, setVideoDurationError] = useState(false);
   const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] =
     useState(false);
   const [allowComment, setAllowComment] = useState(
@@ -321,7 +321,8 @@ const UploadedMediaEdit = ({
               }}
               value={post.description}
               init={{
-                extended_valid_elements: "p[class=tinymce-p]",
+                selector: ".tinymce-p",
+                extended_valid_elements: "p[class=tinymce-p|style]",
                 height: 200,
                 menubar: false,
                 plugins: [
@@ -504,9 +505,11 @@ const UploadedMediaEdit = ({
             {post.items[activeIndex]?.file?.type?.startsWith("video") ? (
               <Video
                 light={
-                  post.items[activeIndex].thumbnail.hasOwnProperty("url")
-                    ? post.items[activeIndex].thumbnail.url
-                    : getFileUrl(post.items[activeIndex].thumbnail)
+                  post.items[activeIndex].thumbnail
+                    ? post.items[activeIndex].thumbnail.hasOwnProperty("url")
+                      ? post.items[activeIndex].thumbnail.url
+                      : getFileUrl(post.items[activeIndex].thumbnail)
+                    : getFileUrl(post.items[activeIndex].file)
                 }
                 initialAutoPlay={false}
                 durationIndicator={true}
@@ -548,7 +551,7 @@ const UploadedMediaEdit = ({
                       }}
                       value={post.items[activeIndex].title}
                       init={{
-                        extended_valid_elements: "p[class=tinymce-p]",
+                        extended_valid_elements: "p[class=tinymce-p|style]",
                         height: "100%",
                         menubar: false,
                         plugins: [
@@ -599,17 +602,18 @@ const UploadedMediaEdit = ({
           </div>
         </div>
       </div>
-          {
-                videoDurationError
-                ?
-                <div className="flex flex-row items-center mx-[22px] my-[5px] rounded-[8px] p-[5px] bg-red-200 max-w-[430px]">
-                  <span onClick={() => setVideoDurationError(false)} className="icon-fi-rs-close cursor-pointer text-[12px] p-[3px] border border-[#21293C] rounded-full"/>
-                  <p className="text-[14px] text-[#21293C] ml-[10px] sm:mx-[10px]">Уучлаарай, таны бичлэг 5 минутаас хэтэрсэн байна</p>
-                  <span className="icon-fi-rs-info text-[14px] text-[#21293C] hidden sm:flex"/>
-                </div>
-                :
-                null
-          }
+      {videoDurationError ? (
+        <div className="flex flex-row items-center mx-[22px] my-[5px] rounded-[8px] p-[5px] bg-red-200 max-w-[430px]">
+          <span
+            onClick={() => setVideoDurationError(false)}
+            className="icon-fi-rs-close cursor-pointer text-[12px] p-[3px] border border-[#21293C] rounded-full"
+          />
+          <p className="text-[14px] text-[#21293C] ml-[10px] sm:mx-[10px]">
+            Уучлаарай, таны бичлэг 5 минутаас хэтэрсэн байна
+          </p>
+          <span className="icon-fi-rs-info text-[14px] text-[#21293C] hidden sm:flex" />
+        </div>
+      ) : null}
 
       <div
         className={

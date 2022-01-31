@@ -141,7 +141,7 @@ const ViewPostLeftReaction = ({
                       </div>
                     </div>
                   </FacebookShareButton>
-                  <TwitterShareButton url={`${pathName}/post/view/${post.id}`}>
+                  <TwitterShareButton title={post.title} url={`${pathName}/post/view/${post.id}`}>
                     <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                       <div
                         className={

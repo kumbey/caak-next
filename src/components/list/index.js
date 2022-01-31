@@ -208,6 +208,7 @@ const List = ({ post, imageSrc, handleToast }) => {
                           </div>
                           <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                             <TwitterShareButton
+                              title={post.title}
                               url={`${pathName}/post/view/${post.id}`}
                             >
                               <div

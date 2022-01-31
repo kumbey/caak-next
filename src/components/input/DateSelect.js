@@ -11,6 +11,7 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
   const [bDay, setBDay] = useState();
   useEffect(() => {
     onChange(bDay);
+    //eslint-disable-next-line
   }, [bDay]);
 
   useEffect(() => {

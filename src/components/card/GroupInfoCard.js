@@ -25,6 +25,12 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
   const [forceRender, setForceRender] = useState(0);
   const [open, setOpen] = useState(false)
 
+  const kFormatter = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  };
+
   const { isLogged, user } = useUser();
   const router = useRouter();
 
@@ -185,7 +191,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
                 "text-[17px] text-caak-generalblack font-medium tracking-[0.26px] leading-[20px]"
               }
             >
-              {group.aura}
+              {kFormatter(group.aura)}
             </p>
             <p
               className={

@@ -149,11 +149,23 @@ const DropDownSelect = ({
 
             {filteredData.member.length > 0 ? (
               <>
-                <div className={"flex flex-row justify-between px-3.5 pt-2"}>
-                  <span className={"text-15px text-caak-darkBlue"}>
-                    Нэгдсэн группүүд
+                <div
+                className={
+                  "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
+                }
+              >
+                <span className={"text-15px text-caak-darkBlue pt-2"}>
+                  Бусад группүүд
+                </span>
+                {filteredData.adminModerator.length === 0 ? (
+                  <span
+                    onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
+                    className={"text-15px font-medium text-caak-primary"}
+                  >
+                    Групп үүсгэх
                   </span>
-                </div>
+                ) : null}
+              </div>
                 <div className={"px-2"}>
                   {filteredData.member.map((item, index) => {
                     return (
@@ -197,16 +209,8 @@ const DropDownSelect = ({
                 }
               >
                 <span className={"text-15px text-caak-darkBlue pt-2"}>
-                  Бүх группүүд
+                  Бусад группүүд
                 </span>
-                {filteredData.adminModerator.length === 0 ? (
-                  <span
-                    onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
-                    className={"text-15px font-medium text-caak-primary"}
-                  >
-                    Групп үүсгэх
-                  </span>
-                ) : null}
               </div>
             )}
 

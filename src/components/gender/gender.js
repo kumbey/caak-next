@@ -79,7 +79,7 @@ const Gender = ({
         </div> */}
       </div>
       <p className="text-12px pt-px-10 text-caak-aleutian">
-        Таны хүйс олон нийтэд харагдахгүй.
+        Таны хүйс болон Нас олон нийтэд харагдахгүй.
       </p>
     </div>
   );

@@ -55,6 +55,12 @@ const GroupLayout = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [open, setOpen] = useState(false)
 
+  const kFormatter = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+      : Math.sign(num) * Math.abs(num);
+  };
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -368,7 +374,7 @@ const GroupLayout = ({
                         }
                       />
                       <p className={"text-[14px] text-caak-generalblack"}>
-                        {groupData.aura ? groupData.aura : 0} Аура
+                        {kFormatter(groupData.aura ? groupData.aura : 0)} Аура
                       </p>
                     </div>
                     {/*<div className="flex mr-[22px] items-center">*/}

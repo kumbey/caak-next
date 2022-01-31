@@ -144,11 +144,11 @@ const Register = () => {
                                     ${
                                       "phone" === activeType
                                         ? "bg-white text-caak-primary border-b-2 border-caak-primary "
-                                        : "bg-transparent text-caak-darkBlue"
+                                        : "bg-transparent text-caak-darkBlue border-b-2 border-caak-titaniumwhite"
                                     }
                                     `}
         >
-          <span className="icon-fi-rs-phone-1 text-24px " />
+          <span className="icon-fi-rs-mobile text-24px " />
           <p className={`text-15pxpx ml-px-10 font-medium `}>Утасны дугаар</p>
         </Button>
 
@@ -159,7 +159,7 @@ const Register = () => {
                                     ${
                                       "mail" === activeType
                                         ? "bg-white text-caak-primary border-b-2 border-caak-primary "
-                                        : "bg-transparent text-caak-darkBlue"
+                                        : "bg-transparent text-caak-darkBlue border-b-2 border-caak-titaniumwhite"
                                     }
                                     `}
         >

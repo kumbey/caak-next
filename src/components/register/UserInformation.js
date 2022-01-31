@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Button from "../button";
 import Input from "../input";
@@ -10,6 +10,7 @@ import { createUser } from "../../graphql-custom/user/mutation";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import DateInput from "../input/MaskedInput";
 import { useUser } from "../../context/userContext";
+import BirthdaySelector from "../input/BirthdaySelector";
 
 const UserInformation = ({ nextStep }) => {
   const router = useRouter();
@@ -121,7 +122,18 @@ const UserInformation = ({ nextStep }) => {
               "py-3 border border-caak-titaniumwhite h-c9 bg-caak-lynxwhite hover:bg-white mt-[8px]"
             }
           />
-          <DateInput
+          <BirthdaySelector
+            label={"Таны төрсөн өдөр"}
+            name={"birthdate"}
+            value={birthdate || ""}
+            format={"YYYY-MM-DD"}
+            className={
+              "py-3 border border-caak-titaniumwhite h-c9 bg-caak-lynxwhite hover:bg-white mt-[8px]"
+            }
+            onChange={setBirthdate}
+          />
+
+          {/* <DateInput
             format={"YYYY-MM-DD"}
             label={"Таны төрсөн өдөр"}
             value={birthdate || ""}
@@ -130,17 +142,6 @@ const UserInformation = ({ nextStep }) => {
             onChange={handleChange}
             className={
               "py-3 border border-caak-titaniumwhite h-c9 bg-caak-lynxwhite hover:bg-white mt-[8px]"
-            }
-          />
-          {/* <Input
-            label={"Таны нас"}
-            value={date || ""}
-            name={"date"}
-            errorMessage={errors.date}
-            onChange={handleChange}
-            placeholder={"Нас"}
-            className={
-              "py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"
             }
           /> */}
 

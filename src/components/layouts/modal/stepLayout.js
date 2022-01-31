@@ -65,7 +65,7 @@ const StepModalLayout = ({
               </div>
             )}
             {!configure.hideCount ? (
-              <div className="absolute right-1/2">
+              <div className="w-full flex justify-center">
                 <p className="text-sm">
                   {activeStep}/{maxStep}
                 </p>

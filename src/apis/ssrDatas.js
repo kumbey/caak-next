@@ -3,8 +3,13 @@ import { getPostView } from "../graphql-custom/post/queries";
 
 export const ssrDataViewPost = async ({ API, Auth, query }) => {
   let user = null;
+  let isSuperAdmin = null;
   try {
     user = await Auth.currentAuthenticatedUser();
+    const groups = user.signInUserSession.accessToken.payload["cognito:groups"];
+    if (groups.includes("caak-admin")) {
+      isSuperAdmin = true;
+    }
   } catch (ex) {
     user = null;
   }
@@ -22,8 +27,14 @@ export const ssrDataViewPost = async ({ API, Auth, query }) => {
       getReturnData(resp).status === "ARCHIVED" ||
       getReturnData(resp).status === "PENDING"
     ) {
-      if (user.attributes.sub !== getReturnData(resp).user.id) {
-        return { notFound: true };
+      if (!isSuperAdmin) {
+        if (user) {
+          if (user.attributes.sub !== getReturnData(resp).user.id) {
+            return { notFound: true };
+          }
+        } else {
+          return { notFound: true };
+        }
       }
     }
     return {
@@ -58,8 +69,8 @@ export const ssrDataViewPostItem = async ({ API, Auth, query }) => {
     if (!getReturnData(resp)) {
       return { notFound: true };
     }
-    if(getReturnData(resp).onlyBlogView === "TRUE"){
-      return {notFound: true}
+    if (getReturnData(resp).onlyBlogView === "TRUE") {
+      return { notFound: true };
     }
     return {
       props: {

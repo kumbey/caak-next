@@ -1,7 +1,7 @@
 import { getReturnData } from "../utility/Util";
 import { getPostView } from "../graphql-custom/post/queries";
 
-export const ssrDataViewPost = async ({ API, Auth, query }) => {
+export const ssrDataViewPost = async ({ API, Auth, query, host }) => {
   let user = null;
   let isSuperAdmin = null;
   try {
@@ -41,6 +41,7 @@ export const ssrDataViewPost = async ({ API, Auth, query }) => {
       props: {
         ssrData: {
           post: getReturnData(resp),
+          host
         },
       },
     };
@@ -52,7 +53,7 @@ export const ssrDataViewPost = async ({ API, Auth, query }) => {
   }
 };
 
-export const ssrDataViewPostItem = async ({ API, Auth, query }) => {
+export const ssrDataViewPostItem = async ({ API, Auth, query, host }) => {
   let user = null;
   try {
     user = await Auth.currentAuthenticatedUser();
@@ -76,6 +77,7 @@ export const ssrDataViewPostItem = async ({ API, Auth, query }) => {
       props: {
         ssrData: {
           post: getReturnData(resp),
+          host
         },
       },
     };

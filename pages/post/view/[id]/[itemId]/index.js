@@ -12,10 +12,12 @@ import useWindowSize from "../../../../../src/hooks/useWindowSize";
 import useModalLayout from "../../../../../src/hooks/useModalLayout";
 import { ssrDataViewPostItem } from "../../../../../src/apis/ssrDatas";
 import CommentCardNew from "../../../../../src/components/card/CommentCardNew";
+import {decode} from "html-entities";
 
 export async function getServerSideProps({ req, query }) {
+  const host = req.headers.host
   const { API, Auth } = withSSRContext({ req });
-  return await ssrDataViewPostItem({ API, Auth, query });
+  return await ssrDataViewPostItem({ API, Auth, query, host });
 }
 
 const PostItem = ({ ssrData }) => {
@@ -118,12 +120,35 @@ const PostItem = ({ ssrData }) => {
 
         <meta
           property="og:url"
-          content={`/post/view/${post.id}/${router.query.itemId}`}
+          content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}/${router.query.itemId}`}
         />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={item.title} />
         <meta property="og:description" content={post.description} />
         <meta property="og:image" content={getFileUrl(item.file)} />
+
+
+        {/* for Twitter */}
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={ssrData.post.title} />
+        <meta
+          name="twitter:description"
+          content={decode(ssrData.post.description)}
+        />
+        <meta
+          name="twitter:url"
+          content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
+        />
+        <meta
+          property="twitter:image"
+          content={
+            ssrData.post.items.items[0].thumbnail
+              ? getFileUrl(ssrData.post.items.items[0].thumbnail)
+              : getFileUrl(ssrData.post.items.items[0].file)
+          }
+        />
+
       </Head>
       {!loading ? (
         <ViewPostItemModal>

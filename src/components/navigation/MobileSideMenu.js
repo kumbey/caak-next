@@ -137,7 +137,7 @@ const MobileSideMenu = ({ setOpen }) => {
               maxColumns={13}
               setIsAuraModalOpen={setIsAuraModalOpen}
               role={["NOT_MEMBER"]}
-              title={"Бусад групп"}
+              title={"Бүх групп"}
             />
           </div>
         )}

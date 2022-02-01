@@ -19,6 +19,7 @@ export const crtPost = async (newPost, userId, role) => {
     post.updated_user_id = userId;
     // post.commentType = true;
     post.user_id = userId;
+    post.ignoreNotification = role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE"
 
     const savedPost = getReturnData(
       await API.graphql(graphqlOperation(createPost, { input: post }))
@@ -50,6 +51,7 @@ export const crtPost = async (newPost, userId, role) => {
         input: {
           id: savedPost.id,
           expectedVersion: savedPost.version,
+          ignoreNotification: role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
           status:
             role === "ADMIN" || role === "MODERATOR" ? "CONFIRMED" : "PENDING",
         },

@@ -209,7 +209,7 @@ const DropDownSelect = ({
                 }
               >
                 <span className={"text-15px text-caak-darkBlue pt-2"}>
-                  Бүх группүүд
+                  Бусад группүүд
                 </span>
               </div>
             )}

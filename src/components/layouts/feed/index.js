@@ -77,7 +77,7 @@ const DefaultFeedLayout = ({
                 title={
                   myGroups !== null && myGroups?.length === 0
                     ? "Бүх групп"
-                    : "Нэгдсэн групп"
+                    : "Бусад групп"
                 }
                 setIsAuraModalOpen={setIsAuraModalOpen}
               />

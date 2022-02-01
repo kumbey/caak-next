@@ -25,8 +25,9 @@ import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg"
 import ConditionalLink from "../../../../src/components/conditionalLink";
 
 export async function getServerSideProps({ req, query }) {
+  const host = req.headers.host
   const { API, Auth } = withSSRContext({ req });
-  return await ssrDataViewPost({ API, Auth, query });
+  return await ssrDataViewPost({ API, Auth, query, host });
 }
 
 const Post = ({ ssrData }) => {
@@ -96,8 +97,7 @@ const Post = ({ ssrData }) => {
     };
     //eslint-disable-next-line
   }, [router.query]);
-
-  return post ? (
+  return (
     <>
       <ViewPostModal
         post={post}
@@ -131,29 +131,43 @@ const Post = ({ ssrData }) => {
           {/* for Twitter */}
 
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={post.title} />
-          <meta name="twitter:description" content={decode(post.description)} />
+          <meta name="twitter:title" content={ssrData.post.title} />
+          <meta
+            name="twitter:description"
+            content={decode(ssrData.post.description)}
+          />
           <meta
             name="twitter:url"
-            content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}
+            content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
           />
           <meta
             property="twitter:image"
-            content={getFileUrl(post.items.items[0].file)}
+            content={
+              ssrData.post.items.items[0].thumbnail
+                ? getFileUrl(ssrData.post.items.items[0].thumbnail)
+                : getFileUrl(ssrData.post.items.items[0].file)
+            }
           />
 
           {/* for Facebook  */}
-          <meta name="description" content={decode(post.description)} />
-          <meta property="og:description" content={decode(post.description)} />
-          <meta property="og:title" content={post.title} />
+          <meta name="description" content={decode(ssrData.post.description)} />
+          <meta
+            property="og:description"
+            content={decode(ssrData.post.description)}
+          />
+          <meta property="og:title" content={ssrData.post.title} />
           <meta property="og:type" content="website" />
           <meta
             name="og:url"
-            content={`https://www.beta.caak.mn/post/view/post/view/${post.id}`}
+            content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
           />
           <meta
             property="og:image"
-            content={getFileUrl(post.items.items[0].file)}
+            content={
+              ssrData.post.items.items[0].thumbnail
+                ? getFileUrl(ssrData.post.items.items[0].thumbnail)
+                : getFileUrl(ssrData.post.items.items[0].file)
+            }
           />
           <title>
             {post.title} - {Consts.siteMainTitle}
@@ -501,7 +515,7 @@ const Post = ({ ssrData }) => {
         </div>
       </ViewPostModal>
     </>
-  ) : null;
+  );
 };
 
 export default Post;

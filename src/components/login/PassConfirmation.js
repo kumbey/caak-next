@@ -98,7 +98,7 @@ const PassConfirmation = () => {
       </div>
 
       <div className="text-center text-15px text-caak-darkBlue mt-c3">
-        {/* Таны {username ? mailNumber(username.replace("+976", "")) : null} руу{" "} */}
+        Таны {username ? mailNumber(username.replace("+976", "")) : null} руу{" "}
         <br /> баталгаажуулах код илгээгдсэн болно.
       </div>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -112,7 +112,7 @@ const PassConfirmation = () => {
         </div>
         <div className={" flex flex-col "}>
           <div className="px-c8 ">
-            <div className=" flex justify-center text-14px text-caak-darkBlue mt-8"/>
+            <div className=" flex justify-center text-14px text-caak-darkBlue mt-8" />
             {counter > 0 ? (
               <>
                 <p className="text-green-600 text-center">

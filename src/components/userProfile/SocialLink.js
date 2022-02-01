@@ -77,7 +77,6 @@ export default function SocialLink() {
   };
 
   const handleSubmit = async (name) => {
-    console.log(text[name]);
     if (text[name].length > 0) {
       if (text[name].includes(name)) {
         saveSocial();
@@ -118,10 +117,6 @@ export default function SocialLink() {
   useEffect(() => {
     setText(user.meta ? JSON.parse(user.meta) : "");
   }, [user]);
-
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
 
   return (
     <div className="flex flex-col mx-[30px]">

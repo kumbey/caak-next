@@ -32,6 +32,7 @@ export default function SocialLink() {
       name: "instagram",
       value: text?.instagram ? text.instagram : "",
       icon: "icon-fi-rs-ig",
+      mnText: "инстаграм",
     },
     {
       id: 1,
@@ -39,6 +40,7 @@ export default function SocialLink() {
       name: "facebook",
       value: text?.facebook ? text.facebook : "",
       icon: "icon-fi-rs-facebook path2",
+      mnText: "фэйсбүүк",
     },
     {
       id: 2,
@@ -46,6 +48,7 @@ export default function SocialLink() {
       name: "tiktok",
       value: text?.tiktok ? text.tiktok : "",
       icon: "icon-fi-rs-tiktok",
+      mnText: "тикток",
     },
     {
       id: 3,
@@ -53,6 +56,7 @@ export default function SocialLink() {
       name: "twitter",
       value: text?.twitter ? text.twitter : "",
       icon: "icon-fi-rs-twitter",
+      mnText: "твиттер",
     },
   ];
   const saveSocial = async () => {
@@ -76,17 +80,19 @@ export default function SocialLink() {
     setError("");
   };
 
-  const handleSubmit = async (name) => {
+  const handleSubmit = async (name, id) => {
+    console.log(text[id]);
     if (text[name].length > 0) {
       if (text[name].includes(name)) {
         saveSocial();
       } else {
-        setError(`Та ${name} хаягаа шалгана уу`);
+        setError(`Уучлаарай ${menus[id].mnText} хаяг биш байна`);
       }
     } else {
       saveSocial();
     }
   };
+
   const handleClick = (id) => {
     setCurrentIndex(id);
     setCol(true);
@@ -187,7 +193,7 @@ export default function SocialLink() {
                       </Button>
                       <Button
                         loading={loading}
-                        onClick={() => handleSubmit(menu.name)}
+                        onClick={() => handleSubmit(menu.name, menu.id)}
                         className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
                       >
                         Хадгалах

@@ -116,9 +116,7 @@ const ViewPostBlogAddComment = ({
         <div className={"flex flex-row items-center"}>
           <div className={"w-[28px] h-[28px] rounded-full relative"}>
             <img
-              width={28}
-              height={28}
-              className={"rounded-full"}
+              className={"rounded-full h-[28px] w-[28px]"}
               src={`${
                 user.pic
                   ? getFileUrl(user.pic)

@@ -1,17 +1,36 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import GroupInfoCard from "../../card/GroupInfoCard";
 import FooterSidebar from "../../footer/FooterSidebar";
 import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import useScrollBlock from "../../../hooks/useScrollBlock";
+import ModalBanner from "../../modalBanner";
 
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
+  const [bannerOpen, setBannerOpen] = useState(false)
+  const [bannerDismissed, setBannerDismissed] = useState(false)
+  const currentBannerScrollPosition = useRef(1200)
   const [blockScroll, allowScroll] = useScrollBlock();
+  
   const viewPostRef = useRef();
+  
   useEffect(() => {
     blockScroll();
     return () => allowScroll();
   }, [allowScroll, blockScroll]);
 
+  const handleScroll = () => {
+    if(window){
+      if(!bannerDismissed && (window.scrollY > currentBannerScrollPosition.current)){
+        setBannerOpen(true)
+        setBannerDismissed(true)
+      }
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 
   return (
     <div className="popup_modal">
@@ -42,6 +61,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
               </div>
             </div>
           </div>
+        {/* <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen}/> */}
         </div>
       </div>
     </div>

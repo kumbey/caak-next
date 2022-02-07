@@ -36,7 +36,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   const [doRender, setDoRender] = useState(0);
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
-  
+
+  const meta = JSON.parse(user?.meta);
+
   const kFormatter = (num) => {
     return Math.abs(num) > 999
       ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
@@ -558,10 +560,14 @@ const DefaultUserProfileLayout = ({ user, children }) => {
 
               {/*Social addresses*/}
               <div className={"flex flex-col w-full"}>
-                {JSON.parse(user?.meta)?.facebook && (
+                {meta?.facebook && (
                   <a
                     rel={"noreferrer"}
-                    href={`${JSON.parse(user?.meta).facebook}`}
+                    href={
+                      getURLUserName(meta.facebook, "CHECK")
+                        ? meta.facebook
+                        : `https://www.facebook.com/${meta.facebook}`
+                    }
                     target="_blank"
                   >
                     <div
@@ -585,15 +591,21 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {getURLUserName(JSON.parse(user?.meta).facebook)}
+                        {getURLUserName(meta.facebook, "CHECK")
+                          ? getURLUserName(meta.facebook)
+                          : meta.facebook}
                       </p>
                     </div>
                   </a>
                 )}
-                {JSON.parse(user?.meta)?.twitter && (
+                {meta?.twitter && (
                   <a
                     rel={"noreferrer"}
-                    href={`${JSON.parse(user?.meta).twitter}`}
+                    href={
+                      getURLUserName(meta.twitter, "CHECK")
+                        ? meta.twitter
+                        : `https://www.twitter.com/${meta.twitter}`
+                    }
                     target="_blank"
                   >
                     <div className={"flex flex-row items-center mb-[10px]"}>
@@ -613,15 +625,21 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {getURLUserName(JSON.parse(user?.meta).twitter)}
+                        {getURLUserName(meta.twitter, "CHECK")
+                          ? getURLUserName(meta.twitter)
+                          : meta.twitter}
                       </p>
                     </div>
                   </a>
                 )}
-                {JSON.parse(user?.meta)?.instagram && (
+                {meta?.instagram && (
                   <a
                     rel={"noreferrer"}
-                    href={`${JSON.parse(user?.meta).instagram}`}
+                    href={
+                      getURLUserName(meta.instagram, "CHECK")
+                        ? meta.instagram
+                        : `https://www.instagram.com/${meta.instagram}`
+                    }
                     target="_blank"
                   >
                     <div className={"flex flex-row items-center mb-[10px]"}>
@@ -641,15 +659,21 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {getURLUserName(JSON.parse(user?.meta).instagram)}
+                        {getURLUserName(meta.instagram, "CHECK")
+                          ? getURLUserName(meta.instagram)
+                          : meta.instagram}
                       </p>
                     </div>
                   </a>
                 )}
-                {JSON.parse(user?.meta)?.tiktok && (
+                {meta?.tiktok && (
                   <a
                     rel={"noreferrer"}
-                    href={`${JSON.parse(user?.meta).tiktok}`}
+                    href={
+                      getURLUserName(meta.tiktok, "CHECK")
+                        ? meta.tiktok
+                        : `https://www.tiktok.com/${meta.tiktok}`
+                    }
                     target="_blank"
                   >
                     <div className={"flex flex-row items-center"}>
@@ -669,7 +693,9 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                           "ml-[8px] text-caak-generalblack text-[15px] font-medium tracking-[0.23px] leading-[18px]"
                         }
                       >
-                        {getURLUserName(JSON.parse(user?.meta).tiktok)}
+                        {getURLUserName(meta.tiktok, "CHECK")
+                          ? getURLUserName(meta.tiktok)
+                          : meta.tiktok}
                       </p>
                     </div>
                   </a>
@@ -689,9 +715,8 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 </div>
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
-                {JSON.parse(user?.meta)?.settings?.showCreatedGroup
-                // && user.id === signedUser?.id
-                ? (
+                {meta?.settings?.showCreatedGroup ? (
+                  // && user.id === signedUser?.id
                   <SideBarGroups
                     authMode={"AWS_IAM"}
                     role={["ADMIN", "MODERATOR"]}
@@ -703,9 +728,8 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                 ) : null}
               </div>
               <div className={"hidden md:block overflow-y-auto w-full"}>
-                {JSON.parse(user?.meta)?.settings?.showFollowedGroup
-                // && user.id === signedUser?.id
-                 ? (
+                {meta?.settings?.showFollowedGroup ? (
+                  // && user.id === signedUser?.id
                   <SideBarGroups
                     authMode={"AWS_IAM"}
                     role={["MEMBER"]}

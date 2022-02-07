@@ -8,8 +8,9 @@ import TwitterIcon from "../../../../public/assets/images/Twitter-Color.svg";
 import AnimatedCaakButton from "../../button/animatedCaakButton";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { useRouter } from "next/router";
+import Consts from "../../../utility/Consts";
 
-const CardFooter = ({ totals, postId, reacted, handleToast, subscription }) => {
+const CardFooter = ({ totals, postId, reacted, handleToast, subscription, title }) => {
   // const [subscripTotal, setSubscripTotal] = useState();
   const router = useRouter();
   // const [render, setRender] = useState(0);
@@ -163,7 +164,7 @@ const CardFooter = ({ totals, postId, reacted, handleToast, subscription }) => {
                         </div>
                       </div>
                     </FacebookShareButton>
-                    <TwitterShareButton url={`${pathName}/post/view/${postId}`}>
+                    <TwitterShareButton title={title} url={`${pathName}/post/view/${postId}`}>
                       <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                         <div
                           className={

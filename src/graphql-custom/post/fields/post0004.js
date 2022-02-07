@@ -4,6 +4,7 @@ const post0004 = /* GraphQL */ `
   {
     id
     title
+    ignoreNotification
     description
     commentType
     onlyBlogView

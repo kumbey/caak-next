@@ -155,7 +155,7 @@ const DropDownSelect = ({
                 }
               >
                 <span className={"text-15px text-caak-darkBlue pt-2"}>
-                  Бусад группүүд
+                  Нэгдсэн группүүд
                 </span>
                 {filteredData.adminModerator.length === 0 ? (
                   <span

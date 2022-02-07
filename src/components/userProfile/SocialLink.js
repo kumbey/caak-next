@@ -6,6 +6,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
 import toast from "react-hot-toast";
 import { useUser } from "../../context/userContext";
+import { getURLUserName } from "../../utility/Util";
 
 export default function SocialLink() {
   const { user } = useUser();
@@ -21,6 +22,7 @@ export default function SocialLink() {
   );
   const [loading, setLoading] = useState(false);
   const [col, setCol] = useState(false);
+  const [error, setError] = useState("");
 
   const [currentIndex, setCurrentIndex] = useState();
   const menus = [
@@ -30,6 +32,7 @@ export default function SocialLink() {
       name: "instagram",
       value: text?.instagram ? text.instagram : "",
       icon: "icon-fi-rs-ig",
+      mnText: "инстаграм",
     },
     {
       id: 1,
@@ -37,6 +40,7 @@ export default function SocialLink() {
       name: "facebook",
       value: text?.facebook ? text.facebook : "",
       icon: "icon-fi-rs-facebook path2",
+      mnText: "фэйсбүүк",
     },
     {
       id: 2,
@@ -44,6 +48,7 @@ export default function SocialLink() {
       name: "tiktok",
       value: text?.tiktok ? text.tiktok : "",
       icon: "icon-fi-rs-tiktok",
+      mnText: "тикток",
     },
     {
       id: 3,
@@ -51,10 +56,10 @@ export default function SocialLink() {
       name: "twitter",
       value: text?.twitter ? text.twitter : "",
       icon: "icon-fi-rs-twitter",
+      mnText: "твиттер",
     },
   ];
-
-  const handleSubmit = async (e) => {
+  const saveSocial = async () => {
     const res = JSON.stringify(text);
 
     await API.graphql(
@@ -65,25 +70,54 @@ export default function SocialLink() {
         },
       })
     );
+
     setText("");
     user.meta = res;
     setCol(false);
     toast.success("Амжилттай хадгалагдлаа.");
 
     setShowInput(false);
+    setError("");
   };
+
+  const handleSubmit = async (name, id) => {
+    console.log(text[id]);
+    if (text[name].length > 0) {
+      if (text[name].includes(name)) {
+        saveSocial();
+      } else {
+        setError(`Уучлаарай ${menus[id].mnText} хаяг биш байна`);
+      }
+    } else {
+      saveSocial();
+    }
+  };
+
   const handleClick = (id) => {
     setCurrentIndex(id);
     setCol(true);
     setShowInput(true);
+    setError("");
   };
   const handleCancel = () => {
     setCol(false);
     setShowInput(false);
+    setError("");
   };
 
   const handleChange = (e) => {
-    setText({ ...text, [e.target.name]: e.target.value });
+    if (getURLUserName(e.target.value, "CHECK")) {
+      setText({ ...text, [e.target.name]: e.target.value });
+    } else {
+      if (e.target.value.length > 0) {
+        setText({
+          ...text,
+          [e.target.name]: `https://www.${e.target.name}.com/${e.target.value}`,
+        });
+      } else {
+        setText({ ...text, [e.target.name]: e.target.value });
+      }
+    }
   };
 
   useEffect(() => {
@@ -92,7 +126,8 @@ export default function SocialLink() {
 
   return (
     <div className="flex flex-col mx-[30px]">
-      <p className="font-semibold text-[#21293C] text-22px"
+      <p
+        className="font-semibold text-[#21293C] text-22px"
         style={{
           marginTop: "30px",
           fontSize: "24px",
@@ -145,21 +180,25 @@ export default function SocialLink() {
                     </div>
                   </div>
 
-                  <div className=" my-auto flex items-center justify-end pb-3">
-                    <Button
-                      loading={loading}
-                      onClick={() => handleCancel()}
-                      className="bg-white text-15px border border-caak-unicornsilver rounded-lg text-caak-generalblack mr-[10px]  px-[24px] "
-                    >
-                      Болих
-                    </Button>
-                    <Button
-                      loading={loading}
-                      onClick={(e) => handleSubmit(e)}
-                      className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
-                    >
-                      Хадгалах
-                    </Button>
+                  <div className="flex items-center justify-between">
+                    <p className="text-13px text-caak-red pb-3">{error}</p>
+
+                    <div className=" my-auto flex items-center justify-end pb-3">
+                      <Button
+                        loading={loading}
+                        onClick={() => handleCancel()}
+                        className="bg-white text-15px border border-caak-unicornsilver rounded-lg text-caak-generalblack mr-[10px]  px-[24px] "
+                      >
+                        Болих
+                      </Button>
+                      <Button
+                        loading={loading}
+                        onClick={() => handleSubmit(menu.name, menu.id)}
+                        className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
+                      >
+                        Хадгалах
+                      </Button>
+                    </div>
                   </div>
                 </form>
               ) : (

@@ -1,4 +1,4 @@
-import auraImage from "../../../public/assets/images/Aura.svg";
+import auraImage from "../../../public/assets/images/Hello.png";
 import registerImage from "../../../public/assets/images/Register.png";
 import Link from "next/link";
 import Image from "next/image";

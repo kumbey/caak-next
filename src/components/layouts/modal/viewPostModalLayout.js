@@ -20,7 +20,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   useEffect(() => {
     setTimeout(() => {
       setBannerOpen(true)
-    }, 3000)
+    }, 2500)
   }, [])
 
   return (

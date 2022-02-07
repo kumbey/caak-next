@@ -102,7 +102,7 @@ const Feed = ({ ssrData }) => {
   const [bannerOpen, setBannerOpen] = useState(false)
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [feedBackShown, setFeedBackShown] = useState(false)
-  const currentBannerScrollPosition = useRef(1200)
+  const currentBannerScrollPosition = useRef(600)
   const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
 
   const subscriptions = {};

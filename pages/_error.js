@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import image404 from "../public/assets/images/500/Connection-Lost.gif";
 import Button from "../src/components/button";
 
-export default function Error() {
-  const router = useRouter()
+export default function Error({ statusCode }) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -16,17 +16,20 @@ export default function Error() {
         }
       >
         <div className={"flex flex-col items-center justify-center"}>
-          <img
-            alt={""}
-            src={image404.src}
-            className={"w-[260px] h-[260px]"}
-          />
+          <img alt={""} src={image404.src} className={"w-[260px] h-[260px]"} />
           <p
             className={
               "text-[38px] font-bold text-caak-generalblack mt-[27.5px]"
             }
           >
             Сервер дээр алдаа гарлаа.
+          </p>
+          <p
+            className={
+              "text-[16px] text-caak-generalblack mt-[16px] text-center"
+            }
+          >
+            {statusCode}
           </p>
           <p
             className={
@@ -50,10 +53,10 @@ export default function Error() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-  return { statusCode }
-}
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
+  return { statusCode };
+};

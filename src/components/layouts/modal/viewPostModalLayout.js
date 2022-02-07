@@ -4,11 +4,10 @@ import FooterSidebar from "../../footer/FooterSidebar";
 import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 import ModalBanner from "../../modalBanner";
+import Banner from "../../banner";
 
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   const [bannerOpen, setBannerOpen] = useState(false)
-  const [bannerDismissed, setBannerDismissed] = useState(false)
-  const currentBannerScrollPosition = useRef(1200)
   const [blockScroll, allowScroll] = useScrollBlock();
   
   const viewPostRef = useRef();
@@ -18,19 +17,11 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
     return () => allowScroll();
   }, [allowScroll, blockScroll]);
 
-  const handleScroll = () => {
-    if(window){
-      if(!bannerDismissed && (window.scrollY > currentBannerScrollPosition.current)){
-        setBannerOpen(true)
-        setBannerDismissed(true)
-      }
-    }
-  }
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
+    setTimeout(() => {
+      setBannerOpen(true)
+    }, 2500)
+  }, [])
 
   return (
     <div className="popup_modal">
@@ -55,13 +46,11 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
                   groupId={post.group_id}
                 />
                 <GroupTrendPostsCard maxItems={5} groupId={post.group_id} />
-                <FooterSidebar
-                  containerClassname={"bg-white p-[20px] rounded-square"}
-                />
+                <Banner/>
               </div>
             </div>
           </div>
-        {/* <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen}/> */}
+        <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen}/>
         </div>
       </div>
     </div>

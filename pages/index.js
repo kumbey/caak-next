@@ -25,7 +25,6 @@ import { useRouter } from "next/router";
 import { usePreserveScroll } from "../src/hooks/useScroll";
 import ModalBanner from "../src/components/modalBanner";
 import {onCreateReactions, onDeleteReactions} from "../src/graphql/subscriptions";
-import Router from "next/router";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -276,7 +275,7 @@ const Feed = ({ ssrData }) => {
   useEffect(() => {
     setTimeout(() => {
       setFeedBackShown(true)
-    }, 180000 )
+    }, 90000 )
   }, [])
 
   const handleScroll = () => {
@@ -295,9 +294,7 @@ const Feed = ({ ssrData }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   });
 
-  if(router) {
-    router.asPath !== "/" && Router.events.on("routeChangeComplete", () => setBannerOpen(false))
-  } 
+  router.asPath !== "/" && router.events.on("routeChangeComplete", () => setBannerOpen(false))
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");

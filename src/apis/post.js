@@ -92,6 +92,7 @@ export const pdtPost = async (oldPost, userId, role) => {
             input: {
               ...postData,
               expectedVersion: post.version,
+              ignoreNotification: role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
               status: "POSTING",
             },
           })
@@ -147,6 +148,7 @@ export const pdtPost = async (oldPost, userId, role) => {
             input: {
               id: post.id,
               expectedVersion: post.version,
+              ignoreNotification: role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
               status:
                 role === "ADMIN" || role === "MODERATOR"
                   ? "CONFIRMED"

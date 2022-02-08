@@ -25,6 +25,7 @@ import { useRouter } from "next/router";
 import { usePreserveScroll } from "../src/hooks/useScroll";
 import ModalBanner from "../src/components/modalBanner";
 import {onCreateReactions, onDeleteReactions} from "../src/graphql/subscriptions";
+import Router from "next/router";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -102,7 +103,7 @@ const Feed = ({ ssrData }) => {
   const [bannerOpen, setBannerOpen] = useState(false)
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [feedBackShown, setFeedBackShown] = useState(false)
-  const currentBannerScrollPosition = useRef(1200)
+  const currentBannerScrollPosition = useRef(1000)
   const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
 
   const subscriptions = {};
@@ -283,6 +284,9 @@ const Feed = ({ ssrData }) => {
       if(!bannerDismissed && (window.scrollY > currentBannerScrollPosition.current)){
         setBannerOpen(true)
         setBannerDismissed(true)
+      }else if(window.scrollY < currentBannerScrollPosition.current){
+        setBannerOpen(false)
+        setBannerDismissed(false)
       }
     }
   }
@@ -290,6 +294,10 @@ const Feed = ({ ssrData }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   });
+
+  if(router) {
+    router.asPath !== "/" && Router.events.on("routeChangeComplete", () => setBannerOpen(false))
+  } 
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");

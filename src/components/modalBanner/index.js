@@ -56,7 +56,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
   }, [swap]);
 
   return bannerOpen && meta && banner ? (
-    <div className="a2_banner fixed left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px] z-[11]">
+    <div className="a2_banner fade-in-banner fixed left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px] z-[11]">
       {modal ? null : (
         <div className="bounce_banner flex flex-row items-start">
           <div

@@ -10,7 +10,12 @@ import { useRouter } from "next/router";
 import Consts from "../../../src/utility/Consts";
 import { useWrapper } from "../../../src/context/wrapperContext";
 import Head from "next/head";
-import { withSSRContext } from "aws-amplify";
+import { API, graphqlOperation, withSSRContext } from "aws-amplify";
+import UserInterests from "../../../src/components/userProfile/UserInterests";
+import { listUserCategoryByUser } from "../../../src/graphql-custom/category/queries";
+import { getReturnData } from "../../../src/utility/Util";
+import toast from "react-hot-toast";
+import UserGroups from "../../../src/components/userProfile/groups/UserGroups";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -29,15 +34,70 @@ export default function Settings() {
   const { user } = useUser();
   const { setNavBarTransparent } = useWrapper();
   const [activeIndex, setActiveIndex] = useState(1);
+  const [categories, setCategories] = useState([]);
+  const [showInterest, setShowInterest] = useState();
+  const [showGroup, setShowGroup] = useState();
+  const [userCategories, setUserCategories] = useState([]);
+
+  const handleToast = ({ param }) => {
+    if (param === "changed") toast.success("Амжилттай солигдлоо.");
+  };
+
+  const setSelectedUserCats = async () => {
+    userCategories.length = 0;
+    categories.map((cat) => {
+      userCategories.push(cat.category.id);
+    });
+  };
+
+  const fetchCat = async () => {
+    const resp = await API.graphql(
+      graphqlOperation(listUserCategoryByUser, {
+        user_id: user.id,
+      })
+    );
+
+    setCategories(getReturnData(resp).items);
+  };
+
   useEffect(() => {
     setNavBarTransparent(false);
   }, [setNavBarTransparent]);
+
+  useEffect(() => {
+    fetchCat();
+  }, []);
+
+  useEffect(() => {
+    setSelectedUserCats();
+  }, [categories]);
+
+  useEffect(() => {
+    fetchCat();
+    setSelectedUserCats();
+  }, [showGroup]);
 
   return user ? (
     <>
       <Head>
         <title>Профайл тохиргоо - {Consts.siteMainTitle}</title>
       </Head>
+      {showInterest && (
+        <UserInterests
+          setShowInterest={setShowInterest}
+          showInterest={showInterest}
+          selectedCats={userCategories}
+          setShowGroup={setShowGroup}
+        />
+      )}
+      {showGroup && (
+        <div className="popup_modal">
+          <div className="popup_modal-groups flex items-center justify-center w-full">
+            <UserGroups setShowGroup={setShowGroup} handleToast={handleToast} />
+          </div>
+        </div>
+      )}
+
       <div
         style={{ marginTop: "36px" }}
         className="flex justify-center  items-center w-full px-4 md:px-6 max-w-4xl mx-auto pt-[54px]"
@@ -70,7 +130,9 @@ export default function Settings() {
               >
                 {user.firstname}
               </p> */}
-              <p className="text-[22px] font-semibold text-[#21293C]">@{user.nickname}</p>
+              <p className="text-[22px] font-semibold text-[#21293C]">
+                @{user.nickname}
+              </p>
             </div>
           </div>
           <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
@@ -102,7 +164,11 @@ export default function Settings() {
               className="md:ml-c11 sm:ml-0 mb-c11 bg-white drop-shadow rounded-lg settingsDiv"
             >
               {activeIndex === 1 ? (
-                <Informations currentUser={user} />
+                <Informations
+                  currentUser={user}
+                  setShowInterest={setShowInterest}
+                  categories={categories}
+                />
               ) : activeIndex === 2 ? (
                 <SocialLink />
               ) : activeIndex === 3 ? (

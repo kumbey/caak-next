@@ -66,15 +66,18 @@ export default function Settings() {
 
   useEffect(() => {
     fetchCat();
+    //eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setSelectedUserCats();
+    //eslint-disable-next-line
   }, [categories]);
 
   useEffect(() => {
     fetchCat();
     setSelectedUserCats();
+    //eslint-disable-next-line
   }, [showGroup]);
 
   return user ? (

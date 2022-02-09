@@ -410,7 +410,7 @@ const PostHeader = ({
                     </div>
                   </FacebookShareButton>
                   <TwitterShareButton
-                    title={post.title}
+                    title={`${post.title} @caaktwt`}
                     url={`${pathName}/post/view/${post.id}/${item.id}`}
                   >
                     <div

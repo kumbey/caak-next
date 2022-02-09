@@ -1,3 +1,5 @@
+import file0001 from "../../file/fields/file0001";
+
 const listUserCategoryField = /* GraphQL */ `
   {
     items {
@@ -7,6 +9,7 @@ const listUserCategoryField = /* GraphQL */ `
         icon
         createdAt
         updatedAt
+        picture ${file0001}        
       }
     }
   }

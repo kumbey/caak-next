@@ -8,7 +8,11 @@ import DateInput from "../input/MaskedInput";
 import toast from "react-hot-toast";
 import Gender from "../gender/gender";
 
-export default function Informations({ currentUser }) {
+export default function Informations({
+  currentUser,
+  setShowInterest,
+  categories,
+}) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState({
     ...text,
@@ -28,7 +32,7 @@ export default function Informations({ currentUser }) {
       type: "text",
       value: currentUser.firstname,
       isReadOnly: false,
-      maxLength: 30
+      maxLength: 30,
     },
     {
       id: 1,
@@ -37,7 +41,7 @@ export default function Informations({ currentUser }) {
       type: "text",
       value: currentUser.nickname,
       isReadOnly: false,
-      maxLength: 50
+      maxLength: 50,
     },
     {
       id: 2,
@@ -46,7 +50,7 @@ export default function Informations({ currentUser }) {
       type: "text",
       value: currentUser.about,
       isReadOnly: false,
-      maxLength: 150
+      maxLength: 150,
     },
     {
       id: 3,
@@ -62,6 +66,14 @@ export default function Informations({ currentUser }) {
       name: "gender",
       type: "gender",
       value: currentUser.gender,
+      isReadOnly: false,
+    },
+    {
+      id: 5,
+      text: "Сонирхол",
+      // name: "gender",
+      type: "interest",
+      // value: currentUser.gender,
       isReadOnly: false,
     },
     // {
@@ -83,6 +95,7 @@ export default function Informations({ currentUser }) {
     //   isReadOnly: false,
     // },
   ];
+
   const handleSubmit = async (e) => {
     if (text !== e.target.value) {
       await API.graphql(
@@ -175,6 +188,19 @@ export default function Informations({ currentUser }) {
                       Таны насыг олон нийтэд харуулахгүй.
                     </p>
                   </>
+                ) : setting.type === "interest" ? (
+                  <div className="flex flex-wrap">
+                    {categories.map((data, index) => {
+                      return (
+                        <div className="flex items-center mr-5" key={index}>
+                          <div className="w-6">{data.category.icon}</div>
+                          <p className="text-caak-generalblack text-[12px] tracking-[0.24px] leading-[19px] break-all">
+                            {data.category.name}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
                 ) : null}
 
                 <div className="justify-end mt-[10px] flex items-center pb-3">
@@ -185,13 +211,23 @@ export default function Informations({ currentUser }) {
                   >
                     Болих
                   </Button>
-                  <Button
-                    loading={loading}
-                    onClick={(e) => handleSubmit(e)}
-                    className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
-                  >
-                    Хадгалах
-                  </Button>
+                  {setting.id !== 5 ? (
+                    <Button
+                      loading={loading}
+                      onClick={(e) => handleSubmit(e)}
+                      className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
+                    >
+                      Хадгалах
+                    </Button>
+                  ) : (
+                    <Button
+                      loading={loading}
+                      onClick={() => setShowInterest(true)}
+                      className="border  rounded-lg text-white text-15px bg-caak-bleudefrance"
+                    >
+                      Өөрчлөх
+                    </Button>
+                  )}
                 </div>
               </form>
             ) : (

@@ -95,8 +95,8 @@ const AddPost = () => {
           grData.unMember.push(item);
         } else if (item.role_on_group === "ADMIN") {
           grData.adminModerator.push(item);
-        } else if (item.role_on_group === "ADMIN") {
-          grData.adminModerator.push(item);
+        } else if (item.role_on_group === "MODERATOR") {
+          grData.member.push(item);
         } else {
           grData.member.push(item);
         }

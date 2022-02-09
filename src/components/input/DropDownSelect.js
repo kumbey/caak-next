@@ -169,32 +169,66 @@ const DropDownSelect = ({
                 <div className={"px-2"}>
                   {filteredData.member.map((item, index) => {
                     return (
+                      item.role_on_group === "MODERATOR" && 
                       <div
                         key={index}
                         onClick={() => selectGroup(item)}
                         className={"flex flex-col"}
                       >
-                        <div
-                          className={
-                            "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                          }
-                        >
-                          <img
-                            src={generateFileUrl(item.profile)}
-                            className={"w-8 h-8 rounded-md object-cover mr-2"}
-                            alt={""}
-                          />
-                          <div className={"flex flex-col justify-between"}>
-                            <span
-                              className={
-                                "text-caak-generalblack font-medium text-15px"
-                              }
-                            >
-                              {item.name}
-                            </span>
-                          </div>
+                      <div
+                        className={
+                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                        }
+                      >
+                        <img
+                          src={generateFileUrl(item.profile)}
+                          className={"w-8 h-8 rounded-md object-cover mr-2"}
+                          alt={""}
+                        />
+                        <div className={"flex flex-col justify-between"}>
+                          <span
+                            className={
+                              "text-caak-generalblack font-medium text-15px"
+                            }
+                          >
+                            {item.name}
+                          </span>
                         </div>
                       </div>
+                    </div>
+                    
+                    );
+                  })}
+                  {filteredData.member.map((item, index) => {
+                    return (
+                      item.role_on_group === "MEMBER" && 
+                      <div
+                        key={index}
+                        onClick={() => selectGroup(item)}
+                        className={"flex flex-col"}
+                      >
+                      <div
+                        className={
+                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                        }
+                      >
+                        <img
+                          src={generateFileUrl(item.profile)}
+                          className={"w-8 h-8 rounded-md object-cover mr-2"}
+                          alt={""}
+                        />
+                        <div className={"flex flex-col justify-between"}>
+                          <span
+                            className={
+                              "text-caak-generalblack font-medium text-15px"
+                            }
+                          >
+                            {item.name}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    
                     );
                   })}
                 </div>

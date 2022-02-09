@@ -55,7 +55,7 @@ const DefaultFeedLayout = ({
               />
               <SideBarGroups
                 userId={user.id}
-                role={["ADMIN", "MODERATOR"]}
+                role={["ADMIN"]}
                 addGroup
                 initialData={adminModeratorGroups}
                 title={"Миний группүүд"}
@@ -63,7 +63,7 @@ const DefaultFeedLayout = ({
               />
               <SideBarGroups
                 userId={user.id}
-                role={["MEMBER"]}
+                role={["MEMBER", "MODERATOR"]}
                 maxColumns={13}
                 initialData={myGroups}
                 title={"Нэгдсэн группүүд"}

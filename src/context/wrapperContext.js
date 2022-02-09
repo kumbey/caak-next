@@ -1,4 +1,10 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 const WrapperContext = createContext();
 
@@ -16,10 +22,58 @@ function WrapperProvider(props) {
   const [isNotificationMenu, setIsNotificationMenu] = useState(false);
   const [feedSortType, setFeedSortType] = useState("");
   const [navBarTransparent, setNavBarTransparent] = useState(false);
-  const [groupIcon, setGroupIcon] = useState(false)
+  const [groupIcon, setGroupIcon] = useState(false);
   const [currentPlayingVideoId, setCurrentPlayingVideoId] = useState(null);
+  const [loadedVideos, setLoadedVideos] = useState([]);
+
+  useEffect(() => {
+    for (let i = 0; i < loadedVideos.length; i++) {
+      if (loadedVideos[i].player) {
+        loadedVideos[i].getInternalPlayer().addEventListener(
+          "play",
+          function () {
+            pauseAll(this);
+          },
+          true
+        );
+      }
+    }
+
+    function pauseAll(elem) {
+      for (let i = 0; i < loadedVideos.length; i++) {
+        const video = loadedVideos[i];
+        if (video.player) {
+          if (video.getInternalPlayer() === elem) continue;
+          if (
+            video.getInternalPlayer().played.length > 0 &&
+            !video.getInternalPlayer().paused
+          ) {
+            video.getInternalPlayer().pause();
+          }
+        }
+      }
+    }
+
+    return () => {
+      loadedVideos.map((video) => {
+        if (video.player)
+          video.getInternalPlayer().removeEventListener(
+            "play",
+            function () {
+              pauseAll(this);
+            },
+            true
+          );
+      });
+    };
+  }, [loadedVideos]);
+  useEffect(() => {
+    console.log(loadedVideos);
+  }, [loadedVideos]);
   const value = useMemo(
     () => ({
+      loadedVideos,
+      setLoadedVideos,
       isMobileMenuOpen,
       setIsMobileMenuOpen,
       isNotificationMenu,
@@ -34,6 +88,7 @@ function WrapperProvider(props) {
       setCurrentPlayingVideoId,
     }),
     [
+      loadedVideos,
       isMobileMenuOpen,
       isNotificationMenu,
       feedSortType,

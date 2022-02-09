@@ -25,7 +25,7 @@ const ViewPostBlogItem = ({
         {postItem.file.type.startsWith("video") ? (
           <div className={"w-full h-[438px]"}>
             <Video
-              videoFileId={postItem.id}
+              videoFileId={postItem.file.id}
               itemIndex={index}
               route={!onlyBlogView}
               postId={postId}

@@ -47,6 +47,7 @@ const Video = ({
   generateThumbnail,
   post,
   setPost,
+  light,
   ...props
 }) => {
   const { user, isLogged } = useUser();
@@ -75,7 +76,8 @@ const Video = ({
   const [volumeSliderActive, setVolumeSliderActive] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const canvasRef = useRef();
-  const { currentPlayingVideoId, setCurrentPlayingVideoId } = useWrapper();
+  const { setCurrentPlayingVideoId, loadedVideos, setLoadedVideos } =
+    useWrapper();
   const [ref, inView] = useInView({
     threshold: 0.5,
   });
@@ -101,6 +103,64 @@ const Video = ({
       setPlayedSeconds(state.playedSeconds);
       setPlayed(state.played);
     }
+  };
+  const onReadyHandler = (e) => {
+    if (videoRef.current) {
+      const videoIndex = loadedVideos.findIndex(
+        (video) => video === videoRef.current
+      );
+      if (videoIndex === -1) {
+        setLoadedVideos([videoRef.current, ...loadedVideos]);
+      }
+    }
+    setIsVideoLoaded(true);
+    if (isAutoPlayEnabled) {
+      // playVideo(videoFileId, false, setIsPlaying);
+      setIsPlaying(true);
+    }
+    if (canvasRef.current && videoRef.current) {
+      canvasRef.current.width =
+        videoRef.current.player?.player.player.videoWidth;
+      canvasRef.current.height =
+        videoRef.current.player?.player.player.videoHeight;
+      const ctx = canvasRef.current.getContext("2d");
+      ctx.drawImage(
+        videoRef.current.player?.player.player,
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+      if (generateThumbnail) {
+        const thumbnailImageBase64 = canvasRef.current.toDataURL();
+        const tempPostArr = post;
+        const currentPostItem = tempPostArr.items[itemIndex];
+
+        fetch(thumbnailImageBase64)
+          .then((res) => res.blob())
+          .then((blob) => {
+            const file = new File(
+              [blob],
+              `${currentPostItem.file.name}_thumbnail`,
+              {
+                type: "image/png",
+              }
+            );
+
+            currentPostItem.thumbnail = {
+              ...currentPostItem.thumbnail,
+              ext: "png",
+              name: getFileName(file.name),
+              key: `${file.name}.png`,
+              type: file.type,
+              url: URL.createObjectURL(file),
+              obj: file,
+            };
+          });
+        setPost(tempPostArr);
+      }
+    }
+    setVideoDuration(e.getDuration());
   };
 
   const handleVolumeChange = (e) => {
@@ -152,7 +212,10 @@ const Video = ({
             videoClientRect >= 0 - videoHeight * 0.5
           ) {
             setCurrentPlayingVideoId(videoFileId);
-            setIsPlaying(isAutoPlayEnabled);
+            if (isAutoPlayEnabled) {
+              setIsPlaying(true);
+              // playVideo(videoFileId, isPlaying, setIsPlaying);
+            }
           } else {
             setIsPlaying(false);
           }
@@ -177,20 +240,19 @@ const Video = ({
       window.addEventListener("blur", onBlur);
     };
   });
-
-  //Only play one video at a time
+  // //Only play one video at a time
+  // useEffect(() => {
+  //   if (currentPlayingVideoId !== videoFileId) {
+  //     setIsPlaying(false);
+  //   }
+  // }, [currentPlayingVideoId, videoFileId]);
   useEffect(() => {
-    if (currentPlayingVideoId !== videoFileId) {
-      setIsPlaying(false);
-    }
-  }, [currentPlayingVideoId, videoFileId]);
-  useEffect(() => {
-    setLightMode(props.light)
+    setLightMode(props.light);
   }, [props.light]);
   Router.events.on("routeChangeStart", () => setIsPlaying(false));
   return (
     <div
-      className={`relative w-full h-full group bg-black ${
+      className={`flex items-center justify-center relative w-full h-full group bg-black ${
         containerClassname ? containerClassname : ""
       }`}
     >
@@ -200,9 +262,7 @@ const Video = ({
 
           opacity: "0.3",
         }}
-        className={`${
-          containerClassname ? containerClassname : ""
-        } w-full h-full hidden`}
+        className={`top-0 absolute w-full h-full z-[1]`}
         ref={canvasRef}
       />
 
@@ -211,7 +271,8 @@ const Video = ({
         onClick={(e) => {
           if (!disableOnClick) {
             if (!isDblTouchTap(e)) {
-              setCurrentPlayingVideoId(videoFileId);
+              // playVideo(videoFileId, isPlaying, setIsPlaying);
+              // setCurrentPlayingVideoId(videoFileId);
               setIsPlaying(!isPlaying);
             }
           }
@@ -273,13 +334,16 @@ const Video = ({
             }
           } else {
             setIsPlaying(!isPlaying);
-            setCurrentPlayingVideoId(videoFileId)
+            // playVideo(videoFileId, isPlaying, setIsPlaying);
+            setCurrentPlayingVideoId(videoFileId);
           }
         }}
-        className={`relative w-full h-full group z-[2]`}
+        className={`flex items-center justify-center relative w-full h-full group z-[2]`}
       >
         {inView || loaded ? (
           <ReactPlayer
+            light={light}
+            playsinline
             onClickPreview={() => setLightMode("")}
             ref={videoRef}
             playing={isPlaying}
@@ -289,57 +353,12 @@ const Video = ({
             onEnded={() => {
               setIsPlaying(false);
             }}
-            onReady={(e) => {
-              setIsVideoLoaded(true);
-              if (canvasRef.current && videoRef.current) {
-                canvasRef.current.width =
-                  videoRef.current.player.player.player.videoWidth;
-                canvasRef.current.height =
-                  videoRef.current.player.player.player.videoHeight;
-                const ctx = canvasRef.current.getContext("2d");
-                ctx.drawImage(
-                  videoRef.current.player.player.player,
-                  0,
-                  0,
-                  canvasRef.current.width,
-                  canvasRef.current.height
-                );
-                if (generateThumbnail) {
-                  const thumbnailImageBase64 = canvasRef.current.toDataURL();
-                  const tempPostArr = post;
-                  const currentPostItem = tempPostArr.items[itemIndex];
-
-                  fetch(thumbnailImageBase64)
-                    .then((res) => res.blob())
-                    .then((blob) => {
-                      const file = new File(
-                        [blob],
-                        `${currentPostItem.file.name}_thumbnail`,
-                        {
-                          type: "image/png",
-                        }
-                      );
-
-                      currentPostItem.thumbnail = {
-                        ...currentPostItem.thumbnail,
-                        ext: "png",
-                        name: getFileName(file.name),
-                        key: `${file.name}.png`,
-                        type: file.type,
-                        url: URL.createObjectURL(file),
-                        obj: file,
-                      };
-                    });
-                  setPost(tempPostArr);
-                }
-              }
-              setVideoDuration(e.getDuration());
-            }}
+            onReady={onReadyHandler}
             onProgress={handleProgress}
             className={`${videoClassname ? videoClassname : ""} react-player`}
             width={"100%"}
             height={"100%"}
-            url={src}
+            url={`${src}${generateThumbnail ? `#t=1` : ""}`}
             {...props}
           />
         ) : null}
@@ -349,8 +368,9 @@ const Video = ({
             {isVideoLoaded ? (
               <div
                 onClick={() => {
-                  if(!disableOnClick){
-                    setCurrentPlayingVideoId(videoFileId)
+                  if (!disableOnClick) {
+                    setCurrentPlayingVideoId(videoFileId);
+                    // playVideo(videoFileId, isPlaying, setIsPlaying);
                     setIsPlaying(true);
                   }
                 }}
@@ -369,7 +389,7 @@ const Video = ({
             ) : (
               <div
                 className={
-                  "absolute top-0 left-0 flex items-center justify-center w-full h-full"
+                  "absolute z-[-1] top-0 left-0 flex items-center justify-center w-full h-full"
                 }
               >
                 <Loader className={"bg-caak-primary"} />
@@ -400,14 +420,15 @@ const Video = ({
       {!hideControls && (
         <div
           className={
-            "h-[18px] z-[2] w-full absolute bottom-[21px] px-[21px] transition-all duration-300 opacity-0 group-hover:opacity-100"
+            "videoPlayerGradient z-[2] w-full absolute bottom-[-1px] pb-[21px] pt-[11px] px-[21px] transition-all duration-300 opacity-0 group-hover:opacity-100"
           }
         >
           <div className={"flex flex-row items-center"}>
             <div
               onClick={(e) => {
                 e.stopPropagation();
-                setCurrentPlayingVideoId(videoFileId)
+                setCurrentPlayingVideoId(videoFileId);
+                // playVideo(videoFileId, isPlaying, setIsPlaying);
                 setIsPlaying(!isPlaying);
               }}
               className={
@@ -480,8 +501,6 @@ const Video = ({
                       step="any"
                       value={volume}
                       onChange={handleVolumeChange}
-                      onMouseUp={(e) => console.log(e.target.value)}
-                      onEnded={(e) => console.log(e)}
                     />
                   </div>
                 </div>

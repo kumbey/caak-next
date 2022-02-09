@@ -307,7 +307,7 @@ const Post = ({ ssrData }) => {
                   ) : (
                     <p
                       className={
-                        "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                        "text-[16px] mt-[13px] whitespace-pre text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
                       }
                     >
                       {decode(post.description)}

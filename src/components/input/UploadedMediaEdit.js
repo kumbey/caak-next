@@ -81,8 +81,8 @@ const UploadedMediaEdit = ({
   // }, []);
 
   const maxLengths = {
-    title: 200,
-    description: 500,
+    title: 300,
+    description: 1000,
     imageDescription: 1000,
   };
   const popItem = (index_arg) => {
@@ -347,7 +347,7 @@ const UploadedMediaEdit = ({
                 onChange={(e) =>
                   setPost((prev) => ({ ...prev, description: e.target.value }))
                 }
-                className={`addPostTextarea pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
+                className={`addPostTextarea whitespace-pre pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
                   post.description?.length === maxLengths.description
                     ? "ring-caak-red border-caak-red"
                     : "focus:ring-caak-primary focus:border-caak-primary"

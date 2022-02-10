@@ -9,6 +9,7 @@ import Tooltip from "../tooltip/Tooltip";
 import Loader from "../loader";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { getFileName } from "../../utility/Util";
+import useUpdateEffect from "../../hooks/useUpdateEffect";
 
 const dblTouchTapMaxDelay = 300;
 let latestTouchTap = {
@@ -52,7 +53,7 @@ const Video = ({
 }) => {
   const { user, isLogged } = useUser();
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const [lightMode, setLightMode] = useState(props.light);
   const [isAutoPlayEnabled] = useState(
     typeof initialAutoPlay === "boolean"
@@ -72,13 +73,20 @@ const Video = ({
   const [loaded, setLoaded] = useState(false);
   const [played, setPlayed] = useState(0);
   const [volume, setVolume] = useState(isMuted ? 0.8 : 0);
-
+  const [isDragging, setIsDragging] = useState(false);
   const [volumeSliderActive, setVolumeSliderActive] = useState(false);
   const [seeking, setSeeking] = useState(false);
   const canvasRef = useRef();
-  const { setCurrentPlayingVideoId, loadedVideos, setLoadedVideos } =
-    useWrapper();
-  const [ref, inView] = useInView({
+  const {
+    setCurrentPlayingVideoId,
+    loadedVideos,
+    setLoadedVideos,
+    isPlaying,
+    play,
+    pause,
+  } = useWrapper();
+  const [ref, inView, entry] = useInView({
+    rootMargin: "-54px",
     threshold: 0.5,
   });
   const handleSeekChange = (e) => {
@@ -114,10 +122,12 @@ const Video = ({
       }
     }
     setIsVideoLoaded(true);
-    if (isAutoPlayEnabled) {
-      // playVideo(videoFileId, false, setIsPlaying);
-      setIsPlaying(true);
-    }
+
+    // if (isAutoPlayEnabled) {
+    //   // playVideo(videoFileId, false, setIsPlaying);
+    //   // setIsPlaying(true);
+    //   play(videoFileId);
+    // }
     if (canvasRef.current && videoRef.current) {
       canvasRef.current.width =
         videoRef.current.player?.player.player.videoWidth;
@@ -198,58 +208,39 @@ const Video = ({
   }, [localStorageIsVideoMuted]);
 
   //Buggy when 2 videos visible on viewport at the same time
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (inView) {
-      setLoaded(true);
-      if (videoRef.current)
-        if (videoRef.current.player?.isReady) {
-          const windowHeight = window.innerHeight;
-          const thisVideoEl = videoRef.current.player.player.player,
-            videoHeight = thisVideoEl.clientHeight,
-            videoClientRect = thisVideoEl.getBoundingClientRect().top;
-          if (
-            videoClientRect <= windowHeight - videoHeight * 0.5 &&
-            videoClientRect >= 0 - videoHeight * 0.5
-          ) {
-            setCurrentPlayingVideoId(videoFileId);
-            if (isAutoPlayEnabled) {
-              setIsPlaying(true);
-              // playVideo(videoFileId, isPlaying, setIsPlaying);
-            }
-          } else {
-            setIsPlaying(false);
-          }
+      if (entry.intersectionRatio <= 0.8) {
+        if (isAutoPlayEnabled) {
+          setCurrentPlayingVideoId(videoFileId);
+          play(videoFileId);
         }
-      // setIsPlaying(isAutoPlayEnabled);
-      // setIsMuted(isAutoPlayEnabled);
-      setCurrentPlayingVideoId(videoFileId);
-    } else if (!inView && loaded) {
-      setIsPlaying(false);
-      // setCurrentPlayingVideoId(null);
-    }
+      } else {
+        pause(videoFileId);
+      }
 
+      setLoaded(true);
+    } else {
+      pause(videoFileId);
+    }
     // eslint-disable-next-line
   }, [inView]);
 
   useEffect(() => {
     const onBlur = () => {
-      setIsPlaying(false);
+      // setIsPlaying(false);
+      pause(videoFileId);
+      setCurrentPlayingVideoId(null);
     };
     window.addEventListener("blur", onBlur);
     return () => {
       window.addEventListener("blur", onBlur);
     };
   });
-  // //Only play one video at a time
-  // useEffect(() => {
-  //   if (currentPlayingVideoId !== videoFileId) {
-  //     setIsPlaying(false);
-  //   }
-  // }, [currentPlayingVideoId, videoFileId]);
   useEffect(() => {
     setLightMode(props.light);
   }, [props.light]);
-  Router.events.on("routeChangeStart", () => setIsPlaying(false));
+  Router.events.on("routeChangeStart", () => pause(videoFileId));
   return (
     <div
       className={`flex items-center justify-center relative w-full h-full group bg-black ${
@@ -267,20 +258,26 @@ const Video = ({
       />
 
       <div
-        ref={ref}
+        // ref={ref}
         onClick={(e) => {
           if (!disableOnClick) {
             if (!isDblTouchTap(e)) {
-              // playVideo(videoFileId, isPlaying, setIsPlaying);
-              // setCurrentPlayingVideoId(videoFileId);
-              setIsPlaying(!isPlaying);
+              if (isPlaying(videoFileId)) {
+                pause(videoFileId);
+              } else {
+                setCurrentPlayingVideoId(videoFileId);
+                play(videoFileId);
+              }
+              // setIsPlaying(!isPlaying);
             }
           }
         }}
         onDoubleClick={() => {
           if (!disableOnClick) {
             if (route) {
-              setIsPlaying(false);
+              setCurrentPlayingVideoId(null);
+              // setIsPlaying(false);
+              pause(videoFileId);
               router.push(
                 {
                   pathname: router.pathname,
@@ -304,7 +301,9 @@ const Video = ({
             }
           }
         }}
+        onTouchMove={() => setIsDragging(true)}
         onTouchEnd={(e) => {
+          setIsDragging(false);
           if (isDblTouchTap(e)) {
             if (!disableOnClick && route) {
               router.push(
@@ -333,37 +332,92 @@ const Video = ({
               );
             }
           } else {
-            setIsPlaying(!isPlaying);
-            // playVideo(videoFileId, isPlaying, setIsPlaying);
-            setCurrentPlayingVideoId(videoFileId);
+            if (!isDragging) {
+              if (isPlaying(videoFileId)) {
+                setCurrentPlayingVideoId(null);
+                pause(videoFileId);
+              } else {
+                setCurrentPlayingVideoId(videoFileId);
+                play(videoFileId);
+              }
+              // setIsPlaying(!isPlaying);
+            }
           }
         }}
         className={`flex items-center justify-center relative w-full h-full group z-[2]`}
       >
-        {inView || loaded ? (
-          <ReactPlayer
-            light={light}
-            playsinline
-            onClickPreview={() => setLightMode("")}
-            ref={videoRef}
-            playing={isPlaying}
-            muted={isMuted}
-            loop={loop}
-            volume={volume}
-            onEnded={() => {
-              setIsPlaying(false);
-            }}
-            onReady={onReadyHandler}
-            onProgress={handleProgress}
-            className={`${videoClassname ? videoClassname : ""} react-player`}
-            width={"100%"}
-            height={"100%"}
-            url={`${src}${generateThumbnail ? `#t=1` : ""}`}
-            {...props}
-          />
-        ) : null}
+        <div
+          className={"w-full h-full flex items-center justify-center relative"}
+          ref={ref}
+        >
+          {inView || loaded ? (
+            <ReactPlayer
+              // config={{
+              //   file: {
+              //     attributes: {
+              //       onPlay: (e) => {
+              //         const videoHeight = e.target.clientHeight;
+              //         const videoClientRect =
+              //           e.target.getBoundingClientRect().top;
+              //         if (
+              //           !(
+              //             videoClientRect <=
+              //               window.innerHeight - videoHeight * 0.5 &&
+              //             videoClientRect >= 0 - videoHeight * 0.5
+              //           )
+              //         ) {
+              //           pause(videoFileId)
+              //           // e.target.scrollIntoView({
+              //           //   behavior: "smooth",
+              //           //   block: "center",
+              //           // });
+              //         }
+              //       },
+              //     },
+              //   },
+              // }}
+              onBuffer={() => setIsVideoLoaded(false)}
+              onBufferEnd={() => {
+                setIsVideoLoaded(true);
+              }}
+              light={light}
+              playsinline
+              onClickPreview={() => {
+                setIsVideoLoaded(true);
+                play(videoFileId);
+                setCurrentPlayingVideoId(videoFileId);
+                setLightMode("");
+              }}
+              ref={videoRef}
+              playing={isPlaying(videoFileId)}
+              muted={isMuted}
+              loop={loop}
+              volume={volume}
+              onEnded={() => {
+                // setIsPlaying(false);
+                pause(videoFileId);
+              }}
+              onReady={onReadyHandler}
+              onProgress={handleProgress}
+              className={`${videoClassname ? videoClassname : ""} react-player`}
+              width={"100%"}
+              height={"100%"}
+              url={`${src}${generateThumbnail ? `#t=1` : ""}`}
+              {...props}
+            />
+          ) : null}
+        </div>
+        {lightMode && !isVideoLoaded && (
+          <div
+            className={
+              "absolute top-0 left-0 flex items-center justify-center w-full h-full"
+            }
+          >
+            <Loader className={"bg-caak-primary"} />
+          </div>
+        )}
 
-        {!lightMode && !smallIndicator && !isPlaying && (
+        {!lightMode && !smallIndicator && !isPlaying(videoFileId) && (
           <div>
             {isVideoLoaded ? (
               <div
@@ -371,7 +425,8 @@ const Video = ({
                   if (!disableOnClick) {
                     setCurrentPlayingVideoId(videoFileId);
                     // playVideo(videoFileId, isPlaying, setIsPlaying);
-                    setIsPlaying(true);
+                    // setIsPlaying(true);
+                    play(videoFileId);
                   }
                 }}
                 className={
@@ -398,7 +453,7 @@ const Video = ({
           </div>
         )}
 
-        {!lightMode && smallIndicator && !isPlaying && (
+        {!lightMode && smallIndicator && !isPlaying(videoFileId) && (
           <div
             className={
               "flex cursor-pointer items-center justify-center w-[20px] h-[20px] rounded-full absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
@@ -410,7 +465,7 @@ const Video = ({
           </div>
         )}
 
-        {durationIndicator && isVideoLoaded && (
+        {durationIndicator && (
           <ItemsCounterCard
             containerClassname={"left-[10px]"}
             duration={videoDuration}
@@ -427,15 +482,22 @@ const Video = ({
             <div
               onClick={(e) => {
                 e.stopPropagation();
-                setCurrentPlayingVideoId(videoFileId);
+
                 // playVideo(videoFileId, isPlaying, setIsPlaying);
-                setIsPlaying(!isPlaying);
+                if (isPlaying(videoFileId)) {
+                  setCurrentPlayingVideoId(null);
+                  pause(videoFileId);
+                } else {
+                  setCurrentPlayingVideoId(videoFileId);
+                  play(videoFileId);
+                }
+                // setIsPlaying(!isPlaying);
               }}
               className={
                 "w-[24px] h-[24px] flex items-center justify-center cursor-pointer flex-shrink-0"
               }
             >
-              {isPlaying ? (
+              {isPlaying(videoFileId) ? (
                 <span className={"icon-fi-rs-pause text-[18px] text-white"} />
               ) : (
                 <span

@@ -5,6 +5,7 @@ import useWindowSize from "../../hooks/useWindowSize";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import Loader from "../loader";
 
 const ImageCarousel = ({
   items,
@@ -167,7 +168,7 @@ const ImageCarousel = ({
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   key={index}
-                  className={`w-[calc(100%+1px)] h-[calc(100%+1px)] flex items-center flex-shrink-0 transition duration-300 ${
+                  className={`w-[calc(100%+1px)] h-[calc(100%+1px)] min-h-[200px] flex items-center flex-shrink-0 transition duration-300 ${
                     card ? `max-h-[770px]` : ""
                   } `}
                   style={{
@@ -215,7 +216,7 @@ const ImageCarousel = ({
                           >
                             <a>
                               <LazyLoadImage
-                                alt={""}
+                                alt={items[index].file.name}
                                 className={`${
                                   index === 0
                                     ? "object-cover"

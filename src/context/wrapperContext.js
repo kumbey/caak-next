@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -25,6 +26,27 @@ function WrapperProvider(props) {
   const [groupIcon, setGroupIcon] = useState(false);
   const [currentPlayingVideoId, setCurrentPlayingVideoId] = useState(null);
   const [loadedVideos, setLoadedVideos] = useState([]);
+
+  // store the id of the current playing player
+  const [playing, setPlaying] = useState("");
+
+  // set playing to the given id
+  const play = (playerId) => setPlaying(playerId);
+
+  // unset the playing player
+  const pause = (playerId) => {
+    if (playerId === playing) {
+      setPlaying(false);
+    }
+  };
+
+  // returns true if the given playerId is playing
+  const isPlaying = useCallback(
+    (playerId) => {
+      return playerId === playing;
+    },
+    [playing]
+  );
 
   useEffect(() => {
     for (let i = 0; i < loadedVideos.length; i++) {
@@ -67,9 +89,6 @@ function WrapperProvider(props) {
       });
     };
   }, [loadedVideos]);
-  useEffect(() => {
-    console.log(loadedVideos);
-  }, [loadedVideos]);
   const value = useMemo(
     () => ({
       loadedVideos,
@@ -86,6 +105,9 @@ function WrapperProvider(props) {
       setGroupIcon,
       currentPlayingVideoId,
       setCurrentPlayingVideoId,
+      play,
+      isPlaying,
+      pause,
     }),
     [
       loadedVideos,
@@ -95,6 +117,7 @@ function WrapperProvider(props) {
       navBarTransparent,
       groupIcon,
       currentPlayingVideoId,
+      isPlaying,
     ]
   );
   return <WrapperContext.Provider value={value} {...props} />;

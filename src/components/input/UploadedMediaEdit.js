@@ -513,6 +513,11 @@ const UploadedMediaEdit = ({
                 }
                 initialAutoPlay={false}
                 durationIndicator={true}
+                videoFileId={
+                  post.items[activeIndex].file.id
+                    ? post.items[activeIndex].file.id
+                    : null
+                }
                 videoClassname={"object-contain rounded-none"}
                 src={thumbnailImageHandler(post.items[activeIndex])}
               />

@@ -6,6 +6,7 @@ import Consts from "/src/utility/Consts";
 import Auth from "@aws-amplify/auth";
 import Input from "../input";
 import OtpInput from "/src/components/input/OtpInput";
+import { mailNumber } from "../../utility/Util";
 
 const PassConfirmation = () => {
   const router = useRouter();

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import { getFileUrl } from "../../utility/Util";
 import { listBannersByTypeOrderByEndDate } from "../../graphql/queries";
+import { addViewToItem } from "../../graphql-custom/banner/mutation";
 
 export default function ModalBanner({ bannerOpen, setBannerOpen }) {
   const [modal, setModal] = useState(false);
@@ -54,6 +55,22 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
       }, 2000);
     }
   }, [swap]);
+
+  const saveClick = async () => {
+    try{
+      await API.graphql({
+        query: addViewToItem,
+        variables: {
+          item_id: banner.id,
+          on_to: "BANNER",
+          type: "VIEWS"
+        },
+        authMode: 'AWS_IAM'
+      })
+    }catch(ex){
+      console.log(ex)
+    }
+  }
 
   return bannerOpen && meta && banner ? (
     <div className="a2_banner fade-in-banner fixed left-[10px] sm:left-[50px] max-w-[114px] sm:max-w-[174px] z-[11]">
@@ -112,6 +129,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
                 target="_blank"
               >
                 <img
+                  onClick={() => saveClick()}
                   style={{ height: screen.width - 20 }}
                   alt=""
                   src={getFileUrl(banner.pic1)}

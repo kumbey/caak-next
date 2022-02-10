@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import React, {useEffect, useState} from 'react';
-import { API } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { getFileUrl } from '../../utility/Util';
 import { listBannersByTypeOrderByEndDate } from '../../graphql/queries';
+import { addViewToItem } from '../../graphql-custom/banner/mutation';
+import { getBanner } from '../../graphql/queries';
 
 export default function Banner() {
     const [banner, setBanner] = useState()
@@ -33,13 +35,29 @@ export default function Banner() {
         // eslint-disable-next-line
     }, [])
 
+    const saveClick = async () => {
+      try{
+        await API.graphql({
+          query: addViewToItem,
+          variables: {
+            item_id: banner.id,
+            on_to: "BANNER",
+            type: "VIEWS"
+          },
+          authMode: 'AWS_IAM'
+        })
+      }catch(ex){
+        console.log(ex)
+      }
+    }
+
   return (
     meta && banner
     ?
     <div className="sticky top-[74px] flex flex-col items-end">
       <Link href={meta.url}>
         <a rel="noreferrer" target="_blank">
-          <img alt="" src={getFileUrl(banner.pic1)} className={`rounded-[8px] w-[320px] max-h-[400px] border`} />
+          <img onClick={() => saveClick()} alt="" src={getFileUrl(banner.pic1)} className={`rounded-[8px] w-[320px] max-h-[400px] border`} />
         </a>
       </Link>
       <Link href='/help/connectus'>

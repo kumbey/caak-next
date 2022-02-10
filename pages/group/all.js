@@ -10,6 +10,7 @@ import useWindowSize from "../../src/hooks/useWindowSize";
 import { useWrapper } from "../../src/context/wrapperContext";
 import Head from "next/head";
 import Consts from "../../src/utility/Consts";
+import { getReturnData } from "../../src/utility/Util";
 
 const button = [
   {
@@ -40,49 +41,48 @@ export default function AllGroups() {
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState('')
   const { isLogged } = useUser();
-  const { width } = useWindowSize();
   const { setNavBarTransparent, setGroupIcon } = useWrapper();
 
-  // const filtered = groups.filter((group) => {
-  //   return group.name.toLowerCase().includes(value.toLowerCase())
-  // })
+  const fetchGroups = async () => {
+    try {
+      const resp = await API.graphql({
+        query: listGroups,
+        variables: {
+          filter: id === null ? null : { category_id: { eq: id } },
+        },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
 
-  // console.log(filtered)
+      const respFeatured = await API.graphql({
+        query: listGroupByFeatured,
+        variables: {
+          featured: "true",
+        },
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
+
+      activeIndex === 3
+        ?
+        setGroups(respFeatured.data.listGroupByFeatured.items)
+        :
+        activeIndex === 2
+        ?
+        setGroups(
+          getReturnData(resp).items.sort(function (a, b) {
+            return b.aura - a.aura;
+          })
+        )
+        :
+        setGroups(resp.data.listGroups.items)
+      
+      setLoading(false)
+        
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        const resp = await API.graphql({
-          query: listGroups,
-          variables: {
-            filter: id === null ? null : { category_id: { eq: id } },
-          },
-          authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-        });
-
-        const respFeatured = await API.graphql({
-          query: listGroupByFeatured,
-          variables: {
-            featured: "true",
-          },
-          authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-        });
-
-        activeIndex === 3
-          ?
-          setGroups(respFeatured.data.listGroupByFeatured.items)
-          :
-          activeIndex === 2
-          ?
-          setGroups(resp.data.listGroups.items)
-          :
-          setGroups(resp.data.listGroups.items)
-          
-          setLoading(false)
-      } catch (ex) {
-        console.log(ex);
-      }
-    };
     fetchGroups();
   }, [isLogged, id, groups, activeIndex]);
 
@@ -102,7 +102,6 @@ export default function AllGroups() {
           authMode: "AWS_IAM",
         });
         setCategory(resp.data.listCategorys.items);
-        setLoading(false);
       } catch (ex) {
         console.log(ex);
       }
@@ -209,10 +208,8 @@ export default function AllGroups() {
                   return (
                     <div
                       onClick={() => {
-                        setLoading(true)
                         setId(data.id);
                         setActiveIndex(0);
-                        setLoading(false)
                       }}
                       key={index}
                       className={`py-[9.5px] pl-[18px] font-inter text-[15px] text-[#0D1026] flex flex-row cursor-pointer ${

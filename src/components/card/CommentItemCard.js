@@ -212,7 +212,7 @@ const CommentItemCard = ({
                   textClassname={
                     "text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal"
                   }
-                  iconContainerClassname={"w-[24px] h-[24px] bg-transparent"}
+                  iconContainerClassname={"w-[24px] h-[24px] bg-transparent"} 
                   iconColor={"text-caak-nocturnal"}
                   iconClassname={"text-[23px]"}
                 />

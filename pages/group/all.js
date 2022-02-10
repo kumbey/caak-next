@@ -84,6 +84,7 @@ export default function AllGroups() {
 
   useEffect(() => {
     fetchGroups();
+    // eslint-disable-next-line
   }, [isLogged, id, groups, activeIndex]);
 
   useEffect(() => {

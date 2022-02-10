@@ -4,6 +4,8 @@ import Video from "../video";
 import useWindowSize from "../../hooks/useWindowSize";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import Loader from "../loader";
 
 const ImageCarousel = ({
   items,
@@ -15,7 +17,6 @@ const ImageCarousel = ({
   viewPostItem,
   index,
   duration,
-  images,
 }) => {
   const [activeIndex, setActiveIndex] = useState(card ? 0 : index);
   const [itemLength, setItemLength] = useState(0);
@@ -152,10 +153,14 @@ const ImageCarousel = ({
         </div>
       )}
       <div
-        style={{ height: images?.maxHeight ? images.maxHeight : "100%" }}
+        // style={{ height: images?.maxHeight ? images.maxHeight : "100%" }}
         className={"flex flex-nowrap flex-row items-center h-full w-full"}
       >
-        <div className={"flex flex-nowrap flex-row items-center w-full h-full"}>
+        <div
+          className={
+            "flex flex-nowrap flex-row items-center w-full h-full bg-black"
+          }
+        >
           {items.map((item, index) => {
             return (
               !item.isEmbed && (
@@ -163,44 +168,19 @@ const ImageCarousel = ({
                   onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   key={index}
-                  className={`w-full flex items-center flex-shrink-0 transition duration-300 ${
+                  className={`w-[calc(100%+1px)] h-[calc(100%+1px)] min-h-[200px] flex items-center flex-shrink-0 transition duration-300 ${
                     card ? `max-h-[770px]` : ""
                   } `}
                   style={{
                     transform: `translateX(-${activeIndex * 100}%)`,
-                    height: images?.maxHeight ? images.maxHeight : "100%",
+                    // height: images?.maxHeight ? images.maxHeight : "100%",
                   }}
                 >
                   <div
                     className={`${
                       mediaContainerClassname ? mediaContainerClassname : ""
-                    } relative flex justify-center items-center h-full bg-black`}
+                    } relative flex justify-center items-center h-full`}
                   >
-                    {card && (
-                      <div
-                        className={"h-full z-[1]"}
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          filter: "blur(12px)",
-                          position: "absolute",
-                          // transform: "scale(12)",
-                          opacity: "0.3",
-                          zIndex: 1,
-                        }}
-                      >
-                        <img
-                          alt={items[index].file.name}
-                          src={
-                            images?.items[index]?.src
-                              ? images.items[index].src
-                              : getFileUrl(items[index].file)
-                          }
-                          className={"object-cover w-full h-full"}
-                        />
-                      </div>
-                    )}
-
                     {item.file.type.startsWith("video") ? (
                       <Video
                         durationIndicator={duration}
@@ -209,9 +189,10 @@ const ImageCarousel = ({
                         videoFileId={item.file.id}
                         // containerClassname={"bg-black"}
                         videoClassname={`object-contain items-center justify-center rounded-none ${
-                          card ? "videoMaxHeight" : "w-full"
+                          card ? "videoMaxHeight max-h-[700px]" : "w-full"
                         }`}
                         src={getFileUrl(item.file)}
+                        // light={getFileUrl(item.thumbnail)}
                       />
                     ) : (
                       <div
@@ -234,14 +215,14 @@ const ImageCarousel = ({
                             }}
                           >
                             <a>
-                              <img
-                                alt={""}
-                                className={"object-contain h-full w-full"}
-                                src={
-                                  images?.items[index]?.src
-                                    ? images.items[index].src
-                                    : getFileUrl(items[index].file)
-                                }
+                              <LazyLoadImage
+                                alt={items[index].file.name}
+                                className={`${
+                                  index === 0
+                                    ? "object-cover"
+                                    : "object-contain"
+                                } w-full h-full`}
+                                src={getFileUrl(items[index].file)}
                               />
                             </a>
                           </Link>
@@ -249,11 +230,7 @@ const ImageCarousel = ({
                           <img
                             alt={""}
                             className={"object-contain h-full w-full"}
-                            src={
-                              images?.items[index]?.src
-                                ? images.items[index].src
-                                : getFileUrl(items[index].file)
-                            }
+                            src={getFileUrl(items[index].file)}
                           />
                         )}
                       </div>

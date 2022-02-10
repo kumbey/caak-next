@@ -848,6 +848,11 @@
       linear-gradient(180deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
       padding-box;
   }
+  .videoPlayerGradient {
+    background: transparent
+    linear-gradient(0deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
+    padding-box;
+  }
   .trendPostsCardWrapper {
     scrollbar-width: none !important;
   }
@@ -913,6 +918,7 @@
 .react-player__preview {
   background-color: gray;
   border-radius: 4px;
+  position: absolute;
 }
 
 .react-player video {

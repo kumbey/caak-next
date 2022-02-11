@@ -1,17 +1,26 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import GroupInfoCard from "../../card/GroupInfoCard";
-import FooterSidebar from "../../footer/FooterSidebar";
 import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import useScrollBlock from "../../../hooks/useScrollBlock";
+import ModalBanner from "../../modalBanner";
+import Banner from "../../banner";
 
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
+  const [bannerOpen, setBannerOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
+
   const viewPostRef = useRef();
+
   useEffect(() => {
     blockScroll();
     return () => allowScroll();
   }, [allowScroll, blockScroll]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setBannerOpen(true);
+    }, 2500);
+  }, []);
 
   return (
     <div className="popup_modal">
@@ -30,18 +39,23 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
               <div ref={viewPostRef} className={"viewPostItem"}>
                 {children}
               </div>
-              <div className={"viewPostRightSideBar ml-0 md:ml-[20px]"}>
-                <GroupInfoCard
-                  containerClassname={"mb-[16px]"}
-                  groupId={post.group_id}
-                />
-                <GroupTrendPostsCard maxItems={5} groupId={post.group_id} />
-                <FooterSidebar
-                  containerClassname={"bg-white p-[20px] rounded-square"}
-                />
+              <div
+                className={
+                  "viewPostRightSideBar flex ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
+                }
+              >
+                <div className={"flex flex-col"}>
+                  <GroupInfoCard
+                    containerClassname={"mb-[16px]"}
+                    groupId={post.group_id}
+                  />
+                  <GroupTrendPostsCard maxItems={5} groupId={post.group_id} />
+                </div>
+                <Banner />
               </div>
             </div>
           </div>
+          <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen} />
         </div>
       </div>
     </div>

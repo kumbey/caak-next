@@ -226,6 +226,38 @@
     }
   }
 
+  .fade-in-banner {
+    animation: fadeIn 2s;
+    -webkit-animation: fadeIn 2s;
+    -moz-animation: fadeIn 2s;
+    -o-animation: fadeIn 2s;
+    -ms-animation: fadeIn 2s;
+  }
+  @keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-o-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+
   .my-masonry-grid {
     display: -webkit-box; /* Not needed if autoprefixing */
     display: -ms-flexbox; /* Not needed if autoprefixing */
@@ -816,6 +848,11 @@
       linear-gradient(180deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
       padding-box;
   }
+  .videoPlayerGradient {
+    background: transparent
+    linear-gradient(0deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
+    padding-box;
+  }
   .trendPostsCardWrapper {
     scrollbar-width: none !important;
   }
@@ -881,6 +918,7 @@
 .react-player__preview {
   background-color: gray;
   border-radius: 4px;
+  position: absolute;
 }
 
 .react-player video {

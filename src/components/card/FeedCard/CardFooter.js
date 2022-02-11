@@ -164,7 +164,7 @@ const CardFooter = ({ totals, postId, reacted, handleToast, subscription, title 
                         </div>
                       </div>
                     </FacebookShareButton>
-                    <TwitterShareButton title={title} url={`${pathName}/post/view/${postId}`}>
+                    <TwitterShareButton title={`${title} @caaktwt`} url={`${pathName}/post/view/${postId}`}>
                       <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                         <div
                           className={

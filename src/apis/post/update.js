@@ -12,6 +12,7 @@ import { ApiFileUpload } from "../../utility/ApiHelper";
 import { _objectWithoutKeys, getReturnData } from "../../utility/Util";
 
 export const update = async (oldPost, userId) => {
+  console.log(oldPost);
   try {
     let { items, ...post } = { ...oldPost };
 
@@ -39,6 +40,7 @@ export const update = async (oldPost, userId) => {
             input: {
               ...postData,
               expectedVersion: post.version,
+              ignoreNotification: role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
               status: "POSTING",
             },
           })

@@ -88,6 +88,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
             className={`rounded-[8px] cursor-pointer border-[5px] sm:border-[10px] relative`}
           >
             <img
+              onClick={() => saveClick()}
               alt=""
               src={getFileUrl(banner.pic2)}
               className="w-[80px] h-[80px] sm:w-[130px] sm:h-[130px]"

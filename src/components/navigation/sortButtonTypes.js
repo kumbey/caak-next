@@ -65,7 +65,7 @@ export const userProfileType = [
   },
   {
     id: 2,
-    title: "Хадгалсан пост",
+    title: "Хадгалсан",
     type: "SAVED",
     icon: "icon-fi-rs-save",
   },
@@ -82,13 +82,7 @@ export const GroupType = [
     title: "Трэнд",
     type: "TREND",
     icon: "icon-fi-rs-trend",
-  },
-  {
-    id: 2,
-    title: "Саак",
-    type: "CAAK",
-    icon: "icon-fi-rs-caak",
-  },
+  }
 ];
 export const GroupViewType = [
   {

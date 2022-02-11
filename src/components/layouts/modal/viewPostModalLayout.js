@@ -40,14 +40,14 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
               <div ref={viewPostRef} className={"viewPostItem"}>
                 {children}
               </div>
-              <div className={"viewPostRightSideBar ml-0 md:ml-[20px]"}>
+              {/* <div className={"viewPostRightSideBar ml-0 md:ml-[20px]"}>
                 <GroupInfoCard
                   containerClassname={"mb-[16px]"}
                   groupId={post.group_id}
                 />
                 <GroupTrendPostsCard maxItems={5} groupId={post.group_id} />
                 <Banner/>
-              </div>
+              </div> */}
             </div>
           </div>
         <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen}/>

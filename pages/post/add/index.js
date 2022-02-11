@@ -30,7 +30,7 @@ const AddPost = () => {
   const router = useRouter();
   const { postId, groupId } = router.query;
   const { user } = useUser();
-
+  const [adminTextEditor, setAdminTextEditor] = useState("TRUE")
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
@@ -389,6 +389,8 @@ const AddPost = () => {
                   valid={valid}
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
+                  adminTextEditor={adminTextEditor}
+                  setAdminTextEditor={setAdminTextEditor}
                 />
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />

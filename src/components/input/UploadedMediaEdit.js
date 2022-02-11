@@ -33,9 +33,12 @@ const UploadedMediaEdit = ({
   valid,
   isEditing,
   setIsEditing,
+  adminTextEditor,
+  setAdminTextEditor
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [htmlEventText, setHtmlEventText]= useState("")
   const [videoDurationError, setVideoDurationError] = useState(false);
   const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] =
     useState(false);
@@ -247,6 +250,10 @@ const UploadedMediaEdit = ({
     setSortItems([...post.items]);
   }, [post]);
 
+  useEffect(() => {
+    selectedGroup?.role_on_group !== "ADMIN" ? setAdminTextEditor("FALSE") : setAdminTextEditor("TRUE")
+  }, [selectedGroup])
+
   return (
     <div>
       {errors && (
@@ -312,11 +319,12 @@ const UploadedMediaEdit = ({
             !viewDescription ? "hidden" : ""
           }`}
         >
-          {post.onlyBlogView === "TRUE" ? (
+          {post.onlyBlogView && adminTextEditor === "TRUE" ? (
             <Editor
               apiKey={"d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"}
               onInit={(evt, editor) => (editorRef.current = editor)}
-              onEditorChange={(e) => {
+              onEditorChange={(e, event) => {
+                console.log(event.getBody().textContent)
                 setPost((prev) => ({ ...prev, description: e }));
               }}
               value={post.description}
@@ -539,7 +547,7 @@ const UploadedMediaEdit = ({
           >
             <div className={"w-full h-full relative"}>
               <div className={"flex flex-col w-full h-full"}>
-                {post.onlyBlogView === "TRUE" ? (
+                {post.onlyBlogView && adminTextEditor === "TRUE" ? (
                   <div
                     className={
                       "flex flex-col w-full h-full h-[200px] md:h-full"
@@ -670,6 +678,33 @@ const UploadedMediaEdit = ({
               </label>
             </div>
           )}
+
+          {
+            selectedGroup?.role_on_group === "ADMIN" && 
+            <div className={"flex flex-row justify-between mt-[16px]"}>
+              <p className={"text-[15px] text-caak-generalblack"}>
+              Текст засварлагч
+              </p>
+              <label
+                onClick={() =>
+                  setAdminTextEditor(adminTextEditor === "TRUE" ? "FALSE" : "TRUE")
+                }
+                style={{ minWidth: "40px", height: "22px" }}
+                className={`ml-1 cursor-pointer
+                rounded-full 
+                bg-caak-${
+                  adminTextEditor === "TRUE" ? "algalfuel" : "titaniumwhite"
+                }  
+                flex items-center 
+                justify-${adminTextEditor === "TRUE" ? "end" : "start"}`}
+              >
+                <span
+                  style={{ width: "18px", height: "18px", marginInline: "2px" }}
+                  className={`bg-white rounded-full`}
+                />
+              </label>
+            </div>
+          }
           {/*<div className={"flex flex-row justify-between mt-[16px]"}>*/}
           {/*  <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>*/}
           {/*  <Switch toggle={setDraft} active={draft} />*/}

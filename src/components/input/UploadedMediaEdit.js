@@ -175,6 +175,7 @@ const UploadedMediaEdit = ({
     caakContent,
     businessPost,
     allowComment,
+    post.items.length
   ]);
 
   useUpdateEffect(() => {
@@ -246,12 +247,21 @@ const UploadedMediaEdit = ({
     // eslint-disable-next-line
   }, [businessPost]);
 
+  useUpdateEffect(() => {
+    setPost({
+      ...post,
+      onlyBlogView: adminTextEditor,
+    });
+    // eslint-disable-next-line
+  }, [adminTextEditor]);
+
   useEffect(() => {
     setSortItems([...post.items]);
   }, [post]);
 
   useEffect(() => {
     selectedGroup?.role_on_group !== "ADMIN" ? setAdminTextEditor("FALSE") : setAdminTextEditor("TRUE")
+    //eslint-disable-next-line
   }, [selectedGroup])
 
   return (
@@ -653,7 +663,7 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
-          {isSuperAdmin && (
+          {/* {isSuperAdmin && (
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>
                 Бизнес мэдээ
@@ -677,10 +687,10 @@ const UploadedMediaEdit = ({
                 />
               </label>
             </div>
-          )}
+          )} */}
 
           {
-            selectedGroup?.role_on_group === "ADMIN" && 
+            (selectedGroup?.role_on_group === "ADMIN" || isSuperAdmin) &&
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>
               Текст засварлагч

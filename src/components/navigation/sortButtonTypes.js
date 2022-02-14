@@ -15,17 +15,18 @@ export const feedType = [
   },
   {
     id: 2,
-    title: "Саак",
-    type: "CAAK",
-    icon: "icon-fi-rs-caak",
-    route: "/caak",
-  },
-  {
-    id: 3,
     title: "Танд",
     type: "FORYOU",
     icon: "icon-fi-rs-for-you",
     route: "/foryou",
+  },
+  
+  {
+    id: 3,
+    title: "Саак",
+    type: "CAAK",
+    icon: "icon-fi-rs-caak",
+    route: "/caak",
   },
 ];
 

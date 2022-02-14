@@ -14,6 +14,7 @@ import { useClickOutSide } from "../../utility/Util";
 import { useUser } from "../../context/userContext";
 import { API } from "aws-amplify";
 import { deleteComment } from "../../graphql-custom/comment/mutation";
+import DeleteCommentConfirm from "./DeleteCommentConfirm";
 
 const CommentItemCard = ({
   children,
@@ -24,6 +25,7 @@ const CommentItemCard = ({
 }) => {
   const [isReplyInputActive, setIsReplyInputActive] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false)
   const [reply, setReply] = useState({
     isReplying: true,
   });
@@ -38,37 +40,37 @@ const CommentItemCard = ({
     setIsMenuOpen(false);
   });
 
-  const deleteComments = async (id) => {
-    if (isLogged)
-      try {
-        // setLoading(true);
-        await API.graphql({
-          query: deleteComment,
-          variables: {
-            input: {
-              id: id,
-            },
-          },
-        });
+  // const deleteComments = async (id) => {
+  //   if (isLogged)
+  //     try {
+  //       // setLoading(true);
+  //       await API.graphql({
+  //         query: deleteComment,
+  //         variables: {
+  //           input: {
+  //             id: id,
+  //           },
+  //         },
+  //       });
 
-        // setLoading(false);
-      } catch (ex) {
-        // setLoading(false);
-        console.log(ex);
-      }
-  };
+  //       // setLoading(false);
+  //     } catch (ex) {
+  //       // setLoading(false);
+  //       console.log(ex);
+  //     }
+  // };
 
-  const handleDelete = async () => {
-    if (!comment.sub) {
-      await deleteComments(comment.id);
-    } else {
-      comment.sub.items.map((sub) => {
-        deleteComments(sub.id);
-      });
+  // const handleDelete = async () => {
+  //   if (!comment.sub) {
+  //     await deleteComments(comment.id);
+  //   } else {
+  //     comment.sub.items.map((sub) => {
+  //       deleteComments(sub.id);
+  //     });
 
-      await deleteComments(comment.id);
-    }
-  };
+  //     await deleteComments(comment.id);
+  //   }
+  // };
 
   return (
     <div
@@ -181,7 +183,9 @@ const CommentItemCard = ({
                         content={
                           user.id === comment.user.id ?
                           <div className="w-[149px]">
-                            <p onClick={() => handleDelete(comment.id)} className="text-center">Устгах</p>
+                            <p onClick={() => {
+                              setConfirmOpen(true)
+                            }} className="text-center">Устгах</p>
                           </div>
                           :
                           null
@@ -190,6 +194,7 @@ const CommentItemCard = ({
                           "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
                         }
                       />
+                    <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={comment}/>
                       <span
                         className={"icon-fi-rs-dots text-caak-darkBlue text-[24px]"}
                       />

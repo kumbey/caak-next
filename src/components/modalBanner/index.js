@@ -117,7 +117,7 @@ export default function ModalBanner({ bannerOpen, setBannerOpen }) {
       )}
       {modal ? (
         <div className="popup_modal bg-[rgba(0, 0, 0, 0.5)] ">
-          <div className="popup_modal-banner">
+          <div className="popup_modal-banner fade-in-bigBanner">
             <div className="flex flex-col items-end mx-[20px] sm:mx-0">
               <span
                 onClick={() => setModal(false)}

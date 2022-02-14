@@ -33,7 +33,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
           >
             <div
               className={
-                "viewPostLayoutContainer relative items-center sm:items-start md:px-[20px] lg:px-0"
+                "viewPostLayoutContainer relative items-center lg:items-start md:px-[20px] lg:px-0"
               }
             >
               <div ref={viewPostRef} className={"viewPostItem"}>
@@ -41,10 +41,10 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
               </div>
               <div
                 className={
-                  "viewPostRightSideBar flex ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
+                  "viewPostRightSideBar flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
                 }
               >
-                <div className={"flex flex-col"}>
+                <div className={"flex flex-col w-full"}>
                   <GroupInfoCard
                     containerClassname={"mb-[16px]"}
                     groupId={post.group_id}

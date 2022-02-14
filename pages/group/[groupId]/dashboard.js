@@ -22,7 +22,6 @@ import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import GroupFollowerList from "../../../src/components/list/GroupFollowerList";
 import { useUser } from "../../../src/context/userContext";
 import { onPostByGroup } from "../../../src/graphql-custom/post/subscription";
-import Divider from "../../../src/components/divider";
 import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
@@ -136,7 +135,6 @@ const Dashboard = ({ ssrData }) => {
       color: "text-caak-buttonblue",
     },
   ];
-
   const dashMenu = [
     {
       id: 0,
@@ -461,7 +459,7 @@ const Dashboard = ({ ssrData }) => {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center justify-between">
+              {/* <div className="flex flex-wrap items-center justify-between">
                 <div className={"flex flex-row items-center mb-[10px] sm:mb-0"}>
                   <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
                     Хандалт
@@ -491,7 +489,7 @@ const Dashboard = ({ ssrData }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div
               className={
@@ -500,8 +498,8 @@ const Dashboard = ({ ssrData }) => {
             >
               {activeIndex === 0 ? (
                 <div className="flex flex-col">
-                  <div className="hidden md:flex">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[290px]">
+                  <div className="hidden md:flex mb-4">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[180px] lg:mr-[240px]">
                       Пост
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack mr-[182px]">
@@ -514,7 +512,6 @@ const Dashboard = ({ ssrData }) => {
                       Үйлдэл
                     </p>
                   </div>
-                  <Divider className={"my-[16px]"} />
 
                   <InfinitScroller onNext={fetchPosts} loading={loading}>
                     {posts.length > 0 &&
@@ -557,7 +554,7 @@ const Dashboard = ({ ssrData }) => {
 
               {activeIndex === 2 ? (
                 <div className="flex flex-col">
-                  <div className="hidden md:flex pb-[16px] mb-[16px] border-b-[1px]">
+                  <div className="hidden md:flex  mb-[16px]">
                     <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px] md:mr-[320px]">
                       Пост
                     </p>
@@ -572,8 +569,6 @@ const Dashboard = ({ ssrData }) => {
                     </p>
                   </div>
                   <InfinitScroller onNext={fetchPending} loading={loading}>
-                    {/*<Divider className={"hidden md:flex mt-[16px]"} />*/}
-
                     {pendingPosts.length > 0 &&
                       pendingPosts.map((pendingPost, index) => {
                         return (

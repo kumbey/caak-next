@@ -6,6 +6,7 @@ import {
   extractDate,
   generateFileUrl,
   getReturnData,
+  kFormatter,
 } from "../../utility/Util";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -23,13 +24,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
   const [isDataFetched, setIsDataFetched] = useState(true);
   const [loading, setLoading] = useState(false);
   const [forceRender, setForceRender] = useState(0);
-  const [open, setOpen] = useState(false)
-
-  const kFormatter = (num) => {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  };
+  const [open, setOpen] = useState(false);
 
   const { isLogged, user } = useUser();
   const router = useRouter();
@@ -39,7 +34,7 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
       if (isLogged) {
         setLoading(true);
         if (group.followed) {
-          setOpen(true)
+          setOpen(true);
           // await API.graphql(
           //   graphqlOperation(deleteGroupUsers, {
           //     input: {
@@ -275,7 +270,13 @@ const GroupInfoCard = ({ groupId, containerClassname }) => {
             {group.followed ? `Нэгдсэн` : `Нэгдэх`}
           </button>
         </div>
-        <LeaveGroup open={open} setOpen={setOpen} groupData={group} setForceRender={setForceRender} forceRender={forceRender}/>
+        <LeaveGroup
+          open={open}
+          setOpen={setOpen}
+          groupData={group}
+          setForceRender={setForceRender}
+          forceRender={forceRender}
+        />
       </div>
     </div>
   ) : null;

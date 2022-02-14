@@ -1,10 +1,8 @@
+import { kFormatter } from "../../utility/Util";
+
 const StatsItem = ({ id, stat }) => {
   const { bgcolor, icon, color, gradient, number, text } = stat;
-  const kFormatter = (num) => {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  };
+
   return (
     <div
       className={`${

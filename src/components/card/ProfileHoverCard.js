@@ -5,7 +5,7 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import { getFileUrl, getGenderImage } from "../../utility/Util";
+import { getFileUrl, getGenderImage, kFormatter } from "../../utility/Util";
 import { getUserById } from "../../utility/ApiHelper";
 import Loader from "../loader";
 import { useRouter } from "next/router";
@@ -18,12 +18,6 @@ export default function ProfileHoverCard({ userId }) {
   const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  const kFormatter = (num) => {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  };
 
   useEffect(() => {
     setLoading(true);

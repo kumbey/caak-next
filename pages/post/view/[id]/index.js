@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
-import { generateTimeAgo, getFileUrl } from "../../../../src/utility/Util";
+import {
+  generateTimeAgo,
+  getFileUrl,
+  getReturnData,
+  shuffleArray,
+} from "../../../../src/utility/Util";
 import ViewPostBlogItem from "../../../../src/components/card/ViewPostBlogItem";
 import CommentSection from "../../../../src/components/viewpost/CommentSection";
 import Video from "../../../../src/components/video";
@@ -23,9 +28,11 @@ import { decode } from "html-entities";
 import toast from "react-hot-toast";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 import ConditionalLink from "../../../../src/components/conditionalLink";
+import { listBoostedPostByStatusOrderByEndDate } from "../../../../src/graphql-custom/post/queries";
+import Sponsored from "../../../../src/components/viewpost/Sponsored";
 
 export async function getServerSideProps({ req, query }) {
-  const host = req.headers.host
+  const host = req.headers.host;
   const { API, Auth } = withSSRContext({ req });
   return await ssrDataViewPost({ API, Auth, query, host });
 }
@@ -40,6 +47,31 @@ const Post = ({ ssrData }) => {
   const { jumpToComment } = router.query;
   const [isReactionActive, setIsReactionActive] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [render, setRender] = useState(0);
+  const [boostedPosts, setBoostedPosts] = useState({
+    items: [],
+  });
+
+  const fetchBoostedPosts = async () => {
+    const date = new Date();
+    const now = date.toISOString();
+    try {
+      let resp = await API.graphql({
+        query: listBoostedPostByStatusOrderByEndDate,
+        variables: {
+          status: "ACTIVE",
+          sortDirection: "DESC",
+          end_date: { gt: now },
+        },
+        authMode: "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      shuffleArray(resp.items);
+      setBoostedPosts(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
@@ -48,18 +80,6 @@ const Post = ({ ssrData }) => {
     if (param === "saved") toast.success("Пост амжилттай хадгалагдлаа.");
     if (param === "unSaved") toast.success("Пост амжилттай хасагдлаа.");
   };
-
-  useEffect(() => {
-    setPost(ssrData.post);
-  }, [ssrData.post]);
-
-  useEffect(() => {
-    if (jumpToComment) {
-      if (commentRef.current) {
-        commentRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [jumpToComment]);
 
   const back = () => {
     if (router.query && router.query.prevPath) {
@@ -86,6 +106,19 @@ const Post = ({ ssrData }) => {
   };
 
   useEffect(() => {
+    setPost(ssrData.post);
+  }, [ssrData.post]);
+
+  useEffect(() => {
+    if (jumpToComment) {
+      if (commentRef.current) {
+        commentRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [jumpToComment]);
+
+  useEffect(() => {
+    fetchBoostedPosts();
     const handler = (e) => {
       if (e.keyCode === 27) {
         if (!router.query.viewItemPost) back();
@@ -97,6 +130,29 @@ const Post = ({ ssrData }) => {
     };
     //eslint-disable-next-line
   }, [router.query]);
+
+  useEffect(() => {
+    if (boostedPosts.items.length > 0) {
+      let boostedPostsExists = false;
+      for (let i = 0; i < boostedPosts.items.length; i++) {
+        if (boostedPosts.items[i].post.id === post.id) {
+          boostedPostsExists = true;
+          break;
+        }
+      }
+      if (!boostedPostsExists) {
+        const boosted = boostedPosts.items[0].post;
+        boosted.sponsored = true;
+        if (post.items.items.length > 1) {
+          post.items.items.splice(2, 0, boosted);
+        } else {
+          if (post.id !== boosted.id) post.items.sponsored = boosted;
+        }
+        setRender(render + 1);
+      }
+    }
+    //eslint-disable-next-line
+  }, [boostedPosts, post]);
   return (
     <>
       <ViewPostModal
@@ -426,26 +482,36 @@ const Post = ({ ssrData }) => {
               {post.items.items.map((item, index) => {
                 if (post.items.items.length === 1) {
                   return (
-                    <ViewPostBlogItem
-                      onlyBlogView={post.onlyBlogView === "TRUE"}
-                      // singleItem
-                      key={index}
-                      index={index}
-                      postId={post.id}
-                      postItem={item}
-                    />
-                  );
-                } else {
-                  if (index > 0)
-                    return (
+                    <>
                       <ViewPostBlogItem
                         onlyBlogView={post.onlyBlogView === "TRUE"}
+                        // singleItem
                         key={index}
                         index={index}
                         postId={post.id}
                         postItem={item}
                       />
-                    );
+                      {post.items.sponsored && (
+                        <Sponsored item={post.items.sponsored} />
+                      )}
+                    </>
+                  );
+                } else {
+                  if (index > 0) {
+                    if (item.sponsored) {
+                      return <Sponsored item={item} key={index} />;
+                    } else {
+                      return (
+                        <ViewPostBlogItem
+                          onlyBlogView={post.onlyBlogView === "TRUE"}
+                          key={index}
+                          index={index}
+                          postId={post.id}
+                          postItem={item}
+                        />
+                      );
+                    }
+                  }
                 }
               })}
               <div

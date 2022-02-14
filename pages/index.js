@@ -1,10 +1,13 @@
-import {useEffect, useRef, useState} from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Card from "../src/components/card/FeedCard";
 import { useUser } from "../src/context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { getReturnData } from "../src/utility/Util";
-import { getPostByStatus } from "../src/graphql-custom/post/queries";
+import { getReturnData, shuffleArray } from "../src/utility/Util";
+import {
+  getPostByStatus,
+  listBoostedPostByStatusOrderByEndDate,
+} from "../src/graphql-custom/post/queries";
 import { useListPager } from "../src/utility/ApiHelper";
 import { onPostUpdateByStatus } from "../src/graphql-custom/post/subscription";
 import { withSSRContext } from "aws-amplify";
@@ -24,7 +27,12 @@ import FeedBack from "../src/components/feedback";
 import { useRouter } from "next/router";
 import { usePreserveScroll } from "../src/hooks/useScroll";
 import ModalBanner from "../src/components/modalBanner";
-import {onCreateReactions, onDeleteReactions} from "../src/graphql/subscriptions";
+import {
+  onCreateReactions,
+  onDeleteReactions,
+} from "../src/graphql/subscriptions";
+import Router from "next/router";
+import FeedCardSkeleton from "../src/components/skeleton/FeedCardSkeleton";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -90,7 +98,7 @@ export async function getServerSideProps({ req }) {
 
 const Feed = ({ ssrData }) => {
   usePreserveScroll();
-  
+
   const router = useRouter();
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
@@ -99,11 +107,15 @@ const Feed = ({ ssrData }) => {
   const [loading, setLoading] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
-  const [bannerOpen, setBannerOpen] = useState(false)
-  const [bannerDismissed, setBannerDismissed] = useState(false)
-  const [feedBackShown, setFeedBackShown] = useState(false)
-  const currentBannerScrollPosition = useRef(1000)
+  const [boostedPosts, setBoostedPosts] = useState({
+    items: [],
+  });
+  const [bannerOpen, setBannerOpen] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [feedBackShown, setFeedBackShown] = useState(false);
+  const currentBannerScrollPosition = useRef(1000);
   const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
+  const [isCardLoading, setIsCardLoading] = useState(true);
 
   const subscriptions = {};
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
@@ -120,6 +132,27 @@ const Feed = ({ ssrData }) => {
     nextToken: ssrData.posts.nextToken,
     ssr: true,
   });
+
+  const fetchBoostedPosts = async () => {
+    const date = new Date();
+    const now = date.toISOString();
+    try {
+      let resp = await API.graphql({
+        query: listBoostedPostByStatusOrderByEndDate,
+        variables: {
+          status: "ACTIVE",
+          sortDirection: "DESC",
+          end_date: { gt: now },
+        },
+        authMode: "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      shuffleArray(resp.items);
+      setBoostedPosts(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   const fetchPosts = async () => {
     try {
@@ -273,28 +306,60 @@ const Feed = ({ ssrData }) => {
   }, [setFeedSortType]);
 
   useEffect(() => {
+    fetchBoostedPosts().then(() => setIsCardLoading(false));
     setTimeout(() => {
       setFeedBackShown(true)
-    }, 90000 )
+    }, 90000)
   }, [])
 
   const handleScroll = () => {
-    if(window){
-      if(!bannerDismissed && (window.scrollY > currentBannerScrollPosition.current)){
-        setBannerOpen(true)
-        setBannerDismissed(true)
-      }else if(window.scrollY < currentBannerScrollPosition.current){
-        setBannerOpen(false)
-        setBannerDismissed(false)
+    if (window) {
+      if (
+        !bannerDismissed &&
+        window.scrollY > currentBannerScrollPosition.current
+      ) {
+        setBannerOpen(true);
+        setBannerDismissed(true);
+      } else if (window.scrollY < currentBannerScrollPosition.current) {
+        setBannerOpen(false);
+        setBannerDismissed(false);
       }
     }
-  }
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
+  };
 
-  router.asPath !== "/" && router.events.on("routeChangeComplete", () => setBannerOpen(false))
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+    //eslint-disable-next-line
+  }, []);
+
+  if (router) {
+    router.asPath !== "/" &&
+      Router.events.on("routeChangeComplete", () => setBannerOpen(false));
+  }
+  let frequency = 5;
+  let boostedIdx = 0;
+  const renderElement = (index) => {
+    if (boostedPosts.items.length > 0) {
+      if (index === (frequency + boostedPosts.items.length)) {
+        if (boostedPosts.items.length - 1 > boostedIdx) {
+          frequency = frequency + 10;
+          boostedIdx++;
+          return (
+            <Card
+              sponsored={true}
+              post={boostedPosts.items[boostedIdx].post}
+              className="ph:mb-4 sm:mb-4"
+              handleToast={handleToast}
+            />
+          );
+        } else {
+          boostedIdx = 0;
+          frequency = frequency + 1
+        }
+      }
+    } else return null;
+  };
 
   const handleToast = ({ param }) => {
     if (param === "copy") toast.success("Холбоос амжилттай хуулагдлаа.");
@@ -312,30 +377,25 @@ const Feed = ({ ssrData }) => {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      {
-        feedBackShown 
-        ?
-        router.asPath === "/" && !isFeedbackOpen && (
-          <div
-            onClick={() => {
-              setIsFeedbackOpen(!isFeedbackOpen);
-            }}
-            className={
-              "feedbackIconBackground cursor-pointer flex items-center justify-center shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[8px] md:right-[27px] rounded-full"
-            }
-          >
-            <span
-              className={`${
-                isFeedbackOpen
-                  ? "icon-fi-rs-close"
-                  : "icon-fi-rs-survey"
-              } text-white text-[30px]`}
-            />
-          </div>
-        )
-        :
-        null
-      }
+      {feedBackShown
+        ? router.asPath === "/" &&
+          !isFeedbackOpen && (
+            <div
+              onClick={() => {
+                setIsFeedbackOpen(!isFeedbackOpen);
+              }}
+              className={
+                "feedbackIconBackground cursor-pointer flex items-center justify-center shadow-card z-[10] w-[54px] h-[54px] fixed bottom-[78px] md:bottom-[24px] right-[8px] md:right-[27px] rounded-full"
+              }
+            >
+              <span
+                className={`${
+                  isFeedbackOpen ? "icon-fi-rs-close" : "icon-fi-rs-survey"
+                } text-white text-[30px]`}
+              />
+            </div>
+          )
+        : null}
 
       {isFeedbackOpen && <FeedBack setIsOpen={setIsFeedbackOpen} />}
 
@@ -365,15 +425,18 @@ const Feed = ({ ssrData }) => {
               <InfinitScroller onNext={fetchPosts} loading={loading}>
                 {posts.items.map((data, index) => {
                   return (
-                    <Card
-                      key={index}
-                      video={data?.items?.items[0]?.file?.type?.startsWith(
-                        "video"
-                      )}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4"
-                      handleToast={handleToast}
-                    />
+                    <Fragment key={index}>
+                      {renderElement(index)}
+                      {!isCardLoading ? !boostedPosts.items.find(
+                        (item) => item.post.id === data.id
+                      ) && (
+                        <Card
+                          post={data}
+                          className="ph:mb-4 sm:mb-4"
+                          handleToast={handleToast}
+                        />
+                      ) : <FeedCardSkeleton/>}
+                    </Fragment>
                   );
                 })}
               </InfinitScroller>
@@ -381,7 +444,7 @@ const Feed = ({ ssrData }) => {
           </div>
         </div>
 
-        <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen}/>
+        <ModalBanner setBannerOpen={setBannerOpen} bannerOpen={bannerOpen} />
       </div>
     </>
   );

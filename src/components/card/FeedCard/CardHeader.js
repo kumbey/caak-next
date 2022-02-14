@@ -10,7 +10,6 @@ import DropDown from "../../navigation/DropDown";
 import PostMoreMenu from "../PostMoreMenu";
 import Link from "next/link";
 import ProfileHoverCard from "../ProfileHoverCard";
-import Image from "next/image";
 import { useWrapper } from "../../../context/wrapperContext";
 import { useRouter } from "next/router";
 import ReportModal from "../../modals/reportModal";
@@ -25,6 +24,7 @@ const CardHeader = ({
   containerClassname,
   titleClassname,
   handleToast,
+  sponsored,
 }) => {
   const { user, isLogged } = useUser();
   const { setFeedSortType } = useWrapper();
@@ -78,7 +78,6 @@ const CardHeader = ({
             </a>
           </Link>
 
-
           <div className="flex flex-col justify-between ml-[8px] h-full">
             <div className={"flex flex-row items-center"}>
               <span className="mr-1 font-semibold cursor-pointer text-generalblack text-14px leading-[16px] tracking-[0.21px]">
@@ -99,55 +98,59 @@ const CardHeader = ({
                 ""
               )}
             </div>
-            <div className={"flex flex-row items-center h-[16px]"}>
-              {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
-              <Tooltip
-                className={"-left-14"}
-                content={
-                  <ProfileHoverCard
-                    userId={post.user.id}
-                    postUser={post.user}
-                  />
-                }
-              >
-                <div className={"flex flex-row items-center"}>
-                  <Link
-                    href={{
-                      pathname: `/user/${post.user.id}/profile`,
-                    }}
-                  >
-                    <a>
-                      <p className="cursor-pointer hover:underline text-generalblack text-[13px] leading-[16px] tracking-[0.2px]">
-                        @{post.user.nickname}
-                      </p>
-                    </a>
-                  </Link>
-                  {post.user.verified ? (
-                    <img
-                      className={"w-[16.5] h-[14.25]"}
-                      alt={""}
-                      height={14.25}
-                      width={16.5}
-                      // quality={100}
-                      // priority={true}
-                      src={userVerifiedSvg.src}
+            {!sponsored ? (
+              <div className={"flex flex-row items-center h-[16px]"}>
+                {/*<span className={"text-darkblue text-12px mx-1"}>•</span>*/}
+                <Tooltip
+                  className={"-left-14"}
+                  content={
+                    <ProfileHoverCard
+                      userId={post.user.id}
+                      postUser={post.user}
                     />
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </Tooltip>
-              <span className={"flex items-center text-darkblue"}>
-                &nbsp;&#903;&nbsp;
-              </span>
-              <span
-                className={
-                  "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
-                }
-              >
-                {generateTimeAgo(post.createdAt)}
-              </span>
-            </div>
+                  }
+                >
+                  <div className={"flex flex-row items-center"}>
+                    <Link
+                      href={{
+                        pathname: `/user/${post.user.id}/profile`,
+                      }}
+                    >
+                      <a>
+                        <p className="cursor-pointer hover:underline text-generalblack text-[13px] leading-[16px] tracking-[0.2px]">
+                          @{post.user.nickname}
+                        </p>
+                      </a>
+                    </Link>
+                    {post.user.verified ? (
+                      <img
+                        className={"w-[16.5] h-[14.25]"}
+                        alt={""}
+                        height={14.25}
+                        width={16.5}
+                        // quality={100}
+                        // priority={true}
+                        src={userVerifiedSvg.src}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </Tooltip>
+                <span className={"flex items-center text-darkblue"}>
+                  &nbsp;&#903;&nbsp;
+                </span>
+                <span
+                  className={
+                    "text-darkblue text-12px leading-[15px] tracking-[0.18px]"
+                  }
+                >
+                  {generateTimeAgo(post.createdAt)}
+                </span>
+              </div>
+            ) : (
+              <p className={"text-[13px] text-darkblue"}>Sponsored</p>
+            )}
           </div>
         </div>
         <div className={"cursor-pointer flex flex-row items-center"}>
@@ -200,11 +203,8 @@ const CardHeader = ({
               className={"top-6 -right-3"}
             />
           </div>
-          
 
-      {
-        open && <PostDeleteConfirm setOpen={setOpen} post={post}/>
-      }
+          {open && <PostDeleteConfirm setOpen={setOpen} post={post} />}
         </div>
       </div>
       {!hideTitle && (

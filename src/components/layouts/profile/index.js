@@ -5,6 +5,7 @@ import {
   getFileUrl,
   getGenderImage,
   getURLUserName,
+  kFormatter,
 } from "../../../utility/Util";
 import Button from "../../button";
 import SideBarGroups from "../../card/SideBarGroups";
@@ -38,12 +39,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   const [uploadingCover, setUploadingCover] = useState(false);
 
   const meta = JSON.parse(user?.meta);
-
-  const kFormatter = (num) => {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  };
 
   const fileParams = (file) => {
     return {

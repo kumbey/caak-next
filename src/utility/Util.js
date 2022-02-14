@@ -490,6 +490,24 @@ export function getURLUserName(url, type) {
   }
 }
 
+export const getDiffDays = (start, end) => {
+  const oneDay = 24 * 60 * 60 * 1000;
+  return Math.round((end - start) / oneDay);
+};
+
+export const convertDateTime = (date) => {
+  const Date = DateTime.fromISO(date);
+  const fullDate = Date.toFormat("yyyy/MM/dd");
+  const fullTime = Date.toFormat("HH:mm:ss");
+  return `${fullDate} ${fullTime}`;
+};
+
+export const kFormatter = (num) => {
+  return Math.abs(num) > 999
+    ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+    : Math.sign(num) * Math.abs(num);
+};
+
 const object = {
   useQuery,
   mailNumber,
@@ -508,5 +526,8 @@ const object = {
   _objectWithoutKeys,
   _modalisOpen,
   getURLUserName,
+  getDiffDays,
+  convertDateTime,
+  kFormatter,
 };
 export default object;

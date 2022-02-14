@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   generateTimeAgo,
   getFileUrl,
@@ -163,26 +162,32 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : null}
         </div>
         <div className="flex text-sm text-caak-darkBlue w-[166px] mr-[32px]">
+          <div className="flex items-center">
+            <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
+            <p className="font-inter font-normal text-14px text-caak-darkBlue">
+              {post.totals.reach ? post.totals.reach : 0}
+            </p>
+          </div>
+          <div className="flex items-center mr-5">
+            <span className="icon-fi-rs-clicked-o  text-caak-scriptink text-20px mr-[6px] " />
+            <p className="font-inter font-normal text-14px text-caak-darkBlue">
+              {post.totals.views ? post.totals.views : 0}
+            </p>
+          </div>
           <div className="flex items-center mr-5">
             <span className="icon-fi-rs-rock-i text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
-              {post.totals.reactions}
+              {post.totals.reactions ? post.totals.reactions : 0}
             </p>
           </div>
           <div className="flex items-center mr-5">
             <span className="icon-fi-rs-comment-o text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
-              {post.totals.comments}
-            </p>
-          </div>
-          <div className="flex items-center">
-            <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
-            <p className="font-inter font-normal text-14px text-caak-darkBlue">
-              {post.totals.views}
+              {post.totals.comments ? post.totals.comments : 0}
             </p>
           </div>
         </div>{" "}
-        <div className="flex ml-[10px] ">
+        <div className="flex ml-[40px] ">
           {type === "group" ? (
             <Button
               loading={loading}

@@ -112,6 +112,7 @@ const SideBarGroups = ({
           </div>
         )}
       </div>
+
       {groupData.map((group, index) => {
         let params = {};
 
@@ -134,8 +135,60 @@ const SideBarGroups = ({
             role: group.role_on_group,
           };
         }
-        if (maxColumns) {
-          if (index < maxColumns) {
+        if (params.role === "MODERATOR") {
+          return(
+            <SideBarGroupItem
+                key={index}
+                {...params}
+                notification={
+                  role[0] === "ADMIN"
+                    ? getGroupPending(group.group_id)?.pending
+                    : null
+                }
+              />
+          )
+        } 
+      })}
+      
+      {groupData.map((group, index) => {
+        let params = {};
+
+        if (group.group) {
+          params = {
+            name: group.group.name,
+            image: group.group.profile
+              ? getFileUrl(group.group.profile)
+              : getGenderImage("default").src,
+            groupId: group.group_id,
+            role: group.group.role_on_group,
+          };
+        } else {
+          params = {
+            name: group.name,
+            image: group.profile
+              ? getFileUrl(group.profile)
+              : getGenderImage("default").src,
+            groupId: group.id,
+            role: group.role_on_group,
+          };
+        }
+
+        if(params.role !== "MODERATOR"){
+          if (maxColumns) {
+            if (index < maxColumns) {
+              return (
+                <SideBarGroupItem
+                  key={index}
+                  {...params}
+                  notification={
+                    role[0] === "ADMIN"
+                      ? getGroupPending(group.group_id)?.pending
+                      : null
+                  }
+                />
+              );
+            } else return null;
+          } else {
             return (
               <SideBarGroupItem
                 key={index}
@@ -147,19 +200,7 @@ const SideBarGroups = ({
                 }
               />
             );
-          } else return null;
-        } else {
-          return (
-            <SideBarGroupItem
-              key={index}
-              {...params}
-              notification={
-                role[0] === "ADMIN"
-                  ? getGroupPending(group.group_id)?.pending
-                  : null
-              }
-            />
-          );
+          }
         }
       })}
 

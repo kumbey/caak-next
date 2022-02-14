@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useWrapper } from "../../context/wrapperContext";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
+import useDeviceDetect from '../../hooks/useDeviceDetect'
 
 const FeedSortButtons = ({
   direction,
@@ -28,14 +29,16 @@ const FeedSortButtons = ({
   const router = useRouter();
   const { user: signedUser, isLogged } = useUser();
   const [sortArray, setSortArray] = useState(items);
+  const { isMobile } = useDeviceDetect();
 
   useEffect(() => {
     if (!isLogged) {
       setSortArray(items.filter((item) => item.type !== "FORYOU"));
     }
-    else {
+    else if(isMobile) {
       setSortArray(items.filter((item) => item.type !== "CAAK"));
     }
+    //eslint-disable-next-line
   }, [isLogged, items]);
   return (
     !hide && (

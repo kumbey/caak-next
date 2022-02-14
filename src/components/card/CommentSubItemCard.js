@@ -15,14 +15,18 @@ import ProfileHoverCard from "./ProfileHoverCard";
 import Tooltip from "../tooltip/Tooltip";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
 import Link from "next/link";
+import { useClickOutSide } from "../../utility/Util";
+import DropDown from '../navigation/DropDown'
+import { deleteComment } from "../../graphql-custom/comment/mutation";
 
 const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) => {
-  const { isLogged } = useUser();
+  const { isLogged, user } = useUser();
   const subscriptions = {};
   const [subscriptionComment, setSubscriptionComment] = useState(null);
   const [reRender, setReRender] = useState(0);
   const [isFetchingComment, setIsFetchingComment] = useState(false);
   const [isReplyInputActive, setIsReplyInputActive] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   // const [replyInputValue, setReplyInputValue] = useState("");
   const [reply, setReply] = useState({
@@ -32,6 +36,42 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
     items: [],
     nextToken: null,
   });
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
+  const deleteComments = async (id) => {
+    if (isLogged)
+      try {
+        await API.graphql({
+          query: deleteComment,
+          variables: {
+            input: {
+              id: id,
+            },
+          },
+        });
+      } catch (ex) {
+        console.log(ex);
+      }
+  };
+
+  // const handleDelete = async () => {
+  //   if (!comment.sub) {
+  //     await deleteComments(comment.id);
+  //   } else {
+  //     comment.sub.items.map((sub) => {
+  //       deleteComments(sub.id);
+  //     });
+
+  //     await deleteComments(comment.id);
+  //   }
+  // };
 
   const subscrip = () => {
     const params = {
@@ -207,6 +247,42 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                         </div>
                         <p className={"text-[13px] cursor-pointer"}>Хариулах</p>
                       </div>
+                      {/* {
+                    isLogged 
+                    &&
+                    <div
+                      ref={menuRef}
+                      onClick={toggleMenu}
+                      className={
+                        "flex flex-col items-center cursor-pointer relative "
+                      }
+                    >
+                    <div
+                      className={
+                        "flex items-center justify-center w-[44px] h-[44px] ml-[5px] rounded-full hover:bg-caak-titaniumwhite"
+                      }
+                    >
+                      <DropDown
+                        open={isMenuOpen}
+                        onToggle={toggleMenu}
+                        content={
+                          user.id === subComment.user.id ?
+                          <div className="w-[149px]">
+                            <p onClick={() => handleDelete(subComment.id)} className="text-center">Устгах</p>
+                          </div>
+                          :
+                          null
+                        }
+                        className={
+                          "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
+                        }
+                      />
+                      <span
+                        className={"icon-fi-rs-dots text-caak-darkBlue text-[24px]"}
+                      />
+                    </div>
+                  </div>
+                  } */}
                     </div>
                   </div>
                   <div

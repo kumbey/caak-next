@@ -89,8 +89,8 @@ export async function getServerSideProps({ req }) {
       ssrData: {
         posts: getReturnData(resp),
         // allGroups: await fetchGroups(user, ["NOT_MEMBER"]),
-        myGroups: await fetchGroups(user, ["MEMBER"]),
-        adminModerator: await fetchGroups(user, ["ADMIN", "MODERATOR"]),
+        myGroups: await fetchGroups(user, ["MEMBER", "MODERATOR"]),
+        adminModerator: await fetchGroups(user, ["ADMIN"]),
       },
     },
   };
@@ -308,9 +308,9 @@ const Feed = ({ ssrData }) => {
   useEffect(() => {
     fetchBoostedPosts().then(() => setIsCardLoading(false));
     setTimeout(() => {
-      setFeedBackShown(true);
-    }, 180000);
-  }, []);
+      setFeedBackShown(true)
+    }, 90000)
+  }, [])
 
   const handleScroll = () => {
     if (window) {

@@ -104,6 +104,8 @@ const Dashboard = ({ ssrData }) => {
     groupTotals?.member + groupTotals?.moderator + groupTotals?.admin
   );
 
+
+
   useEffect(() => {
     setNavBarTransparent(false);
     // eslint-disable-next-line
@@ -113,7 +115,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 0,
       icon: "icon-fi-rs-aura-f",
-      number: groupData?.aura ? groupData.aura : 2300,
+      number: groupData?.aura ? groupData.aura : 0,
       text: "Аура",
       bgcolor: "",
       gradient: "auraBgGradient",

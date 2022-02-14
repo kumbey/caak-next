@@ -33,6 +33,8 @@ const ViewPostBlogAddComment = ({
     setFocus(false);
   };
 
+  const maxLength = 1000
+
   const addComment = async () => {
     if (inputValue) {
       setLoading(true);
@@ -142,17 +144,23 @@ const ViewPostBlogAddComment = ({
           containerClassname ? containerClassname : ""
         } flex flex-col w-full bg-white mt-[10px] border border-caak-titaniumwhite rounded-square mb-[24px]`}
       >
-        <textarea
-          onFocus={onFocus}
-          onBlur={onBlur}
-          className={`w-full resize-y border-transparent rounded-t-square placeholder-caak-shit text-[15px] tracking-[0.23px] leading-[18px] focus:ring-caak-primary ${
-            inputClassname ? inputClassname : ""
-          }`}
-          placeholder={"Таны санал сэтгэгдэл?"}
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          rows={3}
-        />
+        <div className="relative">
+          <textarea
+            maxLength={maxLength}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            className={`w-full resize-y border-transparent rounded-t-square placeholder-caak-shit text-[15px] tracking-[0.23px] leading-[18px] focus:ring-caak-primary ${
+              inputClassname ? inputClassname : ""
+            }`}
+            placeholder={"Таны санал сэтгэгдэл?"}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            rows={3}
+          />
+          {
+            inputValue.length > 0 && <p className="absolute text-black z-3 bottom-1 text-[12px] right-3">{`${inputValue.length} / ${maxLength}`}</p>
+          }
+        </div>
         <div
           className={
             "flex flex-row items-center justify-end w-full h-[38px] bg-caak-liquidnitrogen rounded-b-square px-[10px] py-[6px]"

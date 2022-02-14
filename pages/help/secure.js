@@ -11,7 +11,7 @@ export default function Secure() {
     return (
         <HelpLayout>
             <div className='flex flex-col sm:flex-row items-center sm:items-start'>
-                <div className="flex flex-col w-[320px] sm:w-[280px] xl:w-[300px] 2xl:w-[320px] max-h-[450px] rounded-[10px] bg-white p-[23px] mb-[20px] sm:mb-0">
+                <div className="flex flex-col w-[320px] sm:w-[280px] xl:w-[300px] 2xl:w-[320px] rounded-[10px] bg-white p-[23px] mb-[20px] sm:mb-0">
                     <Link href="/help" shallow>
                         <a className='flex flex-row items-center'> 
                             <span className='icon-fi-rs-back text-[#FF6600] text-[22px]'/>

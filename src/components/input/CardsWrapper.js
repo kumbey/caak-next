@@ -5,7 +5,6 @@ function CardsWrapper({ children }) {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
-        maxHeight: "168px",
         overflowY: "scroll",
       }}
     >

@@ -9,6 +9,12 @@ import Tooltip from "../tooltip/Tooltip";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
 import { useState } from "react";
 import Link from "next/link";
+import DropDown from '../navigation/DropDown'
+import { useClickOutSide } from "../../utility/Util";
+import { useUser } from "../../context/userContext";
+import { API } from "aws-amplify";
+import { deleteComment } from "../../graphql-custom/comment/mutation";
+import DeleteCommentConfirm from "./DeleteCommentConfirm";
 
 const CommentItemCard = ({
   children,
@@ -18,9 +24,53 @@ const CommentItemCard = ({
   postId,
 }) => {
   const [isReplyInputActive, setIsReplyInputActive] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false)
   const [reply, setReply] = useState({
     isReplying: true,
   });
+
+  const {isLogged, user} = useUser()
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
+  // const deleteComments = async (id) => {
+  //   if (isLogged)
+  //     try {
+  //       // setLoading(true);
+  //       await API.graphql({
+  //         query: deleteComment,
+  //         variables: {
+  //           input: {
+  //             id: id,
+  //           },
+  //         },
+  //       });
+
+  //       // setLoading(false);
+  //     } catch (ex) {
+  //       // setLoading(false);
+  //       console.log(ex);
+  //     }
+  // };
+
+  // const handleDelete = async () => {
+  //   if (!comment.sub) {
+  //     await deleteComments(comment.id);
+  //   } else {
+  //     comment.sub.items.map((sub) => {
+  //       deleteComments(sub.id);
+  //     });
+
+  //     await deleteComments(comment.id);
+  //   }
+  // };
 
   return (
     <div
@@ -112,6 +162,45 @@ const CommentItemCard = ({
                     </div>
                     <p className={"text-[13px] cursor-pointer"}>Хариулах</p>
                   </div>
+                  {
+                    isLogged 
+                    &&
+                    <div
+                      ref={menuRef}
+                      onClick={toggleMenu}
+                      className={
+                        "flex flex-col items-center cursor-pointer relative "
+                      }
+                    >
+                    <div
+                      className={
+                        "flex items-center justify-center w-[44px] h-[44px] ml-[5px] rounded-full hover:bg-caak-titaniumwhite"
+                      }
+                    >
+                      <DropDown
+                        open={isMenuOpen}
+                        onToggle={toggleMenu}
+                        content={
+                          user.id === comment.user.id ?
+                          <div className="w-[149px]">
+                            <p onClick={() => {
+                              setConfirmOpen(true)
+                            }} className="text-center">Устгах</p>
+                          </div>
+                          :
+                          null
+                        }
+                        className={
+                          "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
+                        }
+                      />
+                    <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={comment}/>
+                      <span
+                        className={"icon-fi-rs-dots text-caak-darkBlue text-[24px]"}
+                      />
+                    </div>
+                  </div>
+                  }
                 </div>
               </div>
               <div className={"self-start"}>
@@ -128,7 +217,7 @@ const CommentItemCard = ({
                   textClassname={
                     "text-[13px] font-medium text-13px tracking-[0.2px] leading-[16px] text-caak-nocturnal"
                   }
-                  iconContainerClassname={"w-[24px] h-[24px] bg-transparent"}
+                  iconContainerClassname={"w-[24px] h-[24px] bg-transparent"} 
                   iconColor={"text-caak-nocturnal"}
                   iconClassname={"text-[23px]"}
                 />
@@ -154,3 +243,5 @@ const CommentItemCard = ({
 };
 
 export default CommentItemCard;
+
+

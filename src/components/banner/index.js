@@ -1,8 +1,9 @@
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { API } from "aws-amplify";
-import { getFileUrl } from "../../utility/Util";
-import { listBannersByTypeOrderByEndDate } from "../../graphql/queries";
+import Link from 'next/link';
+import React, {useEffect, useState} from 'react';
+import { API, graphqlOperation } from 'aws-amplify';
+import { getFileUrl } from '../../utility/Util';
+import { listBannersByTypeOrderByEndDate } from '../../graphql/queries';
+import { addViewToItem } from '../../graphql-custom/banner/mutation';
 
 export default function Banner() {
   const [banner, setBanner] = useState();
@@ -37,8 +38,24 @@ export default function Banner() {
     // eslint-disable-next-line
   }, []);
 
-  return meta && banner ? (
-    <div className="md:sticky md:top-[74px] relative flex flex-col items-end mb-[10px]">
+    const saveClick = async () => {
+      try{
+        await API.graphql({
+          query: addViewToItem,
+          variables: {
+            item_id: banner.id,
+            on_to: "BANNER",
+            type: "VIEWS"
+          },
+          authMode: 'AWS_IAM'
+        })
+      }catch(ex){
+        console.log(ex)
+      }
+    }
+
+  return  meta && banner ? (
+     <div className="md:sticky md:top-[74px] relative flex flex-col items-end mb-[10px]">
       <Link href={meta.url}>
         <a className={"w-full"} rel="noreferrer" target="_blank">
           <img

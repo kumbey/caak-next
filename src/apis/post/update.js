@@ -12,7 +12,6 @@ import { ApiFileUpload } from "../../utility/ApiHelper";
 import { _objectWithoutKeys, getReturnData } from "../../utility/Util";
 
 export const update = async (oldPost, userId) => {
-  console.log(oldPost);
   try {
     let { items, ...post } = { ...oldPost };
 

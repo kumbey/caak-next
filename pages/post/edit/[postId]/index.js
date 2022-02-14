@@ -100,7 +100,7 @@ const EditPost = ({ ssrData }) => {
   const router = useRouter();
   const AddPostLayout = useAddPostLayout();
   const { user } = useUser();
-
+  const [adminTextEditor, setAdminTextEditor] = useState("TRUE")
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
@@ -348,6 +348,8 @@ const EditPost = ({ ssrData }) => {
                   uploadPost={uploadPost}
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
+                  adminTextEditor={adminTextEditor}
+                  setAdminTextEditor={setAdminTextEditor}
                 />
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />

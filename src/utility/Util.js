@@ -11,6 +11,28 @@ import { Auth } from "aws-amplify";
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
 
+
+export function shuffleArray(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
+
 export const sortSearchResultByKeyword = (array, keyword) => {
   array
     .filter((prof) => {
@@ -232,37 +254,37 @@ export function getRandomInt(max) {
 
 export function generateFileUrl(file) {
   if (file)
-    if(file.bucket.includes("dev")){
-      return (
-        "http://bucket-dev.caak.mn/" +
-        file.level +
-        "/" +
-        file.id +
-        "." +
-        file.ext
-      );
-    }else{
-      return (
-        "http://bucket.caak.mn/" +
-        file.level +
-        "/" +
-        file.id +
-        "." +
-        file.ext
-      );
-    }
-    // return (
-    //   "https://" +
-    //   file.bucket +
-    //   ".s3." +
-    //   file.region +
-    //   ".amazonaws.com/" +
-    //   file.level +
-    //   "/" +
-    //   file.id +
-    //   "." +
-    //   file.ext
-    // );
+    // if(file.bucket.includes("dev")){
+    //   return (
+    //     "http://bucket-dev.caak.mn/" +
+    //     file.level +
+    //     "/" +
+    //     file.id +
+    //     "." +
+    //     file.ext
+    //   );
+    // }else{
+    //   return (
+    //     "http://bucket.caak.mn/" +
+    //     file.level +
+    //     "/" +
+    //     file.id +
+    //     "." +
+    //     file.ext
+    //   );
+    // }
+    return (
+      "https://" +
+      file.bucket +
+      ".s3." +
+      file.region +
+      ".amazonaws.com/" +
+      file.level +
+      "/" +
+      file.id +
+      "." +
+      file.ext
+    );
   return null;
 }
 

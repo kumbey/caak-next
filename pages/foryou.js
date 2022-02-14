@@ -1,9 +1,9 @@
 import Head from "next/head";
 import Const from "../src/utility/Consts";
 import { API } from "aws-amplify";
-import { searchPosts } from "../src/graphql-custom/post/queries";
-import { getReturnData } from "../src/utility/Util";
-import { useEffect, useState } from "react";
+import {listBoostedPostByStatusOrderByEndDate, searchPosts} from "../src/graphql-custom/post/queries";
+import {getReturnData, shuffleArray} from "../src/utility/Util";
+import { useEffect, useState, Fragment } from "react";
 import { useUser } from "../src/context/userContext";
 import { listGroupByUserAndRoleForYou } from "../src/graphql-custom/GroupUsers/queries";
 import { listUsersbyFollowingForYou } from "../src/graphql-custom/user/queries";
@@ -21,6 +21,7 @@ import {
   onCreateReactions,
   onDeleteReactions,
 } from "../src/graphql/subscriptions";
+import FeedCardSkeleton from "../src/components/skeleton/FeedCardSkeleton";
 
 const Foryou = () => {
   const { user, isLogged } = useUser();
@@ -37,6 +38,10 @@ const Foryou = () => {
   const [subscribedReactionPost, setSubscribedReactionPost] = useState(null);
   const [render, setRender] = useState(0);
   const subscriptions = {};
+  const [boostedPosts, setBoostedPosts] = useState({
+    items: [],
+  });
+  const [isCardLoading, setIsCardLoading] = useState(true);
 
   const [nextForYouPosts] = useListPager({
     query: searchPosts,
@@ -53,6 +58,50 @@ const Foryou = () => {
     nextToken: forYouPosts.nextToken,
     ssr: false,
   });
+
+  const fetchBoostedPosts = async () => {
+    const date = new Date();
+    const now = date.toISOString();
+    try {
+      let resp = await API.graphql({
+        query: listBoostedPostByStatusOrderByEndDate,
+        variables: {
+          status: "ACTIVE",
+          sortDirection: "DESC",
+          end_date: { gt: now },
+        },
+        authMode: "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      shuffleArray(resp.items);
+      setBoostedPosts(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  let frequency = 5;
+  let boostedIdx = 0;
+  const renderElement = (index) => {
+    if (boostedPosts.items.length > 0) {
+      if (index === (frequency + boostedPosts.items.length)) {
+        if (boostedPosts.items.length - 1 > boostedIdx) {
+          frequency = frequency + 10;
+          boostedIdx++;
+          return (
+            <Card
+              sponsored={true}
+              post={boostedPosts.items[boostedIdx].post}
+              className="ph:mb-4 sm:mb-4"
+            />
+          );
+        } else {
+          boostedIdx = 0;
+          frequency = frequency + 1
+        }
+      }
+    } else return null;
+  };
 
   const fetchForYouPostsInfinite = async () => {
     try {
@@ -191,6 +240,10 @@ const Foryou = () => {
     //eslint-disable-next-line
   }, [subscribedReactionPost]);
 
+  useEffect(()=> {
+    fetchBoostedPosts().then(() => setIsCardLoading(false));
+  },[])
+
   useEffect(() => {
     if (isLogged) {
       subscribeOnReaction();
@@ -235,14 +288,17 @@ const Foryou = () => {
             >
               {forYouPosts.items.map((data, index) => {
                 return (
-                  <Card
-                    key={index}
-                    video={data?.items?.items[0]?.file?.type?.startsWith(
-                      "video"
-                    )}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
+                  <Fragment key={index}>
+                    {renderElement(index)}
+                    {!isCardLoading ? !boostedPosts.items.find(
+                      (item) => item.post.id === data.id
+                    ) && (
+                      <Card
+                        post={data}
+                        className="ph:mb-4 sm:mb-4"
+                      />
+                    ) : <FeedCardSkeleton/>}
+                  </Fragment>
                 );
               })}
             </InfinitScroller>

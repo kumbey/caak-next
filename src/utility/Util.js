@@ -232,18 +232,37 @@ export function getRandomInt(max) {
 
 export function generateFileUrl(file) {
   if (file)
-    return (
-      "https://" +
-      file.bucket +
-      ".s3." +
-      file.region +
-      ".amazonaws.com/" +
-      file.level +
-      "/" +
-      file.id +
-      "." +
-      file.ext
-    );
+    if(file.bucket.includes("dev")){
+      return (
+        "http://bucket-dev.caak.mn/" +
+        file.level +
+        "/" +
+        file.id +
+        "." +
+        file.ext
+      );
+    }else{
+      return (
+        "http://bucket.caak.mn/" +
+        file.level +
+        "/" +
+        file.id +
+        "." +
+        file.ext
+      );
+    }
+    // return (
+    //   "https://" +
+    //   file.bucket +
+    //   ".s3." +
+    //   file.region +
+    //   ".amazonaws.com/" +
+    //   file.level +
+    //   "/" +
+    //   file.id +
+    //   "." +
+    //   file.ext
+    // );
   return null;
 }
 

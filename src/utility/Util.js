@@ -272,6 +272,7 @@ export function generateFileUrl(file) {
         "." +
         file.ext
       );
+      
     }
   //   return (
   //     "https://" +
@@ -286,7 +287,7 @@ export function generateFileUrl(file) {
   //     file.ext
   //   );
   }
-  
+
   return null;
 }
 

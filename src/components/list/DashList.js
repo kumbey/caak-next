@@ -162,7 +162,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : null}
         </div>
         <div className="flex text-sm text-caak-darkBlue w-[166px] mr-[32px]">
-          <div className="flex items-center">
+          <div className="flex items-center mr-5">
             <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.totals.reach ? post.totals.reach : 0}

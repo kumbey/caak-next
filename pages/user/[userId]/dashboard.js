@@ -23,7 +23,6 @@ import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
 import API from "@aws-amplify/api";
 import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
-import Divider from "../../../src/components/divider";
 import GroupPostItem from "../../../src/components/group/GroupPostItem";
 import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
@@ -32,6 +31,8 @@ import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroll
 import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 import { useWrapper } from "../../../src/context/wrapperContext";
 import ReportedPostItem from "../../../src/components/group/ReportedPostItem";
+import BoostedPostItem from "../../../src/components/group/BoostedPostItem";
+import { listBoostedPostByStatus } from "../../../src/graphql-custom/boost/queries";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -105,6 +106,10 @@ const Dashboard = ({ ssrData }) => {
     items: [],
     nextToken: "",
   });
+  const [boostedPosts, setBoostedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const [totalReaction] = useState(
@@ -170,18 +175,24 @@ const Dashboard = ({ ssrData }) => {
     },
     {
       id: 3,
+      name: "Бүүстэлсэн постууд",
+      icon: "icon-fi-rs-rocket-o",
+      length: boostedPosts.items.length,
+    },
+    {
+      id: 4,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
       length: userTotals.followers,
     },
     {
-      id: 4,
+      id: 5,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
       length: userTotals.comments,
     },
     {
-      id: 5,
+      id: 6,
       name: "Репортлогдсон постууд",
       icon: "icon-fi-rs-flag",
       length: userTotals.reported,
@@ -251,6 +262,16 @@ const Dashboard = ({ ssrData }) => {
       limit: 20,
     },
     nextToken: pendingPosts.nextToken,
+    // ssr: true,
+  });
+  const [nextBoosted] = useListPager({
+    query: listBoostedPostByStatus,
+    variables: {
+      status: "ACTIVE",
+      sortDirection: "DESC",
+      filter: { user_id: { eq: router.query.userId } },
+    },
+    nextToken: boostedPosts.nextToken,
     // ssr: true,
   });
   const fetchPosts = async () => {
@@ -362,6 +383,26 @@ const Dashboard = ({ ssrData }) => {
           setReportedPosts((nextReported) => ({
             ...nextReported,
             items: [...nextReported.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchBoosted = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextBoosted();
+        if (resp) {
+          setBoostedPosts((nextBoosted) => ({
+            ...nextBoosted,
+            items: [...nextBoosted.items, ...resp],
           }));
         }
 
@@ -588,9 +629,7 @@ const Dashboard = ({ ssrData }) => {
           {user.nickname} / дашбоард - {Consts.siteMainTitle}
         </title>
       </Head>
-      <div
-        className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px] pt-[54px]"
-      >
+      <div className="px-[8px] lg:px-0 max-w-[1240px] mx-auto flex flex-col justify-center pb-[200px]  mt-[50px] pt-[54px]">
         <div className="flex items-center mb-[40px]">
           <span
             onClick={() => router.back()}
@@ -675,7 +714,7 @@ const Dashboard = ({ ssrData }) => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-between flex-wrap md:mb-0 mb-[10px]">
+              {/* <div className="flex items-center justify-between flex-wrap md:mb-0 mb-[10px]">
                 <div className={"flex flex-row items-center"}>
                   <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
                     Хандалт
@@ -704,7 +743,7 @@ const Dashboard = ({ ssrData }) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div
               className={
@@ -714,22 +753,20 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 0 ? (
                 <div className="flex flex-col">
                   <div className="mb-[13px] hidden md:flex ">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[289px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[230px]">
                       Пост
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
                       Групп
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[161px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[180px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">
                       Үйлдэл
                     </p>
                   </div>
-                  <Divider
-                    className={"mb-[20px] bg-caak-titaniumwhite hidden md:flex"}
-                  />
+
                   <InfinitScroller onNext={fetchPosts} loading={loading}>
                     {posts.items.length > 0 &&
                       posts.items.map((post, index) => {
@@ -766,7 +803,6 @@ const Dashboard = ({ ssrData }) => {
                       Үйлдэл
                     </p>
                   </div>
-                  <Divider className={"hidden md:flex mb-[20px]"} />
                   <InfinitScroller onNext={fetchPending} loading={loading}>
                     {pendingPosts.items.length > 0 &&
                       pendingPosts.items.map((pendingPost, index) => {
@@ -802,7 +838,6 @@ const Dashboard = ({ ssrData }) => {
                       Үйлдэл
                     </p>
                   </div>
-                  <Divider className={"hidden md:flex mb-[20px]"} />
                   <InfinitScroller onNext={fetchArchived} loading={loading}>
                     {archivedPosts.items.length > 0 &&
                       archivedPosts.items.map((archivedPost, index) => {
@@ -823,6 +858,57 @@ const Dashboard = ({ ssrData }) => {
                 </div>
               ) : null}
               {activeIndex === 3 ? (
+                <div className="flex flex-col">
+                  <InfinitScroller onNext={fetchBoosted} loading={loading}>
+                    <table className="w-full table">
+                      <thead className="">
+                        <tr className="">
+                          <th className=" w-[220px] text-left  mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                            Пост
+                          </th>
+                          <th className="text-left w-16 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                            Хоног
+                          </th>
+                          <th className="text-left w-40 mr-[14px] font-inter font-normal text-14px text-caak-generalblack">
+                            Эхлэсэн огноо
+                          </th>
+                          <th className="text-left w-40 mr-[14px] font-inter font-normal text-14px text-caak-generalblack">
+                            Дуусах огноо
+                          </th>
+                          <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
+                            Хандалт
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {boostedPosts.items.length > 0 &&
+                          boostedPosts.items.map((boostedPosts, index) => {
+                            return (
+                              <tr
+                                key={index}
+                                className="border-t border-b mb-2"
+                              >
+                                <BoostedPostItem
+                                  type={"user"}
+                                  key={index}
+                                  imageSrc={
+                                    boostedPosts?.post?.items?.items[0]?.file
+                                  }
+                                  video={boostedPosts?.post?.items?.items[0]?.file?.type?.startsWith(
+                                    "video"
+                                  )}
+                                  post={boostedPosts}
+                                  className="ph:mb-4 sm:mb-4"
+                                />
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
+                  </InfinitScroller>
+                </div>
+              ) : null}
+              {activeIndex === 4 ? (
                 <InfinitScroller onNext={fetchFollowers} loading={loading}>
                   <div className="mt-[14px] flex flex-row flex-wrap justify-between">
                     {followedUsers.items.map((data, index) => {
@@ -840,7 +926,7 @@ const Dashboard = ({ ssrData }) => {
                 </InfinitScroller>
               ) : null}
 
-              {activeIndex === 4 ? (
+              {activeIndex === 5 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex mb-[13px] ">
                     <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
@@ -856,9 +942,7 @@ const Dashboard = ({ ssrData }) => {
                       Үйлдэл
                     </p>
                   </div>
-                  <Divider
-                    className={"hidden md:flex mb-[20px] bg-caak-titaniumwhite"}
-                  />
+
                   <InfinitScroller onNext={fetchComments} loading={loading}>
                     {userComments.items.map((comment, index) => {
                       return (
@@ -879,7 +963,7 @@ const Dashboard = ({ ssrData }) => {
                   </InfinitScroller>
                 </div>
               ) : null}
-              {activeIndex === 5 ? (
+              {activeIndex === 6 ? (
                 <div className="flex flex-col">
                   {/* <div className="hidden md:flex mb-[13px]">
                     <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[270px] lg:mr-[300px]">

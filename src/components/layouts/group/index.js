@@ -5,12 +5,13 @@ import useMediaQuery from "../../navigation/useMeduaQuery";
 import GroupRules from "../../card/GroupRules";
 import Dropzone from "react-dropzone";
 import Button from "../../button";
-import LeaveGroup from '../../group/LeaveGroup'
+import LeaveGroup from "../../group/LeaveGroup";
 import {
   getFileExt,
   getFileName,
   getFileUrl,
   getGenderImage,
+  kFormatter,
   useClickOutSide,
 } from "../../../utility/Util";
 import { useCallback, useEffect, useState } from "react";
@@ -20,9 +21,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import { updateGroup } from "../../../graphql-custom/group/mutation";
 import { deleteFile } from "../../../graphql-custom/file/mutation";
 
-import {
-  createGroupUsers
-} from "../../../graphql-custom/GroupUsers/mutation";
+import { createGroupUsers } from "../../../graphql-custom/GroupUsers/mutation";
 import DropDown from "../../navigation/DropDown";
 import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
@@ -31,7 +30,7 @@ import Loader from "../../loader";
 import GroupAdminsCard from "../../group/GroupAdminsCard";
 import Banner from "../../banner";
 import GroupInfoCard from "../../card/GroupInfoCard";
-import {usePreserveScroll} from "../../../hooks/useScroll";
+import { usePreserveScroll } from "../../../hooks/useScroll";
 
 const GroupLayout = ({
   children,
@@ -39,7 +38,7 @@ const GroupLayout = ({
   totalMember,
   hideSuggestedGroups,
 }) => {
-  usePreserveScroll()
+  usePreserveScroll();
 
   const { isLogged, user: signedUser } = useUser();
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
@@ -53,13 +52,7 @@ const GroupLayout = ({
 
   const [forceRender, setForceRender] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [open, setOpen] = useState(false)
-
-  const kFormatter = (num) => {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  };
+  const [open, setOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -73,7 +66,7 @@ const GroupLayout = ({
     try {
       setLoading(true);
       if (groupData.followed) {
-        setOpen(true)
+        setOpen(true);
         // await API.graphql(
         //   graphqlOperation(deleteGroupUsers, {
         //     input: {
@@ -83,7 +76,7 @@ const GroupLayout = ({
         // );
         // groupData.followed = false;
         // groupData.totals.member -= 1;
-        // setForceRender(forceRender + 1);   
+        // setForceRender(forceRender + 1);
       } else {
         await API.graphql(
           graphqlOperation(createGroupUsers, {
@@ -219,7 +212,13 @@ const GroupLayout = ({
   }, []);
   return loaded ? (
     <div className={"flex flex-col relative pb-[200px] md:pb-0"}>
-      <LeaveGroup open={open} setOpen={setOpen} groupData={groupData} setForceRender={setForceRender} forceRender={forceRender}/>
+      <LeaveGroup
+        open={open}
+        setOpen={setOpen}
+        groupData={groupData}
+        setForceRender={setForceRender}
+        forceRender={forceRender}
+      />
       <div className={"flex flex-col"}>
         <div className={"relative w-full h-[240px]"}>
           <div className={"w-full h-[120px] navbarGradient absolute top-0"} />
@@ -237,7 +236,7 @@ const GroupLayout = ({
             }
           />
           {isLogged &&
-            (groupData.role_on_group === "ADMIN" ?
+            (groupData.role_on_group === "ADMIN" ? (
               <Dropzone
                 noKeyboard
                 maxFiles={1}
@@ -286,9 +285,7 @@ const GroupLayout = ({
                   </div>
                 )}
               </Dropzone>
-              :
-              null
-            )}
+            ) : null)}
         </div>
       </div>
       <div className="w-full flex items-center mb-[20px] relative">
@@ -325,8 +322,7 @@ const GroupLayout = ({
                   }
                 />
                 {isLogged &&
-                  (groupData.role_on_group === "ADMIN" 
-                  ?
+                  (groupData.role_on_group === "ADMIN" ? (
                     // groupData.role_on_group === "MODERATOR") && (
                     <Dropzone
                       onDropRejected={(e) =>
@@ -351,9 +347,7 @@ const GroupLayout = ({
                         </div>
                       )}
                     </Dropzone>
-                    :
-                    null
-                  )}
+                  ) : null)}
               </div>
               <div
                 className={
@@ -441,9 +435,12 @@ const GroupLayout = ({
               isLaptop ? "hidden" : "block"
             }`}
           >
-            {groupData.role_on_group === "ADMIN" ? 
-              <GroupAdminPanel groupRole={groupData.role_on_group} groupId={groupData.id} />
-            : null}
+            {groupData.role_on_group === "ADMIN" ? (
+              <GroupAdminPanel
+                groupRole={groupData.role_on_group}
+                groupId={groupData.id}
+              />
+            ) : null}
             {/*<GroupTopMembersCard groupId={groupData.id}/>*/}
             {!hideSuggestedGroups && (
               <div className="mt-[16px]">

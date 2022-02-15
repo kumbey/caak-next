@@ -174,7 +174,7 @@ export default function UserInterests({
                           style={{
                             textShadow: "0px 3px 4px #0000004D",
                           }}
-                          className="text-white text-[16px] font-semibold tracking-[0.24px] leading-[19px] break-all"
+                          className="text-white text-[16px] font-semibold tracking-[0.24px] leading-[19px] break-words"
                         >
                           {data.name}
                         </p>

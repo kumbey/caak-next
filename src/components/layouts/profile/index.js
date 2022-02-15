@@ -5,6 +5,7 @@ import {
   getFileUrl,
   getGenderImage,
   getURLUserName,
+  kFormatter,
 } from "../../../utility/Util";
 import Button from "../../button";
 import SideBarGroups from "../../card/SideBarGroups";
@@ -38,12 +39,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   const [uploadingCover, setUploadingCover] = useState(false);
 
   const meta = JSON.parse(user?.meta);
-
-  const kFormatter = (num) => {
-    return Math.abs(num) > 999
-      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
-      : Math.sign(num) * Math.abs(num);
-  };
 
   const fileParams = (file) => {
     return {
@@ -701,7 +696,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   </a>
                 )}
               </div>
-              <div className={"w-full my-[20px]"}>
+              {/* <div className={"w-full my-[20px]"}>
                 <div
                   className={
                     "flex items-center justify-center w-[35px] h-[35px] rounded-full hover:bg-caak-titaniumwhite"
@@ -713,7 +708,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                     }
                   />
                 </div>
-              </div>
+              </div> */}
               <div className={"hidden md:block overflow-y-auto w-full"}>
                 {meta?.settings?.showCreatedGroup ? (
                   // && user.id === signedUser?.id
@@ -744,7 +739,7 @@ const DefaultUserProfileLayout = ({ user, children }) => {
           </div>
           <div
             className={
-              "profileLayoutPosts relative top-[-74px] sm:top-0 mt-[10px] ml-0 md:ml-[40px]"
+              "profileLayoutPosts relative justify-center top-[-74px] sm:top-0 mt-[10px] ml-0 md:ml-[40px]"
             }
           >
             {children}

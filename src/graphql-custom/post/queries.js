@@ -3,6 +3,7 @@ import post0004 from "./fields/post0004";
 import post0005 from "./fields/post0005";
 import post0006 from "./fields/post0006";
 import file0001 from "../file/fields/file0001";
+import post0007 from "./fields/post0007";
 
 export const getPost = /* GraphQL */ `
     query GetPost($id: ID!) {
@@ -31,7 +32,7 @@ export const getPostByStatus = /* GraphQL */ `
             filter: $filter,
             limit: $limit,
             nextToken: $nextToken) {
-            items ${post0004}
+            items ${post0007}
             nextToken
         }
     }
@@ -279,6 +280,31 @@ export const listPostByOldId = /* GraphQL */ `
             items
             ${post0004}
             nextToken 
+        }
+    }
+`;
+
+export const listBoostedPostByStatusOrderByEndDate = /* GraphQL */ `
+    query ListBoostedPostByStatusOrderByEndDate(
+    $status: String,
+    $end_date: ModelStringKeyConditionInput,
+    $sortDirection: ModelSortDirection,
+    $filter: ModelBoostedPostFilterInput,
+    $limit: Int,
+    $nextToken: String
+    ) {
+        listBoostedPostByStatusOrderByEndDate(
+        status: $status,
+        end_date: $end_date,
+        sortDirection: $sortDirection,
+        filter: $filter,
+        limit: $limit,
+        nextToken: $nextToken
+        ) {
+            items {
+              post ${post0007}
+            }
+            nextToken
         }
     }
 `;

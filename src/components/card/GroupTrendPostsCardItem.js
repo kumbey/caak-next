@@ -22,7 +22,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
           },
         }}
       >
-        <a>
+        <a target="_blank" rel="noreferrer">
           <div
             className={
               "w-[80px] h-[80px] rounded-square relative flex-shrink-0 cursor-pointer"
@@ -98,7 +98,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
             },
           }}
         >
-          <a>
+          <a target="_blank" rel="noreferrer">
             <p
               className={
                 "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] truncate-3 cursor-pointer"

@@ -1,8 +1,8 @@
 import useFeedLayout from "../src/hooks/useFeedLayout";
 import {API, withSSRContext} from "aws-amplify";
-import { listPostOrderByReactions } from "../src/graphql-custom/post/queries";
-import { getReturnData } from "../src/utility/Util";
-import { useEffect, useState } from "react";
+import {listBoostedPostByStatusOrderByEndDate, listPostOrderByReactions} from "../src/graphql-custom/post/queries";
+import {getReturnData, shuffleArray} from "../src/utility/Util";
+import { useEffect, useState, Fragment } from "react";
 import { useUser } from "../src/context/userContext";
 import Card from "../src/components/card/FeedCard";
 import { useListPager } from "../src/utility/ApiHelper";
@@ -16,6 +16,7 @@ import InfinitScroller from "../src/components/layouts/extra/InfinitScroller";
 import TrendPostsByCategory from "../src/components/TrendPostsByCategory";
 import { usePreserveScroll } from "../src/hooks/useScroll";
 import {onCreateReactions, onDeleteReactions} from "../src/graphql/subscriptions";
+import FeedCardSkeleton from "../src/components/skeleton/FeedCardSkeleton";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -64,6 +65,11 @@ const Trending = ({ ssrData }) => {
   const { isLogged } = useUser();
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
   const { setFeedSortType } = useWrapper();
+  const [boostedPosts, setBoostedPosts] = useState({
+    items: [],
+  });
+  const [isCardLoading, setIsCardLoading] = useState(true);
+
 
   const [nextTrendingPosts] = useListPager({
     query: listPostOrderByReactions,
@@ -76,6 +82,50 @@ const Trending = ({ ssrData }) => {
     nextToken: ssrData.trendingPosts.nextToken,
     ssr: true,
   });
+
+  const fetchBoostedPosts = async () => {
+    const date = new Date();
+    const now = date.toISOString();
+    try {
+      let resp = await API.graphql({
+        query: listBoostedPostByStatusOrderByEndDate,
+        variables: {
+          status: "ACTIVE",
+          sortDirection: "DESC",
+          end_date: { gt: now },
+        },
+        authMode: "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      shuffleArray(resp.items);
+      setBoostedPosts(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  let frequency = 5;
+  let boostedIdx = 0;
+  const renderElement = (index) => {
+    if (boostedPosts.items.length > 0) {
+      if (index === (frequency + boostedPosts.items.length)) {
+        if (boostedPosts.items.length - 1 > boostedIdx) {
+          frequency = frequency + 10;
+          boostedIdx++;
+          return (
+            <Card
+              sponsored={true}
+              post={boostedPosts.items[boostedIdx].post}
+              className="ph:mb-4 sm:mb-4"
+            />
+          );
+        } else {
+          boostedIdx = 0;
+          frequency = frequency + 1
+        }
+      }
+    } else return null;
+  };
 
   const fetchTrendingPosts = async () => {
     try {
@@ -137,7 +187,7 @@ const Trending = ({ ssrData }) => {
       if (postIndex !== -1) {
         const post = trendingPosts.items[postIndex];
         if (post.post) {
-          trendingPosts.items[postIndex].post.reacted = subscribedReactionPost.type === "CREATE";
+          trendingFs.items[postIndex].post.reacted = subscribedReactionPost.type === "CREATE";
         } else {
           trendingPosts.items[postIndex].reacted = subscribedReactionPost.type === "CREATE";
         }
@@ -148,6 +198,7 @@ const Trending = ({ ssrData }) => {
   },[subscribedReactionPost])
 
   useEffect(()=> {
+    fetchBoostedPosts().then(() => setIsCardLoading(false));
     if(isLogged){
       subscribeOnReaction()
     }
@@ -184,14 +235,17 @@ const Trending = ({ ssrData }) => {
           <InfinitScroller onNext={fetchTrendingPosts} loading={loading}>
             {trendingPosts.items.map((data, index) => {
               return (
-                <Card
-                  key={index}
-                  video={data.post?.items?.items[0]?.file?.type?.startsWith(
-                    "video"
-                  )}
-                  post={data.post}
-                  className="ph:mb-4 sm:mb-4"
-                />
+                <Fragment key={index}>
+                  {renderElement(index)}
+                  {!isCardLoading ? !boostedPosts.items.find(
+                    (item) => item.post.id === data.post.id
+                  ) && (
+                    <Card
+                      post={data.post}
+                      className="ph:mb-4 sm:mb-4"
+                    />
+                  ) : <FeedCardSkeleton/>}
+                </Fragment>
               );
             })}
           </InfinitScroller>

@@ -296,13 +296,13 @@ const Profile = ({ ssrData }) => {
       </Head>
       <ProfileLayout user={fetchedUser}>
         <div className={"pt-0 md:pt-[42px]"}>
-          <FeedSortButtons
-            rootContainerClassname={"items-start justify-between"}
+          {/* <FeedSortButtons
+            rootContainerClassname={"items-start"}
             initialSort={router.query.sortType ? router.query.sortType : "POST"}
             iconSize={"text-[17px]"}
             iconContainerSize={"w-[20px] h-[20px]"}
             textClassname={"text-[15px] font-medium"}
-            containerClassname={"mb-[20px] flex-wrap"}
+            containerClassname={"mb-[20px]"}
             items={userProfileType}
             items2={FeedViewType}
             activeIndex={activeIndex}
@@ -311,9 +311,55 @@ const Profile = ({ ssrData }) => {
             setActiveView={setActiveView}
             setSortType={setSortType}
             sortType={sortType}
-            direction={"col"}
             userId={userId}
-          />
+          /> */}
+
+          <div className="flex flex-row items-center mb-[20px] max-w-[480px] w-full cursor-pointer">
+            {
+              userProfileType.map((data, index) =>{
+                return(
+                  <div onClick={()=> {
+                    setActiveIndex(index)
+                    setSortType(data.type)
+                  }} key={index} className={`flex flex-row items-center justify-center h-9 w-full rounded-lg ${activeIndex === index ? "bg-white text-caak-primary" : "text-caak-generalblack"}`}>
+                    <span className={`${activeIndex === index ? `${data.icon}-f` : `${data.icon}-o`} text-[17px] mr-2`}/>
+                    <p className="text-[15px] font-medium h-[20px]">{data.title}</p>
+                  </div>
+                )
+              })
+            }
+            {FeedViewType ? (
+          <div className="hidden md:flex w-[80px] h-[36px] px-[5px] py-[4px] items-center justify-center bg-white rounded-lg">
+            <div
+              className={`flex flex-nowrap items-center w-full justify-between flex-row`}
+            >
+              {FeedViewType.map(({ icon, id }) => {
+                return (
+                  <div
+                    className={`flex items-center justify-center w-[32px] h-[28px] rounded-[5px] ${
+                      id === activeView ? "bg-caak-titaniumwhite" : ""
+                    }`}
+                    key={id}
+                  >
+                    <div
+                      className={`w-[20px] h-[20px] flex items-center justify-center cursor-pointer`}
+                      onClick={() => setActiveView(id)}
+                    >
+                      <span
+                        className={`${
+                          id === activeView ? `${icon}-f` : `${icon}-o`
+                        } ${
+                          "text-[16.67px]"
+                        } ph:text-15px`}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
+          </div>
 
           {sortType === "SAVED" ? (
             <InfinitScroller onNext={fetchSavedPosts} loading={loading}>

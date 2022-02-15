@@ -11,6 +11,7 @@ const boost0001 = /* GraphQL */ `
     status
     updatedAt
     post {
+      createdAt
       totals {
         categoryAndStatus
         category_id

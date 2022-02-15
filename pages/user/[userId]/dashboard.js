@@ -177,7 +177,7 @@ const Dashboard = ({ ssrData }) => {
       id: 3,
       name: "Бүүстэлсэн постууд",
       icon: "icon-fi-rs-rocket-o",
-      length: boostedPosts.length,
+      length: boostedPosts.items.length,
     },
     {
       id: 4,
@@ -269,6 +269,7 @@ const Dashboard = ({ ssrData }) => {
     variables: {
       status: "ACTIVE",
       sortDirection: "DESC",
+      filter: { user_id: { eq: router.query.userId } },
     },
     nextToken: boostedPosts.nextToken,
     // ssr: true,
@@ -862,19 +863,19 @@ const Dashboard = ({ ssrData }) => {
                     <table className="w-full table">
                       <thead className="">
                         <tr className="">
-                          <th className="min-w-[400px] text-left w-full mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                          <th className=" w-[220px] text-left  mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
                             Пост
                           </th>
-                          <th className="text-left w-20 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                          <th className="text-left w-16 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
                             Хоног
                           </th>
-                          <th className="text-left w-36 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                          <th className="text-left w-40 mr-[14px] font-inter font-normal text-14px text-caak-generalblack">
                             Эхлэсэн огноо
                           </th>
-                          <th className="text-left w-36 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
+                          <th className="text-left w-40 mr-[14px] font-inter font-normal text-14px text-caak-generalblack">
                             Дуусах огноо
                           </th>
-                          <th className="text-left max-w-36 font-inter font-normal text-14px text-caak-generalblack">
+                          <th className="text-left max-w-40 font-inter font-normal text-14px text-caak-generalblack">
                             Хандалт
                           </th>
                         </tr>

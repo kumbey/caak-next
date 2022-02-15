@@ -875,7 +875,7 @@ const Dashboard = ({ ssrData }) => {
                           <th className="text-left w-40 mr-[14px] font-inter font-normal text-14px text-caak-generalblack">
                             Дуусах огноо
                           </th>
-                          <th className="text-left max-w-40 font-inter font-normal text-14px text-caak-generalblack">
+                          <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
                             Хандалт
                           </th>
                         </tr>

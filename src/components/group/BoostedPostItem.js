@@ -108,7 +108,6 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               {post.post.title}
             </div>
             <div className="flex text-12px cursor-default text-caak-darkBlue tracking-[0.21px]  leading-[16px] ">
-              {console.log(post)}
               <p>{convertDateTime(post.post.createdAt, ".", "true")}</p>
             </div>
           </div>

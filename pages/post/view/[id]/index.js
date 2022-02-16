@@ -21,7 +21,7 @@ import { ssrDataViewPost } from "../../../../src/apis/ssrDatas";
 import Button from "../../../../src/components/button";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { updatePost } from "../../../../src/graphql-custom/post/mutation";
+import {addViewToItem, updatePost} from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
 import { useUser } from "../../../../src/context/userContext";
 import { decode } from "html-entities";
@@ -51,7 +51,17 @@ const Post = ({ ssrData }) => {
   const [boostedPosts, setBoostedPosts] = useState({
     items: [],
   });
-
+  const countViews = async () => {
+    await API.graphql({
+      query: addViewToItem,
+      variables: {
+        item_id: post.id,
+        on_to: "POST",
+        type: "VIEWS",
+      },
+      authMode: "AWS_IAM",
+    });
+  };
   const fetchBoostedPosts = async () => {
     const date = new Date();
     const now = date.toISOString();
@@ -118,6 +128,7 @@ const Post = ({ ssrData }) => {
   }, [jumpToComment]);
 
   useEffect(() => {
+    countViews()
     fetchBoostedPosts();
     const handler = (e) => {
       if (e.keyCode === 27) {
@@ -351,24 +362,14 @@ const Post = ({ ssrData }) => {
                 )}
               {post.description && (
                 <div>
-                  {post.onlyBlogView === "TRUE" ? (
-                    <div
+                    <p
                       className={
-                        "text-[16px] mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                        "text-[16px] whitespace-pre-wrap mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
                       }
                       dangerouslySetInnerHTML={{
                         __html: decode(post.description),
                       }}
                     />
-                  ) : (
-                    <p
-                      className={
-                        "text-[16px] mt-[13px] whitespace-pre text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
-                      }
-                    >
-                      {decode(post.description)}
-                    </p>
-                  )}
                 </div>
               )}
             </div>
@@ -446,7 +447,7 @@ const Post = ({ ssrData }) => {
                     {decode(post.items.items[0].description)}
                   </p>
                 )}
-                {post.onlyBlogView === "TRUE" ? (
+
                   <div
                     className={
                       "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
@@ -455,15 +456,7 @@ const Post = ({ ssrData }) => {
                       __html: decode(post.items.items[0].title),
                     }}
                   />
-                ) : (
-                  <p
-                    className={
-                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-                    }
-                  >
-                    {decode(post.items.items[0].title)}
-                  </p>
-                )}
+
               </div>
             )}
 

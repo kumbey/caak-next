@@ -25,17 +25,6 @@ const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
     });
   };
 
-  const countViews = async () => {
-    await API.graphql({
-      query: addViewToItem,
-      variables: {
-        item_id: post.id,
-        on_to: "POST",
-        type: "VIEWS",
-      },
-      authMode: "AWS_IAM",
-    });
-  };
 
   useUpdateEffect(() => {
     if (post.sponsored)
@@ -43,7 +32,7 @@ const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
         countReach();
       }
   }, [inView]);
-  
+
   return (
     post && (
       <div className="feedCard relative flex flex-col justify-between mx-auto bg-white rounded-xl shadow-card mb-[24px]">
@@ -52,7 +41,6 @@ const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
         ) : (
           <>
             <div
-              onClick={() => countViews()}
               ref={ref}
               className={"flex flex-col"}
             >

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Post1 from '../../public/assets/images/post.png'
 import Post1Mobile from '../../public/assets/images/postMobile.png'
 import Post2 from '../../public/assets/images/post2.png'

@@ -103,13 +103,11 @@ const Feed = ({ ssrData }) => {
   const FeedLayout = useFeedLayout();
   const { user, isLogged } = useUser();
   const [posts, setPosts] = useState(ssrData.posts);
-  const { setFeedSortType } = useWrapper();
+  const { setFeedSortType, setBoostedPostsArr, boostedPostsArr } = useWrapper();
   const [loading, setLoading] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [subscripedPost, setSubscripedPost] = useState(0);
-  const [boostedPosts, setBoostedPosts] = useState({
-    items: [],
-  });
+
   const [bannerOpen, setBannerOpen] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [feedBackShown, setFeedBackShown] = useState(false);
@@ -133,7 +131,7 @@ const Feed = ({ ssrData }) => {
     ssr: true,
   });
 
-  const fetchBoostedPosts = async () => {
+  const fetchBoostedPosts = async (init) => {
     const date = new Date();
     const now = date.toISOString();
     try {
@@ -147,8 +145,19 @@ const Feed = ({ ssrData }) => {
         authMode: "AWS_IAM",
       });
       resp = getReturnData(resp);
-      shuffleArray(resp.items);
-      setBoostedPosts(resp);
+
+      if (!init) {
+        const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
+        const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
+
+        const myDiff = makeSymmDiffFunc((x, y) => x.post.id === y.post.id)
+
+        const result = myDiff(boostedPostsArr, resp.items)
+
+        setBoostedPostsArr(prev=> [...prev, ...result])
+      }
+
+      return resp;
     } catch (ex) {
       console.log(ex);
     }
@@ -159,8 +168,12 @@ const Feed = ({ ssrData }) => {
       if (!loading) {
         setLoading(true);
         const resp = await nextPosts();
+        await fetchBoostedPosts(false);
         if (resp) {
-          setPosts((nextPosts) => ({...nextPosts, items: [...nextPosts.items, ...resp]}));
+          setPosts((nextPosts) => ({
+            ...nextPosts,
+            items: [...nextPosts.items, ...resp],
+          }));
         }
       }
       setLoading(false);
@@ -222,7 +235,7 @@ const Feed = ({ ssrData }) => {
     });
   };
 
-  const subscribeOnReaction = ()=> {
+  const subscribeOnReaction = () => {
     try {
       subscriptions.onCreateReactions = API.graphql({
         query: onCreateReactions,
@@ -240,10 +253,10 @@ const Feed = ({ ssrData }) => {
           setSubscribedReactionPost({ ...onData, type: "DELETE" });
         },
       });
-    }catch (ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
     }
-  }
+  };
 
   useEffect(() => {
     if (subscripedPost) {
@@ -253,7 +266,7 @@ const Feed = ({ ssrData }) => {
 
       if (subscripedPost.type === "add") {
         if (postIndex <= -1) {
-          setPosts({...posts, items: [subscripedPost.post, ...posts.items]})
+          setPosts({ ...posts, items: [subscripedPost.post, ...posts.items] });
           // setPosts([subscripedPost.post, ...posts]);
         }
       } else {
@@ -266,8 +279,8 @@ const Feed = ({ ssrData }) => {
     // eslint-disable-next-line
   }, [subscripedPost]);
 
-  useEffect(()=> {
-    if(subscribedReactionPost){
+  useEffect(() => {
+    if (subscribedReactionPost) {
       const postIndex = posts.items.findIndex((item) => {
         if (item.post) {
           return item.post.id === subscribedReactionPost.item_id;
@@ -278,15 +291,17 @@ const Feed = ({ ssrData }) => {
       if (postIndex !== -1) {
         const post = posts.items[postIndex];
         if (post.post) {
-          posts.items[postIndex].post.reacted = subscribedReactionPost.type === "CREATE";
+          posts.items[postIndex].post.reacted =
+            subscribedReactionPost.type === "CREATE";
         } else {
-          posts.items[postIndex].reacted = subscribedReactionPost.type === "CREATE";
+          posts.items[postIndex].reacted =
+            subscribedReactionPost.type === "CREATE";
         }
-        setRender(render + 1)
+        setRender(render + 1);
       }
     }
     //eslint-disable-next-line
-  },[subscribedReactionPost])
+  }, [subscribedReactionPost]);
 
   useEffect(() => {
     isLogged && subscribeOnReaction();
@@ -306,11 +321,17 @@ const Feed = ({ ssrData }) => {
   }, [setFeedSortType]);
 
   useEffect(() => {
-    fetchBoostedPosts().then(() => setIsCardLoading(false));
+    //Shuffling boosted posts array on first fetch
+    fetchBoostedPosts(true).then((e) => {
+      const shuffledArr = shuffleArray(e.items);
+      setBoostedPostsArr(shuffledArr);
+      setIsCardLoading(false);
+    });
     setTimeout(() => {
-      setFeedBackShown(true)
-    }, 90000)
-  }, [])
+      setFeedBackShown(true);
+    }, 90000);
+    //eslint-disable-next-line
+  }, []);
 
   const handleScroll = () => {
     if (window) {
@@ -340,22 +361,23 @@ const Feed = ({ ssrData }) => {
   let frequency = 5;
   let boostedIdx = 0;
   const renderElement = (index) => {
-    if (boostedPosts.items.length > 0) {
-      if (index === (frequency + boostedPosts.items.length)) {
-        if (boostedPosts.items.length - 1 > boostedIdx) {
+    if (boostedPostsArr.length > 0) {
+      if (index === frequency) {
+        if (boostedPostsArr.length > boostedIdx) {
           frequency = frequency + 10;
+          const idx = boostedIdx;
           boostedIdx++;
           return (
             <Card
               sponsored={true}
-              post={boostedPosts.items[boostedIdx].post}
+              post={boostedPostsArr[idx].post}
               className="ph:mb-4 sm:mb-4"
               handleToast={handleToast}
             />
           );
         } else {
           boostedIdx = 0;
-          frequency = frequency + 1
+          frequency = frequency + 1;
         }
       }
     } else return null;
@@ -427,15 +449,19 @@ const Feed = ({ ssrData }) => {
                   return (
                     <Fragment key={index}>
                       {renderElement(index)}
-                      {!isCardLoading ? !boostedPosts.items.find(
-                        (item) => item.post.id === data.id
-                      ) && (
-                        <Card
-                          post={data}
-                          className="ph:mb-4 sm:mb-4"
-                          handleToast={handleToast}
-                        />
-                      ) : <FeedCardSkeleton/>}
+                      {!isCardLoading ? (
+                        !boostedPostsArr.find(
+                          (item) => item.post.id === data.id
+                        ) && (
+                          <Card
+                            post={data}
+                            className="ph:mb-4 sm:mb-4"
+                            handleToast={handleToast}
+                          />
+                        )
+                      ) : (
+                        <FeedCardSkeleton />
+                      )}
                     </Fragment>
                   );
                 })}

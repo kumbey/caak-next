@@ -169,22 +169,12 @@ const ViewPostBlogItem = ({
             {`${displayNumber(postItem.display_number)}${decode(postItem.description)}`}
           </p>
         )}
-        {onlyBlogView ? (
           <div
             className={
-              "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px]"
+              "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap break-all"
             }
             dangerouslySetInnerHTML={{ __html: postItem.title }}
           />
-        ) : (
-          <p
-            className={
-              "text-caak-generalblack text-[16px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-            }
-          >
-            {postItem.title && decode(postItem.title)}
-          </p>
-        )}
       </div>
     </div>
   );

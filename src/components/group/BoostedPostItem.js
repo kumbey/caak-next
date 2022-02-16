@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import {
-  convertDateTime,
   generateFileUrl,
   getDiffDays,
   getGenderImage,
@@ -11,11 +10,20 @@ import {
 import Video from "../video";
 import { useRouter } from "next/router";
 import moment from "moment";
+import { DateTime } from "luxon";
 
 const BoostedPostItem = ({ imageSrc, post, video }) => {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+
+  const convertDateTime = (date, seperator, noTime, noSec) => {
+    const Date = DateTime.fromISO(date);
+    const sep = seperator ? seperator : "/";
+    const fullDate = Date.toFormat(`yyyy${sep}MM${sep}dd`);
+    const fullTime = Date.toFormat(`${noSec ? "HH:mm" : "HH:mm:ss"} `);
+    return `${fullDate} ${noTime ? "" : fullTime}`;
+  };
 
   useEffect(() => {
     const handler = (e) => {
@@ -34,7 +42,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
   return (
     <>
       <td>
-        <div className="cursor-pointer flex items-center ">
+        <div className=" flex items-center ">
           <div
             onClick={() => {
               router.push(
@@ -51,7 +59,9 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
                 { shallow: true, scroll: false }
               );
             }}
-            className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}
+            className={
+              "flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative cursor-pointer"
+            }
           >
             {video ? (
               <Video
@@ -76,26 +86,30 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               />
             )}
           </div>
-
-          <div
-            onClick={() => {
-              router.push(
-                {
-                  query: {
-                    ...router.query,
-                    viewPost: "post",
-                    id: post.post_id,
-                    prevPath: router.asPath,
-                    isModal: true,
+          <div className="flex flex-col  space-y-4">
+            <div
+              onClick={() => {
+                router.push(
+                  {
+                    query: {
+                      ...router.query,
+                      viewPost: "post",
+                      id: post.post_id,
+                      prevPath: router.asPath,
+                      isModal: true,
+                    },
                   },
-                },
-                `/post/view/${post.post_id}`,
-                { shallow: true, scroll: false }
-              );
-            }}
-            className="break-words cursor-pointer text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium"
-          >
-            {post.post.title}
+                  `/post/view/${post.post_id}`,
+                  { shallow: true, scroll: false }
+                );
+              }}
+              className="break-words cursor-pointer text-15px break-all truncate-1 text-caak-generalblack font-roboto font-medium"
+            >
+              {post.post.title}
+            </div>
+            <div className="flex text-12px cursor-default text-caak-darkBlue tracking-[0.21px]  leading-[16px] ">
+              <p>{convertDateTime(post.post.createdAt, ".", "true")}</p>
+            </div>
           </div>
         </div>
       </td>
@@ -109,10 +123,10 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
         <div className="flex  mr-[28px]">
           <p
             className={
-              "text-[12px] font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
+              "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
             }
           >
-            {convertDateTime(post.start_date)}
+            {convertDateTime(post.start_date, ".", false, true)}
           </p>
         </div>
       </td>
@@ -120,10 +134,10 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
         <div className="flex  mr-[28px]">
           <p
             className={
-              "text-[12px] font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
+              "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
             }
           >
-            {convertDateTime(post.end_date)}
+            {convertDateTime(post.end_date, ".", false, true)}
           </p>
         </div>
       </td>

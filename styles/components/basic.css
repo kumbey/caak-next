@@ -274,6 +274,18 @@
     }
   }
 
+  ul ch:before {
+    content: '✓';
+    color: #FF6600;
+    margin-right: 5px;
+  }
+
+  ul plus:before {
+    content: '+';
+    color: #257CEE;
+    margin-right: 5px;
+  }
+
   .my-masonry-grid {
     display: -webkit-box; /* Not needed if autoprefixing */
     display: -ms-flexbox; /* Not needed if autoprefixing */
@@ -697,6 +709,24 @@
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
+
+  .about_popup_banner {
+    min-width: 1080px;
+    width: clamp(1080px, 100%, 450px);
+    background: #fff;
+    max-width: 450px;
+    margin: 30px auto;
+    position: relative;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .about_popup_banner_mobile {
+    background: #fff;
+    margin: 10px auto;
+    position: relative;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  }
+
   .popup_modal-leaveGroup {
     min-width: 300px;
     background: #fff;

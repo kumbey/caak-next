@@ -109,7 +109,7 @@ export default function DefaultHelpLayout({ children }) {
                 </a>
               </Link>
             </div>
-            <div className="sm:flex text-[15px] text-[#6C7392] mt-[10px] sm:mt-[25.5px]">
+            <div className="sm:flex text-[15px] text-[#6C7392] mt-[10px] sm:mt-[25.5px] pb-[20px]">
               <p className="md:ml-[16px] text-center">{`©${year} "Саак Холдинг" ХХК`}</p>
             </div>
           </div>

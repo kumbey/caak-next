@@ -100,7 +100,7 @@ const EditPost = ({ ssrData }) => {
   const router = useRouter();
   const AddPostLayout = useAddPostLayout();
   const { user } = useUser();
-  const [adminTextEditor, setAdminTextEditor] = useState("TRUE")
+  const [adminTextEditor, setAdminTextEditor] = useState(ssrData.post.onlyBlogView ?? "FALSE")
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();

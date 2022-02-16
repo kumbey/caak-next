@@ -1,5 +1,5 @@
 import Loader from "../loader";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   arrayMove,
   rectSortingStrategy,
@@ -23,6 +23,7 @@ import useUpdateEffect from "../../hooks/useUpdateEffect";
 import { Editor } from "@tinymce/tinymce-react";
 import CardsWrapper from "./CardsWrapper";
 import SortableCard from "./SortableCard";
+import sanitizeHtml from "sanitize-html";
 
 const UploadedMediaEdit = ({
   setPost,
@@ -34,11 +35,10 @@ const UploadedMediaEdit = ({
   isEditing,
   setIsEditing,
   adminTextEditor,
-  setAdminTextEditor
+  setAdminTextEditor,
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [htmlEventText, setHtmlEventText]= useState("")
   const [videoDurationError, setVideoDurationError] = useState(false);
   const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] =
     useState(false);
@@ -50,19 +50,13 @@ const UploadedMediaEdit = ({
     post.onlyBlogView ? post.onlyBlogView : "FALSE"
   );
   const [caakContent, setCaakContent] = useState(post?.owned === "CAAK");
-
-  // const [draft, setDraft] = useState(false);
-  // const [boost, setBoost] = useState(false);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
   const [viewDescription, setViewDescription] = useState(
     post.description ? post.description : false
   );
 
-  // const [loaded, setLoaded] = useState(false);
-
   const router = useRouter();
-  // const [editorLoaded, setEditorLoaded] = useState(false);
   const editorRef = useRef(null);
 
   const thumbnailImageHandler = (item) => {
@@ -78,10 +72,6 @@ const UploadedMediaEdit = ({
       return getGenderImage("default").src;
     }
   };
-
-  // useEffect(() => {
-  //   setEditorLoaded(true);
-  // }, []);
 
   const maxLengths = {
     title: 300,
@@ -164,7 +154,6 @@ const UploadedMediaEdit = ({
     return await isAdmin();
   };
 
-
   useUpdateEffect(() => {
     setIsEditing(true);
   }, [
@@ -173,9 +162,9 @@ const UploadedMediaEdit = ({
     post.description,
     post.group_id,
     caakContent,
-    businessPost,
+    adminTextEditor,
     allowComment,
-    post.items.length
+    post.items.length,
   ]);
 
   useUpdateEffect(() => {
@@ -216,10 +205,6 @@ const UploadedMediaEdit = ({
     // eslint-disable-next-line
   }, [post, router, isEditing, selectedGroup]);
 
-  // useEffect(() => {
-  //   setLoaded(true);
-  // }, []);
-
   useEffect(() => {
     let cContent;
     if (caakContent) {
@@ -248,10 +233,27 @@ const UploadedMediaEdit = ({
   }, [businessPost]);
 
   useUpdateEffect(() => {
-    setPost({
-      ...post,
-      onlyBlogView: adminTextEditor,
-    });
+    if (adminTextEditor === "FALSE") {
+      const postItems = post.items;
+      postItems.map((item) => {
+        item.title = sanitizeHtml(item.title, {
+          allowedTags: [],
+          allowedAttributes: {},
+          allowedIframeHostnames: [],
+        });
+      });
+      const cleanDesc = sanitizeHtml(post.description, {
+        allowedTags: [],
+        allowedAttributes: {},
+        allowedIframeHostnames: [],
+      });
+      setPost({
+        ...post,
+        items: postItems,
+        onlyBlogView: adminTextEditor,
+        description: cleanDesc,
+      });
+    }
     // eslint-disable-next-line
   }, [adminTextEditor]);
 
@@ -260,9 +262,11 @@ const UploadedMediaEdit = ({
   }, [post]);
 
   useEffect(() => {
-    selectedGroup?.role_on_group !== "ADMIN" ? setAdminTextEditor("FALSE") : setAdminTextEditor("TRUE")
+    selectedGroup?.role_on_group !== "ADMIN"
+      ? setAdminTextEditor("FALSE")
+      : setAdminTextEditor("TRUE");
     //eslint-disable-next-line
-  }, [selectedGroup])
+  }, [selectedGroup]);
 
   return (
     <div>
@@ -333,20 +337,22 @@ const UploadedMediaEdit = ({
             <Editor
               apiKey={"d8002ouvvak8ealdsmv07avyednf4ab12unnpjf1o2fjshj7"}
               onInit={(evt, editor) => (editorRef.current = editor)}
-              onEditorChange={(e, event) => {
-                console.log(event.getBody().textContent)
+              onEditorChange={(e) => {
                 setPost((prev) => ({ ...prev, description: e }));
               }}
               value={post.description}
               init={{
-                selector: ".tinymce-p",
-                extended_valid_elements: "p[class=tinymce-p|style]",
+                valid_elements:
+                  "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
+                extended_valid_elements: [
+                  "p[class=tinymce-p]",
+                  "li[class=tinymce-p]",
+                  "ol[class=tinymce-ol]",
+                  "ul[class=tinymce-ul]",
+                ],
                 height: 200,
                 menubar: false,
-                plugins: [
-                  "advlist autolink lists link preview anchor",
-                  "paste wordcount",
-                ],
+                plugins: ["advlist lists link", "paste wordcount"],
                 toolbar:
                   "bold italic | bullist numlist link | alignleft aligncenter " +
                   "alignright alignjustify | outdent indent | " +
@@ -365,7 +371,7 @@ const UploadedMediaEdit = ({
                 onChange={(e) =>
                   setPost((prev) => ({ ...prev, description: e.target.value }))
                 }
-                className={`addPostTextarea whitespace-pre pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
+                className={`addPostTextarea pb-[25px] overflow-y-scroll min-h-[68px] text-[15px] text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm focus:border-caak-primary focus:ring-2 focus:ring-opacity-20 ${
                   post.description?.length === maxLengths.description
                     ? "ring-caak-red border-caak-red"
                     : "focus:ring-caak-primary focus:border-caak-primary"
@@ -574,7 +580,14 @@ const UploadedMediaEdit = ({
                       }}
                       value={post.items[activeIndex].title}
                       init={{
-                        extended_valid_elements: "p[class=tinymce-p|style]",
+                        valid_elements:
+                          "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
+                        extended_valid_elements: [
+                          "p[class=tinymce-p]",
+                          "li[class=tinymce-p]",
+                          "ol[class=tinymce-ol]",
+                          "ul[class=tinymce-ul]",
+                        ],
                         height: "100%",
                         menubar: false,
                         plugins: [
@@ -674,11 +687,11 @@ const UploadedMediaEdit = ({
                 }
                 style={{ minWidth: "40px", height: "22px" }}
                 className={`ml-1 cursor-pointer
-                rounded-full 
+                rounded-full
                 bg-caak-${
                   businessPost === "TRUE" ? "algalfuel" : "titaniumwhite"
-                }  
-                flex items-center 
+                }
+                flex items-center
                 justify-${businessPost === "TRUE" ? "end" : "start"}`}
               >
                 <span
@@ -689,15 +702,18 @@ const UploadedMediaEdit = ({
             </div>
           )} */}
 
-          {
-            (selectedGroup?.role_on_group === "ADMIN" || isSuperAdmin) &&
+          {(selectedGroup?.role_on_group === "ADMIN" ||
+            selectedGroup?.role_on_group === "MODERATOR" ||
+            isSuperAdmin) && (
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>
-              Текст засварлагч
+                Текст засварлагч
               </p>
               <label
                 onClick={() =>
-                  setAdminTextEditor(adminTextEditor === "TRUE" ? "FALSE" : "TRUE")
+                  setAdminTextEditor(
+                    adminTextEditor === "TRUE" ? "FALSE" : "TRUE"
+                  )
                 }
                 style={{ minWidth: "40px", height: "22px" }}
                 className={`ml-1 cursor-pointer
@@ -714,7 +730,7 @@ const UploadedMediaEdit = ({
                 />
               </label>
             </div>
-          }
+          )}
           {/*<div className={"flex flex-row justify-between mt-[16px]"}>*/}
           {/*  <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>*/}
           {/*  <Switch toggle={setDraft} active={draft} />*/}

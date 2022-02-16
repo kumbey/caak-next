@@ -26,6 +26,7 @@ function WrapperProvider(props) {
   const [groupIcon, setGroupIcon] = useState(false);
   const [currentPlayingVideoId, setCurrentPlayingVideoId] = useState(null);
   const [loadedVideos, setLoadedVideos] = useState([]);
+  const [boostedPostsArr, setBoostedPostsArr] = useState([]);
 
   // store the id of the current playing player
   const [playing, setPlaying] = useState("");
@@ -108,6 +109,8 @@ function WrapperProvider(props) {
       play,
       isPlaying,
       pause,
+      boostedPostsArr,
+      setBoostedPostsArr,
     }),
     [
       loadedVideos,
@@ -118,6 +121,8 @@ function WrapperProvider(props) {
       groupIcon,
       currentPlayingVideoId,
       isPlaying,
+      pause,
+      boostedPostsArr,
     ]
   );
   return <WrapperContext.Provider value={value} {...props} />;

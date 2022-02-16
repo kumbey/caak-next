@@ -888,8 +888,17 @@
     height: 60px;
     border-radius: 2px;
   }
-  .tinymce-p a {
-    word-break: break-all !important;
+  .tinymce-ol {
+    white-space: normal !important;
+  }
+  .tinymce-ul {
+    white-space: normal !important;
+  }
+  .tinymce-ol > li {
+    line-height: 1.6!important;
+  }
+  .tinymce-p {
+    word-break: break-word !important;
   }
   .tinymce-p a:link {
     color: #FF6600 !important;

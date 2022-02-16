@@ -14,23 +14,30 @@ const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
   });
 
   const countReach = async () => {
-    await API.graphql({
-      query: addViewToItem,
-      variables: {
-        item_id: post.id,
-        on_to: "POST",
-        type: "REACH",
-      },
-      authMode: "AWS_IAM",
-    });
+    try {
+      await API.graphql({
+        query: addViewToItem,
+        variables: {
+          item_id: post.id,
+          on_to: "POST",
+          type: "REACH",
+        },
+        authMode: "AWS_IAM",
+      });
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
-
   useUpdateEffect(() => {
-    if (post.sponsored)
-      if (inView) {
-        countReach();
+    if (inView) {
+      if (sponsored) {
+        if (!post.reached) {
+          countReach();
+          post.reached = true;
+        }
       }
+    }
   }, [inView]);
 
   return (
@@ -40,10 +47,7 @@ const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
           <FeedCardSkeleton />
         ) : (
           <>
-            <div
-              ref={ref}
-              className={"flex flex-col"}
-            >
+            <div ref={ref} className={"flex flex-col"}>
               <CardHeader
                 sponsored={sponsored}
                 post={post}

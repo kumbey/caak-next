@@ -21,7 +21,10 @@ import { ssrDataViewPost } from "../../../../src/apis/ssrDatas";
 import Button from "../../../../src/components/button";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import {addViewToItem, updatePost} from "../../../../src/graphql-custom/post/mutation";
+import {
+  addViewToItem,
+  updatePost,
+} from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
 import { useUser } from "../../../../src/context/userContext";
 import { decode } from "html-entities";
@@ -52,15 +55,19 @@ const Post = ({ ssrData }) => {
     items: [],
   });
   const countViews = async () => {
-    await API.graphql({
-      query: addViewToItem,
-      variables: {
-        item_id: post.id,
-        on_to: "POST",
-        type: "VIEWS",
-      },
-      authMode: "AWS_IAM",
-    });
+    try {
+      await API.graphql({
+        query: addViewToItem,
+        variables: {
+          item_id: post.id,
+          on_to: "POST",
+          type: "VIEWS",
+        },
+        authMode: "AWS_IAM",
+      });
+    } catch (ex) {
+      console.log(ex);
+    }
   };
   const fetchBoostedPosts = async () => {
     const date = new Date();
@@ -128,7 +135,7 @@ const Post = ({ ssrData }) => {
   }, [jumpToComment]);
 
   useEffect(() => {
-    countViews()
+    countViews();
     fetchBoostedPosts();
     const handler = (e) => {
       if (e.keyCode === 27) {
@@ -362,14 +369,14 @@ const Post = ({ ssrData }) => {
                 )}
               {post.description && (
                 <div>
-                    <p
-                      className={
-                        "text-[16px] whitespace-pre-wrap mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
-                      }
-                      dangerouslySetInnerHTML={{
-                        __html: decode(post.description),
-                      }}
-                    />
+                  <p
+                    className={
+                      "text-[16px] whitespace-pre-wrap mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                    }
+                    dangerouslySetInnerHTML={{
+                      __html: decode(post.description),
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -448,15 +455,14 @@ const Post = ({ ssrData }) => {
                   </p>
                 )}
 
-                  <div
-                    className={
-                      "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
-                    }
-                    dangerouslySetInnerHTML={{
-                      __html: decode(post.items.items[0].title),
-                    }}
-                  />
-
+                <div
+                  className={
+                    "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
+                  }
+                  dangerouslySetInnerHTML={{
+                    __html: decode(post.items.items[0].title),
+                  }}
+                />
               </div>
             )}
 

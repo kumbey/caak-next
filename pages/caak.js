@@ -64,13 +64,13 @@ const Trending = ({ ssrData }) => {
   const subscriptions = {};
   const { isLogged } = useUser();
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-  const { setFeedSortType } = useWrapper();
+  const { setFeedSortType, setBoostedPostsArr, boostedPostsArr } = useWrapper();
   const [isCardLoading, setIsCardLoading] = useState(true);
-  const [boostedPosts, setBoostedPosts] = useState({
-    items: [],
-  });
+  // const [boostedPosts, setBoostedPosts] = useState({
+  //   items: [],
+  // });
 
-  const fetchBoostedPosts = async () => {
+  const fetchBoostedPosts = async (init) => {
     const date = new Date();
     const now = date.toISOString();
     try {
@@ -84,8 +84,19 @@ const Trending = ({ ssrData }) => {
         authMode: "AWS_IAM",
       });
       resp = getReturnData(resp);
-      shuffleArray(resp.items);
-      setBoostedPosts(resp);
+
+      if (!init) {
+        const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
+        const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
+
+        const myDiff = makeSymmDiffFunc((x, y) => x.post.id === y.post.id)
+
+        const result = myDiff(boostedPostsArr, resp.items)
+
+        setBoostedPostsArr(prev=> [...prev, ...result])
+      }
+
+      return resp;
     } catch (ex) {
       console.log(ex);
     }
@@ -94,15 +105,16 @@ const Trending = ({ ssrData }) => {
   let frequency = 5;
   let boostedIdx = 0;
   const renderElement = (index) => {
-    if (boostedPosts.items.length > 0) {
-      if (index === (frequency + boostedPosts.items.length)) {
-        if (boostedPosts.items.length - 1 > boostedIdx) {
+    if (boostedPostsArr.length > 0) {
+      if (index === frequency) {
+        if (boostedPostsArr.length > boostedIdx) {
           frequency = frequency + 10;
+          const idx = boostedIdx;
           boostedIdx++;
           return (
             <Card
               sponsored={true}
-              post={boostedPosts.items[boostedIdx].post}
+              post={boostedPostsArr[idx].post}
               className="ph:mb-4 sm:mb-4"
             />
           );
@@ -132,6 +144,7 @@ const Trending = ({ ssrData }) => {
         setLoading(true);
 
         const resp = await nextCaakPosts();
+        await fetchBoostedPosts()
         if (resp) {
           setCaakPosts((prev) => ({
             ...prev,
@@ -197,7 +210,11 @@ const Trending = ({ ssrData }) => {
   },[subscribedReactionPost])
 
   useEffect(()=> {
-    fetchBoostedPosts().then(() => setIsCardLoading(false));
+    fetchBoostedPosts(true).then((e) => {
+      const shuffledArr = shuffleArray(e.items);
+      setBoostedPostsArr(shuffledArr);
+      setIsCardLoading(false);
+    });
     if(isLogged){
       subscribeOnReaction()
     }
@@ -234,7 +251,7 @@ const Trending = ({ ssrData }) => {
               return (
                 <Fragment key={index}>
                   {renderElement(index)}
-                  {!isCardLoading ? !boostedPosts.items.find(
+                  {!isCardLoading ? !boostedPostsArr.find(
                     (item) => item.post.id === data.id
                   ) && (
                     <Card

@@ -2,8 +2,7 @@ import "../styles/globals.css";
 import "simplebar/dist/simplebar.min.css";
 import { WrapperProvider } from "../src/context/wrapperContext";
 import { UserProvider } from "../src/context/userContext";
-import Amplify from "@aws-amplify/core";
-import Storage from "@aws-amplify/storage";
+import Amplify, { Storage, withSSRContext } from "aws-amplify";
 import awsExports from "../src/aws-exports";
 import NavBar from "../src/components/navigation/NavBar";
 import Modals from "../src/components/modals";
@@ -33,6 +32,18 @@ const updatedAwsConfig = {
 
 Amplify.configure(updatedAwsConfig);
 Storage.configure({ level: "public" });
+
+const { Auth } = withSSRContext();
+
+Auth.configure({
+  ...awsExports,
+  oauth: {
+    ...awsExports.oauth,
+    redirectSignIn: RedirectUrls.redirectSignIn,
+    redirectSignOut: RedirectUrls.redirectSignOut,
+  },
+  ssr: true,
+})
 
 const MyApp = ({ Component, pageProps }) => {
   const router = useRouter();

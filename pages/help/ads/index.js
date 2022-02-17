@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import AboutCaakAds from './aboutCaakAds';
-import Bg from '../../public/assets/images/ads.svg'
+import Bg from '../../../public/assets/images/ads.svg'
 import Head from 'next/head';
-import Consts from '../../src/utility/Consts';
+import Consts from '../../../src/utility/Consts';
 
 export default function Boost() {
   const [open, setOpen] = useState(false) 

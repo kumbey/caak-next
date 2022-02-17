@@ -26,7 +26,7 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
             <p>· Холбоо барих</p>
           </a>
         </Link>
-        <Link href={"/boost"} shallow>
+        <Link href={"/help/ads"} shallow>
           <a rel="noreferrer" target="_blank">
             <p>· Сурталчилгаа</p>
           </a>

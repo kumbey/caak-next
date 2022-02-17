@@ -68,7 +68,7 @@ export default function DefaultHelpLayout({ children }) {
                   <p>· Холбоо барих</p>
                 </a>
               </Link>
-              <Link href={"/boost"} shallow>
+              <Link href={"/help/ads"} shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
                   <p>· Сурталчилгаа</p>
                 </a>

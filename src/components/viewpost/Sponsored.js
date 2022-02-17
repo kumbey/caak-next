@@ -87,8 +87,8 @@ const Sponsored = ({ item }) => {
           "flex justify-end items-center px-[14px] py-[12px] h-[40px] rounded-b-[8px] self-end"
         }
       >
-        <Link href="/boost">
-          <a rel="noreferrer" target="_blank">
+        <Link href={"/help/ads"}>
+          <a>
             <p className={"text-[13px] text-caak-darkBlue"}>Caak Ads</p>
           </a>
         </Link>

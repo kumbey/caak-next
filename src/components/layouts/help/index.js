@@ -65,16 +65,14 @@ export default function DefaultHelpLayout({ children }) {
             <div className="text-[15px] text-[#6C7392] flex flex-wrap justify-center sm:justify-start gap-[4px] sm:flex-row sm:h-[69px] border-b sm:items-end pb-[18px] border-color:[#F3F3F4]">
               <Link href="/help/connectus" shallow>
                 <a>
-                  <p>Холбоо барих</p>
+                  <p>· Холбоо барих</p>
                 </a>
               </Link>
-              <p className="mx-[5px] cursor-default">·</p>
               <Link href={"/help/ads"} shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Сурталчилгаа</p>
+                  <p>· Сурталчилгаа</p>
                 </a>
               </Link>
-              <p className="mx-[5px] hidden sm:block cursor-default">·</p>
               <Link
                 href={{
                   pathname: "/help/secure",
@@ -85,10 +83,9 @@ export default function DefaultHelpLayout({ children }) {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Үйлчилгээний нөхцөл</p>
+                  <p>· Үйлчилгээний нөхцөл</p>
                 </a>
               </Link>
-              <p className="mx-[5px] cursor-default">·</p>
               <Link
                 href={{
                   pathname: "/help/secure",
@@ -99,13 +96,12 @@ export default function DefaultHelpLayout({ children }) {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Нууцлал</p>
+                  <p>· Нууцлал</p>
                 </a>
               </Link>
-              <p className="mx-[5px] cursor-default">·</p>
               <Link href="/help" shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Тусламж</p>
+                  <p>· Тусламж</p>
                 </a>
               </Link>
             </div>

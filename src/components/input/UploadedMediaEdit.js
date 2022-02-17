@@ -23,6 +23,7 @@ import useUpdateEffect from "../../hooks/useUpdateEffect";
 import { Editor } from "@tinymce/tinymce-react";
 import CardsWrapper from "./CardsWrapper";
 import SortableCard from "./SortableCard";
+import sanitizeHtml from "sanitize-html";
 
 const UploadedMediaEdit = ({
   setPost,

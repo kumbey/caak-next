@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import AboutCaakAds from './aboutCaakAds';
 import Bg from '../../public/assets/images/ads.svg'
+import Head from 'next/head';
+import Consts from '../../src/utility/Consts';
 
 export default function Boost() {
   const [open, setOpen] = useState(false) 
@@ -9,6 +11,13 @@ export default function Boost() {
   const year = day.getFullYear();
   return (
     <div style={{overflow: open && 'hidden'}} className='relative mt-[20px] lg:mt-[103px] '>
+      <Head>
+        <title>Сурталчилгаа - {Consts.siteMainTitle}</title>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
       <img alt='' className='w-full' src={Bg.src}/>
       <div className='absolute top-0 mt-[54px] w-full flex flex-col items-center'>
         <div className='max-w-[1090px] w-full flex flex-col items-center'>
@@ -18,18 +27,18 @@ export default function Boost() {
             <div className='relative h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]'>
               <p className='text-[#2B3A4C] font-semibold text-[32px] mt-[47px]'>Sponsored post</p>
               <p className='text-[16px] font-semibold text-[#2B3A4C] mt-[5px]'><span className='text-[#FF6600]'>Пост</span> бүүстлэх</p>
-              <p className='text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]'><span className='text-[46px] font-roboto font-medium'>₮</span>5.000</p>
+              <p className='text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]'><span className='text-[46px] font-roboto font-medium'>₮</span>5.500</p>
               <p className='text-[#5D636B] font-medium text-[16px]'>1 хоног</p>
               <div className='w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center'>
                 <ul>
                   <li>
-                    <p className='text-[#5D636B] font-medium text-[14px]'>10 хоног бол <span className='text-[#FF6600] font-semibold'>45,000 төг</span></p>
+                    <p className='text-[#5D636B] font-medium text-[14px]'>14+ хоног бол <span className='text-[#FF6600] font-semibold'>5,000  төг</span></p>
                   </li>
                   <li>
-                    <p className='text-[#5D636B] font-medium text-[14px]'>30 хоног бол <span className='text-[#FF6600] font-semibold'>80,000 төг</span></p>
+                    <p className='text-[#5D636B] font-medium text-[14px]'>20+ хоног бол <span className='text-[#FF6600] font-semibold'>4,500 төг</span></p>
                   </li>
                   <li>
-                    <p className='text-[#5D636B] font-medium text-[14px]'>60 хоног бол <span className='text-[#FF6600] font-semibold'>100,000 төг</span></p>
+                    <p className='text-[#5D636B] font-medium text-[14px]'>30+ хоног бол <span className='text-[#FF6600] font-semibold'>4,000  төг</span></p>
                   </li>
                 </ul>
               </div>
@@ -61,7 +70,7 @@ export default function Boost() {
             <div className='h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]'>
               <p className='text-[#2B3A4C] font-semibold text-[38px] mt-[47px]'>A1</p>
               <p className='text-[16px] font-semibold text-[#2B3A4C] mt-[5px]'><span className='text-[#257CEE]'>Pop-Up</span> баннер</p>
-              <p className='text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]'><span className='text-[46px] font-roboto font-medium'>₮</span>165.000</p>
+              <p className='text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]'><span className='text-[46px] font-roboto font-medium'>₮</span>220.000</p>
               <p className='text-[#5D636B] font-medium text-[16px]'>1 хоног</p>
               <button onClick={() => setOpen(2)} className='w-full h-[48px] rounded-[8px] bg-[#257CEE] border border-[#257CEE] text-white text-[16px] font-medium mt-[20px]'>
                 Жишээ харах
@@ -84,7 +93,7 @@ export default function Boost() {
             <div className='h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]'>
               <p className='text-[#2B3A4C] font-semibold text-[38px] mt-[47px]'>A2</p>
               <p className='text-[16px] font-semibold text-[#2B3A4C] mt-[5px]'><span className='text-[#257CEE]'>Дагадаг</span> баннер</p>
-              <p className='text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]'><span className='text-[46px] font-roboto font-medium'>₮</span>110.000</p>
+              <p className='text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]'><span className='text-[46px] font-roboto font-medium'>₮</span>165.000</p>
               <p className='text-[#5D636B] font-medium text-[16px]'>1 хоног</p>
               <button onClick={() => setOpen(3)} className='w-full h-[48px] rounded-[8px] bg-[#257CEE] border border-[#257CEE] text-white text-[16px] font-medium mt-[20px]'>
                 Жишээ харах
@@ -133,16 +142,14 @@ export default function Boost() {
             <div className="text-[15px] text-[#6C7392] flex flex-wrap justify-center sm:justify-start gap-[4px] sm:flex-row sm:h-[69px] border-b sm:items-end pb-[18px] border-color:[#F3F3F4]">
               <Link href="/help/connectus" shallow>
                 <a>
-                  <p>Холбоо барих</p>
+                  <p>· Холбоо барих</p>
                 </a>
               </Link>
-              <p className="mx-[5px] cursor-default">·</p>
-              <Link href={"/help/connectus"} shallow>
+              <Link href={"/boost"} shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Сурталчилгаа</p>
+                  <p>· Сурталчилгаа</p>
                 </a>
               </Link>
-              <p className="mx-[5px] hidden sm:block cursor-default">·</p>
               <Link
                 href={{
                   pathname: "/help/secure",
@@ -153,10 +160,9 @@ export default function Boost() {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Үйлчилгээний нөхцөл</p>
+                  <p>· Үйлчилгээний нөхцөл</p>
                 </a>
               </Link>
-              <p className="mx-[5px] cursor-default">·</p>
               <Link
                 href={{
                   pathname: "/help/secure",
@@ -167,13 +173,12 @@ export default function Boost() {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Нууцлал</p>
+                  <p>· Нууцлал</p>
                 </a>
               </Link>
-              <p className="mx-[5px] cursor-default">·</p>
               <Link href="/help" shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Тусламж</p>
+                  <p>· Тусламж</p>
                 </a>
               </Link>
             </div>

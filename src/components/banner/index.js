@@ -67,6 +67,7 @@ export default function Banner() {
       </Link>
       <Link href="/boost">
         <a
+          rel="noreferrer" target="_blank"
           className="flex flex-row items-center mt-[8px] w-[80px]"
         >
           <span className="icon-fi-rs-info text-[14px] text-[#6C7392]" />

@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import Post1 from '../../public/assets/images/post.png'
 import Post1Mobile from '../../public/assets/images/postMobile.png'
 import Post2 from '../../public/assets/images/post2.png'
-import Post2Mobile from '../../public/assets/images/post2mobile.png'
+import Post2Mobile from '../../public/assets/images/a2mobile.png'
 import PostHome from '../../public/assets/images/homepost.png'
 import PostHome2 from '../../public/assets/images/homepost2.png'
+import { useRouter } from 'next/router'
 
 export default function AboutCaakAds({open, setOpen}) {
     const [selected, setSelected] = useState(0)
+    const router = useRouter()
     const data = [
         {
             title: 'Desktop'
@@ -55,7 +57,7 @@ export default function AboutCaakAds({open, setOpen}) {
             <p className='text-[#2B3A4C] text-[38px] h-[46px] font-semibold'>A1</p>
             <p className='text-[14px] font-semibold'><span className='text-[#257CEE]'>Pop-Up</span> баннер</p>
             <span className='w-full h-[1px] bg-[#E4E4E5] mt-[14px]'/>
-            <p className='text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[25px]'><span className='text-[20px] sm:text-[38px] font-medium'>₮</span>165.000</p>
+            <p className='text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[25px]'><span className='text-[20px] sm:text-[38px] font-medium'>₮</span>220.000</p>
             <p className='text-[#5D636B]'>1 хоног</p>
             <p className='text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]'>Баннерын байршил:</p>
             <ul className='w-full flex flex-col pl-0 text-[14px] font-medium mt-[10px]'>
@@ -66,7 +68,7 @@ export default function AboutCaakAds({open, setOpen}) {
                 Постны дэлгэрэнгүй хуудаст
                 </ch>
             </ul>
-            <button className='bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]'>
+            <button onClick={() => router.replace("/help/connectus")} className='bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]'>
                 Захиалах
             </button>
         </div>
@@ -102,7 +104,7 @@ export default function AboutCaakAds({open, setOpen}) {
             <p className='text-[#2B3A4C] text-[38px] h-[46px] font-semibold'>A2</p>
             <p className='text-[14px] font-semibold'><span className='text-[#257CEE]'>Дагадаг</span> баннер</p>
             <span className='w-full h-[1px] bg-[#E4E4E5] mt-[14px]'/>
-            <p className='text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[25px]'><span className='text-[20px] sm:text-[38px] font-medium'>₮</span>110.000</p>
+            <p className='text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[25px]'><span className='text-[20px] sm:text-[38px] font-medium'>₮</span>165.000</p>
             <p className='text-[#5D636B]'>1 хоног</p>
             <p className='text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]'>Баннерын байршил:</p>
             <ul className='w-full flex flex-col pl-0 text-[14px] font-medium mt-[10px]'>
@@ -113,7 +115,7 @@ export default function AboutCaakAds({open, setOpen}) {
                 Постны дэлгэрэнгүй хуудаст
                 </ch>
             </ul>
-            <button className='bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]'>
+            <button onClick={() => router.replace("/help/connectus")} className='bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]'>
                 Захиалах
             </button>
         </div>
@@ -149,20 +151,20 @@ export default function AboutCaakAds({open, setOpen}) {
             <p className='text-[#2B3A4C] text-[18px] lg:text-[30px] h-[36px] font-semibold'>Sponsored Post</p>
             <p className='text-[14px] font-semibold'><span className='text-[#257CEE]'>Пост</span> бүүстлэх</p>
             <span className='w-full h-[1px] bg-[#E4E4E5] mt-[14px]'/>
-            <p className='text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[10px] lg:mt-[25px]'><span className='text-[20px] sm:text-[38px] font-medium'>₮</span>5.000</p>
+            <p className='text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[10px] lg:mt-[25px]'><span className='text-[20px] sm:text-[38px] font-medium'>₮</span>5.500</p>
             <p className='text-[#5D636B]'>1 хоног</p>
             <div className='w-full hidden sm:block h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center'>
-              <ul>
-                <li>
-                  <p className='text-[#5D636B] font-medium text-[14px]'>10 хоног бол <span className='text-[#FF6600] font-semibold'>45,000 төг</span></p>
-                </li>
-                <li>
-                  <p className='text-[#5D636B] font-medium text-[14px]'>30 хоног бол <span className='text-[#FF6600] font-semibold'>80,000 төг</span></p>
-                </li>
-                <li>
-                  <p className='text-[#5D636B] font-medium text-[14px]'>60 хоног бол <span className='text-[#FF6600] font-semibold'>100,000 төг</span></p>
-                </li>
-              </ul>
+                <ul>
+                  <li>
+                    <p className='text-[#5D636B] font-medium text-[14px]'>14+ хоног бол <span className='text-[#FF6600] font-semibold'>5,000  төг</span></p>
+                  </li>
+                  <li>
+                    <p className='text-[#5D636B] font-medium text-[14px]'>20+ хоног бол <span className='text-[#FF6600] font-semibold'>4,500 төг</span></p>
+                  </li>
+                  <li>
+                    <p className='text-[#5D636B] font-medium text-[14px]'>30+ хоног бол <span className='text-[#FF6600] font-semibold'>4,000  төг</span></p>
+                  </li>
+                </ul>
             </div>
             <p className='text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]'>Постын байршил:</p>
             <ul className='flex flex-col w-full pl-0 text-medium text-[14px] text-[#5D636B]'>
@@ -179,7 +181,7 @@ export default function AboutCaakAds({open, setOpen}) {
                 Сонирхол, нас, хүйс сонгож бүүстлэх
               </plus>
             </ul>
-            <button className='bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]'>
+            <button onClick={() => router.replace("/help/connectus")} className='bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]'>
                 Захиалах
             </button>
         </div>

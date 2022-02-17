@@ -88,7 +88,7 @@ const Sponsored = ({ item }) => {
         }
       >
         <Link href="/boost">
-          <a>
+          <a rel="noreferrer" target="_blank">
             <p className={"text-[13px] text-caak-darkBlue"}>Caak Ads</p>
           </a>
         </Link>

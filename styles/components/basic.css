@@ -274,13 +274,13 @@
     }
   }
 
-  ul ch:before {
+  .ads-checked-icon:before {
     content: '✓';
     color: #FF6600;
     margin-right: 5px;
   }
 
-  ul plus:before {
+  .ads-plus-icon:before {
     content: '+';
     color: #257CEE;
     margin-right: 5px;

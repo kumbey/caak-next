@@ -69,7 +69,7 @@ export default function DefaultHelpLayout({ children }) {
                 </a>
               </Link>
               <p className="mx-[5px] cursor-default">·</p>
-              <Link href={"/help/connectus"} shallow>
+              <Link href={"/help/ads"} shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
                   <p>Сурталчилгаа</p>
                 </a>

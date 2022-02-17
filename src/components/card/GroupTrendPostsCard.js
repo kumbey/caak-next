@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getReturnData } from "../../utility/Util";
 import { listPostByGroupOrderByReactions } from "../../graphql-custom/group/queries";
 
-const GroupTrendPostsCard = ({ groupId, maxItems }) => {
+const GroupTrendPostsCard = ({ groupId, maxItems, onClickItem }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { isLogged } = useUser();
@@ -43,7 +43,7 @@ const GroupTrendPostsCard = ({ groupId, maxItems }) => {
       </p>
       {posts.items.map((item, index) => {
         if (index < maxItems)
-          return <GroupTrendPostsCardItem item={item.post} key={index} />;
+          return <GroupTrendPostsCardItem onClickItem={onClickItem} item={item.post} key={index} />;
       })}
     </div>
   ) : null;

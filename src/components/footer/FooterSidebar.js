@@ -29,7 +29,7 @@ const FooterSidebar = ({ containerClassname, banner, topItemHeight }) => {
         </Link>
         <p className="mx-[5px] cursor-default">·</p>
 
-        <Link href={"/help/connectus"} shallow>
+        <Link href={"/help/ads"} shallow>
           <a>
             <p>Сурталчилгаа</p>
           </a>

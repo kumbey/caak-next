@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Post1 from "../../../public/assets/images/post.png";
 import Post1Mobile from "../../../public/assets/images/postMobile.png";
 import Post2 from "../../../public/assets/images/post2.png";
-import Post2Mobile from "../../../public/assets/images/post2mobile.png";
+import Post2Mobile from "../../../public/assets/images/a2mobile.png";
 import PostHome from "../../../public/assets/images/homepost.png";
 import PostHome2 from "../../../public/assets/images/homepost2.png";
 import Consts from "../../../src/utility/Consts";

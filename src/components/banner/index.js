@@ -6,7 +6,7 @@ import { listBannersByTypeOrderByEndDate } from '../../graphql/queries';
 import { addViewToItem } from '../../graphql-custom/banner/mutation';
 
 export default function Banner() {
-  const [banner, setBanner] = useState();
+  const [banner, setBanner] = useState(null);
   const [meta, setMeta] = useState();
 
   const date = new Date();
@@ -55,7 +55,7 @@ export default function Banner() {
     }
 
   return  meta && banner ? (
-     <div className="md:sticky md:top-[74px] relative flex flex-col items-end mb-[10px]">
+     <div onClick={()=> saveClick()} className="md:sticky md:top-[74px] relative flex flex-col items-end mb-[10px]">
       <Link href={meta.url}>
         <a className={"w-full"} rel="noreferrer" target="_blank">
           <img
@@ -65,7 +65,7 @@ export default function Banner() {
           />
         </a>
       </Link>
-      <Link href="/boost">
+      <Link href={"/help/ads"}>
         <a
           className="flex flex-row items-center mt-[8px] w-[80px]"
         >

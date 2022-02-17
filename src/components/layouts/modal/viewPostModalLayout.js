@@ -50,7 +50,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
               </div>
               <div
                 className={
-                  "viewPostRightSideBar flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
+                  "viewPostRightSideBar h-full flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
                 }
               >
                 <div className={"flex flex-col w-full"}>
@@ -60,7 +60,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
                   />
                   <GroupTrendPostsCard onClickItem={onClickScrollTop} maxItems={5} groupId={post.group_id} />
                 </div>
-                <Banner />
+                <Banner location={"post"} />
               </div>
             </div>
           </div>

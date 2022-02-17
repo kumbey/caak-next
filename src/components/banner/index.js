@@ -5,7 +5,7 @@ import { getFileUrl } from '../../utility/Util';
 import { listBannersByTypeOrderByEndDate } from '../../graphql/queries';
 import { addViewToItem } from '../../graphql-custom/banner/mutation';
 
-export default function Banner() {
+export default function Banner({location}) {
   const [banner, setBanner] = useState(null);
   const [meta, setMeta] = useState();
 
@@ -55,7 +55,7 @@ export default function Banner() {
     }
 
   return  meta && banner ? (
-     <div onClick={()=> saveClick()} className="md:sticky md:top-[74px] relative flex flex-col items-end mb-[10px]">
+     <div onClick={()=> saveClick()} className={`md:sticky ${location === "post" ? "md:top-[16px]" : "md:top-[74px]"} relative flex flex-col items-end mb-[10px]`}>
       <Link href={meta.url}>
         <a className={"w-full"} rel="noreferrer" target="_blank">
           <img

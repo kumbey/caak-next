@@ -94,8 +94,8 @@ export default function AboutCaakAds({ open, setOpen }) {
               Баннерын байршил:
             </p>
             <ul className="w-full flex flex-col pl-0 text-[14px] font-medium mt-[10px]">
-              <ch>Нүүр хуудасны голд</ch>
-              <ch>Постны дэлгэрэнгүй хуудаст</ch>
+              <li className={"ads-checked-icon list-none"}>Нүүр хуудасны голд</li>
+              <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
             <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах
@@ -164,8 +164,8 @@ export default function AboutCaakAds({ open, setOpen }) {
               Баннерын байршил:
             </p>
             <ul className="w-full flex flex-col pl-0 text-[14px] font-medium mt-[10px]">
-              <ch>Нүүр хуудасны баруун талд</ch>
-              <ch>Постны дэлгэрэнгүй хуудаст</ch>
+              <li className={"ads-checked-icon list-none"}>Нүүр хуудасны баруун талд</li>
+              <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
             <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах
@@ -265,10 +265,10 @@ export default function AboutCaakAds({ open, setOpen }) {
               Постын байршил:
             </p>
             <ul className="flex flex-col w-full pl-0 text-medium text-[14px] text-[#5D636B]">
-              <ch>Нүүр хуудасны постон дунд</ch>
-              <ch>Постны дэлгэрэнгүй хуудас дотор</ch>
-              <ch>Группуудын постон дунд</ch>
-              <plus>Сонирхол, нас, хүйс сонгож бүүстлэх</plus>
+              <li className={"ads-checked-icon list-none"}>Нүүр хуудасны постон дунд</li>
+              <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудас дотор</li>
+              <li className={"ads-checked-icon list-none"}>Группуудын постон дунд</li>
+              <li className={"ads-plus-icon list-none"}>Сонирхол, нас, хүйс сонгож бүүстлэх</li>
             </ul>
             <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах

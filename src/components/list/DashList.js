@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ReactTooltip from "react-tooltip";
 import Link from "next/link";
 import {
   generateTimeAgo,
@@ -162,29 +163,65 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : null}
         </div>
         <div className="flex text-sm text-caak-darkBlue w-[166px] mr-[32px]">
-          <div className="flex items-center mr-5">
+          {/* <div className="flex items-center mr-5">
             <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.totals.reach ? post.totals.reach : 0}
             </p>
-          </div>
-          <div className="flex items-center mr-5">
-            <span className="icon-fi-rs-clicked-o  text-caak-scriptink text-20px mr-[6px] " />
+          </div> */}
+          <div
+            className="flex items-center mr-5 min-w-[50px]"
+            data-tip
+            data-for="clickTip"
+          >
+            <span className="icon-fi-rs-view  text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.totals.views ? post.totals.views : 0}
             </p>
+            <ReactTooltip
+              id="clickTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-10"
+            >
+              <p className="text-11px text-white ">Даралтын тоо</p>
+            </ReactTooltip>
           </div>
-          <div className="flex items-center mr-5">
+          <div
+            className="flex items-center mr-5 min-w-[50px]"
+            data-tip
+            data-for="caakTip"
+          >
             <span className="icon-fi-rs-rock-i text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.totals.reactions ? post.totals.reactions : 0}
             </p>
+            <ReactTooltip
+              id="caakTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-10"
+            >
+              <p className="text-11px text-white ">Саакын тоо</p>
+            </ReactTooltip>
           </div>
-          <div className="flex items-center mr-5">
+          <div
+            className="flex items-center mr-5 min-w-[50px]"
+            data-tip
+            data-for="commentTip"
+          >
             <span className="icon-fi-rs-comment-o text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.totals.comments ? post.totals.comments : 0}
             </p>
+            <ReactTooltip
+              id="commentTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-10"
+            >
+              <p className="text-11px text-white ">Сэтгэгдлийн тоо</p>
+            </ReactTooltip>
           </div>
         </div>{" "}
         <div className="flex ml-[40px] ">

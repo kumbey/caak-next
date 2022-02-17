@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import {API} from "aws-amplify";
 import {addViewToItem} from "../../graphql-custom/post/mutation";
+import Link from "next/link";
 
 const Sponsored = ({ item }) => {
   const [animationState, setAnimationState] = useState({
@@ -86,7 +87,11 @@ const Sponsored = ({ item }) => {
           "flex justify-end items-center px-[14px] py-[12px] h-[40px] rounded-b-[8px] self-end"
         }
       >
-        <p className={"text-[13px] text-caak-darkBlue"}>Caak Ads</p>
+        <Link href={"/help/ads"}>
+          <a>
+            <p className={"text-[13px] text-caak-darkBlue"}>Caak Ads</p>
+          </a>
+        </Link>
       </div>
     </div>
   );

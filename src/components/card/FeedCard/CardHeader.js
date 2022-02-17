@@ -149,7 +149,11 @@ const CardHeader = ({
                 </span>
               </div>
             ) : (
-              <p className={"text-[13px] text-darkblue"}>Sponsored</p>
+              <Link href="/help/ads">
+                <a>
+                  <p className={"text-[13px] text-darkblue"}>Sponsored</p>
+                </a>
+              </Link>
             )}
           </div>
         </div>

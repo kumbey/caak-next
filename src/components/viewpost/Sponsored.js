@@ -17,27 +17,36 @@ const Sponsored = ({ item }) => {
   });
 
   const countReach = async () => {
-    await API.graphql({
-      query: addViewToItem,
-      variables: {
-        item_id: item.id,
-        on_to: "POST",
-        type: "REACH",
-      },
-      authMode: "AWS_IAM",
-    });
+    try {
+      await API.graphql({
+        query: addViewToItem,
+        variables: {
+          item_id: item.id,
+          on_to: "POST",
+          type: "REACH",
+        },
+        authMode: "AWS_IAM",
+      });
+    }catch (ex){
+      console.log(ex)
+    }
+
   };
 
   const countViews = async () => {
-    await API.graphql({
-      query: addViewToItem,
-      variables: {
-        item_id: item.id,
-        on_to: "POST",
-        type: "VIEWS",
-      },
-      authMode: "AWS_IAM",
-    });
+    try {
+      await API.graphql({
+        query: addViewToItem,
+        variables: {
+          item_id: item.id,
+          on_to: "POST",
+          type: "VIEWS",
+        },
+        authMode: "AWS_IAM",
+      });
+    }catch (ex){
+      console.log(ex)
+    }
   };
 
   useEffect(() => {

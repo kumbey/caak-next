@@ -51,6 +51,22 @@ const SignInUp = () => {
     try {
       setLoading(true);
       await Auth.signIn(checkUsername(username), password);
+      //Setting cookies expiration date from 'session' to 'one year'
+      function setAuthCookies () {
+        const cookieList = ["LastAuthUser", "refreshToken", "accessToken", "idToken"]
+        const expiration = new Date()
+        expiration.setFullYear(expiration.getFullYear() + 1)
+        for (const key in window.localStorage) {
+          if (window.localStorage.hasOwnProperty(key)) {
+            const tokenNamearray = key.split('.')
+            const tokenName = tokenNamearray.pop()
+            if(cookieList.indexOf(tokenName) !== -1) {
+              document.cookie = `${key}=${window.localStorage[key]};expires=${expiration.toUTCString()};secure=true;samesite=strict`
+            }
+          }
+        }
+      }
+      setAuthCookies()
       if (router.query.prevPath && router.query.prevPath !== router.asPath) {
         router.replace(router.query.prevPath, undefined, {
           shallow: false,

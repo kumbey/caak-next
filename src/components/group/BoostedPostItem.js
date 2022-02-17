@@ -127,7 +127,11 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
       </td>
       <td>
         <div className="flex text-sm text-caak-darkBlue w-[166px] ">
-          <div className="flex items-center mr-5" data-tip data-for="reachtTip">
+          <div
+            className="flex items-center mr-5 min-w-[60px]"
+            data-tip
+            data-for="reachtTip"
+          >
             <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.post.totals.reach ? kFormatter(post.post.totals.reach) : 0}
@@ -141,7 +145,11 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               <p className="text-11px text-white ">Үзэлтийн тоо</p>
             </ReactTooltip>
           </div>
-          <div className="flex items-center mr-5" data-tip data-for="viewTip">
+          <div
+            className="flex items-center mr-5 min-w-[60px]"
+            data-tip
+            data-for="viewTip"
+          >
             <span className="  icon-fi-rs-clicked-o text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.post.totals.views ? kFormatter(post.post.totals.views) : 0}
@@ -156,7 +164,11 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
             </ReactTooltip>
           </div>
 
-          <div className="flex items-center mr-5" data-tip data-for="caakTip">
+          <div
+            className="flex items-center mr-5 min-w-[60px]"
+            data-tip
+            data-for="caakTip"
+          >
             <span className=" icon-fi-rs-rock-i text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.post.totals.reactions
@@ -168,13 +180,12 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               place="top"
               effect="solid"
               className="p-1 opacity-50"
-              type="dark"
             >
               <p className="text-11px text-white ">Саакын тоо</p>
             </ReactTooltip>
           </div>
           <div
-            className="flex items-center mr-5"
+            className="flex items-center mr-5 min-w-[60px]"
             data-tip
             data-for="commentTip"
           >

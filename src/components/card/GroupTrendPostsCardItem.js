@@ -3,12 +3,12 @@ import Link from "next/link";
 import Video from "../video";
 import { useRouter } from "next/router";
 
-const GroupTrendPostsCardItem = ({ item }) => {
+const GroupTrendPostsCardItem = ({ item, onClickItem }) => {
   const firstItem = item.items.items[0];
   const router = useRouter();
 
   return (
-    <div className={"flex flex-row mb-[21px]"}>
+    <div className={"flex flex-row mb-[21px]"} onClick={onClickItem}>
       <Link
         shallow
         as={`/post/view/${item.id}`}
@@ -22,7 +22,7 @@ const GroupTrendPostsCardItem = ({ item }) => {
           },
         }}
       >
-        <a target="_blank" rel="noreferrer">
+        <a>
           <div
             className={
               "w-[80px] h-[80px] rounded-square relative flex-shrink-0 cursor-pointer"

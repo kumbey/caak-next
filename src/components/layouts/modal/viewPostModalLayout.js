@@ -8,8 +8,17 @@ import Banner from "../../banner";
 const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   const [bannerOpen, setBannerOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
-
+  const modalRef = useRef(null)
   const viewPostRef = useRef();
+
+  const onClickScrollTop = ()=> {
+    if(modalRef.current){
+      modalRef.current.scrollTo({
+        behavior: "smooth",
+        top: 0
+      })
+    }
+  }
 
   useEffect(() => {
     blockScroll();
@@ -23,7 +32,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
   }, []);
 
   return (
-    <div className="popup_modal">
+    <div ref={modalRef} className="popup_modal">
       <div className="popup_modal-viewPost">
         <div className={`h-full bg-black bg-opacity-80`}>
           <div
@@ -41,7 +50,7 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
               </div>
               <div
                 className={
-                  "viewPostRightSideBar flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
+                  "viewPostRightSideBar h-full flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
                 }
               >
                 <div className={"flex flex-col w-full"}>
@@ -49,9 +58,9 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
                     containerClassname={"mb-[16px]"}
                     groupId={post.group_id}
                   />
-                  <GroupTrendPostsCard maxItems={5} groupId={post.group_id} />
+                  <GroupTrendPostsCard onClickItem={onClickScrollTop} maxItems={5} groupId={post.group_id} />
                 </div>
-                <Banner />
+                <Banner location={"post"} />
               </div>
             </div>
           </div>

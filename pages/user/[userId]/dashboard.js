@@ -32,6 +32,7 @@ import { useWrapper } from "../../../src/context/wrapperContext";
 import ReportedPostItem from "../../../src/components/group/ReportedPostItem";
 import BoostedPostItem from "../../../src/components/group/BoostedPostItem";
 import { listBoostedPostByStatus } from "../../../src/graphql-custom/boost/queries";
+import Link from "next/link";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -824,11 +825,13 @@ const Dashboard = ({ ssrData }) => {
                       <div className="flex items-center justify-center h-80">
                         <p className="text-sm">
                           Уучлаарай та пост илгээгээгүй байна.&nbsp;
-                          <a rel="noreferrer" href="/post/add" target="_blank">
-                            <strong className="text-[#0000EE]">
-                              ЭНД &nbsp;
-                            </strong>
-                          </a>
+                          <Link href="/post/add">
+                            <a rel="noreferrer" target="_blank">
+                              <strong className="text-[#0000EE]">
+                                ЭНД &nbsp;
+                              </strong>
+                            </a>
+                          </Link>
                           дарж пост оруулна уу!
                         </p>
                       </div>
@@ -924,11 +927,13 @@ const Dashboard = ({ ssrData }) => {
                       <div className="flex items-center justify-center h-80">
                         <p className="text-sm">
                           Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
-                          <a rel="noreferrer" href="/help/ads" target="_blank">
-                            <strong className="text-[#0000EE]">
-                              ЭНД &nbsp;
-                            </strong>
-                          </a>
+                          <Link href="/help/ads">
+                            <a rel="noreferrer" target="_blank">
+                              <strong className="text-[#0000EE]">
+                                ЭНД &nbsp;
+                              </strong>
+                            </a>
+                          </Link>
                           дарж дэлгэрэнгүй мэдээлэл авна уу!
                         </p>
                       </div>

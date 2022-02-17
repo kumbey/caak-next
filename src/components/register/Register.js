@@ -178,6 +178,7 @@ const Register = () => {
             errorMessage={condition ? errors.phoneNumber : errors.email}
             onChange={handleChange}
             placeholder={`${condition ? "Утасны дугаар" : "Имэйл хаяг"}`}
+            inputMode={`${condition ? "tel" : "email"}`}
             className={
               "border border-caak-titaniumwhite h-[44px] mt-[8px] bg-caak-liquidnitrogen hover:bg-white"
             }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import ReactTooltip from "react-tooltip";
 
 import {
   generateFileUrl,
@@ -14,8 +14,6 @@ import { DateTime } from "luxon";
 
 const BoostedPostItem = ({ imageSrc, post, video }) => {
   const router = useRouter();
-
-  const [loading, setLoading] = useState(false);
 
   const convertDateTime = (date, seperator, noTime, noSec) => {
     const Date = DateTime.fromISO(date);
@@ -129,34 +127,71 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
       </td>
       <td>
         <div className="flex text-sm text-caak-darkBlue w-[166px] ">
-          <div className="flex items-center mr-5">
+          <div className="flex items-center mr-5" data-tip data-for="reachtTip">
             <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.post.totals.reach ? kFormatter(post.post.totals.reach) : 0}
             </p>
+            <ReactTooltip
+              id="reachtTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-50"
+            >
+              <p className="text-11px text-white ">Үзэлтийн тоо</p>
+            </ReactTooltip>
           </div>
-          <div className="flex items-center mr-5">
+          <div className="flex items-center mr-5" data-tip data-for="viewTip">
             <span className="  icon-fi-rs-clicked-o text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.post.totals.views ? kFormatter(post.post.totals.views) : 0}
             </p>
+            <ReactTooltip
+              id="viewTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-50"
+            >
+              <p className="text-11px text-white ">Даралтын тоо</p>
+            </ReactTooltip>
           </div>
 
-          <div className="flex items-center mr-5">
+          <div className="flex items-center mr-5" data-tip data-for="caakTip">
             <span className=" icon-fi-rs-rock-i text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.post.totals.reactions
                 ? kFormatter(post.post.totals.reactions)
                 : 0}
             </p>
+            <ReactTooltip
+              id="caakTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-50"
+              type="dark"
+            >
+              <p className="text-11px text-white ">Саакын тоо</p>
+            </ReactTooltip>
           </div>
-          <div className="flex items-center mr-5">
+          <div
+            className="flex items-center mr-5"
+            data-tip
+            data-for="commentTip"
+          >
             <span className="  icon-fi-rs-comment-o text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
               {post.post.totals.reactions
                 ? kFormatter(post.post.totals.comments)
                 : 0}
             </p>
+            <ReactTooltip
+              id="commentTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-50"
+            >
+              <p className="text-11px text-white ">Сэтгэгдлийн тоо</p>
+            </ReactTooltip>
           </div>
         </div>
       </td>

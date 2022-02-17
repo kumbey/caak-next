@@ -4,7 +4,6 @@ import StatsItem from "../../../src/components/stats";
 
 import { withSSRContext } from "aws-amplify";
 import {
-  checkUser,
   generateFileUrl,
   getGenderImage,
   getReturnData,
@@ -417,7 +416,7 @@ const Dashboard = ({ ssrData }) => {
   const subscrip = () => {
     let authMode = "AWS_IAM";
 
-    if (checkUser(user)) {
+    if (isLogged) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
 
@@ -756,7 +755,7 @@ const Dashboard = ({ ssrData }) => {
                     <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[230px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[210px]">
                       Групп
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack mr-[180px]">

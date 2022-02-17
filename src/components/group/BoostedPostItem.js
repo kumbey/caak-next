@@ -25,20 +25,6 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
     return `${fullDate} ${noTime ? "" : fullTime}`;
   };
 
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.keyCode === 27) {
-        setIsModalOpen(false);
-      }
-    };
-    document.addEventListener("keydown", handler);
-    return () => {
-      document.removeEventListener("keydown", handler);
-    };
-
-    // eslint-disable-next-line
-  }, []);
-
   return (
     <>
       <td>

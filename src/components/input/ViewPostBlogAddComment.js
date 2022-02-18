@@ -1,19 +1,23 @@
 import Button from "../button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { createComment } from "../../graphql-custom/comment/mutation";
 import { useUser } from "../../context/userContext";
 import { useRouter } from "next/router";
-import { getFileUrl, getGenderImage } from "../../utility/Util";
+import {
+  getFileUrl,
+  getGenderImage,
+  useClickOutSide,
+} from "../../utility/Util";
 import Image from "next/image";
+// import Picker, {SKIN_TONE_MEDIUM_DARK} from "emoji-picker-react";
+import dynamic from "next/dynamic";
+const Picker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
 const ViewPostBlogAddComment = ({
   postId,
-  comments,
   replyUserId,
-  commentInputValue,
-  setCommentInputValue,
   setIsActive,
   reply,
   inputClassname,
@@ -23,8 +27,10 @@ const ViewPostBlogAddComment = ({
   const [loading, setLoading] = useState(false);
   const [client, setClient] = useState(false);
   const { user, isLogged } = useUser();
+  const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [focus, setFocus] = useState(false);
+  const emojiPickerRef = useRef(null);
   const router = useRouter();
   const onFocus = () => {
     setFocus(true);
@@ -33,7 +39,7 @@ const ViewPostBlogAddComment = ({
     setFocus(false);
   };
 
-  const maxLength = 1000
+  const maxLength = 1000;
 
   const addComment = async () => {
     if (inputValue) {
@@ -112,6 +118,20 @@ const ViewPostBlogAddComment = ({
     if (typeof document !== "undefined") setClient(true);
   }, []);
 
+  useEffect(() => {
+    const handleUserKeyPress = (e) => {
+      const emojiWrapperClick = !!emojiPickerRef.current?.contains(e.target);
+      if (!emojiWrapperClick) {
+        setIsEmojiPickerVisible(false);
+      }
+    };
+    window.addEventListener("mousedown", handleUserKeyPress);
+
+    return () => {
+      window.removeEventListener("mousedown", handleUserKeyPress);
+    };
+  }, []);
+
   return client ? (
     <div className={`${rootContainerClassname ? rootContainerClassname : ""}`}>
       {isLogged && (
@@ -142,9 +162,28 @@ const ViewPostBlogAddComment = ({
       <div
         className={`${
           containerClassname ? containerClassname : ""
-        } flex flex-col w-full bg-white mt-[10px] border border-caak-titaniumwhite rounded-square mb-[24px]`}
+        } flex flex-col w-full bg-white mt-[10px] border border-caak-titaniumwhite rounded-square mb-[24px] relative`}
       >
         <div className="relative">
+          <div
+            ref={emojiPickerRef}
+            className={`${isEmojiPickerVisible ? "" : "hidden"} absolute bottom-[0] right-0 z-[4]`}
+          >
+              <Picker
+                pickerStyle={{ height: "300px", width: "280px" }}
+                disableSkinTonePicker={true}
+                onEmojiClick={(e, emojiObject) => {
+                  const emoji = emojiObject.emoji;
+                  setInputValue(inputValue + emoji);
+                }}
+                disableAutoFocus={true}
+                groupNames={{
+                  smileys_people: "Хүмүүс",
+                  recently_used: "Сүүлд хэрэглэсэн",
+                }}
+                native
+              />
+          </div>
           <textarea
             maxLength={maxLength}
             onFocus={onFocus}
@@ -157,9 +196,9 @@ const ViewPostBlogAddComment = ({
             onChange={(e) => setInputValue(e.target.value)}
             rows={3}
           />
-          {
-            inputValue.length > 0 && <p className="absolute text-black z-3 bottom-1 text-[12px] right-3">{`${inputValue.length} / ${maxLength}`}</p>
-          }
+          {inputValue.length > 0 && (
+            <p className="absolute text-black z-3 bottom-1 text-[12px] right-3">{`${inputValue.length} / ${maxLength}`}</p>
+          )}
         </div>
         <div
           className={
@@ -190,15 +229,21 @@ const ViewPostBlogAddComment = ({
           {/*    }*/}
           {/*  />*/}
           {/*</div>*/}
-          {/*<div*/}
-          {/*  className={*/}
-          {/*    "flex items-center justify-center w-[20px] h-[20px] ml-[12px] cursor-pointer"*/}
-          {/*  }*/}
-          {/*>*/}
-          {/*  <span*/}
-          {/*    className={"icon-fi-rs-smile text-[18px] text-caak-generalblack"}*/}
-          {/*  />*/}
-          {/*</div>*/}
+          <div className={"relative"}>
+            <div
+              onClick={() => setIsEmojiPickerVisible(!isEmojiPickerVisible)}
+              className={
+                "flex items-center justify-center w-[20px] h-[20px] ml-[12px] cursor-pointer"
+              }
+            >
+              <span
+                className={
+                  "icon-fi-rs-smile text-[18px] text-caak-generalblack"
+                }
+              />
+            </div>
+          </div>
+
           <div className={"ml-[17px]"}>
             <Button
               onClick={() => addComment()}

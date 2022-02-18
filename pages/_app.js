@@ -36,6 +36,8 @@ Storage.configure({ level: "public" });
 const MyApp = ({ Component, pageProps }) => {
   const router = useRouter();
   useEffect(() => {
+    //It tracks when page is reloaded
+    gtag.pageview(router.asPath);
     const handleRouteChange = (url) => {
       gtag.pageview(url);
     };
@@ -43,6 +45,7 @@ const MyApp = ({ Component, pageProps }) => {
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
+  //  eslint-disable-next-line
   }, [router.events]);
 
   return (
@@ -68,7 +71,7 @@ const MyApp = ({ Component, pageProps }) => {
       <Script
         dangerouslySetInnerHTML={{
           __html: `
-            _atrk_opts = { atrk_acct:"TDYMh1awVK00EN", domain:"beta.caak.mn",dynamic: true};
+            _atrk_opts = { atrk_acct:"TDYMh1awVK00EN", domain:"caak.mn",dynamic: true};
         (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
           `,
         }}

@@ -254,38 +254,38 @@ export function getRandomInt(max) {
 
 export function generateFileUrl(file) {
   if (file){
-    if(file.bucket.includes("dev")){
-      return (
-        "https://bucket-dev.caak.mn/" +
-        file.level +
-        "/" +
-        file.id +
-        "." +
-        file.ext
-      );
-    }else{
-      return (
-        "https://bucket.caak.mn/" +
-        file.level +
-        "/" +
-        file.id +
-        "." +
-        file.ext
-      );
+    // if(file.bucket.includes("dev")){
+    //   return (
+    //     "https://bucket-dev.caak.mn/" +
+    //     file.level +
+    //     "/" +
+    //     file.id +
+    //     "." +
+    //     file.ext
+    //   );
+    // }else{
+    //   return (
+    //     "https://bucket.caak.mn/" +
+    //     file.level +
+    //     "/" +
+    //     file.id +
+    //     "." +
+    //     file.ext
+    //   );
       
-    }
-  //   return (
-  //     "https://" +
-  //     file.bucket +
-  //     ".s3." +
-  //     file.region +
-  //     ".amazonaws.com/" +
-  //     file.level +
-  //     "/" +
-  //     file.id +
-  //     "." +
-  //     file.ext
-  //   );
+    // }
+    return (
+      "https://" +
+      file.bucket +
+      ".s3." +
+      file.region +
+      ".amazonaws.com/" +
+      file.level +
+      "/" +
+      file.id +
+      "." +
+      file.ext
+    );
   }
 
   return null;

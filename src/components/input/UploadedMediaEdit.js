@@ -258,6 +258,7 @@ const UploadedMediaEdit = ({
   }, [adminTextEditor]);
 
   useEffect(() => {
+    console.log(post.description)
     setSortItems([...post.items]);
   }, [post]);
 
@@ -345,10 +346,10 @@ const UploadedMediaEdit = ({
                 valid_elements:
                   "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
                 extended_valid_elements: [
-                  "p[class=tinymce-p]",
-                  "li[class=tinymce-p]",
-                  "ol[class=tinymce-ol]",
-                  "ul[class=tinymce-ul]",
+                  "p[style|class=tinymce-p]",
+                  "li[style|class=tinymce-p]",
+                  "ol[style|class=tinymce-ol]",
+                  "ul[style|class=tinymce-ul]",
                 ],
                 height: 200,
                 menubar: false,
@@ -583,10 +584,10 @@ const UploadedMediaEdit = ({
                         valid_elements:
                           "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
                         extended_valid_elements: [
-                          "p[class=tinymce-p]",
-                          "li[class=tinymce-p]",
-                          "ol[class=tinymce-ol]",
-                          "ul[class=tinymce-ul]",
+                          "p[style|class=tinymce-p]",
+                          "li[style|class=tinymce-p]",
+                          "ol[style|class=tinymce-ol]",
+                          "ul[style|class=tinymce-ul]",
                         ],
                         height: "100%",
                         menubar: false,

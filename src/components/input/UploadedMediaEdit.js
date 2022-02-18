@@ -24,6 +24,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import CardsWrapper from "./CardsWrapper";
 import SortableCard from "./SortableCard";
 import sanitizeHtml from "sanitize-html";
+import useMediaQuery from "../navigation/useMeduaQuery";
 
 const UploadedMediaEdit = ({
   setPost,
@@ -40,8 +41,8 @@ const UploadedMediaEdit = ({
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [videoDurationError, setVideoDurationError] = useState(false);
-  const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] =
-    useState(false);
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
+  const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] = useState(!isTablet);
   const [allowComment, setAllowComment] = useState(
     post?.commentType ? post.commentType : false
   );
@@ -53,7 +54,7 @@ const UploadedMediaEdit = ({
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
   const [viewDescription, setViewDescription] = useState(
-    post.description ? post.description : false
+    post.description ? post.description : !isTablet
   );
 
   const router = useRouter();
@@ -204,6 +205,12 @@ const UploadedMediaEdit = ({
 
     // eslint-disable-next-line
   }, [post, router, isEditing, selectedGroup]);
+
+  useEffect(() => {
+    setIsImageCaptionSectionVisible(!isTablet)
+    setViewDescription(!isTablet)
+    //eslint-disable-next-line
+  }, [isTablet])
 
   useEffect(() => {
     let cContent;

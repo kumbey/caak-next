@@ -12,7 +12,7 @@ export default function Boost() {
   return (
     <div
       style={{ overflow: open && "hidden" }}
-      className="relative mt-[20px] lg:mt-[103px] "
+      className="relative mt-[20px] lg:mt-[54px]"
     >
       <Head>
         <title>Сурталчилгаа - {Consts.siteMainTitle}</title>
@@ -25,11 +25,11 @@ export default function Boost() {
       <div className="absolute top-0 mt-[54px] w-full flex flex-col items-center">
         <div className="max-w-[1090px] w-full flex flex-col items-center">
           <p className="text-[#2B3A4C] font-semibold lg:text-[56px]">
-            Таны бизнессын хурдасгуур
+            Таны бизнессийн хурдасгуур
           </p>
           <p className="text-[#6C7392] text-[14px] sm:text-[16px] font-medium mt-[15px] lg:mt-[30px] max-w-[532px] text-center">
-            Саак Ads нь хэрэглэгч төвтэй тул таны бизнессын үйл ажиллагааг илүү
-            хүртээмжтэй хэрэглэгчидэд хүргэх юм.
+            Саак Ads нь хэрэглэгч төвтэй тул таны бизнессийн үйл ажиллагааг илүү
+            хүртээмжтэй, оновчтой хүргэх болно.
           </p>
           <div className="flex flex-wrap justify-center gap-[20px] my-[30px] lg:my-[69px]">
             <div className="relative h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]">
@@ -39,8 +39,8 @@ export default function Boost() {
               <p className="text-[16px] font-semibold text-[#2B3A4C] mt-[5px]">
                 <span className="text-[#FF6600]">Пост</span> бүүстлэх
               </p>
-              <p className="text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]">
-                <span className="text-[46px] font-roboto font-medium">₮</span>
+              <p className="text-[#2B3A4C] text-[50px] font-roboto font-bold flex items-center mt-[41px]">
+                <span className="text-[46px] font-medium">₮</span>
                 5.500
               </p>
               <p className="text-[#5D636B] font-medium text-[16px]">1 хоног</p>
@@ -109,8 +109,8 @@ export default function Boost() {
               <p className="text-[16px] font-semibold text-[#2B3A4C] mt-[5px]">
                 <span className="text-[#257CEE]">Pop-Up</span> баннер
               </p>
-              <p className="text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]">
-                <span className="text-[46px] font-roboto font-medium">₮</span>
+              <p className="text-[#2B3A4C] text-[50px] font-roboto font-bold flex items-center mt-[41px]">
+                <span className="text-[46px] font-medium">₮</span>
                 220.000
               </p>
               <p className="text-[#5D636B] font-medium text-[16px]">1 хоног</p>
@@ -142,8 +142,8 @@ export default function Boost() {
               <p className="text-[16px] font-semibold text-[#2B3A4C] mt-[5px]">
                 <span className="text-[#257CEE]">Дагадаг</span> баннер
               </p>
-              <p className="text-[#2B3A4C] text-[50px] font-bold flex items-center mt-[41px]">
-                <span className="text-[46px] font-roboto font-medium">₮</span>
+              <p className="text-[#2B3A4C] text-[50px] font-roboto font-bold flex items-center mt-[41px]">
+                <span className="text-[46px] font-medium">₮</span>
                 165.000
               </p>
               <p className="text-[#5D636B] font-medium text-[16px]">1 хоног</p>
@@ -167,7 +167,7 @@ export default function Boost() {
                 <li className={"ads-checked-icon list-none"}>JPEG,GIF, PNG</li>
               </ul>
             </div>
-            <div className="flex flex-row w-full justify-between mt-[20px] lg:mt-[40px] px-[5px] md:px-[22px]">
+            <div className="flex flex-col mx-[10px] md:mx-0 md:flex-row w-full justify-between mt-[20px] lg:mt-[40px] px-[5px] md:px-[22px]">
               <div>
                 <ul className="list-decimal text-[14px] text-[#0D1026] list-inside pl-0">
                   <p className="text-[#E60033] flex items-center font-semibold text-[16px]">
@@ -188,13 +188,13 @@ export default function Boost() {
                   </li>
                 </ul>
               </div>
-              <div>
+              <div className="mt-[20px] md:mt-0">
                 <p className="text-[14px] md:text-[16px] font-semibold text-[#21293C] flex items-center">
-                  <span className="icon-fi-rs-phone text-[18px] mr-[10px]" />
+                  <span className="icon-fi-rs-phone-thick text-[18px] mr-[10px]" />
                   72728008, 99093445
                 </p>
                 <p className="text-[14px] md:text-[16px] font-semibold text-[#21293C] flex items-center">
-                  <span className="icon-fi-rs-mail text-[18px] mr-[10px]" />
+                  <span className="icon-fi-rs-mail-thick text-[18px] mr-[10px]" />
                   marketing@caak.mn
                 </p>
               </div>

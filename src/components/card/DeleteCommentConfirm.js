@@ -1,4 +1,4 @@
-import { API, graphqlOperation } from "aws-amplify";
+import { API } from "aws-amplify";
 import { useUser } from "../../context/userContext";
 import { deleteComment } from "../../graphql-custom/comment/mutation";
 

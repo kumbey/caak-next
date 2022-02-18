@@ -825,13 +825,16 @@ const Dashboard = ({ ssrData }) => {
                       <div className="flex items-center justify-center h-80">
                         <p className="text-sm">
                           Уучлаарай та пост илгээгээгүй байна.&nbsp;
-                          <Link href="/post/add">
-                            <a rel="noreferrer" target="_blank">
-                              <strong className="text-[#0000EE]">
-                                ЭНД &nbsp;
-                              </strong>
-                            </a>
-                          </Link>
+                          <strong
+                            onClick={() =>
+                              router.push("/post/add", undefined, {
+                                shallow: false,
+                              })
+                            }
+                            className="text-[#0000EE] cursor-pointer"
+                          >
+                            ЭНД &nbsp;
+                          </strong>
                           дарж пост оруулна уу!
                         </p>
                       </div>
@@ -927,13 +930,16 @@ const Dashboard = ({ ssrData }) => {
                       <div className="flex items-center justify-center h-80">
                         <p className="text-sm">
                           Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
-                          <Link href="/help/ads">
-                            <a rel="noreferrer" target="_blank">
-                              <strong className="text-[#0000EE]">
-                                ЭНД &nbsp;
-                              </strong>
-                            </a>
-                          </Link>
+                          <strong
+                            onClick={() =>
+                              router.push("/help/ads", undefined, {
+                                shallow: false,
+                              })
+                            }
+                            className="text-[#0000EE] cursor-pointer"
+                          >
+                            ЭНД &nbsp;
+                          </strong>
                           дарж дэлгэрэнгүй мэдээлэл авна уу!
                         </p>
                       </div>

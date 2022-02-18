@@ -41,23 +41,22 @@ export default function AboutCaakAds({ open, setOpen }) {
               </p>
               <span
                 onClick={() => setOpen(false)}
-                className="icon-fi-rs-close cursor-pointer w-[30px] text-[11px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
+                className="icon-fi-rs-close cursor-pointer text-[#21293C] w-[30px] text-[11.6px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
               />
             </div>
             <div className="w-full bg-[#ECECEF] px-[30px] pb-[49px] flex flex-col items-center">
-              <div className="flex flex-col md:flex-row items-center justify-between w-full mt-[38px]">
-                <span className="w-[210px] hidden lg:block" />
+              <div className="relative flex flex-col md:flex-row items-center justify-center w-full mt-[38px]">
                 <p className="text-[#21293C] text-[16px] md:text-[20px] font-semibold">
                   Нүүр хуудсанд харагдах байдал
                 </p>
-                <div className="bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
+                <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
                   {data.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
                         className={`${
                           selected === index ? "bg-white" : ""
-                        } w-[100px] m-[6px] cursor-pointer h-[30px] rounded-[6px] flex items-center justify-center`}
+                        } w-[100px] m-[6px] text-[14px] font-medium text-[#2B3A4C] cursor-pointer h-[30px] rounded-[6px] flex items-center justify-center`}
                         key={index}
                       >
                         {data.title}
@@ -73,7 +72,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               />
             </div>
             <p className="w-full px-[40px] h-full flex items-center text-[16px] mt-[20px] mb-[14px]">
-              <span className="font-bold mr-[5px]">Хэмжээ:</span> 150х150,
+              <span className="font-bold mr-[5px] text-[#21293C]">Хэмжээ:</span> 150х150,
               500x500
             </p>
           </div>
@@ -93,7 +92,7 @@ export default function AboutCaakAds({ open, setOpen }) {
             <p className="text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]">
               Баннерын байршил:
             </p>
-            <ul className="w-full flex flex-col pl-0 text-[14px] font-medium mt-[10px]">
+            <ul className="w-full flex flex-col pl-0 text-[#5D636B] text-[14px] font-medium mt-[10px]">
               <li className={"ads-checked-icon list-none"}>Нүүр хуудасны голд</li>
               <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
@@ -112,23 +111,22 @@ export default function AboutCaakAds({ open, setOpen }) {
               </p>
               <span
                 onClick={() => setOpen(false)}
-                className="icon-fi-rs-close cursor-pointer w-[30px] text-[11px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
+                className="icon-fi-rs-close text-[#21293C] cursor-pointer w-[30px] text-[11.6px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
               />
             </div>
             <div className="w-full bg-[#ECECEF] px-[30px] pb-[49px] flex flex-col items-center">
-              <div className="flex flex-col md:flex-row items-center justify-between w-full mt-[38px]">
-                <span className="w-[210px] hidden lg:block" />
+              <div className="relative flex flex-col md:flex-row items-center justify-center w-full mt-[38px]">
                 <p className="text-[#21293C] text-[16px] md:text-[20px] font-semibold">
                   Нүүр хуудсанд харагдах байдал
                 </p>
-                <div className="bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
+                <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
                   {data.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
                         className={`${
                           selected === index ? "bg-white" : ""
-                        } w-[100px] m-[6px] cursor-pointer h-[30px] rounded-[6px] flex items-center justify-center`}
+                        } w-[100px] m-[6px] text-[14px] font-medium text-[#2B3A4C]  cursor-pointer h-[30px] rounded-[6px] flex items-center justify-center`}
                         key={index}
                       >
                         {data.title}
@@ -144,7 +142,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               />
             </div>
             <p className="w-full px-[40px] h-full flex items-center text-[16px] mt-[20px] mb-[14px]">
-              <span className="font-bold mr-[5px]">Хэмжээ:</span> 320х400
+              <span className="font-bold mr-[5px] text-[#21293C]">Хэмжээ:</span> 320х400
             </p>
           </div>
           <div className="sticky px-[10px] sm:px-[20px] bottom-[10px] sm:bottom-[40px] left-2 sm:float-right sm:mr-[30px] bg-white w-[200px] sm:w-[320px] pb-[18px] rounded-[6px] flex flex-col items-center">
@@ -163,7 +161,7 @@ export default function AboutCaakAds({ open, setOpen }) {
             <p className="text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]">
               Баннерын байршил:
             </p>
-            <ul className="w-full flex flex-col pl-0 text-[14px] font-medium mt-[10px]">
+            <ul className="w-full flex flex-col pl-0 text-[#5D636B] text-[14px] font-medium mt-[10px]">
               <li className={"ads-checked-icon list-none"}>Нүүр хуудасны баруун талд</li>
               <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
@@ -182,23 +180,22 @@ export default function AboutCaakAds({ open, setOpen }) {
               </p>
               <span
                 onClick={() => setOpen(false)}
-                className="icon-fi-rs-close cursor-pointer w-[30px] text-[11px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
+                className="icon-fi-rs-close text-[#21293C] cursor-pointer w-[30px] text-[11.6px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
               />
             </div>
             <div className="w-full bg-[#ECECEF] px-[30px] pb-[49px] flex flex-col items-center">
-              <div className="flex flex-col md:flex-row items-center justify-between w-full mt-[38px]">
-                <span className="w-[210px] hidden lg:block" />
+              <div className="relative flex flex-col md:flex-row items-center justify-center w-full mt-[38px]">
                 <p className="text-[#21293C] text-[16px] sm:text-[20px] font-semibold">
                   Харагдах байдал
                 </p>
-                <div className="bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
+                <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
                   {data1.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
                         className={`${
                           selected === index ? "bg-white" : ""
-                        } m-[6px] px-[4px] lg:px-[14px] cursor-pointer text-center lg:h-[30px] rounded-[6px] flex items-center justify-center`}
+                        } m-[6px] px-[4px] text-[14px] font-medium text-[#2B3A4C] lg:px-[14px] cursor-pointer text-center lg:h-[30px] rounded-[6px] flex items-center justify-center`}
                         key={index}
                       >
                         {data.title}
@@ -214,14 +211,14 @@ export default function AboutCaakAds({ open, setOpen }) {
               />
             </div>
             <p className="w-full px-[15px] md:px-[40px] h-full flex items-center text-[14px] md:text-[16px] mt-[20px] mb-[14px]">
-              <span className="font-bold mr-[5px]">
+              <span className="font-bold mr-[5px] text-[#21293C]">
                 Нийт постонд багтах зургийн тоо:
               </span>{" "}
               30ш
             </p>
           </div>
-          <div className="sticky px-[10px] sm:px-[20px] bottom-[10px] sm:bottom-[40px] left-2 sm:float-right sm:mr-[30px] bg-white w-[200px] sm:w-[320px] pb-[18px] rounded-[6px] flex flex-col items-center">
-            <p className="text-[#2B3A4C] text-[18px] lg:text-[30px] h-[36px] font-semibold">
+          <div className="sticky bottom-[10px] sm:bottom-[40px] left-2 sm:float-right sm:mr-[30px] bg-white w-[200px] sm:w-[320px] pb-[18px] rounded-[6px] flex flex-col items-center">
+            <p className="text-[#2B3A4C] text-[18px] lg:text-[30px] mt-[14px] h-[36px] font-semibold">
               Sponsored Post
             </p>
             <p className="text-[14px] font-semibold">
@@ -233,44 +230,46 @@ export default function AboutCaakAds({ open, setOpen }) {
               5.000
             </p>
             <p className="text-[#5D636B]">1 хоног</p>
-            <div className="w-full hidden sm:block h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
-              <ul>
-                <li>
-                  <p className="text-[#5D636B] font-medium text-[14px]">
-                    10 хоног бол{" "}
-                    <span className="text-[#FF6600] font-semibold">
-                      45,000 төг
-                    </span>
-                  </p>
-                </li>
-                <li>
-                  <p className="text-[#5D636B] font-medium text-[14px]">
-                    30 хоног бол{" "}
-                    <span className="text-[#FF6600] font-semibold">
-                      80,000 төг
-                    </span>
-                  </p>
-                </li>
-                <li>
-                  <p className="text-[#5D636B] font-medium text-[14px]">
-                    60 хоног бол{" "}
-                    <span className="text-[#FF6600] font-semibold">
-                      100,000 төг
-                    </span>
-                  </p>
-                </li>
-              </ul>
+            <div className="w-full px-[10px] sm:px-[20px]">
+              <div className="w-full hidden sm:block h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px]">
+                <ul className="flex flex-col h-full justify-center">
+                  <li>
+                    <p className="text-[#5D636B] font-medium text-[14px]">
+                      10 хоног бол{" "}
+                      <span className="text-[#FF6600] font-semibold">
+                        45,000 төг
+                      </span>
+                    </p>
+                  </li>
+                  <li>
+                    <p className="text-[#5D636B] font-medium text-[14px]">
+                      30 хоног бол{" "}
+                      <span className="text-[#FF6600] font-semibold">
+                        80,000 төг
+                      </span>
+                    </p>
+                  </li>
+                  <li>
+                    <p className="text-[#5D636B] font-medium text-[14px]">
+                      60 хоног бол{" "}
+                      <span className="text-[#FF6600] font-semibold">
+                        100,000 төг
+                      </span>
+                    </p>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <p className="text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]">
+            <p className="text-[#2B3A4C] px-[10px] sm:px-[20px] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]">
               Постын байршил:
             </p>
-            <ul className="flex flex-col w-full pl-0 text-medium text-[14px] text-[#5D636B]">
+            <ul className="flex flex-col w-full px-[10px] text-[#5D636B] sm:px-[20px] pl-0 text-medium text-[14px] text-[#5D636B]">
               <li className={"ads-checked-icon list-none"}>Нүүр хуудасны постон дунд</li>
               <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудас дотор</li>
               <li className={"ads-checked-icon list-none"}>Группуудын постон дунд</li>
               <li className={"ads-plus-icon list-none"}>Сонирхол, нас, хүйс сонгож бүүстлэх</li>
             </ul>
-            <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
+            <button className="bg-caak-primary w-[282px] h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах
             </button>
           </div>

@@ -33,6 +33,7 @@ import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg"
 import ConditionalLink from "../../../../src/components/conditionalLink";
 import { listBoostedPostByStatusOrderByEndDate } from "../../../../src/graphql-custom/post/queries";
 import Sponsored from "../../../../src/components/viewpost/Sponsored";
+import sanitizeHtml from "sanitize-html";
 
 export async function getServerSideProps({ req, query }) {
   const host = req.headers.host;
@@ -208,7 +209,11 @@ const Post = ({ ssrData }) => {
           <meta name="twitter:title" content={ssrData.post.title} />
           <meta
             name="twitter:description"
-            content={decode(ssrData.post.description)}
+            content={sanitizeHtml(ssrData.post.description, {
+              allowedTags: [],
+              allowedAttributes: {},
+              allowedIframeHostnames: [],
+            })}
           />
           <meta
             name="twitter:url"
@@ -224,10 +229,21 @@ const Post = ({ ssrData }) => {
           />
 
           {/* for Facebook  */}
-          <meta name="description" content={decode(ssrData.post.description)} />
+          <meta
+            name="description"
+            content={sanitizeHtml(ssrData.post.description, {
+              allowedTags: [],
+              allowedAttributes: {},
+              allowedIframeHostnames: [],
+            })}
+          />
           <meta
             property="og:description"
-            content={decode(ssrData.post.description)}
+            content={sanitizeHtml(ssrData.post.description, {
+              allowedTags: [],
+              allowedAttributes: {},
+              allowedIframeHostnames: [],
+            })}
           />
           <meta property="og:title" content={ssrData.post.title} />
           <meta property="og:type" content="website" />

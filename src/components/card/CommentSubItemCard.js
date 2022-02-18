@@ -206,13 +206,16 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
 
                 <div className={"flex flex-row items-center justify-between"}>
                   <div className={"flex flex-col justify-center"}>
-                    <p
+                    <div
                       className={
-                        "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px]"
+                        "text-[15px] tracking-[0.23px] leading-[18px]"
                       }
                     >
-                      {subComment.comment}
-                    </p>
+                      <p className={"inline text-caak-bleudefrance"}>@{subComment.comment.split(/^(?:^|\W)@(\w+)(?!\w)?/)[1]}</p>
+                      <p className={"inline text-caak-generalblack"}>
+                        {subComment.comment.split(/^(?:^|\W)@(\w+)(?!\w)?/)[2]}
+                      </p>
+                    </div>
                     <div
                       className={
                         "flex flex-row text-caak-darkBlue items-center mt-[10px] mb-[10px]"

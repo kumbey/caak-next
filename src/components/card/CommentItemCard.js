@@ -12,8 +12,6 @@ import Link from "next/link";
 import DropDown from '../navigation/DropDown'
 import { useClickOutSide } from "../../utility/Util";
 import { useUser } from "../../context/userContext";
-import { API } from "aws-amplify";
-import { deleteComment } from "../../graphql-custom/comment/mutation";
 import DeleteCommentConfirm from "./DeleteCommentConfirm";
 
 const CommentItemCard = ({
@@ -39,38 +37,6 @@ const CommentItemCard = ({
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
-
-  // const deleteComments = async (id) => {
-  //   if (isLogged)
-  //     try {
-  //       // setLoading(true);
-  //       await API.graphql({
-  //         query: deleteComment,
-  //         variables: {
-  //           input: {
-  //             id: id,
-  //           },
-  //         },
-  //       });
-
-  //       // setLoading(false);
-  //     } catch (ex) {
-  //       // setLoading(false);
-  //       console.log(ex);
-  //     }
-  // };
-
-  // const handleDelete = async () => {
-  //   if (!comment.sub) {
-  //     await deleteComments(comment.id);
-  //   } else {
-  //     comment.sub.items.map((sub) => {
-  //       deleteComments(sub.id);
-  //     });
-
-  //     await deleteComments(comment.id);
-  //   }
-  // };
 
   return (
     <div

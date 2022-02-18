@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import {API} from "aws-amplify";
 import {addViewToItem} from "../../graphql-custom/post/mutation";
-import Link from 'next/link'
+import Link from "next/link";
 
 const Sponsored = ({ item }) => {
   const [animationState, setAnimationState] = useState({

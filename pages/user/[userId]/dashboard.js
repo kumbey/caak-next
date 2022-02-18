@@ -4,7 +4,6 @@ import StatsItem from "../../../src/components/stats";
 
 import { withSSRContext } from "aws-amplify";
 import {
-  checkUser,
   generateFileUrl,
   getGenderImage,
   getReturnData,
@@ -33,6 +32,7 @@ import { useWrapper } from "../../../src/context/wrapperContext";
 import ReportedPostItem from "../../../src/components/group/ReportedPostItem";
 import BoostedPostItem from "../../../src/components/group/BoostedPostItem";
 import { listBoostedPostByStatus } from "../../../src/graphql-custom/boost/queries";
+import Link from "next/link";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -417,7 +417,7 @@ const Dashboard = ({ ssrData }) => {
   const subscrip = () => {
     let authMode = "AWS_IAM";
 
-    if (checkUser(user)) {
+    if (isLogged) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
 
@@ -756,10 +756,10 @@ const Dashboard = ({ ssrData }) => {
                     <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[230px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[192px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[250px]">
                       Групп
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[180px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[140px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">
@@ -789,22 +789,24 @@ const Dashboard = ({ ssrData }) => {
 
               {activeIndex === 1 ? (
                 <div className="flex flex-col">
-                  <div className="hidden md:flex mb-[13px]">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
-                      Пост
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
-                      Гишүүн
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
-                      Огноо
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack">
-                      Үйлдэл
-                    </p>
-                  </div>
+                  {pendingPosts.items.length > 0 ? (
+                    <div className="hidden md:flex mb-[13px]">
+                      <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
+                        Пост
+                      </p>
+                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
+                        Гишүүн
+                      </p>
+                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
+                        Огноо
+                      </p>
+                      <p className="font-inter font-normal text-14px text-caak-generalblack">
+                        Үйлдэл
+                      </p>
+                    </div>
+                  ) : null}
                   <InfinitScroller onNext={fetchPending} loading={loading}>
-                    {pendingPosts.items.length > 0 &&
+                    {pendingPosts.items.length > 0 ? (
                       pendingPosts.items.map((pendingPost, index) => {
                         return (
                           <GroupPostItem
@@ -818,7 +820,25 @@ const Dashboard = ({ ssrData }) => {
                             className="ph:mb-4 sm:mb-4"
                           />
                         );
-                      })}
+                      })
+                    ) : (
+                      <div className="flex items-center justify-center h-80">
+                        <p className="text-sm">
+                          Уучлаарай та пост илгээгээгүй байна.&nbsp;
+                          <strong
+                            onClick={() =>
+                              router.push("/post/add", undefined, {
+                                shallow: false,
+                              })
+                            }
+                            className="text-[#0000EE] cursor-pointer"
+                          >
+                            ЭНД &nbsp;
+                          </strong>
+                          дарж пост оруулна уу!
+                        </p>
+                      </div>
+                    )}
                   </InfinitScroller>
                 </div>
               ) : null}
@@ -860,51 +880,70 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 3 ? (
                 <div className="flex flex-col">
                   <InfinitScroller onNext={fetchBoosted} loading={loading}>
-                    <table className="w-full table">
-                      <thead className="">
-                        <tr className="">
-                          <th className=" w-[220px] text-left  mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
-                            Пост
-                          </th>
-                          <th className="text-left w-16 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
-                            Хоног
-                          </th>
-                          <th className="text-left w-40 mr-[14px] font-inter font-normal text-14px text-caak-generalblack">
-                            Эхлэсэн огноо
-                          </th>
-                          <th className="text-left w-40 mr-[14px] font-inter font-normal text-14px text-caak-generalblack">
-                            Дуусах огноо
-                          </th>
-                          <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
-                            Хандалт
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {boostedPosts.items.length > 0 &&
-                          boostedPosts.items.map((boostedPosts, index) => {
-                            return (
-                              <tr
-                                key={index}
-                                className="border-t border-b mb-2"
-                              >
-                                <BoostedPostItem
-                                  type={"user"}
+                    {boostedPosts.items.length > 0 ? (
+                      <table className="w-full table">
+                        <thead className="">
+                          <tr className="">
+                            <th className=" w-[220px] text-left   font-inter font-normal text-14px text-caak-generalblack">
+                              Пост
+                            </th>
+                            <th className="text-left w-16  font-inter font-normal text-14px text-caak-generalblack">
+                              Хоног
+                            </th>
+                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack">
+                              Эхлэсэн огноо
+                            </th>
+                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack">
+                              Дуусах огноо
+                            </th>
+                            <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
+                              Хандалт
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {boostedPosts.items.length > 0 &&
+                            boostedPosts.items.map((boostedPost, index) => {
+                              return (
+                                <tr
                                   key={index}
-                                  imageSrc={
-                                    boostedPosts?.post?.items?.items[0]?.file
-                                  }
-                                  video={boostedPosts?.post?.items?.items[0]?.file?.type?.startsWith(
-                                    "video"
-                                  )}
-                                  post={boostedPosts}
-                                  className="ph:mb-4 sm:mb-4"
-                                />
-                              </tr>
-                            );
-                          })}
-                      </tbody>
-                    </table>
+                                  className="border-t border-b mb-2"
+                                >
+                                  <BoostedPostItem
+                                    type={"user"}
+                                    key={index}
+                                    imageSrc={
+                                      boostedPost?.post?.items?.items[0]?.file
+                                    }
+                                    video={boostedPost?.post?.items?.items[0]?.file?.type?.startsWith(
+                                      "video"
+                                    )}
+                                    post={boostedPost}
+                                    className="ph:mb-4 sm:mb-4"
+                                  />
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <div className="flex items-center justify-center h-80">
+                        <p className="text-sm">
+                          Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
+                          <strong
+                            onClick={() =>
+                              router.push("/help/ads", undefined, {
+                                shallow: false,
+                              })
+                            }
+                            className="text-[#0000EE] cursor-pointer"
+                          >
+                            ЭНД &nbsp;
+                          </strong>
+                          дарж дэлгэрэнгүй мэдээлэл авна уу!
+                        </p>
+                      </div>
+                    )}
                   </InfinitScroller>
                 </div>
               ) : null}

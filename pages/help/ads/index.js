@@ -25,11 +25,11 @@ export default function Boost() {
       <div className="absolute top-0 mt-[54px] w-full flex flex-col items-center">
         <div className="max-w-[1090px] w-full flex flex-col items-center">
           <p className="text-[#2B3A4C] font-semibold lg:text-[56px]">
-            Таны бизнессын хурдасгуур
+            Таны бизнессийн хурдасгуур
           </p>
           <p className="text-[#6C7392] text-[14px] sm:text-[16px] font-medium mt-[15px] lg:mt-[30px] max-w-[532px] text-center">
-            Саак Ads нь хэрэглэгч төвтэй тул таны бизнессын үйл ажиллагааг илүү
-            хүртээмжтэй хэрэглэгчидэд хүргэх юм.
+            Саак Ads нь хэрэглэгч төвтэй тул таны бизнессийн үйл ажиллагааг илүү
+            хүртээмжтэй, оновчтой хүргэх болно.
           </p>
           <div className="flex flex-wrap justify-center gap-[20px] my-[30px] lg:my-[69px]">
             <div className="relative h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]">

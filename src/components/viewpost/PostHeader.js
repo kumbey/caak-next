@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import AnimatedCaakButton from "../button/animatedCaakButton";
 import toast from "react-hot-toast";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
-import { decode } from "html-entities";
 import DropDown from "../navigation/DropDown";
 import PostMoreMenu from "../card/PostMoreMenu";
 import PostDeleteConfirm from "../card/PostDeleteConfirm";
@@ -24,7 +23,8 @@ import {
 } from "../../graphql-custom/GroupUsers/mutation";
 import { useUser } from "../../context/userContext";
 import useMediaQuery from "../navigation/useMeduaQuery";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
+import sanitizeHtml from "sanitize-html";
 
 const PostHeader = ({
   addCommentRef,
@@ -40,7 +40,7 @@ const PostHeader = ({
   const [pathName, setPathName] = useState("");
   const isTablet = useMediaQuery("screen and (max-device-width: 1023px)");
   const [isShareButtonVisible, setIsShareButtonVisible] = useState(!isTablet);
-  const router = useRouter()
+  const router = useRouter();
   const titleMaxCharacters = 160;
   const titleRef = useRef();
   const [isViewMoreTextVisible, setIsViewMoreTextVisible] = useState(
@@ -163,9 +163,7 @@ const PostHeader = ({
               className={"top-10 right-1"}
             />
           </div>
-          {
-        open && <PostDeleteConfirm setOpen={setOpen} post={post}/>
-      }
+          {open && <PostDeleteConfirm setOpen={setOpen} post={post} />}
         </div>
         <div className={"flex flex-col-reverse lg:flex-col px-[24px]"}>
           <div
@@ -284,7 +282,15 @@ const PostHeader = ({
                 !isExpanded ? "truncate-2" : "max-h-[50vh] overflow-y-auto"
               } ${mobile ? "text-white" : "text-caak-generalblack"} `}
             >
-              {item.title && decode(item.title)}
+              {item.title &&
+                sanitizeHtml(item.title, {
+                  allowedTags: [],
+                  allowedAttributes: {},
+                  allowedIframeHostnames: [],
+                  parser: {
+                    decodeEntities: true
+                  }
+                })}
             </p>
             {isViewMoreTextVisible && (
               <p

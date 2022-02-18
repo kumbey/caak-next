@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { listGroups, listGroupByFeatured } from "../../src/graphql/queries";
-import { API, graphqlOperation } from "aws-amplify";
+import React, { useEffect, useState } from "react";
+import {
+  listCategorys,
+  listGroupByFeatured,
+  listGroups,
+} from "../../src/graphql/queries";
+import { API } from "aws-amplify";
 import Cover from "../../public/assets/images/groups.jpeg";
 import SearchCardGroup from "../../src/components/card/SearchCardGroup";
 import Loader from "../../src/components/loader";
-import { listCategorys } from "../../src/graphql/queries";
 import { useUser } from "../../src/context/userContext";
-import useWindowSize from "../../src/hooks/useWindowSize";
 import { useWrapper } from "../../src/context/wrapperContext";
 import Head from "next/head";
 import Consts from "../../src/utility/Consts";
@@ -17,101 +19,144 @@ const button = [
     title: "Зөвхөн таньд",
     icon: "icon-fi-rs-love-f",
     icon1: "icon-fi-rs-love-o",
-    id: 1,
+    id: 0,
   },
   {
     title: "Трэнд болж буй",
     icon: "icon-fi-rs-flash-f",
     icon1: "icon-fi-rs-flash-o",
-    id: 2,
+    id: 1,
   },
   {
     title: "Бидний санал болгосон",
     icon: "icon-fi-rs-new-f",
     icon1: "icon-fi-rs-new-o",
-    id: 3,
+    id: 2,
   },
 ];
 
 export default function AllGroups() {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [groups, setGroups] = useState([]);
-  const [id, setId] = useState(null);
+  const [render, setRender] = useState(0);
+  const [filteredByCat, setFilteredByCat] = useState([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState([]);
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState("");
   const { isLogged } = useUser();
   const { setNavBarTransparent, setGroupIcon } = useWrapper();
 
-  const fetchGroups = async () => {
+  const fetchCategory = async () => {
     try {
-      const resp = await API.graphql({
-        query: listGroups,
-        variables: {
-          filter: id === null ? null : { category_id: { eq: id } },
-        },
-        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      let resp = await API.graphql({
+        query: listCategorys,
+        authMode: "AWS_IAM",
       });
+      resp = getReturnData(resp);
+      const sorted = sortByName(resp.items);
+      setCategory(sorted);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
-      const respFeatured = await API.graphql({
+  const sortByName = (arr) => {
+    arr.sort(function (a, b) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    return arr;
+  };
+
+  const fetchFeaturedGroups = async () => {
+    try {
+      setLoading(true);
+      let resp = await API.graphql({
         query: listGroupByFeatured,
         variables: {
           featured: "true",
         },
         authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
-
-      activeIndex === 3
-        ?
-        setGroups(respFeatured.data.listGroupByFeatured.items)
-        :
-        activeIndex === 2
-        ?
-        setGroups(
-          getReturnData(resp).items.sort(function (a, b) {
-            return b.aura - a.aura;
-          })
-        )
-        :
-        setGroups(resp.data.listGroups.items)
-      
-      setLoading(false)
-        
+      resp = getReturnData(resp);
+      setGroups(resp.items);
+      setRender(render + 1);
+      setLoading(false);
     } catch (ex) {
       console.log(ex);
     }
   };
 
-  useEffect(() => {
-    fetchGroups();
-    // eslint-disable-next-line
-  }, [isLogged, id, groups, activeIndex]);
+  const fetchGroups = async () => {
+    try {
+      setLoading(true);
+      let resp = await API.graphql({
+        query: listGroups,
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+      });
+      resp = getReturnData(resp);
+      const sorted = sortByName(resp.items);
+      setGroups(sorted);
+      setLoading(false);
+      return resp.items;
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const selectHandler = (id) => {
+    if (selectedCategoryId.length === 0)
+      setSelectedCategoryId([...selectedCategoryId, id]);
+    if (selectedCategoryId.includes(id)) {
+      setSelectedCategoryId(selectedCategoryId.filter((item) => item !== id));
+    } else {
+      setSelectedCategoryId([...selectedCategoryId, id]);
+    }
+  };
 
   useEffect(() => {
-    setGroupIcon(true);
-    return ()=> {
-      setGroupIcon(false)
+    if (selectedCategoryId.length > 0) {
+      const duplicates = groups.filter(function (val) {
+        return selectedCategoryId.indexOf(val.category_id) !== -1;
+      });
+      const sorted = sortByName(duplicates)
+      setFilteredByCat(sorted);
     }
     //eslint-disable-next-line
-  }, []);
+  }, [selectedCategoryId]);
 
   useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const resp = await API.graphql({
-          query: listCategorys,
-          authMode: "AWS_IAM",
+    if (activeIndex === 0) {
+      fetchGroups();
+    } else if (activeIndex === 1) {
+      setLoading(true);
+      fetchGroups().then((e) => {
+        const grps = e.sort(function (a, b) {
+          return b.aura - a.aura;
         });
-        setCategory(resp.data.listCategorys.items);
-      } catch (ex) {
-        console.log(ex);
-      }
-    };
-    fetchCategory();
-  }, [])
+        setGroups(grps);
+        setRender(render + 1);
+        setLoading(false);
+      });
+    } else if (activeIndex === 2) {
+      fetchFeaturedGroups();
+    }
+    //eslint-disable-next-line
+  }, [activeIndex]);
 
   useEffect(() => {
+    fetchCategory();
     setNavBarTransparent(true);
+    setGroupIcon(true);
+    return () => {
+      setGroupIcon(false);
+    };
     //eslint-disable-next-line
   }, []);
 
@@ -129,7 +174,7 @@ export default function AllGroups() {
       document.removeEventListener("scroll", listener);
     };
   }, [setNavBarTransparent]);
-  
+
   return (
     <>
       <Head>
@@ -143,10 +188,11 @@ export default function AllGroups() {
               Өөрийн дуртай группүүддээ нэгдээрэй!
             </p>
             <input
-            style={{color: "#6C7392"}}
+              style={{ color: "#6C7392" }}
               className="w-[300px] hidden sm:block sm:w-[400px] xl:w-[550px] h-[44px] bg-white rounded-[4px] mt-[10px] md:mt-[20px] xl:mt-[30px] text-[#6C7392] px-[25px] "
               placeholder="Хайлт хийх"
-              onChange={(e) => setValue(e)}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
             />
           </div>
         </div>
@@ -159,7 +205,6 @@ export default function AllGroups() {
                     key={title}
                     onClick={() => {
                       setActiveIndex(id);
-                      setId(null);
                     }}
                     className={`px-[20px] py-[7px] lg:px-[20px] rounded-[8px] cursor-pointer mr-[8px] bg-${
                       activeIndex === id && "white"
@@ -185,7 +230,9 @@ export default function AllGroups() {
           <div className="flex flex-row">
             <div className="w-full mt-[20px]">
               {loading ? (
-                <Loader className={`bg-caak-primary self-center`} />
+                <div className={"w-full flex justify-center"}>
+                  <Loader className={`bg-caak-primary self-center`} />
+                </div>
               ) : (
                 <div
                   style={{
@@ -194,9 +241,25 @@ export default function AllGroups() {
                   }}
                   className={"groupCardsGrid"}
                 >
-                  {groups.map((data, index) => {
-                    return <SearchCardGroup all key={index} result={data} />;
-                  })}
+                  {selectedCategoryId.length > 0
+                    ? filteredByCat
+                        .filter((item) =>
+                          item.name.toLowerCase().includes(value.toLowerCase())
+                        )
+                        .map((data, index) => {
+                          return (
+                            <SearchCardGroup all key={index} result={data} />
+                          );
+                        })
+                    : groups
+                        .filter((item) =>
+                          item.name.toLowerCase().includes(value.toLowerCase())
+                        )
+                        .map((data, index) => {
+                          return (
+                            <SearchCardGroup all key={index} result={data} />
+                          );
+                        })}
                 </div>
               )}
             </div>
@@ -209,12 +272,18 @@ export default function AllGroups() {
                   return (
                     <div
                       onClick={() => {
-                        setId(data.id);
-                        setActiveIndex(0);
+                        selectHandler(data.id);
+                        // if (selectedCategoryId === data.id) {
+                        //   setSelectedCategoryId(null);
+                        // } else {
+                        //   setSelectedCategoryId(data.id);
+                        // }
                       }}
                       key={index}
                       className={`py-[9.5px] pl-[18px] font-inter text-[15px] text-[#0D1026] flex flex-row cursor-pointer ${
-                        data.id === id ? "bg-[#E4E4E5] text-[#21293C]" : "transparent"
+                        selectedCategoryId.some((cat) => cat === data.id)
+                          ? "bg-[#E4E4E5] text-[#21293C]"
+                          : "transparent"
                       }`}
                     >
                       <span>{data.icon}</span>

@@ -465,7 +465,7 @@ const Video = ({
           </div>
         )}
 
-        {durationIndicator && (
+        {durationIndicator && videoDuration <= 60 && (
           <ItemsCounterCard
             containerClassname={"left-[10px]"}
             duration={videoDuration}

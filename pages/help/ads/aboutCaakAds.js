@@ -41,7 +41,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               </p>
               <span
                 onClick={() => setOpen(false)}
-                className="icon-fi-rs-close cursor-pointer text-[#21293C] w-[30px] text-[11.6px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
+                className="icon-fi-rs-close cursor-pointer text-[#21293C] w-[30px] text-[12px] flex items-center justify-center h-[30px] rounded-full bg-[#E4E4E5]"
               />
             </div>
             <div className="w-full bg-[#ECECEF] px-[30px] pb-[49px] flex flex-col items-center">
@@ -76,17 +76,17 @@ export default function AboutCaakAds({ open, setOpen }) {
               500x500
             </p>
           </div>
-          <div className="sticky px-[10px] sm:px-[20px] bottom-[10px] sm:bottom-[40px] left-2 sm:float-right sm:mr-[30px] bg-white w-[200px] sm:w-[320px] pb-[18px] rounded-[6px] flex flex-col items-center">
+          <div className="sticky px-[10px] sm:px-[20px] bottom-[10px] sm:bottom-[40px] left-2 sm:float-right sm:mr-[30px] bg-white w-[200px] sm:w-[260px] pb-[18px] rounded-[6px] flex flex-col items-center">
             <p className="text-[#2B3A4C] text-[38px] h-[46px] font-semibold">
               A1
             </p>
-            <p className="text-[14px] font-semibold">
+            <p className="text-[14px] font-semibold text-[#2B3A4C]">
               <span className="text-[#257CEE]">Pop-Up</span> баннер
             </p>
             <span className="w-full h-[1px] bg-[#E4E4E5] mt-[14px]" />
-            <p className="text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[25px]">
+            <p className="text-[#2B3A4C] text-[22px] sm:text-[40px] sm:h-[42px] font-bold mt-[25px]">
               <span className="text-[20px] sm:text-[38px] font-medium">₮</span>
-              165.000
+              220.000
             </p>
             <p className="text-[#5D636B]">1 хоног</p>
             <p className="text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]">
@@ -145,17 +145,17 @@ export default function AboutCaakAds({ open, setOpen }) {
               <span className="font-bold mr-[5px] text-[#21293C]">Хэмжээ:</span> 320х400
             </p>
           </div>
-          <div className="sticky px-[10px] sm:px-[20px] bottom-[10px] sm:bottom-[40px] left-2 sm:float-right sm:mr-[30px] bg-white w-[200px] sm:w-[320px] pb-[18px] rounded-[6px] flex flex-col items-center">
+          <div className="sticky px-[10px] sm:px-[20px] bottom-[10px] sm:bottom-[40px] left-2 sm:float-right sm:mr-[30px] bg-white w-[200px] sm:w-[260px] pb-[18px] rounded-[6px] flex flex-col items-center">
             <p className="text-[#2B3A4C] text-[38px] h-[46px] font-semibold">
               A2
             </p>
-            <p className="text-[14px] font-semibold">
+            <p className="text-[14px] text-[#2B3A4C] font-semibold">
               <span className="text-[#257CEE]">Дагадаг</span> баннер
             </p>
             <span className="w-full h-[1px] bg-[#E4E4E5] mt-[14px]" />
-            <p className="text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[25px]">
+            <p className="text-[#2B3A4C] text-[22px] sm:text-[40px] h-[42px] font-bold mt-[25px]">
               <span className="text-[20px] sm:text-[38px] font-medium">₮</span>
-              110.000
+              165.000
             </p>
             <p className="text-[#5D636B]">1 хоног</p>
             <p className="text-[#2B3A4C] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]">
@@ -175,7 +175,7 @@ export default function AboutCaakAds({ open, setOpen }) {
           <div className="about_popup_banner_mobile lg:about_popup_banner flex flex-col items-center rounded-[12px]">
             <div className="flex flex-row items-center w-full justify-between px-[16px]">
               <span />
-              <p className="text-[20px] font-semibold mt-[20px] mb-[17px]">
+              <p className="text-[20px] text-[#2B3A4C] font-semibold mt-[20px] mb-[17px]">
                 <span className="text-[#FF6600]">Sponsored post</span> жишээ
               </p>
               <span

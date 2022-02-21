@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useWrapper } from "../../context/wrapperContext";
 import { useRouter } from "next/router";
 import { useUser } from "../../context/userContext";
-import useDeviceDetect from '../../hooks/useDeviceDetect'
+import useMediaQuery from "./useMeduaQuery";
 
 const FeedSortButtons = ({
   direction,
@@ -29,17 +29,19 @@ const FeedSortButtons = ({
   const router = useRouter();
   const { user: signedUser, isLogged } = useUser();
   const [sortArray, setSortArray] = useState(items);
-  const { isMobile } = useDeviceDetect();
+  
+  const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
 
   useEffect(() => {
     if (!isLogged) {
       setSortArray(items.filter((item) => item.type !== "FORYOU"));
     }
-    else if(isMobile) {
+    else if(isTablet) {
       setSortArray(items.filter((item) => item.type !== "CAAK"));
     }
     //eslint-disable-next-line
-  }, [isLogged, items]);
+  }, [isLogged, items, isTablet]);
+
   return (
     !hide && (
       <div

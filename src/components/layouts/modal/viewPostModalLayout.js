@@ -35,6 +35,7 @@ const ViewPostModalLayout = ({
         return () => clearTimeout(timer);
       }
     }
+    //eslint-disable-next-line
   }, [jumpToComment]);
 
   useEffect(() => {

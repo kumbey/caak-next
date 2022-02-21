@@ -4,8 +4,7 @@ import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 import ModalBanner from "../../modalBanner";
 import Banner from "../../banner";
-import useWindowSize from "../../../hooks/useWindowSize";
-import useMediaQuery from "../../navigation/useMeduaQuery";
+import {useRouter} from "next/router";
 
 const ViewPostModalLayout = ({
   children,
@@ -18,9 +17,8 @@ const ViewPostModalLayout = ({
   const [blockScroll, allowScroll] = useScrollBlock();
   const [isScrollButtonVisible, setIsScrollButtonVisible] = useState(false);
   const modalRef = useRef(null);
-  const isWideScreen = useMediaQuery("screen and (max-device-width: 1023px)");
   const viewPostRef = useRef();
-  const windowSize = useWindowSize();
+  const router  = useRouter()
 
   const onClickScrollTop = () => {
     if (modalRef.current) {
@@ -30,7 +28,13 @@ const ViewPostModalLayout = ({
       });
     }
   };
-
+  const back = () => {
+    if (router.query && router.query.prevPath) {
+      router.replace(router.query.prevPath, undefined, { shallow: true });
+    } else {
+      router.replace(`/`);
+    }
+  };
   useEffect(() => {
     if (modalRef.current) {
       const modalRefCurrent = modalRef.current;
@@ -75,8 +79,9 @@ const ViewPostModalLayout = ({
   return (
     <div ref={modalRef} className="popup_modal">
       <div className="popup_modal-viewPost">
-        <div className={`h-full bg-black bg-opacity-80`}>
+        <div onClick={()=> back()} className={`h-full bg-black bg-opacity-80`}>
           <div
+            onClick={(e)=> {e.stopPropagation()}}
             className={`rounded-lg relative ${
               containerClassname ? containerClassname : ""
             }`}

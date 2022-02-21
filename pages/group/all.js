@@ -132,6 +132,7 @@ export default function AllGroups() {
   }, [selectedCategoryId]);
 
   useEffect(() => {
+    setSelectedCategoryId([])
     if (activeIndex === 0) {
       fetchGroups();
     } else if (activeIndex === 1) {

@@ -98,7 +98,7 @@ const GroupTrendPostsCardItem = ({ item, onClickItem }) => {
             },
           }}
         >
-          <a target="_blank" rel="noreferrer">
+          <a>
             <p
               className={
                 "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] truncate-3 cursor-pointer"

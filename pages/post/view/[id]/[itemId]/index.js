@@ -23,7 +23,7 @@ export async function getServerSideProps({ req, query }) {
 const PostItem = ({ ssrData }) => {
   const [post, setPost] = useState(ssrData.post);
   const router = useRouter();
-  const scrollableRef = useRef();
+  const scrollableRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(
     findMatchIndex(post.items.items, "id", router.query.itemId)
   );

@@ -5,20 +5,37 @@ import useScrollBlock from "../../../hooks/useScrollBlock";
 import ModalBanner from "../../modalBanner";
 import Banner from "../../banner";
 
-const ViewPostModalLayout = ({ children, containerClassname, post }) => {
+const ViewPostModalLayout = ({
+  children,
+  containerClassname,
+  post,
+  jumpToComment,
+  commentRef,
+}) => {
   const [bannerOpen, setBannerOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
-  const modalRef = useRef(null)
+  const modalRef = useRef(null);
   const viewPostRef = useRef();
 
-  const onClickScrollTop = ()=> {
-    if(modalRef.current){
+  const onClickScrollTop = () => {
+    if (modalRef.current) {
       modalRef.current.scrollTo({
         behavior: "smooth",
-        top: 0
-      })
+        top: 0,
+      });
     }
-  }
+  };
+
+  useEffect(() => {
+    if (jumpToComment) {
+      if (commentRef) {
+        const timer = setTimeout(() => {
+          commentRef.current.scrollIntoView({ behavior: "smooth" });
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [jumpToComment]);
 
   useEffect(() => {
     blockScroll();
@@ -58,7 +75,11 @@ const ViewPostModalLayout = ({ children, containerClassname, post }) => {
                     containerClassname={"mb-[16px]"}
                     groupId={post.group_id}
                   />
-                  <GroupTrendPostsCard onClickItem={onClickScrollTop} maxItems={5} groupId={post.group_id} />
+                  <GroupTrendPostsCard
+                    onClickItem={onClickScrollTop}
+                    maxItems={5}
+                    groupId={post.group_id}
+                  />
                 </div>
                 <Banner location={"post"} />
               </div>

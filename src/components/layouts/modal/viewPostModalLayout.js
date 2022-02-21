@@ -4,6 +4,8 @@ import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 import ModalBanner from "../../modalBanner";
 import Banner from "../../banner";
+import useWindowSize from "../../../hooks/useWindowSize";
+import useMediaQuery from "../../navigation/useMeduaQuery";
 
 const ViewPostModalLayout = ({
   children,
@@ -14,8 +16,11 @@ const ViewPostModalLayout = ({
 }) => {
   const [bannerOpen, setBannerOpen] = useState(false);
   const [blockScroll, allowScroll] = useScrollBlock();
+  const [isScrollButtonVisible, setIsScrollButtonVisible] = useState(false);
   const modalRef = useRef(null);
+  const isWideScreen = useMediaQuery("screen and (max-device-width: 1023px)");
   const viewPostRef = useRef();
+  const windowSize = useWindowSize();
 
   const onClickScrollTop = () => {
     if (modalRef.current) {
@@ -25,6 +30,24 @@ const ViewPostModalLayout = ({
       });
     }
   };
+
+  useEffect(() => {
+    if (modalRef.current) {
+      const modalRefCurrent = modalRef.current;
+      const listener = () => {
+        const scrolled = modalRef.current.scrollTop;
+        if (scrolled > 54) {
+          setIsScrollButtonVisible(true);
+        } else {
+          setIsScrollButtonVisible(false);
+        }
+      };
+      modalRefCurrent.addEventListener("scroll", listener);
+      return () => {
+        modalRefCurrent.removeEventListener("scroll", listener);
+      };
+    }
+  });
 
   useEffect(() => {
     if (jumpToComment) {
@@ -71,6 +94,21 @@ const ViewPostModalLayout = ({
                   "viewPostRightSideBar h-full flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
                 }
               >
+                {isScrollButtonVisible && (
+                  <div
+                    onClick={() => onClickScrollTop()}
+                      className={`shadow-dropdown flex items-center fixed bottom-[20px] cursor-pointer rounded-[20px] h-[34px] z-[4] bg-white px-[12px] pr-[16px]`}
+                  >
+                    <div className={"w-[18px] h-[18px] -rotate-90"}>
+                      <span
+                        className={"icon-fi-rs-next-b text-black text-[18px]"}
+                      />
+                    </div>
+                    <p className={"ml-[8px] text-[10px] font-bold"}>
+                      Дээш буцах
+                    </p>
+                  </div>
+                )}
                 <div className={"flex flex-col w-full"}>
                   <GroupInfoCard
                     containerClassname={"mb-[16px]"}

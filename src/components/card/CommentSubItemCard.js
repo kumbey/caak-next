@@ -229,7 +229,7 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                         >
                         <div
                           className={
-                            "flex items-center justify-center w-[44px] h-[44px] ml-[5px] rounded-full hover:bg-caak-titaniumwhite"
+                            "flex items-center justify-center w-[22px] h-[22px] ml-[5px] rounded-full"
                           }
                         >
                           <DropDown
@@ -249,7 +249,7 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                           />
                           <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={subComment}/>
                           <span
-                            className={"icon-fi-rs-dots text-caak-darkBlue text-[24px]"}
+                            className={"icon-fi-rs-dots text-caak-darkBlue hover:text-black text-[24px]"}
                           />
                         </div>
                       </div>

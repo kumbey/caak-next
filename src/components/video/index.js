@@ -475,6 +475,20 @@ const Video = ({
       {!hideControls && (
         <div
           className={
+            "transition-all duration-300 opacity-100 group-hover:opacity-0 cursor-pointer w-[22px] h-[22px] absolute bottom-[21px] right-[22px] right-0 z-[2]"
+          }
+        >
+          <span
+            className={`${
+              isMuted ? "icon-fi-rs-mute" : "icon-fi-rs-volume"
+            } text-[22px] text-white`}
+          />
+        </div>
+      )}
+
+      {!hideControls && (
+        <div
+          className={
             "videoPlayerGradient z-[2] w-full absolute bottom-[-1px] pb-[21px] pt-[11px] px-[21px] transition-all duration-300 opacity-0 group-hover:opacity-100"
           }
         >
@@ -585,12 +599,11 @@ const Video = ({
                   "w-[24px] h-[24px] flex items-center justify-center relative cursor-pointer"
                 }
               >
-                <span className={"icon-fi-rs-volume text-white text-[22px]"} />
-                {isMuted && (
-                  <span
-                    className={`w-full bg-white h-[2px] absolute rotate-[45deg]`}
-                  />
-                )}
+                <span
+                  className={`${
+                    isMuted ? "icon-fi-rs-mute" : "icon-fi-rs-volume"
+                  } text-white text-[22px]`}
+                />
               </div>
             </Tooltip>
           </div>

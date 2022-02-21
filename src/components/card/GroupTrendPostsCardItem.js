@@ -1,6 +1,5 @@
-import { generateFileUrl, getFileUrl } from "../../utility/Util";
+import { getFileUrl } from "../../utility/Util";
 import Link from "next/link";
-import Video from "../video";
 import { useRouter } from "next/router";
 
 const GroupTrendPostsCardItem = ({ item, onClickItem }) => {
@@ -30,24 +29,30 @@ const GroupTrendPostsCardItem = ({ item, onClickItem }) => {
           >
             {firstItem.file.type.startsWith("video") ? (
               <div className={"relative w-full h-full"}>
-                {firstItem.thumbnail && <div
-                  className={
-                    "absolute h-full w-full top-0 left-0 brightness-[.4]"
-                  }
-                >
+                {firstItem.thumbnail && (
+                  <div
+                    className={
+                      "absolute h-full w-full top-0 left-0 brightness-[.4]"
+                    }
+                  >
+                    <img
+                      alt=""
+                      className={"w-full h-full object-cover rounded-[4px]"}
+                      src={getFileUrl(firstItem.thumbnail)}
+                    />
+                  </div>
+                )}
+                {firstItem.thumbnail ? (
                   <img
                     alt=""
-                    className={"w-full h-full object-cover rounded-[4px]"}
+                    className={
+                      "relative w-full h-full object-contain rounded-[4px]"
+                    }
                     src={getFileUrl(firstItem.thumbnail)}
                   />
-                </div>}
-                {firstItem.thumbnail ? <img
-                  alt=""
-                  className={
-                    "relative w-full h-full object-contain rounded-[4px]"
-                  }
-                  src={getFileUrl(firstItem.thumbnail)}
-                /> : <div className={"w-full h-full bg-gray-500 rounded-[4px]"}/>}
+                ) : (
+                  <div className={"w-full h-full bg-gray-500 rounded-[4px]"} />
+                )}
 
                 <div
                   className={
@@ -98,7 +103,7 @@ const GroupTrendPostsCardItem = ({ item, onClickItem }) => {
             },
           }}
         >
-          <a target="_blank" rel="noreferrer">
+          <a>
             <p
               className={
                 "text-caak-generalblack text-[15px] tracking-[0.23px] leading-[18px] truncate-3 cursor-pointer"

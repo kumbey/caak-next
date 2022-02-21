@@ -40,7 +40,7 @@ const CommentItemCard = ({
 
   return (
     <div
-      className={`flex flex-row justify-between ${subComment ? "" : ""} w-full`}
+      className={`flex flex-row justify-between w-full`}
     >
       <div className={"flex flex-row w-full"}>
         {/*User Profile Picture*/}
@@ -129,32 +129,30 @@ const CommentItemCard = ({
                     <p className={"text-[13px] cursor-pointer"}>Хариулах</p>
                   </div>
                   {
-                    isLogged 
+                    isLogged && 
+                    user.id === comment.user.id
                     &&
                     <div
                       ref={menuRef}
                       onClick={toggleMenu}
                       className={
-                        "flex flex-col items-center cursor-pointer relative "
+                        "flex flex-col items-center cursor-pointer relative ml-[10px]"
                       }
                     >
                     <div
                       className={
-                        "flex items-center justify-center w-[44px] h-[44px] ml-[5px] rounded-full hover:bg-caak-titaniumwhite"
+                        "flex items-center justify-center w-[22px] h-[22px] ml-[5px] rounded-full"
                       }
                     >
                       <DropDown
                         open={isMenuOpen}
                         onToggle={toggleMenu}
                         content={
-                          user.id === comment.user.id ?
                           <div className="w-[149px]">
                             <p onClick={() => {
                               setConfirmOpen(true)
                             }} className="text-center">Устгах</p>
                           </div>
-                          :
-                          null
                         }
                         className={
                           "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
@@ -162,7 +160,7 @@ const CommentItemCard = ({
                       />
                     <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={comment}/>
                       <span
-                        className={"icon-fi-rs-dots text-caak-darkBlue text-[24px]"}
+                        className={"icon-fi-rs-dots text-caak-darkBlue hover:text-black text-[24px]"}
                       />
                     </div>
                   </div>

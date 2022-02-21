@@ -661,7 +661,7 @@ const UploadedMediaEdit = ({
 
       <div
         className={
-          "bg-white px-[28px] py-[20px] border-b-[1px] border-t-[1px] border-caak-titaniumwhite"
+          "bg-white px-[28px] py-[20px] border-t-[1px] border-caak-titaniumwhite"
         }
       >
         <div className={"flex items-center justify-between"}>

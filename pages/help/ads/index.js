@@ -12,7 +12,7 @@ export default function Boost() {
   return (
     <div
       style={{ overflow: open && "hidden" }}
-      className="relative mt-[20px] lg:mt-[54px]"
+      className="relative bg-white h-[1257px] mt-[20px] lg:mt-[54px]"
     >
       <Head>
         <title>Сурталчилгаа - {Consts.siteMainTitle}</title>
@@ -31,8 +31,8 @@ export default function Boost() {
             Саак Ads нь хэрэглэгч төвтэй тул таны бизнессийн үйл ажиллагааг илүү
             хүртээмжтэй, оновчтой хүргэх болно.
           </p>
-          <div className="flex flex-wrap justify-center gap-[20px] my-[30px] lg:my-[69px]">
-            <div className="relative h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]">
+          <div className="flex flex-row flex-wrap  justify-center gap-[20px] mt-[30px] lg:mt-[69px]">
+            <div style={{boxShadow: '0px 3px 6px #00000029'}} className="relative h-[654px] w-[350px] border border-[#D6F1FF] bg-white rounded-[12px] flex flex-col items-center px-[28px]">
               <p className="text-[#2B3A4C] font-semibold text-[32px] mt-[47px]">
                 Sponsored post
               </p>
@@ -102,7 +102,7 @@ export default function Boost() {
               </p>
             </div>
 
-            <div className="h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]">
+            <div style={{boxShadow: '0px 3px 6px #00000029'}} className="h-[654px] border border-[#D6F1FF] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]">
               <p className="text-[#2B3A4C] font-semibold text-[38px] mt-[47px]">
                 A1
               </p>
@@ -135,7 +135,7 @@ export default function Boost() {
               </ul>
             </div>
 
-            <div className="h-[654px] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]">
+            <div style={{boxShadow: '0px 3px 6px #00000029'}} className="h-[654px] border border-[#D6F1FF] w-[350px] bg-white rounded-[12px] flex flex-col items-center px-[28px]">
               <p className="text-[#2B3A4C] font-semibold text-[38px] mt-[47px]">
                 A2
               </p>
@@ -167,7 +167,8 @@ export default function Boost() {
                 <li className={"ads-checked-icon list-none"}>JPEG,GIF, PNG</li>
               </ul>
             </div>
-            <div className="flex flex-col mx-[10px] md:mx-0 md:flex-row w-full justify-between mt-[20px] lg:mt-[40px] px-[5px] md:px-[22px]">
+          </div>
+          <div className="flex flex-col mx-[10px] md:mx-0 md:flex-row w-full justify-between mt-[20px] lg:mt-[44px] px-[5px] md:px-[22px]">
               <div>
                 <ul className="list-decimal text-[14px] text-[#0D1026] list-inside pl-0">
                   <p className="text-[#E60033] flex items-center font-semibold text-[16px]">
@@ -199,19 +200,18 @@ export default function Boost() {
                 </p>
               </div>
             </div>
-          </div>
         </div>
-        <div className="bg-white h-[200px] sm:h-[155px] flex w-full justify-center mt-[30px] md:mt-[65px]">
+        <div className="bg-white h-[200px] border-t border-[#D9E3EF] sm:h-[155px] flex w-full justify-center mt-[30px] md:mt-[70px]">
           <div className="w-full sm:w-[670px] md:w-[870px] xl:w-[1247px]">
             <div className="text-[15px] text-[#6C7392] flex flex-wrap justify-center sm:justify-start gap-[4px] sm:flex-row sm:h-[69px] border-b sm:items-end pb-[18px] border-color:[#F3F3F4]">
               <Link href="/help/connectus" shallow>
                 <a>
-                  <p>· Холбоо барих</p>
+                  <p>Холбоо барих</p>
                 </a>
               </Link>
               <Link href={"/help/ads"} shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>· Сурталчилгаа</p>
+                  <p>Сурталчилгаа</p>
                 </a>
               </Link>
               <Link
@@ -224,7 +224,7 @@ export default function Boost() {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>· Үйлчилгээний нөхцөл</p>
+                  <p>Үйлчилгээний нөхцөл</p>
                 </a>
               </Link>
               <Link
@@ -237,12 +237,12 @@ export default function Boost() {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>· Нууцлал</p>
+                  <p>Нууцлал</p>
                 </a>
               </Link>
               <Link href="/help" shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>· Тусламж</p>
+                  <p>Тусламж</p>
                 </a>
               </Link>
             </div>

@@ -10,7 +10,14 @@ import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { useRouter } from "next/router";
 import Consts from "../../../utility/Consts";
 
-const CardFooter = ({ totals, postId, reacted, handleToast, subscription, title }) => {
+const CardFooter = ({
+  totals,
+  postId,
+  reacted,
+  handleToast,
+  subscription,
+  title,
+}) => {
   // const [subscripTotal, setSubscripTotal] = useState();
   const router = useRouter();
   // const [render, setRender] = useState(0);
@@ -97,17 +104,17 @@ const CardFooter = ({ totals, postId, reacted, handleToast, subscription, title 
               onClick={() =>
                 router.push(
                   {
-                    // pathname: `/post/view/${postId}`,
                     query: {
-                      jumpToComment: true,
                       ...router.query,
                       viewPost: "post",
                       id: postId,
                       prevPath: router.asPath,
                       isModal: true,
+                      jumpToComment: true,
                     },
                   },
-                  `/post/view/${postId}`
+                  `/post/view/${postId}`,
+                  { shallow: true }
                 )
               }
               className={"flex flex-row items-center mr-4 cursor-pointer group"}
@@ -164,7 +171,10 @@ const CardFooter = ({ totals, postId, reacted, handleToast, subscription, title 
                         </div>
                       </div>
                     </FacebookShareButton>
-                    <TwitterShareButton title={`${title} @caaktwt`} url={`${pathName}/post/view/${postId}`}>
+                    <TwitterShareButton
+                      title={`${title} @caaktwt`}
+                      url={`${pathName}/post/view/${postId}`}
+                    >
                       <div className="hover:bg-caak-liquidnitrogen w-full px-c6">
                         <div
                           className={

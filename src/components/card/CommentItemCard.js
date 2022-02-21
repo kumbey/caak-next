@@ -40,7 +40,7 @@ const CommentItemCard = ({
 
   return (
     <div
-      className={`flex flex-row justify-between ${subComment ? "" : ""} w-full`}
+      className={`flex flex-row justify-between w-full`}
     >
       <div className={"flex flex-row w-full"}>
         {/*User Profile Picture*/}

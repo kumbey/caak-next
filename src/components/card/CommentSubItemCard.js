@@ -17,6 +17,7 @@ import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
 import Link from "next/link";
 import DropDown from '../navigation/DropDown'
 import DeleteCommentConfirm from "./DeleteCommentConfirm";
+import { useClickOutSide } from "../../utility/Util";
 
 const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) => {
   const { isLogged, user } = useUser();
@@ -40,6 +41,10 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
 
   const subscrip = () => {
     const params = {
@@ -221,7 +226,10 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                       {
                         isLogged 
                         &&
+                        user.id === subComment.user.id
+                        &&
                         <div
+                          ref={menuRef}
                           onClick={toggleMenu}
                           className={
                             "flex flex-col items-center cursor-pointer relative "
@@ -234,14 +242,10 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                         >
                           <DropDown
                             open={isMenuOpen}
-                            onToggle={toggleMenu}
                             content={
-                              user.id === subComment.user.id ?
                               <div className="w-[149px]">
                                 <p onClick={() => setConfirmOpen(true)} className="text-center">Устгах</p>
                               </div>
-                              :
-                              null
                             }
                             className={
                               "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"

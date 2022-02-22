@@ -115,7 +115,7 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
   useEffect(() => {
     listSubCommentByParentId();
     // eslint-disable-next-line
-  }, [parentId]);
+  }, [parentId, setSubscriptionComment]);
 
   return subComments.items ? (
     <div className={"flex flex-col justify-center"}>
@@ -192,7 +192,7 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                       </div>
                       <div
                         onClick={() => {
-                          setIsReplyInputActive(true);
+                          setIsReplyInputActive(!isReplyInputActive);
                           setActiveIndex(index);
                           setReply({
                             isReplying: true,
@@ -217,17 +217,20 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                       {
                         isLogged && user.id === subComment.user.id &&
                         <div className="flex cursor-pointer relative h-[20px] ml-[10px]">
-                          <div onClick={() => deleteOpen ? setDeleteOpen(false) : setDeleteOpen(subComment.id)}>
+                          <div onClick={() => deleteOpen === subComment.id ? setDeleteOpen(false) : setDeleteOpen(subComment.id)}>
                             <span
                                 className={"icon-fi-rs-dots text-caak-darkBlue hover:text-black text-[24px]"}
                             />
                             {
                               deleteOpen === subComment.id &&
                               <div className="w-[149px] text-[14px] bg-white text-[#0D1026] font-medium cursor-pointer absolute py-2 shadow-dropdown top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]">
-                                  <p onClick={() => setConfirmOpen(true)} className="text-center">Устгах</p>
+                                  <p onClick={() => {
+                                    setConfirmOpen(true)
+                                    setDeleteOpen(false)
+                                  }} className="text-center">Устгах</p>
                               </div>
                             }
-                            <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={subComment}/>
+                            <DeleteCommentConfirm setIsMenuOpen={setDeleteOpen} setOpen={setConfirmOpen} open={confirmOpen} comment={subComment}/>
                           </div>
                         </div>
                       }

@@ -81,7 +81,7 @@ export async function getServerSideProps({ req, res, query }) {
   if (!post) {
     return { notFound: true };
   }
-  if (post.user.id !== user.attributes.sub) {
+  if (post.user.id !== user?.attributes.sub) {
     return { notFound: true };
   }
   const groups = await getGroups();
@@ -321,6 +321,7 @@ const EditPost = ({ ssrData }) => {
               setIsOpen={setIsSuccessModalOpen}
               finish={finish}
               role={selectedGroup.role_on_group}
+              postStatus={post.status}
               messageTitle={"Таны засвар амжилттай хадгалагдлаа."}
             />
           )}

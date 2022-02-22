@@ -50,6 +50,7 @@ const UploadedMediaEdit = ({
   const [businessPost, setBusinessPost] = useState(
     post.onlyBlogView ? post.onlyBlogView : "FALSE"
   );
+  const [isDraft, setIsDraft] = useState(post.status === "DRAFT")
   const [caakContent, setCaakContent] = useState(post?.owned === "CAAK");
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
@@ -166,6 +167,7 @@ const UploadedMediaEdit = ({
     adminTextEditor,
     allowComment,
     post.items.length,
+    isDraft
   ]);
 
   useUpdateEffect(() => {
@@ -223,9 +225,10 @@ const UploadedMediaEdit = ({
       ...post,
       commentType: !!allowComment,
       ...cContent,
+      status: isDraft ? "DRAFT" : "PENDING"
     });
     // eslint-disable-next-line
-  }, [allowComment, caakContent]);
+  }, [allowComment, caakContent, isDraft]);
 
   useEffect(() => {
     isAdminAsync().then((e) => setIsSuperAdmin(e));
@@ -683,31 +686,12 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
-          {/* {isSuperAdmin && (
-            <div className={"flex flex-row justify-between mt-[16px]"}>
-              <p className={"text-[15px] text-caak-generalblack"}>
-                Бизнес мэдээ
-              </p>
-              <label
-                onClick={() =>
-                  setBusinessPost(businessPost === "TRUE" ? "FALSE" : "TRUE")
-                }
-                style={{ minWidth: "40px", height: "22px" }}
-                className={`ml-1 cursor-pointer
-                rounded-full
-                bg-caak-${
-                  businessPost === "TRUE" ? "algalfuel" : "titaniumwhite"
-                }
-                flex items-center
-                justify-${businessPost === "TRUE" ? "end" : "start"}`}
-              >
-                <span
-                  style={{ width: "18px", height: "18px", marginInline: "2px" }}
-                  className={`bg-white rounded-full`}
-                />
-              </label>
-            </div>
-          )} */}
+          <div className={"flex flex-row justify-between mt-[16px]"}>
+            <p className={"text-[15px] text-caak-generalblack"}>
+              Ноорог
+            </p>
+            <Switch toggle={setIsDraft} active={isDraft} />
+          </div>
 
           {(selectedGroup?.role_on_group === "ADMIN" ||
             selectedGroup?.role_on_group === "MODERATOR" ||

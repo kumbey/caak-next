@@ -221,17 +221,17 @@ export default function AboutCaakAds({ open, setOpen }) {
             <p className="text-[#2B3A4C] text-[18px] lg:text-[30px] mt-[14px] h-[36px] font-semibold">
               Sponsored Post
             </p>
-            <p className="text-[14px] font-semibold">
+            <p className="text-[14px] text-[#0D1026] font-semibold">
               <span className="text-[#257CEE]">Пост</span> бүүстлэх
             </p>
             <span className="w-full h-[1px] bg-[#E4E4E5] mt-[14px]" />
-            <p className="text-[#2B3A4C] text-[22px] sm:text-[40px] font-bold mt-[10px] lg:mt-[25px]">
+            <p className="text-[#2B3A4C] text-[22px] h-[42px] sm:text-[40px] font-bold mt-[10px] lg:mt-[24.6px]">
               <span className="text-[20px] sm:text-[38px] font-medium">₮</span>
               5.000
             </p>
             <p className="text-[#5D636B]">1 хоног</p>
             <div className="w-full px-[10px] sm:px-[20px]">
-              <div className="w-full hidden sm:block h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px]">
+              <div className="w-full hidden sm:block h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[14px]">
                 <ul className="flex flex-col h-full justify-center">
                   <li>
                     <p className="text-[#5D636B] font-medium text-[14px]">
@@ -260,7 +260,7 @@ export default function AboutCaakAds({ open, setOpen }) {
                 </ul>
               </div>
             </div>
-            <p className="text-[#2B3A4C] px-[10px] sm:px-[20px] text-[14px] font-bold w-full mt-[5px] sm:mt-[16px]">
+            <p className="text-[#2B3A4C] px-[10px] sm:px-[20px] text-[14px] font-bold w-full mt-[5px] sm:mt-[20px]">
               Постын байршил:
             </p>
             <ul className="flex flex-col w-full px-[10px] text-[#5D636B] sm:px-[20px] pl-0 text-medium text-[14px] text-[#5D636B]">
@@ -269,7 +269,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               <li className={"ads-checked-icon list-none"}>Группуудын постон дунд</li>
               <li className={"ads-plus-icon list-none"}>Сонирхол, нас, хүйс сонгож бүүстлэх</li>
             </ul>
-            <button className="bg-caak-primary w-[282px] h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
+            <button className="bg-caak-primary w-[282px] h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[20px]">
               Захиалах
             </button>
           </div>

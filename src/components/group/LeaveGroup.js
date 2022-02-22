@@ -2,7 +2,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import { useUser } from "../../context/userContext";
 import { deleteGroupUsers } from "../../graphql-custom/GroupUsers/mutation";
 
-const LeaveGroup = ({open, setOpen, groupData, setForceRender, forceRender}) => {
+const LeaveGroup = ({open, setOpen, groupData, setForceRender, forceRender, setLoading}) => {
     const {user} = useUser()
 
     const leave = async () => {
@@ -18,9 +18,11 @@ const LeaveGroup = ({open, setOpen, groupData, setForceRender, forceRender}) => 
             groupData.totals.member -= 1;
             // setForceRender(forceRender + 1);
             setOpen(false)
+            setLoading(false)
         }catch(ex){
             console.log(ex)
         }
+        setLoading(false)
     } 
 
     return open ? (

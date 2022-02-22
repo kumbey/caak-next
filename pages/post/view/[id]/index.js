@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import {Fragment, useEffect, useRef, useState} from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
 import {
@@ -127,13 +127,13 @@ const Post = ({ ssrData }) => {
     setPost(ssrData.post);
   }, [ssrData.post]);
 
-  useEffect(() => {
-    if (jumpToComment) {
-      if (commentRef.current) {
-        commentRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [jumpToComment]);
+  // useEffect(() => {
+  //   if (jumpToComment) {
+  //     if (commentRef.current) {
+  //       commentRef.current.scrollIntoView({ behavior: "smooth" });
+  //     }
+  //   }
+  // }, [jumpToComment]);
 
   useEffect(() => {
     countViews();
@@ -175,6 +175,8 @@ const Post = ({ ssrData }) => {
   return (
     <>
       <ViewPostModal
+        jumpToComment={jumpToComment}
+        commentRef={commentRef}
         post={post}
         containerClassname={
           "w-full flex flex-row  max-w-[1200px] mx-auto py-[20px] py-[78px] min-h-[100vh] rounded-b-square z-[0]"
@@ -510,7 +512,7 @@ const Post = ({ ssrData }) => {
               {post.items.items.map((item, index) => {
                 if (post.items.items.length === 1) {
                   return (
-                    <>
+                    <Fragment key={index}>
                       <ViewPostBlogItem
                         onlyBlogView={post.onlyBlogView === "TRUE"}
                         // singleItem
@@ -522,7 +524,7 @@ const Post = ({ ssrData }) => {
                       {post.items.sponsored && (
                         <Sponsored item={post.items.sponsored} />
                       )}
-                    </>
+                    </Fragment>
                   );
                 } else {
                   if (index > 0) {

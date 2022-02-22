@@ -2,7 +2,7 @@ import useAddPostLayout from "../../../../src/hooks/useAddPostLayout";
 import { useRouter } from "next/router";
 import { useUser } from "../../../../src/context/userContext";
 import { useEffect, useState } from "react";
-import { getFileUrl, getReturnData } from "../../../../src/utility/Util";
+import { getReturnData } from "../../../../src/utility/Util";
 import { withSSRContext } from "aws-amplify";
 import {
   getGroupView,
@@ -22,7 +22,7 @@ import PostSuccessModal from "../../../../src/components/modals/postSuccessModal
 import Consts from "../../../../src/utility/Consts";
 import Head from "next/head";
 import { useWrapper } from "../../../../src/context/wrapperContext";
-import {createGroupUsers} from "../../../../src/graphql-custom/GroupUsers/mutation";
+import { createGroupUsers } from "../../../../src/graphql-custom/GroupUsers/mutation";
 import useUpdateEffect from "../../../../src/hooks/useUpdateEffect";
 
 export async function getServerSideProps({ req, res, query }) {
@@ -100,7 +100,9 @@ const EditPost = ({ ssrData }) => {
   const router = useRouter();
   const AddPostLayout = useAddPostLayout();
   const { user } = useUser();
-  const [adminTextEditor, setAdminTextEditor] = useState(ssrData.post.onlyBlogView ?? "FALSE")
+  const [adminTextEditor, setAdminTextEditor] = useState(
+    ssrData.post.onlyBlogView ?? "FALSE"
+  );
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
@@ -355,7 +357,9 @@ const EditPost = ({ ssrData }) => {
                 <DropZoneWithCaption post={post} setPost={setPost} />
               )}
 
-              <div className={"flex flex-row pb-4 px-4 justify-end"}>
+              <div
+                className={`z-[3] sticky bottom-[48px] md:bottom-0 bg-white border-t-[1px] rounded-b-square flex flex-row pb-4 px-4 justify-end`}
+              >
                 <Button
                   className={
                     "font-medium text-[16px] mr-2 mt-4 text-17px border border-caak-titaniumwhite h-[44px]"
@@ -365,10 +369,7 @@ const EditPost = ({ ssrData }) => {
                 </Button>
                 <Button
                   loading={loading}
-                  disabled={
-                    !isEditing ||
-                    loading
-                  }
+                  disabled={!isEditing || loading}
                   onClick={() => handleSubmit()}
                   skin={"primary"}
                   className={

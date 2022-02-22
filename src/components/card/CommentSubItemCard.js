@@ -15,8 +15,8 @@ import ProfileHoverCard from "./ProfileHoverCard";
 import Tooltip from "../tooltip/Tooltip";
 import ViewPostBlogAddComment from "../input/ViewPostBlogAddComment";
 import Link from "next/link";
-import DropDown from '../navigation/DropDown'
 import DeleteCommentConfirm from "./DeleteCommentConfirm";
+import { useClickOutSide } from "../../utility/Util";
 
 const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) => {
   const { isLogged, user } = useUser();
@@ -25,9 +25,9 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
   const [reRender, setReRender] = useState(0);
   const [isFetchingComment, setIsFetchingComment] = useState(false);
   const [isReplyInputActive, setIsReplyInputActive] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0);
+  const [ deleteOpen,setDeleteOpen] = useState(false)
   // const [replyInputValue, setReplyInputValue] = useState("");
   const [reply, setReply] = useState({
     isReplying: true,
@@ -36,10 +36,6 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
     items: [],
     nextToken: null,
   });
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const subscrip = () => {
     const params = {
@@ -219,40 +215,21 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
                         <p className={"text-[13px] cursor-pointer"}>Хариулах</p>
                       </div>
                       {
-                        isLogged 
-                        &&
-                        <div
-                          onClick={toggleMenu}
-                          className={
-                            "flex flex-col items-center cursor-pointer relative "
-                          }
-                        >
-                        <div
-                          className={
-                            "flex items-center justify-center w-[44px] h-[44px] ml-[5px] rounded-full hover:bg-caak-titaniumwhite"
-                          }
-                        >
-                          <DropDown
-                            open={isMenuOpen}
-                            onToggle={toggleMenu}
-                            content={
-                              user.id === subComment.user.id ?
-                              <div className="w-[149px]">
-                                <p onClick={() => setConfirmOpen(true)} className="text-center">Устгах</p>
+                        isLogged && user.id === subComment.user.id &&
+                        <div className="flex cursor-pointer relative h-[20px] ml-[10px]">
+                          <div onClick={() => deleteOpen ? setDeleteOpen(false) : setDeleteOpen(subComment.id)}>
+                            <span
+                                className={"icon-fi-rs-dots text-caak-darkBlue hover:text-black text-[24px]"}
+                            />
+                            {
+                              deleteOpen === subComment.id &&
+                              <div className="w-[149px] text-[14px] bg-white text-[#0D1026] font-medium cursor-pointer absolute py-2 shadow-dropdown top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]">
+                                  <p onClick={() => setConfirmOpen(true)} className="text-center">Устгах</p>
                               </div>
-                              :
-                              null
                             }
-                            className={
-                              "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
-                            }
-                          />
-                          <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={subComment}/>
-                          <span
-                            className={"icon-fi-rs-dots text-caak-darkBlue text-[24px]"}
-                          />
+                            <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={subComment}/>
+                          </div>
                         </div>
-                      </div>
                       }
                     </div>
                   </div>

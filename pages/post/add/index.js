@@ -30,7 +30,7 @@ const AddPost = () => {
   const router = useRouter();
   const { postId, groupId } = router.query;
   const { user } = useUser();
-  const [adminTextEditor, setAdminTextEditor] = useState("TRUE")
+  const [adminTextEditor, setAdminTextEditor] = useState("TRUE");
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
@@ -121,13 +121,13 @@ const AddPost = () => {
     //   );
     // }
     // else {
-      router.push(
-        {
-          pathname: `/post/view/${newPostId}`,
-        },
-        `/post/view/${newPostId}`,
-        { shallow: true, scroll: false }
-      );
+    router.push(
+      {
+        pathname: `/post/view/${newPostId}`,
+      },
+      `/post/view/${newPostId}`,
+      { shallow: true, scroll: false }
+    );
     // }
   };
 
@@ -145,7 +145,8 @@ const AddPost = () => {
   };
 
   const handleSubmit = async () => {
-    await uploadPost(); setLoading(false);
+    await uploadPost();
+    setLoading(false);
     // setIsEditing(false);
   };
   const toastIcon = {
@@ -307,7 +308,7 @@ const AddPost = () => {
         setValid(true);
 
         setIsSuccessModalOpen(true);
-        setIsEditing(false)
+        setIsEditing(false);
       } catch (ex) {
         ex?.errors?.map((error) => {
           if (error.message.includes("IndexKey: group_id")) {
@@ -325,9 +326,9 @@ const AddPost = () => {
   };
 
   useEffect(() => {
-    setIsMobileMenuOpen(false)
+    setIsMobileMenuOpen(false);
     //eslint-disable-next-line
-  }, [])
+  }, []);
 
   return !permissionDenied ? (
     <>
@@ -395,7 +396,9 @@ const AddPost = () => {
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />
               )}
-              <div className={"flex flex-row pb-4 px-4 justify-end"}>
+              <div
+                className={`z-[3] sticky bottom-[48px] md:bottom-0 bg-white border-t-[1px] rounded-b-square flex flex-row pb-4 px-4 justify-end`}
+              >
                 <Button
                   onClick={() => router.back()}
                   className={

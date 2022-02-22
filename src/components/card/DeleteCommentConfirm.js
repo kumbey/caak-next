@@ -16,6 +16,7 @@ const DeleteCommentConfirm = ({open, setOpen, comment}) => {
                   id: id,
                 },
               },
+              authMode: 'AMAZON_COGNITO_USER_POOLS'
             });
     
             // setLoading(false);
@@ -26,15 +27,7 @@ const DeleteCommentConfirm = ({open, setOpen, comment}) => {
       };
     
       const handleDelete = async () => {
-        if (!comment.sub) {
-          await deleteComments(comment.id);
-        } else {
-          comment.sub.items.map((sub) => {
-            deleteComments(sub.id);
-          });
-    
-          await deleteComments(comment.id);
-        }
+        await deleteComments(comment.id);
         setOpen(false)
       };
 

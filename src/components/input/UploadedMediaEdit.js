@@ -265,7 +265,6 @@ const UploadedMediaEdit = ({
   }, [adminTextEditor]);
 
   useEffect(() => {
-    console.log(post.description)
     setSortItems([...post.items]);
   }, [post]);
 

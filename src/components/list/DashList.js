@@ -5,6 +5,7 @@ import {
   generateTimeAgo,
   getFileUrl,
   getGenderImage,
+  kFormatter,
 } from "../../utility/Util";
 import Button from "../../components/button";
 import Tooltip from "../tooltip/Tooltip";
@@ -109,7 +110,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-shrink-0 w-[185px] mr-[50px]">
+        <div className="flex flex-shrink-0 w-[185px] mr-[20px]">
           {type === "group" ? (
             <Tooltip
               className={"-left-14"}
@@ -163,20 +164,32 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : null}
         </div>
         <div className="flex text-sm text-caak-darkBlue w-[166px] mr-[32px]">
-          {/* <div className="flex items-center mr-5">
+          <div
+            className="flex items-center mr-5 min-w-[50px]"
+            data-tip
+            data-for="reachTip"
+          >
             <span className="icon-fi-rs-view text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
-              {post.totals.reach ? post.totals.reach : 0}
+              {post.totals.reach ? kFormatter(post.totals.reach) : 0}
             </p>
-          </div> */}
+            <ReactTooltip
+              id="reachTip"
+              place="top"
+              effect="solid"
+              className="p-1 opacity-10"
+            >
+              <p className="text-11px text-white ">Харсан тоо</p>
+            </ReactTooltip>
+          </div>
           <div
             className="flex items-center mr-5 min-w-[50px]"
             data-tip
             data-for="clickTip"
           >
-            <span className="icon-fi-rs-view  text-caak-scriptink text-20px mr-[6px] " />
+            <span className="icon-fi-rs-clicked-o  text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
-              {post.totals.views ? post.totals.views : 0}
+              {post.totals.views ? kFormatter(post.totals.views) : 0}
             </p>
             <ReactTooltip
               id="clickTip"
@@ -184,7 +197,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
               effect="solid"
               className="p-1 opacity-10"
             >
-              <p className="text-11px text-white ">Даралтын тоо</p>
+              <p className="text-11px text-white ">Үзсэн тоо</p>
             </ReactTooltip>
           </div>
           <div
@@ -194,7 +207,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           >
             <span className="icon-fi-rs-rock-i text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
-              {post.totals.reactions ? post.totals.reactions : 0}
+              {post.totals.reactions ? kFormatter(post.totals.reactions) : 0}
             </p>
             <ReactTooltip
               id="caakTip"
@@ -212,7 +225,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           >
             <span className="icon-fi-rs-comment-o text-caak-scriptink text-20px mr-[6px] " />
             <p className="font-inter font-normal text-14px text-caak-darkBlue">
-              {post.totals.comments ? post.totals.comments : 0}
+              {post.totals.comments ? kFormatter(post.totals.comments) : 0}
             </p>
             <ReactTooltip
               id="commentTip"
@@ -224,7 +237,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
             </ReactTooltip>
           </div>
         </div>{" "}
-        <div className="flex ml-[40px] ">
+        <div className="flex ml-[100px] ">
           {type === "group" ? (
             <Button
               loading={loading}

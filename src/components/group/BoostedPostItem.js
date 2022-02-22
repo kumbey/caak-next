@@ -142,7 +142,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               effect="solid"
               className="p-1 opacity-50"
             >
-              <p className="text-11px text-white ">Үзэлтийн тоо</p>
+              <p className="text-11px text-white ">Харсан тоо</p>
             </ReactTooltip>
           </div>
           <div
@@ -160,7 +160,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               effect="solid"
               className="p-1 opacity-50"
             >
-              <p className="text-11px text-white ">Даралтын тоо</p>
+              <p className="text-11px text-white ">Үзсэн тоо</p>
             </ReactTooltip>
           </div>
 

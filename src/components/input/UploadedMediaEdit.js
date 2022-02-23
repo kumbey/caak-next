@@ -389,6 +389,7 @@ const UploadedMediaEdit = ({
               }}
               value={post.description}
               init={{
+                convert_urls: false,
                 valid_elements:
                   "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
                 extended_valid_elements: [
@@ -627,6 +628,7 @@ const UploadedMediaEdit = ({
                       }}
                       value={post.items[activeIndex].title}
                       init={{
+                        convert_urls: false,
                         valid_elements:
                           "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
                         extended_valid_elements: [

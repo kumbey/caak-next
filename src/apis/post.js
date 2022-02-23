@@ -11,15 +11,22 @@ import {
 import { ApiFileUpload } from "../utility/ApiHelper";
 import { _objectWithoutKeys, getReturnData } from "../utility/Util";
 
+const postStatusHandler = (status, role) => {
+  if (status === "DRAFT") return "DRAFT";
+  if (role === "ADMIN" || role === "MODERATOR") return "CONFIRMED";
+  return "PENDING";
+};
+
 export const crtPost = async (newPost, userId, role) => {
   try {
-    let { items, ...post } = { ...newPost };
+    let { items, status, ...post } = { ...newPost };
     post = _objectWithoutKeys(post, ["id"]);
     post.status = "POSTING";
     post.updated_user_id = userId;
     // post.commentType = true;
     post.user_id = userId;
-    post.ignoreNotification = role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE"
+    post.ignoreNotification =
+      role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE";
 
     const savedPost = getReturnData(
       await API.graphql(graphqlOperation(createPost, { input: post }))
@@ -34,10 +41,10 @@ export const crtPost = async (newPost, userId, role) => {
         "id",
         "url",
       ]);
-     if(item.file.type.startsWith("video")){
-       const thumbnailResp = await ApiFileUpload(item.thumbnail);
-       postItem.thumbnail_id = thumbnailResp.id;
-     }
+      if (item.file.type.startsWith("video")) {
+        const thumbnailResp = await ApiFileUpload(item.thumbnail);
+        postItem.thumbnail_id = thumbnailResp.id;
+      }
       postItem.file_id = resp.id;
       postItem.order = i;
       postItem.post_id = savedPost.id;
@@ -51,9 +58,9 @@ export const crtPost = async (newPost, userId, role) => {
         input: {
           id: savedPost.id,
           expectedVersion: savedPost.version,
-          ignoreNotification: role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
-          status:
-            role === "ADMIN" || role === "MODERATOR" ? "CONFIRMED" : "PENDING",
+          ignoreNotification:
+            role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
+          status: postStatusHandler(status, role),
         },
       })
     );
@@ -66,7 +73,7 @@ export const crtPost = async (newPost, userId, role) => {
 
 export const pdtPost = async (oldPost, userId, role) => {
   try {
-    let { items, ...post } = { ...oldPost };
+    let { items, status, ...post } = { ...oldPost };
 
     const currentPost = getReturnData(
       await API.graphql(graphqlOperation(getPost, { id: post.id }))
@@ -92,7 +99,8 @@ export const pdtPost = async (oldPost, userId, role) => {
             input: {
               ...postData,
               expectedVersion: post.version,
-              ignoreNotification: role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
+              ignoreNotification:
+                role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
               status: "POSTING",
             },
           })
@@ -110,7 +118,7 @@ export const pdtPost = async (oldPost, userId, role) => {
           "id",
         ]);
         if (typeof item.id === "number") {
-          if(item.file.type.startsWith("video")){
+          if (item.file.type.startsWith("video")) {
             const thumbnailResp = await ApiFileUpload(item.thumbnail);
             postItem.thumbnail_id = thumbnailResp.id;
           }
@@ -148,11 +156,9 @@ export const pdtPost = async (oldPost, userId, role) => {
             input: {
               id: post.id,
               expectedVersion: post.version,
-              ignoreNotification: role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
-              status:
-                role === "ADMIN" || role === "MODERATOR"
-                  ? "CONFIRMED"
-                  : "PENDING",
+              ignoreNotification:
+                role === "ADMIN" || role === "MODERATOR" ? "TRUE" : "FALSE",
+              status: postStatusHandler(status, role),
             },
           })
         )

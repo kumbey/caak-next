@@ -924,7 +924,7 @@ const Dashboard = ({ ssrData }) => {
                       <table className="w-full table">
                         <thead className="">
                           <tr className="">
-                            <th className=" w-[220px] text-left   font-inter font-normal text-14px text-caak-generalblack">
+                            <th className="w-[250px] max-w-[250px] text-left font-inter font-normal text-14px text-caak-generalblack">
                               Пост
                             </th>
                             <th className="text-left w-16  font-inter font-normal text-14px text-caak-generalblack">

@@ -110,6 +110,10 @@ const Dashboard = ({ ssrData }) => {
     items: [],
     nextToken: "",
   });
+  const [draftedPosts, setDraftedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const [totalReaction] = useState(
@@ -169,30 +173,36 @@ const Dashboard = ({ ssrData }) => {
     },
     {
       id: 2,
+      name: "Ноорог",
+      icon: "icon-fi-rs-edit",
+      length: draftedPosts.items.length,
+    },
+    {
+      id: 3,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-folder-o",
       length: userTotals.archived,
     },
     {
-      id: 3,
+      id: 4,
       name: "Бүүстэлсэн постууд",
       icon: "icon-fi-rs-rocket-o",
       length: boostedPosts.items.length,
     },
     {
-      id: 4,
+      id: 5,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
       length: userTotals.followers,
     },
     {
-      id: 5,
+      id: 6,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
       length: userTotals.comments,
     },
     {
-      id: 6,
+      id: 7,
       name: "Репортлогдсон постууд",
       icon: "icon-fi-rs-flag",
       length: userTotals.reported,
@@ -227,6 +237,16 @@ const Dashboard = ({ ssrData }) => {
       user_id: router.query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "ARCHIVED" } },
+      limit: 20,
+    },
+    nextToken: archivedPosts.nextToken,
+  });
+  const [nextDrafted] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "DRAFT" } },
       limit: 20,
     },
     nextToken: archivedPosts.nextToken,
@@ -323,6 +343,26 @@ const Dashboard = ({ ssrData }) => {
           setArchivedPosts((nextArchived) => ({
             ...nextArchived,
             items: [...nextArchived.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchDrafted = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextDrafted();
+        if (resp) {
+          setDraftedPosts((nextDrafted) => ({
+            ...nextDrafted,
+            items: [...nextDrafted.items, ...resp],
           }));
         }
 
@@ -714,36 +754,6 @@ const Dashboard = ({ ssrData }) => {
                   </p>
                 </div>
               </div>
-              {/* <div className="flex items-center justify-between flex-wrap md:mb-0 mb-[10px]">
-                <div className={"flex flex-row items-center"}>
-                  <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                    Хандалт
-                  </p>
-
-                  <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                    <div className="flex items-center  mx-[12px] my-[10px]">
-                      <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                        Бүгд
-                      </p>
-                      <span className="icon-fi-rs-triangle text-14px" />
-                    </div>
-                  </div>
-                </div>
-                <div className={"flex flex-row items-center"}>
-                  <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                    Огноо
-                  </p>
-
-                  <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                    <div className="flex items-center  mx-[12px] my-[10px]">
-                      <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                        Сүүлд нэмэгдсэн
-                      </p>
-                      <span className="icon-fi-rs-triangle text-14px" />
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
             <div
               className={
@@ -858,6 +868,41 @@ const Dashboard = ({ ssrData }) => {
                       Үйлдэл
                     </p>
                   </div>
+                  <InfinitScroller onNext={fetchDrafted} loading={loading}>
+                    {draftedPosts.items.length > 0 &&
+                    draftedPosts.items.map((draftedPost, index) => {
+                      return (
+                        <GroupPostItem
+                          type={"user"}
+                          key={index}
+                          imageSrc={draftedPost?.items?.items[0]?.file}
+                          video={draftedPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={draftedPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
+                  </InfinitScroller>
+                </div>
+              ) : null}
+              {activeIndex === 3 ? (
+                <div className="flex flex-col">
+                  <div className="hidden md:flex mb-[13px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
+                      Пост
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
+                      Гишүүн
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
+                      Огноо
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack">
+                      Үйлдэл
+                    </p>
+                  </div>
                   <InfinitScroller onNext={fetchArchived} loading={loading}>
                     {archivedPosts.items.length > 0 &&
                       archivedPosts.items.map((archivedPost, index) => {
@@ -877,7 +922,7 @@ const Dashboard = ({ ssrData }) => {
                   </InfinitScroller>
                 </div>
               ) : null}
-              {activeIndex === 3 ? (
+              {activeIndex === 4 ? (
                 <div className="flex flex-col">
                   <InfinitScroller onNext={fetchBoosted} loading={loading}>
                     {boostedPosts.items.length > 0 ? (
@@ -947,7 +992,7 @@ const Dashboard = ({ ssrData }) => {
                   </InfinitScroller>
                 </div>
               ) : null}
-              {activeIndex === 4 ? (
+              {activeIndex === 5 ? (
                 <InfinitScroller onNext={fetchFollowers} loading={loading}>
                   <div className="mt-[14px] flex flex-row flex-wrap justify-between">
                     {followedUsers.items.map((data, index) => {
@@ -965,7 +1010,7 @@ const Dashboard = ({ ssrData }) => {
                 </InfinitScroller>
               ) : null}
 
-              {activeIndex === 5 ? (
+              {activeIndex === 6 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex mb-[13px] ">
                     <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
@@ -1002,25 +1047,8 @@ const Dashboard = ({ ssrData }) => {
                   </InfinitScroller>
                 </div>
               ) : null}
-              {activeIndex === 6 ? (
+              {activeIndex === 7 ? (
                 <div className="flex flex-col">
-                  {/* <div className="hidden md:flex mb-[13px]">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[270px] lg:mr-[300px]">
-                      Пост
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px]">
-                      Групп
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px]">
-                      Репорт
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
-                      Огноо
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack">
-                      Үйлдэл
-                    </p>
-                  </div> */}
                   <InfinitScroller onNext={fetchReported} loading={loading}>
                     <table className="w-full table">
                       <thead className="">

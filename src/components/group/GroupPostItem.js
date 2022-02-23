@@ -243,7 +243,7 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
               }.${extractDate(post.createdAt).day}`}
             </p>
           </div>
-          {post.status === "ARCHIVED" ||
+          {post.status === "ARCHIVED" || post.status === "DRAFT" ||
           (post.status === "PENDING" && type === "user") ? (
             <div className=" flex w-[102px] ">
               <Link href={`/post/edit/${post.id}`}>

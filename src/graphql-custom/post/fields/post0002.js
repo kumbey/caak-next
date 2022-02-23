@@ -4,6 +4,7 @@ import file0001 from "../../file/fields/file0001";
 const post0002 = /* GraphQL */ `{
     id
     title
+    createdAt
     description
     commentType
     onlyBlogView

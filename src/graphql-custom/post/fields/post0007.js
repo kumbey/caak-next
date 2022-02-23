@@ -10,6 +10,7 @@ const post0007 = /* GraphQL */ `
         updatedAt
         createdAt
         isSaved
+        version
         user {
             id
             verified

@@ -453,7 +453,7 @@ const Post = ({ ssrData }) => {
                         src={getFileUrl(post.items.items[0].file)}
                         alt={"post picture"}
                         className={
-                          "object-contain w-full h-full z-[2] relative"
+                          "object-contain w-full h-full z-[1] relative"
                         }
                       />
                     </ConditionalLink>

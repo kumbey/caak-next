@@ -99,6 +99,8 @@ export const listCommentsByDateAndType = /* GraphQL */ `
                 id
                 createdAt
                 reacted
+                updatedAt
+                status
                 type
                 totals {
                     reactions
@@ -147,6 +149,8 @@ export const listCommentsByDateAndTypeForItem = /* GraphQL */ `
                 createdAt
                 reacted
                 type
+                updatedAt
+                status
                 totals {
                     reactions
                 }

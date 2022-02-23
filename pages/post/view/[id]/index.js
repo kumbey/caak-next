@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useRef, useState} from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
 import {
@@ -378,6 +378,7 @@ const Post = ({ ssrData }) => {
               <p className={"text-caak-scriptink"}>
                 {post.status === "PENDING" ? " (Шалгагдаж буй пост)" : ""}
                 {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
+                {post.status === "REPORTED" ? " (Репортлогдсон пост)" : ""}
                 {post.status === "DRAFT" ? " (Ноорог)" : ""}
               </p>
               {post.status === "ARCHIVED" &&
@@ -386,6 +387,18 @@ const Post = ({ ssrData }) => {
                     Шалтгаан: {post.status_history.items[0].description}
                   </p>
                 )}
+              {post.status === "REPORTED" &&
+                post.status_history.items?.length > 0 && (
+                  <p className={"text-caak-scriptink"}>
+                    Шалтгаан:{" "}
+                    {
+                      post.status_history.items[
+                        post.status_history.items.length - 1 || 0
+                      ].description
+                    }
+                  </p>
+                )}
+
               {post.description && (
                 <div>
                   <p

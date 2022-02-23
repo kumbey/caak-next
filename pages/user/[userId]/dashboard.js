@@ -764,7 +764,7 @@ const Dashboard = ({ ssrData }) => {
                     <p className="font-inter font-normal text-14px text-caak-generalblack mr-[250px]">
                       Групп
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[140px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[175px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">

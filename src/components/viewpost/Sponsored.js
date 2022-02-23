@@ -77,7 +77,7 @@ const Sponsored = ({ item }) => {
         <img
           width={500}
           height={320}
-          className={"object-cover w-[500px] h-[320px]"}
+          className={"object-cover w-full h-full"}
           alt={item.items.items[0].file.name}
           src={getFileUrl(item.items.items[0].file)}
         />

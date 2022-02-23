@@ -676,20 +676,15 @@ const Dashboard = ({ ssrData }) => {
             className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5"
             style={{ height: "48px", width: "48px" }}
           />
-          <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-            <img
-              className=" bg-white rounded-full object-cover"
-              src={
-                user?.pic
-                  ? generateFileUrl(user?.pic)
-                  : getGenderImage(user?.gender).src
-              }
-              width={52}
-              height={52}
-              // objectFit={"cover"}
-              alt="#"
-            />
-          </div>
+          <img
+            className="bg-white w-[52px] h-[52px] mr-[8px] rounded-full object-cover"
+            src={
+              user?.pic
+                ? generateFileUrl(user?.pic)
+                : getGenderImage(user?.gender).src
+            }
+            alt="#"
+          />
           <div className="text-2xl font-semibold text-caak-generalblack mr-1">
             @{user?.nickname}
           </div>

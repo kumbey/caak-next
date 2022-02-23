@@ -13,6 +13,7 @@ import {
   listCommentsByDateAndTypeForItem,
 } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
+import { onDeleteComment } from "../../graphql/subscriptions";
 
 const CommentCardNew = ({
   setup,
@@ -74,7 +75,7 @@ const CommentCardNew = ({
     // setComments({});
     listCommentByType();
     // eslint-disable-next-line
-  }, [setup.id]);
+  }, [setup.id, comments]);
 
   const subscrip = () => {
     let params = {};
@@ -118,6 +119,13 @@ const CommentCardNew = ({
           ...comments,
           items: [subscriptionComment, ...comments.items],
         });
+        setReRender(reRender + 1);
+      }else if(subscriptionComment.type === "DELETE" && !comments.items.find((item) => item.id === subscriptionComment.id)){
+        setComments({
+          ...comments,
+          items: [subscriptionComment, ...comments.items],
+        });
+        setReRender(reRender + 1);
       }
       setReRender(reRender + 1);
     }
@@ -136,6 +144,26 @@ const CommentCardNew = ({
     // eslint-disable-next-line
   }, [setup.id]);
 
+  const subscribeOnDelete = ()=> {
+    try {
+      subscriptions.onDeleteComment = API.graphql({
+        query: onDeleteComment,
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true);
+          setSubscriptionComment({ ...onData, type: "DELETE" });
+        },
+      });
+    }catch (ex){
+      console.log(ex)
+    }
+  }
+    
+  useEffect(() => {
+    if(isLogged) subscribeOnDelete()
+    //eslint-disable-next-line
+  }, [])
+
   return comments.items ? (
     comments.items.length !== 0 ? (
       <div
@@ -151,6 +179,7 @@ const CommentCardNew = ({
               comment={comment}
               postId={setup.id}
               key={index}
+              setComments={setComments}
             >
               <div className={"mt-[12px]"}>
                 <CommentSubItemCard

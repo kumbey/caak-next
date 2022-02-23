@@ -93,7 +93,9 @@ const Profile = ({ ssrData }) => {
     items: [],
     nextToken: "",
   });
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(
+    router.query.sortType === "SAVED" ? 2 : 0
+  );
   const [activeView, setActiveView] = useState(0);
   const [sortType, setSortType] = useState(
     router.query.sortType ? router.query.sortType : "POST"
@@ -329,7 +331,7 @@ const Profile = ({ ssrData }) => {
               })
             }
             {FeedViewType ? (
-          <div className="hidden md:flex w-[80px] h-[36px] px-[5px] py-[4px] items-center justify-center bg-white rounded-lg">
+          <div className="hidden md:flex w-[80px] ml-[5px] h-[36px] px-[5px] py-[4px] items-center justify-center bg-white rounded-lg">
             <div
               className={`flex flex-nowrap items-center w-full justify-between flex-row`}
             >

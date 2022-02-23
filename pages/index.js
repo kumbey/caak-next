@@ -147,14 +147,16 @@ const Feed = ({ ssrData }) => {
       resp = getReturnData(resp);
 
       if (!init) {
-        const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
-        const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
+        const diffBy = (pred) => (a, b) =>
+          a.filter((x) => !b.some((y) => pred(x, y)));
+        const makeSymmDiffFunc = (pred) => (a, b) =>
+          diffBy(pred)(a, b).concat(diffBy(pred)(b, a));
 
-        const myDiff = makeSymmDiffFunc((x, y) => x.post.id === y.post.id)
+        const myDiff = makeSymmDiffFunc((x, y) => x.post.id === y.post.id);
 
-        const result = myDiff(boostedPostsArr, resp.items)
+        const result = myDiff(boostedPostsArr, resp.items);
 
-        setBoostedPostsArr(prev=> [...prev, ...result])
+        setBoostedPostsArr((prev) => [...prev, ...result]);
       }
 
       return resp;
@@ -266,8 +268,14 @@ const Feed = ({ ssrData }) => {
 
       if (subscripedPost.type === "add") {
         if (postIndex <= -1) {
-          setPosts({ ...posts, items: [subscripedPost.post, ...posts.items] });
-          // setPosts([subscripedPost.post, ...posts]);
+          const postData = posts.items
+          for(let i=0; i<postData.length; i++){
+            if(postData[i].createdAt < subscripedPost.post.createdAt){
+              postData.splice(i,0, subscripedPost.post)
+              break;
+            }
+          }
+          setPosts({ ...posts, items: [...postData] });
         }
       } else {
         if (postIndex > -1) {

@@ -30,7 +30,6 @@ const AddPost = () => {
   const router = useRouter();
   const { postId, groupId } = router.query;
   const { user } = useUser();
-  const [adminTextEditor, setAdminTextEditor] = useState("TRUE");
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
@@ -276,7 +275,14 @@ const AddPost = () => {
       console.log(ex);
     }
   };
-
+  const successMsgHandler = (selectedGroup, status) => {
+    if (status === "DRAFT") return "Таны ноорог хадгалагдлаа.";
+    if (selectedGroup.role === "ADMIN" || selectedGroup.role === "MODERATOR") {
+      return `Таны пост "${selectedGroup.name}" группт амжилттай нийтлэгдлээ.`;
+    } else {
+      return `Таны пост "${selectedGroup.name}" группт амжилттай илгээгдлээ.`;
+    }
+  };
   const uploadPost = async () => {
     setLoading(true);
     if (post.items.length === 0) {
@@ -344,12 +350,8 @@ const AddPost = () => {
               setIsOpen={setIsSuccessModalOpen}
               role={selectedGroup.role_on_group}
               finish={finish}
-              messageTitle={`${
-                selectedGroup.role_on_group === "ADMIN" ||
-                selectedGroup.role_on_group === "MODERATOR"
-                  ? `Таны пост "${selectedGroup.name}" группт амжилттай нийтлэгдлээ.`
-                  : `Таны пост "${selectedGroup.name}" группт амжилттай илгээгдлээ.`
-              }`}
+              postStatus={post.status}
+              messageTitle={successMsgHandler(selectedGroup, post.status)}
             />
           )}
 
@@ -390,8 +392,6 @@ const AddPost = () => {
                   valid={valid}
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
-                  adminTextEditor={adminTextEditor}
-                  setAdminTextEditor={setAdminTextEditor}
                 />
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />

@@ -25,7 +25,8 @@ export const ssrDataViewPost = async ({ API, Auth, query, host }) => {
     }
     if (
       getReturnData(resp).status === "ARCHIVED" ||
-      getReturnData(resp).status === "PENDING"
+      getReturnData(resp).status === "PENDING" ||
+      getReturnData(resp).status === "DRAFT"
     ) {
       if (!isSuperAdmin) {
         if (user) {
@@ -41,7 +42,7 @@ export const ssrDataViewPost = async ({ API, Auth, query, host }) => {
       props: {
         ssrData: {
           post: getReturnData(resp),
-          host
+          host,
         },
       },
     };
@@ -77,7 +78,7 @@ export const ssrDataViewPostItem = async ({ API, Auth, query, host }) => {
       props: {
         ssrData: {
           post: getReturnData(resp),
-          host
+          host,
         },
       },
     };

@@ -87,7 +87,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
                   { shallow: true, scroll: false }
                 );
               }}
-              className="break-words cursor-pointer text-15px break-all truncate-1 text-caak-generalblack font-roboto font-medium"
+              className="break-words cursor-pointer text-15px truncate-3 text-caak-generalblack font-roboto font-medium"
             >
               {post.post.title}
             </div>

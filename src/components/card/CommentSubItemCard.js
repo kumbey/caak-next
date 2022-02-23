@@ -35,7 +35,7 @@ const CommentSubItemCard = ({ parentId, maxComment, jumpToCommentId, postId }) =
   const [subComments, setSubComments] = useState({
     items: [],
     nextToken: null,
-  });
+  });;
 
   const subscrip = () => {
     const params = {

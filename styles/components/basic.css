@@ -745,7 +745,16 @@
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
-
+  .popup_modal-content-boost {
+    min-width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    max-width: 1092px;
+    max-height: 710px;
+    margin: 70px auto;
+    position: relative;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  }
   .popup_modal-leaveGroup {
     min-width: 300px;
     background: #fff;

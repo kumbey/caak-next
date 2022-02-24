@@ -7,7 +7,16 @@ import useUpdateEffect from "../../../hooks/useUpdateEffect";
 import { API } from "aws-amplify";
 import { addViewToItem } from "../../../graphql-custom/post/mutation";
 
-const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
+const Card = ({
+  post,
+  handleToast,
+  subscription,
+  sponsored,
+  loading,
+  className,
+  mediaContainerClassname,
+  headerClassname
+}) => {
   const [ref, inView] = useInView({
     rootMargin: "-54px",
     triggerOnce: true,
@@ -42,7 +51,11 @@ const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
 
   return (
     post && (
-      <div className="feedCard relative flex flex-col justify-between mx-auto bg-white rounded-xl shadow-card mb-[24px]">
+      <div
+        className={`${
+          className ?? ""
+        } feedCard relative flex flex-col mx-auto bg-white rounded-xl shadow-card mb-[24px]`}
+      >
         {loading ? (
           <FeedCardSkeleton />
         ) : (
@@ -52,13 +65,16 @@ const Card = ({ post, handleToast, subscription, sponsored, loading }) => {
                 sponsored={sponsored}
                 post={post}
                 handleToast={handleToast}
+                containerClassname={headerClassname}
               />
               <ImageCarousel
                 cover={false}
                 duration
                 route
                 card={true}
-                mediaContainerClassname={"w-full"}
+                mediaContainerClassname={`${
+                  mediaContainerClassname ?? ""
+                } w-full`}
                 postId={post.id}
                 items={post.items.items}
               />

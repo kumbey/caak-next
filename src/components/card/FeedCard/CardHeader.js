@@ -42,8 +42,8 @@ const CardHeader = ({
 
   return post.user ? (
     <div
-      className={`flex flex-col relative ${
-        containerClassname ? containerClassname : "p-[16px]"
+      className={`flex flex-col relative p-[16px] ${
+        containerClassname ? containerClassname : ""
       } `}
     >
       {isLogged && (
@@ -227,7 +227,7 @@ const CardHeader = ({
         >
           <a>
             <p
-              className={`text-caak-generalblack break-words pt-[12px]  ${
+              className={`text-caak-generalblack break-words pt-[12px] truncate-2  ${
                 titleClassname
                   ? titleClassname
                   : "text-15px leading-[18px] tracking-[0.23px]"

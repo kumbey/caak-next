@@ -4,13 +4,35 @@ import Button from "../button";
 import Link from "next/link";
 import DatePicker from "react-datepicker";
 import Input from "../../components/input";
-import { addDays, differenceDate } from "../../utility/Util";
+import {addDays, differenceDate, getReturnData} from "../../utility/Util";
+import FeedCardSkeleton from "../skeleton/FeedCardSkeleton";
+import Card from "../card/FeedCard";
+import {getPostView} from "../../graphql-custom/post/queries";
+import {API} from "aws-amplify";
 
-const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
+const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [day, setDay] = useState(0);
+
+  const [post, setPost] = useState(null);
+
+  const getPostById = async () => {
+    let resp = await API.graphql({
+      query: getPostView,
+      variables: {
+        id: postId,
+      },
+    });
+    resp = getReturnData(resp);
+    setPost(resp);
+  };
+
+  useEffect(() => {
+    getPostById();
+  // eslint-disable-next-line
+  }, [postId]);
 
   useEffect(() => {
     blockScroll();
@@ -19,6 +41,7 @@ const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
 
   useEffect(() => {
     setEndDate(addDays(startDate, day));
+    // eslint-disable-next-line
   }, [day]);
 
   useEffect(() => {
@@ -27,17 +50,21 @@ const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
     } else {
       setDay(differenceDate(endDate, startDate));
     }
+    // eslint-disable-next-line
   }, [startDate]);
 
   useEffect(() => {
     setDay(differenceDate(endDate, startDate));
+    // eslint-disable-next-line
   }, [endDate]);
 
-  return isBoostModalOpen ? (
+  return (
     <div className="popup_modal">
       <div className="popup_modal-content-boost w-full h-full">
         <div
-          className={"flex flex-col bg-[#ECECEF] w-full h-full rounded-[12px]"}
+          className={
+            "flex flex-col justify-between bg-[#ECECEF] w-full h-full rounded-[12px]"
+          }
         >
           {/*Header*/}
           <div
@@ -164,7 +191,7 @@ const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
             {/*Right*/}
             <div
               className={
-                "bg-white flex flex-col rounded-[8px] w-[400px] h-[519px] ml-[22px] shadow-card"
+                "flex flex-col rounded-[8px] w-[400px] h-[519px] ml-[22px]"
               }
             >
               <div
@@ -179,28 +206,43 @@ const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
                 >
                   Постны харагдац
                 </p>
-                <Button
-                  iconPosition={"left"}
-                  icon={
-                    <div
-                      className={
-                        "w-[16px] h-[16px] flex items-center justify-center mr-[6px]"
-                      }
-                    >
+                <Link href={`/post/edit/${postId}`}>
+                  <a target={"_blank"} rel={"noreferrer"}>
+                    <Button
+                      iconPosition={"left"}
+                      icon={
+                        <div
+                          className={
+                            "w-[16px] h-[16px] flex items-center justify-center mr-[6px]"
+                          }
+                        >
                       <span
                         className={
                           "icon-fi-rs-edit-f text-caak-generalblack text-[16px]"
                         }
                       />
-                    </div>
-                  }
-                  className={
-                    "text-[14px] h-[28px] px-[10px] py-[5px] font-medium tracking-[0.21px] leading-[17px] text-caak-generalblack bg-caak-extraLight rounded-[6px]"
-                  }
-                >
-                  Пост засах
-                </Button>
+                        </div>
+                      }
+                      className={
+                        "text-[14px] h-[28px] px-[10px] py-[5px] font-medium tracking-[0.21px] leading-[17px] text-caak-generalblack bg-caak-extraLight rounded-[6px]"
+                      }
+                    >
+                      Пост засах
+                    </Button>
+                  </a>
+                </Link>
               </div>
+              {post ? (
+                <Card
+                  // headerClassname={"h-[115px]"}
+                  mediaContainerClassname={"max-h-[308px] h-full"}
+                  className={"mb-0 rounded-t-none max-h-[468px]"}
+                  post={post}
+                  sponsored
+                />
+              ) : (
+                <FeedCardSkeleton />
+              )}
             </div>
           </div>
           {/*Footer*/}
@@ -244,7 +286,7 @@ const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
         </div>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default BoostPostModal;

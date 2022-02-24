@@ -4,17 +4,21 @@ import Button from "../button";
 import Link from "next/link";
 import DatePicker from "react-datepicker";
 import Input from "../../components/input";
-import {addDays, differenceDate, getReturnData} from "../../utility/Util";
+import { addDays, differenceDate, getReturnData } from "../../utility/Util";
 import FeedCardSkeleton from "../skeleton/FeedCardSkeleton";
 import Card from "../card/FeedCard";
-import {getPostView} from "../../graphql-custom/post/queries";
-import {API} from "aws-amplify";
+import { getPostView } from "../../graphql-custom/post/queries";
+import { API, graphqlOperation } from "aws-amplify";
+import toast from "react-hot-toast";
+import { createBoostedPost } from "../../graphql-custom/boost/mutation";
 
 const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [day, setDay] = useState(0);
+  const [isValid, setIsValid] = useState(false);
+  const [loading, setLoading] = useState();
 
   const [post, setPost] = useState(null);
 
@@ -29,9 +33,39 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
     setPost(resp);
   };
 
+  const updateBoostData = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    try {
+      const postData = {
+        post_id: post.id,
+        user_id: post.user_id,
+        start_date: startDate ? startDate.toISOString() : null,
+        end_date: endDate ? endDate.toISOString() : null,
+        status: "ACTIVE",
+      };
+      const resp = await API.graphql(
+        graphqlOperation(createBoostedPost, {
+          input: postData,
+        })
+      );
+      toast.success(
+        `${getReturnData(resp).post.title} 
+        амжилттай бүүстлэгдлээ.`
+      );
+      setLoading(false);
+      setIsBoostModalOpen(false);
+      setData(initData);
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+
   useEffect(() => {
     getPostById();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [postId]);
 
   useEffect(() => {
@@ -57,6 +91,15 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
     setDay(differenceDate(endDate, startDate));
     // eslint-disable-next-line
   }, [endDate]);
+
+  useEffect(() => {
+    if (day > 0) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+    // eslint-disable-next-line
+  }, [day]);
 
   return (
     <div className="popup_modal">
@@ -114,7 +157,13 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     <Input
                       type="text"
                       value={day}
-                      onChange={(e) => setDay(e.target.value)}
+                      onChange={(e) =>
+                        setDay(
+                          e.target.value
+                            .replace(/[^0-9.]/g, "")
+                            .replace(/(\..*?)\..*/g, "$1")
+                        )
+                      }
                       className={
                         "border h-[37px] w-full min-w-[168px] mt-1  block  rounded-md text-base  border-gray-200 placeholder-gray-400 focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack                        focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary                        hover:bg-white transition ease-in duration-100"
                       }
@@ -216,11 +265,11 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                             "w-[16px] h-[16px] flex items-center justify-center mr-[6px]"
                           }
                         >
-                      <span
-                        className={
-                          "icon-fi-rs-edit-f text-caak-generalblack text-[16px]"
-                        }
-                      />
+                          <span
+                            className={
+                              "icon-fi-rs-edit-f text-caak-generalblack text-[16px]"
+                            }
+                          />
                         </div>
                       }
                       className={
@@ -278,10 +327,13 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
             </div>
 
             <Button
+              onClick={updateBoostData}
               className={
                 "w-full max-w-[200px] min-w-[150px] mb-[6px] md:mb-0 text-[14px] font-medium leading-[17px] tracking-[0.21px] px-[24px] py-[10px] h-[36px] rounded-[8px]"
               }
               skin={"primary"}
+              disabled={!isValid}
+              loading={loading}
             >
               Пост бүүстлэх
             </Button>

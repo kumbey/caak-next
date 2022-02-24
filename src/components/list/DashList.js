@@ -16,12 +16,12 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostDenyModal from "../modals/postDenyModal";
 import { useRouter } from "next/router";
-import moment from "moment";
+import BoostPostModal from "../modals/boostPostModal";
 
 const DashList = ({ imageSrc, post, type, video }) => {
   const [loading, setLoading] = useState(false);
   const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
-  const now = new Date();
+  const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
   const postHandler = async ({ id, status, message }) => {
     setLoading(true);
     try {
@@ -41,6 +41,10 @@ const DashList = ({ imageSrc, post, type, video }) => {
 
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
+      <BoostPostModal
+        isBoostModalOpen={isBoostModalOpen}
+        setIsBoostModalOpen={setIsBoostModalOpen}
+      />
       <PostDenyModal
         isOpen={isDenyModalOpen}
         setIsOpen={setIsDenyModalOpen}
@@ -262,6 +266,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 </a>
               </Link>
               <Button
+                onClick={() => setIsBoostModalOpen(true)}
                 // loading={loading}
                 className={`bg-[#257CEE] text-caak-generalblack text-14px font-inter font-medium w-[102px]  h-[39px]  ml-2 border`}
               >

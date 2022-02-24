@@ -750,7 +750,7 @@
     background: #fff;
     border-radius: 12px;
     max-width: 1092px;
-    max-height: 710px;
+    min-height: 710px;
     margin: 70px auto;
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);

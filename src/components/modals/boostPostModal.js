@@ -60,7 +60,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
 
   return (
     <div className="popup_modal">
-      <div className="popup_modal-content-boost w-full h-full">
+      <div className="popup_modal-content-boost w-full">
         <div
           className={
             "flex flex-col justify-between bg-[#ECECEF] w-full h-full rounded-[12px]"
@@ -93,30 +93,30 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
             </p>
           </div>
           {/*Main content*/}
-          <div className={"flex flex-row h-[590px] py-[30px] px-[40px]"}>
+          <div className={"flex flex-col lg:flex-row py-[40px] px-[5px] sm:px-[40px]"}>
             {/*Left*/}
             <div className={"flex flex-col"}>
               <div
                 className={
-                  " w-[590px] h-[146px] bg-white rounded-[8px] px-[24px] py-[22px] shadow-card "
+                  "max-w-[590px] w-[fit-content] min-h-[146px] bg-white rounded-[8px] px-[24px] py-[22px] shadow-card "
                 }
               >
                 <p
                   className={
-                    "text-caak-generalblack text-[18px] font-semibold tracking-[0.27px] leading-[21px] mb-5"
+                    "inline-block text-caak-generalblack text-[18px] font-semibold tracking-[0.27px] leading-[21px] mb-5"
                   }
                 >
                   Бүүстлэх хугацаа
                 </p>
-                <div className="flex">
-                  <div className="relative flex flex-col mr-[18px]">
+                <div className="flex flex-col items-start md:flex-row" >
+                  <div className="relative flex flex-col mr-[18px] w-full">
                     <p className="font-inter font-medium text-14px ">Хоног</p>
                     <Input
                       type="text"
                       value={day}
                       onChange={(e) => setDay(e.target.value)}
                       className={
-                        " border h-[37px] w-[168px] mt-1  block  rounded-md text-base  border-gray-200 placeholder-gray-400 focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack                        focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary                        hover:bg-white transition ease-in duration-100"
+                        "border h-[37px] w-full min-w-[168px] mt-1  block  rounded-md text-base  border-gray-200 placeholder-gray-400 focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack                        focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary                        hover:bg-white transition ease-in duration-100"
                       }
                     />
                     <div className="flex flex-col items-center justify-center">
@@ -134,12 +134,12 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col mr-[18px] relative">
+                  <div className="flex flex-col mr-[18px] w-full relative">
                     <p className="font-inter font-medium text-14px  ">
                       Эхлэх өдөр
                     </p>
                     <DatePicker
-                      className=" h-[37px] w-[168px] mt-1  px-10 py-3 block  rounded-md text-base border border-gray-200 placeholder-gray-400
+                      className=" h-[37px] min-w-[168px] w-full mt-1  px-10 py-3 block  rounded-md text-base border border-gray-200 placeholder-gray-400
                     focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack
                     focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary
                     hover:bg-white transition ease-in duration-100"
@@ -154,12 +154,12 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     text-20px text-caak-nocturnal icon-fi-rs-date-checked"
                     />
                   </div>
-                  <div className="relative flex flex-col mr-[18px]">
+                  <div className="relative flex flex-col w-full mr-[18px]">
                     <p className="font-inter font-medium text-14px">
                       Дуусах өдөр
                     </p>
                     <DatePicker
-                      className=" h-[37px] w-[168px] mt-1  px-10   py-3 block  rounded-md text-base border border-gray-200 placeholder-gray-400
+                      className=" h-[37px] min-w-[168px] w-full mt-1  px-10   py-3 block  rounded-md text-base border border-gray-200 placeholder-gray-400
                       focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack
                       focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary
                       hover:bg-white transition ease-in duration-100"
@@ -175,7 +175,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
               </div>
               <div
                 className={
-                  "w-[590px] h-[307px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] py-[22px]"
+                  "max-w-[590px] h-[307px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] py-[22px]"
                 }
               >
                 <p
@@ -191,7 +191,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
             {/*Right*/}
             <div
               className={
-                "flex flex-col rounded-[8px] w-[400px] h-[519px] ml-[22px]"
+                "flex flex-col mt-[20px] lg:mt-0 lg:ml-[22px] rounded-[8px] max-w-[400px] h-[519px] "
               }
             >
               <div
@@ -248,14 +248,15 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
           {/*Footer*/}
           <div
             className={
-              "px-[30px] py-[10px] flex flex-row items-center justify-between bg-white flex-shrink-0 h-[60px] rounded-b-[12px]"
+              "px-[30px] min-h-[56px] py-[10px] h-full flex flex-col-reverse md:flex-row items-center justify-between bg-white flex-shrink-0 h-[60px] rounded-b-[12px]"
             }
           >
-            <div
-              className={
-                "flex flex-row items-center text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[17px]"
-              }
-            >
+            <div className={"flex flex-row items-center"}>
+              <div
+                className={
+                  "flex flex-row items-center text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[17px] mr-[10px]"
+                }
+              >
               <span>
                 Та бүүстлэх товч дарснаар{" "}
                 <Link href={"/help"}>
@@ -267,16 +268,18 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                 </Link>{" "}
                 -ийг зөвшөөрсөнд тооцно
               </span>
-              <span className={"text-[#CDCFD9] mx-[10px]"}> |</span>
-              <Link href={"/help"}>
-                <a>
-                  <span className={"text-[#257CEE]"}>Тусламж</span>
-                </a>
-              </Link>
+                <span className={"text-[#CDCFD9] mx-[10px]"}> |</span>
+                <Link href={"/help"}>
+                  <a>
+                    <span className={"text-[#257CEE]"}>Тусламж</span>
+                  </a>
+                </Link>
+              </div>
             </div>
+
             <Button
               className={
-                "text-[14px] font-medium leading-[17px] tracking-[0.21px] px-[24px] py-[10px] h-[36px] rounded-[8px]"
+                "w-full max-w-[200px] min-w-[150px] mb-[6px] md:mb-0 text-[14px] font-medium leading-[17px] tracking-[0.21px] px-[24px] py-[10px] h-[36px] rounded-[8px]"
               }
               skin={"primary"}
             >

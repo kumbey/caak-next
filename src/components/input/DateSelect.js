@@ -73,7 +73,7 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
           name={"month"}
           onChange={(e) => setMonth(e.target.value)}
           containerStyle={"flex-1 mr-2"}
-          className="h-c9 w-c14 bg-caak-lynxwhite"
+          className="h-c9 w-c14 py-3 bg-caak-lynxwhite"
         >
           <option disabled hidden value={"DEFAULT"}>
             {"Сар"}
@@ -89,7 +89,7 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
           name={"day"}
           onChange={(e) => setDay(e.target.value)}
           containerStyle={"flex-1 mr-2"}
-          className="h-c9 w-c14 bg-caak-lynxwhite"
+          className="h-c9 w-c14 py-3 bg-caak-lynxwhite"
         >
           <option disabled hidden value="DEFAULT">
             {"Өдөр"}
@@ -106,7 +106,7 @@ const DateSelect = ({ value, errorMessage, onChange, startYear, ...props }) => {
           name={"year"}
           onChange={(e) => setYear(e.target.value)}
           containerStyle={"flex-1 mr-2"}
-          className="h-c9 bg-caak-lynxwhite"
+          className="h-c9 py-3 bg-caak-lynxwhite"
         >
           <option disabled hidden value="DEFAULT">
             {"Он"}

@@ -1,15 +1,38 @@
 import useScrollBlock from "../../hooks/useScrollBlock";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button";
 import Link from "next/link";
-import Card from "../card/FeedCard";
+import DatePicker from "react-datepicker";
+import Input from "../../components/input";
+import { addDays, differenceDate } from "../../utility/Util";
 
 const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [day, setDay] = useState(0);
+
   useEffect(() => {
     blockScroll();
     return () => allowScroll();
   }, [allowScroll, blockScroll]);
+
+  useEffect(() => {
+    setEndDate(addDays(startDate, day));
+  }, [day]);
+
+  useEffect(() => {
+    if (startDate > endDate) {
+      setEndDate(startDate);
+    } else {
+      setDay(differenceDate(endDate, startDate));
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    setDay(differenceDate(endDate, startDate));
+  }, [endDate]);
+
   return isBoostModalOpen ? (
     <div className="popup_modal">
       <div className="popup_modal-content-boost w-full h-full">
@@ -48,16 +71,80 @@ const BoostPostModal = ({ isBoostModalOpen, setIsBoostModalOpen }) => {
             <div className={"flex flex-col"}>
               <div
                 className={
-                  "w-[590px] h-[146px] bg-white rounded-[8px] px-[24px] py-[22px] shadow-card px-[24px] py-[22px]"
+                  " w-[590px] h-[146px] bg-white rounded-[8px] px-[24px] py-[22px] shadow-card "
                 }
               >
                 <p
                   className={
-                    "text-caak-generalblack text-[18px] font-semibold tracking-[0.27px] leading-[21px]"
+                    "text-caak-generalblack text-[18px] font-semibold tracking-[0.27px] leading-[21px] mb-5"
                   }
                 >
                   Бүүстлэх хугацаа
                 </p>
+                <div className="flex">
+                  <div className="relative flex flex-col mr-[18px]">
+                    <p className="font-inter font-medium text-14px ">Хоног</p>
+                    <Input
+                      type="text"
+                      value={day}
+                      onChange={(e) => setDay(e.target.value)}
+                      className={
+                        " border h-[37px] w-[168px] mt-1  block  rounded-md text-base  border-gray-200 placeholder-gray-400 focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack                        focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary                        hover:bg-white transition ease-in duration-100"
+                      }
+                    />
+                    <div className="flex flex-col items-center justify-center">
+                      <span
+                        onClick={() => setDay(day + 1)}
+                        className="absolute cursor-pointer text-[10px]  rotate-180 top-[33px] right-[9px] icon-fi-rs-triangle"
+                      />
+                      <span
+                        onClick={() => {
+                          if (day > 0) {
+                            setDay(day - 1);
+                          }
+                        }}
+                        className="absolute cursor-pointer text-[10px] top-[44px] right-[8.4px] icon-fi-rs-triangle"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col mr-[18px] relative">
+                    <p className="font-inter font-medium text-14px  ">
+                      Эхлэх өдөр
+                    </p>
+                    <DatePicker
+                      className=" h-[37px] w-[168px] mt-1  px-10 py-3 block  rounded-md text-base border border-gray-200 placeholder-gray-400
+                    focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack
+                    focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary
+                    hover:bg-white transition ease-in duration-100"
+                      minDate={new Date()}
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      dateFormat={"yyyy/MM/dd"}
+                      calendarStartDay={1}
+                    />
+                    <span
+                      className="absolute top-[33px] left-3
+                    text-20px text-caak-nocturnal icon-fi-rs-date-checked"
+                    />
+                  </div>
+                  <div className="relative flex flex-col mr-[18px]">
+                    <p className="font-inter font-medium text-14px">
+                      Дуусах өдөр
+                    </p>
+                    <DatePicker
+                      className=" h-[37px] w-[168px] mt-1  px-10   py-3 block  rounded-md text-base border border-gray-200 placeholder-gray-400
+                      focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack
+                      focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary
+                      hover:bg-white transition ease-in duration-100"
+                      minDate={startDate}
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      dateFormat={"yyyy/MM/dd"}
+                      calendarStartDay={1}
+                    />
+                    <span className="absolute top-[33px] left-3 text-20px text-caak-nocturnal icon-fi-rs-date-over" />
+                  </div>
+                </div>
               </div>
               <div
                 className={

@@ -11,7 +11,6 @@ import { Auth } from "aws-amplify";
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
 
-
 export function shuffleArray(array) {
   let currentIndex = array.length,
     randomIndex;
@@ -31,7 +30,6 @@ export function shuffleArray(array) {
 
   return array;
 }
-
 
 export const sortSearchResultByKeyword = (array, keyword) => {
   array
@@ -253,8 +251,8 @@ export function getRandomInt(max) {
 }
 
 export function generateFileUrl(file) {
-  if (file){
-    if(file.bucket.includes("dev")){
+  if (file) {
+    if (file.bucket.includes("dev")) {
       return (
         "https://bucket-dev.caak.mn/" +
         file.level +
@@ -263,16 +261,10 @@ export function generateFileUrl(file) {
         "." +
         file.ext
       );
-    }else{
+    } else {
       return (
-        "https://bucket.caak.mn/" +
-        file.level +
-        "/" +
-        file.id +
-        "." +
-        file.ext
+        "https://bucket.caak.mn/" + file.level + "/" + file.id + "." + file.ext
       );
-      
     }
     // return (
     //   "https://" +
@@ -511,6 +503,10 @@ export const kFormatter = (num) => {
     : Math.sign(num) * Math.abs(num);
 };
 
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 const object = {
   useQuery,
   mailNumber,
@@ -532,5 +528,6 @@ const object = {
   getDiffDays,
   convertDateTime,
   kFormatter,
+  numberWithCommas,
 };
 export default object;

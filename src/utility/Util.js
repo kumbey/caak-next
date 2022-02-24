@@ -507,6 +507,24 @@ export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+export const addDays = (date, days) => {
+  let result = new Date(date);
+  if (days) {
+    result.setDate(result.getDate() + parseInt(days));
+  }
+  return result;
+};
+
+export const differenceDate = (date1, date2) => {
+  let diffDays;
+  if (date1 && date2) {
+    const diffTime = Math.abs(date1 - date2);
+    diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  return diffDays;
+};
+
 const object = {
   useQuery,
   mailNumber,
@@ -529,5 +547,7 @@ const object = {
   convertDateTime,
   kFormatter,
   numberWithCommas,
+  addDays,
+  differenceDate,
 };
 export default object;

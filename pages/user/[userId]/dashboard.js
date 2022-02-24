@@ -752,7 +752,7 @@ const Dashboard = ({ ssrData }) => {
             </div>
             <div
               className={
-                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-auto"
+                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[20px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-auto"
               }
             >
               {activeIndex === 0 ? (
@@ -865,20 +865,20 @@ const Dashboard = ({ ssrData }) => {
                   </div>
                   <InfinitScroller onNext={fetchDrafted} loading={loading}>
                     {draftedPosts.items.length > 0 &&
-                    draftedPosts.items.map((draftedPost, index) => {
-                      return (
-                        <GroupPostItem
-                          type={"user"}
-                          key={index}
-                          imageSrc={draftedPost?.items?.items[0]?.file}
-                          video={draftedPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={draftedPost}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    })}
+                      draftedPosts.items.map((draftedPost, index) => {
+                        return (
+                          <GroupPostItem
+                            type={"user"}
+                            key={index}
+                            imageSrc={draftedPost?.items?.items[0]?.file}
+                            video={draftedPost?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={draftedPost}
+                            className="ph:mb-4 sm:mb-4"
+                          />
+                        );
+                      })}
                   </InfinitScroller>
                 </div>
               ) : null}
@@ -924,21 +924,23 @@ const Dashboard = ({ ssrData }) => {
                       <table className="w-full table">
                         <thead className="">
                           <tr className="">
-                            <th className="w-[250px] max-w-[250px] text-left font-inter font-normal text-14px text-caak-generalblack">
+                            <th className="w-[215px] max-w-[215px] text-left font-inter font-normal text-14px text-caak-generalblack">
                               Пост
                             </th>
-                            <th className="text-left w-16  font-inter font-normal text-14px text-caak-generalblack">
+                            <th className="text-left w-10  font-inter font-normal text-14px text-caak-generalblack">
                               Хоног
                             </th>
-                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack">
-                              Эхлэсэн огноо
+                            <th className="text-center w-36  font-inter font-normal text-14px text-caak-generalblack">
+                              Эхлэх дуусах огноо
                             </th>
-                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack">
-                              Дуусах огноо
-                            </th>
+
                             <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
+                              Зарцуулалт
+                            </th>
+                            <th className="text-center font-inter font-normal text-14px text-caak-generalblack">
                               Хандалт
                             </th>
+                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack"></th>
                           </tr>
                         </thead>
                         <tbody>

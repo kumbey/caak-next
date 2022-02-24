@@ -16,11 +16,12 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import PostDenyModal from "../modals/postDenyModal";
 import { useRouter } from "next/router";
+import moment from "moment";
 
 const DashList = ({ imageSrc, post, type, video }) => {
   const [loading, setLoading] = useState(false);
   const [isDenyModalOpen, setIsDenyModalOpen] = useState(false);
-
+  const now = new Date();
   const postHandler = async ({ id, status, message }) => {
     setLoading(true);
     try {
@@ -247,18 +248,28 @@ const DashList = ({ imageSrc, post, type, video }) => {
               Татгалзах
             </Button>
           ) : type === "user" ? (
-            <Link href={`/post/edit/${post.id}`}>
-              <a>
-                <Button
-                  round
-                  className={
-                    "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
-                  }
-                >
-                  <p className="">Засах</p>
-                </Button>
-              </a>
-            </Link>
+            <>
+              <Link href={`/post/edit/${post.id}`}>
+                <a>
+                  <Button
+                    round
+                    className={
+                      "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                    }
+                  >
+                    <p className="">Засах</p>
+                  </Button>
+                </a>
+              </Link>
+              <Button
+                // loading={loading}
+                className={`bg-[#257CEE] text-caak-generalblack text-14px font-inter font-medium w-[102px]  h-[39px]  ml-2 border`}
+              >
+                <p className={`text-white font-inter font-normal text-13px`}>
+                  Бүүстлэх
+                </p>
+              </Button>
+            </>
           ) : null}
         </div>
       </div>

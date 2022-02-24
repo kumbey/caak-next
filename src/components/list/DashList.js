@@ -41,10 +41,13 @@ const DashList = ({ imageSrc, post, type, video }) => {
 
   return (
     <div className="first:border-t-0 first:pt-0 border-t-[1px] border-caak-liquidnitrogen pt-[19px] mb-[19px] ">
-      <BoostPostModal
-        isBoostModalOpen={isBoostModalOpen}
-        setIsBoostModalOpen={setIsBoostModalOpen}
-      />
+      {isBoostModalOpen && (
+        <BoostPostModal
+          setIsBoostModalOpen={setIsBoostModalOpen}
+          postId={post.id}
+        />
+      )}
+
       <PostDenyModal
         isOpen={isDenyModalOpen}
         setIsOpen={setIsDenyModalOpen}

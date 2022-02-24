@@ -158,7 +158,7 @@ const ImageCarousel = ({
       >
         <div
           className={
-            "flex flex-nowrap flex-row items-center w-full h-full bg-black"
+            "flex flex-nowrap flex-row items-center w-full h-[calc(100%+1px)] bg-black"
           }
         >
           {items.map((item, index) => {

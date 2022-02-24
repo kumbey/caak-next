@@ -77,7 +77,7 @@ const CardFooter = ({
 
   return (
     <>
-      <div className="relative flex flex-col justify-center h-[50px] py-[12px] px-[20px]">
+      <div className="relative flex flex-col justify-center h-[46px] py-[12px] px-[20px]">
         <div className={"flex row justify-between"}>
           <div className={"flex flex-row"}>
             <div

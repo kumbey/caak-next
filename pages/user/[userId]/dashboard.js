@@ -77,7 +77,7 @@ export async function getServerSideProps({ req, query }) {
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
   const { isLogged, user } = useUser();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
@@ -812,40 +812,39 @@ const Dashboard = ({ ssrData }) => {
                       </p>
                     </div>
                   ) : null}
+                  {!loading && pendingPosts.items.length === 0 ? (
+                    <div className="flex items-center justify-center h-80">
+                      <p className="text-sm">
+                        Уучлаарай та пост илгээгээгүй байна.&nbsp;
+                        <strong
+                          onClick={() =>
+                            router.push("/post/add", undefined, {
+                              shallow: false,
+                            })
+                          }
+                          className="text-[#0000EE] cursor-pointer"
+                        >
+                          ЭНД &nbsp;
+                        </strong>
+                        дарж пост оруулна уу!
+                      </p>
+                    </div>
+                  ) : null}
                   <InfinitScroller onNext={fetchPending} loading={loading}>
-                    {pendingPosts.items.length > 0 ? (
-                      pendingPosts.items.map((pendingPost, index) => {
-                        return (
-                          <GroupPostItem
-                            type={"user"}
-                            key={index}
-                            imageSrc={pendingPost?.items?.items[0]?.file}
-                            video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                              "video"
-                            )}
-                            post={pendingPost}
-                            className="ph:mb-4 sm:mb-4"
-                          />
-                        );
-                      })
-                    ) : (
-                      <div className="flex items-center justify-center h-80">
-                        <p className="text-sm">
-                          Уучлаарай та пост илгээгээгүй байна.&nbsp;
-                          <strong
-                            onClick={() =>
-                              router.push("/post/add", undefined, {
-                                shallow: false,
-                              })
-                            }
-                            className="text-[#0000EE] cursor-pointer"
-                          >
-                            ЭНД &nbsp;
-                          </strong>
-                          дарж пост оруулна уу!
-                        </p>
-                      </div>
-                    )}
+                    {pendingPosts.items.map((pendingPost, index) => {
+                      return (
+                        <GroupPostItem
+                          type={"user"}
+                          key={index}
+                          imageSrc={pendingPost?.items?.items[0]?.file}
+                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={pendingPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
                   </InfinitScroller>
                 </div>
               ) : null}
@@ -921,9 +920,27 @@ const Dashboard = ({ ssrData }) => {
               ) : null}
               {activeIndex === 4 ? (
                 <div className="flex flex-col">
+                  {!loading && boostedPosts.items.length === 0 ? (
+                    <div className="flex items-center justify-center h-80">
+                      <p className="text-sm">
+                        Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
+                        <strong
+                          onClick={() =>
+                            router.push("/help/ads", undefined, {
+                              shallow: false,
+                            })
+                          }
+                          className="text-[#0000EE] cursor-pointer"
+                        >
+                          ЭНД &nbsp;
+                        </strong>
+                        дарж дэлгэрэнгүй мэдээлэл авна уу!
+                      </p>
+                    </div>
+                  ) : null}
                   <InfinitScroller onNext={fetchBoosted} loading={loading}>
-                    {boostedPosts.items.length > 0 ? (
-                      <table className="w-full table">
+                    <table className="w-full table">
+                      {boostedPosts.items.length > 0 ? (
                         <thead className="">
                           <tr className="">
                             <th className="w-[215px] max-w-[215px] text-left font-inter font-normal text-14px text-caak-generalblack">
@@ -945,49 +962,32 @@ const Dashboard = ({ ssrData }) => {
                             <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack"></th>
                           </tr>
                         </thead>
-                        <tbody>
-                          {boostedPosts.items.length > 0 &&
-                            boostedPosts.items.map((boostedPost, index) => {
-                              return (
-                                <tr
+                      ) : null}
+                      <tbody>
+                        {boostedPosts.items.length > 0 &&
+                          boostedPosts.items.map((boostedPost, index) => {
+                            return (
+                              <tr
+                                key={index}
+                                className="border-t border-b mb-2"
+                              >
+                                <BoostedPostItem
+                                  type={"user"}
                                   key={index}
-                                  className="border-t border-b mb-2"
-                                >
-                                  <BoostedPostItem
-                                    type={"user"}
-                                    key={index}
-                                    imageSrc={
-                                      boostedPost?.post?.items?.items[0]?.file
-                                    }
-                                    video={boostedPost?.post?.items?.items[0]?.file?.type?.startsWith(
-                                      "video"
-                                    )}
-                                    post={boostedPost}
-                                    className="ph:mb-4 sm:mb-4"
-                                  />
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
-                    ) : (
-                      <div className="flex items-center justify-center h-80">
-                        <p className="text-sm">
-                          Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
-                          <strong
-                            onClick={() =>
-                              router.push("/help/ads", undefined, {
-                                shallow: false,
-                              })
-                            }
-                            className="text-[#0000EE] cursor-pointer"
-                          >
-                            ЭНД &nbsp;
-                          </strong>
-                          дарж дэлгэрэнгүй мэдээлэл авна уу!
-                        </p>
-                      </div>
-                    )}
+                                  imageSrc={
+                                    boostedPost?.post?.items?.items[0]?.file
+                                  }
+                                  video={boostedPost?.post?.items?.items[0]?.file?.type?.startsWith(
+                                    "video"
+                                  )}
+                                  post={boostedPost}
+                                  className="ph:mb-4 sm:mb-4"
+                                />
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
                   </InfinitScroller>
                 </div>
               ) : null}

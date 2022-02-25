@@ -119,6 +119,8 @@ module.exports = {
           macarooncream: "#FFE8D6",
           cobalite: "#9A99FE",
           naturallycalm: "#CDCFD9",
+          clearblue: "#257CEE",
+          cottonboll: "#E6EFFA",
           carbon: {
             DEFAULT: "#333333",
             hover: "#4D4D4D",

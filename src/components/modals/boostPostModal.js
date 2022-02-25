@@ -4,13 +4,19 @@ import Button from "../button";
 import Link from "next/link";
 import DatePicker from "react-datepicker";
 import Input from "../../components/input";
-import { addDays, differenceDate, getReturnData } from "../../utility/Util";
+import {
+  addDays,
+  differenceDate,
+  getFileUrl,
+  getReturnData,
+} from "../../utility/Util";
 import FeedCardSkeleton from "../skeleton/FeedCardSkeleton";
 import Card from "../card/FeedCard";
 import { getPostView } from "../../graphql-custom/post/queries";
 import { API, graphqlOperation } from "aws-amplify";
 import toast from "react-hot-toast";
 import { createBoostedPost } from "../../graphql-custom/boost/mutation";
+import { useUser } from "../../context/userContext";
 
 const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -19,7 +25,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const [day, setDay] = useState(0);
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState();
-
+  const { user } = useUser();
   const [post, setPost] = useState(null);
 
   const getPostById = async () => {
@@ -136,7 +142,11 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
             </p>
           </div>
           {/*Main content*/}
-          <div className={"flex flex-col lg:flex-row py-[40px] px-[5px] sm:px-[40px]"}>
+          <div
+            className={
+              "flex flex-col lg:flex-row py-[40px] px-[5px] sm:px-[40px]"
+            }
+          >
             {/*Left*/}
             <div className={"flex flex-col"}>
               <div
@@ -151,7 +161,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                 >
                   Бүүстлэх хугацаа
                 </p>
-                <div className="flex flex-col items-start md:flex-row" >
+                <div className="flex flex-col items-start md:flex-row">
                   <div className="relative flex flex-col mr-[18px] w-full">
                     <p className="font-inter font-medium text-14px ">Хоног</p>
                     <Input
@@ -234,13 +244,101 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                 >
                   Нийт төлөх дүн
                 </p>
+                <div
+                  className={
+                    "flex flex-col justify-center items-center mt-[20px]"
+                  }
+                >
+                  <div
+                    className={
+                      "flex flex-col justify-center items-center rounded-[8px] border-[1px] border-[#E4E4E5] w-full h-full max-w-[400px] min-h-[112px] bg-white px-[16px] py-[14px]"
+                    }
+                  >
+                    <div
+                      className={"flex flex-row justify-center items-center"}
+                    >
+                      <p
+                        className={
+                          "font-bold text-[38px] text-[#257CEE] leading-[28px] tracking-[0px]"
+                        }
+                      >
+                        100.000
+                      </p>
+                      <p
+                        className={
+                          "self-end text-[24px] font-semibold tracking-[0.36px] leading-[20px] text-[#257CEE] ml-[4px]"
+                        }
+                      >
+                        ₮
+                      </p>
+                    </div>
+                    <p
+                      className={
+                        "text-[13px] text-[#9A9FB4] tracking-[0.2px] leading-[24px] mt-[6px]"
+                      }
+                    >
+                      Таны бүүстлэх хоногууд дээр үндэслэн бодогдов.
+                    </p>
+                  </div>
+                  <div
+                    className={
+                      "flex flex-col rounded-[8px] bg-[#F3F3F4] px-[16px] py-[14px] max-w-[400px] h-full w-full min-h-[89px] mt-[20px]"
+                    }
+                  >
+                    <p
+                      className={
+                        "text-caak-generalblack text-[15px] font-medium tracking-[0.23px]"
+                      }
+                    >
+                      Таны дансны үлдэгдэл
+                    </p>
+                    <div className={"flex flex-row justify-between mt-[10px]"}>
+                      <div className={"flex flex-row items-center"}>
+                        <img
+                          width={28}
+                          height={28}
+                          className={"w-[28px] h-[28px] rounded-full"}
+                          alt={user.nickname}
+                          src={getFileUrl(user.pic)}
+                        />
+                        <p
+                          className={
+                            "text-caak-generalblack text-[14px] leading-[17px] ml-[8px]"
+                          }
+                        >
+                          @{user.nickname}
+                        </p>
+                      </div>
+                      <div className={"flex flex-row items-center"}>
+                        <p
+                          className={
+                            "text-caak-generalblack font-bold text-[18px]"
+                          }
+                        >
+                          300.000₮
+                        </p>
+                        <div
+                          className={
+                            "cursor-pointer w-[21px] h-[21px] flex justify-center items-center bg-[#CDCFD9] rounded-full ml-[8px]"
+                          }
+                        >
+                          <span
+                            className={
+                              "icon-fi-rs-add-l text-[16px] w-[16.2px] h-[16.2px]"
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/*Right*/}
             <div
               className={
-                "flex flex-col mt-[20px] lg:mt-0 lg:ml-[22px] rounded-[8px] max-w-[400px] h-[519px] "
+                "flex flex-col mt-[20px] lg:mt-0 lg:ml-[22px] rounded-[8px] w-full max-w-[400px] h-[519px] "
               }
             >
               <div
@@ -306,17 +404,17 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                   "flex flex-row items-center text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[17px] mr-[10px]"
                 }
               >
-              <span>
-                Та бүүстлэх товч дарснаар{" "}
-                <Link href={"/help"}>
-                  <a>
-                    <span className={"text-[#367CE6]"}>
-                      Үйлчилгээний нөхцөл
-                    </span>
-                  </a>
-                </Link>{" "}
-                -ийг зөвшөөрсөнд тооцно
-              </span>
+                <span>
+                  Та бүүстлэх товч дарснаар{" "}
+                  <Link href={"/help"}>
+                    <a>
+                      <span className={"text-[#367CE6]"}>
+                        Үйлчилгээний нөхцөл
+                      </span>
+                    </a>
+                  </Link>{" "}
+                  -ийг зөвшөөрсөнд тооцно
+                </span>
                 <span className={"text-[#CDCFD9] mx-[10px]"}> |</span>
                 <Link href={"/help"}>
                   <a>

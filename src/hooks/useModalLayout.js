@@ -3,6 +3,7 @@ import StepModalLayout from "../components/layouts/modal/stepLayout";
 import ViewPostModalLayout from "../components/layouts/modal/viewPostModalLayout";
 import DefaultUserProfileLayout from "../components/layouts/profile";
 import ViewPostItemModalLayout from "../components/layouts/modal/viewPostItemModalLayout";
+import DefaultBoostModalLayout from "../components/layouts/modal/boostModalLayout";
 
 const layouts = {
   default: DefaultModalLayout,
@@ -10,6 +11,7 @@ const layouts = {
   viewpost: ViewPostModalLayout,
   viewPostItem: ViewPostItemModalLayout,
   userProfile: DefaultUserProfileLayout,
+  boostModal: DefaultBoostModalLayout
 };
 
 const useModalLayout = (props) => {

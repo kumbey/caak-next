@@ -132,7 +132,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
           </p>
         </div>
       </td>
-      <td className="max-w-[80px]">
+      {/* <td className="max-w-[80px]">
         <p
           className={
             "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px] "
@@ -140,7 +140,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
         >
           {`${numberWithCommas(3000500)}₮`}
         </p>
-      </td>
+      </td> */}
       <td>
         <div className="flex text-sm text-caak-darkBlue w-[166px] ">
           <div
@@ -220,7 +220,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               <p className="text-11px text-white ">Сэтгэгдлийн тоо</p>
             </ReactTooltip>
           </div>
-          <Button
+          {/* <Button
             // loading={loading}
             className={`${
               moment(post.end_date)._d > now
@@ -235,7 +235,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
             >
               {moment(post.end_date)._d > now ? "Бүүстлэсэн" : "Бүүстлэх"}
             </p>
-          </Button>
+          </Button> */}
         </div>
       </td>
     </>

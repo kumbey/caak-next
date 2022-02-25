@@ -268,7 +268,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                   </Button>
                 </a>
               </Link>
-              <Button
+              {/* <Button
                 onClick={() => setIsBoostModalOpen(true)}
                 // loading={loading}
                 className={`bg-[#257CEE] text-caak-generalblack text-14px font-inter font-medium w-[102px]  h-[39px]  ml-2 border`}
@@ -276,7 +276,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 <p className={`text-white font-inter font-normal text-13px`}>
                   Бүүстлэх
                 </p>
-              </Button>
+              </Button> */}
             </>
           ) : null}
         </div>

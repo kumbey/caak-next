@@ -136,7 +136,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 1,
       icon: "icon-fi-rs-megaphone",
-      number: 100000,
+      number: 0,
       type: "money",
       text: "Caak Ads данс",
       bgcolor: "bg-caak-cottonboll",
@@ -953,9 +953,9 @@ const Dashboard = ({ ssrData }) => {
                               Эхлэх дуусах огноо
                             </th>
 
-                            <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
+                            {/* <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
                               Зарцуулалт
-                            </th>
+                            </th> */}
                             <th className="text-center font-inter font-normal text-14px text-caak-generalblack">
                               Хандалт
                             </th>

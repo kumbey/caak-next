@@ -7,6 +7,7 @@ import {
   generateFileUrl,
   getGenderImage,
   getReturnData,
+  numberWithCommas,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
@@ -127,13 +128,22 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       icon: "icon-fi-rs-aura-f",
       number: user?.aura,
-      text: "Аура",
+      text: "Нийт аура",
       bgcolor: "",
       gradient: "auraBgGradient",
       color: "auraGradient",
     },
     {
       id: 1,
+      icon: "icon-fi-rs-megaphone",
+      number: 100000,
+      type: "money",
+      text: "Caak Ads данс",
+      bgcolor: "bg-caak-cottonboll",
+      color: "text-caak-clearblue",
+    },
+    {
+      id: 2,
       icon: "icon-fi-rs-post-f",
       number: userTotals?.confirmed,
       text: "Нийт пост",
@@ -141,20 +151,12 @@ const Dashboard = ({ ssrData }) => {
       color: "text-caak-darkBlue",
     },
     {
-      id: 2,
+      id: 3,
       icon: "icon-fi-rs-rock-f",
       number: totalReaction,
-      text: "Саак",
+      text: "Нийт саак",
       bgcolor: "bg-caak-sweetfrosting",
       color: "text-caak-uclagold",
-    },
-    {
-      id: 3,
-      icon: "icon-fi-rs-comment-f",
-      number: userTotals.comments,
-      text: "Сэтгэгдэл",
-      bgcolor: "bg-caak-placeboblue",
-      color: "text-caak-buttonblue",
     },
   ];
 
@@ -711,7 +713,7 @@ const Dashboard = ({ ssrData }) => {
                 return (
                   <div
                     onClick={() => setActiveIndex(index)}
-                    className={`flex items-center mb-[28px] cursor-pointer`}
+                    className={`flex items-center mb-[12px] cursor-pointer`}
                     key={index}
                   >
                     <span
@@ -719,7 +721,7 @@ const Dashboard = ({ ssrData }) => {
                         activeIndex === index
                           ? "text-caak-primary"
                           : "text-caak-generalblack"
-                      } text-xl `}
+                      } text-2xl `}
                     />
                     <p
                       className={`ml-3 text-base font-inter font-medium text-caak-generalblack ${

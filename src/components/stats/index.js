@@ -1,7 +1,7 @@
-import { kFormatter } from "../../utility/Util";
+import { kFormatter, numberWithCommas } from "../../utility/Util";
 
 const StatsItem = ({ id, stat }) => {
-  const { bgcolor, icon, color, gradient, number, text } = stat;
+  const { bgcolor, icon, color, gradient, number, text, type } = stat;
 
   return (
     <div
@@ -18,10 +18,12 @@ const StatsItem = ({ id, stat }) => {
         <span className={`${icon} ${color} text-[26px] `} />
       </div>
       <div className="flex flex-col">
-        <div className="text-[18px] text-caak-generalblack md:text-[22px] font-inter font-medium">
-          {kFormatter(number)}
+        <div className="text-[18px] text-caak-generalblack md:text-[22px] leading-[24px] font-inter font-medium">
+          {type === "money"
+            ? `${numberWithCommas(number)}₮`
+            : kFormatter(number)}
         </div>
-        <div className="text-caak-aleutian text-[12px] md:text-[15px] font-normal font-inter">
+        <div className="text-caak-aleutian text-[12px] md:text-[14px] leading-[17px] font-normal font-inter">
           {text}
         </div>
       </div>

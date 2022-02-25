@@ -16,7 +16,12 @@ import {
 } from "@dnd-kit/core";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import { getFileUrl, getGenderImage, isAdmin } from "../../utility/Util";
+import {
+  _objectWithoutKeys,
+  getFileUrl,
+  getGenderImage,
+  isAdmin,
+} from "../../utility/Util";
 import Video from "../video";
 import { useRouter } from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
@@ -25,6 +30,9 @@ import CardsWrapper from "./CardsWrapper";
 import SortableCard from "./SortableCard";
 import sanitizeHtml from "sanitize-html";
 import useMediaQuery from "../navigation/useMeduaQuery";
+import DatePicker from "react-datepicker";
+import Button from "../button";
+import moment from "moment";
 
 const UploadedMediaEdit = ({
   setPost,
@@ -35,21 +43,27 @@ const UploadedMediaEdit = ({
   valid,
   isEditing,
   setIsEditing,
-  adminTextEditor,
-  setAdminTextEditor,
 }) => {
   const [activeId, setActiveId] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [videoDurationError, setVideoDurationError] = useState(false);
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-  const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] = useState(!isTablet);
+  const [isImageCaptionSectionVisible, setIsImageCaptionSectionVisible] =
+    useState(!isTablet);
   const [allowComment, setAllowComment] = useState(
     post?.commentType ? post.commentType : false
   );
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [businessPost, setBusinessPost] = useState(
-    post.onlyBlogView ? post.onlyBlogView : "FALSE"
+  const [adminTextEditor, setAdminTextEditor] = useState(
+    post.onlyBlogView
+      ? post.onlyBlogView
+      : selectedGroup.role_on_group === "ADMIN"
+      ? "TRUE"
+      : "FALSE"
   );
+  const [startDate, setStartDate] = useState(moment(post.createdAt)._d);
+  const [isDraft, setIsDraft] = useState(post.status === "DRAFT");
+  const [isPublishDateOn, setIsPublishDateOn] = useState(false);
   const [caakContent, setCaakContent] = useState(post?.owned === "CAAK");
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
@@ -166,6 +180,9 @@ const UploadedMediaEdit = ({
     adminTextEditor,
     allowComment,
     post.items.length,
+    isDraft,
+    startDate,
+    isPublishDateOn,
   ]);
 
   useUpdateEffect(() => {
@@ -207,10 +224,10 @@ const UploadedMediaEdit = ({
   }, [post, router, isEditing, selectedGroup]);
 
   useEffect(() => {
-    setIsImageCaptionSectionVisible(!isTablet)
-    setViewDescription(!isTablet)
+    setIsImageCaptionSectionVisible(!isTablet);
+    setViewDescription(!isTablet);
     //eslint-disable-next-line
-  }, [isTablet])
+  }, [isTablet]);
 
   useEffect(() => {
     let cContent;
@@ -223,9 +240,30 @@ const UploadedMediaEdit = ({
       ...post,
       commentType: !!allowComment,
       ...cContent,
+      status: isDraft ? "DRAFT" : "PENDING",
     });
     // eslint-disable-next-line
-  }, [allowComment, caakContent]);
+  }, [allowComment, caakContent, isDraft]);
+
+  useUpdateEffect(() => {
+    if (!isPublishDateOn) {
+      setStartDate(new Date());
+    }
+  }, [isPublishDateOn]);
+
+  useUpdateEffect(() => {
+    if (startDate) {
+      if (startDate < new Date()) {
+        setPost({
+          ...post,
+          createdAt: startDate.toISOString(),
+        });
+      }
+    } else {
+      setStartDate(null);
+    }
+    //eslint-disable-next-line
+  }, [startDate, isPublishDateOn]);
 
   useEffect(() => {
     isAdminAsync().then((e) => setIsSuperAdmin(e));
@@ -234,10 +272,10 @@ const UploadedMediaEdit = ({
   useUpdateEffect(() => {
     setPost({
       ...post,
-      onlyBlogView: businessPost,
+      onlyBlogView: adminTextEditor,
     });
     // eslint-disable-next-line
-  }, [businessPost]);
+  }, [adminTextEditor]);
 
   useUpdateEffect(() => {
     if (adminTextEditor === "FALSE") {
@@ -265,14 +303,15 @@ const UploadedMediaEdit = ({
   }, [adminTextEditor]);
 
   useEffect(() => {
-    console.log(post.description)
     setSortItems([...post.items]);
   }, [post]);
 
   useEffect(() => {
-    selectedGroup?.role_on_group !== "ADMIN"
-      ? setAdminTextEditor("FALSE")
-      : setAdminTextEditor("TRUE");
+    if (selectedGroup) {
+      if (selectedGroup.role_on_group !== "ADMIN") {
+        setAdminTextEditor("FALSE");
+      }
+    }
     //eslint-disable-next-line
   }, [selectedGroup]);
 
@@ -350,6 +389,7 @@ const UploadedMediaEdit = ({
               }}
               value={post.description}
               init={{
+                convert_urls: false,
                 valid_elements:
                   "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
                 extended_valid_elements: [
@@ -588,6 +628,7 @@ const UploadedMediaEdit = ({
                       }}
                       value={post.items[activeIndex].title}
                       init={{
+                        convert_urls: false,
                         valid_elements:
                           "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
                         extended_valid_elements: [
@@ -684,31 +725,10 @@ const UploadedMediaEdit = ({
             </p>
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
-          {/* {isSuperAdmin && (
-            <div className={"flex flex-row justify-between mt-[16px]"}>
-              <p className={"text-[15px] text-caak-generalblack"}>
-                Бизнес мэдээ
-              </p>
-              <label
-                onClick={() =>
-                  setBusinessPost(businessPost === "TRUE" ? "FALSE" : "TRUE")
-                }
-                style={{ minWidth: "40px", height: "22px" }}
-                className={`ml-1 cursor-pointer
-                rounded-full
-                bg-caak-${
-                  businessPost === "TRUE" ? "algalfuel" : "titaniumwhite"
-                }
-                flex items-center
-                justify-${businessPost === "TRUE" ? "end" : "start"}`}
-              >
-                <span
-                  style={{ width: "18px", height: "18px", marginInline: "2px" }}
-                  className={`bg-white rounded-full`}
-                />
-              </label>
-            </div>
-          )} */}
+          <div className={"flex flex-row justify-between mt-[16px]"}>
+            <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>
+            <Switch toggle={setIsDraft} active={isDraft} />
+          </div>
 
           {(selectedGroup?.role_on_group === "ADMIN" ||
             selectedGroup?.role_on_group === "MODERATOR" ||
@@ -739,10 +759,54 @@ const UploadedMediaEdit = ({
               </label>
             </div>
           )}
-          {/*<div className={"flex flex-row justify-between mt-[16px]"}>*/}
-          {/*  <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>*/}
-          {/*  <Switch toggle={setDraft} active={draft} />*/}
-          {/*</div>*/}
+          {isSuperAdmin && (
+            <div className={"flex flex-row justify-between mt-[16px]"}>
+              <p className={"text-[15px] text-caak-generalblack"}>
+                Нийтлэх өдөр тохируулах
+              </p>
+              <label
+                onClick={() => {
+                  setIsPublishDateOn(!isPublishDateOn);
+                }}
+                style={{ minWidth: "40px", height: "22px" }}
+                className={`ml-1 cursor-pointer
+                rounded-full 
+                bg-caak-${isPublishDateOn ? "algalfuel" : "titaniumwhite"}  
+                flex items-center 
+                justify-${isPublishDateOn ? "end" : "start"}`}
+              >
+                <span
+                  style={{ width: "18px", height: "18px", marginInline: "2px" }}
+                  className={`bg-white rounded-full`}
+                />
+              </label>
+            </div>
+          )}
+
+          {isPublishDateOn && (
+            <div
+              className={
+                "flex flex-row items-center addPostDatePicker mt-[16px]"
+              }
+            >
+              <DatePicker
+                maxDate={new Date()}
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                timeIntervals={60}
+                showTimeSelect
+                dateFormat={"yyyy/MM/dd, HH:mm"}
+                calendarStartDay={1}
+              />
+              <Button
+                onClick={() => setStartDate(new Date())}
+                className={"ml-[8px] h-full"}
+                skin={"primary"}
+              >
+                Одоо
+              </Button>
+            </div>
+          )}
           {/*<div className={"flex flex-row justify-between mt-[16px]"}>*/}
           {/*  <p className={"text-[15px] text-caak-generalblack"}>Онцлох</p>*/}
           {/*  <Switch toggle={setBoost} active={boost} />*/}

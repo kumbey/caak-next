@@ -102,14 +102,14 @@ const ViewPostModalLayout = ({
                 {isScrollButtonVisible && (
                   <div
                     onClick={() => onClickScrollTop()}
-                      className={`shadow-dropdown flex items-center fixed bottom-[20px] cursor-pointer rounded-[20px] h-[34px] z-[4] bg-white px-[12px] pr-[16px]`}
+                      className={`shadow-dropdown flex items-center fixed bottom-[20px] cursor-pointer rounded-[100px] h-[40px] z-[4] bg-white py-[12px] px-[20px]`}
                   >
-                    <div className={"w-[18px] h-[18px] -rotate-90"}>
+                    <div className={"w-[20px] h-[20px] -rotate-90"}>
                       <span
-                        className={"icon-fi-rs-next-b text-black text-[18px]"}
+                        className={"icon-fi-rs-next-b text-black text-[20px]"}
                       />
                     </div>
-                    <p className={"ml-[8px] text-[10px] font-bold"}>
+                    <p className={"ml-[9px] text-[14px] font-medium tracking-[0.21px] leading-[17px]"}>
                       Дээш буцах
                     </p>
                   </div>

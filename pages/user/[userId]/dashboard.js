@@ -7,6 +7,7 @@ import {
   generateFileUrl,
   getGenderImage,
   getReturnData,
+  numberWithCommas,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
@@ -76,7 +77,7 @@ export async function getServerSideProps({ req, query }) {
 const Dashboard = ({ ssrData }) => {
   const router = useRouter();
   const { isLogged, user } = useUser();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
@@ -110,6 +111,10 @@ const Dashboard = ({ ssrData }) => {
     items: [],
     nextToken: "",
   });
+  const [draftedPosts, setDraftedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
   const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
   const [totalReaction] = useState(
@@ -123,13 +128,22 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       icon: "icon-fi-rs-aura-f",
       number: user?.aura,
-      text: "Аура",
+      text: "Нийт аура",
       bgcolor: "",
       gradient: "auraBgGradient",
       color: "auraGradient",
     },
     {
       id: 1,
+      icon: "icon-fi-rs-megaphone",
+      number: 0,
+      type: "money",
+      text: "Caak Ads данс",
+      bgcolor: "bg-caak-cottonboll",
+      color: "text-caak-clearblue",
+    },
+    {
+      id: 2,
       icon: "icon-fi-rs-post-f",
       number: userTotals?.confirmed,
       text: "Нийт пост",
@@ -137,20 +151,12 @@ const Dashboard = ({ ssrData }) => {
       color: "text-caak-darkBlue",
     },
     {
-      id: 2,
+      id: 3,
       icon: "icon-fi-rs-rock-f",
       number: totalReaction,
-      text: "Саак",
+      text: "Нийт саак",
       bgcolor: "bg-caak-sweetfrosting",
       color: "text-caak-uclagold",
-    },
-    {
-      id: 3,
-      icon: "icon-fi-rs-comment-f",
-      number: userTotals.comments,
-      text: "Сэтгэгдэл",
-      bgcolor: "bg-caak-placeboblue",
-      color: "text-caak-buttonblue",
     },
   ];
 
@@ -169,30 +175,36 @@ const Dashboard = ({ ssrData }) => {
     },
     {
       id: 2,
+      name: "Ноорог",
+      icon: "icon-fi-rs-edit",
+      length: draftedPosts.items.length,
+    },
+    {
+      id: 3,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-folder-o",
       length: userTotals.archived,
     },
     {
-      id: 3,
+      id: 4,
       name: "Бүүстэлсэн постууд",
       icon: "icon-fi-rs-rocket-o",
       length: boostedPosts.items.length,
     },
     {
-      id: 4,
+      id: 5,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
       length: userTotals.followers,
     },
     {
-      id: 5,
+      id: 6,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
       length: userTotals.comments,
     },
     {
-      id: 6,
+      id: 7,
       name: "Репортлогдсон постууд",
       icon: "icon-fi-rs-flag",
       length: userTotals.reported,
@@ -227,6 +239,16 @@ const Dashboard = ({ ssrData }) => {
       user_id: router.query.userId,
       sortDirection: "DESC",
       filter: { status: { eq: "ARCHIVED" } },
+      limit: 20,
+    },
+    nextToken: archivedPosts.nextToken,
+  });
+  const [nextDrafted] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "DRAFT" } },
       limit: 20,
     },
     nextToken: archivedPosts.nextToken,
@@ -323,6 +345,26 @@ const Dashboard = ({ ssrData }) => {
           setArchivedPosts((nextArchived) => ({
             ...nextArchived,
             items: [...nextArchived.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+  const fetchDrafted = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextDrafted();
+        if (resp) {
+          setDraftedPosts((nextDrafted) => ({
+            ...nextDrafted,
+            items: [...nextDrafted.items, ...resp],
           }));
         }
 
@@ -636,20 +678,15 @@ const Dashboard = ({ ssrData }) => {
             className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer mr-5"
             style={{ height: "48px", width: "48px" }}
           />
-          <div className={"w-[52px] h-[52px] mr-[8px] relative"}>
-            <img
-              className=" bg-white rounded-full object-cover"
-              src={
-                user?.pic
-                  ? generateFileUrl(user?.pic)
-                  : getGenderImage(user?.gender).src
-              }
-              width={52}
-              height={52}
-              // objectFit={"cover"}
-              alt="#"
-            />
-          </div>
+          <img
+            className="bg-white w-[52px] h-[52px] mr-[8px] rounded-full object-cover"
+            src={
+              user?.pic
+                ? generateFileUrl(user?.pic)
+                : getGenderImage(user?.gender).src
+            }
+            alt="#"
+          />
           <div className="text-2xl font-semibold text-caak-generalblack mr-1">
             @{user?.nickname}
           </div>
@@ -676,7 +713,7 @@ const Dashboard = ({ ssrData }) => {
                 return (
                   <div
                     onClick={() => setActiveIndex(index)}
-                    className={`flex items-center mb-[28px] cursor-pointer`}
+                    className={`flex items-center mb-[12px] cursor-pointer`}
                     key={index}
                   >
                     <span
@@ -684,7 +721,7 @@ const Dashboard = ({ ssrData }) => {
                         activeIndex === index
                           ? "text-caak-primary"
                           : "text-caak-generalblack"
-                      } text-xl `}
+                      } text-2xl `}
                     />
                     <p
                       className={`ml-3 text-base font-inter font-medium text-caak-generalblack ${
@@ -714,40 +751,10 @@ const Dashboard = ({ ssrData }) => {
                   </p>
                 </div>
               </div>
-              {/* <div className="flex items-center justify-between flex-wrap md:mb-0 mb-[10px]">
-                <div className={"flex flex-row items-center"}>
-                  <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                    Хандалт
-                  </p>
-
-                  <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                    <div className="flex items-center  mx-[12px] my-[10px]">
-                      <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                        Бүгд
-                      </p>
-                      <span className="icon-fi-rs-triangle text-14px" />
-                    </div>
-                  </div>
-                </div>
-                <div className={"flex flex-row items-center"}>
-                  <p className="mr-[15px] text-14px font-normal  text-caak-generalblack font-inter">
-                    Огноо
-                  </p>
-
-                  <div className="flex rounded-lg border border-caak-titaniumwhite mr-[20px] bg-white h-[36px] items-center">
-                    <div className="flex items-center  mx-[12px] my-[10px]">
-                      <p className="text-14px font-normal  text-caak-generalblack font-inter mr-[13px]">
-                        Сүүлд нэмэгдсэн
-                      </p>
-                      <span className="icon-fi-rs-triangle text-14px" />
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
             <div
               className={
-                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[30px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-auto"
+                "flex flex-col rounded-lg  bg-caak-emptiness mt-[15px] px-[10px] md:px-[20px] pt-[6px] md:pt-[16px] mb-[20px] overflow-x-auto"
               }
             >
               {activeIndex === 0 ? (
@@ -759,7 +766,7 @@ const Dashboard = ({ ssrData }) => {
                     <p className="font-inter font-normal text-14px text-caak-generalblack mr-[250px]">
                       Групп
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[140px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[175px]">
                       Хандалт
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">
@@ -805,44 +812,78 @@ const Dashboard = ({ ssrData }) => {
                       </p>
                     </div>
                   ) : null}
+                  {!loading && pendingPosts.items.length === 0 ? (
+                    <div className="flex items-center justify-center h-80">
+                      <p className="text-sm">
+                        Уучлаарай та пост илгээгээгүй байна.&nbsp;
+                        <strong
+                          onClick={() =>
+                            router.push("/post/add", undefined, {
+                              shallow: false,
+                            })
+                          }
+                          className="text-[#0000EE] cursor-pointer"
+                        >
+                          ЭНД &nbsp;
+                        </strong>
+                        дарж пост оруулна уу!
+                      </p>
+                    </div>
+                  ) : null}
                   <InfinitScroller onNext={fetchPending} loading={loading}>
-                    {pendingPosts.items.length > 0 ? (
-                      pendingPosts.items.map((pendingPost, index) => {
-                        return (
-                          <GroupPostItem
-                            type={"user"}
-                            key={index}
-                            imageSrc={pendingPost?.items?.items[0]?.file}
-                            video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                              "video"
-                            )}
-                            post={pendingPost}
-                            className="ph:mb-4 sm:mb-4"
-                          />
-                        );
-                      })
-                    ) : (
-                      <div className="flex items-center justify-center h-80">
-                        <p className="text-sm">
-                          Уучлаарай та пост илгээгээгүй байна.&nbsp;
-                          <strong
-                            onClick={() =>
-                              router.push("/post/add", undefined, {
-                                shallow: false,
-                              })
-                            }
-                            className="text-[#0000EE] cursor-pointer"
-                          >
-                            ЭНД &nbsp;
-                          </strong>
-                          дарж пост оруулна уу!
-                        </p>
-                      </div>
-                    )}
+                    {pendingPosts.items.map((pendingPost, index) => {
+                      return (
+                        <GroupPostItem
+                          type={"user"}
+                          key={index}
+                          imageSrc={pendingPost?.items?.items[0]?.file}
+                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
+                            "video"
+                          )}
+                          post={pendingPost}
+                          className="ph:mb-4 sm:mb-4"
+                        />
+                      );
+                    })}
                   </InfinitScroller>
                 </div>
               ) : null}
               {activeIndex === 2 ? (
+                <div className="flex flex-col">
+                  <div className="hidden md:flex mb-[13px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
+                      Пост
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
+                      Гишүүн
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
+                      Огноо
+                    </p>
+                    <p className="font-inter font-normal text-14px text-caak-generalblack">
+                      Үйлдэл
+                    </p>
+                  </div>
+                  <InfinitScroller onNext={fetchDrafted} loading={loading}>
+                    {draftedPosts.items.length > 0 &&
+                      draftedPosts.items.map((draftedPost, index) => {
+                        return (
+                          <GroupPostItem
+                            type={"user"}
+                            key={index}
+                            imageSrc={draftedPost?.items?.items[0]?.file}
+                            video={draftedPost?.items?.items[0]?.file?.type?.startsWith(
+                              "video"
+                            )}
+                            post={draftedPost}
+                            className="ph:mb-4 sm:mb-4"
+                          />
+                        );
+                      })}
+                  </InfinitScroller>
+                </div>
+              ) : null}
+              {activeIndex === 3 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex mb-[13px]">
                     <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
@@ -877,77 +918,80 @@ const Dashboard = ({ ssrData }) => {
                   </InfinitScroller>
                 </div>
               ) : null}
-              {activeIndex === 3 ? (
+              {activeIndex === 4 ? (
                 <div className="flex flex-col">
+                  {!loading && boostedPosts.items.length === 0 ? (
+                    <div className="flex items-center justify-center h-80">
+                      <p className="text-sm">
+                        Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
+                        <strong
+                          onClick={() =>
+                            router.push("/help/ads", undefined, {
+                              shallow: false,
+                            })
+                          }
+                          className="text-[#0000EE] cursor-pointer"
+                        >
+                          ЭНД &nbsp;
+                        </strong>
+                        дарж дэлгэрэнгүй мэдээлэл авна уу!
+                      </p>
+                    </div>
+                  ) : null}
                   <InfinitScroller onNext={fetchBoosted} loading={loading}>
-                    {boostedPosts.items.length > 0 ? (
-                      <table className="w-full table">
+                    <table className="w-full table">
+                      {boostedPosts.items.length > 0 ? (
                         <thead className="">
                           <tr className="">
-                            <th className=" w-[220px] text-left   font-inter font-normal text-14px text-caak-generalblack">
+                            <th className="w-[215px] max-w-[215px] text-left font-inter font-normal text-14px text-caak-generalblack">
                               Пост
                             </th>
-                            <th className="text-left w-16  font-inter font-normal text-14px text-caak-generalblack">
+                            <th className="text-left w-10  font-inter font-normal text-14px text-caak-generalblack">
                               Хоног
                             </th>
-                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack">
-                              Эхлэсэн огноо
+                            <th className="text-center w-36  font-inter font-normal text-14px text-caak-generalblack">
+                              Эхлэх дуусах огноо
                             </th>
-                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack">
-                              Дуусах огноо
-                            </th>
-                            <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
+
+                            {/* <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
+                              Зарцуулалт
+                            </th> */}
+                            <th className="text-center font-inter font-normal text-14px text-caak-generalblack">
                               Хандалт
                             </th>
+                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack"></th>
                           </tr>
                         </thead>
-                        <tbody>
-                          {boostedPosts.items.length > 0 &&
-                            boostedPosts.items.map((boostedPost, index) => {
-                              return (
-                                <tr
+                      ) : null}
+                      <tbody>
+                        {boostedPosts.items.length > 0 &&
+                          boostedPosts.items.map((boostedPost, index) => {
+                            return (
+                              <tr
+                                key={index}
+                                className="border-t border-b mb-2"
+                              >
+                                <BoostedPostItem
+                                  type={"user"}
                                   key={index}
-                                  className="border-t border-b mb-2"
-                                >
-                                  <BoostedPostItem
-                                    type={"user"}
-                                    key={index}
-                                    imageSrc={
-                                      boostedPost?.post?.items?.items[0]?.file
-                                    }
-                                    video={boostedPost?.post?.items?.items[0]?.file?.type?.startsWith(
-                                      "video"
-                                    )}
-                                    post={boostedPost}
-                                    className="ph:mb-4 sm:mb-4"
-                                  />
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
-                    ) : (
-                      <div className="flex items-center justify-center h-80">
-                        <p className="text-sm">
-                          Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
-                          <strong
-                            onClick={() =>
-                              router.push("/help/ads", undefined, {
-                                shallow: false,
-                              })
-                            }
-                            className="text-[#0000EE] cursor-pointer"
-                          >
-                            ЭНД &nbsp;
-                          </strong>
-                          дарж дэлгэрэнгүй мэдээлэл авна уу!
-                        </p>
-                      </div>
-                    )}
+                                  imageSrc={
+                                    boostedPost?.post?.items?.items[0]?.file
+                                  }
+                                  video={boostedPost?.post?.items?.items[0]?.file?.type?.startsWith(
+                                    "video"
+                                  )}
+                                  post={boostedPost}
+                                  className="ph:mb-4 sm:mb-4"
+                                />
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
                   </InfinitScroller>
                 </div>
               ) : null}
-              {activeIndex === 4 ? (
+              {activeIndex === 5 ? (
                 <InfinitScroller onNext={fetchFollowers} loading={loading}>
                   <div className="mt-[14px] flex flex-row flex-wrap justify-between">
                     {followedUsers.items.map((data, index) => {
@@ -965,7 +1009,7 @@ const Dashboard = ({ ssrData }) => {
                 </InfinitScroller>
               ) : null}
 
-              {activeIndex === 5 ? (
+              {activeIndex === 6 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex mb-[13px] ">
                     <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
@@ -1002,25 +1046,8 @@ const Dashboard = ({ ssrData }) => {
                   </InfinitScroller>
                 </div>
               ) : null}
-              {activeIndex === 6 ? (
+              {activeIndex === 7 ? (
                 <div className="flex flex-col">
-                  {/* <div className="hidden md:flex mb-[13px]">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack md:mr-[270px] lg:mr-[300px]">
-                      Пост
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px]">
-                      Групп
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[150px]">
-                      Репорт
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
-                      Огноо
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack">
-                      Үйлдэл
-                    </p>
-                  </div> */}
                   <InfinitScroller onNext={fetchReported} loading={loading}>
                     <table className="w-full table">
                       <thead className="">

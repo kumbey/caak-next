@@ -27,6 +27,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-fi-rs-date-checked:before {
+  content: "\e997";
+}
+.icon-fi-rs-date-over:before {
+  content: "\e998";
+}
+.icon-fi-rs-megaphone-o:before {
+  content: "\e999";
+}
+.icon-fi-rs-mute-f:before {
+  content: "\e99a";
+}
 .icon-fi-rs-clicked-o:before {
   content: "\e996";
 }

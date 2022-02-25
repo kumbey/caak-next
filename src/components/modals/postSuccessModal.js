@@ -7,6 +7,7 @@ const PostSuccessModal = ({
   setIsOpen,
   finish,
   role,
+  postStatus,
 }) => {
   const router = useRouter();
   return isOpen ? (
@@ -34,7 +35,7 @@ const PostSuccessModal = ({
           <p className="font-inter font-semibold text-18px text-caak-generalblack mb-[14px] text-center">
             {messageTitle}
           </p>
-          {role === "MEMBER" ? (
+          {postStatus !== "DRAFT" && role === "MEMBER" ? (
             <p className="font-inter font-normal text-15px text-caak-darkBlue text-center tracking-0.23px px-2 ">
               Группын админ постыг баталгаажуулах хүртэл түр хүлээнэ үү.
             </p>

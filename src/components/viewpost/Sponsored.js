@@ -2,8 +2,8 @@ import CardHeader from "../card/FeedCard/CardHeader";
 import { getFileUrl } from "../../utility/Util";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
-import {API} from "aws-amplify";
-import {addViewToItem} from "../../graphql-custom/post/mutation";
+import { API } from "aws-amplify";
+import { addViewToItem } from "../../graphql-custom/post/mutation";
 import Link from "next/link";
 
 const Sponsored = ({ item }) => {
@@ -27,10 +27,9 @@ const Sponsored = ({ item }) => {
         },
         authMode: "AWS_IAM",
       });
-    }catch (ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
     }
-
   };
 
   const countViews = async () => {
@@ -44,14 +43,14 @@ const Sponsored = ({ item }) => {
         },
         authMode: "AWS_IAM",
       });
-    }catch (ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
     }
   };
 
   useEffect(() => {
     if (inView) {
-      countReach()
+      countReach();
       setAnimationState({
         transform: "scale(1)",
         opacity: 1,
@@ -61,7 +60,7 @@ const Sponsored = ({ item }) => {
   }, [inView]);
   return (
     <div
-      onClick={()=> countViews()}
+      onClick={() => countViews()}
       style={{
         transition: "all 0.5s ease",
         ...animationState,
@@ -76,8 +75,8 @@ const Sponsored = ({ item }) => {
       <a rel={"noreferrer"} target={"_blank"} href={`/post/view/${item.id}`}>
         <img
           width={500}
-          height={320}
-          className={"object-cover w-[500px] h-[320px]"}
+          height={350}
+          className={"object-cover w-full h-full max-w-[500px] max-h-[350px]"}
           alt={item.items.items[0].file.name}
           src={getFileUrl(item.items.items[0].file)}
         />
@@ -89,7 +88,14 @@ const Sponsored = ({ item }) => {
       >
         <Link href={"/help/ads"}>
           <a>
-            <p className={"text-[13px] text-caak-darkBlue"}>Caak Ads</p>
+            <div className={"flex flex-row items-center text-caak-darkBlue"}>
+              <div
+                className={"w-[20px] h-[20px] flex items-center justify-center"}
+              >
+                <span className={"icon-fi-rs-megaphone text-[18px]"} />
+              </div>
+              <p className={"text-[13px] ml-[5px]"}>Caak Ads</p>
+            </div>
           </a>
         </Link>
       </div>

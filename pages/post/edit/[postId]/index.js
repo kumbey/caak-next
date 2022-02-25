@@ -81,7 +81,7 @@ export async function getServerSideProps({ req, res, query }) {
   if (!post) {
     return { notFound: true };
   }
-  if (post.user.id !== user.attributes.sub) {
+  if (post.user.id !== user?.attributes.sub) {
     return { notFound: true };
   }
   const groups = await getGroups();
@@ -100,9 +100,6 @@ const EditPost = ({ ssrData }) => {
   const router = useRouter();
   const AddPostLayout = useAddPostLayout();
   const { user } = useUser();
-  const [adminTextEditor, setAdminTextEditor] = useState(
-    ssrData.post.onlyBlogView ?? "FALSE"
-  );
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
@@ -321,6 +318,7 @@ const EditPost = ({ ssrData }) => {
               setIsOpen={setIsSuccessModalOpen}
               finish={finish}
               role={selectedGroup.role_on_group}
+              postStatus={post.status}
               messageTitle={"Таны засвар амжилттай хадгалагдлаа."}
             />
           )}
@@ -350,8 +348,6 @@ const EditPost = ({ ssrData }) => {
                   uploadPost={uploadPost}
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
-                  adminTextEditor={adminTextEditor}
-                  setAdminTextEditor={setAdminTextEditor}
                 />
               ) : (
                 <DropZoneWithCaption post={post} setPost={setPost} />

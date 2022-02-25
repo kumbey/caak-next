@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useRef, useState} from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import useModalLayout from "../../../../src/hooks/useModalLayout";
 import { withSSRContext } from "aws-amplify";
 import {
@@ -27,7 +27,6 @@ import {
 } from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
 import { useUser } from "../../../../src/context/userContext";
-import { decode } from "html-entities";
 import toast from "react-hot-toast";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 import ConditionalLink from "../../../../src/components/conditionalLink";
@@ -378,6 +377,8 @@ const Post = ({ ssrData }) => {
               <p className={"text-caak-scriptink"}>
                 {post.status === "PENDING" ? " (Шалгагдаж буй пост)" : ""}
                 {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
+                {post.status === "REPORTED" ? " (Репортлогдсон пост)" : ""}
+                {post.status === "DRAFT" ? " (Ноорог)" : ""}
               </p>
               {post.status === "ARCHIVED" &&
                 post.status_history.items?.length > 0 && (
@@ -385,6 +386,18 @@ const Post = ({ ssrData }) => {
                     Шалтгаан: {post.status_history.items[0].description}
                   </p>
                 )}
+              {post.status === "REPORTED" &&
+                post.status_history.items?.length > 0 && (
+                  <p className={"text-caak-scriptink"}>
+                    Шалтгаан:{" "}
+                    {
+                      post.status_history.items[
+                        post.status_history.items.length - 1 || 0
+                      ].description
+                    }
+                  </p>
+                )}
+
               {post.description && (
                 <div>
                   <p
@@ -392,7 +405,11 @@ const Post = ({ ssrData }) => {
                       "text-[16px] whitespace-pre-wrap mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
                     }
                     dangerouslySetInnerHTML={{
-                      __html: decode(post.description),
+                      __html: sanitizeHtml(post.description, {
+                        allowedTags: [],
+                        allowedAttributes: {},
+                        allowedIframeHostnames: [],
+                      }),
                     }}
                   />
                 </div>
@@ -453,7 +470,7 @@ const Post = ({ ssrData }) => {
                         src={getFileUrl(post.items.items[0].file)}
                         alt={"post picture"}
                         className={
-                          "object-contain w-full h-full z-[2] relative"
+                          "object-contain w-full h-full z-[1] relative"
                         }
                       />
                     </ConditionalLink>
@@ -469,7 +486,14 @@ const Post = ({ ssrData }) => {
                       "font-bold text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                     }
                   >
-                    {decode(post.items.items[0].description)}
+                    {
+                      sanitizeHtml(post.items.items[0].description, {
+                        allowedTags: [],
+                        allowedAttributes: {},
+                        allowedIframeHostnames: [],
+                      })
+                    }
+                    {/*{decode(post.items.items[0].description)}*/}
                   </p>
                 )}
 
@@ -478,8 +502,15 @@ const Post = ({ ssrData }) => {
                     "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                   }
                   dangerouslySetInnerHTML={{
-                    __html: decode(post.items.items[0].title),
+                    __html: sanitizeHtml(post.items.items[0].title, {
+                      allowedTags: [],
+                      allowedAttributes: {},
+                      allowedIframeHostnames: [],
+                    }),
                   }}
+                  // dangerouslySetInnerHTML={{
+                  //   __html: decode(post.items.items[0].title),
+                  // }}
                 />
               </div>
             )}
@@ -582,7 +613,7 @@ const Post = ({ ssrData }) => {
                 </Button>
               </div>
             )}
-          {post.status === "ARCHIVED" && (
+          {(post.status === "ARCHIVED" || post.status === "DRAFT") && (
             <div
               className={"flex flex-row justify-end mt-[10px] bg-transparent"}
             >

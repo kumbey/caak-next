@@ -29,7 +29,9 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
           post_id: post.id,
         },
       });
-      setPostHistory(getReturnData(resp).items[0]);
+      setPostHistory(
+        getReturnData(resp).items[getReturnData(resp).items.length - 1 || 0]
+      );
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -38,15 +40,6 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
 
   useEffect(() => {
     fetchPostHistory();
-    const handler = (e) => {
-      if (e.keyCode === 27) {
-        setIsModalOpen(false);
-      }
-    };
-    document.addEventListener("keydown", handler);
-    return () => {
-      document.removeEventListener("keydown", handler);
-    };
 
     // eslint-disable-next-line
   }, []);

@@ -20,6 +20,7 @@ const CommentItemCard = ({
   comment,
   jumpToCommentId,
   postId,
+  setComments
 }) => {
   const [isReplyInputActive, setIsReplyInputActive] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -109,7 +110,7 @@ const CommentItemCard = ({
                   </div>
                   <div
                     onClick={() => {
-                      setIsReplyInputActive(true);
+                      setIsReplyInputActive(!isReplyInputActive);
                       setReply({
                         isReplying: true,
                         user_id: comment.user.id,
@@ -151,14 +152,15 @@ const CommentItemCard = ({
                           <div className="w-[149px]">
                             <p onClick={() => {
                               setConfirmOpen(true)
+                              setIsMenuOpen(false)
                             }} className="text-center">Устгах</p>
                           </div>
                         }
                         className={
-                          "top-10 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
+                          "top-5 md:left-1/2 -left-4 -translate-x-1/2 z-[3] rounded-[4px]"
                         }
                       />
-                    <DeleteCommentConfirm setOpen={setConfirmOpen} open={confirmOpen} comment={comment}/>
+                    <DeleteCommentConfirm setIsMenuOpen={setIsMenuOpen} setOpen={setConfirmOpen} open={confirmOpen} comment={comment}/>
                       <span
                         className={"icon-fi-rs-dots text-caak-darkBlue hover:text-black text-[24px]"}
                       />

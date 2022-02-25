@@ -2,12 +2,12 @@ import { API, graphqlOperation } from "aws-amplify";
 import { updatePost } from "../../graphql-custom/post/mutation";
 
 const PostDeleteConfirm = ({post, setOpen}) => {
-
+  
     const postHandler = async ({ id, status }) => {
         try {
           await API.graphql(
             graphqlOperation(updatePost, {
-              input: { id, status, expectedVersion: post.version },
+              input: { id: id, status: status, expectedVersion: post.version },
             })
           );
         } catch (ex) {

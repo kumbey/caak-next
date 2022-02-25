@@ -11,9 +11,13 @@ import Video from "../video";
 import { useRouter } from "next/router";
 import moment from "moment";
 import { DateTime } from "luxon";
+import Button from "../../components/button";
+import { numberWithCommas } from "../../utility/Util";
 
 const BoostedPostItem = ({ imageSrc, post, video }) => {
   const router = useRouter();
+
+  const now = new Date();
 
   const convertDateTime = (date, seperator, noTime, noSec) => {
     const Date = DateTime.fromISO(date);
@@ -70,7 +74,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               />
             )}
           </div>
-          <div className="flex flex-col  space-y-4">
+          <div className="flex flex-col  ">
             <div
               onClick={() => {
                 router.push(
@@ -87,7 +91,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
                   { shallow: true, scroll: false }
                 );
               }}
-              className="break-words cursor-pointer text-15px break-all truncate-1 text-caak-generalblack font-roboto font-medium"
+              className="break-words cursor-pointer text-15px break-all truncate-2 text-caak-generalblack font-roboto font-medium min-w-[120px]"
             >
               {post.post.title}
             </div>
@@ -104,7 +108,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
       </td>
 
       <td>
-        <div className="flex  mr-[28px]">
+        <div className="flex  ">
           <p
             className={
               "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
@@ -112,10 +116,13 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
           >
             {convertDateTime(post.start_date, ".", false, true)}
           </p>
-        </div>
-      </td>
-      <td>
-        <div className="flex  mr-[28px]">
+          <p
+            className={
+              "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px] mx-2 mt-2"
+            }
+          >
+            ~
+          </p>
           <p
             className={
               "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px]"
@@ -125,10 +132,19 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
           </p>
         </div>
       </td>
+      {/* <td className="max-w-[80px]">
+        <p
+          className={
+            "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px] "
+          }
+        >
+          {`${numberWithCommas(3000500)}₮`}
+        </p>
+      </td> */}
       <td>
         <div className="flex text-sm text-caak-darkBlue w-[166px] ">
           <div
-            className="flex items-center mr-5 min-w-[60px]"
+            className="flex items-center mr-4 min-w-[50px]"
             data-tip
             data-for="reachtTip"
           >
@@ -142,11 +158,11 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               effect="solid"
               className="p-1 opacity-50"
             >
-              <p className="text-11px text-white ">Үзэлтийн тоо</p>
+              <p className="text-11px text-white ">Харсан тоо</p>
             </ReactTooltip>
           </div>
           <div
-            className="flex items-center mr-5 min-w-[60px]"
+            className="flex items-center mr-4 min-w-[50px]"
             data-tip
             data-for="viewTip"
           >
@@ -160,12 +176,12 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               effect="solid"
               className="p-1 opacity-50"
             >
-              <p className="text-11px text-white ">Даралтын тоо</p>
+              <p className="text-11px text-white ">Үзсэн тоо</p>
             </ReactTooltip>
           </div>
 
           <div
-            className="flex items-center mr-5 min-w-[60px]"
+            className="flex items-center mr-4 min-w-[50px]"
             data-tip
             data-for="caakTip"
           >
@@ -185,7 +201,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
             </ReactTooltip>
           </div>
           <div
-            className="flex items-center mr-5 min-w-[60px]"
+            className="flex items-center mr-4 min-w-[50px]"
             data-tip
             data-for="commentTip"
           >
@@ -204,6 +220,22 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               <p className="text-11px text-white ">Сэтгэгдлийн тоо</p>
             </ReactTooltip>
           </div>
+          {/* <Button
+            // loading={loading}
+            className={`${
+              moment(post.end_date)._d > now
+                ? "bg-caak-titaniumwhite"
+                : "bg-[#257CEE]"
+            } text-caak-generalblack text-14px font-inter font-medium w-[87px] h-[30px] bg-white border`}
+          >
+            <p
+              className={`${
+                moment(post.end_date)._d > now ? "text-caak-shit" : "text-white"
+              } font-inter font-normal text-13px`}
+            >
+              {moment(post.end_date)._d > now ? "Бүүстлэсэн" : "Бүүстлэх"}
+            </p>
+          </Button> */}
         </div>
       </td>
     </>

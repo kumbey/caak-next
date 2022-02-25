@@ -20,7 +20,7 @@
 
   @media (max-width: 1099px) {
     .navbarSearch {
-    width: clamp(100px, 35%, 500px)
+      width: clamp(100px, 35%, 500px);
     }
   }
 
@@ -234,28 +234,48 @@
     -ms-animation: fadeIn 2s;
   }
   @keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  
+
   @-moz-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  
+
   @-webkit-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  
+
   @-o-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
-  
+
   @-ms-keyframes fadeIn {
-    0% {opacity:0;}
-    100% {opacity:1;}
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   .fade-in-bigBanner {
@@ -275,14 +295,14 @@
   }
 
   .ads-checked-icon:before {
-    content: '✓';
-    color: #FF6600;
+    content: "✓";
+    color: #ff6600;
     margin-right: 5px;
   }
 
   .ads-plus-icon:before {
-    content: '+';
-    color: #257CEE;
+    content: "+";
+    color: #257cee;
     margin-right: 5px;
   }
 
@@ -498,7 +518,6 @@
       top: 64px;
     }
   }
-
 
   .bounce_banner {
     animation: bounce_banner 2s ease infinite;
@@ -726,7 +745,16 @@
     position: relative;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
-
+  .popup_modal-content-boost {
+    min-width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    max-width: 1092px;
+    min-height: 710px;
+    margin: 70px auto;
+    position: relative;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  }
   .popup_modal-leaveGroup {
     min-width: 300px;
     background: #fff;
@@ -895,9 +923,8 @@
       padding-box;
   }
   .videoPlayerGradient {
-    background: transparent
-    linear-gradient(0deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
-    padding-box;
+    background: transparent linear-gradient(0deg, #00000099 0%, #80808000 100%)
+      0 0 no-repeat padding-box;
   }
   .trendPostsCardWrapper {
     scrollbar-width: none !important;
@@ -925,16 +952,16 @@
     white-space: normal !important;
   }
   .tinymce-ol > li {
-    line-height: 1.6!important;
+    line-height: 1.6 !important;
   }
   .tinymce-p {
     word-break: break-word !important;
   }
   .tinymce-p a:link {
-    color: #FF6600 !important;
+    color: #ff6600 !important;
   }
   .tinymce-p a:visited {
-    color: #FF8939 !important;
+    color: #ff8939 !important;
   }
 
   .youtube-player-wrapper {
@@ -953,6 +980,16 @@
   .youtube-player-wrapper .react-player video {
     position: absolute;
     object-fit: fill;
+  }
+  .addPostDatePicker .react-datepicker-popper {
+    z-index: 4 !important;
+  }
+  .addPostDatePicker .react-datepicker__input-container input {
+    border-radius: 8px;
+  }
+
+  .selectBank [type='radio']  {
+    color: #FF6600
   }
 }
 

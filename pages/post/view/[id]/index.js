@@ -27,7 +27,6 @@ import {
 } from "../../../../src/graphql-custom/post/mutation";
 import ReportModal from "../../../../src/components/modals/reportModal";
 import { useUser } from "../../../../src/context/userContext";
-import { decode } from "html-entities";
 import toast from "react-hot-toast";
 import groupVerifiedSvg from "../../../../public/assets/images/fi-rs-verify.svg";
 import ConditionalLink from "../../../../src/components/conditionalLink";
@@ -406,7 +405,11 @@ const Post = ({ ssrData }) => {
                       "text-[16px] whitespace-pre-wrap mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
                     }
                     dangerouslySetInnerHTML={{
-                      __html: decode(post.description),
+                      __html: sanitizeHtml(post.description, {
+                        allowedTags: [],
+                        allowedAttributes: {},
+                        allowedIframeHostnames: [],
+                      }),
                     }}
                   />
                 </div>
@@ -483,7 +486,14 @@ const Post = ({ ssrData }) => {
                       "font-bold text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                     }
                   >
-                    {decode(post.items.items[0].description)}
+                    {
+                      sanitizeHtml(post.items.items[0].description, {
+                        allowedTags: [],
+                        allowedAttributes: {},
+                        allowedIframeHostnames: [],
+                      })
+                    }
+                    {/*{decode(post.items.items[0].description)}*/}
                   </p>
                 )}
 
@@ -492,8 +502,15 @@ const Post = ({ ssrData }) => {
                     "text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                   }
                   dangerouslySetInnerHTML={{
-                    __html: decode(post.items.items[0].title),
+                    __html: sanitizeHtml(post.items.items[0].title, {
+                      allowedTags: [],
+                      allowedAttributes: {},
+                      allowedIframeHostnames: [],
+                    }),
                   }}
+                  // dangerouslySetInnerHTML={{
+                  //   __html: decode(post.items.items[0].title),
+                  // }}
                 />
               </div>
             )}

@@ -987,6 +987,10 @@
   .addPostDatePicker .react-datepicker__input-container input {
     border-radius: 8px;
   }
+
+  .selectBank [type='radio']  {
+    color: #FF6600
+  }
 }
 
 .react-player {

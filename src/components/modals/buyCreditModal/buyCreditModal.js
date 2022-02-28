@@ -8,7 +8,6 @@ import Button from "../../button";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 
 const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
-  console.log(isBoostModalOpen)
   const [blockScroll, allowScroll] = useScrollBlock();
   const banks = [
     { id: 0, logo: khan, name: "Хаан Банк", accountNumber: "5212 062 121" },
@@ -196,7 +195,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
         </div>
         <div
           className={
-            "rounded-[8px] bg-white mt-[22px] lg:mt-0 ml-0 lg:ml-[22px] h-[fit-content] min-w-[320px] max-w-[400px] shadow-card"
+            "rounded-[8px] bg-white mt-[22px] lg:mt-0 ml-0 lg:ml-[22px] h-[fit-content] min-w-[320px] w-full max-w-[400px] shadow-card"
           }
         >
           <div

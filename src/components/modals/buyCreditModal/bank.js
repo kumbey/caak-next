@@ -15,6 +15,7 @@ const Bank = ({ logo, selected, name, setSelected, index }) => {
       <input
         className={"mt-[8px] w-[12px] h-[12px] ring-transparent"}
         checked={selected}
+        readOnly
         type={"radio"}
       />
     </div>

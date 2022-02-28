@@ -15,7 +15,8 @@ const Card = ({
   loading,
   className,
   mediaContainerClassname,
-  headerClassname
+  headerClassname,
+  notBoosted
 }) => {
   const [ref, inView] = useInView({
     rootMargin: "-54px",
@@ -87,6 +88,8 @@ const Card = ({
               totals={post.totals}
               handleToast={handleToast}
               subscription={subscription}
+              postUser={post.user}
+              notBoosted={notBoosted}
             />
           </>
         )}

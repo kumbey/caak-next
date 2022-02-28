@@ -56,7 +56,7 @@ const UploadedMediaEdit = ({
   const [adminTextEditor, setAdminTextEditor] = useState(
     post.onlyBlogView
       ? post.onlyBlogView
-      : selectedGroup.role_on_group === "ADMIN"
+      : selectedGroup?.role_on_group === "ADMIN"
       ? "TRUE"
       : "FALSE"
   );

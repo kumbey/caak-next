@@ -9,6 +9,7 @@ import AnimatedCaakButton from "../../button/animatedCaakButton";
 import { FacebookShareButton, TwitterShareButton } from "next-share";
 import { useRouter } from "next/router";
 import Consts from "../../../utility/Consts";
+import { useUser } from "../../../context/userContext";
 
 const CardFooter = ({
   totals,
@@ -17,6 +18,8 @@ const CardFooter = ({
   handleToast,
   subscription,
   title,
+  postUser,
+  notBoosted
 }) => {
   // const [subscripTotal, setSubscripTotal] = useState();
   const router = useRouter();
@@ -29,6 +32,8 @@ const CardFooter = ({
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
+
+  const {user} = useUser()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -129,6 +134,13 @@ const CardFooter = ({
               </span>
             </div>
           </div>
+          <div className="flex flex-row items-center">
+          {/* {
+            postUser.id === user.id && notBoosted &&
+            <div>
+              <p>Бүүстлэх</p>
+            </div>
+          } */}
           <div
             ref={menuRef}
             onClick={toggleMenu}
@@ -227,6 +239,7 @@ const CardFooter = ({
                 </div>
               }
             />
+          </div>
           </div>
         </div>
       </div>

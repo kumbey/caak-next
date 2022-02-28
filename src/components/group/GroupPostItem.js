@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Button from "../button";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import API from "@aws-amplify/api";
@@ -246,20 +247,37 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
           post.status === "DRAFT" ||
           post.status === "CAAK_DRAFT" ||
           (post.status === "PENDING" && type === "user") ? (
-            <div className=" flex w-[102px] ">
-              <Link href={`/post/edit/${post.id}`}>
-                <a>
+            <>
+              <div className="flex w-[102px]">
+                {post.status === "DRAFT" && (
                   <Button
+                    onClick={() => {
+                      {
+                        postHandler({ id: post.id, status: "ARCHIVED" });
+                      }
+                    }}
                     round
-                    className={
-                      "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
-                    }
+                    className="bg-caak-cardinal w-[112px] text-14px font-inter font-medium  mr-[10px] text-white"
                   >
-                    <p className="">Засах</p>
+                    <p className="">Устгах</p>
                   </Button>
-                </a>
-              </Link>
-            </div>
+                )}
+              </div>
+              <div className=" flex w-[102px] ">
+                <Link href={`/post/edit/${post.id}`}>
+                  <a>
+                    <Button
+                      round
+                      className={
+                        "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                      }
+                    >
+                      <p className="">Засах</p>
+                    </Button>
+                  </a>
+                </Link>
+              </div>
+            </>
           ) : (
             //  post.status === "PENDING" && type === "user" ? (
             //   <div className=" flex w-[120px] ">

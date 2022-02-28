@@ -391,12 +391,13 @@ const UploadedMediaEdit = ({
               init={{
                 convert_urls: false,
                 valid_elements:
-                  "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
+                  "a[href|target=_blank],strong/b,em/i,br,li,ol,ul,span,br",
                 extended_valid_elements: [
                   "p[style|class=tinymce-p]",
                   "li[style|class=tinymce-p]",
                   "ol[style|class=tinymce-ol]",
                   "ul[style|class=tinymce-ul]",
+                  "span[style|class=tinymce-span]",
                 ],
                 height: 200,
                 menubar: false,
@@ -630,12 +631,13 @@ const UploadedMediaEdit = ({
                       init={{
                         convert_urls: false,
                         valid_elements:
-                          "a[href|target=_blank],strong/b,em/i,br,li,ol,ul",
+                          "a[href|target=_blank],strong/b,em/i,br,li,ol,ul,span,br",
                         extended_valid_elements: [
                           "p[style|class=tinymce-p]",
                           "li[style|class=tinymce-p]",
                           "ol[style|class=tinymce-ol]",
                           "ul[style|class=tinymce-ul]",
+                          "span[style|class=tinymce-span]",
                         ],
                         height: "100%",
                         menubar: false,

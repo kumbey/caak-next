@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Button from "../../button";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 
-const BuyCreditModal = ({ setIsBoostModalOpen }) => {
+const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const banks = [
     { id: 0, logo: khan, name: "Хаан Банк", accountNumber: "5212 062 121" },
@@ -98,7 +98,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
               <p className={"text-caak-generalblack text-[15px] font-semibold"}>
                 Шилжүүлэх мөнгөн дүн:&nbsp;
               </p>
-              <p className={"text-caak-generalblack text-[15px]"}>100,000₮</p>
+              <p className={"text-caak-generalblack text-[15px]"}>{isBoostModalOpen.price}₮</p>
             </div>
           </div>
           <p
@@ -123,7 +123,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
                   "text-[15px] text-white font-medium leading-[24px] tracking-0px]"
                 }
               >
-                ck300
+                {isBoostModalOpen.price === "50.000" ? "ck50" : isBoostModalOpen.price === "100.000" ? "ck100" : isBoostModalOpen.price === "150.000" ? "ck150" : null}
               </p>
             </div>
             <div
@@ -136,11 +136,11 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
                   "text-[15px] text-white font-medium leading-[24px] tracking-0px]"
                 }
               >
-                99093445
+                Таны утасны дугаар
               </p>
             </div>
           </div>
-          <div className={"flex flex-col mt-[14px]"}>
+          {/* <div className={"flex flex-col mt-[14px]"}>
             <div
               className={
                 "flex flex-row items-center text-caak-generalblack text-[15px] leading-[24px]"
@@ -157,7 +157,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
               <p className={"font-medium"}>Таны утасны дугаар:&nbsp;</p>
               <p>9093445</p>
             </div>
-          </div>
+          </div> */}
           <div
             className={
               "px-[20px] py-[15px] rounded-[8px] min-h-[72px] w-full max-w-[542px] bg-[#E60033] mt-[30px] bg-opacity-5"
@@ -183,10 +183,19 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
               </p>
             </div>
           </div>
+          
+          <Button
+              skin={"primary"}
+              className={
+                "w-full mt-[14px] h-[44px] text-[16px] tracking-[0.24px] leading-[20px] font-medium"
+              }
+            >
+              Хүсэлт илгээх
+            </Button>
         </div>
         <div
           className={
-            "rounded-[8px] bg-white mt-[22px] lg:mt-0 ml-0 lg:ml-[22px] h-[fit-content] min-w-[320px] max-w-[400px] shadow-card"
+            "rounded-[8px] bg-white mt-[22px] lg:mt-0 ml-0 lg:ml-[22px] h-[fit-content] min-w-[320px] w-full max-w-[400px] shadow-card"
           }
         >
           <div
@@ -213,7 +222,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
                   "text-[#257CEE] font-semibold text-[18px] tracking-[0.27px] leading-[28px]"
                 }
               >
-                Premium&nbsp;
+                {isBoostModalOpen.title}&nbsp;
                 <span
                   className={
                     "text-caak-generalblack font-semibold text-[18px] tracking-[0.27px] leading-[28px]"
@@ -227,7 +236,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
                   "text-[30px] tracking-[0.30px] leading-[28px] font-bold mt-[16px] text-[#21293C]"
                 }
               >
-                100.000₮
+                {isBoostModalOpen.price}₮
               </p>
               <p
                 className={
@@ -246,22 +255,14 @@ const BuyCreditModal = ({ setIsBoostModalOpen }) => {
                 <li className={"ads-checked-icon list-none"}>Дагадаг баннер</li>
               </ul>
             </div>
-            <Button
-              skin={"primary"}
-              className={
-                "w-full mt-[14px] h-[44px] text-[16px] tracking-[0.24px] leading-[20px] font-medium"
-              }
-            >
-              Хүсэлт илгээх
-            </Button>
-            <p
+            {/* <p
               className={
                 "text-[14px] font-medium leading-[20px] tracking-[0px] text-[#E60033] mt-[14px] text-center"
               }
             >
               Хүсэлт илгээхээс өмнө &quot;Гүйлгээ хийх Банк дахь дансаа сонгоно
               төлбөрөө&quot; шилжүүлнэ үү!
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

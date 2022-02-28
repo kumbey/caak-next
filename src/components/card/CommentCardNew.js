@@ -75,7 +75,7 @@ const CommentCardNew = ({
     // setComments({});
     listCommentByType();
     // eslint-disable-next-line
-  }, [setup.id, comments]);
+  }, [setup.id]);
 
   const subscrip = () => {
     let params = {};

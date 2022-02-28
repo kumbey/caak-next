@@ -168,7 +168,7 @@ export default function Boost() {
                 >
                   Жишээ харах
                 </button>
-                <Link href='/help/connectus' shallow>
+                <Link href='/help/connectus' passHref>
                   <div className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p></div>
                 </Link>
               </div>
@@ -209,7 +209,7 @@ export default function Boost() {
               >
                 Жишээ харах
               </button>
-              <Link href={'/help/connectus'}>
+              <Link href={'/help/connectus'} passHref>
                 <div className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p></div>
               </Link>
             </div>

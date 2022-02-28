@@ -462,6 +462,7 @@ const Feed = ({ ssrData }) => {
                           (item) => item.post.id === data.id
                         ) && (
                           <Card
+                            notBoosted={true}
                             post={data}
                             className="ph:mb-4 sm:mb-4"
                             handleToast={handleToast}

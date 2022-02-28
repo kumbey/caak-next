@@ -763,6 +763,7 @@ const Dashboard = ({ ssrData }) => {
           });
         }
       }
+    //eslint-disable-next-line
   }, [activeIndex]);
 
   return isLogged && loaded ? (

@@ -168,7 +168,9 @@ export default function Boost() {
                 >
                   Жишээ харах
                 </button>
-                <div className="flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p></div>
+                <Link href={'/help/connectus'}>
+                  <div className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p></div>
+                </Link>
               </div>
               <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]"/>
               <div className="flex flex-col w-full px-[28px]">
@@ -207,7 +209,9 @@ export default function Boost() {
               >
                 Жишээ харах
               </button>
-              <div className="flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p></div>
+              <Link href={'/help/connectus'}>
+                <div className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p></div>
+              </Link>
             </div>
             <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]"/>
             <div className="flex flex-col w-full px-[28px]">
@@ -232,7 +236,7 @@ export default function Boost() {
             {
               adsCardData.map((data, index) => {
                 return(
-                  <CaakAdsCard title={data.title} price={data.price} key={index}/>
+                  <CaakAdsCard data={data} key={index}/>
                 )
               })
             }

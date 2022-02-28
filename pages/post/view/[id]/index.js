@@ -399,20 +399,38 @@ const Post = ({ ssrData }) => {
                 )}
 
               {post.description && (
-                <div>
-                  <p
-                    className={
-                      "text-[16px] whitespace-pre-wrap mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
-                    }
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizeHtml(post.description, {
-                        allowedTags: [],
-                        allowedAttributes: {},
-                        allowedIframeHostnames: [],
-                      }),
-                    }}
-                  />
-                </div>
+                <div
+                  className={
+                    "text-[16px] whitespace-pre-wrap mt-[13px] text-caak-generalblack tracking-[0.38px] leading-[22px] break-words"
+                  }
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(post.description, {
+                      allowedTags: [
+                        "b",
+                        "i",
+                        "em",
+                        "strong",
+                        "a",
+                        "ul",
+                        "ol",
+                        "li",
+                        "p",
+                        "span",
+                        "u",
+                        "br",
+                      ],
+                      allowedAttributes: {
+                        a: ["href", "target", "rel"],
+                        p: ["style", "class"],
+                        ul: ["style", "class"],
+                        ol: ["style", "class"],
+                        li: ["style", "class"],
+                        span: ["style", "class"],
+                      },
+                      allowedIframeHostnames: [],
+                    }),
+                  }}
+                />
               )}
             </div>
 
@@ -481,20 +499,38 @@ const Post = ({ ssrData }) => {
             {post.items.items.length > 1 && (
               <div>
                 {post.items.items[0].description && (
-                  <p
+                  <div
                     className={
                       "font-bold text-caak-generalblack text-[16px] px-[22px] md:px-[52px] mb-[40px] tracking-[0.38px] leading-[22px] whitespace-pre-wrap"
                     }
-                  >
-                    {
-                      sanitizeHtml(post.items.items[0].description, {
-                        allowedTags: [],
-                        allowedAttributes: {},
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeHtml(post.items.items[0].description, {
+                        allowedTags: [
+                          "b",
+                          "i",
+                          "em",
+                          "strong",
+                          "a",
+                          "ul",
+                          "ol",
+                          "li",
+                          "p",
+                          "span",
+                          "u",
+                          "br",
+                        ],
+                        allowedAttributes: {
+                          a: ["href", "target", "rel"],
+                          p: ["style", "class"],
+                          ul: ["style", "class"],
+                          ol: ["style", "class"],
+                          li: ["style", "class"],
+                          span: ["style", "class"],
+                        },
                         allowedIframeHostnames: [],
-                      })
-                    }
-                    {/*{decode(post.items.items[0].description)}*/}
-                  </p>
+                      }),
+                    }}
+                  />
                 )}
 
                 <div
@@ -503,14 +539,31 @@ const Post = ({ ssrData }) => {
                   }
                   dangerouslySetInnerHTML={{
                     __html: sanitizeHtml(post.items.items[0].title, {
-                      allowedTags: [],
-                      allowedAttributes: {},
+                      allowedTags: [
+                        "b",
+                        "i",
+                        "em",
+                        "strong",
+                        "a",
+                        "ul",
+                        "ol",
+                        "li",
+                        "p",
+                        "span",
+                        "u",
+                        "br",
+                      ],
+                      allowedAttributes: {
+                        a: ["href", "target", "rel"],
+                        p: ["style", "class"],
+                        ul: ["style", "class"],
+                        ol: ["style", "class"],
+                        li: ["style", "class"],
+                        span: ["style", "class"],
+                      },
                       allowedIframeHostnames: [],
                     }),
                   }}
-                  // dangerouslySetInnerHTML={{
-                  //   __html: decode(post.items.items[0].title),
-                  // }}
                 />
               </div>
             )}

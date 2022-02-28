@@ -988,8 +988,8 @@
     border-radius: 8px;
   }
 
-  .selectBank [type='radio']  {
-    color: #FF6600
+  .selectBank [type="radio"] {
+    color: #ff6600;
   }
 }
 

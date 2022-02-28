@@ -26,7 +26,8 @@ export const ssrDataViewPost = async ({ API, Auth, query, host }) => {
     if (
       getReturnData(resp).status === "ARCHIVED" ||
       getReturnData(resp).status === "PENDING" ||
-      getReturnData(resp).status === "DRAFT"
+      getReturnData(resp).status === "DRAFT" ||
+      getReturnData(resp).status === "CAAK_DRAFT"
     ) {
       if (!isSuperAdmin) {
         if (user) {

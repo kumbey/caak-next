@@ -13,6 +13,7 @@ import { _objectWithoutKeys, getReturnData } from "../utility/Util";
 
 const postStatusHandler = (status, role) => {
   if (status === "DRAFT") return "DRAFT";
+  if (status === "CAAK_DRAFT") return "CAAK_DRAFT";
   if (role === "ADMIN" || role === "MODERATOR") return "CONFIRMED";
   return "PENDING";
 };

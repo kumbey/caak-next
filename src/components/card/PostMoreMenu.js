@@ -141,7 +141,7 @@ export default function PostMoreMenu({
         </div>
       )}
 
-      {((isLogged && postUser.id === user.id) || (post.status === "DRAFT" && postUser.id === user.id) || isSuperAdmin) && (
+      {isLogged && postUser.id === user.id && (
         <div
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>

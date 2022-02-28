@@ -378,7 +378,9 @@ const Post = ({ ssrData }) => {
                 {post.status === "PENDING" ? " (Шалгагдаж буй пост)" : ""}
                 {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
                 {post.status === "REPORTED" ? " (Репортлогдсон пост)" : ""}
-                {post.status === "DRAFT" ? " (Ноорог)" : ""}
+                {post.status === "DRAFT" || post.status === "CAAK_DRAFT"
+                  ? " (Ноорог)"
+                  : ""}
               </p>
               {post.status === "ARCHIVED" &&
                 post.status_history.items?.length > 0 && (
@@ -388,15 +390,13 @@ const Post = ({ ssrData }) => {
                 )}
               {post.status === "REPORTED" &&
                 post.status_history.items?.length > 0 && (
-                  <p className={"flex flex-row text-caak-scriptink"}>
-                    Шалтгаан:
-                    <p className="text-caak-red ml-1">
-                      {
-                        post.status_history.items[
-                          post.status_history.items.length - 1 || 0
-                        ].description
-                      }
-                    </p>
+                  <p className={"text-caak-scriptink"}>
+                    Шалтгаан:{" "}
+                    {
+                      post.status_history.items[
+                        post.status_history.items.length - 1 || 0
+                      ].description
+                    }
                   </p>
                 )}
 
@@ -668,7 +668,7 @@ const Post = ({ ssrData }) => {
                 </Button>
               </div>
             )}
-          {(post.status === "ARCHIVED" || post.status === "DRAFT") && (
+          {(post.status === "ARCHIVED" || post.status === "DRAFT" || post.status === "CAAK_DRAFT") && (
             <div
               className={"flex flex-row justify-end mt-[10px] bg-transparent"}
             >

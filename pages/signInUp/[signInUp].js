@@ -1,7 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebook,
-} from "@fortawesome/free-brands-svg-icons";
+import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 import googleImg from "../../public/assets/images/Google-Color.svg";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import Button from "../../src/components/button";
@@ -12,7 +10,7 @@ import WithOutAuth from "../../src/middleware/auth/WithOutAuth";
 import Link from "next/link";
 import { useState } from "react";
 import Consts from "../../src/utility/Consts";
-import Validate from '../../src/utility/Validate'
+import Validate from "../../src/utility/Validate";
 import Input from "../../src/components/input";
 import { Auth } from "aws-amplify";
 import { checkUsername, _objectWithoutKeys } from "../../src/utility/Util";
@@ -51,22 +49,29 @@ const SignInUp = () => {
     try {
       setLoading(true);
       await Auth.signIn(checkUsername(username), password);
-      //Setting cookies expiration date from 'session' to 'one year'
-      function setAuthCookies () {
-        const cookieList = ["LastAuthUser", "refreshToken", "accessToken", "idToken"]
-        const expiration = new Date()
-        expiration.setFullYear(expiration.getFullYear() + 1)
+      // Setting cookies expiration date from 'session' to 'one year'
+      function setAuthCookies() {
+        const cookieList = [
+          "LastAuthUser",
+          "refreshToken",
+          "accessToken",
+          "idToken",
+        ];
+        const expiration = new Date();
+        expiration.setFullYear(expiration.getFullYear() + 1);
         for (const key in window.localStorage) {
           if (window.localStorage.hasOwnProperty(key)) {
-            const tokenNamearray = key.split('.')
-            const tokenName = tokenNamearray.pop()
-            if(cookieList.indexOf(tokenName) !== -1) {
-              document.cookie = `${key}=${window.localStorage[key]};expires=${expiration.toUTCString()};secure=true;samesite=strict`
+            const tokenNamearray = key.split(".");
+            const tokenName = tokenNamearray.pop();
+            if (cookieList.indexOf(tokenName) !== -1) {
+              document.cookie = `${key}=${
+                window.localStorage[key]
+              };expires=${expiration.toUTCString()};secure=true;samesite=strict;path=/`;
             }
           }
         }
       }
-      setAuthCookies()
+      setAuthCookies();
       if (router.query.prevPath && router.query.prevPath !== router.asPath) {
         router.replace(router.query.prevPath, undefined, {
           shallow: false,
@@ -141,67 +146,67 @@ const SignInUp = () => {
           </div>
           Имэйл хаяг/Утасны дугаар
         </Button> */}
-        
-      {
-        type === "signIn" && (
+
+        {type === "signIn" && (
           <form onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <p className="error ">{error}</p>
-          <Input
-            name={"username"}
-            type={"text"}
-            errorMessage={errors.username}
-            onChange={handleChange}
-            placeholder={"Имэйл хаяг/Утасны дугаар"}
-            className={
-              "border border-caak-titaniumwhite bg-caak-liquidnitrogen hover:bg-white h-[44px] mt-2"
-            }
-          />
-          <Input
-            name={"password"}
-            type={"password"}
-            errorMessage={errors.password}
-            onChange={handleChange}
-            placeholder={"Нууц үг"}
-            className={
-              "border border-caak-titaniumwhite w-80 bg-caak-liquidnitrogen hover:bg-white h-[44px] mt-2"
-            }
-          />
-          <div
-            className="text-caak-bleudefrance text-14px"
-            onClick={() =>
-              router.push(
-                {
-                  query: {
-                    ...router.query,
-                    signInUp: "forgotpassword",
-                  },
-                },
-                `/signInUp/forgotpassword`,
-                { shallow: true, scroll: false }
-              )
-            }
-          >
-            <span className="ml- cursor-pointer border-b border-caak-bleudefrance border-dashed">
-              Нууц үгээ мартсан уу?
-            </span>
-          </div>
-        </div>
-        <div className="text-white text-14px flex flex-col items-center justify-between mt-5">
-          <Button
-            loading={loading}
-            onClick={() => handleSubmit(doSignIn)}
-            className={
-              "rounded-md w-80 h-c9 text-16px font-medium font-inter bg-caak-primary"
-            }
-          >
-            Нэвтрэх
-          </Button>
-        </div>
-        <p className="text-[14px] text-[#AFAFAF] my-[14px] md:my-[24px] text-center">Эсвэл</p>
-        </form>
-        )
-      }
+            <div>
+              <p className="error ">{error}</p>
+              <Input
+                name={"username"}
+                type={"text"}
+                errorMessage={errors.username}
+                onChange={handleChange}
+                placeholder={"Имэйл хаяг/Утасны дугаар"}
+                className={
+                  "border border-caak-titaniumwhite bg-caak-liquidnitrogen hover:bg-white h-[44px] mt-2"
+                }
+              />
+              <Input
+                name={"password"}
+                type={"password"}
+                errorMessage={errors.password}
+                onChange={handleChange}
+                placeholder={"Нууц үг"}
+                className={
+                  "border border-caak-titaniumwhite w-80 bg-caak-liquidnitrogen hover:bg-white h-[44px] mt-2"
+                }
+              />
+              <div
+                className="text-caak-bleudefrance text-14px"
+                onClick={() =>
+                  router.push(
+                    {
+                      query: {
+                        ...router.query,
+                        signInUp: "forgotpassword",
+                      },
+                    },
+                    `/signInUp/forgotpassword`,
+                    { shallow: true, scroll: false }
+                  )
+                }
+              >
+                <span className="ml- cursor-pointer border-b border-caak-bleudefrance border-dashed">
+                  Нууц үгээ мартсан уу?
+                </span>
+              </div>
+            </div>
+            <div className="text-white text-14px flex flex-col items-center justify-between mt-5">
+              <Button
+                loading={loading}
+                onClick={() => handleSubmit(doSignIn)}
+                className={
+                  "rounded-md w-80 h-c9 text-16px font-medium font-inter bg-caak-primary"
+                }
+              >
+                Нэвтрэх
+              </Button>
+            </div>
+            <p className="text-[14px] text-[#AFAFAF] my-[14px] md:my-[24px] text-center">
+              Эсвэл
+            </p>
+          </form>
+        )}
         <Button
           onClick={() => openWindow("facebook")}
           round
@@ -284,62 +289,66 @@ const SignInUp = () => {
         </Button> */}
       </div>
       {type === "signUp" && (
-      <div className="flex flex-col items-center px-c13 ">
-        <p className="text-[14px] text-[#AFAFAF] my-[14px] md:my-[24px] text-center">Эсвэл</p>
-        <Button
-          onClick={goNext}
-          round
-          className={
-            "hover:bg-gray-100 border border-gray-200 w-80 h-11 font-medium font-inter rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
-          }
-        >
-          <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
-            <FontAwesomeIcon
-              size={"lg"}
-              className={"text-caak-generalblack absolute right-4 top-0 "}
-              icon={faEnvelope}
-            />
-          </div>
-          Имэйл хаяг/Утасны дугаар
-        </Button>
-      
-        <p className="text-center mt-[24px]  font-inter font-normal text-13px text-caak-aleutian">
-          Та энэ алхамын үргэлжлүүлснээр, сайтын{" "}
-          <Link
-            as={'/help/secure'}
-            href={{
-              pathname: "/help/secure",
-              query: {
-                index: 1,
-              }
-            }}
-            shallow
+        <div className="flex flex-col items-center px-c13 ">
+          <p className="text-[14px] text-[#AFAFAF] my-[14px] md:my-[24px] text-center">
+            Эсвэл
+          </p>
+          <Button
+            onClick={goNext}
+            round
+            className={
+              "hover:bg-gray-100 border border-gray-200 w-80 h-11 font-medium font-inter rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
+            }
           >
-            <a target="_blank" rel="noopener noreferrer">
-              <span className="text-caak-generalblack">
-                Үйлчилгээний нөхцөл
-              </span>{" "}
-            </a>
-          </Link>
-          болон{" "}
-          <Link
-            as={'/help/secure'}
-            href={{
-              pathname: "/help/secure",
-              query: {
-                index: 2,
-              },
-            }}
-            shallow
-          >
-            <a target="_blank" rel="noopener noreferrer">
-              <span className="text-caak-generalblack">Нууцлалын бодлогыг</span>{" "}
-            </a>
-          </Link>
-          зөвшөөрсөнд тооцно.
-        </p>
-      
-      </div>)}
+            <div className=" relative border-r border-caak-titaniumwhite w-[30px] h-[20px] mr-4">
+              <FontAwesomeIcon
+                size={"lg"}
+                className={"text-caak-generalblack absolute right-4 top-0 "}
+                icon={faEnvelope}
+              />
+            </div>
+            Имэйл хаяг/Утасны дугаар
+          </Button>
+
+          <p className="text-center mt-[24px]  font-inter font-normal text-13px text-caak-aleutian">
+            Та энэ алхамын үргэлжлүүлснээр, сайтын{" "}
+            <Link
+              as={"/help/secure"}
+              href={{
+                pathname: "/help/secure",
+                query: {
+                  index: 1,
+                },
+              }}
+              shallow
+            >
+              <a target="_blank" rel="noopener noreferrer">
+                <span className="text-caak-generalblack">
+                  Үйлчилгээний нөхцөл
+                </span>{" "}
+              </a>
+            </Link>
+            болон{" "}
+            <Link
+              as={"/help/secure"}
+              href={{
+                pathname: "/help/secure",
+                query: {
+                  index: 2,
+                },
+              }}
+              shallow
+            >
+              <a target="_blank" rel="noopener noreferrer">
+                <span className="text-caak-generalblack">
+                  Нууцлалын бодлогыг
+                </span>{" "}
+              </a>
+            </Link>
+            зөвшөөрсөнд тооцно.
+          </p>
+        </div>
+      )}
     </ModalLayout>
   );
 };

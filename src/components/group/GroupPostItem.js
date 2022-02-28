@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Button from "../button";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import API from "@aws-amplify/api";
@@ -243,7 +242,9 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
               }.${extractDate(post.createdAt).day}`}
             </p>
           </div>
-          {post.status === "ARCHIVED" || post.status === "DRAFT" ||
+          {post.status === "ARCHIVED" ||
+          post.status === "DRAFT" ||
+          post.status === "CAAK_DRAFT" ||
           (post.status === "PENDING" && type === "user") ? (
             <div className=" flex w-[102px] ">
               <Link href={`/post/edit/${post.id}`}>

@@ -82,7 +82,7 @@ const Dashboard = ({ ssrData }) => {
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
-
+  const [draftPostType, setDraftPostType] = useState("DRAFT");
   const [userTotals, setUserTotals] = useState(ssrData.userTotals);
   const [followedUsers, setFollowedUsers] = useState({
     items: [],
@@ -112,6 +112,10 @@ const Dashboard = ({ ssrData }) => {
     nextToken: "",
   });
   const [draftedPosts, setDraftedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
+  const [caakDraftedPosts, setCaakDraftedPosts] = useState({
     items: [],
     nextToken: "",
   });
@@ -177,7 +181,10 @@ const Dashboard = ({ ssrData }) => {
       id: 2,
       name: "Ноорог",
       icon: "icon-fi-rs-edit",
-      length: draftedPosts.items.length,
+      length:
+        draftPostType === "DRAFT"
+          ? draftedPosts.items.length
+          : caakDraftedPosts.items.length,
     },
     {
       id: 3,
@@ -251,7 +258,17 @@ const Dashboard = ({ ssrData }) => {
       filter: { status: { eq: "DRAFT" } },
       limit: 20,
     },
-    nextToken: archivedPosts.nextToken,
+    nextToken: draftedPosts.nextToken,
+  });
+  const [nextCaakDrafted] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "CAAK_DRAFT" } },
+      limit: 20,
+    },
+    nextToken: caakDraftedPosts.nextToken,
   });
   const [nextComments] = useListPager({
     query: listCommentByUser,
@@ -375,6 +392,28 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
+
+  const fetchCaakDrafted = async () => {
+    try {
+      if (!loading) {
+        setLoading(true);
+
+        const resp = await nextCaakDrafted();
+        if (resp) {
+          setCaakDraftedPosts((nextCaakDrafted) => ({
+            ...nextCaakDrafted,
+            items: [...nextCaakDrafted.items, ...resp],
+          }));
+        }
+
+        setLoading(false);
+      }
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
+
   const fetchComments = async () => {
     try {
       if (!loading) {
@@ -653,6 +692,15 @@ const Dashboard = ({ ssrData }) => {
   }, []);
 
   useEffect(() => {
+    if (draftPostType === "DRAFT") {
+      fetchDrafted();
+    } else {
+      fetchCaakDrafted();
+    }
+    //  eslint-disable-next-line
+  }, [draftPostType]);
+
+  useEffect(() => {
     if (window) {
       if (window.scrollY < 300) {
         window.scrollTo({
@@ -740,11 +788,27 @@ const Dashboard = ({ ssrData }) => {
           <div className="flex flex-col w-full">
             <div className="flex flex-wrap justify-between mt-[10px]">
               <div className="flex items-center my-[10px] md:my-0">
-                <p
-                  className={` text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
-                >
-                  {dashMenu[activeIndex].name}
-                </p>
+                {dashMenu[activeIndex].name === "Ноорог" ? (
+                  <select
+                    value={draftPostType}
+                    onChange={(e) => {
+                      setDraftPostType(e.target.value);
+                    }}
+                    className={
+                      "text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] rounded-[8px]"
+                    }
+                  >
+                    <option value={"DRAFT"}>Ноорог</option>
+                    <option value={"CAAK_DRAFT"}>Орчуулга</option>
+                  </select>
+                ) : (
+                  <p
+                    className={`text-[14px] font-inter tracking-[0.21px] leading-[16px] font-medium mr-[10px] `}
+                  >
+                    {dashMenu[activeIndex].name}
+                  </p>
+                )}
+
                 <div className="flex justify-center items-center text-13px h-[16px] w-[35px] bg-opacity-20 bg-caak-bleudefrance  font-inter font-medium rounded-lg ">
                   <p className="text-caak-bleudefrance text-opacity-100 ">
                     {dashMenu[activeIndex].length}
@@ -864,23 +928,46 @@ const Dashboard = ({ ssrData }) => {
                       Үйлдэл
                     </p>
                   </div>
-                  <InfinitScroller onNext={fetchDrafted} loading={loading}>
-                    {draftedPosts.items.length > 0 &&
-                      draftedPosts.items.map((draftedPost, index) => {
-                        return (
-                          <GroupPostItem
-                            type={"user"}
-                            key={index}
-                            imageSrc={draftedPost?.items?.items[0]?.file}
-                            video={draftedPost?.items?.items[0]?.file?.type?.startsWith(
-                              "video"
-                            )}
-                            post={draftedPost}
-                            className="ph:mb-4 sm:mb-4"
-                          />
-                        );
-                      })}
-                  </InfinitScroller>
+                  {draftPostType === "DRAFT" ? (
+                    <InfinitScroller onNext={fetchDrafted} loading={loading}>
+                      {draftedPosts.items.length > 0 &&
+                        draftedPosts.items.map((draftedPost, index) => {
+                          return (
+                            <GroupPostItem
+                              type={"user"}
+                              key={index}
+                              imageSrc={draftedPost?.items?.items[0]?.file}
+                              video={draftedPost?.items?.items[0]?.file?.type?.startsWith(
+                                "video"
+                              )}
+                              post={draftedPost}
+                              className="ph:mb-4 sm:mb-4"
+                            />
+                          );
+                        })}
+                    </InfinitScroller>
+                  ) : (
+                    <InfinitScroller
+                      onNext={fetchCaakDrafted}
+                      loading={loading}
+                    >
+                      {caakDraftedPosts.items.length > 0 &&
+                        caakDraftedPosts.items.map((caakDraftedPost, index) => {
+                          return (
+                            <GroupPostItem
+                              type={"user"}
+                              key={index}
+                              imageSrc={caakDraftedPost?.items?.items[0]?.file}
+                              video={caakDraftedPost?.items?.items[0]?.file?.type?.startsWith(
+                                "video"
+                              )}
+                              post={caakDraftedPost}
+                              className="ph:mb-4 sm:mb-4"
+                            />
+                          );
+                        })}
+                    </InfinitScroller>
+                  )}
                 </div>
               ) : null}
               {activeIndex === 3 ? (

@@ -17,7 +17,6 @@ import {
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import {
-  _objectWithoutKeys,
   getFileUrl,
   getGenderImage,
   isAdmin,
@@ -62,9 +61,10 @@ const UploadedMediaEdit = ({
       : "FALSE"
   );
   const [startDate, setStartDate] = useState(moment(post.createdAt)._d);
-  const [isDraft, setIsDraft] = useState(post.status === "DRAFT");
+  const [isDraft, setIsDraft] = useState(post.status === "DRAFT" || post.status === "CAAK_DRAFT");
   const [isPublishDateOn, setIsPublishDateOn] = useState(false);
   const [caakContent, setCaakContent] = useState(post?.owned === "CAAK");
+  const [caakDraft, setCaakDraft] = useState(post.status === "CAAK_DRAFT");
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const [sortItems, setSortItems] = useState(post.items);
   const [viewDescription, setViewDescription] = useState(
@@ -183,6 +183,7 @@ const UploadedMediaEdit = ({
     isDraft,
     startDate,
     isPublishDateOn,
+    caakDraft
   ]);
 
   useUpdateEffect(() => {
@@ -240,10 +241,10 @@ const UploadedMediaEdit = ({
       ...post,
       commentType: !!allowComment,
       ...cContent,
-      status: isDraft ? "DRAFT" : "PENDING",
+      status: isDraft ? caakDraft ? "CAAK_DRAFT" : "DRAFT" : "PENDING",
     });
     // eslint-disable-next-line
-  }, [allowComment, caakContent, isDraft]);
+  }, [allowComment, caakContent, isDraft, caakDraft]);
 
   useUpdateEffect(() => {
     if (!isPublishDateOn) {
@@ -276,6 +277,11 @@ const UploadedMediaEdit = ({
     });
     // eslint-disable-next-line
   }, [adminTextEditor]);
+  useUpdateEffect(() => {
+    if (!isDraft) {
+      setCaakDraft(false);
+    }
+  }, [isDraft]);
 
   useUpdateEffect(() => {
     if (adminTextEditor === "FALSE") {
@@ -728,7 +734,21 @@ const UploadedMediaEdit = ({
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
           <div className={"flex flex-row justify-between mt-[16px]"}>
-            <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>
+            <p
+              onDoubleClick={() => {
+                if (isDraft) {
+                  setCaakDraft(!caakDraft);
+                } else {
+                  setCaakDraft(true);
+                  setIsDraft(true);
+                }
+              }}
+              className={`${
+                caakDraft ? "text-caak-primary" : "text-caak-generalblack"
+              } text-[15px]`}
+            >
+              {caakDraft ? "Ноорог (орчуулагч)" : "Ноорог"}
+            </p>
             <Switch toggle={setIsDraft} active={isDraft} />
           </div>
 

@@ -378,7 +378,9 @@ const Post = ({ ssrData }) => {
                 {post.status === "PENDING" ? " (Шалгагдаж буй пост)" : ""}
                 {post.status === "ARCHIVED" ? " (Архивлагдсан пост)" : ""}
                 {post.status === "REPORTED" ? " (Репортлогдсон пост)" : ""}
-                {post.status === "DRAFT" ? " (Ноорог)" : ""}
+                {post.status === "DRAFT" || post.status === "CAAK_DRAFT"
+                  ? " (Ноорог)"
+                  : ""}
               </p>
               {post.status === "ARCHIVED" &&
                 post.status_history.items?.length > 0 && (
@@ -666,7 +668,7 @@ const Post = ({ ssrData }) => {
                 </Button>
               </div>
             )}
-          {(post.status === "ARCHIVED" || post.status === "DRAFT") && (
+          {(post.status === "ARCHIVED" || post.status === "DRAFT" || post.status === "CAAK_DRAFT") && (
             <div
               className={"flex flex-row justify-end mt-[10px] bg-transparent"}
             >

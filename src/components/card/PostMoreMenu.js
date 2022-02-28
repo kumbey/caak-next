@@ -14,7 +14,7 @@ import {
   createSavedPost,
   deleteSavedPost,
 } from "../../graphql-custom/post/mutation";
-import { updatePost } from "../../graphql-custom/post/mutation";
+import { isAdmin } from "../../utility/Util";
 
 export default function PostMoreMenu({
   postUser,
@@ -28,6 +28,7 @@ export default function PostMoreMenu({
   const router = useRouter();
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   
   const getGroupFollow = async () => {
     setLoading(true);
@@ -97,6 +98,14 @@ export default function PostMoreMenu({
     setGroupFollowed(false);
     handleToast({ param: "unfollow" });
   };
+  
+  const isAdminAsync = async () => {
+    return await isAdmin();
+  };
+
+  useEffect(() => {
+    isAdminAsync().then((e) => setIsSuperAdmin(e));
+  }, []);
 
   return !loading ? (
     <div className={"dropdown-item-wrapper"}>    
@@ -132,7 +141,7 @@ export default function PostMoreMenu({
         </div>
       )}
 
-      {isLogged && postUser.id === user.id && (
+      {isLogged && postUser.id === user.id && post.status === "DRAFT" || isSuperAdmin && (
         <div
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>

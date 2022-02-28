@@ -177,7 +177,7 @@ const Dashboard = ({ ssrData }) => {
       id: 2,
       name: "Ноорог",
       icon: "icon-fi-rs-edit",
-      length: draftedPosts.items.length,
+      length: draftedPosts?.items?.length ? draftedPosts?.items?.length : 0,
     },
     {
       id: 3,
@@ -510,6 +510,22 @@ const Dashboard = ({ ssrData }) => {
         });
       },
     });
+
+    subscriptions.onPostByUserDeleted = API.graphql({
+      query: onPostByUser,
+      variables: {
+        status: "DRAFT",
+        user_id: user.id,
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
+      },
+    });
   };
 
   useUpdateEffect(() => {
@@ -523,6 +539,10 @@ const Dashboard = ({ ssrData }) => {
       const archivedIndex = archivedPosts.items.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
+      const draftIndex = draftedPosts.items.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
+
       if (subscripedPost.post.status === "CONFIRMED") {
         if (postIndex === -1) {
           setPosts({
@@ -632,6 +652,35 @@ const Dashboard = ({ ssrData }) => {
           }
           setRender(render + 1);
         }
+
+        if (draftIndex > -1) {
+          draftedPosts.items.splice(draftIndex, 1);
+          // userTotals.pending - 1;
+
+          setRender(render + 1);
+        }
+      }
+
+      if (subscripedPost.post.status === "DRAFT") {
+        if (draftIndex === -1) {
+          setDraftedPosts({
+            ...draftedPosts,
+            items: [subscripedPost.post, ...draftedPosts.items],
+          });
+          // userTotals.pending + 1;
+          // setRender(render + 1);
+        }
+        if (archivedIndex > -1) {
+          archivedPosts.items.splice(archivedIndex, 1);
+          // userTotals.archived - 1;
+          // setRender(render + 1);
+          if (userTotals.archived !== 0) {
+            setUserTotals({
+              ...userTotals,
+              archived: userTotals.archived - 1,
+            });
+          }
+        }
       }
     }
     // eslint-disable-next-line
@@ -712,7 +761,10 @@ const Dashboard = ({ ssrData }) => {
               {dashMenu.map((menu, index) => {
                 return (
                   <div
-                    onClick={() => setActiveIndex(index)}
+                    onClick={() => {
+                      setActiveIndex(index);
+                      setLoading(false);
+                    }}
                     className={`flex items-center mb-[12px] cursor-pointer`}
                     key={index}
                   >
@@ -851,13 +903,13 @@ const Dashboard = ({ ssrData }) => {
               {activeIndex === 2 ? (
                 <div className="flex flex-col">
                   <div className="hidden md:flex mb-[13px]">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[325px]">
                       Пост
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[175px]">
                       Гишүүн
                     </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
+                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[120px]">
                       Огноо
                     </p>
                     <p className="font-inter font-normal text-14px text-caak-generalblack">
@@ -865,7 +917,7 @@ const Dashboard = ({ ssrData }) => {
                     </p>
                   </div>
                   <InfinitScroller onNext={fetchDrafted} loading={loading}>
-                    {draftedPosts.items.length > 0 &&
+                    {draftedPosts?.items?.length > 0 &&
                       draftedPosts.items.map((draftedPost, index) => {
                         return (
                           <GroupPostItem
@@ -876,6 +928,8 @@ const Dashboard = ({ ssrData }) => {
                               "video"
                             )}
                             post={draftedPost}
+                            draftedPosts={draftedPosts}
+                            setDraftedPosts={setDraftedPosts}
                             className="ph:mb-4 sm:mb-4"
                           />
                         );

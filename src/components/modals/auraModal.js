@@ -4,13 +4,14 @@ import Image from "next/image";
 import helloImg from "../../../public/assets/images/Hello.svg";
 import auraImg from "../../../public/assets/images/AuraSM.png";
 import { useRouter } from "next/router";
+import {createPortal} from "react-dom";
 
 const AuraModal = ({ isOpen, setIsOpen }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isNext, setIsNext] = useState(false);
 
-  return isOpen ? (
+  return isOpen ? createPortal(
     <div className="popup_modal">
       <div className="popup_modal-report  ">
         {!isNext ? (
@@ -164,7 +165,7 @@ const AuraModal = ({ isOpen, setIsOpen }) => {
           </div>
         )}
       </div>
-    </div>
+    </div>, document.body
   ) : null;
 };
 

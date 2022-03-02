@@ -10,18 +10,22 @@ import useScrollBlock from "../../../hooks/useScrollBlock";
 const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const banks = [
-    { id: 0, logo: khan, name: "Хаан Банк", accountNumber: "5212 062 121" },
+    { 
+      id: 0, 
+      logo: khan, 
+      name: "Хаан Банк", 
+      accountNumber: "5212 062 121" },
     {
       id: 1,
       logo: tdb,
       name: "Худалдаа Хөгжлийн Банк",
-      accountNumber: "5212 023 121",
+      accountNumber: "464007506",
     },
     {
       id: 2,
       logo: golomt,
       name: "Голомт Банк",
-      accountNumber: "1234 062 121",
+      accountNumber: "1410005680",
     },
   ];
   const [selectedBankId, setSelectedBankId] = useState(null);

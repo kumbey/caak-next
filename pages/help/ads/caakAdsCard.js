@@ -26,9 +26,9 @@ export default function CaakAdsCard({data}) {
         Нэмэлт бонус
       </span>
       <ul className="flex flex-col pl-0 text-medium text-[14px] text-[#5D636B] mt-[14px]">
-        <li className={"ads-checked-icon list-none inline-flex"}><p className={"text-caak-primary"}>БОНУС:&nbsp;</p>{data.bonus}₮</li>
+        <li className={"ads-checked-icon list-none inline-flex"}><p className={"text-caak-primary"}>БОНУС:&nbsp;</p>{data?.bonus}₮</li>
         <li className={"ads-checked-icon list-none inline-flex"}>
-          <p className={"font-bold"}>{data.boostDays}&nbsp;</p> өдөр бүүстлэх
+          <p className={"font-bold"}>{data?.boostDays}&nbsp;</p> өдөр бүүстлэх
         </li>
       </ul>
       <button

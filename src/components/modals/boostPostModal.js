@@ -24,6 +24,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [price, setPrice] = useState(0);
+  const [balanceError, setBalanceError] = useState(false)
   const [userBalance] = useState(0);
   const [day, setDay] = useState(0);
   const [isValid, setIsValid] = useState(false);
@@ -45,7 +46,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const updateBoostData = async (e) => {
     e.preventDefault();
     if (userBalance === 0) {
-      toast.error("Таны дансны үлдэгдэл хүрэлцэхгүй байна.");
+      setBalanceError(true)
       return null;
     }
     setLoading(true);
@@ -214,7 +215,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
           </div>
           <div
             className={
-              "max-w-[590px] h-[307px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] py-[22px]"
+              `max-w-[590px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] pt-[22px] pb-[10px]`
             }
           >
             <p
@@ -291,20 +292,35 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     >
                       {userBalance}₮
                     </p>
-                    <div
-                      className={
-                        "cursor-pointer w-[21px] h-[21px] flex justify-center items-center bg-[#CDCFD9] rounded-full ml-[8px]"
-                      }
-                    >
-                      <span
+                    <Link href={{pathname: '/help/ads', query: {tab: 1}}}>
+                      <a>
+                        <div
                         className={
-                          "icon-fi-rs-add-l text-[16px] w-[16.2px] h-[16.2px]"
+                          "cursor-pointer w-[21px] h-[21px] flex justify-center items-center bg-[#CDCFD9] rounded-full ml-[8px]"
                         }
-                      />
-                    </div>
+                      >
+                        <span
+                          className={
+                            "icon-fi-rs-add-l text-[16px] w-[16.2px] h-[16.2px]"
+                          }
+                        />
+                      </div>
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </div>
+              {
+                balanceError && 
+                <div className="flex flex-row mt-[10px] items-center px-[10px] justify-between mx-[22px] my-[5px] rounded-[8px] p-[5px] bg-red-200 max-w-[400px] w-full">
+                  <p className="text-[14px] text-[#21293C]sm:mx-[10px]">Таны дансны үлдэгдэл хүрэлцэхгүй байна.</p>
+                  <Link href={{pathname: '/help/ads', query: {tab: 1}}} shallow>
+                    <a>
+                      <p className="text-[14px] text-[#21293C] font-semibold">Цэнэглэх</p>
+                    </a>
+                  </Link>
+                </div>
+              }
             </div>
           </div>
         </div>

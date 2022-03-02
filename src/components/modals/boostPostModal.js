@@ -298,7 +298,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     >
                       {userBalance}₮
                     </p>
-                    <Link href={{pathname: '/help/ads', query: {tab: 1}}}>
+                    <Link as={"/help/ads"} href={{pathname: '/help/ads', query: {tab: 1}}}>
                       <a>
                         <div
                         className={

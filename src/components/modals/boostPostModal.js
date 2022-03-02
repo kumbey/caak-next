@@ -8,7 +8,7 @@ import {
   addDays,
   differenceDate,
   getFileUrl,
-  getReturnData,
+  getReturnData, numberWithCommas,
 } from "../../utility/Util";
 import FeedCardSkeleton from "../skeleton/FeedCardSkeleton";
 import Card from "../card/FeedCard";
@@ -23,6 +23,8 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [price, setPrice] = useState(0);
+  const [userBalance] = useState(0);
   const [day, setDay] = useState(0);
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState();
@@ -42,7 +44,10 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
 
   const updateBoostData = async (e) => {
     e.preventDefault();
-
+    if (userBalance === 0) {
+      toast.error("Таны дансны үлдэгдэл хүрэлцэхгүй байна.");
+      return null;
+    }
     setLoading(true);
     try {
       const postData = {
@@ -63,7 +68,6 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
       );
       setLoading(false);
       setIsBoostModalOpen(false);
-      setData(initData);
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -82,6 +86,16 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
 
   useEffect(() => {
     setEndDate(addDays(startDate, day));
+    if (day < 14) {
+      setPrice(day * 5500);
+    } else if (day >= 14 && day < 20) {
+      setPrice(day * 5000);
+    } else if (day >= 20 && day < 30) {
+      setPrice(day * 4500);
+    } else if (day >= 30) {
+      setPrice(day * 4000);
+    }
+
     // eslint-disable-next-line
   }, [day]);
 
@@ -109,7 +123,10 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   }, [day]);
 
   return (
-    <BoostPostModalLayout setIsOpen={setIsBoostModalOpen} headerTitle={"Пост бүүстлэх"}>
+    <BoostPostModalLayout
+      setIsOpen={setIsBoostModalOpen}
+      headerTitle={"Пост бүүстлэх"}
+    >
       {/*Main content*/}
       <div
         className={"flex flex-col lg:flex-row py-[40px] px-[5px] sm:px-[40px]"}
@@ -221,7 +238,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                       "font-bold text-[38px] text-[#257CEE] leading-[28px] tracking-[0px]"
                     }
                   >
-                    100.000
+                    {numberWithCommas(price, ",")}
                   </p>
                   <p
                     className={
@@ -272,7 +289,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     <p
                       className={"text-caak-generalblack font-bold text-[18px]"}
                     >
-                      300.000₮
+                      {userBalance}₮
                     </p>
                     <div
                       className={

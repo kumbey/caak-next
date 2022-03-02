@@ -225,7 +225,7 @@ const CardHeader = ({
             },
           }}
         >
-          <a>
+          <a className={"w-max"}>
             <p
               className={`text-caak-generalblack break-words pt-[12px] truncate-2  ${
                 titleClassname

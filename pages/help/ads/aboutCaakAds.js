@@ -7,9 +7,11 @@ import PostHome from "../../../public/assets/images/homepost.png";
 import PostHome2 from "../../../public/assets/images/homepost2.png";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
+import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
 
 export default function AboutCaakAds({ open, setOpen }) {
   const [selected, setSelected] = useState(0);
+  const [isBoostModalOpen, setIsBoostModalOpen] = useState(false)
   const data = [
     {
       title: "Desktop",
@@ -96,7 +98,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               <li className={"ads-checked-icon list-none"}>Нүүр хуудасны голд</li>
               <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
-            <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
+            <button onClick={() => setIsBoostModalOpen(true)} className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах
             </button>
           </div>
@@ -165,7 +167,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               <li className={"ads-checked-icon list-none"}>Нүүр хуудасны баруун талд</li>
               <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
-            <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
+            <button onClick={() => setIsBoostModalOpen(true)} className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах
             </button>
           </div>
@@ -269,10 +271,13 @@ export default function AboutCaakAds({ open, setOpen }) {
               <li className={"ads-checked-icon list-none"}>Группуудын постон дунд</li>
               <li className={"ads-plus-icon list-none"}>Сонирхол, нас, хүйс сонгож бүүстлэх</li>
             </ul>
-            <button className="bg-caak-primary w-[282px] h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[20px]">
+            <button onClick={() => setIsBoostModalOpen(true)} className="bg-caak-primary w-[282px] h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[20px]">
               Захиалах
             </button>
           </div>
+          {
+            isBoostModalOpen && <BuyCreditModal setIsBoostModalOpen={setIsBoostModalOpen} isBoostModalOpen={isBoostModalOpen}/>
+          }
         </div>
       ) : null}
     </>

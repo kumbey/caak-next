@@ -29,7 +29,11 @@ const Consts = {
   loggedUserAuth: "AMAZON_COGNITO_USER_POOLS",
   publicUserAuth: "AWS_IAM",
   siteMainTitle: "Саак.мн",
-  translatorUserId: ["5d86b0d1-a958-45f1-82c6-3a999787f77f", "b2514e43-82eb-449f-9985-06667a895b7f"],
+  translatorUserId: [
+    "a35649ba-d066-480f-b01d-f586b53af5a5",
+    "f100ebec-1ae4-4d2f-abcf-3c261af96cc7",
+    "c0d39895-53fd-4da6-a266-3a1959b67431",
+  ],
 };
 
 export default Consts;

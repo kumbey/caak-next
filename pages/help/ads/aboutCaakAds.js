@@ -235,25 +235,25 @@ export default function AboutCaakAds({ open, setOpen }) {
                 <ul className="flex flex-col h-full justify-center">
                   <li>
                     <p className="text-[#5D636B] font-medium text-[14px]">
-                      10 хоног бол{" "}
+                      14+ хоног бол{" "}
                       <span className="text-[#FF6600] font-semibold">
-                        45,000 төг
+                        4,500 төг
                       </span>
                     </p>
                   </li>
                   <li>
                     <p className="text-[#5D636B] font-medium text-[14px]">
-                      30 хоног бол{" "}
+                      20+ хоног бол{" "}
                       <span className="text-[#FF6600] font-semibold">
-                        80,000 төг
+                        4,000 төг
                       </span>
                     </p>
                   </li>
                   <li>
                     <p className="text-[#5D636B] font-medium text-[14px]">
-                      60 хоног бол{" "}
+                      30+ хоног бол{" "}
                       <span className="text-[#FF6600] font-semibold">
-                        100,000 төг
+                        3,500 төг
                       </span>
                     </p>
                   </li>

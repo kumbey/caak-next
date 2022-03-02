@@ -20,7 +20,7 @@ const StatsItem = ({ id, stat }) => {
       <div className="flex flex-col">
         <div className="text-[18px] text-caak-generalblack md:text-[22px] leading-[24px] font-inter font-medium">
           {type === "money"
-            ? `${numberWithCommas(number)}₮`
+            ? `${numberWithCommas(number, ".")}₮`
             : kFormatter(number)}
         </div>
         <div className="text-caak-aleutian text-[12px] md:text-[14px] leading-[17px] font-normal font-inter">

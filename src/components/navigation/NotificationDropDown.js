@@ -37,8 +37,6 @@ const NotificationDropDown = ({ isOpen }) => {
 
   const subscriptions = {};
   const history = useRouter();
-  // const location = useLocation();
-  // let localNotifications = notifications;
   const notificationRef = useRef();
 
   const [nextNotification] = useListPager({
@@ -124,15 +122,13 @@ const NotificationDropDown = ({ isOpen }) => {
 
       if (item.seen === "FALSE") notifications[index].seen = "TRUE";
 
-      if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
-        history.push({
-          pathname: `/post/view/${item.item_id}`,
-        });
-      } else if (item.action === "POST_PENDING") {
-        history.push({
-          pathname: `/post/view/${item.item_id}`,
-        });
-      } else if (item.action === "POST_ARCHIVED") {
+      if (
+        item.action === "POST_PENDING" ||
+        item.action === "POST_ARCHIVED" ||
+        item.action === "POST_DRAFT" ||
+        item.action === "POST_CONFIRMED" ||
+        item.action === "REACTION_POST"
+      ) {
         history.push({
           pathname: `/post/view/${item.item_id}`,
         });
@@ -279,7 +275,11 @@ const NotificationDropDown = ({ isOpen }) => {
           </div>
         </div>
       </div>
-      <SimpleBar className={"max-h-full md:max-h-[559px] rounded-b-[4px] pb-[200px] md:pb-0"}>
+      <SimpleBar
+        className={
+          "max-h-full md:max-h-[559px] rounded-b-[4px] pb-[200px] md:pb-0"
+        }
+      >
         <div
           className={
             "notification_body overflow-hidden rounded-b-[4px] h-full flex flex-col bg-caak-washme p-0"
@@ -318,27 +318,6 @@ const NotificationDropDown = ({ isOpen }) => {
               );
             })
           )}
-          {/*{notifications.map((item, index) => {*/}
-          {/*  return (*/}
-          {/*    <Notification*/}
-          {/*      onClick={() => handleNotificationClick(index)}*/}
-          {/*      key={index}*/}
-          {/*      item={item}*/}
-          {/*    />*/}
-          {/*  );*/}
-          {/*})}*/}
-          {/* <span
-            className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
-          >
-            Сүүлд ирсэн
-          </span> */}
-          {/* <Notification type={"caak"} />
-          <Notification type={"comment"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} /> */}
           <div
             ref={notificationRef}
             className={"flex justify-center items-center"}
@@ -351,7 +330,6 @@ const NotificationDropDown = ({ isOpen }) => {
           </div>
         </div>
       </SimpleBar>
-
     </div>
   );
 };

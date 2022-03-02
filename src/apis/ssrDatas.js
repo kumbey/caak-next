@@ -1,5 +1,6 @@
 import { getReturnData } from "../utility/Util";
 import { getPostView } from "../graphql-custom/post/queries";
+import Consts from "../utility/Consts";
 
 export const ssrDataViewPost = async ({ API, Auth, query, host }) => {
   let user = null;
@@ -25,9 +26,7 @@ export const ssrDataViewPost = async ({ API, Auth, query, host }) => {
     }
     if (
       getReturnData(resp).status === "ARCHIVED" ||
-      getReturnData(resp).status === "PENDING" ||
-      getReturnData(resp).status === "DRAFT" ||
-      getReturnData(resp).status === "CAAK_DRAFT"
+      getReturnData(resp).status === "PENDING"
     ) {
       if (!isSuperAdmin) {
         if (user) {
@@ -38,6 +37,22 @@ export const ssrDataViewPost = async ({ API, Auth, query, host }) => {
           return { notFound: true };
         }
       }
+    } else if (
+      getReturnData(resp).status === "DRAFT" &&
+      isSuperAdmin &&
+      (getReturnData(resp).owned === "CAAK" ||
+        Consts.translatorUserId.some(
+          (id) => id === getReturnData(resp).user.id
+        ))
+    ) {
+      return {
+        props: {
+          ssrData: {
+            post: getReturnData(resp),
+            host,
+          },
+        },
+      };
     }
     return {
       props: {

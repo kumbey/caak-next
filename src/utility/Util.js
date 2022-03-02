@@ -503,8 +503,8 @@ export const kFormatter = (num) => {
     : Math.sign(num) * Math.abs(num);
 };
 
-export function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+export function numberWithCommas(x, separator) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 }
 
 export const addDays = (date, days) => {

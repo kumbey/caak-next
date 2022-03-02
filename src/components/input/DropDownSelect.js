@@ -282,7 +282,7 @@ const DropDownSelect = ({
                           {item.totals.member +
                             item.totals.moderator +
                             item.totals.admin}{" "}
-                          дагагчидтай
+                          гишүүдтэй
                         </p>
                       </div>
                     </div>

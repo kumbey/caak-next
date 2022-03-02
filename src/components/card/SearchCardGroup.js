@@ -197,7 +197,7 @@ const SearchCardGroup = ({ result, sortType, all }) => {
                 {result.totals.member + result.totals.admin + result.totals.moderator}
               </p>
               <p className={"text-[14px] text-caak-darkBlue ml-[5px]"}>
-                Гишүүн
+                гишүүн
               </p>
             </div>
           </div>

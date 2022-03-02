@@ -8,7 +8,9 @@ import {
   addDays,
   differenceDate,
   getFileUrl,
-  getReturnData, numberWithCommas,
+  getGenderImage,
+  getReturnData,
+  numberWithCommas,
 } from "../../utility/Util";
 import FeedCardSkeleton from "../skeleton/FeedCardSkeleton";
 import Card from "../card/FeedCard";
@@ -88,13 +90,13 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   useEffect(() => {
     setEndDate(addDays(startDate, day));
     if (day < 14) {
-      setPrice(day * 5500);
-    } else if (day >= 14 && day < 20) {
       setPrice(day * 5000);
-    } else if (day >= 20 && day < 30) {
+    } else if (day >= 14 && day < 20) {
       setPrice(day * 4500);
-    } else if (day >= 30) {
+    } else if (day >= 20 && day < 30) {
       setPrice(day * 4000);
+    } else if (day >= 30) {
+      setPrice(day * 3500);
     }
 
     // eslint-disable-next-line
@@ -276,7 +278,11 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                       height={28}
                       className={"w-[28px] h-[28px] rounded-full"}
                       alt={user.nickname}
-                      src={getFileUrl(user.pic)}
+                      src={
+                        user.pic
+                          ? getFileUrl(user.pic)
+                          : getGenderImage(user.gender).src
+                      }
                     />
                     <p
                       className={
@@ -292,7 +298,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     >
                       {userBalance}₮
                     </p>
-                    <Link href={{pathname: '/help/ads', query: {tab: 1}}}>
+                    <Link as={"/help/ads"} href={{pathname: '/help/ads', query: {tab: 1}}}>
                       <a>
                         <div
                         className={

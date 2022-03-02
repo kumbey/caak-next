@@ -26,14 +26,19 @@ const Notification = ({ item, ...props }) => {
       );
     } else if (
       item.action === "POST_PENDING" ||
-      item.action === "POST_ARCHIVED"
+      item.action === "POST_ARCHIVED" ||
+      item.action === "POST_DRAFT"
     ) {
       if (item.action === "POST_PENDING") {
         text.short = `таны пост`;
         text.long = `шалгалдаж байна`;
-      } else {
+      } else if(item.action === "POST_ARCHIVED") {
         text.short = `админ таны постыг`;
         text.long = `татгалзлаа`;
+      }
+      else if(item.action === "POST_DRAFT") {
+        text.short = `таны ноорог`;
+        text.long = `хадгалагдлаа`;
       }
 
       return (

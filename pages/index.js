@@ -235,6 +235,21 @@ const Feed = ({ ssrData }) => {
         });
       },
     });
+
+    subscriptions.onPostUpdateByStatusArchived = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "REPORTED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
+      },
+    });
   };
 
   const subscribeOnReaction = () => {
@@ -268,10 +283,10 @@ const Feed = ({ ssrData }) => {
 
       if (subscripedPost.type === "add") {
         if (postIndex <= -1) {
-          const postData = posts.items
-          for(let i=0; i<postData.length; i++){
-            if(postData[i].createdAt < subscripedPost.post.createdAt){
-              postData.splice(i,0, subscripedPost.post)
+          const postData = posts.items;
+          for (let i = 0; i < postData.length; i++) {
+            if (postData[i].createdAt < subscripedPost.post.createdAt) {
+              postData.splice(i, 0, subscripedPost.post);
               break;
             }
           }
@@ -281,6 +296,12 @@ const Feed = ({ ssrData }) => {
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
           setRender(render + 1);
+        }
+      }
+
+      if (subscripedPost.post.status === "REPORTED") {
+        if (postIndex > -1) {
+          posts.items.splice(postIndex, 1);
         }
       }
     }

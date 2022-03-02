@@ -80,7 +80,7 @@ const Dashboard = ({ ssrData }) => {
   const isScreenXl = useMediaQuery("screen and (max-device-width: 1279px)");
 
   const { isLogged, user } = useUser();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
@@ -318,18 +318,16 @@ const Dashboard = ({ ssrData }) => {
   });
   const fetchPosts = async () => {
     try {
-      if (!loading) {
-        setLoading(true);
-        const resp = await nextPosts();
-        if (resp) {
-          setPosts((nextPost) => ({
-            ...nextPost,
-            items: [...nextPost.items, ...resp],
-          }));
-        }
-
-        setLoading(false);
+      setLoading(true);
+      const resp = await nextPosts();
+      if (resp) {
+        setPosts((nextPost) => ({
+          ...nextPost,
+          items: [...nextPost.items, ...resp],
+        }));
       }
+
+      setLoading(false);
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -568,6 +566,22 @@ const Dashboard = ({ ssrData }) => {
         });
       },
     });
+
+    subscriptions.onPostByUserDeleted = API.graphql({
+      query: onPostByUser,
+      variables: {
+        status: "REPORTED",
+        user_id: user.id,
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
+      },
+    });
   };
 
   useUpdateEffect(() => {
@@ -582,6 +596,9 @@ const Dashboard = ({ ssrData }) => {
         (post) => post.id === subscripedPost.post.id
       );
       const draftIndex = draftedPosts.items.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
+      const reportIndex = reportedPosts.items.findIndex(
         (post) => post.id === subscripedPost.post.id
       );
 
@@ -602,7 +619,7 @@ const Dashboard = ({ ssrData }) => {
           setRender(render + 1);
         }
         if (pendingIndex > -1) {
-          pendingPosts.splice(pendingIndex, 1);
+          pendingPosts.items.splice(pendingIndex, 1);
           setRender(render + 1);
           if (userTotals.pending !== 0) {
             setUserTotals({
@@ -612,12 +629,24 @@ const Dashboard = ({ ssrData }) => {
           }
         }
         if (archivedIndex > -1) {
-          archivedPosts.splice(archivedIndex, 1);
+          archivedPosts.items.splice(archivedIndex, 1);
           setRender(render + 1);
           if (userTotals.archived !== 0) {
             setUserTotals({
               ...userTotals,
               archived: userTotals.archived - 1,
+            });
+          }
+        }
+        if (reportIndex > -1) {
+          reportedPosts.items.splice(reportIndex, 1);
+          // userTotals.pending - 1;
+
+          setRender(render + 1);
+          if (userTotals.reported !== 0) {
+            setUserTotals({
+              ...userTotals,
+              reported: userTotals.reported - 1,
             });
           }
         }
@@ -701,6 +730,17 @@ const Dashboard = ({ ssrData }) => {
 
           setRender(render + 1);
         }
+        if (reportIndex > -1) {
+          reportedPosts.items.splice(reportIndex, 1);
+          // userTotals.pending - 1;
+          if (userTotals.reported !== 0) {
+            setUserTotals({
+              ...userTotals,
+              reported: userTotals.reported - 1,
+            });
+          }
+          setRender(render + 1);
+        }
       }
 
       if (subscripedPost.post.status === "DRAFT") {
@@ -722,6 +762,33 @@ const Dashboard = ({ ssrData }) => {
               archived: userTotals.archived - 1,
             });
           }
+        }
+      }
+
+      if (subscripedPost.post.status === "REPORTED") {
+        if (reportIndex === -1) {
+          setReportedPosts({
+            ...reportedPosts,
+            items: [subscripedPost.post, ...reportedPosts.items],
+          });
+
+          setUserTotals({
+            ...userTotals,
+            reported: userTotals.reported + 1,
+          });
+          // userTotals.pending + 1;
+          // setRender(render + 1);
+        }
+        if (postIndex > -1) {
+          posts.items.splice(postIndex, 1);
+          // userTotals.pending - 1;
+          if (userTotals.confirmed !== 0) {
+            setUserTotals({
+              ...userTotals,
+              confirmed: userTotals.confirmed - 1,
+            });
+          }
+          setRender(render + 1);
         }
       }
     }

@@ -8,7 +8,9 @@ import {
   addDays,
   differenceDate,
   getFileUrl,
+  getGenderImage,
   getReturnData,
+  numberWithCommas,
 } from "../../utility/Util";
 import FeedCardSkeleton from "../skeleton/FeedCardSkeleton";
 import Card from "../card/FeedCard";
@@ -23,6 +25,9 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [price, setPrice] = useState(0);
+  const [balanceError, setBalanceError] = useState(false)
+  const [userBalance] = useState(0);
   const [day, setDay] = useState(0);
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState();
@@ -42,7 +47,10 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
 
   const updateBoostData = async (e) => {
     e.preventDefault();
-
+    if (userBalance === 0) {
+      setBalanceError(true)
+      return null;
+    }
     setLoading(true);
     try {
       const postData = {
@@ -63,7 +71,6 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
       );
       setLoading(false);
       setIsBoostModalOpen(false);
-      setData(initData);
     } catch (ex) {
       setLoading(false);
       console.log(ex);
@@ -82,6 +89,16 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
 
   useEffect(() => {
     setEndDate(addDays(startDate, day));
+    if (day < 14) {
+      setPrice(day * 5000);
+    } else if (day >= 14 && day < 20) {
+      setPrice(day * 4500);
+    } else if (day >= 20 && day < 30) {
+      setPrice(day * 4000);
+    } else if (day >= 30) {
+      setPrice(day * 3500);
+    }
+
     // eslint-disable-next-line
   }, [day]);
 
@@ -109,7 +126,10 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   }, [day]);
 
   return (
-    <BoostPostModalLayout setIsOpen={setIsBoostModalOpen} headerTitle={"Пост бүүстлэх"}>
+    <BoostPostModalLayout
+      setIsOpen={setIsBoostModalOpen}
+      headerTitle={"Пост бүүстлэх"}
+    >
       {/*Main content*/}
       <div
         className={"flex flex-col lg:flex-row py-[40px] px-[5px] sm:px-[40px]"}
@@ -197,7 +217,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
           </div>
           <div
             className={
-              "max-w-[590px] h-[307px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] py-[22px]"
+              `max-w-[590px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] pt-[22px] pb-[10px]`
             }
           >
             <p
@@ -221,7 +241,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                       "font-bold text-[38px] text-[#257CEE] leading-[28px] tracking-[0px]"
                     }
                   >
-                    100.000
+                    {numberWithCommas(price, ",")}
                   </p>
                   <p
                     className={
@@ -258,7 +278,11 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                       height={28}
                       className={"w-[28px] h-[28px] rounded-full"}
                       alt={user.nickname}
-                      src={getFileUrl(user.pic)}
+                      src={
+                        user.pic
+                          ? getFileUrl(user.pic)
+                          : getGenderImage(user.gender).src
+                      }
                     />
                     <p
                       className={
@@ -272,22 +296,37 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     <p
                       className={"text-caak-generalblack font-bold text-[18px]"}
                     >
-                      300.000₮
+                      {userBalance}₮
                     </p>
-                    <div
-                      className={
-                        "cursor-pointer w-[21px] h-[21px] flex justify-center items-center bg-[#CDCFD9] rounded-full ml-[8px]"
-                      }
-                    >
-                      <span
+                    <Link as={"/help/ads"} href={{pathname: '/help/ads', query: {tab: 1}}}>
+                      <a>
+                        <div
                         className={
-                          "icon-fi-rs-add-l text-[16px] w-[16.2px] h-[16.2px]"
+                          "cursor-pointer w-[21px] h-[21px] flex justify-center items-center bg-[#CDCFD9] rounded-full ml-[8px]"
                         }
-                      />
-                    </div>
+                      >
+                        <span
+                          className={
+                            "icon-fi-rs-add-l text-[16px] w-[16.2px] h-[16.2px]"
+                          }
+                        />
+                      </div>
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </div>
+              {
+                balanceError && 
+                <div className="flex flex-row mt-[10px] items-center px-[10px] justify-between mx-[22px] my-[5px] rounded-[8px] p-[5px] bg-red-200 max-w-[400px] w-full">
+                  <p className="text-[14px] text-[#21293C]sm:mx-[10px]">Таны дансны үлдэгдэл хүрэлцэхгүй байна.</p>
+                  <Link href={{pathname: '/help/ads', query: {tab: 1}}} shallow>
+                    <a>
+                      <p className="text-[14px] text-[#21293C] font-semibold">Цэнэглэх</p>
+                    </a>
+                  </Link>
+                </div>
+              }
             </div>
           </div>
         </div>

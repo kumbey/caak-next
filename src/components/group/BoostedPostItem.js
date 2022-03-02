@@ -138,7 +138,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
             "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px] "
           }
         >
-          {`${numberWithCommas(3000500)}₮`}
+          {`${numberWithCommas(3000500, ".")}₮`}
         </p>
       </td> */}
       <td>

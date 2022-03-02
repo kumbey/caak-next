@@ -245,7 +245,6 @@ const GroupPostItem = ({ imageSrc, post, video, type, index }) => {
           </div>
           {post.status === "ARCHIVED" ||
           post.status === "DRAFT" ||
-          post.status === "CAAK_DRAFT" ||
           (post.status === "PENDING" && type === "user") ? (
             <>
               <div className="flex w-[102px]">

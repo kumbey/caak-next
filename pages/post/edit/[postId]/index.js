@@ -87,7 +87,11 @@ export async function getServerSideProps({ req, res, query }) {
       user?.signInUserSession.accessToken.payload["cognito:groups"].includes(
         "caak-admin"
       );
-    if (isSuperAdmin && post.status === "CAAK_DRAFT") {
+    if (
+      isSuperAdmin &&
+      (post.owned === "CAAK" ||
+        Consts.translatorUserId.some((id) => post.user.id === id))
+    ) {
       const groups = await getGroups();
       return {
         props: {

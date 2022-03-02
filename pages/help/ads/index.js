@@ -5,10 +5,14 @@ import Bg from "../../../public/assets/images/ads.svg";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import CaakAdsCard from "./caakAdsCard";
+import { useRouter } from "next/router";
+import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
 
 export default function Boost() {
+  const router = useRouter()
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(0)
+  const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
+  const [selected, setSelected] = useState(router.query.tab ? JSON.parse(router.query.tab) : 0)
   const headerButton = [
     {
       title: 'Хоногоор төлөх'
@@ -82,7 +86,7 @@ export default function Boost() {
               </p>
               <p className="text-[#2B3A4C] text-[50px] font-roboto font-bold flex items-center mt-[41px]">
                 <span className="text-[46px] font-medium">₮</span>
-                5.500
+                5.000
               </p>
               <p className="text-[#5D636B] font-medium text-[16px]">1 хоног</p>
               <div className="w-full px-[28px]">
@@ -92,7 +96,7 @@ export default function Boost() {
                       <p className="text-[#5D636B] font-medium text-[14px]">
                         14+ хоног бол{" "}
                         <span className="text-[#FF6600] font-semibold">
-                          5,000 төг
+                          4,500 төг
                         </span>
                       </p>
                     </li>
@@ -100,7 +104,7 @@ export default function Boost() {
                       <p className="text-[#5D636B] font-medium text-[14px]">
                         20+ хоног бол{" "}
                         <span className="text-[#FF6600] font-semibold">
-                          4,500 төг
+                          4,000 төг
                         </span>
                       </p>
                     </li>
@@ -108,7 +112,7 @@ export default function Boost() {
                       <p className="text-[#5D636B] font-medium text-[14px]">
                         30+ хоног бол{" "}
                         <span className="text-[#FF6600] font-semibold">
-                          4,000 төг
+                          3,500 төг
                         </span>
                       </p>
                     </li>
@@ -120,7 +124,10 @@ export default function Boost() {
                 >
                   Жишээ харах
                 </button>
-                <div className="flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p className="ml-[5px] text-[#FF6600]">Одоо захиалах</p></div>
+                <div className="flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">Эсвэл<p onClick={() => setIsBoostModalOpen(true)} className="ml-[5px] cursor-pointer text-[#FF6600]">Одоо захиалах</p></div>
+                {
+                  isBoostModalOpen && <BuyCreditModal setIsBoostModalOpen={setIsBoostModalOpen} isBoostModalOpen={isBoostModalOpen}/>
+                }
               </div>
               <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]"/>
               <div className="w-full px-[28px]">
@@ -162,6 +169,34 @@ export default function Boost() {
               </p>
               <p className="text-[#5D636B] font-medium text-[16px]">1 хоног</p>
               <div className="w-full px-[28px]">
+                <div className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
+                    <ul>
+                      <li>
+                        <p className="text-[#5D636B] font-medium text-[14px]">
+                          14+ хоног бол{" "}
+                          <span className="text-[#FF6600] font-semibold">
+                            180,000 төг
+                          </span>
+                        </p>
+                      </li>
+                      <li>
+                        <p className="text-[#5D636B] font-medium text-[14px]">
+                          30+ хоног бол{" "}
+                          <span className="text-[#FF6600] font-semibold">
+                            150,000 төг
+                          </span>
+                        </p>
+                      </li>
+                      <li>
+                        <p className="text-[#5D636B] font-medium text-[14px]">
+                          60+ хоног бол{" "}
+                          <span className="text-[#FF6600] font-semibold">
+                            100,000 төг
+                          </span>
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
                 <button
                   onClick={() => setOpen(2)}
                   className="w-full h-[48px] rounded-[8px] bg-[#257CEE] border border-[#257CEE] text-white text-[16px] font-medium mt-[20px]"
@@ -203,6 +238,34 @@ export default function Boost() {
               </p>
               <p className="text-[#5D636B] font-medium text-[16px]">1 хоног</p>
               <div className="w-full px-[28px]">
+              <div className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
+                    <ul>
+                      <li>
+                        <p className="text-[#5D636B] font-medium text-[14px]">
+                          14+ хоног бол{" "}
+                          <span className="text-[#FF6600] font-semibold">
+                            120,000 төг
+                          </span>
+                        </p>
+                      </li>
+                      <li>
+                        <p className="text-[#5D636B] font-medium text-[14px]">
+                          30+ хоног бол{" "}
+                          <span className="text-[#FF6600] font-semibold">
+                            100,000 төг
+                          </span>
+                        </p>
+                      </li>
+                      <li>
+                        <p className="text-[#5D636B] font-medium text-[14px]">
+                          60+ хоног бол{" "}
+                          <span className="text-[#FF6600] font-semibold">
+                            80,000 төг
+                          </span>
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
               <button
                 onClick={() => setOpen(3)}
                 className="w-full h-[48px] rounded-[8px] bg-[#257CEE] border border-[#257CEE] text-white text-[16px] font-medium mt-[20px]"

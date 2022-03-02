@@ -6,15 +6,16 @@ import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import CaakAdsCard from "./caakAdsCard";
 import { useRouter } from "next/router";
-import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
+import { useUser } from "../../../src/context/userContext";
 
 export default function Boost() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
+  const [userBalance] = useState(0);
   const [selected, setSelected] = useState(
     router.query.tab ? JSON.parse(router.query.tab) : 0
   );
+  const {user, isLogged} = useUser()
   const headerButton = [
     {
       title: "Хоногоор төлөх",
@@ -173,18 +174,12 @@ export default function Boost() {
                   <div className="flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">
                     Эсвэл
                     <p
-                      onClick={() => setIsBoostModalOpen(true)}
+                      onClick={() => isLogged && (userBalance < 3500 ? setSelected(1) : router.push(`/user/${user.id}/dashboard`))}
                       className="ml-[5px] cursor-pointer text-[#FF6600]"
                     >
                       Одоо захиалах
                     </p>
                   </div>
-                  {isBoostModalOpen && (
-                    <BuyCreditModal
-                      setIsBoostModalOpen={setIsBoostModalOpen}
-                      isBoostModalOpen={isBoostModalOpen}
-                    />
-                  )}
                 </div>
                 <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]" />
                 <div className="w-full px-[28px]">

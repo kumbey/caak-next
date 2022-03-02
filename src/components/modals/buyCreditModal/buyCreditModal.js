@@ -3,18 +3,19 @@ import Bank from "./bank";
 import golomt from "/public/assets/images/bankLogos/Golomt.png";
 import khan from "/public/assets/images/bankLogos/khanbank.png";
 import tdb from "/public/assets/images/bankLogos/tdbblue.png";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../button";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 
 const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const banks = [
-    { 
-      id: 0, 
-      logo: khan, 
-      name: "Хаан Банк", 
-      accountNumber: "5212 062 121" },
+    {
+      id: 0,
+      logo: khan,
+      name: "Хаан Банк",
+      accountNumber: "5212062121",
+    },
     {
       id: 1,
       logo: tdb,
@@ -102,7 +103,9 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
               <p className={"text-caak-generalblack text-[15px] font-semibold"}>
                 Шилжүүлэх мөнгөн дүн:&nbsp;
               </p>
-              <p className={"text-caak-generalblack text-[15px]"}>{isBoostModalOpen.price}₮</p>
+              <p className={"text-caak-generalblack text-[15px]"}>
+                {isBoostModalOpen.price}₮
+              </p>
             </div>
           </div>
           <p
@@ -127,7 +130,13 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
                   "text-[15px] text-white font-medium leading-[24px] tracking-0px]"
                 }
               >
-                {isBoostModalOpen.price === "50.000" ? "ck50" : isBoostModalOpen.price === "100.000" ? "ck100" : isBoostModalOpen.price === "150.000" ? "ck150" : null}
+                {isBoostModalOpen.price === "100.000"
+                  ? "caak100"
+                  : isBoostModalOpen.price === "200.000"
+                  ? "caak200"
+                  : isBoostModalOpen.price === "500.000"
+                  ? "caak500"
+                  : "custom"}
               </p>
             </div>
             <div
@@ -187,15 +196,15 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
               </p>
             </div>
           </div>
-          
+
           <Button
-              skin={"primary"}
-              className={
-                "w-full mt-[14px] h-[44px] text-[16px] tracking-[0.24px] leading-[20px] font-medium"
-              }
-            >
-              Хүсэлт илгээх
-            </Button>
+            skin={"primary"}
+            className={
+              "w-full mt-[14px] h-[44px] text-[16px] tracking-[0.24px] leading-[20px] font-medium"
+            }
+          >
+            Хүсэлт илгээх
+          </Button>
         </div>
         <div
           className={
@@ -254,9 +263,16 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
                   "mt-[14px] p-0 text-[14px] font-medium tracking-[0px] leading-[28px] text-[#5D636B]"
                 }
               >
-                <li className={"ads-checked-icon list-none"}>Sponsored Post</li>
-                <li className={"ads-checked-icon list-none"}>Pop-Up баннер</li>
-                <li className={"ads-checked-icon list-none"}>Дагадаг баннер</li>
+                <li className={"ads-checked-icon list-none"}>
+                  <p className={"text-caak-primary inline-flex"}>БОНУС:&nbsp;</p>
+                  {isBoostModalOpen.bonus}₮
+                </li>
+                <li className={"ads-checked-icon list-none"}>
+                  <p className={"font-bold inline-flex"}>
+                    {isBoostModalOpen.boostDays}&nbsp;
+                  </p>{" "}
+                  өдөр бүүстлэх
+                </li>
               </ul>
             </div>
             {/* <p

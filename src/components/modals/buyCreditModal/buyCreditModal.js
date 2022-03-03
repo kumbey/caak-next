@@ -3,34 +3,64 @@ import Bank from "./bank";
 import golomt from "/public/assets/images/bankLogos/Golomt.png";
 import khan from "/public/assets/images/bankLogos/khanbank.png";
 import tdb from "/public/assets/images/bankLogos/tdbblue.png";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Button from "../../button";
 import useScrollBlock from "../../../hooks/useScrollBlock";
+import {API} from "aws-amplify";
+import {createAccouningtRequest} from "../../../graphql-custom/accountingRequest/mutation";
+import {useUser} from "../../../context/userContext";
+import {getReturnData} from "../../../utility/Util";
 
-const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
+const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
   const [blockScroll, allowScroll] = useScrollBlock();
+  const {user} = useUser()
   const banks = [
     {
       id: 0,
       logo: khan,
       name: "Хаан Банк",
-      accountNumber: "5212062121",
+      accountNumber: 5212062121,
     },
     {
       id: 1,
       logo: tdb,
       name: "Худалдаа Хөгжлийн Банк",
-      accountNumber: "464007506",
+      accountNumber: 464007506,
     },
     {
       id: 2,
       logo: golomt,
       name: "Голомт Банк",
-      accountNumber: "1410005680",
+      accountNumber: 1410005680,
     },
   ];
   const [selectedBankId, setSelectedBankId] = useState(null);
-  const BuyCreditModalLayout = useModalLayout({ layoutName: "boostModal" });
+  const BuyCreditModalLayout = useModalLayout({layoutName: "boostModal"});
+
+  const createAccountingRequest = async () => {
+    let resp = API.graphql({
+      query: createAccouningtRequest,
+      variables: {
+        user_id: user.id,
+        status: "REQUESTED",
+        userStatus: `${user.id}#REQUESTED`,
+        pack: data.type,
+        phoneNumber: "99369522",
+        meta: JSON.stringify([{
+          action: "REQUESTED",
+          amount: data.price,
+          date: new Date().toISOString(),
+          user: user.id,
+          bank: {
+            name: banks[selectedBankId].name,
+            account_number: banks[selectedBankId].accountNumber
+          }
+        }])
+      }
+    })
+    resp = getReturnData(resp)
+  }
+
   useEffect(() => {
     blockScroll();
     return () => allowScroll();
@@ -104,7 +134,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
                 Шилжүүлэх мөнгөн дүн:&nbsp;
               </p>
               <p className={"text-caak-generalblack text-[15px]"}>
-                {isBoostModalOpen.price}₮
+                {data.price}₮
               </p>
             </div>
           </div>
@@ -130,13 +160,13 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
                   "text-[15px] text-white font-medium leading-[24px] tracking-0px]"
                 }
               >
-                {isBoostModalOpen.price === "100.000"
+                {data.price === 100000
                   ? "caak100"
-                  : isBoostModalOpen.price === "200.000"
-                  ? "caak200"
-                  : isBoostModalOpen.price === "500.000"
-                  ? "caak500"
-                  : "custom"}
+                  : data.price === 200000
+                    ? "caak200"
+                    : data.price === 500000
+                      ? "caak500"
+                      : "custom"}
               </p>
             </div>
             <div
@@ -198,6 +228,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
           </div>
 
           <Button
+            // onClick={() => createAccountingRequest()}
             skin={"primary"}
             className={
               "w-full mt-[14px] h-[44px] text-[16px] tracking-[0.24px] leading-[20px] font-medium"
@@ -235,7 +266,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
                   "text-[#257CEE] font-semibold text-[18px] tracking-[0.27px] leading-[28px]"
                 }
               >
-                {isBoostModalOpen.title}&nbsp;
+                {data.title}&nbsp;
                 <span
                   className={
                     "text-caak-generalblack font-semibold text-[18px] tracking-[0.27px] leading-[28px]"
@@ -249,7 +280,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
                   "text-[30px] tracking-[0.30px] leading-[28px] font-bold mt-[16px] text-[#21293C]"
                 }
               >
-                {isBoostModalOpen.price}₮
+                {data.price}₮
               </p>
               <p
                 className={
@@ -265,11 +296,11 @@ const BuyCreditModal = ({ setIsBoostModalOpen, isBoostModalOpen }) => {
               >
                 <li className={"ads-checked-icon list-none"}>
                   <p className={"text-caak-primary inline-flex"}>БОНУС:&nbsp;</p>
-                  {isBoostModalOpen.bonus}₮
+                  {data.bonus}₮
                 </li>
                 <li className={"ads-checked-icon list-none"}>
                   <p className={"font-bold inline-flex"}>
-                    {isBoostModalOpen.boostDays}&nbsp;
+                    {data.boostDays}&nbsp;
                   </p>{" "}
                   өдөр бүүстлэх
                 </li>

@@ -87,6 +87,7 @@ const Dashboard = ({ ssrData }) => {
   );
   const [draftPostType, setDraftPostType] = useState("DRAFT");
   const [userTotals, setUserTotals] = useState(ssrData.userTotals);
+  let localUserTotals = ssrData.userTotals;
   const [followedUsers, setFollowedUsers] = useState({
     items: [],
     nextToken: "",
@@ -148,7 +149,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 2,
       icon: "icon-fi-rs-post-f",
-      number: userTotals?.confirmed,
+      number: localUserTotals?.confirmed,
       text: "Нийт пост",
       bgcolor: "bg-caak-errigalwhite",
       color: "text-caak-darkBlue",
@@ -168,13 +169,13 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
-      length: userTotals.confirmed,
+      length: localUserTotals.confirmed,
     },
     {
       id: 1,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending-posts",
-      length: userTotals.pending,
+      length: localUserTotals.pending,
     },
     {
       id: 2,
@@ -186,7 +187,7 @@ const Dashboard = ({ ssrData }) => {
       id: 3,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-folder-o",
-      length: userTotals.archived,
+      length: localUserTotals.archived,
     },
     {
       id: 4,
@@ -198,19 +199,19 @@ const Dashboard = ({ ssrData }) => {
       id: 5,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
-      length: userTotals.followers,
+      length: localUserTotals.followers,
     },
     {
       id: 6,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
-      length: userTotals.comments,
+      length: localUserTotals.comments,
     },
     {
       id: 7,
       name: "Репортлогдсон постууд",
       icon: "icon-fi-rs-flag",
-      length: userTotals.reported,
+      length: localUserTotals.reported,
     },
   ];
 
@@ -573,16 +574,19 @@ const Dashboard = ({ ssrData }) => {
           });
           // pendingPosts.items.splice(pendingIndex, 1);
           // archivedPosts.items.splice(archivedIndex, 1);
+          localUserTotals.confirmed = localUserTotals.confirmed + 1;
+          setRender(render + 1);
           setUserTotals({
             ...userTotals,
             confirmed: userTotals.confirmed + 1,
             // pending: userTotals.pending !== 0 && userTotals.pending - 1,
             // archived: userTotals.archived !== 0 && userTotals.archived - 1,
           });
-          setRender(render + 1);
         }
         if (pendingIndex > -1) {
           pendingPosts.items.splice(pendingIndex, 1);
+          localUserTotals.pending = localUserTotals.pending - 1;
+
           setRender(render + 1);
           if (userTotals.pending !== 0) {
             setUserTotals({
@@ -593,6 +597,8 @@ const Dashboard = ({ ssrData }) => {
         }
         if (archivedIndex > -1) {
           archivedPosts.items.splice(archivedIndex, 1);
+          localUserTotals.archived = localUserTotals.archived - 1;
+
           setRender(render + 1);
           if (userTotals.archived !== 0) {
             setUserTotals({
@@ -604,7 +610,7 @@ const Dashboard = ({ ssrData }) => {
         if (reportIndex > -1) {
           reportedPosts.items.splice(reportIndex, 1);
           // userTotals.pending - 1;
-
+          localUserTotals.reported = localUserTotals.reported - 1;
           setRender(render + 1);
           if (userTotals.reported !== 0) {
             setUserTotals({
@@ -620,7 +626,8 @@ const Dashboard = ({ ssrData }) => {
             ...pendingPosts,
             items: [subscripedPost.post, ...pendingPosts.items],
           });
-          // userTotals.pending + 1;
+          localUserTotals.pending = localUserTotals.pending + 1;
+
           setRender(render + 1);
 
           setUserTotals({
@@ -630,7 +637,8 @@ const Dashboard = ({ ssrData }) => {
         }
         if (archivedIndex > -1) {
           archivedPosts.items.splice(archivedIndex, 1);
-          // userTotals.archived - 1;
+          localUserTotals.archived = localUserTotals.archived - 1;
+
           setRender(render + 1);
           if (userTotals.archived !== 0) {
             setUserTotals({
@@ -641,7 +649,8 @@ const Dashboard = ({ ssrData }) => {
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
-          // userTotals.confirmed - 1;
+          localUserTotals.confirmed = localUserTotals.confirmed - 1;
+
           setRender(render + 1);
           if (userTotals.confirmed !== 0) {
             setUserTotals({
@@ -650,6 +659,23 @@ const Dashboard = ({ ssrData }) => {
             });
           }
         }
+
+        if (reportIndex > -1) {
+          reportedPosts.items.splice(reportIndex, 1);
+          localUserTotals.reported = localUserTotals.reported - 1;
+
+          setRender(render + 1);
+          if (userTotals.reported !== 0) {
+            setUserTotals({
+              ...userTotals,
+              reported: userTotals.reported - 1,
+            });
+          }
+        }
+
+        if (draftIndex > -1) {
+          draftedPosts.items.splice(draftIndex, 1);
+        }
       }
       if (subscripedPost.post.status === "ARCHIVED") {
         if (archivedIndex === -1) {
@@ -657,7 +683,8 @@ const Dashboard = ({ ssrData }) => {
             ...archivedPosts,
             items: [subscripedPost.post, ...archivedPosts.items],
           });
-          // userTotals.archived + 1;
+          localUserTotals.archived = localUserTotals.archived + 1;
+
           setUserTotals({
             ...userTotals,
             archived: userTotals.archived + 1,
@@ -666,7 +693,8 @@ const Dashboard = ({ ssrData }) => {
         }
         if (postIndex > -1) {
           posts.items.splice(postIndex, 1);
-          // userTotals.pending - 1;
+          localUserTotals.confirmed = localUserTotals.confirmed - 1;
+
           if (userTotals.confirmed !== 0) {
             setUserTotals({
               ...userTotals,
@@ -677,7 +705,8 @@ const Dashboard = ({ ssrData }) => {
         }
         if (pendingIndex > -1) {
           pendingPosts.items.splice(pendingIndex, 1);
-          // userTotals.pending - 1;
+          localUserTotals.pending = localUserTotals.pending - 1;
+
           if (userTotals.pending !== 0) {
             setUserTotals({
               ...userTotals,
@@ -695,7 +724,8 @@ const Dashboard = ({ ssrData }) => {
         }
         if (reportIndex > -1) {
           reportedPosts.items.splice(reportIndex, 1);
-          // userTotals.pending - 1;
+          localUserTotals.reported = localUserTotals.reported - 1;
+
           if (userTotals.reported !== 0) {
             setUserTotals({
               ...userTotals,
@@ -713,12 +743,13 @@ const Dashboard = ({ ssrData }) => {
             items: [subscripedPost.post, ...draftedPosts.items],
           });
           // userTotals.pending + 1;
-          // setRender(render + 1);
+          setRender(render + 1);
         }
         if (archivedIndex > -1) {
           archivedPosts.items.splice(archivedIndex, 1);
-          // userTotals.archived - 1;
-          // setRender(render + 1);
+          localUserTotals.archived = localUserTotals.archived - 1;
+
+          setRender(render + 1);
           if (userTotals.archived !== 0) {
             setUserTotals({
               ...userTotals,
@@ -726,9 +757,32 @@ const Dashboard = ({ ssrData }) => {
             });
           }
         }
+        if (pendingIndex > -1) {
+          pendingPosts.items.splice(pendingIndex, 1);
+          localUserTotals.pending = localUserTotals.pending - 1;
+
+          setRender(render + 1);
+          if (userTotals.pending !== 0) {
+            setUserTotals({
+              ...userTotals,
+              pending: userTotals.pending - 1,
+            });
+          }
+        }
       }
 
       if (subscripedPost.post.status === "REPORTED") {
+        if (postIndex > -1) {
+          posts.items.splice(postIndex, 1);
+          localUserTotals.confirmed = localUserTotals.confirmed - 1;
+          setRender(render + 1);
+          if (userTotals.confirmed !== 0) {
+            setUserTotals({
+              ...userTotals,
+              confirmed: userTotals.confirmed - 1,
+            });
+          }
+        }
         if (reportIndex === -1) {
           setReportedPosts({
             ...reportedPosts,
@@ -739,18 +793,8 @@ const Dashboard = ({ ssrData }) => {
             ...userTotals,
             reported: userTotals.reported + 1,
           });
-          // userTotals.pending + 1;
-          // setRender(render + 1);
-        }
-        if (postIndex > -1) {
-          posts.items.splice(postIndex, 1);
-          // userTotals.pending - 1;
-          if (userTotals.confirmed !== 0) {
-            setUserTotals({
-              ...userTotals,
-              confirmed: userTotals.confirmed - 1,
-            });
-          }
+          localUserTotals.reported = localUserTotals.reported + 1;
+
           setRender(render + 1);
         }
       }

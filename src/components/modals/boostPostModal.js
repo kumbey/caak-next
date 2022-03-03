@@ -340,7 +340,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     <p
                       className={"text-caak-generalblack font-bold text-[18px]"}
                     >
-                      {numberWithCommas(user.balance.balance, ",")}₮
+                      {user?.balance ? numberWithCommas(user.balance.balance, ",") : "0"}₮
                     </p>
                     <Link
                       as={"/help/ads"}

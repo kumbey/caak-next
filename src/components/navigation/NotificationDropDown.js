@@ -172,6 +172,19 @@ const NotificationDropDown = ({ isOpen }) => {
         history.push({
           pathname: `/user/${item.item_id}/profile`,
         });
+      } else if (
+        item.action === "BALANCE_DECREASE" ||
+        item.action === "BALANCE_INCREASE"
+      ) {
+        history.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 2,
+            },
+          },
+          `/user/${user.id}/dashboard`
+        );
       }
     } catch (ex) {
       if (

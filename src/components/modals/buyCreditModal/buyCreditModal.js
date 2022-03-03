@@ -59,14 +59,14 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
               user_id: user.id,
               status: "REQUESTED",
               userStatus: `${user.id}#REQUESTED`,
-              pack: data.code,
-              phoneNumber: "99369522",
+              pack: data.type === "CUSTOM" ? `custom${data.price / 1000}` : data.code,
+              phoneNumber: phoneNumber,
               meta: JSON.stringify([
                 {
                   action: "REQUESTED",
                   amount: data.price,
                   date: new Date().toISOString(),
-                  user: user.id,
+                  requested_user_id: user.id,
                   bank: {
                     name: banks[selectedBankId].name,
                     account_number: banks[selectedBankId].accountNumber,

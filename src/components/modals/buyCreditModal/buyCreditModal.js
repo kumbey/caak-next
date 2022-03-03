@@ -326,7 +326,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
             >
               <span
                 className={
-                  "text-[#257CEE] font-semibold text-[18px] tracking-[0.27px] leading-[28px]"
+                  `${data.textColor} font-semibold text-[18px] tracking-[0.27px] leading-[28px]`
                 }
               >
                 {data.title}&nbsp;

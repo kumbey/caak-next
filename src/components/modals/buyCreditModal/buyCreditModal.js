@@ -12,12 +12,14 @@ import {useUser} from "../../../context/userContext";
 import {graphqlOperation} from "@aws-amplify/api-graphql";
 import toast from "react-hot-toast";
 import {numberWithCommas} from "../../../utility/Util";
+import {useRouter} from "next/router";
 
 const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
   const [blockScroll, allowScroll] = useScrollBlock();
-  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false)
-  const {user} = useUser();
+  const {user, isLogged} = useUser();
+  const router = useRouter()
   const banks = [
     {
       id: 0,
@@ -49,33 +51,49 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
       return toast.error("Та утасны дугаараа оруулна уу.")
     }
     setLoading(true)
-    try {
-      await API.graphql(
-        graphqlOperation(createAccouningtRequest, {
-          input: {
-            user_id: user.id,
-            status: "REQUESTED",
-            userStatus: `${user.id}#REQUESTED`,
-            pack: data.code,
-            phoneNumber: "99369522",
-            meta: JSON.stringify([
-              {
-                action: "REQUESTED",
-                amount: data.price,
-                date: new Date().toISOString(),
-                user: user.id,
-                bank: {
-                  name: banks[selectedBankId].name,
-                  account_number: banks[selectedBankId].accountNumber,
+    if (isLogged) {
+      try {
+        await API.graphql(
+          graphqlOperation(createAccouningtRequest, {
+            input: {
+              user_id: user.id,
+              status: "REQUESTED",
+              userStatus: `${user.id}#REQUESTED`,
+              pack: data.code,
+              phoneNumber: "99369522",
+              meta: JSON.stringify([
+                {
+                  action: "REQUESTED",
+                  amount: data.price,
+                  date: new Date().toISOString(),
+                  user: user.id,
+                  bank: {
+                    name: banks[selectedBankId].name,
+                    account_number: banks[selectedBankId].accountNumber,
+                  },
                 },
-              },
-            ]),
+              ]),
+            },
+          })
+        );
+        toast.success("Таны хүсэлт амжилттай илгээгдлээ.")
+      } catch (ex) {
+        console.log(ex);
+      }
+    } else {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "signIn",
+            isModal: true,
+            prevPath: router.asPath,
           },
-        })
+        },
+        `/signInUp/signIn`,
+        {shallow: true}
       );
-      toast.success("Таны хүсэлт амжилттай илгээгдлээ.")
-    } catch (ex) {
-      console.log(ex);
     }
     setLoading(false)
   };
@@ -165,21 +183,21 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
             Таны утасны дугаар
           </p>
           <input
-            defaultValue={phoneNumber}
+            pattern="[0-9]+"
+            value={phoneNumber}
             onChange={(e) => {
               if (!e.target.value) {
                 setPhoneNumberError("Та утасны дугаараа оруулна уу");
               } else {
                 setPhoneNumberError(null)
               }
-              const match = e.target.value.replace(/\D/g, "");
-              setPhoneNumber(match);
+              setPhoneNumber(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1'));
             }}
             required
             type={"tel"}
             maxLength={8}
             className={
-              `${phoneNumberError ? "border-caak-primary focus:border-caak-primary" : "focus:outline-none border-[#E4E4E5] focus:border-blue-600"} text-[15px] tracking-[0.23px] leading-[18px] text-caak-generalblack w-full h-[44px] p-[14px] rounded-[8px] border-[1px]`
+              `${phoneNumberError ? "border-caak-primary focus:border-caak-primary" : "focus:outline-none border-[#E4E4E5] focus:border-blue-600"} invalid:text-caak-primary text-[15px] tracking-[0.23px] leading-[18px] text-caak-generalblack w-full h-[44px] p-[14px] rounded-[8px] border-[1px]`
             }
           />
           {phoneNumberError ? (

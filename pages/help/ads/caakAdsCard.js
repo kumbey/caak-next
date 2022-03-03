@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
+import {numberWithCommas} from "../../../src/utility/Util";
 
 export default function CaakAdsCard({data}) {
   const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
@@ -55,10 +56,13 @@ export default function CaakAdsCard({data}) {
                 <p className="text-[#2B3A4C] text-[15px] font-semibold mt-[26px]">Таны хэмнэлт</p>
                 <p className="mt-[11px] text-[24px] font-bold">
                   {
-                    days >= 30 ? (value - (days * 3500)) :
-                    days >= 20 ? (value - (days * 4000)) :
-                    days >= 14 ? (value - (days * 4500)) :
-                    0
+                    numberWithCommas(
+                      days >= 30 ? (value - (days * 3500)) :
+                      days >= 20 ? (value - (days * 4000)) :
+                      days >= 14 ? (value - (days * 4500)) :
+                      0,
+                      '.'
+                    ) 
                   }
                 ₮</p>
               </div>
@@ -73,14 +77,14 @@ export default function CaakAdsCard({data}) {
         :
         <div>
           <p className="mt-[14px] text-[42px] font-bold text-[#2B3A4C] h-[49px]">
-            {data?.price}₮
+            {numberWithCommas(data?.price, '.')}₮
           </p>
           <p className="text-[#5D636B] text-[16px] font-medium text-center">{data?.boostDays} хоног</p>
           <p className="mt-[16px] text-[#2B3A4C] font-semibold">
             Нэмэлт бонус
           </p>
           <div className="flex items-center justify-center rounded-[8px] w-full h-[42px] bg-[#FFFFFF] border border-[#E4E4E5] text-[14px] mt-[8px]">
-            <p className="text-[#257CEE] font-semibold">+ {data?.bonus}₮</p>
+            <p className="text-[#257CEE] font-semibold">+ {numberWithCommas(data?.bonus, '.')}₮</p>
           </div>
           <button
             onClick={() => setIsBoostModalOpen(true)}

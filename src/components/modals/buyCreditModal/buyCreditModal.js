@@ -6,14 +6,20 @@ import tdb from "/public/assets/images/bankLogos/tdbblue.png";
 import React, {useEffect, useState} from "react";
 import Button from "../../button";
 import useScrollBlock from "../../../hooks/useScrollBlock";
-import {API} from "aws-amplify";
+import {API, input} from "aws-amplify";
 import {createAccouningtRequest} from "../../../graphql-custom/accountingRequest/mutation";
 import {useUser} from "../../../context/userContext";
-import {getReturnData} from "../../../utility/Util";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import toast from "react-hot-toast";
+import {numberWithCommas} from "../../../utility/Util";
+import {useRouter} from "next/router";
 
 const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
   const [blockScroll, allowScroll] = useScrollBlock();
-  const {user} = useUser()
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [loading, setLoading] = useState(false)
+  const {user, isLogged} = useUser();
+  const router = useRouter()
   const banks = [
     {
       id: 0,
@@ -35,31 +41,62 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
     },
   ];
   const [selectedBankId, setSelectedBankId] = useState(null);
+  const [phoneNumberError, setPhoneNumberError] = useState(null);
   const BuyCreditModalLayout = useModalLayout({layoutName: "boostModal"});
 
   const createAccountingRequest = async () => {
-    let resp = API.graphql({
-      query: createAccouningtRequest,
-      variables: {
-        user_id: user.id,
-        status: "REQUESTED",
-        userStatus: `${user.id}#REQUESTED`,
-        pack: data.type,
-        phoneNumber: "99369522",
-        meta: JSON.stringify([{
-          action: "REQUESTED",
-          amount: data.price,
-          date: new Date().toISOString(),
-          user: user.id,
-          bank: {
-            name: banks[selectedBankId].name,
-            account_number: banks[selectedBankId].accountNumber
-          }
-        }])
+    if (selectedBankId === null) {
+      return toast.error("Та шилжүүлэх банкаа сонгоно уу.")
+    } else if (!phoneNumber) {
+      return toast.error("Та утасны дугаараа оруулна уу.")
+    }
+    setLoading(true)
+    if (isLogged) {
+      try {
+        await API.graphql(
+          graphqlOperation(createAccouningtRequest, {
+            input: {
+              user_id: user.id,
+              status: "REQUESTED",
+              userStatus: `${user.id}#REQUESTED`,
+              pack: data.code,
+              phoneNumber: "99369522",
+              meta: JSON.stringify([
+                {
+                  action: "REQUESTED",
+                  amount: data.price,
+                  date: new Date().toISOString(),
+                  user: user.id,
+                  bank: {
+                    name: banks[selectedBankId].name,
+                    account_number: banks[selectedBankId].accountNumber,
+                  },
+                },
+              ]),
+            },
+          })
+        );
+        toast.success("Таны хүсэлт амжилттай илгээгдлээ.")
+      } catch (ex) {
+        console.log(ex);
       }
-    })
-    resp = getReturnData(resp)
-  }
+    } else {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            signInUp: "signIn",
+            isModal: true,
+            prevPath: router.asPath,
+          },
+        },
+        `/signInUp/signIn`,
+        {shallow: true}
+      );
+    }
+    setLoading(false)
+  };
 
   useEffect(() => {
     blockScroll();
@@ -134,10 +171,40 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                 Шилжүүлэх мөнгөн дүн:&nbsp;
               </p>
               <p className={"text-caak-generalblack text-[15px]"}>
-                {data.id === 0 ? value : data.price}₮
+                {numberWithCommas(data.id === 0 ? value : data.price, '.')}₮
               </p>
             </div>
           </div>
+          <p
+            className={
+              "text-caak-generalblack text-[14px] font-medium tracking-[0.21px] leading-[28px] mt-[20px]"
+            }
+          >
+            Таны утасны дугаар
+          </p>
+          <input
+            pattern="[0-9]+"
+            value={phoneNumber}
+            onChange={(e) => {
+              if (!e.target.value) {
+                setPhoneNumberError("Та утасны дугаараа оруулна уу");
+              } else {
+                setPhoneNumberError(null)
+              }
+              setPhoneNumber(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1'));
+            }}
+            required
+            type={"tel"}
+            maxLength={8}
+            className={
+              `${phoneNumberError ? "border-caak-primary focus:border-caak-primary" : "focus:outline-none border-[#E4E4E5] focus:border-blue-600"} invalid:text-caak-primary text-[15px] tracking-[0.23px] leading-[18px] text-caak-generalblack w-full h-[44px] p-[14px] rounded-[8px] border-[1px]`
+            }
+          />
+          {phoneNumberError ? (
+            <p className={"text-caak-primary text-[12px]"}>
+              {phoneNumberError}
+            </p>
+          ) : null}
           <p
             className={
               "text-caak-generalblack text-[14px] font-medium tracking-[0.21px] leading-[28px] mt-[20px]"
@@ -160,13 +227,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                   "text-[15px] text-white font-medium leading-[24px] tracking-0px]"
                 }
               >
-                {data.price === 100000
-                  ? "caak100"
-                  : data.price === 200000
-                    ? "caak200"
-                    : data.price === 500000
-                      ? "caak500"
-                      : "custom"}
+                {data.type === "CUSTOM" ? `custom${data.price / 1000}` : data.code}
               </p>
             </div>
             <div
@@ -179,18 +240,18 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                   "text-[15px] text-white font-medium leading-[24px] tracking-0px]"
                 }
               >
-                Таны утасны дугаар
+                {phoneNumber ? phoneNumber : " Таны утасны дугаар"}
               </p>
             </div>
           </div>
-          {/* <div className={"flex flex-col mt-[14px]"}>
+          <div className={"flex flex-col mt-[14px]"}>
             <div
               className={
                 "flex flex-row items-center text-caak-generalblack text-[15px] leading-[24px]"
               }
             >
               <p className={"font-medium"}>Багцын код:&nbsp;</p>
-              <p>ck300</p>
+              <p>{data.type === "CUSTOM" ? `custom${data.price / 1000}` : data.code}</p>
             </div>
             <div
               className={
@@ -198,9 +259,9 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
               }
             >
               <p className={"font-medium"}>Таны утасны дугаар:&nbsp;</p>
-              <p>9093445</p>
+              <p>{phoneNumber}</p>
             </div>
-          </div> */}
+          </div>
           <div
             className={
               "px-[20px] py-[15px] rounded-[8px] min-h-[72px] w-full max-w-[542px] bg-[#E60033] mt-[30px] bg-opacity-5"
@@ -228,7 +289,9 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
           </div>
 
           <Button
-            // onClick={() => createAccountingRequest()}
+            loading={loading}
+            disabled={selectedBankId === null}
+            onClick={() => createAccountingRequest()}
             skin={"primary"}
             className={
               "w-full mt-[14px] h-[44px] text-[16px] tracking-[0.24px] leading-[20px] font-medium"
@@ -280,7 +343,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                   "text-[30px] tracking-[0.30px] leading-[28px] font-bold mt-[16px] text-[#21293C]"
                 }
               >
-                {data.id === 0 ? value : data.price}₮
+                {numberWithCommas(data.id === 0 ? value : data.price, '.')}₮
               </p>
               <p
                 className={
@@ -295,8 +358,10 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                 }
               >
                 <li className={"ads-checked-icon list-none"}>
-                  <p className={"text-caak-primary inline-flex"}>БОНУС:&nbsp;</p>
-                  {data.bonus}₮
+                  <p className={"text-caak-primary inline-flex"}>
+                    БОНУС:&nbsp;
+                  </p>
+                  {numberWithCommas(data.bonus, ",")}₮
                 </li>
                 <li className={"ads-checked-icon list-none"}>
                   <p className={"font-bold inline-flex"}>

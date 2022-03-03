@@ -56,7 +56,7 @@ export default function Boost() {
   return (
     <div
       style={{overflow: open && "hidden"}}
-      className="relative bg-white h-[1257px] mt-[20px] lg:mt-[54px]"
+      className="relative bg-white h-[2800px] sm:h-[1489px] mt-[20px] lg:mt-[54px]"
     >
       <Head>
         <title>Сурталчилгаа - {Consts.siteMainTitle}</title>

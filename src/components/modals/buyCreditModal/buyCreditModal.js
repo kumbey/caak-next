@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import {numberWithCommas} from "../../../utility/Util";
 import {useRouter} from "next/router";
 
-const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
+const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false)
@@ -171,7 +171,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
                 Шилжүүлэх мөнгөн дүн:&nbsp;
               </p>
               <p className={"text-caak-generalblack text-[15px]"}>
-                {numberWithCommas(data.price, ",")}₮
+                {numberWithCommas(data.id === 0 ? value : data.price, '.')}₮
               </p>
             </div>
           </div>
@@ -343,7 +343,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
                   "text-[30px] tracking-[0.30px] leading-[28px] font-bold mt-[16px] text-[#21293C]"
                 }
               >
-                {numberWithCommas(data.price, ",")}₮
+                {numberWithCommas(data.id === 0 ? value : data.price, '.')}₮
               </p>
               <p
                 className={

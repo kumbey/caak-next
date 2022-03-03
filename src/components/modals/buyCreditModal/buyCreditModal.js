@@ -165,7 +165,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
             Таны утасны дугаар
           </p>
           <input
-            value={phoneNumber}
+            defaultValue={phoneNumber}
             onChange={(e) => {
               if (!e.target.value) {
                 setPhoneNumberError("Та утасны дугаараа оруулна уу");

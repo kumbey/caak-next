@@ -11,7 +11,7 @@ import {createAccouningtRequest} from "../../../graphql-custom/accountingRequest
 import {useUser} from "../../../context/userContext";
 import {getReturnData} from "../../../utility/Util";
 
-const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
+const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
   const [blockScroll, allowScroll] = useScrollBlock();
   const {user} = useUser()
   const banks = [
@@ -134,7 +134,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
                 Шилжүүлэх мөнгөн дүн:&nbsp;
               </p>
               <p className={"text-caak-generalblack text-[15px]"}>
-                {data.price}₮
+                {data.id === 0 ? value : data.price}₮
               </p>
             </div>
           </div>
@@ -280,7 +280,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data}) => {
                   "text-[30px] tracking-[0.30px] leading-[28px] font-bold mt-[16px] text-[#21293C]"
                 }
               >
-                {data.price}₮
+                {data.id === 0 ? value : data.price}₮
               </p>
               <p
                 className={

@@ -83,32 +83,23 @@ export default function Boost() {
             Саак Ads нь хэрэглэгч төвтэй тул таны бизнессийн үйл ажиллагааг илүү
             хүртээмжтэй, оновчтой хүргэх болно.
           </p>
-          <div className="flex flex-row items-center mt-[30px] sm:mt-[60px]">
+          <div className="flex p-[6px] flex-row items-center bg-[#F3F3F4] border border-[#E4E4E5] mt-[30px] sm:mt-[60px]">
             {headerButton.map((data, index) => {
               return (
                 <div
                   onClick={() => setSelected(index)}
                   key={index}
-                  className={`w-[160px] sm:w-[242px] cursor-pointer h-[54px] ${
-                    selected !== index && "border"
-                  } ${selected === index ? "bg-[#257CEE]" : "bg-white"} ${
-                    index === 0 && "rounded-l-[8px]"
-                  } ${
-                    index === 1 && "rounded-r-[8px]"
-                  } flex flex-col items-center justify-center`}
+                  className={`w-[160px] sm:w-[236px] cursor-pointer h-[42px] 
+                  ${selected === index && "bg-white"} rounded-[8px] flex flex-col items-center justify-center`}
                 >
                   <p
-                    className={`${
-                      selected === index ? "text-white" : "#21293C"
-                    } text-[14px] text-center sm:text-[16px] font-medium`}
+                    className={`text-[#21293C] text-[14px] text-center sm:text-[16px] font-medium`}
                   >
                     {data.title}
                   </p>
                   {index === 1 && (
                     <p
-                      className={`${
-                        selected === 0 ? "text-[#FF6600]" : "text-white"
-                      } text-[12px] font-medium`}
+                      className={`text-[#FF6600] text-[12px] font-medium`}
                     >
                       Илүү хямд*
                     </p>

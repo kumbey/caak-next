@@ -3,25 +3,30 @@ import Bank from "./bank";
 import golomt from "/public/assets/images/bankLogos/Golomt.png";
 import khan from "/public/assets/images/bankLogos/khanbank.png";
 import tdb from "/public/assets/images/bankLogos/tdbblue.png";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../button";
 import useScrollBlock from "../../../hooks/useScrollBlock";
-import {API, input} from "aws-amplify";
-import {createAccouningtRequest} from "../../../graphql-custom/accountingRequest/mutation";
-import {useUser} from "../../../context/userContext";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
+import { API, input } from "aws-amplify";
+import { createAccouningtRequest } from "../../../graphql-custom/accountingRequest/mutation";
+import { useUser } from "../../../context/userContext";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 import toast from "react-hot-toast";
-import {numberWithCommas} from "../../../utility/Util";
-import {useRouter} from "next/router";
+import { numberWithCommas } from "../../../utility/Util";
+import { useRouter } from "next/router";
 
-const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
+const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
+  const [selectedBankId, setSelectedBankId] = useState(null);
+  const [phoneNumberError, setPhoneNumberError] = useState(null);
+  const BuyCreditModalLayout = useModalLayout({ layoutName: "boostModal" });
   const [blockScroll, allowScroll] = useScrollBlock();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [loading, setLoading] = useState(false)
-  const [isConfirmationModal, setIsConfirmationModal] = useState(false)
-  const [confirmedModalOpen, setConfirmedModalOpen] = useState(false)
-  const {user, isLogged} = useUser();
-  const router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const [isConfirmationModal, setIsConfirmationModal] = useState(false);
+  const [confirmedModalOpen, setConfirmedModalOpen] = useState(false);
+  const { user, isLogged } = useUser();
+  const router = useRouter();
+  const days = Math.floor(customAmount / 5000);
+
   const banks = [
     {
       id: 0,
@@ -42,17 +47,14 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
       accountNumber: 1410005680,
     },
   ];
-  const [selectedBankId, setSelectedBankId] = useState(null);
-  const [phoneNumberError, setPhoneNumberError] = useState(null);
-  const BuyCreditModalLayout = useModalLayout({layoutName: "boostModal"});
 
   const createAccountingRequest = async () => {
     if (selectedBankId === null) {
-      return toast.error("Та шилжүүлэх банкаа сонгоно уу.")
+      return toast.error("Та шилжүүлэх банкаа сонгоно уу.");
     } else if (!phoneNumber) {
-      return toast.error("Та утасны дугаараа оруулна уу.")
+      return toast.error("Та утасны дугаараа оруулна уу.");
     }
-    setLoading(true)
+    setLoading(true);
     if (isLogged) {
       try {
         await API.graphql(
@@ -61,12 +63,15 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
               user_id: user.id,
               status: "REQUESTED",
               userStatus: `${user.id}#REQUESTED`,
-              pack: data.type === "CUSTOM" ? `custom${data.price / 1000}` : data.code,
+              pack:
+                data.type === "CUSTOM"
+                  ? `custom${customAmount / 1000}`
+                  : data.code,
               phoneNumber: phoneNumber,
               meta: JSON.stringify([
                 {
                   action: "REQUESTED",
-                  amount: data.price,
+                  amount: customAmount,
                   date: new Date().toISOString(),
                   requested_user_id: user.id,
                   bank: {
@@ -93,10 +98,10 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
           },
         },
         `/signInUp/signIn`,
-        {shallow: true}
+        { shallow: true }
       );
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -172,7 +177,11 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                 Шилжүүлэх мөнгөн дүн:&nbsp;
               </p>
               <p className={"text-caak-generalblack text-[15px]"}>
-                {numberWithCommas(data.id === 0 ? value : data.price, '.')}₮
+                {numberWithCommas(
+                  data.id === 0 ? customAmount : data.price,
+                  "."
+                )}
+                ₮
               </p>
             </div>
           </div>
@@ -190,16 +199,22 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
               if (!e.target.value) {
                 setPhoneNumberError("Та утасны дугаараа оруулна уу");
               } else {
-                setPhoneNumberError(null)
+                setPhoneNumberError(null);
               }
-              setPhoneNumber(e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1'));
+              setPhoneNumber(
+                e.target.value
+                  .replace(/[^0-9.]/g, "")
+                  .replace(/(\..*?)\..*/g, "$1")
+              );
             }}
             required
             type={"tel"}
             maxLength={8}
-            className={
-              `${phoneNumberError ? "border-caak-primary focus:border-caak-primary" : "focus:outline-none border-[#E4E4E5] focus:border-blue-600"} invalid:text-caak-primary text-[15px] tracking-[0.23px] leading-[18px] text-caak-generalblack w-full h-[44px] p-[14px] rounded-[8px] border-[1px]`
-            }
+            className={`${
+              phoneNumberError
+                ? "border-caak-primary focus:border-caak-primary"
+                : "focus:outline-none border-[#E4E4E5] focus:border-blue-600"
+            } invalid:text-caak-primary text-[15px] tracking-[0.23px] leading-[18px] text-caak-generalblack w-full h-[44px] p-[14px] rounded-[8px] border-[1px]`}
           />
           {phoneNumberError ? (
             <p className={"text-caak-primary text-[12px]"}>
@@ -228,7 +243,9 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                   "text-[15px] text-white font-medium leading-[24px] tracking-0px]"
                 }
               >
-                {data.type === "CUSTOM" ? `custom${data.price / 1000}` : data.code}
+                {data.type === "CUSTOM"
+                  ? `custom${customAmount / 1000}`
+                  : data.code}
               </p>
             </div>
             <div
@@ -252,7 +269,11 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
               }
             >
               <p className={"font-medium"}>Багцын код:&nbsp;</p>
-              <p>{data.type === "CUSTOM" ? `custom${data.price / 1000}` : data.code}</p>
+              <p>
+                {data.type === "CUSTOM"
+                  ? `custom${customAmount / 1000}`
+                  : data.code}
+              </p>
             </div>
             <div
               className={
@@ -326,9 +347,7 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
               }
             >
               <span
-                className={
-                  `${data.textColor} font-semibold text-[18px] tracking-[0.27px] leading-[28px]`
-                }
+                className={`${data.textColor} font-semibold text-[18px] tracking-[0.27px] leading-[28px]`}
               >
                 {data.title}&nbsp;
                 <span
@@ -344,50 +363,98 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                   "text-[30px] tracking-[0.30px] leading-[28px] font-bold mt-[16px] text-[#21293C]"
                 }
               >
-                {numberWithCommas(data.id === 0 ? value : data.price, '.')}₮
+                {numberWithCommas(
+                  data.id === 0 ? customAmount : data.price,
+                  "."
+                )}
+                ₮
               </p>
-              <p className="text-[#5D636B] text-[16px] font-medium mt-[10px]">{data.boostDays} хоног</p>
+              <p className="text-[#5D636B] text-[16px] font-medium mt-[10px]">
+                {customAmount
+                  ? days >= 30
+                    ? Math.floor(customAmount / 3500)
+                    : days >= 20
+                    ? Math.floor(customAmount / 4000)
+                    : days >= 14
+                    ? Math.floor(customAmount / 4500)
+                    : days
+                  : data.boostDays}{" "}
+                хоног
+              </p>
               <div className="w-full">
-                <p className="text-[#2B3A4C] font-medium text-[15px]">Нэмэлт бонус</p>
-                <p className="bg-white h-[42px] w-full rounded-[8px] flex items-center justify-center text-[#257CEE] text-[15px] mt-[10px]">+ {numberWithCommas(data.bonus, ",")}₮</p>
+                <p className="text-[#2B3A4C] font-medium text-[15px]">
+                  Нэмэлт бонус
+                </p>
+                <p className="bg-white h-[42px] w-full rounded-[8px] flex items-center justify-center text-[#257CEE] text-[15px] mt-[10px]">
+                  + {numberWithCommas(data.bonus, ",")}₮
+                </p>
               </div>
             </div>
           </div>
         </div>
-        {
-          isConfirmationModal &&
-            <div className="popup_modal">
-              <div className="popup_modal-content w-full h-[300px] sm:min-w-[500px] sm:h-[259px] rounded-[12px] flex flex-col items-center px-[50px]">
-                <span className="icon-fi-rs-help-thick text-[#EFAA00] text-[24px] p-[12px] bg-[#EFAA00] bg-opacity-10 rounded-full mt-[40px]"/>
-                <p className="text-[18px] font-semibold text-[#21293C] mt-[10px]">Та төлбөрөө шилжүүлсэн үү?</p>
-                <p className="text-center text-[#6C7392] text-[15px] mt-[14px]">Төлбөрөө шилжүүлсний дараа 30 минутын дотор таны данс цэнэглэгдэх болно.</p>
-                <div className="flex flex-row items-center justify-center w-full mt-[24px]">
-                  <p onClick={() => {
-                    setConfirmedModalOpen(true)
-                    setIsConfirmationModal(false)
-                    createAccountingRequest()
-                  }} className="bg-[#FF6600] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-white font-medium flex items-center justify-center">Тийм</p>
-                  <p onClick={() => setIsConfirmationModal(false)} className="border border-[#E8E8E8] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-[#21293C] font-medium flex items-center ml-[11px] justify-center">Үгүй</p>
-                </div>
-                <span onClick={() => setIsConfirmationModal(false)} className="icon-fi-rs-close cursor-pointer absolute top-4 right-4 w-[30px] h-[30px] bg-[#E4E4E5] text-[#21293C] text-[11px] flex items-center justify-center rounded-full"/>
+        {isConfirmationModal && (
+          <div className="popup_modal">
+            <div className="popup_modal-content w-full min-h-[259] sm:min-w-[500px] rounded-[12px] flex flex-col items-center px-[50px] pb-[30px]">
+              <span className="icon-fi-rs-help-thick text-[#EFAA00] text-[24px] p-[12px] bg-[#EFAA00] bg-opacity-10 rounded-full mt-[40px]" />
+              <p className="text-[18px] font-semibold text-[#21293C] mt-[10px]">
+                Та төлбөрөө шилжүүлсэн үү?
+              </p>
+              <p className="text-center text-[#6C7392] text-[15px] mt-[14px]">
+                Төлбөрөө шилжүүлсний дараа 30 минутын дотор таны данс
+                цэнэглэгдэх болно.
+              </p>
+              <div className="flex flex-row items-center justify-center w-full mt-[24px]">
+                <p
+                  onClick={() => {
+                    setConfirmedModalOpen(true);
+                    setIsConfirmationModal(false);
+                    createAccountingRequest();
+                  }}
+                  className="bg-[#FF6600] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-white font-medium flex items-center justify-center"
+                >
+                  Тийм
+                </p>
+                <p
+                  onClick={() => setIsConfirmationModal(false)}
+                  className="border border-[#E8E8E8] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-[#21293C] font-medium flex items-center ml-[11px] justify-center"
+                >
+                  Үгүй
+                </p>
               </div>
+              <span
+                onClick={() => setIsConfirmationModal(false)}
+                className="icon-fi-rs-close cursor-pointer absolute top-4 right-4 w-[30px] h-[30px] bg-[#E4E4E5] text-[#21293C] text-[11px] flex items-center justify-center rounded-full"
+              />
             </div>
-        }
-        {
-          confirmedModalOpen &&
-            <div className="popup_modal">
-              <div className="popup_modal-content w-full h-[300px] sm:min-w-[380px] sm:h-[234px] rounded-[12px] flex flex-col items-center px-[50px]">
-                <span className="icon-fi-rs-clock-o text-[#257CEE] text-[24px] p-[12px] bg-[#257CEE] bg-opacity-10 rounded-full mt-[40px]"/>
-                <p className="text-[18px] font-semibold text-[#21293C] mt-[10px] text-center">Таны данс цэнэглэгдэх хүртэл та түр хүлээнэ үү.</p>
-                <button onClick={() => {
-                  setConfirmedModalOpen(false)
-                  setIsBoostModalOpen(false)
-                  router.push({pathname: `/user/${user.id}/dashboard`})
-                }} className="w-full h-[36px] bg-caak-primary text-white text-[14px] font-medium mt-[24px] rounded-[8px]">Дансны хуулга руу очих</button>
-                <span onClick={() => setConfirmedModalOpen(false)} className="icon-fi-rs-close cursor-pointer absolute top-4 right-4 w-[30px] h-[30px] bg-[#E4E4E5] text-[#21293C] text-[11px] flex items-center justify-center rounded-full"/>
-              </div>
+          </div>
+        )}
+        {confirmedModalOpen && (
+          <div className="popup_modal">
+            <div className="popup_modal-content w-full sm:min-w-[380px] pb-[30px] min-h-[234px] rounded-[12px] flex flex-col items-center px-[50px]">
+              <span className="icon-fi-rs-clock-o text-[#257CEE] text-[24px] p-[12px] bg-[#257CEE] bg-opacity-10 rounded-full mt-[40px]" />
+              <p className="text-[18px] font-semibold text-[#21293C] mt-[10px] text-center">
+                Таны данс цэнэглэгдэх хүртэл та түр хүлээнэ үү.
+              </p>
+              <button
+                onClick={() => {
+                  setConfirmedModalOpen(false);
+                  setIsBoostModalOpen(false);
+                  router.push({ pathname: `/user/${user.id}/dashboard` });
+                }}
+                className="w-full h-[36px] bg-caak-primary text-white text-[14px] font-medium mt-[24px] rounded-[8px]"
+              >
+                Дансны хуулга руу очих
+              </button>
+              <span
+                onClick={() => {
+                  setConfirmedModalOpen(false);
+                  setIsBoostModalOpen(false);
+                }}
+                className="icon-fi-rs-close cursor-pointer absolute top-4 right-4 w-[30px] h-[30px] bg-[#E4E4E5] text-[#21293C] text-[11px] flex items-center justify-center rounded-full"
+              />
             </div>
-        }
+          </div>
+        )}
       </div>
     </BuyCreditModalLayout>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
 import { numberWithCommas } from "../../../src/utility/Util";
 
@@ -133,7 +133,7 @@ export default function CaakAdsCard({ data }) {
       {isBoostModalOpen && (
         <BuyCreditModal
           data={data}
-          value={value}
+          customAmount={removeCommas(value)}
           setIsBoostModalOpen={setIsBoostModalOpen}
           isBoostModalOpen={isBoostModalOpen}
         />

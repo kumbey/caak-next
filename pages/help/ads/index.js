@@ -76,7 +76,7 @@ export default function Boost() {
             Саак Ads нь хэрэглэгч төвтэй тул таны бизнессийн үйл ажиллагааг илүү
             хүртээмжтэй, оновчтой хүргэх болно.
           </p>
-          <div className="flex p-[6px] flex-row items-center bg-[#F3F3F4] border border-[#E4E4E5] mt-[30px] sm:mt-[60px]">
+          <div className="flex p-[6px] flex-row items-center bg-[#F3F3F4] border border-[#E4E4E5] mt-[30px] rounded-[8px] sm:mt-[60px]">
             {headerButton.map((data, index) => {
               return (
                 <div

@@ -32,18 +32,22 @@ export default function Boost() {
       type: "CUSTOM",
       bonus: 0,
       boostDays: 0,
+      textColor: "text-[#FF6600]"
     },
     {
       id: 1,
-      ...Consts.packages.hybrid
+      ...Consts.packages.hybrid,
+      textColor: "text-[#2FC474]"
     },
     {
       id: 2,
-      ...Consts.packages.premium
+      ...Consts.packages.premium,
+      textColor: "text-[#E60033]"
     },
     {
       id: 3,
-      ...Consts.packages.business
+      ...Consts.packages.business,
+      textColor: "text-[#EFAA00]"
     },
 
   ];

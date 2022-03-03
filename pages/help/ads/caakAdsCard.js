@@ -29,7 +29,7 @@ export default function CaakAdsCard({ data }) {
     >
       <div className={"flex flex-col items-center"}>
         <div className="mt-[12px] flex flex-row items-center text-[#2B3A4C] text-[22px] font-semibold">
-          <p className={`mr-[5px] ${data.textColor}`}>{data?.title}</p>
+          <p className={`mr-[5px] ${data?.textColor}`}>{data?.title}</p>
           багц
         </div>
         {data?.id === 0 ? (
@@ -142,7 +142,7 @@ export default function CaakAdsCard({ data }) {
         <button
           onClick={() => setIsBoostModalOpen(true)}
           className={`${
-            data.id === 0 ? "bg-caak-primary" : "bg-[#257CEE]"
+            data?.id === 0 ? "bg-caak-primary" : "bg-[#257CEE]"
           } w-full h-[48px] text-white  rounded-[8px] text-[16px] font-medium`}
         >
           Худалдаж авах

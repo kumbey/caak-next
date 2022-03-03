@@ -78,6 +78,19 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
             />
             <p className="text-14px text-caak-extraBlack">Хадгалсан постууд</p>
           </div>
+          <div
+            className="hover:bg-caak-liquidnitrogen h-c25 justify-between dropdown-items w-full flex items-center cursor-pointer"
+          >
+            <div className="flex flex-row items-center">
+              <span
+                className={
+                  "icon-fi-rs-megaphone-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                }
+              />
+              <p className="text-14px text-caak-extraBlack">Caak Ads данс</p>
+            </div>
+            <p className="bg-[#257CEE] bg-opacity-10 flex items-center rounded-full px-[8px] h-[20px] text-[#257CEE] text-[12px] font-medium">100.000₮</p>
+          </div>
           {/* <div
             onClick={() => router.push({
               pathname: `/user/${user.id}/dashboard`,

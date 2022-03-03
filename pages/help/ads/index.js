@@ -32,22 +32,18 @@ export default function Boost() {
       type: "CUSTOM",
       bonus: 0,
       boostDays: 0,
-      textColor: "text-[#FF6600]"
     },
     {
       id: 1,
-      ...Consts.packages.hybrid,
-      textColor: "text-[#2FC474]"
+      ...Consts.packages.hybrid
     },
     {
       id: 2,
-      ...Consts.packages.premium,
-      textColor: "text-[#E60033]"
+      ...Consts.packages.premium
     },
     {
       id: 3,
-      ...Consts.packages.business,
-      textColor: "text-[#EFAA00]"
+      ...Consts.packages.business
     },
 
   ];
@@ -73,20 +69,20 @@ export default function Boost() {
           </p>
           <p
             className="text-[#6C7392] text-[14px] sm:text-[16px] font-medium mt-[15px] lg:mt-[28px] max-w-[532px] text-center">
-            Саак Ads нь хэрэглэгч төвтэй тул таны бизнессын үйл ажиллагааг илүү хүртээмжтэй хэрэглэгчдэд хүргэх юм.
+            Саак Ads нь хэрэглэгч төвтэй тул таны бизнессийн үйл ажиллагааг илүү
+            хүртээмжтэй, оновчтой хүргэх болно.
           </p>
-          <div
-            className="flex p-[6px] flex-row items-center bg-[#F3F3F4] rounded-[8px] border border-[#E4E4E5] mt-[30px] sm:mt-[60px]">
+          <div className="flex p-[6px] flex-row items-center bg-[#F3F3F4] border border-[#E4E4E5] mt-[30px] sm:mt-[60px]">
             {headerButton.map((data, index) => {
               return (
                 <div
                   onClick={() => setSelected(index)}
                   key={index}
                   className={`w-[160px] sm:w-[236px] cursor-pointer h-[42px] 
-                  ${selected === index && "bg-white shadow-adsTab"} flex flex-col items-center justify-center rounded-[6px] py-[5px]`}
+                  ${selected === index && "bg-white"} rounded-[8px] flex flex-col items-center justify-center`}
                 >
                   <p
-                    className={`text-[#21293C] text-[16px] tracking-[0.24px] leading-[19px] font-medium`}
+                    className={`text-[#21293C] text-[14px] text-center sm:text-[16px] font-medium`}
                   >
                     {data.title}
                   </p>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
+import {numberWithCommas} from "../../../src/utility/Util";
 
 export default function CaakAdsCard({data}) {
   const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
@@ -20,13 +21,13 @@ export default function CaakAdsCard({data}) {
         багц
       </div>
       <p className="mt-[13px] text-[46px] font-bold text-[#2B3A4C] h-[60px]">
-        {data?.price}₮
+        {numberWithCommas(data?.price, ",")}₮
       </p>
       <span className="mt-[14px] text-[#2B3A4C] font-semibold text-[#2B3A4C]">
         Нэмэлт бонус
       </span>
       <ul className="flex flex-col pl-0 text-medium text-[14px] text-[#5D636B] mt-[14px]">
-        <li className={"ads-checked-icon list-none inline-flex"}><p className={"text-caak-primary"}>БОНУС:&nbsp;</p>{data?.bonus}₮</li>
+        <li className={"ads-checked-icon list-none inline-flex"}><p className={"text-caak-primary"}>БОНУС:&nbsp;</p>{numberWithCommas(data?.bonus, ",")}₮</li>
         <li className={"ads-checked-icon list-none inline-flex"}>
           <p className={"font-bold"}>{data?.boostDays}&nbsp;</p> өдөр бүүстлэх
         </li>

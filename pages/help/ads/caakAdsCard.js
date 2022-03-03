@@ -32,13 +32,14 @@ export default function CaakAdsCard({data}) {
         </li>
       </ul>
       <button
-        onClick={() => setIsBoostModalOpen(data)}
+        onClick={() => setIsBoostModalOpen(true)}
         className="w-full h-[48px] text-white bg-[#FF6600] rounded-[8px] text-[16px] font-medium mt-[30px]"
       >
         Худалдаж авах
       </button>
       {isBoostModalOpen && (
         <BuyCreditModal
+          data={data}
           setIsBoostModalOpen={setIsBoostModalOpen}
           isBoostModalOpen={isBoostModalOpen}
         />

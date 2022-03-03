@@ -991,6 +991,10 @@
   .selectBank [type="radio"] {
     color: #ff6600;
   }
+  .customPackInput::placeholder {
+    font-size: 15px;
+    text-align: center;
+  }
 }
 
 .react-player {

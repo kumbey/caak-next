@@ -12,7 +12,7 @@ import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
 export default function AboutCaakAds({ open, setOpen }) {
   const [selected, setSelected] = useState(0);
   const [isBoostModalOpen, setIsBoostModalOpen] = useState(false)
-  const data = [
+  const screenType = [
     {
       title: "Desktop",
     },
@@ -20,7 +20,7 @@ export default function AboutCaakAds({ open, setOpen }) {
       title: "Mobile",
     },
   ];
-  const data1 = [
+  const adsLocation = [
     {
       title: "Нүүр хуудас",
     },
@@ -52,7 +52,7 @@ export default function AboutCaakAds({ open, setOpen }) {
                   Нүүр хуудсанд харагдах байдал
                 </p>
                 <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
-                  {data.map((data, index) => {
+                  {screenType.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
@@ -122,7 +122,7 @@ export default function AboutCaakAds({ open, setOpen }) {
                   Нүүр хуудсанд харагдах байдал
                 </p>
                 <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
-                  {data.map((data, index) => {
+                  {screenType.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
@@ -191,7 +191,7 @@ export default function AboutCaakAds({ open, setOpen }) {
                   Харагдах байдал
                 </p>
                 <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
-                  {data1.map((data, index) => {
+                  {adsLocation.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}

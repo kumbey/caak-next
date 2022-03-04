@@ -4,12 +4,14 @@ import {
   generateTimeAgo,
   getGenderImage,
 } from "../../utility/Util";
+import { useUser } from "../../context/userContext";
 
 const Notification = ({ item, ...props }) => {
   const [text] = useState({
     short: "",
     long: "",
   });
+  const { user } = useUser();
   const button = () => {
     if (item.action === "POST_CONFIRMED") {
       text.short = `таны пост`;
@@ -32,11 +34,10 @@ const Notification = ({ item, ...props }) => {
       if (item.action === "POST_PENDING") {
         text.short = `таны пост`;
         text.long = `шалгалдаж байна`;
-      } else if(item.action === "POST_ARCHIVED") {
+      } else if (item.action === "POST_ARCHIVED") {
         text.short = `админ таны постыг`;
         text.long = `татгалзлаа`;
-      }
-      else if(item.action === "POST_DRAFT") {
+      } else if (item.action === "POST_DRAFT") {
         text.short = `таны ноорог`;
         text.long = `хадгалагдлаа`;
       }
@@ -106,6 +107,37 @@ const Notification = ({ item, ...props }) => {
           />
         </div>
       );
+    } else if (item.action === "BALANCE_DECREASE") {
+      text.short = `гүйлгээ хийгдэж`;
+      text.long = `таны данс хасагдлаа`;
+      return (
+        <div
+          className={
+            "flex items-center justify-center absolute -right-2 border-[1.8px] border-white -bottom-0.5 w-[18px] h-[18px] bg-caak-primary rounded-full"
+          }
+        >
+          <span
+            style={{ fontSize: "10px" }}
+            className={"icon-fi-rs-megaphone text-white "}
+          />
+        </div>
+      );
+    }
+    else if (item.action === "BALANCE_INCREASE") {
+      text.short = `таны данс`;
+      text.long = `амжилттай цэнэглэгдлээ`;
+      return (
+        <div
+          className={
+            "flex items-center justify-center absolute -right-2 border-[1.8px] border-white -bottom-0.5 w-[18px] h-[18px] bg-caak-primary rounded-full"
+          }
+        >
+          <span
+            style={{ fontSize: "10px" }}
+            className={"icon-fi-rs-megaphone text-white "}
+          />
+        </div>
+      );
     }
   };
   return (
@@ -121,7 +153,11 @@ const Notification = ({ item, ...props }) => {
             <img
               className={"rounded-full w-full h-full object-cover"}
               src={
-                item.from_user?.pic
+                item.from === "SYSTEM"
+                  ? user.pic
+                    ? generateFileUrl(user.pic)
+                    : getGenderImage(user.gender).src
+                  : item.from_user?.pic
                   ? generateFileUrl(item.from_user?.pic)
                   : getGenderImage(item.from_user?.gender).src
               }
@@ -142,7 +178,11 @@ const Notification = ({ item, ...props }) => {
                 "text-15px text-caak-generalblack font-medium tracking-[0.23px] leading-[16px]"
               }
             >
-              {`${item.from_user?.nickname}`}
+              {`${
+                item.from_user?.nickname
+                  ? item.from_user?.nickname
+                  : user.nickname
+              }`}
             </span>
             <span
               className={
@@ -168,17 +208,6 @@ const Notification = ({ item, ...props }) => {
           </p>
         </div>
       </div>
-      {/*Post Image*/}
-      {/*<div className={"flex-shrink-0 rounded-[6px] w-[50px] h-[40px]"}>*/}
-      {/*  <Image*/}
-      {/*      className={"rounded-[6px]"}*/}
-      {/*      src={Dummy.image("50x50")}*/}
-      {/*      alt="Comment user"*/}
-      {/*      width={50}*/}
-      {/*      height={40}*/}
-      {/*      objectFit="cover"*/}
-      {/*  />*/}
-      {/*</div>*/}
     </div>
   );
 };

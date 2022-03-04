@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 import AboutCaakAds from "./aboutCaakAds";
 import Bg from "../../../public/assets/images/ads.svg";
 import Head from "next/head";
 import Consts from "../../../src/utility/Consts";
 import CaakAdsCard from "./caakAdsCard";
-import { useRouter } from "next/router";
-import { useUser } from "../../../src/context/userContext";
+import {useRouter} from "next/router";
+import {useUser} from "../../../src/context/userContext";
 
 export default function Boost() {
   const router = useRouter();
@@ -32,30 +32,22 @@ export default function Boost() {
       type: "CUSTOM",
       bonus: 0,
       boostDays: 0,
+      textColor: "text-[#FF6600]"
     },
     {
       id: 1,
-      title: "Hybrid",
-      price: 100000,
-      type: "HYBRID",
-      bonus: 20000,
-      boostDays: 24,
+      ...Consts.packages.hybrid,
+      textColor: "text-[#2FC474]"
     },
     {
       id: 2,
-      title: "Premium",
-      price: 200000,
-      type: "PREMIUM",
-      bonus: 50000,
-      boostDays: 50,
+      ...Consts.packages.premium,
+      textColor: "text-[#E60033]"
     },
     {
       id: 3,
-      title: "Business",
-      price: 500000,
-      type: "BUSINESS",
-      bonus: 100000,
-      boostDays: 120,
+      ...Consts.packages.business,
+      textColor: "text-[#EFAA00]"
     },
 
   ];
@@ -63,8 +55,8 @@ export default function Boost() {
   const year = day.getFullYear();
   return (
     <div
-      style={{ overflow: open && "hidden" }}
-      className="relative bg-white h-[1257px] mt-[20px] lg:mt-[54px]"
+      style={{overflow: open && "hidden"}}
+      className="relative bg-white h-[2800px] sm:h-[1489px] mt-[20px] lg:mt-[54px]"
     >
       <Head>
         <title>Сурталчилгаа - {Consts.siteMainTitle}</title>
@@ -73,42 +65,34 @@ export default function Boost() {
           content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      <img alt="" className="w-full" src={Bg.src} />
+      <img alt="" className="w-full" src={Bg.src}/>
       <div className="absolute top-0 mt-[54px] w-full flex flex-col items-center">
         <div className="max-w-[1200px] w-full flex flex-col items-center">
           <p className="text-[#2B3A4C] font-semibold lg:text-[56px]">
             Таны бизнессийн хурдасгуур
           </p>
-          <p className="text-[#6C7392] text-[14px] sm:text-[16px] font-medium mt-[15px] lg:mt-[28px] max-w-[532px] text-center">
+          <p
+            className="text-[#6C7392] text-[14px] sm:text-[16px] font-medium mt-[15px] lg:mt-[28px] max-w-[532px] text-center">
             Саак Ads нь хэрэглэгч төвтэй тул таны бизнессийн үйл ажиллагааг илүү
             хүртээмжтэй, оновчтой хүргэх болно.
           </p>
-          <div className="flex flex-row items-center mt-[30px] sm:mt-[60px]">
+          <div className="flex p-[6px] flex-row items-center bg-[#F3F3F4] border border-[#E4E4E5] mt-[30px] rounded-[8px] sm:mt-[60px]">
             {headerButton.map((data, index) => {
               return (
                 <div
                   onClick={() => setSelected(index)}
                   key={index}
-                  className={`w-[160px] sm:w-[242px] cursor-pointer h-[54px] ${
-                    selected !== index && "border"
-                  } ${selected === index ? "bg-[#257CEE]" : "bg-white"} ${
-                    index === 0 && "rounded-l-[8px]"
-                  } ${
-                    index === 1 && "rounded-r-[8px]"
-                  } flex flex-col items-center justify-center`}
+                  className={`w-[160px] sm:w-[236px] cursor-pointer h-[42px] 
+                  ${selected === index && "bg-white"} rounded-[8px] flex flex-col items-center justify-center`}
                 >
                   <p
-                    className={`${
-                      selected === index ? "text-white" : "#21293C"
-                    } text-[14px] text-center sm:text-[16px] font-medium`}
+                    className={`text-[#21293C] text-[14px] text-center sm:text-[16px] font-medium`}
                   >
                     {data.title}
                   </p>
                   {index === 1 && (
                     <p
-                      className={`${
-                        selected === 0 ? "text-[#FF6600]" : "text-white"
-                      } text-[12px] font-medium`}
+                      className={`text-[#FF6600] text-[12px] font-medium`}
                     >
                       Илүү хямд*
                     </p>
@@ -120,7 +104,7 @@ export default function Boost() {
           {selected === 0 ? (
             <div className="flex flex-row flex-wrap justify-center gap-[20px] mt-[30px] lg:mt-[59px]">
               <div
-                style={{ boxShadow: "0px 3px 6px #00000029" }}
+                style={{boxShadow: "0px 3px 6px #00000029"}}
                 className="relative h-[707px] w-[350px] border border-[#D6F1FF] bg-white rounded-[12px] flex flex-col items-center"
               >
                 <p className="text-[#2B3A4C] font-semibold text-[32px] mt-[47px]">
@@ -137,7 +121,8 @@ export default function Boost() {
                   1 хоног
                 </p>
                 <div className="w-full px-[28px]">
-                  <div className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
+                  <div
+                    className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
                     <ul>
                       <li>
                         <p className="text-[#5D636B] font-medium text-[14px]">
@@ -171,7 +156,8 @@ export default function Boost() {
                   >
                     Жишээ харах
                   </button>
-                  <div className="flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">
+                  <div
+                    className="flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">
                     Эсвэл
                     <p
                       onClick={() => isLogged && (userBalance < 3500 ? setSelected(1) : router.push(`/user/${user.id}/dashboard`))}
@@ -181,7 +167,7 @@ export default function Boost() {
                     </p>
                   </div>
                 </div>
-                <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]" />
+                <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]"/>
                 <div className="w-full px-[28px]">
                   <p className="text-[#2B3A4C] texrt-[15px] font-semibold mt-[24px] w-full">
                     Постын байршил:
@@ -206,14 +192,15 @@ export default function Boost() {
                   <ul className="flex flex-col w-full pl-0 text-medium text-[14px] text-[#5D636B]">
                     <li className={"ads-checked-icon list-none"}>30ш</li>
                   </ul>
-                  <p className="absolute top-[-15px] bg-gradient-to-r from-[#9A99FE] to-[#3F70FE] w-[172px] h-[30px] rounded-[4px] text-white text-[15px] flex items-center justify-center">
+                  <p
+                    className="absolute top-[-15px] bg-gradient-to-r from-[#9A99FE] to-[#3F70FE] w-[172px] h-[30px] rounded-[4px] text-white text-[15px] flex items-center justify-center">
                     Хамгийн эрэлттэй
                   </p>
                 </div>
               </div>
 
               <div
-                style={{ boxShadow: "0px 3px 6px #00000029" }}
+                style={{boxShadow: "0px 3px 6px #00000029"}}
                 className="h-[707px] border border-[#D6F1FF] w-[350px] bg-white rounded-[12px] flex flex-col items-center"
               >
                 <p className="text-[#2B3A4C] font-semibold text-[38px] mt-[47px]">
@@ -230,7 +217,8 @@ export default function Boost() {
                   1 хоног
                 </p>
                 <div className="w-full px-[28px]">
-                  <div className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
+                  <div
+                    className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
                     <ul>
                       <li>
                         <p className="text-[#5D636B] font-medium text-[14px]">
@@ -265,13 +253,14 @@ export default function Boost() {
                     Жишээ харах
                   </button>
                   <Link href="/help/connectus" passHref>
-                    <div className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">
+                    <div
+                      className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">
                       Эсвэл
                       <p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p>
                     </div>
                   </Link>
                 </div>
-                <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]" />
+                <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]"/>
                 <div className="flex flex-col w-full px-[28px]">
                   <p className="text-[#2B3A4C] texrt-[15px] font-semibold mt-[24px] w-full">
                     Баннерын байршил:
@@ -296,7 +285,7 @@ export default function Boost() {
               </div>
 
               <div
-                style={{ boxShadow: "0px 3px 6px #00000029" }}
+                style={{boxShadow: "0px 3px 6px #00000029"}}
                 className="h-[707px] border border-[#D6F1FF] w-[350px] bg-white rounded-[12px] flex flex-col items-center"
               >
                 <p className="text-[#2B3A4C] font-semibold text-[38px] mt-[47px]">
@@ -313,7 +302,8 @@ export default function Boost() {
                   1 хоног
                 </p>
                 <div className="w-full px-[28px]">
-                  <div className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
+                  <div
+                    className="w-full h-[95px] rounded-[8px] bg-[#FF66000A] border border-[#FF660033] mt-[17px] flex items-center">
                     <ul>
                       <li>
                         <p className="text-[#5D636B] font-medium text-[14px]">
@@ -348,13 +338,14 @@ export default function Boost() {
                     Жишээ харах
                   </button>
                   <Link href={"/help/connectus"} passHref>
-                    <div className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">
+                    <div
+                      className="cursor-pointer flex flex-row justify-center text-[#5D636B] items-center text-[14px] font-medium mt-[12px]">
                       Эсвэл
                       <p className="ml-[5px] text-[#257CEE]">Одоо захиалах</p>
                     </div>
                   </Link>
                 </div>
-                <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]" />
+                <span className="w-full h-[1px] bg-[#E4E4E5] mt-[24px]"/>
                 <div className="flex flex-col w-full px-[28px]">
                   <p className="text-[#2B3A4C] texrt-[15px] font-semibold mt-[24px] w-full">
                     Баннерын байршил:
@@ -381,15 +372,16 @@ export default function Boost() {
           ) : (
             <div className="flex flex-wrap gap-[10px] sm:gap-[20px] w-full justify-center mt-[30px] sm:mt-[59px]">
               {adsCardData.map((data, index) => {
-                return <CaakAdsCard data={data} key={index} />;
+                return <CaakAdsCard data={data} key={index}/>;
               })}
             </div>
           )}
-          <div className="flex flex-col mx-[10px] md:mx-0 md:flex-row w-full justify-between mt-[20px] lg:mt-[44px] px-[5px] md:px-[22px]">
+          <div
+            className="flex flex-col mx-[10px] md:mx-0 md:flex-row w-full justify-between mt-[20px] lg:mt-[44px] px-[5px] md:px-[22px]">
             <div>
               <ul className="list-decimal text-[14px] text-[#0D1026] list-inside pl-0">
                 <p className="text-[#E60033] flex items-center font-semibold text-[16px]">
-                  <span className="icon-fi-rs-danger text-[22px] mr-[9px]" />
+                  <span className="icon-fi-rs-danger text-[22px] mr-[9px]"/>
                   Анхаарах зүйлс
                 </p>
                 <li className=" mt-[16px]">Эдгээр үнэнд НӨАТ орсон болно</li>
@@ -406,19 +398,21 @@ export default function Boost() {
             </div>
             <div className="mt-[20px] md:mt-0">
               <p className="text-[14px] md:text-[16px] font-semibold text-[#21293C] flex items-center">
-                <span className="icon-fi-rs-phone-thick text-[18px] mr-[10px]" />
+                <span className="icon-fi-rs-phone-thick text-[18px] mr-[10px]"/>
                 72728008, 99093445
               </p>
               <p className="text-[14px] md:text-[16px] font-semibold text-[#21293C] flex items-center">
-                <span className="icon-fi-rs-mail-thick text-[18px] mr-[10px]" />
+                <span className="icon-fi-rs-mail-thick text-[18px] mr-[10px]"/>
                 marketing@caak.mn
               </p>
             </div>
           </div>
         </div>
-        <div className="bg-white h-[200px] border-t border-[#D9E3EF] sm:h-[155px] flex w-full justify-center mt-[30px] md:mt-[70px]">
+        <div
+          className="bg-white h-[200px] border-t border-[#D9E3EF] sm:h-[155px] flex w-full justify-center mt-[30px] md:mt-[70px]">
           <div className="w-full sm:w-[670px] md:w-[870px] xl:w-[1247px]">
-            <div className="text-[15px] text-[#6C7392] flex flex-wrap justify-center sm:justify-start gap-[4px] sm:flex-row sm:h-[69px] border-b sm:items-end pb-[18px] border-color:[#F3F3F4]">
+            <div
+              className="text-[15px] text-[#6C7392] flex flex-wrap justify-center sm:justify-start gap-[4px] sm:flex-row sm:h-[69px] border-b sm:items-end pb-[18px] border-color:[#F3F3F4]">
               <Link href="/help/connectus" shallow>
                 <a>
                   <p>Холбоо барих</p>
@@ -466,7 +460,7 @@ export default function Boost() {
             </div>
           </div>
         </div>
-        <AboutCaakAds setOpen={setOpen} open={open} />
+        <AboutCaakAds setOpen={setOpen} open={open}/>
       </div>
     </div>
   );

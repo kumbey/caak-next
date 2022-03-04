@@ -34,6 +34,32 @@ const Consts = {
     "f100ebec-1ae4-4d2f-abcf-3c261af96cc7",
     "c0d39895-53fd-4da6-a266-3a1959b67431",
   ],
+  packages: {
+    hybrid: {
+      title: "Hybrid",
+      price: 100000,
+      type: "HYBRID",
+      bonus: 20000,
+      boostDays: 24,
+      code: "caak100",
+    },
+    premium: {
+      title: "Premium",
+      price: 200000,
+      type: "PREMIUM",
+      bonus: 50000,
+      boostDays: 50,
+      code: "caak200"
+    },
+    business: {
+      title: "Business",
+      price: 500000,
+      type: "BUSINESS",
+      bonus: 100000,
+      boostDays: 120,
+      code: "caak500"
+    }
+  }
 };
 
 export default Consts;

@@ -140,7 +140,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 1,
       icon: "icon-fi-rs-megaphone",
-      number: 0,
+      number: user?.balance?.balance ? user.balance.balance : 0,
       type: "money",
       text: "Caak Ads данс",
       bgcolor: "bg-caak-cottonboll",

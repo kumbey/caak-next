@@ -220,7 +220,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               <p className="text-11px text-white ">Сэтгэгдлийн тоо</p>
             </ReactTooltip>
           </div>
-          {/* <Button
+          <Button
             // loading={loading}
             className={`${
               moment(post.end_date)._d > now
@@ -235,7 +235,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
             >
               {moment(post.end_date)._d > now ? "Бүүстлэсэн" : "Бүүстлэх"}
             </p>
-          </Button> */}
+          </Button>
         </div>
       </td>
     </>

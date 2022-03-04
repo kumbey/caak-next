@@ -117,7 +117,15 @@ export default function CaakAdsCard({ data }) {
             </div>
 
             <p className="mt-[5px] text-[#5D636B] text-[16px] font-medium text-center">
-              {data?.boostDays} хоног
+              {
+                Math.floor((data?.price + data?.bonus) / 5000) >= 30 ? 
+                Math.floor((data?.price + data?.bonus) / 3500) :
+                Math.floor((data?.price + data?.bonus) / 5000) >= 20 ? 
+                Math.floor((data?.price + data?.bonus) / 4000) :
+                Math.floor((data?.price + data?.bonus) / 5000) >= 14 ? 
+                Math.floor((data?.price + data?.bonus) / 4500) :
+                Math.floor((data?.price + data?.bonus) / 5000)
+              } хоног
             </p>
             <p className="self-start mt-[16px] text-[#2B3A4C] text-[15px] tracking-[0px] leading-[18px] font-semibold ">
               Нэмэлт бонус

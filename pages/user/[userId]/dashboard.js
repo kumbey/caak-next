@@ -601,6 +601,7 @@ const Dashboard = ({ ssrData }) => {
                   setPosts={setDraftedPosts}
                   fetcher={fetchDrafted}
                   loading={draftLoading}
+                  totals={userTotals}
                 />
               ) : null}
               {activeIndex === 3 ? (

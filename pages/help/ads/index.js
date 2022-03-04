@@ -412,15 +412,15 @@ export default function Boost() {
           className="bg-white h-[200px] border-t border-[#D9E3EF] sm:h-[155px] flex w-full justify-center mt-[30px] md:mt-[70px]">
           <div className="w-full sm:w-[670px] md:w-[870px] xl:w-[1247px]">
             <div
-              className="text-[15px] text-[#6C7392] flex flex-wrap justify-center sm:justify-start gap-[4px] sm:flex-row sm:h-[69px] border-b sm:items-end pb-[18px] border-color:[#F3F3F4]">
+              className="text-[15px] text-[#6C7392] flex flex-wrap px-[20px] sm:px-0 gap-[4px] sm:flex-row sm:h-[69px] border-b sm:items-end pb-[18px] border-color:[#F3F3F4]">
               <Link href="/help/connectus" shallow>
                 <a>
-                  <p>Холбоо барих</p>
+                  <p>· Холбоо барих</p>
                 </a>
               </Link>
               <Link href={"/help/ads"} shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Сурталчилгаа</p>
+                  <p>· Сурталчилгаа</p>
                 </a>
               </Link>
               <Link
@@ -433,7 +433,7 @@ export default function Boost() {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Үйлчилгээний нөхцөл</p>
+                  <p>· Үйлчилгээний нөхцөл</p>
                 </a>
               </Link>
               <Link
@@ -446,12 +446,12 @@ export default function Boost() {
                 shallow
               >
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Нууцлал</p>
+                  <p>· Нууцлал</p>
                 </a>
               </Link>
               <Link href="/help" shallow>
                 <a className="sm:ml-[10px] md:ml-[35px]">
-                  <p>Тусламж</p>
+                  <p>· Тусламж</p>
                 </a>
               </Link>
             </div>

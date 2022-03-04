@@ -370,15 +370,15 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
                 ₮
               </p>
               <p className="text-[#5D636B] text-[16px] font-medium mt-[10px]">
-                {customAmount
-                  ? days >= 30
-                    ? Math.floor(customAmount / 3500)
-                    : days >= 20
-                    ? Math.floor(customAmount / 4000)
-                    : days >= 14
-                    ? Math.floor(customAmount / 4500)
-                    : days
-                  : data.boostDays}{" "}
+              {
+                Math.floor((data?.price + data?.bonus) / 5000) >= 30 ? 
+                Math.floor((data?.price + data?.bonus) / 3500) :
+                Math.floor((data?.price + data?.bonus) / 5000) >= 20 ? 
+                Math.floor((data?.price + data?.bonus) / 4000) :
+                Math.floor((data?.price + data?.bonus) / 5000) >= 14 ? 
+                Math.floor((data?.price + data?.bonus) / 4500) :
+                Math.floor((data?.price + data?.bonus) / 5000)
+              }{" "}
                 хоног
               </p>
               <div className="w-full">

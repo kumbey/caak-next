@@ -1,5 +1,5 @@
 import useScrollBlock from "../../hooks/useScrollBlock";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
 import Link from "next/link";
 import DatePicker from "react-datepicker";
@@ -21,13 +21,14 @@ import { createBoostedPost } from "../../graphql-custom/boost/mutation";
 import { useUser } from "../../context/userContext";
 import useModalLayout from "../../hooks/useModalLayout";
 import { doTransaction } from "../../graphql-custom/transaction/mutation";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
-  const router = useRouter()
+  const router = useRouter();
   const [blockScroll, allowScroll] = useScrollBlock();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [boostedSuccessModal, setBoostedSuccessModal] = useState(false);
   const [price, setPrice] = useState(0);
   const [error, setError] = useState({
     day: "",
@@ -88,7 +89,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
         }));
       } else {
         toast.error("Таны гүйлгээ амжилтгүй боллоо");
-        return null
+        return null;
       }
     } else if (resp.statusCode === 200) {
       user.balance.balance = resp.body.balance;
@@ -105,12 +106,13 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
             input: postData,
           })
         );
-        toast.success(
-          `${getReturnData(resp).post.title}
-          амжилттай бүүстлэгдлээ.`
-        );
-        router.reload()
-        setIsBoostModalOpen(false);
+        // toast.success(
+        //   `${getReturnData(resp).post.title}
+        //   амжилттай бүүстлэгдлээ.`
+        // );
+        // router.reload();
+        // setIsBoostModalOpen(false);
+        setBoostedSuccessModal(true);
       } catch (ex) {
         setLoading(false);
         console.log(ex);
@@ -172,6 +174,40 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
       setIsOpen={setIsBoostModalOpen}
       headerTitle={"Пост бүүстлэх"}
     >
+      {boostedSuccessModal && (
+        <div className="popup_modal">
+          <div className="popup_modal-content w-full sm:min-w-[380px] pb-[30px] min-h-[234px] rounded-[12px] flex flex-col items-center px-[50px]">
+            <span className="icon-fi-rs-rocket text-[#257CEE] text-[24px] p-[12px] bg-[#257CEE] bg-opacity-10 rounded-full mt-[40px]" />
+            <p className="text-[18px] font-semibold text-[#21293C] mt-[10px] text-center">
+              Таны пост амжилттай бүүстлэгдлээ.
+            </p>
+            <button
+              onClick={() => {
+                setBoostedSuccessModal(false);
+                setIsBoostModalOpen(false);
+                router.push(
+                  {
+                    pathname: `/user/${user.id}/dashboard`,
+                    query: { activeIndex: 4 },
+                  },
+                  `/user/${user.id}/dashboard`
+                );
+              }}
+              className="w-full h-[36px] bg-caak-primary text-white text-[14px] font-medium mt-[24px] rounded-[8px]"
+            >
+              Дашбоард руу очих
+            </button>
+            <span
+              onClick={() => {
+                setBoostedSuccessModal(false);
+                setIsBoostModalOpen(false);
+              }}
+              className="icon-fi-rs-close cursor-pointer absolute top-4 right-4 w-[30px] h-[30px] bg-[#E4E4E5] text-[#21293C] text-[11px] flex items-center justify-center rounded-full"
+            />
+          </div>
+        </div>
+      )}
+
       {/*Main content*/}
       <div
         className={"flex flex-col lg:flex-row py-[40px] px-[5px] sm:px-[40px]"}
@@ -340,7 +376,10 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     <p
                       className={"text-caak-generalblack font-bold text-[18px]"}
                     >
-                      {user?.balance ? numberWithCommas(user.balance.balance, ",") : "0"}₮
+                      {user?.balance
+                        ? numberWithCommas(user.balance.balance, ",")
+                        : "0"}
+                      ₮
                     </p>
                     <Link
                       as={"/help/ads"}

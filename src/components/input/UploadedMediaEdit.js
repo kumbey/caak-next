@@ -305,6 +305,8 @@ const UploadedMediaEdit = ({
     if (selectedGroup) {
       if (selectedGroup.role_on_group !== "ADMIN") {
         setAdminTextEditor("FALSE");
+      }else {
+        setAdminTextEditor("TRUE");
       }
     }
     //eslint-disable-next-line

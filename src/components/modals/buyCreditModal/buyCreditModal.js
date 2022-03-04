@@ -15,7 +15,7 @@ import { numberWithCommas } from "../../../utility/Util";
 import { useRouter } from "next/router";
 
 const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
-  const [selectedBankId, setSelectedBankId] = useState(null);
+  const [selectedBankId, setSelectedBankId] = useState(0);
   const [phoneNumberError, setPhoneNumberError] = useState(null);
   const BuyCreditModalLayout = useModalLayout({ layoutName: "boostModal" });
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -71,7 +71,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
               meta: JSON.stringify([
                 {
                   action: "REQUESTED",
-                  amount: customAmount,
+                  amount: customAmount ? customAmount : data.price,
                   date: new Date().toISOString(),
                   requested_user_id: user.id,
                   bank: {
@@ -244,7 +244,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
                 }
               >
                 {data.type === "CUSTOM"
-                  ? `custom${customAmount / 1000}`
+                  ? `custom${Math.floor(customAmount / 1000)}`
                   : data.code}
               </p>
             </div>
@@ -271,7 +271,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
               <p className={"font-medium"}>Багцын код:&nbsp;</p>
               <p>
                 {data.type === "CUSTOM"
-                  ? `custom${customAmount / 1000}`
+                  ? `custom${Math.floor(customAmount / 1000)}`
                   : data.code}
               </p>
             </div>
@@ -439,7 +439,13 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
                 onClick={() => {
                   setConfirmedModalOpen(false);
                   setIsBoostModalOpen(false);
-                  router.push({ pathname: `/user/${user.id}/dashboard` });
+                  router.push(
+                    {
+                      pathname: `/user/${user.id}/dashboard`,
+                      query: { activeIndex: 8 },
+                    },
+                    `/user/${user.id}/dashboard`
+                  );
                 }}
                 className="w-full h-[36px] bg-caak-primary text-white text-[14px] font-medium mt-[24px] rounded-[8px]"
               >

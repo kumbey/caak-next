@@ -363,8 +363,8 @@ const BuyCreditModal = ({setIsBoostModalOpen, data, value}) => {
                 <p className="text-center text-[#6C7392] text-[15px] mt-[14px]">Төлбөрөө шилжүүлсний дараа 30 минутын дотор таны данс цэнэглэгдэх болно.</p>
                 <div className="flex flex-row items-center justify-center w-full mt-[24px]">
                   <p onClick={() => {
-                    setConfirmedModalOpen(true)
                     setIsConfirmationModal(false)
+                    setConfirmedModalOpen(true)
                     createAccountingRequest()
                   }} className="bg-[#FF6600] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-white font-medium flex items-center justify-center">Тийм</p>
                   <p onClick={() => setIsConfirmationModal(false)} className="border border-[#E8E8E8] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-[#21293C] font-medium flex items-center ml-[11px] justify-center">Үгүй</p>

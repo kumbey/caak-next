@@ -29,6 +29,7 @@ const Notification = ({ item, ...props }) => {
     } else if (
       item.action === "POST_PENDING" ||
       item.action === "POST_ARCHIVED" ||
+      item.action === "POST_REPORTED" ||
       item.action === "POST_DRAFT"
     ) {
       if (item.action === "POST_PENDING") {
@@ -40,6 +41,9 @@ const Notification = ({ item, ...props }) => {
       } else if (item.action === "POST_DRAFT") {
         text.short = `таны ноорог`;
         text.long = `хадгалагдлаа`;
+      } else if (item.action === "POST_REPORTED") {
+        text.short = `таны пост`;
+        text.long = `репортлогдлоо`;
       }
 
       return (
@@ -122,8 +126,7 @@ const Notification = ({ item, ...props }) => {
           />
         </div>
       );
-    }
-    else if (item.action === "BALANCE_INCREASE") {
+    } else if (item.action === "BALANCE_INCREASE") {
       text.short = `таны данс`;
       text.long = `амжилттай цэнэглэгдлээ`;
       return (

@@ -392,24 +392,6 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
             </div>
           </div>
         </div>
-<<<<<<< HEAD
-        {
-          isConfirmationModal &&
-            <div className="popup_modal">
-              <div className="popup_modal-content w-full h-[300px] sm:min-w-[500px] sm:h-[259px] rounded-[12px] flex flex-col items-center px-[50px]">
-                <span className="icon-fi-rs-help-thick text-[#EFAA00] text-[24px] p-[12px] bg-[#EFAA00] bg-opacity-10 rounded-full mt-[40px]"/>
-                <p className="text-[18px] font-semibold text-[#21293C] mt-[10px]">Та төлбөрөө шилжүүлсэн үү?</p>
-                <p className="text-center text-[#6C7392] text-[15px] mt-[14px]">Төлбөрөө шилжүүлсний дараа 30 минутын дотор таны данс цэнэглэгдэх болно.</p>
-                <div className="flex flex-row items-center justify-center w-full mt-[24px]">
-                  <p onClick={() => {
-                    setIsConfirmationModal(false)
-                    setConfirmedModalOpen(true)
-                    createAccountingRequest()
-                  }} className="bg-[#FF6600] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-white font-medium flex items-center justify-center">Тийм</p>
-                  <p onClick={() => setIsConfirmationModal(false)} className="border border-[#E8E8E8] cursor-pointer w-[120px] h-[36px] rounded-[8px] text-[14px] text-[#21293C] font-medium flex items-center ml-[11px] justify-center">Үгүй</p>
-                </div>
-                <span onClick={() => setIsConfirmationModal(false)} className="icon-fi-rs-close cursor-pointer absolute top-4 right-4 w-[30px] h-[30px] bg-[#E4E4E5] text-[#21293C] text-[11px] flex items-center justify-center rounded-full"/>
-=======
         {isConfirmationModal && (
           <div className="popup_modal">
             <div className="popup_modal-content w-full min-h-[259] sm:min-w-[500px] rounded-[12px] flex flex-col items-center px-[50px] pb-[30px]">
@@ -438,7 +420,6 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
                 >
                   Үгүй
                 </p>
->>>>>>> 1bb12c34669cee308d90990125cd4f582c31bda3
               </div>
               <span
                 onClick={() => setIsConfirmationModal(false)}

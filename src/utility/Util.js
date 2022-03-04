@@ -507,6 +507,7 @@ export function numberWithCommas(x, separator) {
   if (x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
   }
+  else return x
 }
 
 export const addDays = (date, days) => {

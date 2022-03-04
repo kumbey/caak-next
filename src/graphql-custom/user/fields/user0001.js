@@ -4,6 +4,9 @@ const user0001 = /* GraphQL */ `{
     id
     firstname
     lastname
+    balance {
+        balance
+    }
     nickname
     birthdate
     gender

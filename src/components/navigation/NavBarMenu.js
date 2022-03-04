@@ -3,13 +3,17 @@ import { Fragment, useEffect, useState } from "react";
 import Divider from "../divider";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { getFileUrl, getGenderImage } from "../../utility/Util";
+import {
+  getFileUrl,
+  getGenderImage,
+  numberWithCommas,
+} from "../../utility/Util";
 import useMediaQuery from "./useMeduaQuery";
 
 export default function NavBarMenu({ type, setIsAuraModalOpen }) {
   const { user, isLogged } = useUser();
   const router = useRouter();
-  
+
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
 
   return (
@@ -66,7 +70,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
                   pathname: `/user/${user.id}/profile`,
                   query: { sortType: "SAVED" },
                 },
-                `/user/${user.id}/profile`,
+                `/user/${user.id}/profile`
               )
             }
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
@@ -78,9 +82,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
             />
             <p className="text-14px text-caak-extraBlack">Хадгалсан постууд</p>
           </div>
-          <div
-            className="hover:bg-caak-liquidnitrogen h-c25 justify-between dropdown-items w-full flex items-center cursor-pointer"
-          >
+          <div className="hover:bg-caak-liquidnitrogen h-c25 justify-between dropdown-items w-full flex items-center cursor-pointer">
             <div className="flex flex-row items-center">
               <span
                 className={
@@ -89,7 +91,12 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
               />
               <p className="text-14px text-caak-extraBlack">Caak Ads данс</p>
             </div>
-            <p className="bg-[#257CEE] bg-opacity-10 flex items-center rounded-full px-[8px] h-[20px] text-[#257CEE] text-[12px] font-medium">100.000₮</p>
+            <p className="bg-[#257CEE] bg-opacity-10 flex items-center rounded-full px-[8px] h-[20px] text-[#257CEE] text-[12px] font-medium">
+              {user.balance?.balance
+                ? numberWithCommas(user.balance.balance, ".")
+                : 0}
+              ₮
+            </p>
           </div>
           {/* <div
             onClick={() => router.push({
@@ -121,11 +128,10 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
               </div>
             </a>
           </Link>
-          {
-            isTablet && (
-              <Link href={'/group/all'}>
-            <a>
-              <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+          {isTablet && (
+            <Link href={"/group/all"}>
+              <a>
+                <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
                   <span
                     className={
                       "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
@@ -133,14 +139,17 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
                   />
                   <p className="text-14px text-caak-extraBlack">Бүх групп</p>
                 </div>
-            </a>
-          </Link>
-            )
-          }
+              </a>
+            </Link>
+          )}
           <div
-            onClick={() => user.aura < 5000 ? setIsAuraModalOpen(true) : router.push({
-              pathname: '/group/create'
-            })}
+            onClick={() =>
+              user.aura < 5000
+                ? setIsAuraModalOpen(true)
+                : router.push({
+                    pathname: "/group/create",
+                  })
+            }
             className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           >
             <span
@@ -165,17 +174,17 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
             </a>
           </Link>
           <Link href={`/group/all`}>
-          <a>
-            <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
-              <span
-                className={
-                  "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
-                }
-              />
-              <p className="text-14px text-caak-extraBlack">Бүх групп</p>
-            </div>
-          </a>
-        </Link>
+            <a>
+              <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+                <span
+                  className={
+                    "icon-fi-rs-group-o text-[18px] px5 text-center w-[20px] flex items-center h-[18px] mr-2"
+                  }
+                />
+                <p className="text-14px text-caak-extraBlack">Бүх групп</p>
+              </div>
+            </a>
+          </Link>
         </Fragment>
       )}
       {isLogged && <Divider className={"my-2"} />}
@@ -191,10 +200,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
           </div>
         </a>
       </Link>
-      {
-        isLogged 
-        ? null
-        : 
+      {isLogged ? null : (
         <Link href={`/group/all`}>
           <a>
             <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
@@ -207,7 +213,7 @@ export default function NavBarMenu({ type, setIsAuraModalOpen }) {
             </div>
           </a>
         </Link>
-      }
+      )}
       <Link href={`/help`}>
         <a>
           <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">

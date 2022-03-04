@@ -47,7 +47,7 @@ const CommentList = ({
       );
       await deleteComments(comment.id);
       setUserComments((prev=> ({
-        ...prev, items: [prev.items, ...filteredComments]
+        ...prev, items: [...filteredComments]
       })));
     } else {
       comment.sub.items.map((sub) => {
@@ -58,7 +58,7 @@ const CommentList = ({
       );
 
       setUserComments((prev=> ({
-        ...prev, items: [prev.items, ...filteredComments]
+        ...prev, items: [...filteredComments]
       })));
 
       await deleteComments(comment.id);
@@ -68,7 +68,7 @@ const CommentList = ({
       (ucomment) => ucomment.id !== comment.id
     );
     setUserComments((prev=> ({
-      ...prev, items: [prev.items, ...filteredComments]
+      ...prev, items: [...filteredComments]
     })));
   };
 

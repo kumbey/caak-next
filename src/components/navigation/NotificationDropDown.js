@@ -30,7 +30,7 @@ import { getUserBalance } from "../../graphql-custom/user/queries";
 const NotificationDropDown = ({ isOpen }) => {
   const [notifications, setNotifications] = useState([]);
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-  const { user, isLogged } = useUser();
+  const { user, setUser, isLogged } = useUser();
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState();
   const [blockScroll, allowScroll] = useScrollBlock();
@@ -57,7 +57,7 @@ const NotificationDropDown = ({ isOpen }) => {
   const getUserData = async (user_id) => {
     return API.graphql({
       query: getUserBalance,
-      variables: {id: user_id},
+      variables: { id: user_id },
     });
   };
 
@@ -87,8 +87,10 @@ const NotificationDropDown = ({ isOpen }) => {
       resp = getReturnData(resp);
       if (resp.type === "BALANCE") {
         let fetchedUser = await getUserData(user.id);
-        fetchedUser = getReturnData(fetchedUser)
-        user.balance.balance = fetchedUser.balance.balance
+        fetchedUser = getReturnData(fetchedUser);
+        const userBalance = { balance: fetchedUser.balance.balance };
+        setUser(prev=> ({...prev, balance: userBalance}))
+        // user.balance.balance = fetchedUser.balance.balance;
       }
       setNotifications([resp, ...notifications]);
     } catch (ex) {
@@ -191,7 +193,7 @@ const NotificationDropDown = ({ isOpen }) => {
           {
             pathname: `/user/${user.id}/dashboard`,
             query: {
-              activeIndex: 2,
+              activeIndex: 8,
             },
           },
           `/user/${user.id}/dashboard`

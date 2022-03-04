@@ -119,7 +119,6 @@ const NotificationDropDown = ({ isOpen }) => {
   const handleNotificationClick = async (index) => {
     try {
       const item = notifications[index];
-      console.log(item);
       if (item.seen === "FALSE") {
         await API.graphql(
           graphqlOperation(updateNotification, {

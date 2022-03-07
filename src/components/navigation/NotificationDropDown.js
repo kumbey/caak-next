@@ -89,7 +89,7 @@ const NotificationDropDown = ({ isOpen }) => {
         let fetchedUser = await getUserData(user.id);
         fetchedUser = getReturnData(fetchedUser);
         const userBalance = { balance: fetchedUser.balance.balance };
-        setUser(prev=> ({...prev, balance: userBalance}))
+        setUser((prev) => ({ ...prev, balance: userBalance }));
         // user.balance.balance = fetchedUser.balance.balance;
       }
       setNotifications([resp, ...notifications]);
@@ -140,6 +140,7 @@ const NotificationDropDown = ({ isOpen }) => {
         item.action === "POST_ARCHIVED" ||
         item.action === "POST_DRAFT" ||
         item.action === "POST_CONFIRMED" ||
+        item.action === "POST_REPORTED" ||
         item.action === "REACTION_POST"
       ) {
         router.push({
@@ -185,6 +186,17 @@ const NotificationDropDown = ({ isOpen }) => {
         router.push({
           pathname: `/user/${item.item_id}/profile`,
         });
+      } else if (item.action === "POST_REPORTED") {
+        let resp = await API.graphql(
+          graphqlOperation(getPost, { id: item.item_id })
+        );
+        resp = getReturnData(resp);
+        router.push(
+          {
+            pathname: `/post/view/${resp.id}`,
+          },
+          `/post/view/${resp.id}`
+        );
       } else if (
         item.action === "BALANCE_DECREASE" ||
         item.action === "BALANCE_INCREASE"

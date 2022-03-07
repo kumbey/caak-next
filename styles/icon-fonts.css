@@ -11,10 +11,9 @@
   font-display: block;
 }
 
-[class^="icon-"],
-[class*=" icon-"] {
+[class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "caakmoon" !important;
+  font-family: 'caakmoon' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -27,6 +26,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-fi-rs-invoice:before {
+  content: "\e99b";
+}
 .icon-fi-rs-date-checked:before {
   content: "\e997";
 }

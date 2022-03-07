@@ -28,6 +28,7 @@ import useUpdateEffect from "../../../../src/hooks/useUpdateEffect";
 export async function getServerSideProps({ req, res, query }) {
   const { API, Auth } = withSSRContext({ req });
   let user;
+  let isSuperAdmin;
   try {
     user = await Auth.currentAuthenticatedUser();
   } catch (ex) {
@@ -82,6 +83,25 @@ export async function getServerSideProps({ req, res, query }) {
     return { notFound: true };
   }
   if (post.user.id !== user?.attributes.sub) {
+    isSuperAdmin =
+      user?.signInUserSession.accessToken.payload["cognito:groups"].includes(
+        "caak-admin"
+      );
+    if (
+      isSuperAdmin &&
+      (post.owned === "CAAK" ||
+        Consts.translatorUserId.some((id) => post.user.id === id))
+    ) {
+      const groups = await getGroups();
+      return {
+        props: {
+          ssrData: {
+            post: post,
+            groups: groups,
+          },
+        },
+      };
+    }
     return { notFound: true };
   }
   const groups = await getGroups();

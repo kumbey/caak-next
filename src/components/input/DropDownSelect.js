@@ -32,13 +32,13 @@ const DropDownSelect = ({
   //Only runs when inputValue changes, ignoring first render.
   useUpdateEffect(() => {
     const adminModerator = groupData.adminModerator.filter((item) =>
-      item.name.toLowerCase().includes(inputValue)
+      item.name.toLowerCase().includes(inputValue.toLowerCase())
     );
     const unMember = groupData.unMember.filter((item) =>
-      item.name.toLowerCase().includes(inputValue)
+      item.name.toLowerCase().includes(inputValue.toLowerCase())
     );
     const member = groupData.member.filter((item) =>
-      item.name.toLowerCase().includes(inputValue)
+      item.name.toLowerCase().includes(inputValue.toLowerCase())
     );
     setFilteredData({ member, unMember, adminModerator });
 
@@ -282,7 +282,7 @@ const DropDownSelect = ({
                           {item.totals.member +
                             item.totals.moderator +
                             item.totals.admin}{" "}
-                          дагагчидтай
+                          гишүүдтэй
                         </p>
                       </div>
                     </div>

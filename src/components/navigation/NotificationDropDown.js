@@ -19,26 +19,24 @@ import { getComment } from "../../graphql-custom/comment/queries";
 import Loader from "../loader";
 import useInfiniteScroll from "../../hooks/useFetch";
 import { useRouter } from "next/router";
-import { isLogged } from "../../utility/Authenty";
 import { getPost } from "../../graphql-custom/post/queries";
 import useMediaQuery from "./useMeduaQuery";
 import useScrollBlock from "../../hooks/useScrollBlock";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
 import emptyNotificationImage from "../../../public/assets/images/Empty-Notification.svg";
 import SimpleBar from "simplebar-react";
+import { getUserBalance } from "../../graphql-custom/user/queries";
 
 const NotificationDropDown = ({ isOpen }) => {
   const [notifications, setNotifications] = useState([]);
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
-  const { user } = useUser();
+  const { user, setUser, isLogged } = useUser();
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState();
   const [blockScroll, allowScroll] = useScrollBlock();
 
   const subscriptions = {};
-  const history = useRouter();
-  // const location = useLocation();
-  // let localNotifications = notifications;
+  const router = useRouter();
   const notificationRef = useRef();
 
   const [nextNotification] = useListPager({
@@ -55,6 +53,13 @@ const NotificationDropDown = ({ isOpen }) => {
     setNotifications,
     notificationRef
   );
+
+  const getUserData = async (user_id) => {
+    return API.graphql({
+      query: getUserBalance,
+      variables: { id: user_id },
+    });
+  };
 
   const fetchNotifications = async (data, setData) => {
     try {
@@ -80,16 +85,22 @@ const NotificationDropDown = ({ isOpen }) => {
         graphqlOperation(getNotification, { id: id })
       );
       resp = getReturnData(resp);
-
+      if (resp.type === "BALANCE") {
+        let fetchedUser = await getUserData(user.id);
+        fetchedUser = getReturnData(fetchedUser);
+        const userBalance = { balance: fetchedUser.balance.balance };
+        setUser((prev) => ({ ...prev, balance: userBalance }));
+        // user.balance.balance = fetchedUser.balance.balance;
+      }
       setNotifications([resp, ...notifications]);
     } catch (ex) {
       console.log(ex);
     }
   };
 
-  const handleAllNotifications = () => {
+  const handleAllNotifications = async () => {
     try {
-      API.graphql(
+      await API.graphql(
         graphqlOperation(methodNoitification, {
           method: "SeenALL",
           user_id: user.id,
@@ -124,16 +135,15 @@ const NotificationDropDown = ({ isOpen }) => {
 
       if (item.seen === "FALSE") notifications[index].seen = "TRUE";
 
-      if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
-        history.push({
-          pathname: `/post/view/${item.item_id}`,
-        });
-      } else if (item.action === "POST_PENDING") {
-        history.push({
-          pathname: `/post/view/${item.item_id}`,
-        });
-      } else if (item.action === "POST_ARCHIVED") {
-        history.push({
+      if (
+        item.action === "POST_PENDING" ||
+        item.action === "POST_ARCHIVED" ||
+        item.action === "POST_DRAFT" ||
+        item.action === "POST_CONFIRMED" ||
+        item.action === "POST_REPORTED" ||
+        item.action === "REACTION_POST"
+      ) {
+        router.push({
           pathname: `/post/view/${item.item_id}`,
         });
       } else if (item.action === "REACTION_POST_ITEM") {
@@ -141,7 +151,7 @@ const NotificationDropDown = ({ isOpen }) => {
           graphqlOperation(getPostItems, { id: item.item_id })
         );
         resp = getReturnData(resp);
-        history.push({
+        router.push({
           pathname: `/post/view/${resp.post_id}`,
         });
       } else if (item.action === "POST_ITEM_COMMENT_WRITED") {
@@ -153,7 +163,7 @@ const NotificationDropDown = ({ isOpen }) => {
           graphqlOperation(getPostItems, { id: resp.post_item_id })
         );
         resp = getReturnData(resp);
-        history.push({
+        router.push({
           pathname: `/post/view/${resp.post_id}/${resp.id}`,
         });
       } else if (item.action === "POST_COMMENT_WRITED") {
@@ -165,7 +175,7 @@ const NotificationDropDown = ({ isOpen }) => {
           graphqlOperation(getPost, { id: resp.post_id })
         );
         resp = getReturnData(resp);
-        history.push(
+        router.push(
           {
             pathname: `/post/view/${resp.id}`,
             query: { jumpToComment: item.item_id },
@@ -173,9 +183,33 @@ const NotificationDropDown = ({ isOpen }) => {
           `/post/view/${resp.id}`
         );
       } else if (item.action === "USER_FOLLOWED") {
-        history.push({
+        router.push({
           pathname: `/user/${item.item_id}/profile`,
         });
+      } else if (item.action === "POST_REPORTED") {
+        let resp = await API.graphql(
+          graphqlOperation(getPost, { id: item.item_id })
+        );
+        resp = getReturnData(resp);
+        router.push(
+          {
+            pathname: `/post/view/${resp.id}`,
+          },
+          `/post/view/${resp.id}`
+        );
+      } else if (
+        item.action === "BALANCE_DECREASE" ||
+        item.action === "BALANCE_INCREASE"
+      ) {
+        router.push(
+          {
+            pathname: `/user/${user.id}/dashboard`,
+            query: {
+              activeIndex: 8,
+            },
+          },
+          `/user/${user.id}/dashboard`
+        );
       }
     } catch (ex) {
       if (
@@ -279,7 +313,11 @@ const NotificationDropDown = ({ isOpen }) => {
           </div>
         </div>
       </div>
-      <SimpleBar className={"max-h-full md:max-h-[559px] rounded-b-[4px] pb-[200px] md:pb-0"}>
+      <SimpleBar
+        className={
+          "max-h-full md:max-h-[559px] rounded-b-[4px] pb-[200px] md:pb-0"
+        }
+      >
         <div
           className={
             "notification_body overflow-hidden rounded-b-[4px] h-full flex flex-col bg-caak-washme p-0"
@@ -318,27 +356,6 @@ const NotificationDropDown = ({ isOpen }) => {
               );
             })
           )}
-          {/*{notifications.map((item, index) => {*/}
-          {/*  return (*/}
-          {/*    <Notification*/}
-          {/*      onClick={() => handleNotificationClick(index)}*/}
-          {/*      key={index}*/}
-          {/*      item={item}*/}
-          {/*    />*/}
-          {/*  );*/}
-          {/*})}*/}
-          {/* <span
-            className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
-          >
-            Сүүлд ирсэн
-          </span> */}
-          {/* <Notification type={"caak"} />
-          <Notification type={"comment"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} />
-          <Notification type={"request"} /> */}
           <div
             ref={notificationRef}
             className={"flex justify-center items-center"}
@@ -351,7 +368,6 @@ const NotificationDropDown = ({ isOpen }) => {
           </div>
         </div>
       </SimpleBar>
-
     </div>
   );
 };

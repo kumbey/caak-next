@@ -29,7 +29,7 @@ export default function PostMoreMenu({
   const [groupFollowed, setGroupFollowed] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  
+
   const getGroupFollow = async () => {
     setLoading(true);
     const resp = await API.graphql({
@@ -98,7 +98,7 @@ export default function PostMoreMenu({
     setGroupFollowed(false);
     handleToast({ param: "unfollow" });
   };
-  
+
   const isAdminAsync = async () => {
     return await isAdmin();
   };
@@ -108,7 +108,7 @@ export default function PostMoreMenu({
   }, []);
 
   return !loading ? (
-    <div className={"dropdown-item-wrapper"}>    
+    <div className={"dropdown-item-wrapper"}>
       {!groupFollowed && (
         <div
           onClick={() =>
@@ -141,21 +141,29 @@ export default function PostMoreMenu({
         </div>
       )}
 
-      {((isLogged && postUser.id === user.id) || (post.status === "DRAFT" && postUser.id === user.id) || isSuperAdmin) && (
-        <div
-          className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
-          onClick={() =>
-            router.push({
-              pathname: `/post/edit/${post.id}`,
-            })
-          }
-        >
-          <span className={"icon-fi-rs-edit-f mr-px-12 w-c1  text-16px"} />
-          <p className="text-14px text-caak-extraBlack">Постыг засах</p>
-        </div>
-      )}
+      {isLogged &&
+        (postUser.id === user.id ||
+          (isSuperAdmin &&
+            (post.owned === "CAAK" ||
+              Consts.translatorUserId.some((id) => id === post.user.id)))) && (
+          <div
+            className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
+            onClick={() =>
+              router.push({
+                pathname: `/post/edit/${post.id}`,
+              })
+            }
+          >
+            <span className={"icon-fi-rs-edit-f mr-px-12 w-c1  text-16px"} />
+            <p className="text-14px text-caak-extraBlack">Постыг засах</p>
+          </div>
+        )}
 
-      {isLogged && postUser.id === user.id && (
+      {isLogged &&
+      (postUser.id === user.id ||
+        (isSuperAdmin &&
+          (post.owned === "CAAK" ||
+            Consts.translatorUserId.some((id) => id === post.user.id)))) && (
         <div
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>
@@ -164,7 +172,7 @@ export default function PostMoreMenu({
             //     status: "ARCHIVED",
             // })
             setOpen(true)
-        } 
+          }
         >
           <span className={"icon-fi-rs-delete-f mr-px-12 w-c1  text-16px"} />
           <p className="text-14px text-caak-extraBlack">Постыг устгах</p>

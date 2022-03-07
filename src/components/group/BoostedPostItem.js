@@ -138,7 +138,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
             "text-13px font-inter font-normal text-caak-darkBlue tracking-[0.21px]  leading-[16px] "
           }
         >
-          {`${numberWithCommas(3000500)}₮`}
+          {`${numberWithCommas(3000500, ".")}₮`}
         </p>
       </td> */}
       <td>
@@ -220,7 +220,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               <p className="text-11px text-white ">Сэтгэгдлийн тоо</p>
             </ReactTooltip>
           </div>
-          {/* <Button
+          <Button
             // loading={loading}
             className={`${
               moment(post.end_date)._d > now
@@ -235,7 +235,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
             >
               {moment(post.end_date)._d > now ? "Бүүстлэсэн" : "Бүүстлэх"}
             </p>
-          </Button> */}
+          </Button>
         </div>
       </td>
     </>

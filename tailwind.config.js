@@ -33,6 +33,7 @@ module.exports = {
         card: "0px 1px 2px rgba(0, 0, 0, 0.1)",
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
         searchInput: "0px 5px 6px rgba(0, 0, 0, 0.12)",
+        adsTab: "0px 0px 4px rgba(0, 0, 0, 0.14)"
       },
       screens: {
         xs: { max: "360px" },

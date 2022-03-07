@@ -16,12 +16,7 @@ import {
 } from "@dnd-kit/core";
 import Switch from "../userProfile/Switch";
 import AddPostCardSmall from "../card/AddPostCardSmall";
-import {
-  _objectWithoutKeys,
-  getFileUrl,
-  getGenderImage,
-  isAdmin,
-} from "../../utility/Util";
+import { getFileUrl, getGenderImage, isAdmin } from "../../utility/Util";
 import Video from "../video";
 import { useRouter } from "next/router";
 import useUpdateEffect from "../../hooks/useUpdateEffect";
@@ -57,7 +52,7 @@ const UploadedMediaEdit = ({
   const [adminTextEditor, setAdminTextEditor] = useState(
     post.onlyBlogView
       ? post.onlyBlogView
-      : selectedGroup.role_on_group === "ADMIN"
+      : selectedGroup?.role_on_group === "ADMIN"
       ? "TRUE"
       : "FALSE"
   );
@@ -310,6 +305,8 @@ const UploadedMediaEdit = ({
     if (selectedGroup) {
       if (selectedGroup.role_on_group !== "ADMIN") {
         setAdminTextEditor("FALSE");
+      }else {
+        setAdminTextEditor("TRUE");
       }
     }
     //eslint-disable-next-line
@@ -728,7 +725,7 @@ const UploadedMediaEdit = ({
             <Switch toggle={setAllowComment} active={allowComment} />
           </div>
           <div className={"flex flex-row justify-between mt-[16px]"}>
-            <p className={"text-[15px] text-caak-generalblack"}>Ноорог</p>
+            <p className={"text-caak-generalblack text-[15px]"}>Ноорог</p>
             <Switch toggle={setIsDraft} active={isDraft} />
           </div>
 

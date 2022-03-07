@@ -1,5 +1,5 @@
 import useScrollBlock from "../../hooks/useScrollBlock";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
 import Link from "next/link";
 import DatePicker from "react-datepicker";
@@ -8,7 +8,9 @@ import {
   addDays,
   differenceDate,
   getFileUrl,
+  getGenderImage,
   getReturnData,
+  numberWithCommas,
 } from "../../utility/Util";
 import FeedCardSkeleton from "../skeleton/FeedCardSkeleton";
 import Card from "../card/FeedCard";
@@ -18,11 +20,20 @@ import toast from "react-hot-toast";
 import { createBoostedPost } from "../../graphql-custom/boost/mutation";
 import { useUser } from "../../context/userContext";
 import useModalLayout from "../../hooks/useModalLayout";
+import { doTransaction } from "../../graphql-custom/transaction/mutation";
+import { useRouter } from "next/router";
 
 const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
+  const router = useRouter();
   const [blockScroll, allowScroll] = useScrollBlock();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [boostedSuccessModal, setBoostedSuccessModal] = useState(false);
+  const [price, setPrice] = useState(0);
+  const [error, setError] = useState({
+    day: "",
+    balance: "",
+  });
   const [day, setDay] = useState(0);
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState();
@@ -40,34 +51,74 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
     setPost(resp);
   };
 
+  const transactionHandler = async () => {
+    return API.graphql({
+      query: doTransaction,
+      variables: {
+        user_id: user.id,
+        status: "DECREASE",
+        desc: JSON.stringify({
+          type: "POST_BOOST",
+          post_id: postId,
+          days: day,
+        }),
+        amount: price,
+      },
+    });
+  };
+
   const updateBoostData = async (e) => {
     e.preventDefault();
-
-    setLoading(true);
-    try {
-      const postData = {
-        post_id: post.id,
-        user_id: post.user_id,
-        start_date: startDate ? startDate.toISOString() : null,
-        end_date: endDate ? endDate.toISOString() : null,
-        status: "ACTIVE",
-      };
-      const resp = await API.graphql(
-        graphqlOperation(createBoostedPost, {
-          input: postData,
-        })
-      );
-      toast.success(
-        `${getReturnData(resp).post.title} 
-        амжилттай бүүстлэгдлээ.`
-      );
-      setLoading(false);
-      setIsBoostModalOpen(false);
-      setData(initData);
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
+    if (day <= 0) {
+      setError((prev) => ({ ...prev, day: "Та хоногоо оруулна уу." }));
+      return null;
     }
+    setLoading(true);
+    let resp = await transactionHandler();
+    resp = getReturnData(resp);
+    resp = resp
+      .toString()
+      .replace("statusCode=", `"statusCode":`)
+      .replace("body=", `"body":`);
+    resp = JSON.parse(resp);
+    if (resp.statusCode === 500) {
+      if (resp.body.errorCode === "LOW_BALANCE") {
+        setError((prev) => ({
+          ...prev,
+          balance: "Таны дансны үлдэгдэл хүрэлцэхгүй байна.",
+        }));
+      } else {
+        toast.error("Таны гүйлгээ амжилтгүй боллоо");
+        return null;
+      }
+    } else if (resp.statusCode === 200) {
+      user.balance.balance = resp.body.balance;
+      try {
+        const postData = {
+          post_id: post.id,
+          user_id: post.user_id,
+          start_date: startDate ? startDate.toISOString() : null,
+          end_date: endDate ? endDate.toISOString() : null,
+          status: "ACTIVE",
+        };
+        const resp = await API.graphql(
+          graphqlOperation(createBoostedPost, {
+            input: postData,
+          })
+        );
+        // toast.success(
+        //   `${getReturnData(resp).post.title}
+        //   амжилттай бүүстлэгдлээ.`
+        // );
+        // router.reload();
+        // setIsBoostModalOpen(false);
+        setBoostedSuccessModal(true);
+      } catch (ex) {
+        setLoading(false);
+        console.log(ex);
+      }
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -82,6 +133,16 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
 
   useEffect(() => {
     setEndDate(addDays(startDate, day));
+    if (day < 14) {
+      setPrice(day * 5000);
+    } else if (day >= 14 && day < 20) {
+      setPrice(day * 4500);
+    } else if (day >= 20 && day < 30) {
+      setPrice(day * 4000);
+    } else if (day >= 30) {
+      setPrice(day * 3500);
+    }
+
     // eslint-disable-next-line
   }, [day]);
 
@@ -109,7 +170,44 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   }, [day]);
 
   return (
-    <BoostPostModalLayout setIsOpen={setIsBoostModalOpen} headerTitle={"Пост бүүстлэх"}>
+    <BoostPostModalLayout
+      setIsOpen={setIsBoostModalOpen}
+      headerTitle={"Пост бүүстлэх"}
+    >
+      {boostedSuccessModal && (
+        <div className="popup_modal">
+          <div className="popup_modal-content w-full sm:min-w-[380px] pb-[30px] min-h-[234px] rounded-[12px] flex flex-col items-center px-[50px]">
+            <span className="icon-fi-rs-rocket text-[#257CEE] text-[24px] p-[12px] bg-[#257CEE] bg-opacity-10 rounded-full mt-[40px]" />
+            <p className="text-[18px] font-semibold text-[#21293C] mt-[10px] text-center">
+              Таны пост амжилттай бүүстлэгдлээ.
+            </p>
+            <button
+              onClick={() => {
+                setBoostedSuccessModal(false);
+                setIsBoostModalOpen(false);
+                router.push(
+                  {
+                    pathname: `/user/${user.id}/dashboard`,
+                    query: { activeIndex: 4 },
+                  },
+                  `/user/${user.id}/dashboard`
+                );
+              }}
+              className="w-full h-[36px] bg-caak-primary text-white text-[14px] font-medium mt-[24px] rounded-[8px]"
+            >
+              Дашбоард руу очих
+            </button>
+            <span
+              onClick={() => {
+                setBoostedSuccessModal(false);
+                setIsBoostModalOpen(false);
+              }}
+              className="icon-fi-rs-close cursor-pointer absolute top-4 right-4 w-[30px] h-[30px] bg-[#E4E4E5] text-[#21293C] text-[11px] flex items-center justify-center rounded-full"
+            />
+          </div>
+        </div>
+      )}
+
       {/*Main content*/}
       <div
         className={"flex flex-col lg:flex-row py-[40px] px-[5px] sm:px-[40px]"}
@@ -145,6 +243,10 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     "border h-[37px] w-full min-w-[168px] mt-1  block  rounded-md text-base  border-gray-200 placeholder-gray-400 focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-caak-generalblack                        focus:ring-1 focus:ring-caak-primary focus:border-caak-primary sm:text-sm hover:border-caak-primary                        hover:bg-white transition ease-in duration-100"
                   }
                 />
+                {error.day && (
+                  <p className={"text-caak-primary text-[12px]"}>{error.day}</p>
+                )}
+
                 <div className="flex flex-col items-center justify-center">
                   <span
                     onClick={() => setDay(day + 1)}
@@ -196,9 +298,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
             </div>
           </div>
           <div
-            className={
-              "max-w-[590px] h-[307px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] py-[22px]"
-            }
+            className={`max-w-[590px] bg-white mt-[20px]  rounded-[8px] shadow-card px-[24px] pt-[22px] pb-[10px]`}
           >
             <p
               className={
@@ -221,7 +321,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                       "font-bold text-[38px] text-[#257CEE] leading-[28px] tracking-[0px]"
                     }
                   >
-                    100.000
+                    {price ?? numberWithCommas(price, ",")}
                   </p>
                   <p
                     className={
@@ -258,7 +358,11 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                       height={28}
                       className={"w-[28px] h-[28px] rounded-full"}
                       alt={user.nickname}
-                      src={getFileUrl(user.pic)}
+                      src={
+                        user.pic
+                          ? getFileUrl(user.pic)
+                          : getGenderImage(user.gender).src
+                      }
                     />
                     <p
                       className={
@@ -272,22 +376,49 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                     <p
                       className={"text-caak-generalblack font-bold text-[18px]"}
                     >
-                      300.000₮
+                      {user?.balance
+                        ? numberWithCommas(user.balance.balance, ",")
+                        : "0"}
+                      ₮
                     </p>
-                    <div
-                      className={
-                        "cursor-pointer w-[21px] h-[21px] flex justify-center items-center bg-[#CDCFD9] rounded-full ml-[8px]"
-                      }
+                    <Link
+                      as={"/help/ads"}
+                      href={{ pathname: "/help/ads", query: { tab: 1 } }}
                     >
-                      <span
-                        className={
-                          "icon-fi-rs-add-l text-[16px] w-[16.2px] h-[16.2px]"
-                        }
-                      />
-                    </div>
+                      <a>
+                        <div
+                          className={
+                            "cursor-pointer w-[21px] h-[21px] flex justify-center items-center bg-[#CDCFD9] rounded-full ml-[8px]"
+                          }
+                        >
+                          <span
+                            className={
+                              "icon-fi-rs-add-l text-[16px] w-[16.2px] h-[16.2px]"
+                            }
+                          />
+                        </div>
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </div>
+              {error.balance && (
+                <div className="flex flex-row mt-[10px] items-center px-[10px] justify-between mx-[22px] my-[5px] rounded-[8px] p-[5px] bg-red-200 max-w-[400px] w-full">
+                  <p className="text-[14px] text-[#21293C]sm:mx-[10px]">
+                    {error.balance}
+                  </p>
+                  <Link
+                    href={{ pathname: "/help/ads", query: { tab: 1 } }}
+                    shallow
+                  >
+                    <a>
+                      <p className="text-[14px] text-[#21293C] font-semibold">
+                        Цэнэглэх
+                      </p>
+                    </a>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

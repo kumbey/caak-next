@@ -1,12 +1,12 @@
 import Consts from "./Consts";
 import CryptoJS from "crypto-js";
 import Configure from "../configure";
-import { DateTime } from "luxon";
-import { useEffect, useRef, useState } from "react";
+import {DateTime} from "luxon";
+import {useEffect, useRef, useState} from "react";
 import femaleImg from "../../public/assets/images/Female-Avatar.svg";
 import maleImg from "../../public/assets/images/Man-Avatar.svg";
 import defaultImg from "../../public/assets/images/default.png";
-import { Auth } from "aws-amplify";
+import {Auth} from "aws-amplify";
 
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
@@ -165,7 +165,7 @@ export function useQuery() {
     });
   }
 
-  return { getQuery, removeQuery, addQuery, addQuerys };
+  return {getQuery, removeQuery, addQuery, addQuerys};
 }
 
 export function mailNumber(mailNumber) {
@@ -297,8 +297,8 @@ export function encodeURL(string) {
 }
 
 export const extractDate = (date) => {
-  const { year, month, day } = DateTime.fromISO(date);
-  return { year, month, day };
+  const {year, month, day} = DateTime.fromISO(date);
+  return {year, month, day};
 };
 
 // Postiin uussen ognoog ni stringeer avch heden second/minute/tsagiin/odriin omno uussniig stringeer butsaadag funkts
@@ -430,7 +430,7 @@ export function _objectWithoutKeys(obj, keys) {
 }
 
 export function _modalisOpen(params) {
-  const { conditions, query } = params;
+  const {conditions, query} = params;
   let isOpen = false;
   for (let i = 0; i, conditions.length > i; i++) {
     const condition = conditions[i];
@@ -503,8 +503,11 @@ export const kFormatter = (num) => {
     : Math.sign(num) * Math.abs(num);
 };
 
-export function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+export function numberWithCommas(x, separator) {
+  if (x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+  }
+  else return x
 }
 
 export const addDays = (date, days) => {

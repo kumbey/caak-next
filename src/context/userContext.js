@@ -208,7 +208,7 @@ function UserProvider(props) {
   // const value = useMemo(() => ({ user, setUser }), [user]);
   return (
     <UserContext.Provider
-      value={{ user, cognitoUser, isLogged, logout, isLoginValid }}
+      value={{ user, cognitoUser, isLogged, setUser, logout, isLoginValid }}
       {...props}
     />
   );

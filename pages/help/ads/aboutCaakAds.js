@@ -7,10 +7,12 @@ import PostHome from "../../../public/assets/images/homepost.png";
 import PostHome2 from "../../../public/assets/images/homepost2.png";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
+import BuyCreditModal from "../../../src/components/modals/buyCreditModal";
 
 export default function AboutCaakAds({ open, setOpen }) {
   const [selected, setSelected] = useState(0);
-  const data = [
+  const [isBoostModalOpen, setIsBoostModalOpen] = useState(false)
+  const screenType = [
     {
       title: "Desktop",
     },
@@ -18,7 +20,7 @@ export default function AboutCaakAds({ open, setOpen }) {
       title: "Mobile",
     },
   ];
-  const data1 = [
+  const adsLocation = [
     {
       title: "Нүүр хуудас",
     },
@@ -50,7 +52,7 @@ export default function AboutCaakAds({ open, setOpen }) {
                   Нүүр хуудсанд харагдах байдал
                 </p>
                 <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
-                  {data.map((data, index) => {
+                  {screenType.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
@@ -96,7 +98,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               <li className={"ads-checked-icon list-none"}>Нүүр хуудасны голд</li>
               <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
-            <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
+            <button onClick={() => setIsBoostModalOpen(true)} className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах
             </button>
           </div>
@@ -120,7 +122,7 @@ export default function AboutCaakAds({ open, setOpen }) {
                   Нүүр хуудсанд харагдах байдал
                 </p>
                 <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
-                  {data.map((data, index) => {
+                  {screenType.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
@@ -165,7 +167,7 @@ export default function AboutCaakAds({ open, setOpen }) {
               <li className={"ads-checked-icon list-none"}>Нүүр хуудасны баруун талд</li>
               <li className={"ads-checked-icon list-none"}>Постны дэлгэрэнгүй хуудаст</li>
             </ul>
-            <button className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
+            <button onClick={() => setIsBoostModalOpen(true)} className="bg-caak-primary w-full h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[14px]">
               Захиалах
             </button>
           </div>
@@ -189,7 +191,7 @@ export default function AboutCaakAds({ open, setOpen }) {
                   Харагдах байдал
                 </p>
                 <div className="sm:absolute right-0 bg-[#D7D7DB] rounded-[8px] flex flex-row items-center">
-                  {data1.map((data, index) => {
+                  {adsLocation.map((data, index) => {
                     return (
                       <p
                         onClick={() => setSelected(index)}
@@ -235,25 +237,25 @@ export default function AboutCaakAds({ open, setOpen }) {
                 <ul className="flex flex-col h-full justify-center">
                   <li>
                     <p className="text-[#5D636B] font-medium text-[14px]">
-                      10 хоног бол{" "}
+                      14+ хоног бол{" "}
                       <span className="text-[#FF6600] font-semibold">
-                        45,000 төг
+                        4,500 төг
                       </span>
                     </p>
                   </li>
                   <li>
                     <p className="text-[#5D636B] font-medium text-[14px]">
-                      30 хоног бол{" "}
+                      20+ хоног бол{" "}
                       <span className="text-[#FF6600] font-semibold">
-                        80,000 төг
+                        4,000 төг
                       </span>
                     </p>
                   </li>
                   <li>
                     <p className="text-[#5D636B] font-medium text-[14px]">
-                      60 хоног бол{" "}
+                      30+ хоног бол{" "}
                       <span className="text-[#FF6600] font-semibold">
-                        100,000 төг
+                        3,500 төг
                       </span>
                     </p>
                   </li>
@@ -269,10 +271,13 @@ export default function AboutCaakAds({ open, setOpen }) {
               <li className={"ads-checked-icon list-none"}>Группуудын постон дунд</li>
               <li className={"ads-plus-icon list-none"}>Сонирхол, нас, хүйс сонгож бүүстлэх</li>
             </ul>
-            <button className="bg-caak-primary w-[282px] h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[20px]">
+            <button onClick={() => setIsBoostModalOpen(true)} className="bg-caak-primary w-[282px] h-[40px] text-white text-[16px] font-medium rounded-[6px] mt-[20px]">
               Захиалах
             </button>
           </div>
+          {
+            isBoostModalOpen && <BuyCreditModal setIsBoostModalOpen={setIsBoostModalOpen} isBoostModalOpen={isBoostModalOpen}/>
+          }
         </div>
       ) : null}
     </>

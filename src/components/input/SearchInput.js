@@ -53,12 +53,18 @@ const SearchInput = ({
   }, [debouncedSearchResult]);
   const handler = (e) => {
     if (e.keyCode === 13) {
-      setIsSearchBarOpen(false);
+      // setIsSearchBarOpen(false);
       e.preventDefault();
       router.push(`/search?q=${e.target.value}`, undefined);
     }
   };
-
+  useEffect(() => {
+    if (inputValue) {
+      setIsSearchBarOpen(true);
+    } else {
+      setIsSearchBarOpen(false);
+    }
+  }, [inputValue]);
   return (
     <div
       ref={searchInputRef}
@@ -168,7 +174,11 @@ const SearchInput = ({
           {...props}
           onKeyDown={handler}
           // onBlur={() => setIsSearchBarOpen(false)}
-          onFocus={() => setIsSearchBarOpen(true)}
+          onFocus={() => {
+            if (inputValue) {
+              setIsSearchBarOpen(true);
+            }
+          }}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           label={label}

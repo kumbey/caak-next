@@ -3,6 +3,7 @@ import API from "@aws-amplify/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Button from "../button";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 
 import {
   extractDate,
@@ -14,12 +15,30 @@ import {
 import Video from "../video";
 import { useRouter } from "next/router";
 import { listPostStatusHistoryByPost } from "../../graphql-custom/post/queries";
+import { updatePost } from "../../graphql-custom/post/mutation";
 
 const ReportedPostItem = ({ imageSrc, post, video }) => {
   const router = useRouter();
   const [postHistory, setPostHistory] = useState();
 
   const [loading, setLoading] = useState(false);
+
+  const postHandler = async ({ id, status }) => {
+    setLoading(true);
+    try {
+      await API.graphql(
+        graphqlOperation(updatePost, {
+          input: { id, status, expectedVersion: post.version },
+        })
+      );
+
+      setLoading(false);
+    } catch (ex) {
+      setLoading(false);
+
+      console.log(ex);
+    }
+  };
 
   const fetchPostHistory = async () => {
     try {
@@ -148,18 +167,31 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
       </td>
 
       <td>
-        <Link href={`/post/edit/${post.id}`}>
-          <a>
-            <Button
-              round
-              className={
-                "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+        <div className="flex justify-between items-center">
+          <Button
+            onClick={() => {
+              {
+                postHandler({ id: post.id, status: "ARCHIVED" });
               }
-            >
-              <p className="">Засах</p>
-            </Button>
-          </a>
-        </Link>
+            }}
+            round
+            className="bg-caak-cardinal w-[112px] text-14px font-inter font-medium  mr-[10px] text-white"
+          >
+            <p className="">Устгах</p>
+          </Button>
+          <Link href={`/post/edit/${post.id}`}>
+            <a>
+              <Button
+                round
+                className={
+                  "hover:bg-gray-100 border border-gray-200 w-[102px] h-[39px]  font-medium font-inter rounded-lg text-caak-generalblack text-14px bg-white relative"
+                }
+              >
+                <p className="">Засах</p>
+              </Button>
+            </a>
+          </Link>
+        </div>
       </td>
     </>
   );

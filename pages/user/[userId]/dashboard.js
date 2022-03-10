@@ -148,7 +148,7 @@ const Dashboard = ({ ssrData }) => {
     {
       id: 2,
       icon: "icon-fi-rs-post-f",
-      number: localUserTotals?.confirmed,
+      number: userTotals?.confirmed,
       text: "Нийт пост",
       bgcolor: "bg-caak-errigalwhite",
       color: "text-caak-darkBlue",
@@ -168,13 +168,13 @@ const Dashboard = ({ ssrData }) => {
       id: 0,
       name: "Бүх постууд",
       icon: "icon-fi-rs-list-grid-o",
-      length: localUserTotals.confirmed,
+      length: userTotals.confirmed,
     },
     {
       id: 1,
       name: "Хүлээгдэж буй постууд",
       icon: "icon-fi-rs-pending-posts",
-      length: localUserTotals.pending,
+      length: userTotals.pending,
     },
     {
       id: 2,
@@ -186,7 +186,7 @@ const Dashboard = ({ ssrData }) => {
       id: 3,
       name: "Архивлагдсан постууд",
       icon: "icon-fi-rs-folder-o",
-      length: localUserTotals.archived,
+      length: userTotals.archived,
     },
     {
       id: 4,
@@ -198,19 +198,19 @@ const Dashboard = ({ ssrData }) => {
       id: 5,
       name: "Дагагчид",
       icon: "icon-fi-rs-friends-o",
-      length: localUserTotals.followers,
+      length: userTotals.followers,
     },
     {
       id: 6,
       name: "Сэтгэгдэл",
       icon: "icon-fi-rs-comment-o",
-      length: localUserTotals.comments,
+      length: userTotals.comments,
     },
     {
       id: 7,
       name: "Репортлогдсон постууд",
       icon: "icon-fi-rs-flag",
-      length: localUserTotals.reported,
+      length: userTotals.reported,
     },
     {
       id: 8,

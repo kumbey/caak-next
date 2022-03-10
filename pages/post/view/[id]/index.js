@@ -382,19 +382,24 @@ const Post = ({ ssrData }) => {
               </p>
               {post.status === "ARCHIVED" &&
                 post.status_history.items?.length > 0 && (
-                  <p className={"text-caak-scriptink"}>
-                    Шалтгаан: {post.status_history.items[0].description}
+                  <p className={"flex text-caak-scriptink"}>
+                    Шалтгаан:
+                    <p className="text-caak-red ml-1">
+                      {post.status_history.items[0].description}
+                    </p>
                   </p>
                 )}
               {post.status === "REPORTED" &&
                 post.status_history.items?.length > 0 && (
-                  <p className={"text-caak-scriptink"}>
-                    Шалтгаан:{" "}
-                    {
-                      post.status_history.items[
-                        post.status_history.items.length - 1 || 0
-                      ].description
-                    }
+                  <p className={"flex text-caak-scriptink"}>
+                    Шалтгаан:
+                    <p className="text-caak-red ml-1">
+                      {
+                        post.status_history.items[
+                          post.status_history.items.length - 1 || 0
+                        ].description
+                      }
+                    </p>
                   </p>
                 )}
 

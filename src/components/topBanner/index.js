@@ -6,7 +6,7 @@ import { listBannersByTypeOrderByEndDate } from "../../graphql/queries";
 import { addViewToItem } from "../../graphql-custom/banner/mutation";
 import { useRouter } from "next/router";
 
-export default function Banner({ location }) {
+export default function TopBanner({ location }) {
   const [banner, setBanner] = useState(null);
   const [meta, setMeta] = useState();
 
@@ -19,7 +19,7 @@ export default function Banner({ location }) {
       const resp = await API.graphql({
         query: listBannersByTypeOrderByEndDate,
         variables: {
-          type: "A2",
+          type: "A3",
           end_date: { gt: now },
         },
         authMode: "AWS_IAM",
@@ -66,9 +66,11 @@ export default function Banner({ location }) {
       <Link href={meta.url}>
         <a className={"w-full"} rel="noreferrer" target="_blank">
           <img
+            width={990}
+            height={160}
             alt=""
             src={getFileUrl(banner.pic1)}
-            className={`rounded-[8px] object-cover w-full min-w-[320px] max-h-[400px]`}
+            className={`object-cover w-full h-full max-w-[990px] max-h-[160px]`}
           />
         </a>
       </Link>

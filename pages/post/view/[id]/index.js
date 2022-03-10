@@ -178,7 +178,7 @@ const Post = ({ ssrData }) => {
         commentRef={commentRef}
         post={post}
         containerClassname={
-          "w-full flex flex-row  max-w-[1200px] mx-auto py-[20px] py-[78px] min-h-[100vh] rounded-b-square z-[0]"
+          "w-full flex flex-row  max-w-[1200px] mx-auto py-[20px] min-h-[100vh] rounded-b-square z-[0]"
         }
       >
         <div

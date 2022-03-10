@@ -4,7 +4,9 @@ import GroupTrendPostsCard from "../../card/GroupTrendPostsCard";
 import useScrollBlock from "../../../hooks/useScrollBlock";
 import ModalBanner from "../../modalBanner";
 import Banner from "../../banner";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
+
+import TopBanner from "../../topBanner";
 
 const ViewPostModalLayout = ({
   children,
@@ -18,7 +20,7 @@ const ViewPostModalLayout = ({
   const [isScrollButtonVisible, setIsScrollButtonVisible] = useState(false);
   const modalRef = useRef(null);
   const viewPostRef = useRef();
-  const router  = useRouter()
+  const router = useRouter();
 
   const onClickScrollTop = () => {
     if (modalRef.current) {
@@ -79,13 +81,18 @@ const ViewPostModalLayout = ({
   return (
     <div ref={modalRef} className="popup_modal">
       <div className="popup_modal-viewPost">
-        <div onClick={()=> back()} className={`h-full bg-black bg-opacity-80`}>
+        <div onClick={() => back()} className={`h-full bg-black bg-opacity-80`}>
           <div
-            onClick={(e)=> {e.stopPropagation()}}
-            className={`rounded-lg relative ${
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className={`flex flex-col rounded-lg relative ${
               containerClassname ? containerClassname : ""
             }`}
           >
+            <div className="flex justify-center pb-[75px]">
+              <TopBanner location={"post"} />
+            </div>
             <div
               className={
                 "viewPostLayoutContainer relative items-center lg:items-start md:px-[20px] lg:px-0"
@@ -102,14 +109,18 @@ const ViewPostModalLayout = ({
                 {isScrollButtonVisible && (
                   <div
                     onClick={() => onClickScrollTop()}
-                      className={`shadow-dropdown flex items-center fixed bottom-[20px] cursor-pointer rounded-[100px] h-[40px] z-[4] bg-white py-[12px] px-[20px]`}
+                    className={`shadow-dropdown flex items-center fixed bottom-[20px] cursor-pointer rounded-[100px] h-[40px] z-[4] bg-white py-[12px] px-[20px]`}
                   >
                     <div className={"w-[20px] h-[20px] -rotate-90"}>
                       <span
                         className={"icon-fi-rs-next-b text-black text-[20px]"}
                       />
                     </div>
-                    <p className={"ml-[9px] text-[14px] font-medium tracking-[0.21px] leading-[17px]"}>
+                    <p
+                      className={
+                        "ml-[9px] text-[14px] font-medium tracking-[0.21px] leading-[17px]"
+                      }
+                    >
                       Дээш буцах
                     </p>
                   </div>

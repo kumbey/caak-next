@@ -12,6 +12,8 @@ import AuraModal from "../../modals/auraModal";
 import Banner from "../../banner";
 import SimpleBar from "simplebar-react";
 
+import TopBanner from "../../topBanner";
+
 const DefaultFeedLayout = ({
   children,
   columns,
@@ -40,70 +42,74 @@ const DefaultFeedLayout = ({
   }
   return (
     loaded && (
-      <div className={"feedLayoutContainer pb-[200px] md:pb-0"}>
-        <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
-
-        {columns === 3 && (
-          <div className={`leftSideBar ${isTablet ? "hidden" : "block"}`}>
-            <SimpleBar className={"leftScroll pr-[12px]"}>
-              <FeedSortButtons
-                feed
-                items={feedType}
-                initialSort={feedSortType}
-                direction={"column"}
-                containerClassname={"w-full"}
-              />
-              <SideBarGroups
-                userId={user.id}
-                role={["ADMIN"]}
-                addGroup
-                initialData={adminModeratorGroups}
-                title={"Миний группүүд"}
-                setIsAuraModalOpen={setIsAuraModalOpen}
-              />
-              <SideBarGroups
-                userId={user.id}
-                role={["MEMBER", "MODERATOR"]}
-                maxColumns={13}
-                initialData={myGroups}
-                title={"Нэгдсэн группүүд"}
-                setIsAuraModalOpen={setIsAuraModalOpen}
-              />
-              <SideBarGroups
-                userId={user.id}
-                role={["NOT_MEMBER"]}
-                initialData={allGroups}
-                maxColumns={13}
-                title={
-                  myGroups !== null && myGroups?.length === 0
-                    ? "Бүх групп"
-                    : "Бусад групп"
-                }
-                setIsAuraModalOpen={setIsAuraModalOpen}
-              />
-              {isLogged && <FooterSidebar />}
-            </SimpleBar>
-          </div>
-        )}
-
-        <div className={"feed"}>{children}</div>
-        <div
-          className={`rightSideBar ${isLogged && !search ? "" : "pt-[60px]"} ${
-            isLaptop ? "hidden" : "block"
-          }`}
-        >
-          {!hideAura && <AuraCard />}
-
-          {!hideSuggestedGroups && (
-            <SuggestedGroupsCard
-              maxColumns={10}
-              title={"Санал болгох группүүд"}
-              className={"mb-[24px]"}
-            />
+      <div className={"flex flex-col feedLayoutContainer"}>
+        <div className="flex justify-center pt-[20px] px-[10px]">
+          <TopBanner />
+        </div>
+        <div className="feedLayoutContainer pb-[200px] md:pb-0">
+          <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
+          {columns === 3 && (
+            <div className={`leftSideBar ${isTablet ? "hidden" : "block"}`}>
+              <SimpleBar className={"leftScroll pr-[12px]"}>
+                <FeedSortButtons
+                  feed
+                  items={feedType}
+                  initialSort={feedSortType}
+                  direction={"column"}
+                  containerClassname={"w-full"}
+                />
+                <SideBarGroups
+                  userId={user.id}
+                  role={["ADMIN"]}
+                  addGroup
+                  initialData={adminModeratorGroups}
+                  title={"Миний группүүд"}
+                  setIsAuraModalOpen={setIsAuraModalOpen}
+                />
+                <SideBarGroups
+                  userId={user.id}
+                  role={["MEMBER", "MODERATOR"]}
+                  maxColumns={13}
+                  initialData={myGroups}
+                  title={"Нэгдсэн группүүд"}
+                  setIsAuraModalOpen={setIsAuraModalOpen}
+                />
+                <SideBarGroups
+                  userId={user.id}
+                  role={["NOT_MEMBER"]}
+                  initialData={allGroups}
+                  maxColumns={13}
+                  title={
+                    myGroups !== null && myGroups?.length === 0
+                      ? "Бүх групп"
+                      : "Бусад групп"
+                  }
+                  setIsAuraModalOpen={setIsAuraModalOpen}
+                />
+                {isLogged && <FooterSidebar />}
+              </SimpleBar>
+            </div>
           )}
 
-          {/* {!isLogged && <FooterSidebar />} */}
-          <Banner />
+          <div className={"feed"}>{children}</div>
+          <div
+            className={`rightSideBar ${
+              isLogged && !search ? "" : "pt-[60px]"
+            } ${isLaptop ? "hidden" : "block"}`}
+          >
+            {!hideAura && <AuraCard />}
+
+            {!hideSuggestedGroups && (
+              <SuggestedGroupsCard
+                maxColumns={10}
+                title={"Санал болгох группүүд"}
+                className={"mb-[24px]"}
+              />
+            )}
+
+            {/* {!isLogged && <FooterSidebar />} */}
+            <Banner />
+          </div>
         </div>
       </div>
     )

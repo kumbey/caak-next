@@ -81,21 +81,24 @@ const ViewPostModalLayout = ({
   return (
     <div ref={modalRef} className="popup_modal">
       <div className="popup_modal-viewPost">
-        <div onClick={() => back()} className={`h-full bg-black bg-opacity-80`}>
+        <div
+          onClick={() => back()}
+          className={`h-full pt-6 bg-black bg-opacity-80`}
+        >
           <div
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className={`flex flex-col rounded-lg relative ${
+            className={`flex flex-col rounded-lg relative pb-[28px] ${
               containerClassname ? containerClassname : ""
             }`}
           >
-            <div className="flex justify-center pb-[75px]">
-              <TopBanner location={"post"} />
+            <div className="flex justify-center">
+              <TopBanner className="pb-[15px]" />
             </div>
             <div
               className={
-                "viewPostLayoutContainer relative items-center lg:items-start md:px-[20px] lg:px-0"
+                "viewPostLayoutContainer mt-16 relative items-center lg:items-start md:px-[20px] lg:px-0"
               }
             >
               <div ref={viewPostRef} className={"viewPostItem"}>

@@ -7,34 +7,31 @@ import {
   generateFileUrl,
   getGenderImage,
   getReturnData,
-  numberWithCommas,
 } from "../../../src/utility/Util";
 import { useListPager } from "../../../src/utility/ApiHelper";
 import { getPostByUser } from "../../../src/graphql-custom/post/queries";
-import DashList from "../../../src/components/list/DashList";
 
-import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 import {
   getUserTotal,
   listUsersbyFollowed,
 } from "../../../src/graphql-custom/user/queries";
-import FollowerList from "../../../src/components/list/FollowerList";
-import CommentList from "../../../src/components/list/CommentList";
 import { useUser } from "../../../src/context/userContext";
-import API from "@aws-amplify/api";
-import { onPostByUser } from "../../../src/graphql-custom/post/subscription";
-import GroupPostItem from "../../../src/components/group/GroupPostItem";
-import useUpdateEffect from "../../../src/hooks/useUpdateEffect";
 import Consts from "../../../src/utility/Consts";
 import Head from "next/head";
-import InfinitScroller from "../../../src/components/layouts/extra/InfinitScroller";
 import userVerifiedSvg from "../../../public/assets/images/fi-rs-awarded.svg";
 import { useWrapper } from "../../../src/context/wrapperContext";
-import ReportedPostItem from "../../../src/components/group/ReportedPostItem";
-import BoostedPostItem from "../../../src/components/group/BoostedPostItem";
-import { listBoostedPostByStatus } from "../../../src/graphql-custom/boost/queries";
-import Link from "next/link";
 import useMediaQuery from "../../../src/components/navigation/useMeduaQuery";
+import AccountHistoryInfinite from "../../../src/components/infiniteScrollers/accountHistoryInfinite";
+import ReportedPostsInfinite from "../../../src/components/infiniteScrollers/reportedPostsInfinite";
+import CommentsInfinite from "../../../src/components/infiniteScrollers/commentsInfinite";
+import FollowersInfinite from "../../../src/components/infiniteScrollers/followersInfinite";
+import BoostedPostsInfinite from "../../../src/components/infiniteScrollers/boostedPostsInfinite";
+import ArchivedPostsInfinite from "../../../src/components/infiniteScrollers/archivedPostsInfinite";
+import DraftedPostsInfinite from "../../../src/components/infiniteScrollers/draftedPostsInfinite";
+import PendingPostsInfinite from "../../../src/components/infiniteScrollers/pendingPostsInfinite";
+import ConfirmedPostsInfinite from "../../../src/components/infiniteScrollers/confirmedPostsInfinite";
+import { listBoostedPostByStatus } from "../../../src/graphql-custom/boost/queries";
+import { listCommentByUser } from "../../../src/graphql-custom/comment/queries";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -81,37 +78,21 @@ const Dashboard = ({ ssrData }) => {
 
   const { isLogged, user } = useUser();
   const [loading, setLoading] = useState(false);
+  const [pendingLoading, setPendingLoading] = useState(false);
+  const [draftLoading, setDraftLoading] = useState(false);
+  const [archivedLoading, setArchivedLoading] = useState(false);
+  const [commentsLoading, setCommentsLoading] = useState(false);
+  const [boostedLoading, setBoostedLoading] = useState(false);
+  const [followedLoading, setFollowedLoading] = useState(false);
+  const [reportedLoading, setReportedLoading] = useState(false);
+
   const [loaded, setLoaded] = useState(false);
   const [activeIndex, setActiveIndex] = useState(
     router.query.activeIndex ? parseInt(router.query.activeIndex) : 0
   );
-  const [draftPostType, setDraftPostType] = useState("DRAFT");
   const [userTotals, setUserTotals] = useState(ssrData.userTotals);
-  let localUserTotals = ssrData.userTotals;
-  const [followedUsers, setFollowedUsers] = useState({
-    items: [],
-    nextToken: "",
-  });
-  const [userComments, setUserComments] = useState({
-    items: [],
-    nextToken: "",
-  });
   const [posts, setPosts] = useState(ssrData.posts);
   const [pendingPosts, setPendingPosts] = useState({
-    items: [],
-    nextToken: "",
-  });
-  const [render, setRender] = useState(0);
-
-  const [archivedPosts, setArchivedPosts] = useState({
-    items: [],
-    nextToken: "",
-  });
-  const [reportedPosts, setReportedPosts] = useState({
-    items: [],
-    nextToken: "",
-  });
-  const [boostedPosts, setBoostedPosts] = useState({
     items: [],
     nextToken: "",
   });
@@ -119,8 +100,26 @@ const Dashboard = ({ ssrData }) => {
     items: [],
     nextToken: "",
   });
-  const [subscripedPost, setSubscripedPost] = useState(0);
-  const subscriptions = {};
+  const [archivedPosts, setArchivedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
+  const [boostedPosts, setBoostedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
+  const [userComments, setUserComments] = useState({
+    items: [],
+    nextToken: "",
+  });
+  const [followedUsers, setFollowedUsers] = useState({
+    items: [],
+    nextToken: "",
+  });
+  const [reportedPosts, setReportedPosts] = useState({
+    items: [],
+    nextToken: "",
+  });
   const [totalReaction] = useState(
     userTotals?.comment_reactions +
       userTotals?.post_reactions +
@@ -213,6 +212,12 @@ const Dashboard = ({ ssrData }) => {
       icon: "icon-fi-rs-flag",
       length: localUserTotals.reported,
     },
+    {
+      id: 8,
+      name: "Дансны хуулга",
+      icon: "icon-fi-rs-invoice",
+      length: 0,
+    },
   ];
 
   const [nextPosts] = useListPager({
@@ -226,81 +231,7 @@ const Dashboard = ({ ssrData }) => {
     nextToken: ssrData.posts.nextToken,
     ssr: true,
   });
-  const [nextPending] = useListPager({
-    query: getPostByUser,
-    variables: {
-      user_id: router.query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "PENDING" } },
-      limit: 20,
-    },
-    nextToken: pendingPosts.nextToken,
-    // ssr: true,
-  });
-  const [nextArchived] = useListPager({
-    query: getPostByUser,
-    variables: {
-      user_id: router.query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "ARCHIVED" } },
-      limit: 20,
-    },
-    nextToken: archivedPosts.nextToken,
-  });
-  const [nextDrafted] = useListPager({
-    query: getPostByUser,
-    variables: {
-      user_id: router.query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "DRAFT" } },
-      limit: 20,
-    },
-    nextToken: draftedPosts.nextToken,
-  });
 
-  const [nextComments] = useListPager({
-    query: listCommentByUser,
-    variables: {
-      user_id: router.query.userId,
-      sortDirection: "DESC",
-      limit: 20,
-    },
-    nextToken: userComments.nextToken,
-
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    // ssr: true,
-  });
-  const [nextFollowers] = useListPager({
-    query: listUsersbyFollowed,
-    variables: {
-      user_id: router.query.userId,
-      limit: 20,
-    },
-    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
-    nextToken: followedUsers.nextToken,
-    // ssr: true,
-  });
-  const [nextReported] = useListPager({
-    query: getPostByUser,
-    variables: {
-      user_id: router.query.userId,
-      sortDirection: "DESC",
-      filter: { status: { eq: "REPORTED" } },
-      limit: 20,
-    },
-    nextToken: pendingPosts.nextToken,
-    // ssr: true,
-  });
-  const [nextBoosted] = useListPager({
-    query: listBoostedPostByStatus,
-    variables: {
-      status: "ACTIVE",
-      sortDirection: "DESC",
-      filter: { user_id: { eq: router.query.userId } },
-    },
-    nextToken: boostedPosts.nextToken,
-    // ssr: true,
-  });
   const fetchPosts = async () => {
     try {
       setLoading(true);
@@ -318,11 +249,20 @@ const Dashboard = ({ ssrData }) => {
       console.log(ex);
     }
   };
-
+  const [nextPending] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "PENDING" } },
+      limit: 20,
+    },
+    nextToken: pendingPosts.nextToken,
+  });
   const fetchPending = async () => {
     try {
-      if (!loading) {
-        setLoading(true);
+      if (!pendingLoading) {
+        setPendingLoading(true);
         const resp = await nextPending();
         if (resp) {
           setPendingPosts((nextPending) => ({
@@ -331,37 +271,28 @@ const Dashboard = ({ ssrData }) => {
           }));
         }
 
-        setLoading(false);
+        setPendingLoading(false);
       }
     } catch (ex) {
-      setLoading(false);
+      setPendingLoading(false);
       console.log(ex);
     }
   };
-  const fetchArchived = async () => {
-    try {
-      if (!loading) {
-        setLoading(true);
 
-        const resp = await nextArchived();
-        if (resp) {
-          setArchivedPosts((nextArchived) => ({
-            ...nextArchived,
-            items: [...nextArchived.items, ...resp],
-          }));
-        }
-
-        setLoading(false);
-      }
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
-  };
+  const [nextDrafted] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "DRAFT" } },
+      limit: 20,
+    },
+    nextToken: draftedPosts.nextToken,
+  });
   const fetchDrafted = async () => {
     try {
-      if (!loading) {
-        setLoading(true);
+      if (!draftLoading) {
+        setDraftLoading(true);
 
         const resp = await nextDrafted();
         if (resp) {
@@ -371,38 +302,85 @@ const Dashboard = ({ ssrData }) => {
           }));
         }
 
-        setLoading(false);
+        setDraftLoading(false);
       }
     } catch (ex) {
-      setLoading(false);
+      setDraftLoading(false);
       console.log(ex);
     }
   };
-
-  const fetchComments = async () => {
+  const [nextArchived] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "ARCHIVED" } },
+      limit: 20,
+    },
+    nextToken: archivedPosts.nextToken,
+  });
+  const fetchArchived = async () => {
     try {
-      if (!loading) {
-        setLoading(true);
-
-        const resp = await nextComments();
+      if (!archivedLoading) {
+        setArchivedLoading(true);
+        const resp = await nextArchived();
         if (resp) {
-          setUserComments((nextComments) => ({
-            ...nextComments,
-            items: [...nextComments.items, ...resp],
+          setArchivedPosts((nextArchived) => ({
+            ...nextArchived,
+            items: [...nextArchived.items, ...resp],
           }));
         }
-
-        setLoading(false);
+        setArchivedLoading(false);
       }
     } catch (ex) {
-      setLoading(false);
+      setArchivedLoading(false);
       console.log(ex);
     }
   };
+
+  const [nextBoosted] = useListPager({
+    query: listBoostedPostByStatus,
+    variables: {
+      status: "ACTIVE",
+      sortDirection: "DESC",
+      filter: { user_id: { eq: router.query.userId } },
+    },
+    nextToken: boostedPosts.nextToken,
+    // ssr: true,
+  });
+  const fetchBoosted = async () => {
+    try {
+      if (!boostedLoading) {
+        setBoostedLoading(true);
+        const resp = await nextBoosted();
+        if (resp) {
+          setBoostedPosts((nextBoosted) => ({
+            ...nextBoosted,
+            items: [...nextBoosted.items, ...resp],
+          }));
+        }
+        setBoostedLoading(false);
+      }
+    } catch (ex) {
+      setBoostedLoading(false);
+      console.log(ex);
+    }
+  };
+
+  const [nextFollowers] = useListPager({
+    query: listUsersbyFollowed,
+    variables: {
+      user_id: router.query.userId,
+      limit: 20,
+    },
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    nextToken: followedUsers.nextToken,
+    // ssr: true,
+  });
   const fetchFollowers = async () => {
     try {
-      if (!loading) {
-        setLoading(true);
+      if (!followedLoading) {
+        setFollowedLoading(true);
 
         const resp = await nextFollowers();
         if (resp) {
@@ -412,17 +390,60 @@ const Dashboard = ({ ssrData }) => {
           }));
         }
 
-        setLoading(false);
+        setFollowedLoading(false);
       }
     } catch (ex) {
-      setLoading(false);
+      setFollowedLoading(false);
       console.log(ex);
     }
   };
+
+  const [nextComments] = useListPager({
+    query: listCommentByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      limit: 20,
+    },
+    nextToken: userComments.nextToken,
+
+    authMode: user ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
+    // ssr: true,
+  });
+  const fetchComments = async () => {
+    try {
+      if (!commentsLoading) {
+        setCommentsLoading(true);
+        const resp = await nextComments();
+        if (resp) {
+          setUserComments((nextComments) => ({
+            ...nextComments,
+            items: [...nextComments.items, ...resp],
+          }));
+        }
+        setCommentsLoading(false);
+      }
+    } catch (ex) {
+      setCommentsLoading(false);
+      console.log(ex);
+    }
+  };
+
+  const [nextReported] = useListPager({
+    query: getPostByUser,
+    variables: {
+      user_id: router.query.userId,
+      sortDirection: "DESC",
+      filter: { status: { eq: "REPORTED" } },
+      limit: 20,
+    },
+    nextToken: reportedPosts.nextToken,
+    // ssr: true,
+  });
   const fetchReported = async () => {
     try {
-      if (!loading) {
-        setLoading(true);
+      if (!reportedLoading) {
+        setReportedLoading(true);
 
         const resp = await nextReported();
         if (resp) {
@@ -432,388 +453,17 @@ const Dashboard = ({ ssrData }) => {
           }));
         }
 
-        setLoading(false);
+        setReportedLoading(false);
       }
     } catch (ex) {
-      setLoading(false);
+      setReportedLoading(false);
       console.log(ex);
     }
   };
-  const fetchBoosted = async () => {
-    try {
-      if (!loading) {
-        setLoading(true);
-
-        const resp = await nextBoosted();
-        if (resp) {
-          setBoostedPosts((nextBoosted) => ({
-            ...nextBoosted,
-            items: [...nextBoosted.items, ...resp],
-          }));
-        }
-
-        setLoading(false);
-      }
-    } catch (ex) {
-      setLoading(false);
-      console.log(ex);
-    }
-  };
-
-  const subscrip = () => {
-    let authMode = "AWS_IAM";
-
-    if (isLogged) {
-      authMode = "AMAZON_COGNITO_USER_POOLS";
-    }
-
-    subscriptions.onPostUpdateByStatus = API.graphql({
-      query: onPostByUser,
-      variables: {
-        status: "CONFIRMED",
-        user_id: user.id,
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        setSubscripedPost({
-          post: getReturnData(data, true),
-          type: "add",
-        });
-      },
-    });
-
-    subscriptions.onPostByUserDeleted = API.graphql({
-      query: onPostByUser,
-      variables: {
-        status: "ARCHIVED",
-        user_id: user.id,
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        setSubscripedPost({
-          post: getReturnData(data, true),
-          type: "remove",
-        });
-      },
-    });
-
-    subscriptions.onPostByUserDeleted = API.graphql({
-      query: onPostByUser,
-      variables: {
-        status: "PENDING",
-        user_id: user.id,
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        setSubscripedPost({
-          post: getReturnData(data, true),
-          type: "remove",
-        });
-      },
-    });
-
-    subscriptions.onPostByUserDeleted = API.graphql({
-      query: onPostByUser,
-      variables: {
-        status: "DRAFT",
-        user_id: user.id,
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        setSubscripedPost({
-          post: getReturnData(data, true),
-          type: "remove",
-        });
-      },
-    });
-
-    subscriptions.onPostByUserDeleted = API.graphql({
-      query: onPostByUser,
-      variables: {
-        status: "REPORTED",
-        user_id: user.id,
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        setSubscripedPost({
-          post: getReturnData(data, true),
-          type: "remove",
-        });
-      },
-    });
-  };
-
-  useUpdateEffect(() => {
-    if (subscripedPost) {
-      const pendingIndex = pendingPosts.items.findIndex(
-        (post) => post.id === subscripedPost.post.id
-      );
-      const postIndex = posts.items.findIndex(
-        (post) => post.id === subscripedPost.post.id
-      );
-      const archivedIndex = archivedPosts.items.findIndex(
-        (post) => post.id === subscripedPost.post.id
-      );
-      const draftIndex = draftedPosts.items.findIndex(
-        (post) => post.id === subscripedPost.post.id
-      );
-      const reportIndex = reportedPosts.items.findIndex(
-        (post) => post.id === subscripedPost.post.id
-      );
-
-      if (subscripedPost.post.status === "CONFIRMED") {
-        if (postIndex === -1) {
-          setPosts({
-            ...posts,
-            items: [subscripedPost.post, ...posts.items],
-          });
-          // pendingPosts.items.splice(pendingIndex, 1);
-          // archivedPosts.items.splice(archivedIndex, 1);
-          localUserTotals.confirmed = localUserTotals.confirmed + 1;
-          setRender(render + 1);
-          setUserTotals({
-            ...userTotals,
-            confirmed: userTotals.confirmed + 1,
-            // pending: userTotals.pending !== 0 && userTotals.pending - 1,
-            // archived: userTotals.archived !== 0 && userTotals.archived - 1,
-          });
-        }
-        if (pendingIndex > -1) {
-          pendingPosts.items.splice(pendingIndex, 1);
-          localUserTotals.pending = localUserTotals.pending - 1;
-
-          setRender(render + 1);
-          if (userTotals.pending !== 0) {
-            setUserTotals({
-              ...userTotals,
-              pending: userTotals.pending - 1,
-            });
-          }
-        }
-        if (archivedIndex > -1) {
-          archivedPosts.items.splice(archivedIndex, 1);
-          localUserTotals.archived = localUserTotals.archived - 1;
-
-          setRender(render + 1);
-          if (userTotals.archived !== 0) {
-            setUserTotals({
-              ...userTotals,
-              archived: userTotals.archived - 1,
-            });
-          }
-        }
-        if (reportIndex > -1) {
-          reportedPosts.items.splice(reportIndex, 1);
-          // userTotals.pending - 1;
-          localUserTotals.reported = localUserTotals.reported - 1;
-          setRender(render + 1);
-          if (userTotals.reported !== 0) {
-            setUserTotals({
-              ...userTotals,
-              reported: userTotals.reported - 1,
-            });
-          }
-        }
-      }
-      if (subscripedPost.post.status === "PENDING") {
-        if (pendingIndex === -1) {
-          setPendingPosts({
-            ...pendingPosts,
-            items: [subscripedPost.post, ...pendingPosts.items],
-          });
-          localUserTotals.pending = localUserTotals.pending + 1;
-
-          setRender(render + 1);
-
-          setUserTotals({
-            ...userTotals,
-            pending: userTotals.pending + 1,
-          });
-        }
-        if (archivedIndex > -1) {
-          archivedPosts.items.splice(archivedIndex, 1);
-          localUserTotals.archived = localUserTotals.archived - 1;
-
-          setRender(render + 1);
-          if (userTotals.archived !== 0) {
-            setUserTotals({
-              ...userTotals,
-              archived: userTotals.archived - 1,
-            });
-          }
-        }
-        if (postIndex > -1) {
-          posts.items.splice(postIndex, 1);
-          localUserTotals.confirmed = localUserTotals.confirmed - 1;
-
-          setRender(render + 1);
-          if (userTotals.confirmed !== 0) {
-            setUserTotals({
-              ...userTotals,
-              confirmed: userTotals.confirmed - 1,
-            });
-          }
-        }
-
-        if (reportIndex > -1) {
-          reportedPosts.items.splice(reportIndex, 1);
-          localUserTotals.reported = localUserTotals.reported - 1;
-
-          setRender(render + 1);
-          if (userTotals.reported !== 0) {
-            setUserTotals({
-              ...userTotals,
-              reported: userTotals.reported - 1,
-            });
-          }
-        }
-
-        if (draftIndex > -1) {
-          draftedPosts.items.splice(draftIndex, 1);
-        }
-      }
-      if (subscripedPost.post.status === "ARCHIVED") {
-        if (archivedIndex === -1) {
-          setArchivedPosts({
-            ...archivedPosts,
-            items: [subscripedPost.post, ...archivedPosts.items],
-          });
-          localUserTotals.archived = localUserTotals.archived + 1;
-
-          setUserTotals({
-            ...userTotals,
-            archived: userTotals.archived + 1,
-          });
-          setRender(render + 1);
-        }
-        if (postIndex > -1) {
-          posts.items.splice(postIndex, 1);
-          localUserTotals.confirmed = localUserTotals.confirmed - 1;
-
-          if (userTotals.confirmed !== 0) {
-            setUserTotals({
-              ...userTotals,
-              confirmed: userTotals.confirmed - 1,
-            });
-          }
-          setRender(render + 1);
-        }
-        if (pendingIndex > -1) {
-          pendingPosts.items.splice(pendingIndex, 1);
-          localUserTotals.pending = localUserTotals.pending - 1;
-
-          if (userTotals.pending !== 0) {
-            setUserTotals({
-              ...userTotals,
-              pending: userTotals.pending - 1,
-            });
-          }
-          setRender(render + 1);
-        }
-
-        if (draftIndex > -1) {
-          draftedPosts.items.splice(draftIndex, 1);
-          // userTotals.pending - 1;
-
-          setRender(render + 1);
-        }
-        if (reportIndex > -1) {
-          reportedPosts.items.splice(reportIndex, 1);
-          localUserTotals.reported = localUserTotals.reported - 1;
-
-          if (userTotals.reported !== 0) {
-            setUserTotals({
-              ...userTotals,
-              reported: userTotals.reported - 1,
-            });
-          }
-          setRender(render + 1);
-        }
-      }
-
-      if (subscripedPost.post.status === "DRAFT") {
-        if (draftIndex === -1) {
-          setDraftedPosts({
-            ...draftedPosts,
-            items: [subscripedPost.post, ...draftedPosts.items],
-          });
-          // userTotals.pending + 1;
-          setRender(render + 1);
-        }
-        if (archivedIndex > -1) {
-          archivedPosts.items.splice(archivedIndex, 1);
-          localUserTotals.archived = localUserTotals.archived - 1;
-
-          setRender(render + 1);
-          if (userTotals.archived !== 0) {
-            setUserTotals({
-              ...userTotals,
-              archived: userTotals.archived - 1,
-            });
-          }
-        }
-        if (pendingIndex > -1) {
-          pendingPosts.items.splice(pendingIndex, 1);
-          localUserTotals.pending = localUserTotals.pending - 1;
-
-          setRender(render + 1);
-          if (userTotals.pending !== 0) {
-            setUserTotals({
-              ...userTotals,
-              pending: userTotals.pending - 1,
-            });
-          }
-        }
-      }
-
-      if (subscripedPost.post.status === "REPORTED") {
-        if (postIndex > -1) {
-          posts.items.splice(postIndex, 1);
-          localUserTotals.confirmed = localUserTotals.confirmed - 1;
-          setRender(render + 1);
-          if (userTotals.confirmed !== 0) {
-            setUserTotals({
-              ...userTotals,
-              confirmed: userTotals.confirmed - 1,
-            });
-          }
-        }
-        if (reportIndex === -1) {
-          setReportedPosts({
-            ...reportedPosts,
-            items: [subscripedPost.post, ...reportedPosts.items],
-          });
-
-          setUserTotals({
-            ...userTotals,
-            reported: userTotals.reported + 1,
-          });
-          localUserTotals.reported = localUserTotals.reported + 1;
-
-          setRender(render + 1);
-        }
-      }
-    }
-    // eslint-disable-next-line
-  }, [subscripedPost]);
 
   useEffect(() => {
     setNavBarTransparent(false);
-    subscrip();
-
     setLoaded(true);
-    return () => {
-      Object.keys(subscriptions).map((key) => {
-        subscriptions[key].unsubscribe();
-        return true;
-      });
-    };
-
     // eslint-disable-next-line
   }, []);
 
@@ -928,343 +578,77 @@ const Dashboard = ({ ssrData }) => {
               }
             >
               {activeIndex === 0 ? (
-                <div className="flex flex-col">
-                  <div className="mb-[13px] hidden md:flex ">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[230px]">
-                      Пост
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[250px]">
-                      Групп
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[175px]">
-                      Хандалт
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack">
-                      Үйлдэл
-                    </p>
-                  </div>
-
-                  <InfinitScroller onNext={fetchPosts} loading={loading}>
-                    {posts.items.length > 0 &&
-                      posts.items.map((post, index) => {
-                        return (
-                          <DashList
-                            key={index}
-                            type={"user"}
-                            imageSrc={post?.items?.items[0]?.file}
-                            video={post?.items?.items[0]?.file?.type?.startsWith(
-                              "video"
-                            )}
-                            post={post}
-                            className="ph:mb-4 sm:mb-4"
-                          />
-                        );
-                      })}
-                  </InfinitScroller>
-                </div>
+                <ConfirmedPostsInfinite
+                  posts={posts}
+                  setPosts={setPosts}
+                  fetcher={fetchPosts}
+                  loading={loading}
+                  totals={userTotals}
+                />
               ) : null}
-
               {activeIndex === 1 ? (
-                <div className="flex flex-col">
-                  {pendingPosts.items.length > 0 ? (
-                    <div className="hidden md:flex mb-[13px]">
-                      <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
-                        Пост
-                      </p>
-                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
-                        Гишүүн
-                      </p>
-                      <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
-                        Огноо
-                      </p>
-                      <p className="font-inter font-normal text-14px text-caak-generalblack">
-                        Үйлдэл
-                      </p>
-                    </div>
-                  ) : null}
-                  {!loading && pendingPosts.items.length === 0 ? (
-                    <div className="flex items-center justify-center h-80">
-                      <p className="text-sm">
-                        Уучлаарай та пост илгээгээгүй байна.&nbsp;
-                        <strong
-                          onClick={() =>
-                            router.push("/post/add", undefined, {
-                              shallow: false,
-                            })
-                          }
-                          className="text-[#0000EE] cursor-pointer"
-                        >
-                          ЭНД &nbsp;
-                        </strong>
-                        дарж пост оруулна уу!
-                      </p>
-                    </div>
-                  ) : null}
-                  <InfinitScroller onNext={fetchPending} loading={loading}>
-                    {pendingPosts.items.map((pendingPost, index) => {
-                      return (
-                        <GroupPostItem
-                          type={"user"}
-                          key={index}
-                          imageSrc={pendingPost?.items?.items[0]?.file}
-                          video={pendingPost?.items?.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          post={pendingPost}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    })}
-                  </InfinitScroller>
-                </div>
+                <PendingPostsInfinite
+                  posts={pendingPosts}
+                  setPosts={setPendingPosts}
+                  fetcher={fetchPending}
+                  loading={pendingLoading}
+                  totals={userTotals}
+                />
               ) : null}
               {activeIndex === 2 ? (
-                <div className="flex flex-col">
-                  <div className="hidden md:flex mb-[13px]">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[325px]">
-                      Пост
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[175px]">
-                      Гишүүн
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[120px]">
-                      Огноо
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack">
-                      Үйлдэл
-                    </p>
-                  </div>
-                  <InfinitScroller onNext={fetchDrafted} loading={loading}>
-                    {draftedPosts?.items?.length > 0 &&
-                      draftedPosts.items.map((draftedPost, index) => {
-                        return (
-                          <GroupPostItem
-                            type={"user"}
-                            key={index}
-                            imageSrc={draftedPost?.items?.items[0]?.file}
-                            video={draftedPost?.items?.items[0]?.file?.type?.startsWith(
-                              "video"
-                            )}
-                            post={draftedPost}
-                            className="ph:mb-4 sm:mb-4"
-                          />
-                        );
-                      })}
-                  </InfinitScroller>
-                </div>
+                <DraftedPostsInfinite
+                  posts={draftedPosts}
+                  setPosts={setDraftedPosts}
+                  fetcher={fetchDrafted}
+                  loading={draftLoading}
+                  totals={userTotals}
+                />
               ) : null}
               {activeIndex === 3 ? (
-                <div className="flex flex-col">
-                  <div className="hidden md:flex mb-[13px]">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[355px]">
-                      Пост
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[195px]">
-                      Гишүүн
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[93px]">
-                      Огноо
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack">
-                      Үйлдэл
-                    </p>
-                  </div>
-                  <InfinitScroller onNext={fetchArchived} loading={loading}>
-                    {archivedPosts.items.length > 0 &&
-                      archivedPosts.items.map((archivedPost, index) => {
-                        return (
-                          <GroupPostItem
-                            type={"user"}
-                            key={index}
-                            imageSrc={archivedPost?.items?.items[0]?.file}
-                            video={archivedPost?.items?.items[0]?.file?.type?.startsWith(
-                              "video"
-                            )}
-                            post={archivedPost}
-                            className="ph:mb-4 sm:mb-4"
-                          />
-                        );
-                      })}
-                  </InfinitScroller>
-                </div>
+                <ArchivedPostsInfinite
+                  posts={archivedPosts}
+                  setPosts={setArchivedPosts}
+                  fetcher={fetchArchived}
+                  loading={archivedLoading}
+                  totals={userTotals}
+                />
               ) : null}
               {activeIndex === 4 ? (
-                <div className="flex flex-col">
-                  {!loading && boostedPosts.items.length === 0 ? (
-                    <div className="flex items-center justify-center h-80">
-                      <p className="text-sm">
-                        Уучлаарай та одоогоор пост бүүстлээгүй байна.&nbsp;
-                        <strong
-                          onClick={() =>
-                            router.push("/help/ads", undefined, {
-                              shallow: false,
-                            })
-                          }
-                          className="text-[#0000EE] cursor-pointer"
-                        >
-                          ЭНД &nbsp;
-                        </strong>
-                        дарж дэлгэрэнгүй мэдээлэл авна уу!
-                      </p>
-                    </div>
-                  ) : null}
-                  <InfinitScroller onNext={fetchBoosted} loading={loading}>
-                    <table className="w-full table">
-                      {boostedPosts.items.length > 0 ? (
-                        <thead className="">
-                          <tr className="">
-                            <th className="w-[215px] max-w-[215px] text-left font-inter font-normal text-14px text-caak-generalblack">
-                              Пост
-                            </th>
-                            <th className="text-left w-10  font-inter font-normal text-14px text-caak-generalblack">
-                              Хоног
-                            </th>
-                            <th className="text-center w-36  font-inter font-normal text-14px text-caak-generalblack">
-                              Эхлэх дуусах огноо
-                            </th>
-
-                            {/* <th className="text-left font-inter font-normal text-14px text-caak-generalblack">
-                              Зарцуулалт
-                            </th> */}
-                            <th className="text-center font-inter font-normal text-14px text-caak-generalblack">
-                              Хандалт
-                            </th>
-                            <th className="text-left w-36  font-inter font-normal text-14px text-caak-generalblack" />
-                          </tr>
-                        </thead>
-                      ) : null}
-                      <tbody>
-                        {boostedPosts.items.length > 0 &&
-                          boostedPosts.items.map((boostedPost, index) => {
-                            return (
-                              <tr
-                                key={index}
-                                className="border-t border-b mb-2"
-                              >
-                                <BoostedPostItem
-                                  type={"user"}
-                                  key={index}
-                                  imageSrc={
-                                    boostedPost?.post?.items?.items[0]?.file
-                                  }
-                                  video={boostedPost?.post?.items?.items[0]?.file?.type?.startsWith(
-                                    "video"
-                                  )}
-                                  post={boostedPost}
-                                  className="ph:mb-4 sm:mb-4"
-                                />
-                              </tr>
-                            );
-                          })}
-                      </tbody>
-                    </table>
-                  </InfinitScroller>
-                </div>
+                <BoostedPostsInfinite
+                  posts={boostedPosts}
+                  setPosts={setBoostedPosts}
+                  fetcher={fetchBoosted}
+                  loading={boostedLoading}
+                />
               ) : null}
               {activeIndex === 5 ? (
-                <InfinitScroller onNext={fetchFollowers} loading={loading}>
-                  <div className="mt-[14px] flex flex-row flex-wrap justify-between">
-                    {followedUsers.items.map((data, index) => {
-                      return (
-                        <FollowerList
-                          key={index}
-                          imageSrc={data?.pic}
-                          followedUser={data}
-                          followedUsers={followedUsers}
-                          setFollowedUsers={setFollowedUsers}
-                        />
-                      );
-                    })}
-                  </div>
-                </InfinitScroller>
+                <FollowersInfinite
+                  fetcher={fetchFollowers}
+                  loading={followedLoading}
+                  followedUsers={followedUsers}
+                  setFollowedUsers={setFollowedUsers}
+                  totals={userTotals}
+                />
               ) : null}
-
               {activeIndex === 6 ? (
-                <div className="flex flex-col">
-                  <div className="hidden md:flex mb-[13px] ">
-                    <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[266px]">
-                      Пост
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[240px]">
-                      Сэтгэгдэл
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack mr-[80px]">
-                      Огноо
-                    </p>
-                    <p className="font-inter font-normal text-14px text-caak-generalblack">
-                      Үйлдэл
-                    </p>
-                  </div>
-
-                  <InfinitScroller onNext={fetchComments} loading={loading}>
-                    {userComments.items.map((comment, index) => {
-                      return (
-                        <CommentList
-                          key={index}
-                          index={index}
-                          imageSrc={comment?.post?.items?.items[0]?.file}
-                          video={comment?.post?.items.items[0]?.file?.type?.startsWith(
-                            "video"
-                          )}
-                          comment={comment}
-                          userComments={userComments.items}
-                          setUserComments={setUserComments}
-                          className="ph:mb-4 sm:mb-4"
-                        />
-                      );
-                    })}
-                  </InfinitScroller>
-                </div>
+                <CommentsInfinite
+                  loading={commentsLoading}
+                  fetcher={fetchComments}
+                  comments={userComments}
+                  setComments={setUserComments}
+                  totals={userTotals}
+                />
               ) : null}
               {activeIndex === 7 ? (
-                <div className="flex flex-col">
-                  <InfinitScroller onNext={fetchReported} loading={loading}>
-                    <table className="w-full table">
-                      <thead className="">
-                        <tr className="">
-                          <th className="min-w-[200px] text-left w-1/3 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
-                            Пост
-                          </th>
-                          <th className="text-left w-1/6 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
-                            Групп
-                          </th>
-                          <th className="text-left w-1/6 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
-                            Репорт
-                          </th>
-                          <th className="text-left w-1/12 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
-                            Огноо
-                          </th>
-                          <th className="text-left w-1/12 mr-[18px] font-inter font-normal text-14px text-caak-generalblack">
-                            Үйлдэл
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {reportedPosts.items.length > 0 &&
-                          reportedPosts.items.map((reportedPost, index) => {
-                            return (
-                              <tr
-                                key={index}
-                                className="border-t border-b mb-2"
-                              >
-                                <ReportedPostItem
-                                  type={"user"}
-                                  key={index}
-                                  imageSrc={reportedPost?.items?.items[0]?.file}
-                                  video={reportedPost?.items?.items[0]?.file?.type?.startsWith(
-                                    "video"
-                                  )}
-                                  post={reportedPost}
-                                  className="ph:mb-4 sm:mb-4"
-                                />
-                              </tr>
-                            );
-                          })}
-                      </tbody>
-                    </table>
-                  </InfinitScroller>
-                </div>
+                <ReportedPostsInfinite
+                  setPosts={setReportedPosts}
+                  posts={reportedPosts}
+                  loading={reportedLoading}
+                  fetcher={fetchReported}
+                  totals={userTotals}
+                />
               ) : null}
+              {activeIndex === 8 ? <AccountHistoryInfinite /> : null}
             </div>
           </div>
         </div>

@@ -23,7 +23,6 @@ import AddPostHandler from "../../../src/components/addposthandler";
 import { useWrapper } from "../../../src/context/wrapperContext";
 import GroupNewPosts from "../../../src/components/group/GroupNewPosts";
 import GroupTrendingPosts from "../../../src/components/group/GroupTrendingPosts";
-import GroupCaakPosts from "../../../src/components/group/GroupCaakPosts";
 
 export async function getServerSideProps({ req, query }) {
   const { API, Auth } = withSSRContext({ req });
@@ -249,6 +248,7 @@ const Group = ({ ssrData }) => {
         />
         <div className={`${sortType === "DEFAULT" ? "block" : "hidden"}`}>
           <GroupNewPosts
+            noAds={groupData.meta ? JSON.parse(groupData.meta).noAds : false}
             handleToast={handleToast}
             initialPosts={ssrData.posts}
             sortType={sortType}
@@ -257,14 +257,7 @@ const Group = ({ ssrData }) => {
         </div>
         <div className={`${sortType === "TREND" ? "block" : "hidden"}`}>
           <GroupTrendingPosts
-            handleToast={handleToast}
-            sortType={sortType}
-            groupId={groupData.id}
-            activeView={activeView}
-          />
-        </div>
-        <div className={`${sortType === "CAAK" ? "block" : "hidden"}`}>
-          <GroupCaakPosts
+            noAds={groupData.meta ? JSON.parse(groupData.meta).noAds : false}
             handleToast={handleToast}
             sortType={sortType}
             groupId={groupData.id}

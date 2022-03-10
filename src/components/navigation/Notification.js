@@ -5,6 +5,7 @@ import {
   getGenderImage,
 } from "../../utility/Util";
 import { useUser } from "../../context/userContext";
+import Link from "next/link";
 
 const Notification = ({ item, ...props }) => {
   const [text] = useState({
@@ -176,17 +177,31 @@ const Notification = ({ item, ...props }) => {
               "flex flex-row flex-wrap items-center ml-3 content-center"
             }
           >
-            <span
-              className={
-                "text-15px text-caak-generalblack font-medium tracking-[0.23px] leading-[16px]"
+            <Link
+              href={
+                item.from && item.from !== "SYSTEM"
+                  ? `/user/${item.from}/profile`
+                  : `/user/${user.id}/profile`
               }
             >
-              {`${
-                item.from_user?.nickname
-                  ? item.from_user?.nickname
-                  : user.nickname
-              }`}
-            </span>
+              <a>
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  className={
+                    "text-15px hover:underline text-caak-generalblack font-medium tracking-[0.23px] leading-[16px]"
+                  }
+                >
+                  {`${
+                    item.from_user?.nickname
+                      ? item.from_user?.nickname
+                      : user.nickname
+                  }`}
+                </span>
+              </a>
+            </Link>
+
             <span
               className={
                 "text-[14px] text-caak-darkBlue tracking-[0.21px] leading-[16px]"

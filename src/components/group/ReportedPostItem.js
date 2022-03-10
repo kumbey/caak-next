@@ -67,48 +67,44 @@ const ReportedPostItem = ({ imageSrc, post, video }) => {
     <>
       <td>
         <div className="cursor-pointer flex items-center ">
-          <div
-            onClick={() => {
-              router.push(
-                {
-                  query: {
-                    ...router.query,
-                    viewPost: "post",
-                    id: post.id,
-                    prevPath: router.asPath,
-                    isModal: true,
-                  },
-                },
-                `/post/view/${post.id}`,
-                { shallow: true, scroll: false }
-              );
+          <Link
+            as={`/post/view/${post.id}`}
+            shallow
+            href={{
+              query: {
+                ...router.query,
+                viewPost: "post",
+                id: post.id,
+                prevPath: router.asPath,
+                isModal: true,
+              },
             }}
-            className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}
           >
-            {video ? (
-              <Video
-                initialAutoPlay={false}
-                containerClassname={"rounded-[4px]"}
-                videoClassname={"object-contain rounded-[4px]"}
-                src={generateFileUrl(imageSrc)}
-                smallIndicator
-                hideControls
-              />
-            ) : (
-              <img
-                className="bg-white rounded-md object-cover w-full h-full"
-                src={
-                  !imageSrc
-                    ? getGenderImage("default").src
-                    : generateFileUrl(imageSrc)
-                }
-                width={64}
-                height={64}
-                alt="#"
-              />
-            )}
-          </div>
-
+            <a className={"flex-shrink-0 w-[64px] h-[64px] mr-[12px] relative"}>
+              {video ? (
+                <Video
+                  initialAutoPlay={false}
+                  containerClassname={"rounded-[4px]"}
+                  videoClassname={"object-contain rounded-[4px]"}
+                  src={generateFileUrl(imageSrc)}
+                  smallIndicator
+                  hideControls
+                />
+              ) : (
+                <img
+                  className="bg-white rounded-md object-cover w-full h-full"
+                  src={
+                    !imageSrc
+                      ? getGenderImage("default").src
+                      : generateFileUrl(imageSrc)
+                  }
+                  width={64}
+                  height={64}
+                  alt="#"
+                />
+              )}
+            </a>
+          </Link>
           <div
             onClick={() => {
               router.push(

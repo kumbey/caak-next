@@ -6,7 +6,7 @@ import { listBannersByTypeOrderByEndDate } from "../../graphql/queries";
 import { addViewToItem } from "../../graphql-custom/banner/mutation";
 import { useRouter } from "next/router";
 
-export default function TopBanner({ location }) {
+export default function TopBanner({ location, className }) {
   const [banner, setBanner] = useState(null);
   const [meta, setMeta] = useState();
 
@@ -59,9 +59,9 @@ export default function TopBanner({ location }) {
   return meta && banner ? (
     <div
       onClick={() => saveClick()}
-      className={`md:sticky ${
+      className={` px-[10px] ${className ? className : ""} md:sticky ${
         location === "post" ? "md:top-[16px]" : "md:top-[74px]"
-      } relative flex flex-col items-end mb-[10px]`}
+      } relative flex flex-col items-end `}
     >
       <Link href={meta.url}>
         <a className={"w-full"} rel="noreferrer" target="_blank">
@@ -74,7 +74,7 @@ export default function TopBanner({ location }) {
           />
         </a>
       </Link>
-      <Link href={"/help/ads"}>
+      {/* <Link href={"/help/ads"}>
         <a
           rel="noreferrer"
           target="_blank"
@@ -85,7 +85,7 @@ export default function TopBanner({ location }) {
           <span className="icon-fi-rs-megaphone text-[14px]" />
           <p className="text-[13px] ml-[4.6px]">Caak ads</p>
         </a>
-      </Link>
+      </Link> */}
     </div>
   ) : null;
 }

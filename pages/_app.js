@@ -28,6 +28,7 @@ const updatedAwsConfig = {
     redirectSignIn: RedirectUrls.redirectSignIn,
     redirectSignOut: RedirectUrls.redirectSignOut,
   },
+  aws_appsync_graphqlEndpoint: RedirectUrls.ApiCustomDomain ? RedirectUrls.ApiCustomDomain : awsExports.aws_appsync_graphqlEndpoint,
   ssr: true,
 };
 

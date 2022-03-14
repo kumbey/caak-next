@@ -380,6 +380,7 @@ const Feed = ({ ssrData }) => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+    //  eslint-disable-next-line
   }, []);
 
   if (router) {

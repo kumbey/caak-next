@@ -80,6 +80,7 @@ const post0004 = /* GraphQL */ `
       profile ${file0001}
       followed
       role_on_group
+      meta
     }
 
     totals {

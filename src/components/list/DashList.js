@@ -172,7 +172,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
           ) : null}
         </div>
         <div className="flex text-sm text-caak-darkBlue w-[166px] mr-[32px]">
-          <div
+          {/* <div
             className="flex items-center mr-5 min-w-[50px]"
             data-tip
             data-for="reachTip"
@@ -189,7 +189,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
             >
               <p className="text-11px text-white ">Харсан тоо</p>
             </ReactTooltip>
-          </div>
+          </div> */}
           <div
             className="flex items-center mr-5 min-w-[50px]"
             data-tip
@@ -245,7 +245,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
             </ReactTooltip>
           </div>
         </div>{" "}
-        <div className="flex ml-[100px] ">
+        <div className="flex ml-[20px]">
           {type === "group" ? (
             <Button
               loading={loading}
@@ -268,7 +268,7 @@ const DashList = ({ imageSrc, post, type, video }) => {
                   </Button>
                 </a>
               </Link>
-              {/* <Button
+              <Button
                 onClick={() => setIsBoostModalOpen(true)}
                 // loading={loading}
                 className={`bg-[#257CEE] text-caak-generalblack text-14px font-inter font-medium w-[102px]  h-[39px]  ml-2 border`}
@@ -276,10 +276,19 @@ const DashList = ({ imageSrc, post, type, video }) => {
                 <p className={`text-white font-inter font-normal text-13px`}>
                   Бүүстлэх
                 </p>
-              </Button> */}
+              </Button>
             </>
           ) : null}
         </div>
+        {/* <Button
+            className={`bg-[#257CEE]  text-caak-generalblack text-14px font-inter font-medium  w-[102px] h-[39px] bg-white border`}
+          >
+            <p
+              className={`text-white font-inter font-normal text-13px`}
+            >
+              Бүүстлэх
+            </p>
+          </Button> */}
       </div>
     </div>
   );

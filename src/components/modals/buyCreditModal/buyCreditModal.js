@@ -313,7 +313,7 @@ const BuyCreditModal = ({ setIsBoostModalOpen, data, customAmount }) => {
           <Button
             loading={loading}
             disabled={selectedBankId === null}
-            onClick={() => setIsConfirmationModal(true)}
+            onClick={() => phoneNumber.length > 7 ? setIsConfirmationModal(true) : setPhoneNumberError('Та утасны дугаараа оруулна уу')}
             skin={"primary"}
             className={
               "w-full mt-[14px] h-[44px] text-[16px] tracking-[0.24px] leading-[20px] font-medium"

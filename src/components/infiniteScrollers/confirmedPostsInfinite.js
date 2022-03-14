@@ -126,10 +126,10 @@ const ConfirmedPostsInfinite = ({ posts, setPosts, fetcher, loading, totals }) =
         <p className="font-inter font-normal text-14px text-caak-generalblack  lg:mr-[230px]">
           Пост
         </p>
-        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[250px]">
+        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[220px]">
           Групп
         </p>
-        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[175px]">
+        <p className="font-inter font-normal text-14px text-caak-generalblack mr-[170px]">
           Хандалт
         </p>
         <p className="font-inter font-normal text-14px text-caak-generalblack">

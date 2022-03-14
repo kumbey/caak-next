@@ -5,9 +5,11 @@ import { useListPager } from "../../utility/ApiHelper";
 import { listAccountHistoryByUser } from "../../graphql-custom/accountingHistory/queries";
 import { useUser } from "../../context/userContext";
 import { useState } from "react";
+import {useRouter} from 'next/router'
 
 const AccountHistoryInfinite = () => {
   const { user } = useUser();
+  const router = useRouter()
   const [loading, setLoading] = useState(false);
   const [totalBalance, setTotalBalance] = useState({
     deposit: 0,
@@ -17,6 +19,7 @@ const AccountHistoryInfinite = () => {
     items: [],
     nextToken: "",
   });
+
   const [nextAccountingHistory] = useListPager({
     query: listAccountHistoryByUser,
     variables: {
@@ -61,6 +64,33 @@ const AccountHistoryInfinite = () => {
   return (
     <div className="flex flex-col relative bg-caak-emptiness">
       <InfinitScroller onNext={fetchAccountingHistories} loading={loading}>
+        
+      
+      {!loading && accountingHistories.items.length === 0 ? (
+        <div className="flex items-center justify-center h-80">
+          <p className="text-sm">
+            Уучлаарай та гүйлгээ хийгээгүй байна.&nbsp;
+            <strong
+              onClick={() =>
+                router.push(
+                  {
+                    pathname: '/help/ads',
+                    query: {
+                      tab: 1
+                    },
+                  },
+                  `/help/ads`,
+                  { shallow: true }
+                )
+              }
+              className="text-[#0000EE] cursor-pointer"
+            >
+              ЭНД &nbsp;
+            </strong>
+            дарж дансаа цэнэглэнэ үү!
+          </p>
+        </div>
+      ) : 
         <table className="w-full table">
           <thead className="sticky top-0 h-full w-full bg-caak-emptiness font-bold">
             <tr>
@@ -152,6 +182,7 @@ const AccountHistoryInfinite = () => {
               })}
           </tbody>
         </table>
+        }
       </InfinitScroller>
     </div>
   );

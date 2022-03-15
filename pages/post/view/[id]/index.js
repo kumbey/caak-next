@@ -215,7 +215,7 @@ const Post = ({ ssrData }) => {
           />
           <meta
             name="twitter:url"
-            content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
+            content={`https://www.caak.mn/post/view/${ssrData.post.id}`}
           />
           <meta
             property="twitter:image"
@@ -247,7 +247,7 @@ const Post = ({ ssrData }) => {
           <meta property="og:type" content="website" />
           <meta
             name="og:url"
-            content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
+            content={`https://www.caak.mn/post/view/${ssrData.post.id}`}
           />
           <meta
             property="og:image"

@@ -124,7 +124,7 @@ const CardFooter = ({
                 }
               />
               <span className={"text-[15px] text-caak-nocturnal"}>
-                {totals.comments}
+                {totals?.comments ?? 0}
               </span>
             </div>
           </div>

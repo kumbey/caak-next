@@ -50,6 +50,9 @@ const Post = ({ ssrData }) => {
   const { jumpToComment } = router.query;
   const [isReactionActive, setIsReactionActive] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [groupNoAds] = useState(
+    ssrData.post.group.meta ? JSON.parse(ssrData.post.group.meta)?.noAds : false
+  );
   const [render, setRender] = useState(0);
   const [boostedPosts, setBoostedPosts] = useState({
     items: [],
@@ -126,17 +129,11 @@ const Post = ({ ssrData }) => {
     setPost(ssrData.post);
   }, [ssrData.post]);
 
-  // useEffect(() => {
-  //   if (jumpToComment) {
-  //     if (commentRef.current) {
-  //       commentRef.current.scrollIntoView({ behavior: "smooth" });
-  //     }
-  //   }
-  // }, [jumpToComment]);
-
   useEffect(() => {
     countViews();
-    fetchBoostedPosts();
+    if (!groupNoAds) {
+      fetchBoostedPosts();
+    }
     const handler = (e) => {
       if (e.keyCode === 27) {
         if (!router.query.viewItemPost) back();
@@ -218,7 +215,7 @@ const Post = ({ ssrData }) => {
           />
           <meta
             name="twitter:url"
-            content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
+            content={`https://www.caak.mn/post/view/${ssrData.post.id}`}
           />
           <meta
             property="twitter:image"
@@ -250,7 +247,7 @@ const Post = ({ ssrData }) => {
           <meta property="og:type" content="website" />
           <meta
             name="og:url"
-            content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
+            content={`https://www.caak.mn/post/view/${ssrData.post.id}`}
           />
           <meta
             property="og:image"

@@ -13,8 +13,11 @@ import moment from "moment";
 import { DateTime } from "luxon";
 import Button from "../../components/button";
 import { numberWithCommas } from "../../utility/Util";
+import BoostPostModal from "../modals/boostPostModal";
+import { useState } from "react";
 
 const BoostedPostItem = ({ imageSrc, post, video }) => {
+  const [isBoostPostModalOpen, setIsBoostPostModalOpen] = useState(false);
   const router = useRouter();
 
   const now = new Date();
@@ -222,6 +225,7 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
           </div>
           <Button
             // loading={loading}
+            onClick={() => moment(post.end_date)._d < now && setIsBoostPostModalOpen(true)}
             className={`${
               moment(post.end_date)._d > now
                 ? "bg-caak-titaniumwhite"
@@ -236,6 +240,13 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
               {moment(post.end_date)._d > now ? "Бүүстлэсэн" : "Бүүстлэх"}
             </p>
           </Button>
+          {
+            isBoostPostModalOpen && 
+            <BoostPostModal
+              postId={post.post_id}
+              setIsBoostModalOpen={setIsBoostPostModalOpen}
+            />
+          }
         </div>
       </td>
     </>

@@ -153,22 +153,34 @@ const Notification = ({ item, ...props }) => {
     >
       <div className={"flex flex-row"}>
         <div className={"avatar relative self-center"}>
-          <div className={"flex justify-center items-center w-[38px] h-[38px]"}>
-            <img
-              className={"rounded-full w-full h-full object-cover"}
-              src={
-                item.from === "SYSTEM"
-                  ? user.pic
-                    ? generateFileUrl(user.pic)
-                    : getGenderImage(user.gender).src
-                  : item.from_user?.pic
-                  ? generateFileUrl(item.from_user?.pic)
-                  : getGenderImage(item.from_user?.gender).src
-              }
-              alt={""}
-            />
-          </div>
-
+          <Link
+            href={
+              item.from && item.from !== "SYSTEM"
+                ? `/user/${item.from}/profile`
+                : `/user/${user.id}/profile`
+            }
+          >
+            <a>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className={"flex justify-center items-center w-[38px] h-[38px]"}
+              >
+                <img
+                  className={"rounded-full w-full h-full object-cover"}
+                  src={
+                    item.from === "SYSTEM"
+                      ? user.pic
+                        ? generateFileUrl(user.pic)
+                        : getGenderImage(user.gender).src
+                      : item.from_user?.pic
+                      ? generateFileUrl(item.from_user?.pic)
+                      : getGenderImage(item.from_user?.gender).src
+                  }
+                  alt={""}
+                />
+              </div>
+            </a>
+          </Link>
           {button()}
         </div>
         <div className={"flex flex-col"}>

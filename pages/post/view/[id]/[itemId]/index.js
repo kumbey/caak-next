@@ -139,7 +139,7 @@ const PostItem = ({ ssrData }) => {
 
         <meta
           property="og:url"
-          content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}/${router.query.itemId}`}
+          content={`https://www.caak.mn/post/view/${ssrData.post.id}/${router.query.itemId}`}
         />
         <meta property="og:type" content="website" />
         <meta
@@ -193,7 +193,7 @@ const PostItem = ({ ssrData }) => {
         />
         <meta
           name="twitter:url"
-          content={`https://www.${ssrData.host}/post/view/${ssrData.post.id}`}
+          content={`https://www.caak.mn/post/view/${ssrData.post.id}`}
         />
         <meta
           property="twitter:image"

@@ -40,6 +40,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const { user } = useUser();
   const [post, setPost] = useState(null);
   const BoostPostModalLayout = useModalLayout({ layoutName: "boostModal" });
+  
   const getPostById = async () => {
     let resp = await API.graphql({
       query: getPostView,

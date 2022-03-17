@@ -34,6 +34,9 @@ export async function getServerSideProps({ req, res, query }) {
   } catch (ex) {
     user = null;
   }
+  if (!user) {
+    return { notFound: true };
+  }
   const getGroups = async () => {
     try {
       const grData = {
@@ -82,30 +85,27 @@ export async function getServerSideProps({ req, res, query }) {
   if (!post) {
     return { notFound: true };
   }
-  if (user) {
-    if (post.user.id !== user.attributes.sub) {
-      isSuperAdmin =
-        user?.signInUserSession.accessToken.payload["cognito:groups"].includes(
-          "caak-admin"
-        );
-      if (
-        isSuperAdmin &&
-        (post.owned === "CAAK" ||
-          Consts.translatorUserId.some((id) => post.user.id === id))
-      ) {
-        const groups = await getGroups();
-        return {
-          props: {
-            ssrData: {
-              post: post,
-              groups: groups,
-            },
+
+  if (post.user.id !== user.attributes.sub) {
+    isSuperAdmin =
+      user?.signInUserSession.accessToken.payload["cognito:groups"].includes(
+        "caak-admin"
+      );
+    if (
+      isSuperAdmin &&
+      (post.owned === "CAAK" ||
+        Consts.translatorUserId.some((id) => post.user.id === id))
+    ) {
+      const groups = await getGroups();
+      return {
+        props: {
+          ssrData: {
+            post: post,
+            groups: groups,
           },
-        };
-      }
-      return { notFound: true };
+        },
+      };
     }
-  } else {
     return { notFound: true };
   }
 

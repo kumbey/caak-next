@@ -124,6 +124,7 @@ const SideBarGroups = ({
               : getGenderImage("default").src,
             groupId: group.group_id,
             role: group.group.role_on_group,
+            meta: group.group.meta,
           };
         } else {
           params = {
@@ -133,62 +134,13 @@ const SideBarGroups = ({
               : getGenderImage("default").src,
             groupId: group.id,
             role: group.role_on_group,
+            meta: group.meta,
           };
         }
-        if (params.role === "MODERATOR") {
-          return(
-            <SideBarGroupItem
-                key={index}
-                {...params}
-                notification={
-                  role[0] === "ADMIN"
-                    ? getGroupPending(group.group_id)?.pending
-                    : null
-                }
-              />
-          )
-        } 
-      })}
-      
-      {groupData.map((group, index) => {
-        let params = {};
-
-        if (group.group) {
-          params = {
-            name: group.group.name,
-            image: group.group.profile
-              ? getFileUrl(group.group.profile)
-              : getGenderImage("default").src,
-            groupId: group.group_id,
-            role: group.group.role_on_group,
-          };
-        } else {
-          params = {
-            name: group.name,
-            image: group.profile
-              ? getFileUrl(group.profile)
-              : getGenderImage("default").src,
-            groupId: group.id,
-            role: group.role_on_group,
-          };
-        }
-
-        if(params.role !== "MODERATOR"){
-          if (maxColumns) {
-            if (index < maxColumns) {
-              return (
-                <SideBarGroupItem
-                  key={index}
-                  {...params}
-                  notification={
-                    role[0] === "ADMIN"
-                      ? getGroupPending(group.group_id)?.pending
-                      : null
-                  }
-                />
-              );
-            } else return null;
-          } else {
+        const meta = params.meta ? JSON.parse(params.meta) : null;
+        const isGroupHidden = meta?.hidden ? meta.hidden : false;
+        if (!isGroupHidden) {
+          if (params.role === "MODERATOR") {
             return (
               <SideBarGroupItem
                 key={index}
@@ -200,6 +152,65 @@ const SideBarGroups = ({
                 }
               />
             );
+          }
+        }
+      })}
+
+      {groupData.map((group, index) => {
+        let params = {};
+
+        if (group.group) {
+          params = {
+            name: group.group.name,
+            image: group.group.profile
+              ? getFileUrl(group.group.profile)
+              : getGenderImage("default").src,
+            groupId: group.group_id,
+            role: group.group.role_on_group,
+            meta: group.group.meta,
+          };
+        } else {
+          params = {
+            name: group.name,
+            image: group.profile
+              ? getFileUrl(group.profile)
+              : getGenderImage("default").src,
+            groupId: group.id,
+            role: group.role_on_group,
+            meta: group.meta,
+          };
+        }
+        const meta = params.meta ? JSON.parse(params.meta) : null;
+        const isGroupHidden = meta?.hidden ? meta.hidden : false;
+        if (!isGroupHidden) {
+          if (params.role !== "MODERATOR") {
+            if (maxColumns) {
+              if (index < maxColumns) {
+                return (
+                  <SideBarGroupItem
+                    key={index}
+                    {...params}
+                    notification={
+                      role[0] === "ADMIN"
+                        ? getGroupPending(group.group_id)?.pending
+                        : null
+                    }
+                  />
+                );
+              } else return null;
+            } else {
+              return (
+                <SideBarGroupItem
+                  key={index}
+                  {...params}
+                  notification={
+                    role[0] === "ADMIN"
+                      ? getGroupPending(group.group_id)?.pending
+                      : null
+                  }
+                />
+              );
+            }
           }
         }
       })}

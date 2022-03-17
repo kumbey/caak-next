@@ -6376,6 +6376,7 @@ export const listGroups = /* GraphQL */ `
   ) {
     listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
+        meta
         id
         name
         category_id
@@ -6497,6 +6498,7 @@ export const listGroupByFeatured = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
+        meta
         id
         name
         category_id

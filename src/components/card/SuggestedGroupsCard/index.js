@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import { listGroupByFeatured } from "../../../graphql-custom/group/queries";
 import { getReturnData } from "../../../utility/Util";
-import {useUser} from "../../../context/userContext";
+import { useUser } from "../../../context/userContext";
 
 const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
   const [suggestedGroups, setSuggestedGroups] = useState({});
   const [loading, setLoading] = useState(true);
-  const {isLogged} = useUser()
+  const { isLogged } = useUser();
 
   const fetchSuggestedGroups = async () => {
     setLoading(true);
@@ -19,7 +19,7 @@ const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
         variables: {
           featured: "true",
         },
-        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM"
+        authMode: isLogged ? "AMAZON_COGNITO_USER_POOLS" : "AWS_IAM",
       });
       resp = getReturnData(resp);
       setSuggestedGroups(resp);
@@ -69,7 +69,11 @@ const SuggestedGroupsCard = ({ className, title, maxColumns }) => {
       {/*</div>*/}
       <div className={"px-[18px] py-[4px]"}>
         {suggestedGroups.items.map((item, index) => {
-          return <SuggestedGroupsCardItem key={index} group={item} />;
+          const meta = item.meta ? JSON.parse(item.meta) : null;
+          const isGroupHidden = meta?.hidden ? meta.hidden : false;
+          if (!isGroupHidden) {
+            return <SuggestedGroupsCardItem key={index} group={item} />;
+          }
         })}
         {/*<SuggestedGroupsCardItem members={"13.2k"} name={"Computer Land"} />*/}
         {/*<SuggestedGroupsCardItem*/}

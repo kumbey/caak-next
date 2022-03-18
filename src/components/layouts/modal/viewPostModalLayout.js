@@ -106,7 +106,7 @@ const ViewPostModalLayout = ({
               </div>
               <div
                 className={
-                  "viewPostRightSideBar h-full flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
+                  `viewPostRightSideBar h-full flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col`
                 }
               >
                 {isScrollButtonVisible && (

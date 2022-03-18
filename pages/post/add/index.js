@@ -276,8 +276,9 @@ const AddPost = () => {
     }
   };
   const successMsgHandler = (selectedGroup, status) => {
+    console.log(selectedGroup)
     if (status === "DRAFT") return "Таны ноорог хадгалагдлаа.";
-    if (selectedGroup.role === "ADMIN" || selectedGroup.role === "MODERATOR") {
+    if (selectedGroup.role_on_group === 'ADMIN' || selectedGroup.role_on_group === 'MODERATOR') {
       return `Таны пост "${selectedGroup.name}" группт амжилттай нийтлэгдлээ.`;
     } else {
       return `Таны пост "${selectedGroup.name}" группт амжилттай илгээгдлээ.`;

@@ -69,7 +69,7 @@ const AccountHistoryInfinite = () => {
       {!loading && accountingHistories.items.length === 0 ? (
         <div className="flex items-center justify-center h-80">
           <p className="text-sm">
-            Уучлаарай та гүйлгээ хийгээгүй байна.&nbsp;
+          Танд дансны хуулга үүсээгүй байна. Хэрвээ та сурталчилгаа байршуулах бол &nbsp;
             <strong
               onClick={() =>
                 router.push(
@@ -87,7 +87,7 @@ const AccountHistoryInfinite = () => {
             >
               ЭНД &nbsp;
             </strong>
-            дарж дансаа цэнэглэнэ үү!
+            дарж дансаа цэнэглээрэй!
           </p>
         </div>
       ) : 

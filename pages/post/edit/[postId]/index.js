@@ -150,26 +150,34 @@ const EditPost = ({ ssrData }) => {
     }
   };
   const finish = (role) => {
-    if (role === "MEMBER") {
-      router.push(
-        {
-          pathname: `/user/${user.id}/dashboard`,
-          query: {
-            activeIndex: 1,
-          },
-        },
-        `/user/${user.id}/dashboard`
-      );
-    } else {
-      router.push(
-        {
-          pathname: `/post/view/${post.id}`,
-        },
-        `/post/view/${post.id}`,
-        { shallow: true, scroll: false }
-      );
-    }
+    // if (role === "MEMBER") {
+    //   router.push(
+    //     {
+    //       pathname: `/user/${user.id}/dashboard`,
+    //       query: {
+    //         activeIndex: 1,
+    //       },
+    //     },
+    //     `/user/${user.id}/dashboard`
+    //   );
+    // } else {
+    //   router.push(
+    //     {
+    //       pathname: `/post/view/${post.id}`,
+    //     },
+    //     `/post/view/${post.id}`,
+    //     { shallow: true, scroll: false }
+    //   );
+    // }
+    router.push(
+      {
+        pathname: `/post/view/${post.id}`,
+      },
+      `/post/view/${post.id}`,
+      { shallow: true, scroll: false }
+    );
   };
+  
   const followGroup = async () => {
     await API.graphql(
       graphqlOperation(createGroupUsers, {

@@ -20,6 +20,10 @@ const BoostedPostItem = ({ imageSrc, post, video }) => {
   const [isBoostPostModalOpen, setIsBoostPostModalOpen] = useState(false);
   const router = useRouter();
 
+  const oneDayPrice = post.meta / getDiffDays(moment(post.start_date)._d, moment(post.end_date)._d)
+
+  console.log(post.post?.totals.views * 50)
+
   const now = new Date();
 
   const convertDateTime = (date, seperator, noTime, noSec) => {

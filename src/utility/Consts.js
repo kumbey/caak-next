@@ -33,6 +33,7 @@ const Consts = {
     "a35649ba-d066-480f-b01d-f586b53af5a5",
     "f100ebec-1ae4-4d2f-abcf-3c261af96cc7",
     "c0d39895-53fd-4da6-a266-3a1959b67431",
+    'af1fe77d-e4c8-4540-8fa3-8a11136ef725'
   ],
   packages: {
     hybrid: {

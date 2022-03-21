@@ -3,6 +3,7 @@ import file0001 from "../../file/fields/file0001";
 const group0002 = /* GraphQL */ `{
     id
     name
+    meta
     category_id
     role_on_group
     totals {

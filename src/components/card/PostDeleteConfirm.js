@@ -1,8 +1,13 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { updatePost } from "../../graphql-custom/post/mutation";
+import toast from "react-hot-toast";
+import {useRouter} from 'next/router'
+import { useUser } from "../../context/userContext";
 
 const PostDeleteConfirm = ({post, setOpen}) => {
-  
+  const router = useRouter()
+  const {user} = useUser()
+
     const postHandler = async ({ id, status }) => {
         try {
           await API.graphql(
@@ -10,12 +15,27 @@ const PostDeleteConfirm = ({post, setOpen}) => {
               input: { id: id, status: status, expectedVersion: post.version },
             })
           );
+          toast.custom(<div>
+            <div className="bg-white p-[10px] rounded-[8px] flex flex-row">Таны пост амжилттай устгагдлаа.
+              <p className="cursor-pointer ml-[5px]" onClick={() => router.push(
+              {
+                pathname: `/user/${user.id}/dashboard`,
+                query: {
+                  activeIndex: 3,
+                },
+              },
+              `/user/${user.id}/dashboard`
+            )}>
+                 Дашбоард харах
+              </p>
+            </div>
+          </div> )
+          setOpen(false)
         } catch (ex) {
-        //   setLoading(false);
           console.log(ex);
+          toast.error("Алдаа гарлаа.")
         }
-        setOpen(false);
-      };
+      }
 
     return  (
         <div className="popup_modal">

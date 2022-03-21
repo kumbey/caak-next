@@ -125,14 +125,14 @@ export default function AllGroups() {
       const duplicates = groups.filter(function (val) {
         return selectedCategoryId.indexOf(val.category_id) !== -1;
       });
-      const sorted = sortByName(duplicates)
+      const sorted = sortByName(duplicates);
       setFilteredByCat(sorted);
     }
     //eslint-disable-next-line
   }, [selectedCategoryId]);
 
   useEffect(() => {
-    setSelectedCategoryId([])
+    setSelectedCategoryId([]);
     if (activeIndex === 0) {
       fetchGroups();
     } else if (activeIndex === 1) {
@@ -248,18 +248,30 @@ export default function AllGroups() {
                           item.name.toLowerCase().includes(value.toLowerCase())
                         )
                         .map((data, index) => {
-                          return (
-                            <SearchCardGroup all key={index} result={data} />
-                          );
+                          const meta = data.meta ? JSON.parse(data.meta) : null;
+                          const isGroupHidden = meta?.hidden
+                            ? meta.hidden
+                            : false;
+                          if (!isGroupHidden) {
+                            return (
+                              <SearchCardGroup all key={index} result={data} />
+                            );
+                          }
                         })
                     : groups
                         .filter((item) =>
                           item.name.toLowerCase().includes(value.toLowerCase())
                         )
                         .map((data, index) => {
-                          return (
-                            <SearchCardGroup all key={index} result={data} />
-                          );
+                          const meta = data.meta ? JSON.parse(data.meta) : null;
+                          const isGroupHidden = meta?.hidden
+                            ? meta.hidden
+                            : false;
+                          if (!isGroupHidden) {
+                            return (
+                              <SearchCardGroup all key={index} result={data} />
+                            );
+                          }
                         })}
                 </div>
               )}

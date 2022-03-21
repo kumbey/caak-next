@@ -123,7 +123,7 @@ export default function NavBar() {
           <nav
             className={`${
               navBarTransparent ? "bg-transparent" : "bg-white shadow-sm"
-            } navbarDesktop z-5 fixed block w-full`}
+            } navbarDesktop z-5 fixed block w-full max-w-[1920px] mx-auto`}
           >
             <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
               <div className="relative flex items-center justify-between w-full h-full">
@@ -158,7 +158,7 @@ export default function NavBar() {
             navBarTransparent && !isTablet
               ? "bg-transparent"
               : "bg-white shadow-sm"
-          } navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t`}
+          } navbar border-caak-liquidnitrogen md:border-t-0 z-[5] fixed w-full bg-white border-t w-full max-w-[1920px] mx-auto`}
         >
           <div className="flex items-center h-full md:px-[40px] py-1">
             <div className="relative flex items-center justify-between w-full h-full">

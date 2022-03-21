@@ -22,6 +22,7 @@ import { useUser } from "../../context/userContext";
 import useModalLayout from "../../hooks/useModalLayout";
 import { doTransaction } from "../../graphql-custom/transaction/mutation";
 import { useRouter } from "next/router";
+import Slider from "react-input-slider";
 
 const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const router = useRouter();
@@ -40,7 +41,9 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   const { user } = useUser();
   const [post, setPost] = useState(null);
   const BoostPostModalLayout = useModalLayout({ layoutName: "boostModal" });
-  
+
+  const [state, setState] = useState({ x: 5000 });
+
   const getPostById = async () => {
     let resp = await API.graphql({
       query: getPostView,
@@ -101,6 +104,7 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
           start_date: startDate ? startDate.toISOString() : null,
           end_date: endDate ? endDate.toISOString() : null,
           status: "ACTIVE",
+          meta: JSON.stringify(price),
         };
         const resp = await API.graphql(
           graphqlOperation(createBoostedPost, {
@@ -135,17 +139,21 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
   useEffect(() => {
     setEndDate(addDays(startDate, day));
     if (day < 14) {
-      setPrice(day * 5000);
+      setPrice(day * state.x);
     } else if (day >= 14 && day < 20) {
-      setPrice(day * 4500);
+      setPrice(day * state.x - 500);
     } else if (day >= 20 && day < 30) {
-      setPrice(day * 4000);
+      setPrice(day * state.x - 1000);
     } else if (day >= 30) {
-      setPrice(day * 3500);
+      setPrice(day * state.x - 1500);
     }
-
+    if (day > 0) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
     // eslint-disable-next-line
-  }, [day]);
+  }, [day, state]);
 
   useEffect(() => {
     if (startDate > endDate) {
@@ -160,15 +168,6 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
     setDay(differenceDate(endDate, startDate));
     // eslint-disable-next-line
   }, [endDate]);
-
-  useEffect(() => {
-    if (day > 0) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
-    // eslint-disable-next-line
-  }, [day]);
 
   return (
     <BoostPostModalLayout
@@ -316,6 +315,17 @@ const BoostPostModal = ({ setIsBoostModalOpen, postId }) => {
                   "flex flex-col justify-center items-center rounded-[8px] border-[1px] border-[#E4E4E5] w-full h-full max-w-[400px] min-h-[112px] bg-white px-[16px] py-[14px]"
                 }
               >
+                <div className="mb-4">
+                  <Slider
+                    axis="x"
+                    xmin={5000}
+                    xmax={100000}
+                    xstep={5000}
+                    x={state.x}
+                    onChange={({ x }) => setState((state) => ({ ...state, x }))}
+                  />
+                </div>
+
                 <div className={"flex flex-row justify-center items-center"}>
                   <p
                     className={

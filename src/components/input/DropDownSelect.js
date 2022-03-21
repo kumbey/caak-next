@@ -114,34 +114,38 @@ const DropDownSelect = ({
                 </div>
                 <div className={"px-2"}>
                   {filteredData.adminModerator.map((item, index) => {
-                    return (
-                      <div
-                        key={index}
-                        onClick={() => selectGroup(item)}
-                        className={"flex flex-col"}
-                      >
+                    const meta = item.meta ? JSON.parse(item.meta) : null;
+                    const isGroupHidden = meta?.hidden ? meta.hidden : false;
+                    if (!isGroupHidden) {
+                      return (
                         <div
-                          className={
-                            "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                          }
+                          key={index}
+                          onClick={() => selectGroup(item)}
+                          className={"flex flex-col"}
                         >
-                          <img
-                            src={generateFileUrl(item.profile)}
-                            className={"w-8 h-8 rounded-md object-cover mr-2"}
-                            alt={""}
-                          />
-                          <div className={"flex flex-col justify-between"}>
-                            <span
-                              className={
-                                "text-caak-generalblack font-medium text-15px"
-                              }
-                            >
-                              {item.name}
-                            </span>
+                          <div
+                            className={
+                              "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                            }
+                          >
+                            <img
+                              src={generateFileUrl(item.profile)}
+                              className={"w-8 h-8 rounded-md object-cover mr-2"}
+                              alt={""}
+                            />
+                            <div className={"flex flex-col justify-between"}>
+                              <span
+                                className={
+                                  "text-caak-generalblack font-medium text-15px"
+                                }
+                              >
+                                {item.name}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
+                      );
+                    }
                   })}
                 </div>
               </>
@@ -150,86 +154,100 @@ const DropDownSelect = ({
             {filteredData.member.length > 0 ? (
               <>
                 <div
-                className={
-                  "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
-                }
-              >
-                <span className={"text-15px text-caak-darkBlue pt-2"}>
-                  Нэгдсэн группүүд
-                </span>
-                {filteredData.adminModerator.length === 0 ? (
-                  <span
-                    onClick={() => userAura < 5000 && setIsAuraModalOpen(true)}
-                    className={"text-15px font-medium text-caak-primary"}
-                  >
-                    Групп үүсгэх
+                  className={
+                    "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
+                  }
+                >
+                  <span className={"text-15px text-caak-darkBlue pt-2"}>
+                    Нэгдсэн группүүд
                   </span>
-                ) : null}
-              </div>
+                  {filteredData.adminModerator.length === 0 ? (
+                    <span
+                      onClick={() =>
+                        userAura < 5000 && setIsAuraModalOpen(true)
+                      }
+                      className={"text-15px font-medium text-caak-primary"}
+                    >
+                      Групп үүсгэх
+                    </span>
+                  ) : null}
+                </div>
                 <div className={"px-2"}>
                   {filteredData.member.map((item, index) => {
-                    return (
-                      item.role_on_group === "MODERATOR" && 
-                      <div
-                        key={index}
-                        onClick={() => selectGroup(item)}
-                        className={"flex flex-col"}
-                      >
-                      <div
-                        className={
-                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                        }
-                      >
-                        <img
-                          src={generateFileUrl(item.profile)}
-                          className={"w-8 h-8 rounded-md object-cover mr-2"}
-                          alt={""}
-                        />
-                        <div className={"flex flex-col justify-between"}>
-                          <span
-                            className={
-                              "text-caak-generalblack font-medium text-15px"
-                            }
+                    const meta = item.meta ? JSON.parse(item.meta) : null;
+                    const isGroupHidden = meta?.hidden ? meta.hidden : false;
+                    if (!isGroupHidden) {
+                      return (
+                        item.role_on_group === "MODERATOR" && (
+                          <div
+                            key={index}
+                            onClick={() => selectGroup(item)}
+                            className={"flex flex-col"}
                           >
-                            {item.name}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    );
+                            <div
+                              className={
+                                "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                              }
+                            >
+                              <img
+                                src={generateFileUrl(item.profile)}
+                                className={
+                                  "w-8 h-8 rounded-md object-cover mr-2"
+                                }
+                                alt={""}
+                              />
+                              <div className={"flex flex-col justify-between"}>
+                                <span
+                                  className={
+                                    "text-caak-generalblack font-medium text-15px"
+                                  }
+                                >
+                                  {item.name}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      );
+                    }
                   })}
                   {filteredData.member.map((item, index) => {
-                    return (
-                      item.role_on_group === "MEMBER" && 
-                      <div
-                        key={index}
-                        onClick={() => selectGroup(item)}
-                        className={"flex flex-col"}
-                      >
-                      <div
-                        className={
-                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                        }
-                      >
-                        <img
-                          src={generateFileUrl(item.profile)}
-                          className={"w-8 h-8 rounded-md object-cover mr-2"}
-                          alt={""}
-                        />
-                        <div className={"flex flex-col justify-between"}>
-                          <span
-                            className={
-                              "text-caak-generalblack font-medium text-15px"
-                            }
+                    const meta = item.meta ? JSON.parse(item.meta) : null;
+                    const isGroupHidden = meta?.hidden ? meta.hidden : false;
+                    if (!isGroupHidden) {
+                      return (
+                        item.role_on_group === "MEMBER" && (
+                          <div
+                            key={index}
+                            onClick={() => selectGroup(item)}
+                            className={"flex flex-col"}
                           >
-                            {item.name}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    );
+                            <div
+                              className={
+                                "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                              }
+                            >
+                              <img
+                                src={generateFileUrl(item.profile)}
+                                className={
+                                  "w-8 h-8 rounded-md object-cover mr-2"
+                                }
+                                alt={""}
+                              />
+                              <div className={"flex flex-col justify-between"}>
+                                <span
+                                  className={
+                                    "text-caak-generalblack font-medium text-15px"
+                                  }
+                                >
+                                  {item.name}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      );
+                    }
                   })}
                 </div>
               </>
@@ -250,44 +268,48 @@ const DropDownSelect = ({
 
             <div className={"px-2"}>
               {filteredData.unMember.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => selectGroup(item)}
-                    className={"flex flex-col"}
-                  >
+                const meta = item.meta ? JSON.parse(item.meta) : null;
+                const isGroupHidden = meta?.hidden ? meta.hidden : false;
+                if (!isGroupHidden) {
+                  return (
                     <div
-                      className={
-                        "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                      }
+                      key={index}
+                      onClick={() => selectGroup(item)}
+                      className={"flex flex-col"}
                     >
-                      <img
-                        src={generateFileUrl(item.profile)}
-                        className={"w-8 h-8 rounded-md object-cover mr-2"}
-                        alt={""}
-                      />
-                      <div className={"flex flex-col justify-between"}>
-                        <span
-                          className={
-                            "text-caak-generalblack font-medium text-16px"
-                          }
-                        >
-                          {item.name}
-                        </span>
-                        <p
-                          className={
-                            "text-caak-darkBlue text-[14px] font-roboto font-normal tracking-[0.21px] leading-[16px]"
-                          }
-                        >
-                          {item.totals.member +
-                            item.totals.moderator +
-                            item.totals.admin}{" "}
-                          гишүүдтэй
-                        </p>
+                      <div
+                        className={
+                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                        }
+                      >
+                        <img
+                          src={generateFileUrl(item.profile)}
+                          className={"w-8 h-8 rounded-md object-cover mr-2"}
+                          alt={""}
+                        />
+                        <div className={"flex flex-col justify-between"}>
+                          <span
+                            className={
+                              "text-caak-generalblack font-medium text-16px"
+                            }
+                          >
+                            {item.name}
+                          </span>
+                          <p
+                            className={
+                              "text-caak-darkBlue text-[14px] font-roboto font-normal tracking-[0.21px] leading-[16px]"
+                            }
+                          >
+                            {item.totals.member +
+                              item.totals.moderator +
+                              item.totals.admin}{" "}
+                            гишүүдтэй
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
+                  );
+                }
               })}
             </div>
           </div>

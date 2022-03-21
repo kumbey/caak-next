@@ -28,6 +28,7 @@ import useMediaQuery from "../navigation/useMeduaQuery";
 import DatePicker from "react-datepicker";
 import Button from "../button";
 import moment from "moment";
+import Consts from "../../utility/Consts";
 
 const UploadedMediaEdit = ({
   setPost,
@@ -609,7 +610,7 @@ const UploadedMediaEdit = ({
           >
             <div className={"w-full h-full relative"}>
               <div className={"flex flex-col w-full h-full"}>
-                {post.onlyBlogView && adminTextEditor === "TRUE" ? (
+                {(post.onlyBlogView && adminTextEditor === "TRUE") || Consts.translatorUserId.some((id) => id === post.user_id) ? (
                   <div
                     className={
                       "flex flex-col w-full h-full h-[200px] md:h-full"
@@ -731,7 +732,7 @@ const UploadedMediaEdit = ({
 
           {(selectedGroup?.role_on_group === "ADMIN" ||
             selectedGroup?.role_on_group === "MODERATOR" ||
-            isSuperAdmin) && (
+            isSuperAdmin || Consts.translatorUserId.some((id) => id === post.user_id)) && (
             <div className={"flex flex-row justify-between mt-[16px]"}>
               <p className={"text-[15px] text-caak-generalblack"}>
                 Текст засварлагч

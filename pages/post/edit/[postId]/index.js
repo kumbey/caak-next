@@ -34,6 +34,9 @@ export async function getServerSideProps({ req, res, query }) {
   } catch (ex) {
     user = null;
   }
+  if (!user) {
+    return { notFound: true };
+  }
   const getGroups = async () => {
     try {
       const grData = {
@@ -82,30 +85,27 @@ export async function getServerSideProps({ req, res, query }) {
   if (!post) {
     return { notFound: true };
   }
-  if (user) {
-    if (post.user.id !== user.attributes.sub) {
-      isSuperAdmin =
-        user?.signInUserSession.accessToken.payload["cognito:groups"].includes(
-          "caak-admin"
-        );
-      if (
-        isSuperAdmin &&
-        (post.owned === "CAAK" ||
-          Consts.translatorUserId.some((id) => post.user.id === id))
-      ) {
-        const groups = await getGroups();
-        return {
-          props: {
-            ssrData: {
-              post: post,
-              groups: groups,
-            },
+
+  if (post.user.id !== user.attributes.sub) {
+    isSuperAdmin =
+      user?.signInUserSession.accessToken.payload["cognito:groups"].includes(
+        "caak-admin"
+      );
+    if (
+      isSuperAdmin &&
+      (post.owned === "CAAK" ||
+        Consts.translatorUserId.some((id) => post.user.id === id))
+    ) {
+      const groups = await getGroups();
+      return {
+        props: {
+          ssrData: {
+            post: post,
+            groups: groups,
           },
-        };
-      }
-      return { notFound: true };
+        },
+      };
     }
-  } else {
     return { notFound: true };
   }
 
@@ -150,26 +150,34 @@ const EditPost = ({ ssrData }) => {
     }
   };
   const finish = (role) => {
-    if (role === "MEMBER") {
-      router.push(
-        {
-          pathname: `/user/${user.id}/dashboard`,
-          query: {
-            activeIndex: 1,
-          },
-        },
-        `/user/${user.id}/dashboard`
-      );
-    } else {
-      router.push(
-        {
-          pathname: `/post/view/${post.id}`,
-        },
-        `/post/view/${post.id}`,
-        { shallow: true, scroll: false }
-      );
-    }
+    // if (role === "MEMBER") {
+    //   router.push(
+    //     {
+    //       pathname: `/user/${user.id}/dashboard`,
+    //       query: {
+    //         activeIndex: 1,
+    //       },
+    //     },
+    //     `/user/${user.id}/dashboard`
+    //   );
+    // } else {
+    //   router.push(
+    //     {
+    //       pathname: `/post/view/${post.id}`,
+    //     },
+    //     `/post/view/${post.id}`,
+    //     { shallow: true, scroll: false }
+    //   );
+    // }
+    router.push(
+      {
+        pathname: `/post/view/${post.id}`,
+      },
+      `/post/view/${post.id}`,
+      { shallow: true, scroll: false }
+    );
   };
+  
   const followGroup = async () => {
     await API.graphql(
       graphqlOperation(createGroupUsers, {

@@ -6,6 +6,7 @@ const groupUsers0002 = /* GraphQL */ `{
     group {
         profile ${file0001}
         name
+        meta
         totals {
             admin
             member

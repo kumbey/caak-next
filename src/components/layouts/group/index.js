@@ -106,6 +106,7 @@ const GroupLayout = ({
     <div className={"flex flex-col relative pb-[200px] md:pb-0"}>
       {isCoverUploadModalOpen && (
         <UploadCoverImageModal
+          type={"GROUP"}
           groupData={groupData}
           setIsOpen={setIsCoverUploadModalOpen}
           img={getFileUrl(groupData.cover)}
@@ -113,6 +114,7 @@ const GroupLayout = ({
       )}
       {isProfileUploadModalOpen && (
         <UploadProfileImageModal
+          type={"GROUP"}
           groupData={groupData}
           setIsOpen={setIsProfileUploadModalOpen}
           img={getFileUrl(groupData.profile)}

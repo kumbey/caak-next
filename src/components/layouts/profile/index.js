@@ -1,7 +1,4 @@
-import Image from "next/image";
 import {
-  getFileExt,
-  getFileName,
   getFileUrl,
   getGenderImage,
   getURLUserName,
@@ -11,22 +8,17 @@ import Button from "../../button";
 import SideBarGroups from "../../card/SideBarGroups";
 import { useUser } from "../../../context/userContext";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createFollowedUsers,
   deleteFollowedUsers,
-  updateUser,
 } from "../../../graphql-custom/user/mutation";
-import { ApiFileUpload } from "../../../utility/ApiHelper";
 import AuraModal from "../../modals/auraModal";
-import awsExports from "../../../aws-exports";
-import Dropzone from "react-dropzone";
-import { API, graphqlOperation } from "aws-amplify";
-import { deleteFile } from "../../../graphql-custom/file/mutation";
-import Loader from "../../loader";
+import { API } from "aws-amplify";
 import { useRouter } from "next/router";
 import userVerifiedSvg from "../../../../public/assets/images/fi-rs-awarded.svg";
-import { usePreserveScroll } from "../../../hooks/useScroll";
+import UploadCoverImageModal from "../../modals/uploadCoverImageModal";
+import UploadProfileImageModal from "../../modals/uploadProfileImageModal";
 
 const DefaultUserProfileLayout = ({ user, children }) => {
   const [isAuraModalOpen, setIsAuraModalOpen] = useState(false);
@@ -35,72 +27,12 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   const { user: signedUser, isLogged } = useUser();
 
   const [doRender, setDoRender] = useState(0);
-  const [uploadingProfile, setUploadingProfile] = useState(false);
-  const [uploadingCover, setUploadingCover] = useState(false);
+  const [isCoverUploadModalOpen, setIsCoverUploadModalOpen] = useState(false);
+  const [isProfileUploadModalOpen, setIsProfileUploadModalOpen] =
+    useState(false);
 
   const meta = JSON.parse(user?.meta);
-
-  const fileParams = (file) => {
-    return {
-      ext: getFileExt(file[0].name),
-      name: getFileName(file[0].name),
-      key: file[0].name,
-      type: file[0].type,
-      url: URL.createObjectURL(file[0]),
-      bucket: awsExports.aws_user_files_s3_bucket,
-      region: awsExports.aws_user_files_s3_bucket_region,
-      level: "public",
-      obj: file[0],
-    };
-  };
-
-  const onDrop = useCallback((file) => {
-    setProfilePictureDropZone(fileParams(file));
-  }, []);
-
-  const onDropCover = useCallback((file) => {
-    setCoverPictureDropZone(fileParams(file));
-  }, []);
-
-  const [profilePictureDropZone, setProfilePictureDropZone] = useState([]);
-  const [coverPictureDropZone, setCoverPictureDropZone] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const updateImage = async ({ type, array, setArray, user, signedUser }) => {
-    try {
-      const resp = await ApiFileUpload(array);
-      await API.graphql(
-        graphqlOperation(updateUser, {
-          input: {
-            id: user.id,
-            ...(type === "cover"
-              ? { cover_pic_id: resp.id }
-              : { pic_id: resp.id }),
-          },
-        })
-      );
-      if (user.cover_pic_id)
-        await API.graphql(
-          graphqlOperation(deleteFile, {
-            input: {
-              ...(type === "cover"
-                ? { id: user.cover_pic_id }
-                : { id: user.pic_id }),
-            },
-          })
-        );
-      if (type === "cover") {
-        signedUser.cover_pic = resp;
-        user.cover_pic = resp;
-      } else {
-        signedUser.pic = resp;
-        user.pic = resp;
-      }
-      setArray({});
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
 
   const handleClick = () => {
     if (isLogged) {
@@ -157,40 +89,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
   };
 
   useEffect(() => {
-    if (coverPictureDropZone.name) {
-      setUploadingCover(true);
-      updateImage({
-        type: "cover",
-        array: coverPictureDropZone,
-        setArray: setCoverPictureDropZone,
-        user,
-        signedUser,
-      }).then(() => {
-        setUploadingCover(false);
-      });
-    }
-
-    // eslint-disable-next-line
-  }, [coverPictureDropZone]);
-
-  useEffect(() => {
-    if (profilePictureDropZone.name) {
-      setUploadingProfile(true);
-      updateImage({
-        type: "profile",
-        array: profilePictureDropZone,
-        setArray: setProfilePictureDropZone,
-        user,
-        signedUser,
-      }).then(() => {
-        setUploadingProfile(false);
-      });
-    }
-
-    // eslint-disable-next-line
-  }, [profilePictureDropZone]);
-
-  useEffect(() => {
     setLoading(true);
   }, []);
 
@@ -198,25 +96,24 @@ const DefaultUserProfileLayout = ({ user, children }) => {
     <>
       <div className={"flex flex-col"}>
         <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />
+        {isCoverUploadModalOpen && (
+          <UploadCoverImageModal
+            groupData={user}
+            type={"USER"}
+            setIsOpen={setIsCoverUploadModalOpen}
+          />
+        )}
+        {isProfileUploadModalOpen && (
+          <UploadProfileImageModal
+            groupData={user}
+            type={"USER"}
+            setIsOpen={setIsProfileUploadModalOpen}
+          />
+        )}
+
         <div className={"relative w-full h-[240px]"}>
-          {uploadingCover && (
-            <div
-              className={
-                "flex items-center justify-center absolute top-0 bg-white w-full h-full z-[1]"
-              }
-            >
-              <Loader
-                containerClassName={"w-full"}
-                className={`bg-caak-primary`}
-              />
-            </div>
-          )}
           <div className={"w-full h-[120px] navbarGradient absolute top-0"} />
           <img
-            // priority={true}
-            // quality={100}
-            // layout={"fill"}
-            // objectFit={"cover"}
             alt={user?.cover_pic?.name}
             className={"object-cover w-full h-full"}
             src={
@@ -226,52 +123,29 @@ const DefaultUserProfileLayout = ({ user, children }) => {
             }
           />
           {isLogged && user?.id === signedUser?.id && (
-            <Dropzone
-              noKeyboard
-              maxFiles={1}
-              onDropRejected={(e) => console.log(e[0].errors[0].message)}
-              accept={"image/jpeg, image/png, image/gif"}
-              onDropAccepted={onDropCover}
+            <div
+              onClick={() => setIsCoverUploadModalOpen(true)}
+              className={
+                "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[10px] md:right-[40px] bottom-[10px] md:bottom-[20px] rounded-square bg-caak-liquidnitrogen"
+              }
             >
-              {({ getRootProps, getInputProps }) => (
+              <>
                 <div
-                  {...getRootProps()}
                   className={
-                    "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[10px] md:right-[40px] bottom-[10px] md:bottom-[20px] rounded-square bg-caak-liquidnitrogen"
+                    "w-[24p] h-[24px] flex items-center justify-center"
                   }
                 >
-                  {!uploadingCover ? (
-                    <>
-                      <div
-                        className={
-                          "w-[24p] h-[24px] flex items-center justify-center"
-                        }
-                      >
-                        <span
-                          className={
-                            "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
-                          }
-                        />
-                      </div>
-                      <p
-                        className={
-                          "text-[14px] text-caak-generalblack ml-[7px]"
-                        }
-                      >
-                        Засах
-                      </p>
-                      <input {...getInputProps()} />
-                    </>
-                  ) : (
-                    <p
-                      className={"text-[14px] text-caak-generalblack ml-[7px]"}
-                    >
-                      Хадгалж байна
-                    </p>
-                  )}
+                  <span
+                    className={
+                      "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                    }
+                  />
                 </div>
-              )}
-            </Dropzone>
+                <p className={"text-[14px] text-caak-generalblack ml-[7px]"}>
+                  Засах
+                </p>
+              </>
+            </div>
           )}
         </div>
         <div
@@ -279,46 +153,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
             "profileLayoutContainer flex-col md:flex-row relative z-[2]"
           }
         >
-          {/*Profile badges*/}
-          {/*<div*/}
-          {/*  className={*/}
-          {/*    "hidden md:flex flex-row items-center h-[50px] bg-white rounded-[100px] py-[8px] px-[24px] bg-white absolute userProfileBadge"*/}
-          {/*  }*/}
-          {/*>*/}
-          {/*  <p className={"text-caak-extraBlack text-[15px] font-medium"}>*/}
-          {/*    Шагналууд*/}
-          {/*  </p>*/}
-          {/*  <div className={"ml-[12px] flex flex-row"}>*/}
-          {/*    <div*/}
-          {/*      className={*/}
-          {/*        "flex items-center justify-center w-[34px] h-[34px] ml-[6px]"*/}
-          {/*      }*/}
-          {/*    >*/}
-          {/*      <span className={"icon-fi-rs-triangle text-[34px]"} />*/}
-          {/*    </div>*/}
-          {/*    <div*/}
-          {/*      className={*/}
-          {/*        "flex items-center justify-center w-[34px] h-[34px] ml-[6px]"*/}
-          {/*      }*/}
-          {/*    >*/}
-          {/*      <span className={"icon-fi-rs-triangle text-[34px]"} />*/}
-          {/*    </div>*/}
-          {/*    <div*/}
-          {/*      className={*/}
-          {/*        "flex items-center justify-center w-[34px] h-[34px] ml-[6px]"*/}
-          {/*      }*/}
-          {/*    >*/}
-          {/*      <span className={"icon-fi-rs-triangle text-[34px]"} />*/}
-          {/*    </div>*/}
-          {/*    <div*/}
-          {/*      className={*/}
-          {/*        "flex items-center justify-center w-[34px] h-[34px] ml-[6px]"*/}
-          {/*      }*/}
-          {/*    >*/}
-          {/*      <span className={"icon-fi-rs-triangle text-[34px]"} />*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
           <div className={"profileLayoutLeftSideBar relative"}>
             <div
               className={
@@ -330,52 +164,28 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                   "w-[148px] h-[148px] relative rounded-full border-[7px] border-caak-liquidnitrogen bg-white"
                 }
               >
-                {uploadingProfile && (
-                  <div
-                    className={
-                      "flex items-center justify-center w-full h-full bg-white absolute top-0 rounded-full z-[1] bg-opacity-80"
-                    }
-                  >
-                    <Loader
-                      containerClassName={"w-full"}
-                      className={`bg-caak-primary`}
-                    />
-                  </div>
-                )}
-
                 <img
                   className={"rounded-full object-cover w-full h-full"}
                   alt={"user profile"}
-                  // layout={"fill"}
-                  // objectFit={"cover"}
                   src={
                     user?.pic
                       ? getFileUrl(user?.pic)
                       : getGenderImage(user.gender).src
                   }
                 />
-                {isLogged && user.id === signedUser?.id && !uploadingProfile && (
-                  <Dropzone
-                    onDropRejected={(e) => console.log(e[0].errors[0].message)}
-                    accept={"image/jpeg, image/png, image/gif"}
-                    onDropAccepted={onDrop}
+                {isLogged && user.id === signedUser?.id && (
+                  <div
+                    onClick={() => setIsProfileUploadModalOpen(true)}
+                    className={
+                      "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
+                    }
                   >
-                    {({ getRootProps, getInputProps }) => (
-                      <div
-                        {...getRootProps()}
-                        className={
-                          "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
-                        }
-                      >
-                        <span
-                          className={
-                            "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
-                          }
-                        />
-                        <input {...getInputProps()} />
-                      </div>
-                    )}
-                  </Dropzone>
+                    <span
+                      className={
+                        "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                      }
+                    />
+                  </div>
                 )}
               </div>
               <div className={"flex flex-row items-center"}>
@@ -397,8 +207,6 @@ const DefaultUserProfileLayout = ({ user, children }) => {
                       className={"w-[16.5px] h-[14.25px] object-contain"}
                       height={14.25}
                       width={16.5}
-                      // quality={100}
-                      // priority={true}
                       src={userVerifiedSvg.src}
                     />
                   </div>

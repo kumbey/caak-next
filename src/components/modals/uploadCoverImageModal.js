@@ -15,10 +15,28 @@ import { API, graphqlOperation } from "aws-amplify";
 import { updateGroup } from "../../graphql-custom/group/mutation";
 import { deleteFile } from "../../graphql-custom/file/mutation";
 import Loader from "../loader";
+import { updateUser } from "../../graphql-custom/user/mutation";
 
-const UploadCoverImageModal = ({ setIsOpen, groupData }) => {
+const UploadCoverImageModal = ({ setIsOpen, groupData, type }) => {
+  const uploadImageGetImageFromProps = (picData, type) => {
+    if (picData) {
+      if (type === "USER") {
+        if (picData.cover_pic) {
+          return getFileUrl(picData.cover_pic);
+        } else {
+          return getGenderImage("default").src;
+        }
+      } else if (type === "GROUP") {
+        if (picData.cover) {
+          return getFileUrl(picData.cover);
+        } else {
+          return getGenderImage("default").src;
+        }
+      }
+    }
+  };
   const [coverPictureDropZone, setCoverPictureDropZone] = useState(
-    getFileUrl(groupData.cover)
+    uploadImageGetImageFromProps(groupData, type)
   );
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -40,32 +58,50 @@ const UploadCoverImageModal = ({ setIsOpen, groupData }) => {
     };
   };
 
-  const updateImage = async (croppedImage) => {
+  const updateImage = async (croppedImage, type) => {
     if (croppedImage) {
       setLoading(true);
       try {
         const resp = await ApiFileUpload(croppedImage);
-        await API.graphql(
-          graphqlOperation(updateGroup, {
-            input: {
-              id: groupData.id,
-              groupCoverId: resp.id,
-            },
-          })
-        );
-        if (groupData.cover.id)
+        if (type === "GROUP") {
           await API.graphql(
-            graphqlOperation(deleteFile, {
+            graphqlOperation(updateGroup, {
               input: {
-                id: groupData.cover.id,
+                id: groupData.id,
+                groupCoverId: resp.id,
               },
             })
           );
-
-        groupData.cover = resp;
+          if (groupData.cover.id)
+            await API.graphql(
+              graphqlOperation(deleteFile, {
+                input: {
+                  id: groupData.cover.id,
+                },
+              })
+            );
+          groupData.cover = resp;
+        } else if (type === "USER") {
+          await API.graphql(
+            graphqlOperation(updateUser, {
+              input: {
+                id: groupData.id,
+                cover_pic_id: resp.id,
+              },
+            })
+          );
+          if (groupData.cover_pic_id)
+            await API.graphql(
+              graphqlOperation(deleteFile, {
+                input: {
+                  id: groupData.cover_pic_id,
+                },
+              })
+            );
+          groupData.cover_pic = resp;
+        }
       } catch (ex) {
         setLoading(false);
-
         console.log(ex);
       }
       setLoading(false);
@@ -86,7 +122,7 @@ const UploadCoverImageModal = ({ setIsOpen, groupData }) => {
         coverPictureDropZone,
         croppedAreaPixels
       );
-      await updateImage(croppedImage);
+      await updateImage(croppedImage, type);
       setRender(render + 1);
       setIsOpen(false);
     } catch (e) {
@@ -139,11 +175,9 @@ const UploadCoverImageModal = ({ setIsOpen, groupData }) => {
 
               <Cropper
                 image={
-                  coverPictureDropZone
+                  coverPictureDropZone.url
                     ? coverPictureDropZone.url
-                      ? coverPictureDropZone.url
-                      : coverPictureDropZone
-                    : getGenderImage("default".src)
+                    : coverPictureDropZone
                 }
                 crop={crop}
                 zoom={zoom}

@@ -1,19 +1,42 @@
-import {useCallback, useState} from "react";
-import {getFileExt, getFileName, getFileUrl, getGenderImage} from "../../utility/Util";
+import { useCallback, useState } from "react";
+import {
+  getFileExt,
+  getFileName,
+  getFileUrl,
+  getGenderImage,
+} from "../../utility/Util";
 import awsExports from "../../aws-exports";
-import {ApiFileUpload} from "../../utility/ApiHelper";
-import {API, graphqlOperation} from "aws-amplify";
-import {updateGroup} from "../../graphql-custom/group/mutation";
-import {deleteFile} from "../../graphql-custom/file/mutation";
+import { ApiFileUpload } from "../../utility/ApiHelper";
+import { API, graphqlOperation } from "aws-amplify";
+import { updateGroup } from "../../graphql-custom/group/mutation";
+import { deleteFile } from "../../graphql-custom/file/mutation";
 import getCroppedImg from "./getCroppedImage";
 import Loader from "../loader";
 import Cropper from "react-easy-crop";
 import Dropzone from "react-dropzone";
 import Button from "../button";
+import { updateUser } from "../../graphql-custom/user/mutation";
 
-const UploadProfileImageModal = ({ setIsOpen, groupData }) => {
+const UploadProfileImageModal = ({ setIsOpen, groupData, type }) => {
+  const uploadImageGetImageFromProps = (picData, type) => {
+    if (picData) {
+      if (type === "USER") {
+        if (picData.pic) {
+          return getFileUrl(picData.pic);
+        } else {
+          return getGenderImage("default").src;
+        }
+      } else if (type === "GROUP") {
+        if (picData.profile) {
+          return getFileUrl(picData.profile);
+        } else {
+          return getGenderImage("default").src;
+        }
+      }
+    }
+  };
   const [profilePictureDropZone, setProfilePictureDropZone] = useState(
-    getFileUrl(groupData.profile)
+    uploadImageGetImageFromProps(groupData, type)
   );
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -35,29 +58,49 @@ const UploadProfileImageModal = ({ setIsOpen, groupData }) => {
     };
   };
 
-  const updateImage = async (croppedImage) => {
+  const updateImage = async (croppedImage, type) => {
     if (croppedImage) {
       setLoading(true);
       try {
         const resp = await ApiFileUpload(croppedImage);
-        await API.graphql(
-          graphqlOperation(updateGroup, {
-            input: {
-              id: groupData.id,
-              groupProfileId: resp.id,
-            },
-          })
-        );
-        if (groupData.profile.id)
+        if (type === "GROUP") {
           await API.graphql(
-            graphqlOperation(deleteFile, {
+            graphqlOperation(updateGroup, {
               input: {
-                id: groupData.profile.id,
+                id: groupData.id,
+                groupProfileId: resp.id,
               },
             })
           );
+          if (groupData.profile.id)
+            await API.graphql(
+              graphqlOperation(deleteFile, {
+                input: {
+                  id: groupData.profile.id,
+                },
+              })
+            );
 
-        groupData.profile = resp;
+          groupData.profile = resp;
+        } else if (type === "USER") {
+          await API.graphql(
+            graphqlOperation(updateUser, {
+              input: {
+                id: groupData.id,
+                pic_id: resp.id,
+              },
+            })
+          );
+          if (groupData.pic_id)
+            await API.graphql(
+              graphqlOperation(deleteFile, {
+                input: {
+                  id: groupData.pic_id,
+                },
+              })
+            );
+          groupData.pic = resp;
+        }
       } catch (ex) {
         setLoading(false);
 
@@ -81,7 +124,7 @@ const UploadProfileImageModal = ({ setIsOpen, groupData }) => {
         profilePictureDropZone,
         croppedAreaPixels
       );
-      await updateImage(croppedImage);
+      await updateImage(croppedImage, type);
       setRender(render + 1);
       setIsOpen(false);
     } catch (e) {

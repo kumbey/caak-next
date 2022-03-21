@@ -5,7 +5,6 @@ import useScrollBlock from "../../../hooks/useScrollBlock";
 import ModalBanner from "../../modalBanner";
 import Banner from "../../banner";
 import { useRouter } from "next/router";
-
 import TopBanner from "../../topBanner";
 
 const ViewPostModalLayout = ({
@@ -83,22 +82,22 @@ const ViewPostModalLayout = ({
       <div className="popup_modal-viewPost">
         <div
           onClick={() => back()}
-          className={`h-full pt-6 bg-black bg-opacity-80`}
+          className={`h-full bg-black bg-opacity-80 pt-20`}
         >
+          <div className="flex justify-center">
+            <TopBanner />
+          </div>
           <div
             onClick={(e) => {
               e.stopPropagation();
             }}
-            className={`flex flex-col rounded-lg relative pb-[28px] ${
+            className={`rounded-lg relative ${
               containerClassname ? containerClassname : ""
             }`}
           >
-            <div className="flex justify-center">
-              <TopBanner className="pb-[15px]" />
-            </div>
             <div
               className={
-                "viewPostLayoutContainer mt-16 relative items-center lg:items-start md:px-[20px] lg:px-0"
+                "viewPostLayoutContainer relative items-center lg:items-start md:px-[20px] lg:px-0"
               }
             >
               <div ref={viewPostRef} className={"viewPostItem"}>
@@ -106,7 +105,7 @@ const ViewPostModalLayout = ({
               </div>
               <div
                 className={
-                  `viewPostRightSideBar h-full flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col`
+                  "viewPostRightSideBar h-full flex items-center ml-0 md:ml-[20px] flex-col-reverse md:flex-col"
                 }
               >
                 {isScrollButtonVisible && (

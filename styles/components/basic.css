@@ -808,6 +808,25 @@
     margin: auto;
     min-height: 100vh;
   }
+
+  .popup_modal-uploadCover{
+    min-width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    max-width: 700px;
+    margin: 90px auto;
+    max-height: 100%;
+    position: relative;
+  }
+  .popup_modal-uploadProfile{
+    min-width: 300px;
+    background: #fff;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 90px auto;
+    max-height: 100%;
+    position: relative;
+  }
   .auraBgGradient {
     background: transparent
       linear-gradient(
@@ -994,6 +1013,9 @@
   .customPackInput::placeholder {
     font-size: 15px;
     text-align: center;
+  }
+  .groupCoverImage {
+    aspect-ratio: 6 / 1;
   }
 }
 

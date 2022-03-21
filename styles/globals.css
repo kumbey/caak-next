@@ -43,25 +43,11 @@
     }
 
     .caak-main-wrapper {
-        /*overflow: auto;*/
-        /*padding-top: var(--topBarSize);*/
-        /*height: 100vh;*/
-        /*min-height: 100vh;*/
+        max-width: 1920px;
+        margin-right: auto;
+        margin-left: auto;
     }
 
-    /*::-webkit-scrollbar {*/
-    /*    width: 0.6em;*/
-    /*}*/
-
-    /*::-webkit-scrollbar,*/
-    /*::-webkit-scrollbar-thumb {*/
-    /*    overflow: visible;*/
-    /*    border-radius: 4px;*/
-    /*}*/
-
-    /*::-webkit-scrollbar-thumb {*/
-    /*    background: rgba(0, 0, 0, 0.2);*/
-    /*}*/
 }
 /*Custom sizing class*/
 @layer utilities {

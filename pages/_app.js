@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import "simplebar/dist/simplebar.min.css";
+import 'react-image-crop/dist/ReactCrop.css'
 import "react-datepicker/dist/react-datepicker.css";
 import { WrapperProvider } from "../src/context/wrapperContext";
 import { UserProvider } from "../src/context/userContext";

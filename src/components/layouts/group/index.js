@@ -1,36 +1,29 @@
-import Image from "next/image";
 import SuggestedGroupsCard from "../../card/SuggestedGroupsCard/";
 import { useUser } from "../../../context/userContext";
 import useMediaQuery from "../../navigation/useMeduaQuery";
 import GroupRules from "../../card/GroupRules";
-import Dropzone from "react-dropzone";
 import Button from "../../button";
 import LeaveGroup from "../../group/LeaveGroup";
 import {
-  getFileExt,
-  getFileName,
   getFileUrl,
   getGenderImage,
   kFormatter,
   useClickOutSide,
 } from "../../../utility/Util";
-import { useCallback, useEffect, useState } from "react";
-import awsExports from "../../../aws-exports";
-import { ApiFileUpload } from "../../../utility/ApiHelper";
+import { useEffect, useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
-import { updateGroup } from "../../../graphql-custom/group/mutation";
-import { deleteFile } from "../../../graphql-custom/file/mutation";
 
 import { createGroupUsers } from "../../../graphql-custom/GroupUsers/mutation";
 import DropDown from "../../navigation/DropDown";
 import GroupMoreMenu from "../../../components/group/GroupMoreMenu";
 import GroupAdminPanel from "../../group/GroupAdminPanel";
 import { useRouter } from "next/router";
-import Loader from "../../loader";
 import GroupAdminsCard from "../../group/GroupAdminsCard";
 import Banner from "../../banner";
 import GroupInfoCard from "../../card/GroupInfoCard";
 import { usePreserveScroll } from "../../../hooks/useScroll";
+import UploadCoverImageModal from "../../modals/uploadCoverImageModal";
+import UploadProfileImageModal from "../../modals/uploadProfileImageModal";
 
 const GroupLayout = ({
   children,
@@ -44,12 +37,10 @@ const GroupLayout = ({
   const isLaptop = useMediaQuery("screen and (max-device-width: 1100px)");
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [isCoverUploadModalOpen, setIsCoverUploadModalOpen] = useState(false);
+  const [isProfileUploadModalOpen, setIsProfileUploadModalOpen] =
+    useState(false);
   const router = useRouter();
-
-  const [uploadingProfile, setUploadingProfile] = useState(false);
-  const [uploadingCover, setUploadingCover] = useState(false);
-
   const [forceRender, setForceRender] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -67,16 +58,6 @@ const GroupLayout = ({
       setLoading(true);
       if (groupData.followed) {
         setOpen(true);
-        // await API.graphql(
-        //   graphqlOperation(deleteGroupUsers, {
-        //     input: {
-        //       id: `${groupData.id}#${signedUser.id}`,
-        //     },
-        //   })
-        // );
-        // groupData.followed = false;
-        // groupData.totals.member -= 1;
-        // setForceRender(forceRender + 1);
       } else {
         await API.graphql(
           graphqlOperation(createGroupUsers, {
@@ -118,100 +99,26 @@ const GroupLayout = ({
     }
   };
 
-  const fileParams = (file) => {
-    return {
-      ext: getFileExt(file[0].name),
-      name: getFileName(file[0].name),
-      key: file[0].name,
-      type: file[0].type,
-      url: URL.createObjectURL(file[0]),
-      bucket: awsExports.aws_user_files_s3_bucket,
-      region: awsExports.aws_user_files_s3_bucket_region,
-      level: "public",
-      obj: file[0],
-    };
-  };
-
-  const onDrop = useCallback((file) => {
-    setProfilePictureDropZone(fileParams(file));
-  }, []);
-
-  const onDropCover = useCallback((file) => {
-    setCoverPictureDropZone(fileParams(file));
-  }, []);
-
-  const [profilePictureDropZone, setProfilePictureDropZone] = useState([]);
-  const [coverPictureDropZone, setCoverPictureDropZone] = useState([]);
-
-  const updateImage = async ({ type, array, setArray }) => {
-    try {
-      const resp = await ApiFileUpload(array);
-      await API.graphql(
-        graphqlOperation(updateGroup, {
-          input: {
-            id: groupData.id,
-            ...(type === "cover"
-              ? { groupCoverId: resp.id }
-              : { groupProfileId: resp.id }),
-          },
-        })
-      );
-      if (groupData.cover.id)
-        await API.graphql(
-          graphqlOperation(deleteFile, {
-            input: {
-              ...(type === "cover"
-                ? { id: groupData.cover.id }
-                : { id: groupData.profile.id }),
-            },
-          })
-        );
-
-      if (type === "cover") {
-        groupData.cover = resp;
-      } else {
-        groupData.profile = resp;
-      }
-      setArray({});
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
-  useEffect(() => {
-    if (coverPictureDropZone.url) {
-      setUploadingCover(true);
-      updateImage({
-        type: "cover",
-        array: coverPictureDropZone,
-        setArray: setCoverPictureDropZone,
-      }).then(() => {
-        setUploadingCover(false);
-      });
-    }
-
-    // eslint-disable-next-line
-  }, [coverPictureDropZone]);
-
-  useEffect(() => {
-    if (profilePictureDropZone.url) {
-      setUploadingProfile(true);
-      updateImage({
-        type: "profile",
-        array: profilePictureDropZone,
-        setArray: setProfilePictureDropZone,
-      }).then(() => {
-        setUploadingProfile(false);
-      });
-    }
-    // eslint-disable-next-line
-  }, [profilePictureDropZone]);
-
   useEffect(() => {
     setLoaded(true);
   }, []);
   return loaded ? (
     <div className={"flex flex-col relative pb-[200px] md:pb-0"}>
+      {isCoverUploadModalOpen && (
+        <UploadCoverImageModal
+          groupData={groupData}
+          setIsOpen={setIsCoverUploadModalOpen}
+          img={getFileUrl(groupData.cover)}
+        />
+      )}
+      {isProfileUploadModalOpen && (
+        <UploadProfileImageModal
+          groupData={groupData}
+          setIsOpen={setIsProfileUploadModalOpen}
+          img={getFileUrl(groupData.profile)}
+        />
+      )}
+
       <LeaveGroup
         open={open}
         setOpen={setOpen}
@@ -220,14 +127,12 @@ const GroupLayout = ({
         forceRender={forceRender}
       />
       <div className={"flex flex-col"}>
-        <div className={"relative w-full h-[240px]"}>
+        <div className={"relative w-full max-h-[240px] h-full"}>
           <div className={"w-full h-[120px] navbarGradient absolute top-0"} />
           <img
-            className={"object-cover h-full w-full"}
-            // priority={true}
-            // quality={100}
-            // layout={"fill"}
-            // objectFit={"cover"}
+            className={
+              "object-cover h-full max-h-[240px] min-h-[120px] w-full groupCoverImage"
+            }
             alt={groupData?.cover?.name}
             src={
               groupData?.cover
@@ -237,54 +142,27 @@ const GroupLayout = ({
           />
           {isLogged &&
             (groupData.role_on_group === "ADMIN" ? (
-              <Dropzone
-                noKeyboard
-                maxFiles={1}
-                onDropRejected={(e) => console.log(e[0].errors[0].message)}
-                accept={"image/jpeg, image/png, image/gif"}
-                onDropAccepted={onDropCover}
+              <div
+                onClick={() => setIsCoverUploadModalOpen(true)}
+                className={
+                  "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[40px] bottom-[20px] rounded-square bg-caak-liquidnitrogen"
+                }
               >
-                {({ getRootProps, getInputProps }) => (
-                  <div
-                    {...getRootProps()}
+                <div
+                  className={
+                    "w-[24p] h-[24px] flex items-center justify-center"
+                  }
+                >
+                  <span
                     className={
-                      "cursor-pointer h-[32px] px-[12px] font-medium py-[8px] flex flex-row items-center justify-center absolute right-[40px] bottom-[20px] rounded-square bg-caak-liquidnitrogen"
+                      "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
                     }
-                  >
-                    {!uploadingCover ? (
-                      <>
-                        <div
-                          className={
-                            "w-[24p] h-[24px] flex items-center justify-center"
-                          }
-                        >
-                          <span
-                            className={
-                              "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
-                            }
-                          />
-                        </div>
-                        <p
-                          className={
-                            "text-[14px] text-caak-generalblack ml-[7px]"
-                          }
-                        >
-                          Засах
-                        </p>
-                        <input {...getInputProps()} />
-                      </>
-                    ) : (
-                      <p
-                        className={
-                          "text-[14px] text-caak-generalblack ml-[7px]"
-                        }
-                      >
-                        Хадгалж байна...
-                      </p>
-                    )}
-                  </div>
-                )}
-              </Dropzone>
+                  />
+                </div>
+                <p className={"text-[14px] text-caak-generalblack ml-[7px]"}>
+                  Засах
+                </p>
+              </div>
             ) : null)}
         </div>
       </div>
@@ -297,20 +175,8 @@ const GroupLayout = ({
                   "w-[100px] h-[100px] md:w-[148px] md:h-[148px] flex-shrink-0 relative rounded-[34px] border-[6px] bg-white border-white"
                 }
               >
-                {uploadingProfile && (
-                  <div
-                    className={
-                      "flex items-center justify-center w-full h-full bg-white absolute top-0 rounded-[34px] z-[1] bg-opacity-80"
-                    }
-                  >
-                    <Loader
-                      containerClassName={"w-full"}
-                      className={`bg-caak-primary`}
-                    />
-                  </div>
-                )}
                 <img
-                  className={"rounded-[34px] object-cover w-full h-full"}
+                  className={"object-cover w-full h-full rounded-[26px]"}
                   alt={"user profile"}
                   height={148}
                   width={148}
@@ -324,29 +190,18 @@ const GroupLayout = ({
                 {isLogged &&
                   (groupData.role_on_group === "ADMIN" ? (
                     // groupData.role_on_group === "MODERATOR") && (
-                    <Dropzone
-                      onDropRejected={(e) =>
-                        console.log(e[0].errors[0].message)
+                    <div
+                      onClick={() => setIsProfileUploadModalOpen(true)}
+                      className={
+                        "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
                       }
-                      accept={"image/jpeg, image/png, image/gif"}
-                      onDropAccepted={onDrop}
                     >
-                      {({ getRootProps, getInputProps }) => (
-                        <div
-                          {...getRootProps()}
-                          className={
-                            "flex items-center justify-center cursor-pointer w-[42px] h-[42px] bg-white rounded-full absolute bottom-[8px] right-[-8px] shadow-profileCamera"
-                          }
-                        >
-                          <span
-                            className={
-                              "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
-                            }
-                          />
-                          <input {...getInputProps()} />
-                        </div>
-                      )}
-                    </Dropzone>
+                      <span
+                        className={
+                          "icon-fi-rs-camera-f text-caak-extraBlack text-[22px]"
+                        }
+                      />
+                    </div>
                   ) : null)}
               </div>
               <div

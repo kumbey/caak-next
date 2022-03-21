@@ -61,7 +61,7 @@ export default function TopBanner({ location, className }) {
       onClick={() => saveClick()}
       className={` px-[10px] ${className ? className : ""} md:sticky ${
         location === "post" ? "md:top-[16px]" : "md:top-[74px]"
-      } relative flex flex-col items-end `}
+      } relative flex flex-col items-end pb-20 -mt-12`}
     >
       <Link href={meta.url}>
         <a className={"w-full"} rel="noreferrer" target="_blank">

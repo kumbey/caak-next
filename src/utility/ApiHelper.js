@@ -4,7 +4,6 @@ import Storage from "@aws-amplify/storage";
 import { useMemo } from "react";
 import { useUser } from "../context/userContext";
 import { createFile } from "../graphql-custom/file/mutation";
-import { checkUser } from "./Util";
 import { getUser } from "../graphql-custom/user/queries";
 
 /**
@@ -33,7 +32,9 @@ export const ApiFileUpload = async (file) => {
         graphqlOperation(createFile, { input: fileData })
       );
       resp = resp.data.createFile;
-      await Storage.put(resp.id + "." + resp.ext, fileObj);
+      await Storage.put(resp.id + "." + resp.ext, fileObj, {
+        contentType: resp.type
+      });
       return resp;
     } else {
       return fileData;

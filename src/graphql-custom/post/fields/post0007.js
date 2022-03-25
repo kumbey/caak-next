@@ -11,6 +11,10 @@ const post0007 = /* GraphQL */ `
         createdAt
         isSaved
         version
+        category {
+            name
+            id
+        }
         user {
             id
             verified

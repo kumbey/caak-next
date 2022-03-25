@@ -1,12 +1,6 @@
-import logoIcon from "../../../public/New-Logo.svg";
 import logoIconLight from "../../../public/New-Logo-Light.svg";
-import anniversary from "../../../public/assets/images/Anniversary.svg";
-import whiteAnivery from "../../../public/assets/images/Anniversary-white.svg"
-
-import { useWrapper } from "../../context/wrapperContext";
 
 const Logo = ({ ...props }) => {
-  const { navBarTransparent } = useWrapper();
   return (
     <div
       {...props}
@@ -14,11 +8,11 @@ const Logo = ({ ...props }) => {
     >
       <div
         className={
-          "w-[112px] flex flex-shrink-0 flex-row items-center pr-[12px] mr-[12px] border-r-[1px]"
+          "w-[112px] flex flex-shrink-0 flex-row items-center pr-[12px]"
         }
       >
         <img
-          src={navBarTransparent ? logoIconLight.src : logoIcon.src}
+          src={logoIconLight.src}
           className="cursor-pointer object-contain"
           alt="Caak Logo"
           width={112}
@@ -26,13 +20,13 @@ const Logo = ({ ...props }) => {
           // objectFit="contain"
         />
       </div>
-      <img
-        width={64}
-        height={34.69}
-        className={"w-[64px] h-[34.69px]"}
-        alt={"16th Anniversary"}
-        src={navBarTransparent ?  whiteAnivery.src : anniversary.src}
-      />
+      {/*<img*/}
+      {/*  width={64}*/}
+      {/*  height={34.69}*/}
+      {/*  className={"w-[64px] h-[34.69px]"}*/}
+      {/*  alt={"16th Anniversary"}*/}
+      {/*  src={navBarTransparent ?  whiteAnivery.src : anniversary.src}*/}
+      {/*/>*/}
     </div>
   );
 };

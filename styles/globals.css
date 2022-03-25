@@ -9,6 +9,7 @@
 @import "./components/auraCard.css";
 
 @import "icon-fonts.css";
+@import "icon-new.css";
 @import "./Tooltip.css";
 @import "./nprogress.css";
 
@@ -38,7 +39,8 @@
     }
 
     body {
-        @apply bg-caak-doctor bg-caak-liquidnitrogen;
+        /*@apply bg-caak-doctor bg-caak-liquidnitrogen;*/
+        @apply bg-caak-absoluteapricot;
         /*overflow: hidden;*/
     }
 

@@ -44,7 +44,7 @@ const DefaultFeedLayout = ({
     loaded && (
       <div className={"flex flex-col w-full"}>
         <div className="flex justify-center ">
-          <TopBanner className={"pt-[20px]"} />
+          <TopBanner className={"pt-[80px]"} />
         </div>
         <div className="feedLayoutContainer pb-[200px] md:pb-0">
           <AuraModal setIsOpen={setIsAuraModalOpen} isOpen={isAuraModalOpen} />

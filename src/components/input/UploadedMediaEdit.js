@@ -41,6 +41,8 @@ const UploadedMediaEdit = ({
   setIsEditing,
 }) => {
   const [activeId, setActiveId] = useState(1);
+  const [link, setLink] = useState(null);
+  const [scrapedData, setScrapedData] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [videoDurationError, setVideoDurationError] = useState(false);
   const isTablet = useMediaQuery("screen and (max-device-width: 767px)");
@@ -164,6 +166,48 @@ const UploadedMediaEdit = ({
   const isAdminAsync = async () => {
     return await isAdmin();
   };
+  const scrapper = async () => {
+    if (link) {
+      fetch("/api/meta", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          url: link,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setScrapedData(data);
+        });
+    }
+  };
+
+  useUpdateEffect(() => {
+    if (scrapedData) {
+      if (scrapedData.success) {
+        if (scrapedData.ogImage.url) {
+          const items = post.items;
+          items[0].file.url = scrapedData.ogImage.url;
+          setPost((prev) => ({
+            ...prev,
+            title: scrapedData.ogTitle,
+            description: scrapedData.ogDescription,
+            items: [...items],
+          }));
+        } else {
+          setPost((prev) => ({
+            ...prev,
+            title: scrapedData.ogTitle,
+            description: scrapedData.ogDescription,
+          }));
+        }
+      } else {
+        console.log(scrapedData.error);
+      }
+    }
+  }, [scrapedData]);
 
   useUpdateEffect(() => {
     setIsEditing(true);
@@ -306,7 +350,7 @@ const UploadedMediaEdit = ({
     if (selectedGroup) {
       if (selectedGroup.role_on_group !== "ADMIN") {
         setAdminTextEditor("FALSE");
-      }else {
+      } else {
         setAdminTextEditor("TRUE");
       }
     }
@@ -334,6 +378,19 @@ const UploadedMediaEdit = ({
         </div>
       )}
       <div className={"px-[18px] mt-[12px]"}>
+        <div className={"w-full block relative"}>
+          <div className={"w-full block relative"}>
+            <textarea
+              onFocus={auto_grow}
+              onInput={auto_grow}
+              placeholder={"Линк"}
+              value={link || ""}
+              onChange={(e) => setLink(e.target.value)}
+              className={`addPostTextarea overflow-hidden min-h-[44px] text-[15px] pb-[25px]   text-caak-extraBlack w-full rounded-[3px] border border-caak-titaniumwhite  sm:text-sm  focus:ring-2 focus:ring-opacity-20`}
+            />
+          </div>
+          <button onClick={() => scrapper()}>Scrap</button>
+        </div>
         <div className={"w-full block relative"}>
           <div className={"w-full block relative"}>
             <textarea

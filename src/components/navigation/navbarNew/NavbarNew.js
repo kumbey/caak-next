@@ -26,7 +26,7 @@ export default function NavbarNew() {
       <nav
         className={`${
           navBarTransparent ? "bg-transparent" : "bg-white"
-        } w-full px-[40px] py-[18.44px] h-[80px]`}
+        } absolute z-[2] top-0 w-full px-[40px] py-[18.44px] h-[80px]`}
       >
         <div
           className={"h-[42.33px] flex flex-row items-center justify-between"}

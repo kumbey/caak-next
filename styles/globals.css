@@ -40,7 +40,7 @@
 
     body {
         /*@apply bg-caak-doctor bg-caak-liquidnitrogen;*/
-        @apply bg-caak-absoluteapricot;
+        /*@apply bg-caak-absoluteapricot;*/
         /*overflow: hidden;*/
     }
 

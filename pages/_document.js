@@ -31,6 +31,13 @@ class MyDocument extends Document {
           />
           <link
             href={
+              "https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"
+            }
+            crossOrigin="anonymous"
+            rel="stylesheet"
+          />
+          <link
+            href={
               "https://fonts.googleapis.com/css2?family=Merriweather:wght@400&display=swap"
             }
             crossOrigin="anonymous"

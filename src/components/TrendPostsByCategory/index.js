@@ -5,6 +5,7 @@ import { listPostByCategoryOrderByReactions } from "../../graphql-custom/post/qu
 import { getReturnData } from "../../utility/Util";
 import { listUserCategoryByUser } from "../../graphql/queries";
 import { useUser } from "../../context/userContext";
+import Story from "../story";
 
 const TrendPostsByCategory = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -134,7 +135,7 @@ const TrendPostsByCategory = () => {
           }
         >
           {trendingPostsByCategory.items.map((item, index) => {
-            return <TrendPostsByCategoryItem item={item} key={index} />;
+            return <Story story={item.post} key={index} />;
           })}
         </div>
       </div>

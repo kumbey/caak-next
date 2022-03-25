@@ -5,7 +5,6 @@ import { WrapperProvider } from "../src/context/wrapperContext";
 import { UserProvider } from "../src/context/userContext";
 import Amplify, { Storage } from "aws-amplify";
 import awsExports from "../src/aws-exports";
-import NavBar from "../src/components/navigation/NavBar";
 import Modals from "../src/components/modals";
 import NProgress from "nprogress"; //nprogress module
 import Router, { useRouter } from "next/router";
@@ -16,6 +15,7 @@ import Script from "next/script";
 import * as gtag from "../src/lib/gtag";
 import { useEffect } from "react";
 import ToastNotification from "../src/components/Toast/toastNotification";
+import NavbarNew from "../src/components/navigation/navbarNew";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -96,7 +96,7 @@ const MyApp = ({ Component, pageProps }) => {
         <UserProvider>
           <div className={"caak-main-wrapper"}>
             <ToastNotification />
-            <NavBar />
+            <NavbarNew />
             <Component {...pageProps} />
           </div>
           <ViewPostModal />

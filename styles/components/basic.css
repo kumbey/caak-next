@@ -78,7 +78,7 @@
   }
 
   .mobileSideMenu {
-    max-height: calc(100vh - var(--bottomTabSize));
+    /*max-height: calc(100vh - var(--bottomTabSize));*/
     width: 295px;
   }
 

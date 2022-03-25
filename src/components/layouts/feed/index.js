@@ -33,7 +33,7 @@ const DefaultFeedLayout = ({
 
   useEffect(() => {
     setLoaded(true);
-    setNavBarTransparent(false);
+    // setNavBarTransparent(false);
   }, [setNavBarTransparent, setLoaded]);
 
   //  If columns is undefined, columns is defaults to 3.

@@ -1,0 +1,84 @@
+@font-face {
+    font-family: 'caakmoonNew';
+    src:  url('../public/assets/fonts/newIcon/caakmoon.eot?xjpuj0');
+    src:  url('../public/assets/fonts/newIcon/caakmoon.eot?xjpuj0#iefix') format('embedded-opentype'),
+    url('../public/assets/fonts/newIcon/caakmoon.ttf?xjpuj0') format('truetype'),
+    url('../public/assets/fonts/newIcon/caakmoon.woff?xjpuj0') format('woff'),
+    url('../public/assets/fonts/newIcon/caakmoon.svg?xjpuj0#caakmoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="iconNew-"], [class*=" iconNew-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'caakmoonNew' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.iconNew-fi-rs-ads:before {
+    content: "\e900";
+}
+.iconNew-fi-rs-bookmark:before {
+    content: "\e901";
+}
+.iconNew-fi-rs-close:before {
+    content: "\e902";
+}
+.iconNew-fi-rs-down-chevron:before {
+    content: "\e903";
+}
+.iconNew-fi-rs-fb:before {
+    content: "\e904";
+}
+.iconNew-fi-rs-hamburger-menu:before {
+    content: "\e905";
+}
+.iconNew-fi-rs-heart:before {
+    content: "\e906";
+}
+.iconNew-fi-rs-ig:before {
+    content: "\e907";
+}
+.iconNew-fi-rs-jor:before {
+    content: "\e908";
+}
+.iconNew-fi-rs-mic:before {
+    content: "\e909";
+}
+.iconNew-fi-rs-more-ver:before {
+    content: "\e90a";
+}
+.iconNew-fi-rs-phone:before {
+    content: "\e90b";
+}
+.iconNew-fi-rs-plus:before {
+    content: "\e90c";
+}
+.iconNew-fi-rs-search:before {
+    content: "\e90d";
+}
+.iconNew-fi-rs-share:before {
+    content: "\e90e";
+}
+.iconNew-fi-rs-tag:before {
+    content: "\e90f";
+}
+.iconNew-fi-rs-tw:before {
+    content: "\e910";
+}
+.iconNew-fi-rs-wave:before {
+    content: "\e911";
+}
+.iconNew-fi-rs-yt:before {
+    content: "\e912";
+}

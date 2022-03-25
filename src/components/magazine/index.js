@@ -2,7 +2,6 @@ import React from 'react'
 import { getFileUrl } from '../../utility/Util'
 
 export default function Magazine({data}) {
-    console.log(data)
     return (
         <div className='min-w-[338px] max-w-[338px] h-[219px] mr-[30px] rounded-[4px] border-[1px] border-[#D4D8D8]'>
             <img src={getFileUrl(data.items.items[0].file)} className='w-full object-cover h-[89px] rounded-t-[4px]'/>

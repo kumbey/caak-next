@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { API } from "aws-amplify";
 import { listPostByCategoryOrderByReactions } from "../../graphql-custom/post/queries";
+import { listCategorys } from "../../graphql-custom/category/queries";
 import { getReturnData } from "../../utility/Util";
 import { listUserCategoryByUser } from "../../graphql/queries";
 import { useUser } from "../../context/userContext";
-import Story from "../story";
-import Magazine from ".";
+import TopTags from ".";
 
-const MagazineItem = () => {
+const TopTagsItem = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [trendingPostsByCategory, setTrendingPostsByCategory] = useState({});
   const [userCategories, setUserCategories] = useState([]);
@@ -25,13 +25,11 @@ const MagazineItem = () => {
     return resp;
   };
 
-  const getTrendPosts = async (randomCategory) => {
+  const getTrendPosts = async () => {
     try {
       let resp = await API.graphql({
-        query: listPostByCategoryOrderByReactions,
+        query: listCategorys,
         variables: {
-          categoryAndStatus: `${randomCategory}#CONFIRMED`,
-          // categoryAndStatus: `46adc96c-aef9-498a-a8f6-fc05cf264cd1#CONFIRMED`,
           limit: 10,
           sortDirection: "DESC",
         },
@@ -44,36 +42,21 @@ const MagazineItem = () => {
     }
   };
 
-  const getTrendPostsByCategory = async () => {
-    try {
-      const categories = await getUserCategories();
-      const randomCategory =
-        categories.items[Math.floor(Math.random() * categories.items.length)];
-      setSelectedCategory(randomCategory);
-      setUserCategories(categories.items);
-      await getTrendPosts(randomCategory.category_id);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
-
+  useEffect(() => {
+    getTrendPosts()
+  },[])
+  
   const nextItem = () => {
     if (activeIndex < trendingPostsByCategory.items.length - 1) {
       setActiveIndex(activeIndex + 1);
     }
   };
+
   const prevItem = () => {
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
     }
   };
-
-  useEffect(() => {
-    // getUserCategories();
-    getTrendPostsByCategory();
-
-    // eslint-disable-next-line
-  }, []);
 
   return trendingPostsByCategory.items?.length > 0 ? (
     <div
@@ -81,7 +64,7 @@ const MagazineItem = () => {
         "flex flex-col w-full relative"
       }
     >
-      {activeIndex + 1 < trendingPostsByCategory.items.length - 1 && (
+      {(activeIndex + 1 < trendingPostsByCategory.items.length - 1) && (
         <div
           onClick={() => {
             trendPostsRef.current.scrollTo({
@@ -124,7 +107,7 @@ const MagazineItem = () => {
           "font-bold text-[#000000] text-[24px] leading-[28px]"
         }
       >
-        АЛДАРТАЙ ЖОРНУУД
+        ШИЛДЭГ ТАГУУД
       </p>
       <div
         ref={trendPostsRef}
@@ -136,7 +119,7 @@ const MagazineItem = () => {
           }
         >
           {trendingPostsByCategory.items.map((item, index) => {
-            return <Magazine data={item.post} key={index} />;
+                return <TopTags data={item} key={index} />;
           })}
         </div>
       </div>
@@ -144,4 +127,4 @@ const MagazineItem = () => {
   ) : null;
 };
 
-export default MagazineItem;
+export default TopTagsItem;

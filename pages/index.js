@@ -545,6 +545,8 @@ import FeedCardSkeleton from "../src/components/skeleton/FeedCardSkeleton";
 import NewFeedCard from "../src/components/card/NewFeedCard";
 import Story from "../src/components/story";
 import TrendPostsByCategory from "../src/components/TrendPostsByCategory";
+import TopBanner from "../src/components/topBanner";
+import MagazineItem from "../src/components/magazine/MagazineItem";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -942,8 +944,14 @@ const Feed = ({ ssrData }) => {
       </Head>
 
       <div className="bg-white flex flex-col items-center pt-[100px]">
-        <div className="flex flex-row max-w-[1502px] w-full overflow-hidden">
+        <div>
+          <TopBanner/>
+        </div>
+        <div className="flex flex-row max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px] w-full">
           <TrendPostsByCategory/>
+        </div>
+        <div className="flex flex-row max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px] w-full">
+          <MagazineItem/>
         </div>
         <div className={"relative max-w-[1310px] w-full flex flex-wrap gap-[22px] mt-[50px]"}>
           <InfinitScroller  onNext={fetchPosts} loading={loading}>

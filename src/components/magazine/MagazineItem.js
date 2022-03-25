@@ -1,4 +1,3 @@
-import TrendPostsByCategoryItem from "./TrendPostsByCategoryItem";
 import { useEffect, useRef, useState } from "react";
 import { API } from "aws-amplify";
 import { listPostByCategoryOrderByReactions } from "../../graphql-custom/post/queries";
@@ -6,8 +5,9 @@ import { getReturnData } from "../../utility/Util";
 import { listUserCategoryByUser } from "../../graphql/queries";
 import { useUser } from "../../context/userContext";
 import Story from "../story";
+import Magazine from ".";
 
-const TrendPostsByCategory = () => {
+const MagazineItem = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [trendingPostsByCategory, setTrendingPostsByCategory] = useState({});
   const [userCategories, setUserCategories] = useState([]);
@@ -85,13 +85,13 @@ const TrendPostsByCategory = () => {
         <div
           onClick={() => {
             trendPostsRef.current.scrollTo({
-              left: (1 + activeIndex) * 310,
+              left: (1 + activeIndex) * 350,
               behavior: "smooth",
             });
             nextItem();
           }}
           className={
-            "cursor-pointer z-[3] w-[52px] h-[52px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute right-[-26px] top-1/2"
+            "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute right-[-20px] top-1/2"
           }
         >
           <span
@@ -104,13 +104,13 @@ const TrendPostsByCategory = () => {
         <div
           onClick={() => {
             trendPostsRef.current.scrollTo({
-              left: (activeIndex - 1) * 310,
+              left: (activeIndex - 1) * 350,
               behavior: "smooth",
             });
             prevItem();
           }}
           className={
-            "cursor-pointer z-[3] w-[52px] h-[52px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute left-[-26px] top-1/2 rotate-180"
+            "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute left-[-20px] top-1/2 rotate-180"
           }
         >
           <span
@@ -121,10 +121,10 @@ const TrendPostsByCategory = () => {
 
       <p
         className={
-          "font-bold text-[#111111] text-[38px] text-center leading-[42px]"
+          "font-bold text-[#000000] text-[24px] leading-[28px]"
         }
       >
-        СТОРИ МЭДЭЭ
+        АЛДАРТАЙ ЖОРНУУД
       </p>
       <div
         ref={trendPostsRef}
@@ -136,7 +136,7 @@ const TrendPostsByCategory = () => {
           }
         >
           {trendingPostsByCategory.items.map((item, index) => {
-            return <Story story={item.post} key={index} />;
+            return <Magazine data={item.post} key={index} />;
           })}
         </div>
       </div>
@@ -144,4 +144,4 @@ const TrendPostsByCategory = () => {
   ) : null;
 };
 
-export default TrendPostsByCategory;
+export default MagazineItem;

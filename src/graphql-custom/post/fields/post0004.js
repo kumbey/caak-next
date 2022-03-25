@@ -20,7 +20,6 @@ const post0004 = /* GraphQL */ `
       }
     user_id
     group_id
-    category_id
     updatedAt
     createdAt
     version

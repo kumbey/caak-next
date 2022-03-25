@@ -6,6 +6,8 @@ import { useInView } from "react-intersection-observer";
 import useUpdateEffect from "../../../hooks/useUpdateEffect";
 import { API } from "aws-amplify";
 import { addViewToItem } from "../../../graphql-custom/banner/mutation";
+import { getFileUrl } from "../../../utility/Util";
+import {useRouter} from 'next/router'
 
 const NewFeedCard = ({
   post,
@@ -22,6 +24,7 @@ const NewFeedCard = ({
     rootMargin: "-54px",
     triggerOnce: true,
   });
+  const router = useRouter()
 
   const countReach = async () => {
     try {
@@ -55,33 +58,13 @@ const NewFeedCard = ({
       <div
         className={`${
           className ?? ""
-        } feedCard relative w-[422px] h-[523px] bg-white shadow-card`}
+        } feedCard relative w-[422px] h-[523px] bg-white border-b border-[#EFEEEF]`}
       >
         {loading ? (
           <FeedCardSkeleton />
         ) : (
           <>
-            <div ref={ref} className={"flex flex-col"}>
-              {/* <CardHeader
-                sponsored={sponsored}
-                post={post}
-                handleToast={handleToast}
-                containerClassname={headerClassname}
-              /> */}
-              <ImageCarousel
-                cover={false}
-                duration
-                route
-                card={true}
-                mediaContainerClassname={`${
-                  mediaContainerClassname ?? ""
-                } w-full`}
-                postId={post.id}
-                items={post.items.items}
-                heigh
-              />
-            </div>
-
+            <img onClick={() => router.push(`/post/view/${post.id}`)} src={getFileUrl(post.items.items[0].file)} className="h-[300px] cursor-pointer w-full object-cover" />
             <CardFooter
               reacted={post.reacted}
               postId={post.id}

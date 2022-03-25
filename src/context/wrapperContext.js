@@ -22,7 +22,7 @@ function WrapperProvider(props) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationMenu, setIsNotificationMenu] = useState(false);
   const [feedSortType, setFeedSortType] = useState("");
-  const [navBarTransparent, setNavBarTransparent] = useState(false);
+  const [navBarTransparent, setNavBarTransparent] = useState(true);
   const [groupIcon, setGroupIcon] = useState(false);
   const [currentPlayingVideoId, setCurrentPlayingVideoId] = useState(null);
   const [loadedVideos, setLoadedVideos] = useState([]);

@@ -168,6 +168,8 @@ module.exports = {
         inter: ["Inter"],
         roboto: ["Roboto"],
         rubik: ["Rubik"],
+        robotoCondensed: ["Roboto Condensed"],
+        merriWeather: ["Merriweather"],
       },
       spacing: {
         "px-2": "2px",

@@ -814,7 +814,7 @@
     min-height: 100vh;
   }
 
-  .popup_modal-uploadCover{
+  .popup_modal-uploadCover {
     min-width: 300px;
     background: #fff;
     border-radius: 12px;
@@ -823,7 +823,7 @@
     max-height: 100%;
     position: relative;
   }
-  .popup_modal-uploadProfile{
+  .popup_modal-uploadProfile {
     min-width: 300px;
     background: #fff;
     border-radius: 12px;
@@ -943,7 +943,7 @@
   }
   .navbarGradient {
     background: transparent
-      linear-gradient(180deg, #00000099 0%, #80808000 100%) 0 0 no-repeat
+      linear-gradient(180deg, #1111119a 0%, #00000000 100%) 0 0 no-repeat
       padding-box;
   }
   .videoPlayerGradient {
@@ -1021,6 +1021,11 @@
   }
   .groupCoverImage {
     aspect-ratio: 6 / 1;
+  }
+  .navBarPostHeaderCardGradient {
+    background: transparent
+      linear-gradient(180deg, #11111100 0%, #111111cc 100%) 0 0 no-repeat
+      padding-box;
   }
 }
 

@@ -66,11 +66,11 @@ export default function TopBanner({ location, className }) {
       <Link href={meta.url}>
         <a className={"w-full"} rel="noreferrer" target="_blank">
           <img
-            width={990}
-            height={160}
+            width={975}
+            height={110}
             alt=""
             src={getFileUrl(banner.pic1)}
-            className={`object-cover w-full h-full max-w-[990px] max-h-[160px]`}
+            className={`object-cover w-full h-full max-w-[975px] max-h-[110px]`}
           />
         </a>
       </Link>

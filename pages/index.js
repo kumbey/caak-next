@@ -949,19 +949,18 @@ const Feed = ({ ssrData }) => {
         {/*<div>*/}
         {/*  <TopBanner />*/}
         {/*</div>*/}
-        <div className="flex flex-row max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px] w-full">
+        <div className="flex w-full mx-auto flex-row max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px] w-full">
           <TrendPostsByCategory />
         </div>
         <div className="flex flex-row max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px] w-full">
           <MagazineItem />
-          <div className="bg-white flex flex-col items-center">
-
+          <div className="bg-white flex flex-col w-full items-center">
             <div className="flex flex-row max-w-[1502px] w-full overflow-hidden">
               <TrendPostsByCategory />
             </div>
             <div
               className={
-                "relative max-w-[1310px] w-full flex flex-wrap gap-[22px] mt-[50px]"
+                "relative transition-all duration-300 max-w-[1310px] w-full justify-items-center newFeedGrid justify-center mt-[50px]"
               }
             >
               <InfinitScroller onNext={fetchPosts} loading={loading}>

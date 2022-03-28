@@ -435,6 +435,11 @@
     grid-gap: 20px;
     margin-bottom: 20px;
   }
+  .newFeedGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(422px, 1px));
+    grid-gap: 40px 22px;
+  }
 
   .reportModalItemsContainer {
     display: grid;

@@ -1,12 +1,11 @@
 import React from 'react'
 import { getFileUrl } from '../../utility/Util'
 
-export default function TopTags({data}) {
-    console.log(data)
+export default function TopTagsItem({data}) {
     return (
-        <div className='min-w-[150px] max-w-[150px] h-[96px] bg-black-20 mr-[13px] relative'>
-            <img className='h-full w-full object-cover rounded-[4px]' alt='' src={getFileUrl(data.picture)}/>
-            <p className='absolute top-[14px] left-[14px] text-white text-[18px] font-bold'>#{data.name}</p>
+        <div className=' h-[96px] mr-[13px] relative'>
+            <img className='h-full min-w-[150px] object-cover rounded-[4px]' alt='' src={getFileUrl(data.picture)}/>
+            <p className='absolute top-0 w-full h-full pt-[14px] px-[14px] bg-black bg-opacity-20 text-white text-[18px] font-bold'>#{data.name}</p>
         </div>
     )
 }

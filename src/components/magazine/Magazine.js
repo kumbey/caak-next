@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { API } from "aws-amplify";
 import { listPostByCategoryOrderByReactions } from "../../graphql-custom/post/queries";
-import { listCategorys } from "../../graphql-custom/category/queries";
 import { getReturnData } from "../../utility/Util";
 import { listUserCategoryByUser } from "../../graphql/queries";
 import { useUser } from "../../context/userContext";
-import TopTags from ".";
+import MagazineItem from ".";
 
-const TopTagsItem = () => {
+const Magazine = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [trendingPostsByCategory, setTrendingPostsByCategory] = useState({});
   const [userCategories, setUserCategories] = useState([]);
@@ -25,11 +24,13 @@ const TopTagsItem = () => {
     return resp;
   };
 
-  const getTrendPosts = async () => {
+  const getTrendPosts = async (randomCategory) => {
     try {
       let resp = await API.graphql({
-        query: listCategorys,
+        query: listPostByCategoryOrderByReactions,
         variables: {
+          categoryAndStatus: `${randomCategory}#CONFIRMED`,
+          // categoryAndStatus: `46adc96c-aef9-498a-a8f6-fc05cf264cd1#CONFIRMED`,
           limit: 10,
           sortDirection: "DESC",
         },
@@ -42,21 +43,36 @@ const TopTagsItem = () => {
     }
   };
 
-  useEffect(() => {
-    getTrendPosts()
-  },[])
-  
+  const getTrendPostsByCategory = async () => {
+    try {
+      const categories = await getUserCategories();
+      const randomCategory =
+        categories.items[Math.floor(Math.random() * categories.items.length)];
+      setSelectedCategory(randomCategory);
+      setUserCategories(categories.items);
+      await getTrendPosts(randomCategory.category_id);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
   const nextItem = () => {
     if (activeIndex < trendingPostsByCategory.items.length - 1) {
       setActiveIndex(activeIndex + 1);
     }
   };
-
   const prevItem = () => {
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
     }
   };
+
+  useEffect(() => {
+    // getUserCategories();
+    getTrendPostsByCategory();
+
+    // eslint-disable-next-line
+  }, []);
 
   return trendingPostsByCategory.items?.length > 0 ? (
     <div
@@ -64,7 +80,7 @@ const TopTagsItem = () => {
         "flex flex-col w-full relative"
       }
     >
-      {(activeIndex + 1 < trendingPostsByCategory.items.length - 1) && (
+      {activeIndex + 1 < trendingPostsByCategory.items.length - 1 && (
         <div
           onClick={() => {
             trendPostsRef.current.scrollTo({
@@ -101,17 +117,19 @@ const TopTagsItem = () => {
           />
         </div>
       )}
-
-      <p
-        className={
-          "font-bold text-[#000000] text-[24px] leading-[28px]"
-        }
-      >
-        ШИЛДЭГ ТАГУУД
-      </p>
+      <div className="flex flex-row items-center">
+        <span className="iconNew-fi-rs-jor text-[20px] text-[#FF6600]"/>
+        <p
+          className={
+            "font-bold text-[#000000] ml-[8px] text-[24px] leading-[28px]"
+          }
+        >
+          АЛДАРТАЙ ЖОРНУУД
+        </p>
+      </div>
       <div
         ref={trendPostsRef}
-        className={"trendPostsCardWrapper relative mt-[39px] overflow-x-scroll"}
+        className={"trendPostsCardWrapper relative mt-[21px] overflow-x-scroll"}
       >
         <div
           className={
@@ -119,7 +137,7 @@ const TopTagsItem = () => {
           }
         >
           {trendingPostsByCategory.items.map((item, index) => {
-                return <TopTags data={item} key={index} />;
+            return <MagazineItem data={item.post} key={index} />;
           })}
         </div>
       </div>
@@ -127,4 +145,4 @@ const TopTagsItem = () => {
   ) : null;
 };
 
-export default TopTagsItem;
+export default Magazine;

@@ -547,7 +547,8 @@ import Story from "../src/components/story";
 import TrendPostsByCategory from "../src/components/TrendPostsByCategory";
 import NavbarPostHeader from "../src/components/navigation/navbarNew/navbarPostHeader";
 import TopBanner from "../src/components/topBanner";
-import MagazineItem from "../src/components/magazine/MagazineItem";
+import Magazine from "../src/components/magazine/Magazine";
+import TopTags from "../src/components/toptags/TopTags";
 
 export async function getServerSideProps({ req }) {
   const { API, Auth } = withSSRContext({ req });
@@ -949,16 +950,12 @@ const Feed = ({ ssrData }) => {
         {/*<div>*/}
         {/*  <TopBanner />*/}
         {/*</div>*/}
-        <div className="flex flex-row max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px] w-full">
-          <TrendPostsByCategory />
-        </div>
-        <div className="flex flex-row max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px] w-full">
-          <MagazineItem />
           <div className="bg-white w-full flex flex-col items-center">
-
+            <Magazine />
             <div className="flex flex-row max-w-[1502px] w-full overflow-hidden">
               <TrendPostsByCategory />
             </div>
+            <TopTags/>
             <div
               className={
                 "relative max-w-[1310px] w-full justify-items-center newFeedGrid justify-center mt-[50px]"
@@ -971,7 +968,6 @@ const Feed = ({ ssrData }) => {
               </InfinitScroller>
             </div>
           </div>
-        </div>
       </div>
     </>
   );

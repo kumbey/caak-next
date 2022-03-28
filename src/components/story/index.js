@@ -21,10 +21,10 @@ export default function Story({story}) {
             }}
         >
             <a>
-                <div className='w-[290px] storyLinear h-[435px] relative mr-[13px] rounded-[4px]'>
+                <div className='w-[290px] storyLinear h-[435px] relative mr-[13px]'>
                     <LazyLoadImage
                         alt={story.items.items[0].file.name}
-                        className={`object-cover w-full h-full`}
+                        className={`object-cover w-full h-full rounded-[4px]`}
                         src={getFileUrl(story.items.items[0].file)}
                     />
                     <div className='absolute bottom-0 py-[30px] px-[20px] flex flex-col items-start'>

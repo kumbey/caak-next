@@ -78,7 +78,7 @@ const TrendPostsByCategory = () => {
   return trendingPostsByCategory.items?.length > 0 ? (
     <div
       className={
-        "flex flex-col w-full bg-white relative"
+        "flex flex-col w-full bg-white relative py-[80px]"
       }
     >
       {activeIndex + 1 < trendingPostsByCategory.items.length - 1 && (

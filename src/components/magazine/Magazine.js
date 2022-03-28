@@ -4,10 +4,9 @@ import { listPostByCategoryOrderByReactions } from "../../graphql-custom/post/qu
 import { getReturnData } from "../../utility/Util";
 import { listUserCategoryByUser } from "../../graphql/queries";
 import { useUser } from "../../context/userContext";
-import Story from "../story";
-import Magazine from ".";
+import MagazineItem from ".";
 
-const MagazineItem = () => {
+const Magazine = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [trendingPostsByCategory, setTrendingPostsByCategory] = useState({});
   const [userCategories, setUserCategories] = useState([]);
@@ -76,72 +75,76 @@ const MagazineItem = () => {
   }, []);
 
   return trendingPostsByCategory.items?.length > 0 ? (
-    <div
-      className={
-        "flex flex-col w-full bg-white relative"
-      }
-    >
-      {activeIndex + 1 < trendingPostsByCategory.items.length - 1 && (
-        <div
-          onClick={() => {
-            trendPostsRef.current.scrollTo({
-              left: (1 + activeIndex) * 350,
-              behavior: "smooth",
-            });
-            nextItem();
-          }}
-          className={
-            "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute right-[-20px] top-1/2"
-          }
-        >
-          <span
-            className={"icon-fi-rs-next text-[#555555] text-[18px]"}
-          />
-        </div>
-      )}
-
-      {activeIndex > 0 && (
-        <div
-          onClick={() => {
-            trendPostsRef.current.scrollTo({
-              left: (activeIndex - 1) * 350,
-              behavior: "smooth",
-            });
-            prevItem();
-          }}
-          className={
-            "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute left-[-20px] top-1/2 rotate-180"
-          }
-        >
-          <span
-            className={"icon-fi-rs-next text-[#555555] text-[18px]"}
-          />
-        </div>
-      )}
-
-      <p
+    <div className="bg-[#F5F5F5] w-full flex justify-center py-[50px]">
+      <div
         className={
-          "font-bold text-[#000000] text-[24px] leading-[28px]"
+          "flex flex-col w-full relative max-w-[400px] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[1002px] xl:max-w-[1202px] 2xl:max-w-[1502px]"
         }
       >
-        АЛДАРТАЙ ЖОРНУУД
-      </p>
-      <div
-        ref={trendPostsRef}
-        className={"trendPostsCardWrapper relative mt-[39px] overflow-x-scroll"}
-      >
+        {activeIndex + 1 < trendingPostsByCategory.items.length - 1 && (
+          <div
+            onClick={() => {
+              trendPostsRef.current.scrollTo({
+                left: (1 + activeIndex) * 350,
+                behavior: "smooth",
+              });
+              nextItem();
+            }}
+            className={
+              "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute right-[-20px] top-1/2"
+            }
+          >
+            <span
+              className={"icon-fi-rs-next text-[#555555] text-[18px]"}
+            />
+          </div>
+        )}
+
+        {activeIndex > 0 && (
+          <div
+            onClick={() => {
+              trendPostsRef.current.scrollTo({
+                left: (activeIndex - 1) * 350,
+                behavior: "smooth",
+              });
+              prevItem();
+            }}
+            className={
+              "cursor-pointer z-[3] w-[40px] h-[40px] flex items-center justify-center bg-white border-[#D4D8D8] drop-shadow-md rounded-full absolute left-[-20px] top-1/2 rotate-180"
+            }
+          >
+            <span
+              className={"icon-fi-rs-next text-[#555555] text-[18px]"}
+            />
+          </div>
+        )}
+        <div className="flex flex-row items-center">
+          <span className="iconNew-fi-rs-jor text-[20px] text-[#FF6600]"/>
+          <p
+            className={
+              "font-bold text-[#000000] ml-[8px] text-[24px] leading-[28px]"
+            }
+          >
+            АЛДАРТАЙ ЖОРНУУД
+          </p>
+        </div>
         <div
-          className={
-            " flex flex-row flex-nowrap w-full h-full transition-all duration-300"
-          }
+          ref={trendPostsRef}
+          className={"trendPostsCardWrapper relative mt-[21px] overflow-x-scroll"}
         >
-          {trendingPostsByCategory.items.map((item, index) => {
-            return <Magazine data={item.post} key={index} />;
-          })}
+          <div
+            className={
+              " flex flex-row flex-nowrap w-full h-full gap-[21px] transition-all duration-300"
+            }
+          >
+            {trendingPostsByCategory.items.map((item, index) => {
+              return <MagazineItem data={item.post} key={index} />;
+            })}
+          </div>
         </div>
       </div>
     </div>
   ) : null;
 };
 
-export default MagazineItem;
+export default Magazine;
